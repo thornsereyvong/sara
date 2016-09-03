@@ -1,0 +1,142 @@
+div.style-switcher {
+	background-color: #fff;
+	color: #262626;
+	width: 255px;
+	position: fixed;
+	top: 183px;
+	z-index: 1002;
+	left: -257px;
+}
+div.style-switcher .header {
+	padding: 10px 30px;
+	background: #b2bfca;
+	box-shadow: 2px 1px 1px #5C5C5C;
+	z-index: 2;
+	position: relative;
+	border-top: none;
+	height: 51px;
+}
+div.style-switcher .body {
+	padding: 20px 30px;
+	top: 0px;
+	position: absolute;
+	opacity: 0;
+	background-color: #ffffff;
+	border: 1px solid #ddd;
+	border-top: none;
+	-webkit-transition: all 0.6s ease-in-out;
+	-moz-transition: all 0.6s ease-in-out;
+	-o-transition: all 0.6s ease-in-out;
+	-ms-transition: all 0.6s ease-in-out;
+	transition: all 0.6s ease-in-out;
+}
+div.style-switcher.opened .body {
+	top: 50px;
+	opacity: 1;
+}
+div.style-switcher h2 {
+	margin: 0;
+	color: #fff;
+}
+div.style-switcher h3 {
+	margin: 0 0 15px 0;
+}
+div.style-switcher a.trigger {
+	display: block;
+	height: 51px;
+	position: absolute;
+	right: -50px;
+	top: 0;
+	background: #b2bfca;
+	width: 50px;
+	font-size: 28px;
+	line-height: 48px;
+	color: #ffffff;
+	text-align: center;
+	text-decoration: none;
+	box-shadow: 1px 1px 1px #5C5C5C;
+}
+div.style-switcher ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 0;
+}
+div.style-switcher ul li {
+	width: 44px;
+	height: 44px;
+	background: #333;
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	margin: 0 4px 4px 0;
+	-webkit-transition: all linear 0.3s;
+	-moz-transition: all linear 0.3s;
+	-o-transition: all linear 0.3s;
+	-ms-transition: all linear 0.3s;
+	transition: all linear 0.3s;
+}
+div.style-switcher ul li.selected:after {
+	font-family: "FontAwesome";
+	content: "\f00c";
+	color: #fff;
+	top: 0;
+	position: absolute;
+	text-align: center;
+	line-height: 44px;
+	width: 100%;
+	font-size: 16px;
+}
+div.style-switcher select {
+	width: 100%;
+	padding: 5px;
+	border: 1px solid #b2bfca;
+}
+div.style-switcher .blue {
+	background: #3f85c2;
+}
+div.style-switcher .blue:hover {
+	background: #3472a8;
+}
+div.style-switcher .green {
+	background: #1fa719;
+}
+div.style-switcher .green:hover {
+	background: #1c8f17;
+}
+div.style-switcher .gray {
+	background: #4c575b;
+}
+div.style-switcher .gray:hover {
+	background: #3d4346;
+}
+div.style-switcher .cyan {
+	background: #00c4c5;
+}
+div.style-switcher .cyan:hover {
+	background: #00b5b5;
+}
+div.style-switcher .orange {
+	background: #e49910;
+}
+div.style-switcher .orange:hover {
+	background: #ce8a0e;
+}
+div.style-switcher .pink {
+	background: #ff8b9f;
+}
+div.style-switcher .pink:hover {
+	background: #ff6680;
+}
+div.style-switcher .purple {
+	background: #5d4186;
+}
+div.style-switcher .purple:hover {
+	background: #4b3074;
+}
+div.style-switcher .red {
+	background: #bd392f;
+}
+div.style-switcher .red:hover {
+	background: #96261d;
+}
