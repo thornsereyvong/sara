@@ -6,7 +6,7 @@
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
 
-<!-- <h1></h1> -->
+<h1>dddd</h1>
 <script type="text/javascript">
 
 var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
