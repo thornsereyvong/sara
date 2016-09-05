@@ -86,20 +86,156 @@ $(document).ready(function() {
 				validators: {
 					notEmpty: {
 						message: 'The Campaign is required and can not be empty!'
+					},
+					stringLength: {
+						max: 100,
+						message: 'The must be less than 100 characters long.'
 					}
 				}
 			},
 			lea_firstName: {
 				validators: {
 					notEmpty: {
-						message: 'The Lead First name is required and can not be empty!'
+						message: 'The first name is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The first name must be less than 255 characters long.'
 					}
 				}
 			},
 			lea_lastName: {
 				validators: {
 					notEmpty: {
-						message: 'The Lead Last name is required and can not be empty!'
+						message: 'The last name is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The last name must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_phone: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The phone must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			lea_mobilePhone: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The mobile phone must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_title: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The title must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			lea_department: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The department must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			lea_email: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The department must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_accountName: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The Company must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_no: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The no must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_street: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The street must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_village: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The village must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			lea_commune: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The commune must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_district: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The district must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_state: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The state must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_city: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The city must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_country: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The country must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_description: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The description must be less than 255 characters long.'
 					}
 				}
 			}
@@ -268,11 +404,8 @@ padding-right: 10px;
 
 					<div class="col-sm-6">
 
-						<div class="col-sm-2">
-							<label class="font-label">First Name :</label>
-						</div>
-						
-						<div class="col-sm-4"> 
+						<div class="col-sm-6">
+							<label class="font-label">First Name <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 	                            <div class="input-group">
 	                            		<span class="input-group-btn">
@@ -287,84 +420,76 @@ padding-right: 10px;
 										</span>
 										<input type="text" name="lea_firstName" class="form-control" id="lea_firstName">
 								</div>
-							</div>					
-						</div>
-						
-						<div class="col-sm-2">
-							<label class="font-label">Last Name :</label>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<input type="text" class="form-control" id="lea_lastName" name="lea_lastName">
 							</div>	
 						</div>
-						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Title :</label>
+						
+						
+						<div class="col-sm-6">
+							<label class="font-label">Last Name <span class="requrie">(Required)</span></label>
+							<div class="form-group">
+								<input type="text" class="form-control" id="lea_lastName" name="lea_lastName">
+							</div>
 						</div>
-						<div class="col-sm-4">
+						
+						<div class="clearfix"></div>
+						<div class="col-sm-6">
+							<label class="font-label">Title </label>
 							<div class="form-group">
 								<input type="text" class="form-control" id="lea_title" name="lea_title">
 							</div>	
 						</div>
-						
-						<div class="col-sm-2">
-							<label class="font-label">Department :</label>
-						</div>
-						<div class="col-sm-4">
+					
+						<div class="col-sm-6">
+							<label class="font-label">Department </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_department" name="lea_department">
-							</div>	
+							</div>
 						</div>
-						<div class="col-sm-2" style="padding-right: 2px;">
-							<label class="font-label">Campany Name :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Company Name </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_accountName" name="lea_accountName">
 							</div>	
 						</div>
+						
 
 						
 					</div>
 
 					<div class="col-sm-6">
 	
-						<div class="col-sm-2">
+						<div class="col-sm-6">
 							<label>Phone :</label>
-						</div>
-						<div class="col-sm-4">
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_phone" name="lea_phone">
 							</div>	
 						</div>
 						
-						<div class="col-sm-2 padding-right">
-							<label class="font-label">Mobile Phone :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6 ">
+							<label class="font-label">Mobile Phone </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_mobilePhone" name="lea_mobilePhone">
 							</div>	
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Website :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Website </label>
 							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_website" name="lea_website">
+								<input type="url" placeholder="http://www.example.com" class="form-control" id="lea_website" name="lea_website">
 							</div>	
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Email :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Email </label>
 							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_email" name="lea_email">
+								<input type="email"  class="form-control" id="lea_email" name="lea_email">
 							</div>	
 						</div>
+						
 						
 
 					</div>
@@ -383,88 +508,79 @@ padding-right: 10px;
 				<div class="col-sm-12">
 						<hr style="margin-top: 3px;" />
 				</div>
-				
+				<div class="row">
 				<div class="col-sm-6">
 				
-					<div class="col-sm-2">
-							<label class="font-label">No :</label>
-						</div>
-						<div class="col-sm-4">
+					<div class="col-sm-6">
+							<label class="font-label">No </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_no" name="lea_no">
 							</div>	
 						</div>
-					<div class="col-sm-2">
-							<label class="font-label">Street :</label>
-						</div>
-						<div class="col-sm-4">
+						
+					<div class="col-sm-6">
+							<label class="font-label">Street </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_street" name="lea_street">
 							</div>	
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Village :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Village </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_village" name="lea_village">
-							</div>	
-						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Commune :</label>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_commune" name="lea_commune">
-							</div>	
+							</div>
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Description :</label>
+						<div class="col-sm-6">
+							<label class="font-label">Commune </label>
+							<div class="form-group">
+								<input type="text"  class="form-control" id="lea_commune" name="lea_commune">
+							</div>
 						</div>
-						<div class="col-sm-10">
+						
+						
+						<div class="col-sm-12">
+							<label class="font-label">Description </label>
 							<div class="form-group">
 								<textarea style="height: 120px" rows="" cols="" name="lea_description" id="lea_description"
 									class="form-control"></textarea>
 							</div>
 						</div>
 						
+						
 				</div>
 				<div class="col-sm-6">
-						<div class="col-sm-2">
-							<label class="font-label">District :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">District </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_district" name="lea_district">
 							</div>	
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">City :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">City </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_city" name="lea_city">
 							</div>	
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">State :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">State </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_state" name="lea_state">
-							</div>	
+							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Country :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Country </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_country" name="lea_country">
 							</div>	
 						</div>
+						
 				</div>
-				
+			  </div>
 				
 				<div class="clearfix"></div>
 				
@@ -473,11 +589,10 @@ padding-right: 10px;
 				<div class="col-sm-12">
 						<hr style="margin-top: 3px;" />
 				</div>
+				<div class="row">
 				<div class="col-sm-6">
-					<div class="col-sm-2" data-ng-init="listLeadStatus()">
-							<label class="font-label">Status :</label>
-						</div>
-						<div class="col-sm-4">
+					<div class="col-sm-6" data-ng-init="listLeadStatus()">
+							<label class="font-label">Status </label>
 							<div class="form-group">
 								<select class="form-control select2" name="lea_status" id="lea_status">
 									<option value="">-- SELECT Status --</option>
@@ -485,10 +600,9 @@ padding-right: 10px;
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-2" data-ng-init="listLeadIndustry()">
-							<label class="font-label">Industry :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6" data-ng-init="listLeadIndustry()">
+							<label class="font-label">Industry </label>
 							<div class="form-group" >
 								<select class="form-control select2" name="lea_industry" id="lea_industry">
 									<option value="">-- SELECT Industry --</option>
@@ -496,10 +610,10 @@ padding-right: 10px;
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-2" data-ng-init="listLeadSource()">
-							<label class="font-label">Source :</label>
-						</div>
-						<div class="col-sm-4">
+					</div>
+				  <div class="col-sm-6">		
+						<div class="col-sm-6" data-ng-init="listLeadSource()">
+							<label class="font-label">Source </label>
 							<div class="form-group">
 								<select class="form-control select2" name="lea_source" id="lea_source">
 									<option value="">-- SELECT Source --</option>
@@ -507,10 +621,9 @@ padding-right: 10px;
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-2" data-ng-init="listCampaigns()">
-							<label class="font-label">Campaign Name :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6" data-ng-init="listCampaigns()">
+							<label class="font-label">Campaign</label>
 							<div class="form-group">
 								<select class="form-control select2" name="lea_ca" id="lea_ca">
 									<option value="">-- SELECT Campaign --</option>
@@ -518,6 +631,7 @@ padding-right: 10px;
 								</select>
 							</div>
 						</div>
+					</div>	
 				</div>
 				
 				
@@ -530,24 +644,19 @@ padding-right: 10px;
 				<div class="col-sm-12">
 						<hr style="margin-top: 3px;" />
 				</div>
-				<div class="col-sm-6">
 				
-				</div>
-				<div class="col-sm-12">
-				
-					
-					<div class="col-sm-1">
+
+					<div class="col-sm-3"  data-ng-init="listCampUser()">
 							<label class="font-label">Assigned to : </label>
-						</div>
-						<div class="col-sm-2" data-ng-init="listCampUser()">
 							<div class="form-group">
 								<select class="form-control select2"  name="lea_assignTo" id="lea_assignTo" style="width: 100%;">
 			                      <option value=""></option>
 			                                
 			                    </select>
 							</div>
-						</div>	
-				</div>
+						</div>
+						
+			
 				
 			</form>
 			</div>
