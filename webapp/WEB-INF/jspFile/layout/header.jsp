@@ -239,7 +239,7 @@ function userReportList(id,vals){
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="${pageContext.request.contextPath}/resources/images/user-icon-512.png" class="user-image" alt="User Image">
-                  <span class="hidden-xs">Hi ${SESSION}!</span>
+                  <span class="hidden-xs">Welcome ${SESSION}!</span>
                   
                 </a>
                 <ul class="dropdown-menu">
