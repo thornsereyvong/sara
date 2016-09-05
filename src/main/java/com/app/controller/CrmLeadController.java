@@ -32,12 +32,11 @@ public class CrmLeadController {
 	private String URL;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/lead/list",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllCampaign(){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/list", HttpMethod.GET, request, Map.class);
-		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
+	@RequestMapping(value="/lead/list",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> getAllCampaign(@RequestBody String json){	
+		HttpEntity<String> request = new HttpEntity<String>(json,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/list", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -53,10 +52,8 @@ public class CrmLeadController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/add",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addCampaign(@RequestBody CrmLead lead){
-		
 		HttpEntity<Object> request = new HttpEntity<Object>(lead,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/add", HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}

@@ -13,11 +13,25 @@
 var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-	$scope.listLeads = function(){
-		$http.get("${pageContext.request.contextPath}/lead/list").success(function(response){
+	$scope.listLeads = function(username){
+		/* $http.get("${pageContext.request.contextPath}/lead/list").success(function(response){
 				$scope.leads = response.DATA;
 			});
-		} ;
+		} ; */
+		$http({
+		    method: 'POST',
+		    url: '${pageContext.request.contextPath}/lead/list',
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {
+		    	"username":username
+		    }
+		}).success(function(response){
+			$scope.leads = response.DATA;
+		});
+	}
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -141,7 +155,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 				    <br/>
 				  </div>
 				  <div class="clearfix"></div>
-			<div class="tablecontainer table-responsive" data-ng-init="listLeads()" > 
+			<div class="tablecontainer table-responsive" data-ng-init="listLeads('${SESSION}')" > 
 				<%
 					
 				if(roleList.equals("YES")){
@@ -172,7 +186,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 						<tr dir-paginate="cc in leads |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
 							<td>{{cc.leadID}}</td>
-							<td>{{cc.salutation}}{{cc.firstName}} {{cc.lastName}}</td>
+							<td>{{cc.salutation}} {{cc.firstName}} {{cc.lastName}}</td>
 							<td>{{cc.statusName}}</td>
 							<td>{{cc.accountName}}</td>
 							<td>{{cc.email}}</td>
