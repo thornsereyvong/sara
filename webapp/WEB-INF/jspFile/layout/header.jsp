@@ -206,7 +206,6 @@ function userReportList(id,vals){
 }
 
 
-
 </script>
 <style>
 .has-error .select2-selection {

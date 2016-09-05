@@ -18,7 +18,8 @@
 	<section class="content-header">
 		<h1>Update Campaign</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Update Campaign</a></li>
+		    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#"> Update Campaign</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
@@ -218,33 +219,47 @@ $(document).ready(function() {
 			invalid: 'glyphicon glyphicon-remove',
 			validating: 'glyphicon glyphicon-refresh'
 		},
-		fields: {
-			cam_name: {
-				validators: {
-					notEmpty: {
-						message: 'The Campaign Name is required and can not be empty!'
+		fields : {
+			cam_name : {
+				validators : {
+					notEmpty : {
+						message : 'The name is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The name must be less than 255 characters long.'
 					}
 				}
 			},
-			cam_status: {
-				validators: {
-					notEmpty: {
-						message: 'The Campaign Status is required and can not be empty!'
-					}
-				}
-			},
-			cam_type: {
-				validators: {
-					notEmpty: {
-						message: 'The Campaign Type is required and can not be empty!'
+			cam_description : {
+				validators : {
+					
+					stringLength: {
+						max: 255,
+						message: 'The name must be less than 255 characters long.'
 					}
 				}
 			},
 			
+			cam_status : {
+				validators : {
+					notEmpty : {
+						message : 'The tatus is required and can not be empty!'
+					}
+				}
+			},
+			cam_type : {
+				validators : {
+					notEmpty : {
+						message : 'The type is required and can not be empty!'
+					}
+				}
+			},
+
 			cam_endDate : {
 				validators : {
 					notEmpty : {
-						message : 'The Campaign EndDate is required and can not be empty!'
+						message : 'The  end date is required and can not be empty!'
 					},
 					date: {
                         format: 'DD/MM/YYYY',
@@ -260,46 +275,65 @@ $(document).ready(function() {
                     }
 				}
 			},
-			cam_budget: {
-				validators: {
-					digits: {
-						message: 'The value can contain only digits'
-					}
+			cam_budget : {
+				validators : {
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
 				}
 			},
-			cam_actualCost: {
-				validators: {
-					digits: {
-						message: 'The value can contain only digits'
-					}
+			cam_actualCost : {
+				validators : {
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
 				}
 			},
-			cam_numSend: {
-				validators: {
-					digits: {
-						message: 'The value can contain only digits'
-					}
+			cam_numSend : {
+				validators : {
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
 				}
 			},
-			cam_expectedResponse: {
-				validators: {
-					digits: {
-						message: 'The value can contain only digits'
-					}
+			cam_expectedResponse : {
+				validators : {
+					
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
 				}
 			},
-			cam_expectedCost: {
-				validators: {
-					digits: {
-						message: 'The value can contain only digits'
-					}
+			cam_expectedCost : {
+				validators : {
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
 				}
 			},
-			cam_expectedRevenue: {
-				validators: {
-					digits: {
-						message: 'The value can contain only digits'
-					}
+			cam_expectedRevenue : {
+				validators : {
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
 				}
 			}
 		}
@@ -494,7 +528,7 @@ $(document).ready(function() {
 						<div class="col-sm-6">
 							<label class="font-label">Status <span class="requrie">(Required)</span></label>
 							<div class="form-group">
-								<select class="form-control select2" name="cam_status" id="cam_status">
+								<select class="form-control select2" name="cam_status" id="cam_status" style="width: 100%;">
 									
 								</select>
 							</div>
@@ -503,7 +537,7 @@ $(document).ready(function() {
 						<div class="col-sm-6">
 							<label class="font-label">Type <span class="requrie">(Required)</span></label>
 							<div class="form-group" >
-								<select class="form-control select2" name="cam_type" id="cam_type">
+								<select class="form-control select2" name="cam_type" id="cam_type" style="width: 100%;">
 									
 								</select>
 							</div>
@@ -513,7 +547,7 @@ $(document).ready(function() {
 						<div class="col-sm-6">
 							<label class="font-label">Parent ID </label>
 							<div class="form-group">
-								<select class="form-control select2" name="cam_parent" id="cam_parent">
+								<select class="form-control select2" name="cam_parent" id="cam_parent" style="width: 100%;">
 									
 								</select>
 							</div>

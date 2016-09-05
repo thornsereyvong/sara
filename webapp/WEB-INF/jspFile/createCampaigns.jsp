@@ -15,8 +15,8 @@
   <section class="content-header">
     <h1>Create Campaign</h1>
     <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Create
-        Campaign</a></li>
+    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a href="#">Create Campaign</a></li>
     </ol>
   </section>
   <script type="text/javascript">
@@ -248,7 +248,7 @@
               <div class="col-sm-6" data-ng-init="listCampStatus()">
                 <label class="font-label">Status <span class="requrie">(Required)</span></label>
                 <div class="form-group">
-                  <select class="form-control select2" name="cam_status"
+                  <select class="form-control select2" name="cam_status" style="width:100%;"
 										id="cam_status">
                     <option value="">-- SELECT Status --</option>
                     <option ng-repeat="stat in camp_status"
@@ -259,7 +259,7 @@
               <div class="col-sm-6" data-ng-init="listCampType()">
                 <label class="font-label">Type <span class="requrie">(Required)</span></label>
                 <div class="form-group">
-                  <select class="form-control select2" name="cam_type"
+                  <select class="form-control select2" name="cam_type" style="width: 100%;"
 										id="cam_type">
                     <option value="">-- SELECT Type --</option>
                     <option ng-repeat="ty in camp_type" value="{{ty.typeID}}">{{ty.typeName}}</option>
@@ -269,7 +269,7 @@
               <div class="col-sm-6" data-ng-init="listCampaigns()">
                 <label class="font-label">Parent ID </label>
                 <div class="form-group">
-                  <select class="form-control select2" name="cam_parent"
+                  <select class="form-control select2" name="cam_parent" style="width: 100%;"
 										id="cam_parent">
                     <option value="">-- SELECT Parent --</option>
                     <option ng-repeat="par in campaigns" value="{{par.campID}}">{{par.campName}}</option>

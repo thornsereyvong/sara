@@ -18,7 +18,8 @@
 	<section class="content-header">
 		<h1>Create Customer</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Create Customer</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#"> Create Customer</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
@@ -85,7 +86,89 @@ $(document).ready(function() {
 				cs_name: {
 					validators: {
 						notEmpty: {
-							message: 'The Customer Name is required and can not be empty!'
+							message: 'The  name is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The name must be less than 255 characters long.'
+						}
+					}
+				},
+				c_tel1: {
+					validators: {
+						notEmpty: {
+							message: 'The tel is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The tel must be less than 255 characters long.'
+						}
+					}
+				},
+				c_tel2: {
+					validators: {
+						
+						stringLength: {
+							max: 255,
+							message: 'The tel must be less than 255 characters long.'
+						}
+					}
+				},
+				c_email: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The email must be less than 255 characters long.'
+						}
+					}
+				}
+				,
+				c_fax: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The fax must be less than 255 characters long.'
+						}
+					}
+				},
+				c_address: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The address must be less than 255 characters long.'
+						}
+					}
+				}
+				,
+				c_facebook: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The facebook must be less than 255 characters long.'
+						}
+					}
+				},
+				c_line: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The line must be less than 255 characters long.'
+						}
+					}
+				},
+				c_viber: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The viber must be less than 255 characters long.'
+						}
+					}
+				},
+				c_whatapp: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The whatApp must be less than 255 characters long.'
 						}
 					}
 				}
@@ -205,68 +288,61 @@ $(document).ready(function() {
 
 						
 
-						<div class="col-sm-2">
-							<label class="font-label">Name *:</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Name <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
 								<input type="text" class="form-control" name="cs_name" id="cs_name">
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Tel *:</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Tel <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="c_tel1" id="c_tel1">
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Tel :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Tel </label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="c_tel2" id="c_tel2">
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Fax :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Fax </label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="c_fax" id="c_fax">
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Address :</label>
-						</div>
-						<div class="col-sm-10">
+						
+						<div class="col-sm-12">
+							<label class="font-label">Address </label>
 							<div class="form-group">
 								<textarea style="height: 120px" rows="" cols="" name="c_address" id="c_address"	class="form-control"></textarea>
 							</div>
 						</div>
+						
 					</div>
 
 					<div class="col-sm-6">
 
-						<div class="col-sm-2">
-							<label class="font-label">Email :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Email </label>
 							<div class="form-group">
-								<input type="text" class="form-control" name="c_email" id="c_email">
+								<input type="email" class="form-control" name="c_email" id="c_email">
 							</div>
 						</div>
+						
 
-						<div class="col-sm-2">
-							<label class="font-label">Website :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Website </label>
 							<div class="form-group">
-								<input type="text" class="form-control" name="c_website" id="c_website">
+								<input type="url" placeholder="http://www.example.com" class="form-control" name="c_website" id="c_website">
 							</div>
 						</div>
+						
 
 					</div>
 					
@@ -283,63 +359,56 @@ $(document).ready(function() {
 				<div class="col-sm-12">
 						<hr style="margin-top: 8px;"/>
 				</div>
-				
+				<div class="row">
 				<div class="col-sm-6">
 				
-					<div class="col-sm-2">
-							<label class="font-label">Facebook:</label>
-						</div>
-						<div class="col-sm-4">
+					<div class="col-sm-6">
+							<label class="font-label">Facebook</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="c_facebook" id="c_facebook">
 							</div>
 						</div>
 						
-					<div class="col-sm-2">
-							<label class="font-label">Line:</label>
-						</div>
-						<div class="col-sm-4">
+						
+					<div class="col-sm-6">
+							<label class="font-label">Line</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="c_line" id="c_line">
 							</div>
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Viber:</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Viber</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="c_viber" id="c_viber">
 							</div>
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">WhatApp:</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">WhatApp</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="c_whatapp" id="c_whatapp">
 							</div>
 						</div>
+						
 				</div>
 				
 				<div class="col-sm-6">
 				
-					<div class="col-sm-2" data-ng-init="listIndustry()">
-							<label class="font-label">Industry:</label>
-						</div>
-						<div class="col-sm-4">
+					<div class="col-sm-6" data-ng-init="listIndustry()">
+							<label class="font-label">Industry</label>
 							<div class="form-group">
-								<select class="form-control select2" name="c_industry" id="c_industry">
+								<select class="form-control select2" name="c_industry" id="c_industry" style="width:100%">
 									<option value="">-- SELECT Industry</option>
 									<option ng-repeat="u in industry" value="{{u.industID}}">{{u.industName}}</option> 
 								</select>
 							</div>
 						</div>
-					<div class="col-sm-2" data-ng-init="listAccount()">
-							<label class="font-label">Type:</label>
-						</div>
-						<div class="col-sm-4">
+						
+					<div class="col-sm-6" data-ng-init="listAccount()">
+							<label class="font-label">Type</label>
 							<div class="form-group">
 								<select class="form-control select2" name="c_type" id="c_type">
 									<option value="">-- SELECT Type</option>
@@ -348,6 +417,7 @@ $(document).ready(function() {
 							</div>
 						</div>
 						
+					</div>	
 				</div>
 
 			</form>

@@ -33,7 +33,8 @@ padding-right: 10px;
 	<section class="content-header">
 		<h1>Create Contact</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Create Contact</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#"> Create Contact</a></li>
 		</ol>
 	</section>
 
@@ -85,7 +86,11 @@ $(document).ready(function() {
 			con_firstName: {
 				validators: {
 					notEmpty: {
-						message: 'The Contact Frist Name ID is required and can not be empty!'
+						message: 'The first name is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The first name must be less than 255 characters long.'
 					}
 				}
 			},
@@ -93,14 +98,122 @@ $(document).ready(function() {
 			con_lastName: {
 				validators: {
 					notEmpty: {
-						message: 'The Contact Last Name is required and can not be empty!'
+						message: 'The last name is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The last name must be less than 255 characters long.'
 					}
 				}
 			},
 			con_phone: {
 				validators: {
 					notEmpty: {
-						message: 'The Contact Phone is required and can not be empty!'
+						message: 'The phone is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The last name must be less than 255 characters long.'
+					}
+				}
+			},
+			con_mobilePhone: {
+				validators: {
+					
+					stringLength: {
+						max: 255,
+						message: 'The last name must be less than 255 characters long.'
+					}
+				}
+			},
+			con_title: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The title must be less than 255 characters long.'
+					}
+				}
+			},
+			con_department: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The department must be less than 255 characters long.'
+					}
+				}
+			},
+			con_email: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The email must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			con_no: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The no must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			con_street: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The street must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			con_village: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The village must be less than 255 characters long.'
+					}
+				}
+			},
+			con_commune: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The commune must be less than 255 characters long.'
+					}
+				}
+			},
+			con_district: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The district must be less than 255 characters long.'
+					}
+				}
+			},
+			con_state: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The state must be less than 255 characters long.'
+					}
+				}
+			},
+			con_city: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The city must be less than 255 characters long.'
+					}
+				}
+			},
+			con_country: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The country must be less than 255 characters long.'
 					}
 				}
 			}
@@ -237,81 +350,71 @@ $(document).ready(function() {
 
 					<div class="col-sm-6">
 
-						<div class="col-sm-2">
-							<label class="font-label">First Name *:</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">First name <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="con_firstName" id="con_firstName">
 							</div>
 						</div>
+						
 
-						<div class="col-sm-2">
-							<label class="font-label">Last Name *:</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Last name <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="con_lastName" id="con_lastName">
 							</div>
 						</div>
-						
-						<div class="col-sm-2">
-							<label>Title :</label>
-						</div>
-						<div class="col-sm-4">
+
+						<div class="col-sm-6">
+							<label>Title </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_title" name="con_title">
-							</div>	
+							</div>
 						</div>
 						
-						<div class="col-sm-2 padding-right">
-							<label class="font-label">Department :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6 ">
+							<label class="font-label">Department </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_department" name="con_department">
 							</div>	
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Customer :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Customer </label>
 							<div class="form-group">
-								<select class="form-control select2" name="con_customer" id="con_customer">
+								<select class="form-control select2" name="con_customer" id="con_customer" style="width:100%">
 									<!-- <option value="">-- SELECT Customer --</option> -->
 								</select>
 							</div>
 						</div>
+						
 
 					</div>
 
 					<div class="col-sm-6">
 					
-						<div class="col-sm-2">
-							<label>Phone *:</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label>Phone <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_phone" name="con_phone">
 							</div>	
 						</div>
 						
-						<div class="col-sm-2 padding-right">
-							<label class="font-label">Mobile Phone :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Mobile phone :</label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_mobilePhone" name="con_mobilePhone">
 							</div>	
-						</div>	
-						<div class="col-sm-2">
-							<label class="font-label">Email :</label>
 						</div>
-						<div class="col-sm-4">
+							
+						<div class="col-sm-6">
+							<label class="font-label">Email :</label>
 							<div class="form-group">
-								<input type="text"  class="form-control" id="con_email" name="con_email">
-							</div>	
+								<input type="email"  class="form-control" id="con_email" name="con_email">
+							</div>
 						</div>
 						
 
@@ -328,37 +431,32 @@ $(document).ready(function() {
 				<div class="col-sm-12">
 						<hr style="margin-top: 3px;" />
 				</div>
-				
+				<div class="row">
 				<div class="col-sm-6">
 				
-					<div class="col-sm-2">
-							<label class="font-label">No :</label>
-						</div>
-						<div class="col-sm-4">
+					<div class="col-sm-6">
+							<label class="font-label">No </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_no" name="con_no">
 							</div>	
 						</div>
-					<div class="col-sm-2">
-							<label class="font-label">Street :</label>
-						</div>
-						<div class="col-sm-4">
+						
+					<div class="col-sm-6">
+							<label class="font-label">Street </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_street" name="con_street">
-							</div>	
+							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Village :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Village </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_village" name="con_village">
-							</div>	
+							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Commune :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Commune </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_commune" name="con_commune">
 							</div>	
@@ -366,40 +464,37 @@ $(document).ready(function() {
 						
 						
 						
+						
 				</div>
 				<div class="col-sm-6">
-						<div class="col-sm-2">
-							<label class="font-label">District :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">District </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_district" name="con_district">
-							</div>	
+							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">City :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">City </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_city" name="con_city">
 							</div>	
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">State :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">State</label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_state" name="con_state">
 							</div>	
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Country :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Country </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="con_country" name="con_country">
-							</div>	
+							</div>
 						</div>
+					</div>		
 				</div>
 				
 				
@@ -408,45 +503,41 @@ $(document).ready(function() {
 				<div class="col-sm-12">
 						<hr style="margin-top: 3px;" />
 				</div>
-
+				<div class="row">
 				<div class="col-sm-12">
 				
-					<div class="col-sm-1">
-							<label class="font-label">Assigned to : </label>
-						</div>
-						<div class="col-sm-2">
+					<div class="col-sm-3">
+							<label class="font-label">Assigned to</label>
 							<div class="form-group">
 								
-								<select class="form-control select2" name="con_assignedTo" id="con_assignedTo">
+								<select class="form-control select2" name="con_assignedTo" id="con_assignedTo" style="width:100%">
 									<option value=""></option>
 								</select>
 							</div>
 						</div>
 						
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-1">
-							<label class="font-label">Lead Source :</label>
-						</div>
-						<div class="col-sm-2" data-ng-init="listLeadSource()">
+						<div class="col-sm-3" data-ng-init="listLeadSource()">
+							<label class="font-label">Lead source </label>
 							<div class="form-group">
-								<select class="form-control select2" name="con_leadSource" id="con_leadSource">
+								<select class="form-control select2" name="con_leadSource" id="con_leadSource" style="width:100%">
 									<option value="">-- SELECT Lead Source --</option>
 									<option ng-repeat="u in lead_source" value="{{u.sourceID}}">{{u.sourceName}}</option> 
 								</select>
 							</div>
 						</div>
-						<div class="clearfix"></div>
-						<div class="col-sm-1">
-							<label class="font-label">Report to : </label>
-						</div>
-						<div class="col-sm-2">
+
+						<div class="col-sm-3">
+							<label class="font-label">Report to</label>
 							<div class="form-group">
-								<select class="form-control select2" name="con_report" id="con_report">
+								<select class="form-control select2" name="con_report" id="con_report" style="width:100%">
 									<option value=""></option>
 								</select>
 							</div>
 						</div>
 						
+					</div>	
 				</div>
 
 			</form>
