@@ -395,7 +395,7 @@ $(document).ready(function() {
 				</div>
 
 				<div class="row">
-
+					<input type="hidden" class="form-control" name="con_id" id="con_id">
 					<div class="col-sm-6">
 
 						<div class="col-sm-6">

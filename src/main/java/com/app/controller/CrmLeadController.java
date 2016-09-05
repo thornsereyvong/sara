@@ -39,6 +39,15 @@ public class CrmLeadController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
 	}
 	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/list_all",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getAllleads(){	
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/list_all", HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/list/{leadID}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> findLeadById(@PathVariable("leadID") String leadID){	

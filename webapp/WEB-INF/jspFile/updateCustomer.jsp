@@ -228,6 +228,7 @@ $(document).ready(function() {
 			}else{
 				account = null;
 			}
+
 			$.ajax({
 				url : "${pageContext.request.contextPath}/customer/edit",
 				type : "PUT",
@@ -322,7 +323,7 @@ $(document).ready(function() {
 
 					<div class="col-sm-6">
 
-						
+						<input type="hidden" class="form-control" name="cs_id" id="cs_id">
 
 						<div class="col-sm-6">
 							<label class="font-label">Name <span class="requrie">(Required)</span></label>
