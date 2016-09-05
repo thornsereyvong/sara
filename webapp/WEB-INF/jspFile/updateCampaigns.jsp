@@ -32,8 +32,6 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
  function listStatusID(statusids, status){
 		$("#cam_status").empty().append('<option value="">-- SELECT Status --</option>');
-
-		alert(status);
 		$.each(status, function(key, value){
 			var div = "<option value='"+value.statusID+"' >"+value.statusName+"</option>";
 			$("#cam_status").append(div);
