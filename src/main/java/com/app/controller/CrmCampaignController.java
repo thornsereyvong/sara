@@ -42,6 +42,14 @@ public class CrmCampaignController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/campaign/startup",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> startupAddPage(){	
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/add/startup", HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/list/validate/{campName}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getCampName(@PathVariable("campName") String campName){	
 		HttpEntity<String> request = new HttpEntity<String>(header);	
