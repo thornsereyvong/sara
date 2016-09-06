@@ -404,14 +404,13 @@ padding-right: 10px;
 				<div class="row">
 
 					<div class="col-sm-6">
-
+						
 						<div class="col-sm-6">
 							<label class="font-label">First Name <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 	                            <div class="input-group">
 	                            		<span class="input-group-btn">
-		                                    <select class="btn" style="width: 64px;text-align:center" name="lea_salutation" id="lea_salutation">
-		                                      <option value=""></option> 
+		                                    <select class="btn" style="height: 34px; width: 75px;text-align:center" name="lea_salutation" id="lea_salutation">		                                      
 		                                      <option value="Mr.">Mr.</option>
 		                                      <option value="Ms.">Ms.</option>
 		                                       <option value="Mrs.">Mrs.</option>
