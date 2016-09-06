@@ -4,7 +4,9 @@
 <jsp:include page="${request.contextPath}/head"></jsp:include>
 <jsp:include page="${request.contextPath}/header"></jsp:include>
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
-<% String roleDelete = (String)request.getAttribute("role_delete"); %>
+<%
+	String roleDelete = (String) request.getAttribute("role_delete");
+%>
 
 
 <script type="text/javascript">
@@ -77,280 +79,329 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 </script>
 <style>
-.icon_color{
-color:#2196F3;
+.icon_color {
+	color: #2196F3;
 }
+
 .pagination {
-    display: inline-block;
-    padding-left: 0;
-    margin: 0px 0px 13px 0px;
-    border-radius: 4px;
-    margin-buttom:10px;
+	display: inline-block;
+	padding-left: 0;
+	margin: 0px 0px 13px 0px;
+	border-radius: 4px;
+	margin-buttom: 10px;
+}
+
+.breadcrumb1 {
+	padding: 0;
+	background: #D4D4D4;
+	list-style: none;
+	overflow: hidden;
+	margin: 20px;
+}
+
+.breadcrumb1>li+li:before {
+	padding: 0;
+}
+
+.breadcrumb1 li {
+	float: left;
+}
+
+.breadcrumb1 li.active a {
+	background: brown; /* fallback color */
+	background: #ffc107;
+}
+
+.breadcrumb1 li.completed a {
+	background: brown; /* fallback color */
+	background: hsla(153, 57%, 51%, 1);
+}
+
+.breadcrumb1 li.active a:after {
+	border-left: 30px solid #ffc107;
+}
+
+.breadcrumb1 li.completed a:after {
+	border-left: 30px solid hsla(153, 57%, 51%, 1);
+}
+
+.breadcrumb1 li a {
+	color: white;
+	text-decoration: none;
+	padding: 10px 0 10px 45px;
+	position: relative;
+	display: block;
+	float: left;
+}
+
+.breadcrumb1 li a:after {
+	content: " ";
+	display: block;
+	width: 0;
+	height: 0;
+	border-top: 50px solid transparent;
+	/* Go big on the size, and let overflow hide */
+	border-bottom: 50px solid transparent;
+	border-left: 30px solid hsla(0, 0%, 83%, 1);
+	position: absolute;
+	top: 50%;
+	margin-top: -50px;
+	left: 100%;
+	z-index: 2;
+}
+
+.breadcrumb1 li a:before {
+	content: " ";
+	display: block;
+	width: 0;
+	height: 0;
+	border-top: 50px solid transparent;
+	/* Go big on the size, and let overflow hide */
+	border-bottom: 50px solid transparent;
+	border-left: 30px solid white;
+	position: absolute;
+	top: 50%;
+	margin-top: -50px;
+	margin-left: 1px;
+	left: 100%;
+	z-index: 1;
+}
+
+.breadcrumb1 li:first-child a {
+	padding-left: 15px;
+}
+
+.breadcrumb1 li a:hover {
+	background: #ffc107;
+}
+
+.breadcrumb1 li a:hover:after {
+	border-left-color: #ffc107 !important;
 }
 </style>
-<div class="content-wrapper" ng-app="campaign" ng-controller="campController">
+<div class="content-wrapper" ng-app="campaign"
+	ng-controller="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>Leads</h1>
+		<h1>View Lead</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i>Leads</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i
+					class="fa fa-home"></i> Home</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i>View Lead</a></li>
 		</ol>
 	</section>
 
 	<section class="content">
 
-		<!-- Default box -->
-		
-		<div class="box box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-				<div class="col-sm-12">
-					<hr style="margin-bottom: 5px;margin-top: 8px;" />
-				 </div> 
-				<div style="background: #fff;margin-top: 15px;">
-				 <div class="col-sm-12">
-				 	<a href="${pageContext.request.contextPath}/create-lead" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
-				 	<a href="${pageContext.request.contextPath}/list-leads" class="btn btn-info btn-app" ><i class="fa fa-clone"	aria-hidden="true"></i> View</a>
-				 </div>
-				 
-				  
-				  <div class="col-sm-12">
-					<hr style="margin-bottom: 0;margin-top: 0px;" />
-				 </div> 
-			</div>
-			</div>
-			
-			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
-				
-			 
-			<div class="clearfix"></div>
 
-			<div class="panel panel-default">
-  				<div class="panel-body">
-  				
-				
-				  <div class="clearfix"></div>
-			<div class="tablecontainer table-responsive" data-ng-init="listLeads()" > 
-				<div dir-paginate="cc in leads |orderBy:sortKey:reverse |filter:search |itemsPerPage:1">
-				<div class="col-sm-8 form-group">
-						<a href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-						<a href="${pageContext.request.contextPath}/convert-lead/{{cc.leadID}}" class="btn btn-info custom-width"><i class="fa  fa-retweet" aria-hidden="true"></i> Convert</a>
-						<button type="button" ng-click="deleteLead(cc.leadID)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>
-				</div>
-				<div class="col-sm-4 text-right form-group">
-					<dir-pagination-controls 
-						max-size="2"
-						direction-links="true"
-						boundary-links="true"> 
-					</dir-pagination-controls>
-				</div>
-			     <div class="clearfix"></div>
-			    		 <!-- Nav tabs -->
-				  <ul class="nav nav-tabs" role="tablist">
-				    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
-				    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Address</a></li>
-				    <li role="presentation"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">More Information</a></li>
-				    <li role="presentation"><a href="#other" aria-controls="other" role="tab" data-toggle="tab">Other</a></li>
-				  </ul>
-				
-				  <!-- Tab panes -->
-				  <div class="tab-content">
-				    <div role="tabpanel" class="tab-pane active" id="home">
-				    	<div class="col-sm-6">
-								<table class="table table-hover">
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Lead ID</td>
-										<td>{{cc.leadID}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Name </td>
-										<td>{{cc.salutation}} {{cc.firstName}} {{cc.lastName}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Title</td>
-										<td>{{cc.title}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Department</td>
-										<td>{{cc.department}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Campany Name</td>
-										<td>{{cc.accountName}}</td>
-									</tr>
-									
-								</table>
-							</div>
-							
-							<div class="col-sm-6">
-								<table class="table table-hover">
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Phone </td>
-										<td>{{cc.phone}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Mobile</td>
-										<td>{{cc.mobile}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Website</td>
-										<td>{{cc.website}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Email</td>
-										<td>{{cc.email}}</td>
-									</tr>
-									
-									
-								</table>
-							</div>
-							
-				    </div>
-				    <div role="tabpanel" class="tab-pane" id="profile">
-				    		<div class="col-sm-6">
-								<table class="table table-hover">
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> No</td>
-										<td>{{cc.no}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Street</td>
-										<td>{{cc.street}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Village </td>
-										<td>{{cc.village}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Commune  </td>
-										<td>{{cc.commune}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Description  </td>
-										<td>{{cc.description}}</td>
-									</tr>
-									
-									
-								</table>
-							</div>
-							
-							<div class="col-sm-6">
-								<table class="table table-hover">
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> District </td>
-										<td>{{cc.district}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> City </td>
-										<td>{{cc.city}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> State</td>
-										<td>{{cc.state}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Country </td>
-										<td>{{cc.country}}</td>
-									</tr>
-									
-									
-								</table>
-							</div>
-				    </div>
-				    <div role="tabpanel" class="tab-pane" id="information">
-				    		<div class="col-sm-6">
-								<table class="table table-hover">
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Status </td>
-										<td>{{cc.statusName}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Source </td>
-										<td>{{cc.sourceName}}</td>
-									</tr>
-									
-									
-									
-								</table>
-							</div>
-							
-							<div class="col-sm-6">
-								<table class="table table-hover">
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Industry</td>
-										<td>{{cc.industName}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Campaign Name</td>
-										<td>{{cc.campName}}</td>
-									</tr>
-									
-								</table>
-							</div>
-				    </div>
-				    <div role="tabpanel" class="tab-pane" id="other">
-				    		<div class="col-sm-6">
-								<table class="table table-hover">
-								<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Assigned To </td>
-										<td>{{cc.assignToUsername}}</td>
-									</tr>
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Created Date</td>
-										<td>{{cc.createDate | date:'dd-MM-yyyy'}} By {{cc.createBy}}</td>
-									</tr>
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Modified Date</td>
-										<td>{{cc.modifyDate | date:'dd-MM-yyyy'}} By {{cc.modifyBy}}</td>
-									</tr>
-									
-								</table>
-							</div>
-							
-							
-				    </div>
-				  </div>
-			    
-			    </div>
-			</div>	
-				
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box box-primary">
+					<div class="box-body">
+						<div class="col-md-2">
+							<img class="profile-user-img img-responsive"
+								src="${pageContext.request.contextPath}/resources/images/logo_red.png"
+								alt="User profile picture">
+							<h3 class="profile-username text-center">Nina Mcintire</h3>
+						</div>
+						<div class="col-md-10">
+							<ul class="breadcrumb1">
+								<li class="completed"><a href="#"> <i
+										class="fa fa-check-circle"></i> New
+								</a></li>
+								<li class="active"><a href="#"> <i
+										class="fa fa-check-circle"></i> Assigned
+								</a></li>
+								<li><a href="#"> <i class="fa fa-lock"></i> In Process
+								</a></li>
+								<li><a href="#"> <i class="fa fa-lock"></i> Converted
+								</a></li>
 
-			  </div>
+								<li class="dead"><a href="#"> <i class="fa fa-lock"></i>
+										Dead
+								</a></li>
+							</ul>
+
+						</div>
+						
+						<div class="clearfix"></div><br/><br/>
+							<div class="nav-tabs-custom">
+								<ul class="nav nav-tabs">
+									<li class="active"><a href="#activity" data-toggle="tab"
+										aria-expanded="true">Activity</a></li>
+									<li class=""><a href="#timeline" data-toggle="tab"
+										aria-expanded="false">Notes</a></li>
+									<li class=""><a href="#settings" data-toggle="tab"
+										aria-expanded="false">Details</a></li>
+								</ul>
+								<div class="tab-content">
+									<div class="tab-pane active" id="activity">
+										
+										<section id="emp_info">
+											<p class="page-header">Log Call</p>
+											<div class="row">
+											
+											</div>
+										</section>
+										
+									
+									</div>
+									<!-- /.tab-pane -->
+									<div class="tab-pane" id="timeline">
+										<div class="col-md-5">
+											<form class="form-horizontal">
+												<div class="form-group">
+													<label for="inputName" class="col-sm-2 control-label">Subject</label>
+													<div class="col-sm-10">
+														<input type="text" class="form-control" id="inputName"
+															placeholder="">
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="inputEmail" class="col-sm-2 control-label">Description</label>
+													<div class="col-sm-10">
+														<textarea rows="3" cols="" name="me_description"
+															id="me_description" class="form-control"></textarea>
+													</div>
+												</div>
+												<button type="submit" class="btn btn-info pull-right">Note</button>
+											</form>
+										</div>
+
+										<div class="clearfix"></div>
+										<ul class="timeline timeline-inverse">
+											<!-- timeline time label -->
+											<li class="time-label"><span class="bg-red"> 10
+													Feb. 2014 </span></li>
+											<!-- /.timeline-label -->
+											<!-- timeline item -->
+											<li><i class="fa fa-envelope bg-blue"></i>
+												<div class="timeline-item">
+													<span class="time"><i class="fa fa-clock-o"></i>
+														12:05</span>
+													<h3 class="timeline-header">
+														<a href="#">Support Team</a> sent you an email
+													</h3>
+													<div class="timeline-body">Etsy doostang zoodles
+														disqus groupon greplin oooj voxy zoodles, weebly ning
+														heekya handango imeem plugg dopplr jibjab, movity jajah
+														plickers sifteo edmodo ifttt zimbra. Babblely odeo
+														kaboodle quora plaxo ideeli hulu weebly balihoo...</div>
+													<div class="timeline-footer">
+														<a class="btn btn-primary btn-xs">Read more</a> <a
+															class="btn btn-danger btn-xs">Delete</a>
+													</div>
+												</div></li>
+											<!-- END timeline item -->
+											<!-- timeline item -->
+											<li><i class="fa fa-user bg-aqua"></i>
+												<div class="timeline-item">
+													<span class="time"><i class="fa fa-clock-o"></i> 5
+														mins ago</span>
+													<h3 class="timeline-header no-border">
+														<a href="#">Sarah Young</a> accepted your friend request
+													</h3>
+												</div></li>
+											<!-- END timeline item -->
+											<!-- timeline item -->
+											<li><i class="fa fa-comments bg-yellow"></i>
+												<div class="timeline-item">
+													<span class="time"><i class="fa fa-clock-o"></i> 27
+														mins ago</span>
+													<h3 class="timeline-header">
+														<a href="#">Jay White</a> commented on your post
+													</h3>
+													<div class="timeline-body">Take me to your leader!
+														Switzerland is small and neutral! We are more like
+														Germany, ambitious and misunderstood!</div>
+													<div class="timeline-footer">
+														<a class="btn btn-warning btn-flat btn-xs">View
+															comment</a>
+													</div>
+												</div></li>
+											<!-- END timeline item -->
+											<!-- timeline time label -->
+											<li class="time-label"><span class="bg-green"> 3
+													Jan. 2014 </span></li>
+											<!-- /.timeline-label -->
+											<!-- timeline item -->
+											<li><i class="fa fa-camera bg-purple"></i>
+												<div class="timeline-item">
+													<span class="time"><i class="fa fa-clock-o"></i> 2
+														days ago</span>
+													<h3 class="timeline-header">
+														<a href="#">Mina Lee</a> uploaded new photos
+													</h3>
+													<div class="timeline-body">
+														<img src="http://placehold.it/150x100" alt="..."
+															class="margin"> <img
+															src="http://placehold.it/150x100" alt="..."
+															class="margin"> <img
+															src="http://placehold.it/150x100" alt="..."
+															class="margin"> <img
+															src="http://placehold.it/150x100" alt="..."
+															class="margin">
+													</div>
+												</div></li>
+											<!-- END timeline item -->
+											<li><i class="fa fa-clock-o bg-gray"></i></li>
+										</ul>
+									</div>
+									<!-- /.tab-pane -->
+
+									<div class="tab-pane" id="settings">
+										<div class="row">
+											<div class="col-md-4">
+												<strong><i class="fa fa-map-marker margin-r-5"></i>
+													Location</strong>
+												<ul class="list-group list-group-unbordered">
+													<li class="list-group-item"><b>Followers</b> <a
+														class="pull-right">1,322</a></li>
+													<li class="list-group-item"><b>Following</b> <a
+														class="pull-right">543</a></li>
+													<li class="list-group-item"><b>Friends</b> <a
+														class="pull-right">13,287</a></li>
+												</ul>
+											</div>
+											<div class="col-md-4">
+												<ul class="list-group list-group-unbordered">
+													<li class="list-group-item"><b>Followers</b> <a
+														class="pull-right">1,322</a></li>
+													<li class="list-group-item"><b>Following</b> <a
+														class="pull-right">543</a></li>
+													<li class="list-group-item"><b>Friends</b> <a
+														class="pull-right">13,287</a></li>
+												</ul>
+											</div>
+											<div class="col-md-4">
+												<ul class="list-group list-group-unbordered">
+													<li class="list-group-item"><b>Followers</b> <a
+														class="pull-right">1,322</a></li>
+													<li class="list-group-item"><b>Following</b> <a
+														class="pull-right">543</a></li>
+													<li class="list-group-item"><b>Friends</b> <a
+														class="pull-right">13,287</a></li>
+												</ul>
+											</div>
+
+										</div>
+									</div>
+									<!-- /.tab-pane -->
+								</div>
+								<!-- /.tab-content -->
+							</div>
+					
+
+
+					</div>
+				</div>
+			</div>
+
+
+
 		</div>
-			</div>
-			<!-- /.box-body -->
-			<div class="box-footer"></div>
-			<!-- /.box-footer-->
-		</div>
-		
-		<!-- /.box -->
-
-
 	</section>
-	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-
-
-
-<!-- /.content-wrapper -->
-
-
-
-
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 
