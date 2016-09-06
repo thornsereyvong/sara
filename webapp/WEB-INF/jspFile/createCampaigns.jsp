@@ -237,8 +237,7 @@
             <div class="col-sm-6">
               <label class="font-label">Expected revenue</label>
               <div class="form-group">
-                <input type="text" class="form-control"
-									name="cam_expectedRevenue" id="cam_expectedRevenue">
+                <input type="text" class="form-control" name="cam_expectedRevenue" id="cam_expectedRevenue">
               </div>
             </div>
           </div>
