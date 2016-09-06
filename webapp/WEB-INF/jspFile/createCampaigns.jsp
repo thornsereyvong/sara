@@ -9,8 +9,7 @@
 	padding-top: 4px;
 }
 </style>
-<div class="content-wrapper" ng-app="campaign"
-	ng-controller="campController"> 
+<div class="content-wrapper" ng-app="campaign" ng-controller="campController"> 
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>Create Campaign</h1>
@@ -22,150 +21,67 @@
   <script type="text/javascript">
 		var app = angular.module('campaign', [ 'oitozero.ngSweetAlert', ]);
 		var self = this;
-		app
-				.controller(
-						'campController',
-						[
-								'SweetAlert',
-								'$scope',
-								'$http',
-								function(SweetAlert, $scope, $http) {
-
-									$scope.listCampaigns = function() {
-										$http
-												.get(
-														"${pageContext.request.contextPath}/campaign/list")
-												.success(
-														function(response) {
-															$scope.campaigns = response.DATA;
-														});
-									};
-
-									$scope.listCampStatus = function() {
-										$http
-												.get(
-														"${pageContext.request.contextPath}/camp_status/list")
-												.success(
-														function(response) {
-															$scope.camp_status = response.DATA;
-														});
-									};
-									$scope.listCampType = function() {
-										$http
-												.get(
-														"${pageContext.request.contextPath}/camp_type/list")
-												.success(
-														function(response) {
-															$scope.camp_type = response.DATA;
-														});
-									};
-								} ]);
-
+		app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http) {
+				$scope.startupAddPage = function() {
+					$http.get("${pageContext.request.contextPath}/campaign/startup").success(function(response) {
+						$scope.campaigns = response.CAMP_PARENT;
+						alert(response.CAMP_PARENT);
+						$scope.camp_status = response.CAMP_STATUS;
+						$scope.camp_type = response.CAMP_TYPE;
+					});
+				};
+			}]);
 		/* swal({  
 		 title: "HTML <small>Title</small>!", 
 		 text: "A custom <span style="color:#F8BB86">html<span> message.",
 		 html: true
 		 }); */
 
-		$(document)
-				.ready(
-						function() {
+		$(document).ready(function() {
 
-							$(".select2").select2();
-
-							var data = ${users};
-
-							userAllList(data, '#cam_assignTo', '');
-
-							$("#cam_name")
-									.change(
-											function() {
-												var name = $("#cam_name").val();
-												$.ajax({
-															url : "${pageContext.request.contextPath}/campaign/list/validate/"
-																	+ name,
-															method : "GET",
-															header : "application/json",
-															statusCode : {
-																404 : function(
-																		xhr) {
-																	var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-ok" data-bv-icon-for="cam_name" style="display: block;"></i>';
-																	$(
-																			"#div_camName")
-																			.find(
-																					"i")
-																			.remove();
-																	$(
-																			"#div_camName")
-																			.find(
-																					"small")
-																			.remove();
-																	$(
-																			"#div_camName")
-																			.removeClass(
-																					"form-group has-feedback has-error")
-																			.addClass(
-																					"form-group has-feedback has-success");
-																	$(
-																			"#div_camName")
-																			.append(
-																					i);
-																	$(
-																			"#btn_save")
-																			.removeAttr(
-																					"disabled");
-																}
+			$(".select2").select2();
+			var data = ${users};
+			userAllList(data, '#cam_assignTo', '');
+			$("#cam_name").change(function() {
+				var name = $("#cam_name").val();
+				$.ajax({
+					url : "${pageContext.request.contextPath}/campaign/list/validate/"+ name,
+					method : "GET",
+					header : "application/json",
+					statusCode : {
+								404 : function(xhr) {
+									var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-ok" data-bv-icon-for="cam_name" style="display: block;"></i>';
+									$("#div_camName").find("i").remove();
+									$("#div_camName").find("small").remove();
+									$("#div_camName").removeClass("form-group has-feedback has-error").addClass("form-group has-feedback has-success");
+									$("#div_camName").append(i);
+									$("#btn_save").removeAttr("disabled");
+								}
 															},
-															success : function(
-																	data) {
-																var dataObject = data.MESSAGE;
-																if (dataObject == "EXIST") {
-																	var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-remove" data-bv-icon-for="cam_name" style="display: block;"></i>';
-																	var small = '<small class="help-block" data-bv-validator="notEmpty" data-bv-for="cam_name" data-bv-result="INVALID" style="">The Campaign Name is already exit ! </small>';
-																	$(
-																			"#div_camName")
-																			.find(
-																					"i")
-																			.remove();
-																	$(
-																			"#div_camName")
-																			.find(
-																					"small")
-																			.remove();
-																	$(
-																			"#div_camName")
-																			.removeClass(
-																					"form-group has-feedback has-success")
-																			.addClass(
-																					"form-group has-feedback has-error");
-																	$(
-																			"#div_camName")
-																			.append(
-																					i
-																							+ small);
-																	$(
-																			"#btn_save")
-																			.attr(
-																					"disabled",
-																					"disabled");
-																}
+					success : function(data) {
+						var dataObject = data.MESSAGE;
+						if (dataObject == "EXIST") {
+							var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-remove" data-bv-icon-for="cam_name" style="display: block;"></i>';
+							var small = '<small class="help-block" data-bv-validator="notEmpty" data-bv-for="cam_name" data-bv-result="INVALID" style="">The Campaign Name is already exit ! </small>';
+							$("#div_camName").find("i").remove();
+							$("#div_camName").find("small").remove();
+							$("#div_camName").removeClass("form-group has-feedback has-success").addClass("form-group has-feedback has-error");
+							$("#div_camName").append(i+ small);
+							$("#btn_save").attr("disabled","disabled");
+					}
 
-															}
-														});
-											});
+				}
+			});
+		});
 
-							$("#btn_clear").click(
-									function() {
-										$("#form-campaigns")
-												.bootstrapValidator(
-														'resetForm', 'true');
-									});
+		$("#btn_clear").click(function() {
+			$("#form-campaigns").bootstrapValidator('resetForm', 'true');
+		});
 
-							$("#btn_save").click(function() {
-								$("#form-campaigns").submit();
-							});
-
-						});
+		$("#btn_save").click(function() {
+			$("#form-campaigns").submit();
+		});
+	});
 	</script>
   <section class="content"> 
     
@@ -181,7 +97,7 @@
 						data-toggle="tooltip" title="Remove"> <i class="fa fa-times"></i> </button>
         </div>
       </div>
-      <div class="box-body">
+      <div class="box-body" data-ng-init = "startupAddPage()">
         <form method="post" id="form-campaigns">
           <button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save </button>
           <a class="btn btn-info btn-app" id="btn_clear"> <i
@@ -245,7 +161,7 @@
               </div>
             </div>
             <div class="col-sm-6">
-              <div class="col-sm-6" data-ng-init="listCampStatus()">
+              <div class="col-sm-6">
                 <label class="font-label">Status <span class="requrie">(Required)</span></label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_status" style="width:100%;"
@@ -256,7 +172,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6" data-ng-init="listCampType()">
+              <div class="col-sm-6">
                 <label class="font-label">Type <span class="requrie">(Required)</span></label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_type" style="width: 100%;"
@@ -266,8 +182,8 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6" data-ng-init="listCampaigns()">
-                <label class="font-label">Parent ID </label>
+              <div class="col-sm-6">
+                <label class="font-label">Parent Campaign </label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_parent" style="width: 100%;"
 										id="cam_parent">

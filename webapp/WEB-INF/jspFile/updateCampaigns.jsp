@@ -31,49 +31,28 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 }]);
 
-
-
- function listStatusID(statusids){
-	
-		$.ajax({
-			url: "${pageContext.request.contextPath}/camp_status/list",
-			method: "GET",
-			header: "application/json",
-			success: function(data){
-				var dataObject = data.DATA;
-				 $("#cam_status").empty().append('<option value="">-- SELECT Status --</option>');
-				$.each(data.DATA, function(key, value){
-					var div = "<option value='"+value.statusID+"' >"+value.statusName+"</option>";
-					$("#cam_status").append(div);
-				});  
-				$("#cam_status").select2("val",statusids);
-				
-				} 
-			});
+ function listStatusID(statusids, status){
+		$("#cam_status").empty().append('<option value="">-- SELECT Status --</option>');
+		$.each(status, function(key, value){
+			var div = "<option value='"+value.statusID+"' >"+value.statusName+"</option>";
+			$("#cam_status").append(div);
+		});  
+		$("#cam_status").select2("val",statusids);
 	}
 
- function listTypeID(type){
-		$.ajax({
-			url: "${pageContext.request.contextPath}/camp_type/list",
-			method: "GET",
-			header: "application/json",
-			success: function(data){
-				var dataObject = data.DATA;
-				 $("#cam_type").empty().append('<option value="">-- SELECT Type --</option>');
-				$.each(dataObject, function(key, value){
-					var div = "<option value='"+value.typeID+"' >"+value.typeName+"</option>";
-					$("#cam_type").append(div);
-				});  
-				$("#cam_type").select2("val",type);
-				} 
-			});
+ function listTypeID(typeId,type){
+		$("#cam_type").empty().append('<option value="">-- SELECT Type --</option>');
+		$.each(type, function(key, value){
+			var div = "<option value='"+value.typeID+"' >"+value.typeName+"</option>";
+			$("#cam_type").append(div);
+		});  
+		$("#cam_type").select2("val",typeId);
 	}
 
  function listParentID(parent,not_equal){
-	    var parent = ${parent};
 	    $("#cam_parent").empty().append('<option value="">-- SELECT Parent --</option>');
-	    if(parent.body.DATA != ""){
-				$.each(parent.body.DATA, function(key, value){
+	    if(parent!= ""){
+				$.each(parent, function(key, value){
 						var div = "<option value='"+value.campID+"' >"+value.campName+"</option>";
 					$("#cam_parent").append(div);
 				});  
@@ -123,30 +102,27 @@ function listDataByCampID(){
 	$("#cam_expectedResponse").val(result.expectedResponse);
 
 	//listCampUserID(result.assignTo);
-
 	
 	userAllList(user_id,'#cam_assignTo',result.userID);
-	
-	
 	
 	
 	if(result.statusID == null || result.statusID == ""){
 		listStatusID("");
 	}else{	
-		listStatusID(result.statusID);
+		listStatusID(result.statusID, data.body.CAMP_STATUS);
 	}
 
 	if(result.typeID == null || result.typeID == ""){
 		listTypeID("");
 	}else{
-		listTypeID(result.typeID);
+		listTypeID(result.typeID, data.body.CAMP_TYPE);
 	}
 
 	
 	if(result.parentID == null || result.parentID == ""){
 		listParentID("",result.campID);
 	}else{
-		listParentID(result.parentID, result.campID);
+		listParentID(data.body.CAMP_PARENT, result.campID);
 	}
 	
 }
