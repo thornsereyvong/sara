@@ -73,12 +73,11 @@
 					}
 
 				}
-			});
 		});
 
-              	$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_startDate');
+        $('#form-campaigns').bootstrapValidator('revalidateField', 'cam_startDate');
             
-          });
+    	});
       	$('#cam_endDate').daterangepicker({
               singleDatePicker: true,
               showDropdowns: true,
@@ -88,6 +87,15 @@
               	$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_endDate');
             
           });
+      	$('#cam_startDate').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            format: 'DD/MM/YYYY'
+        }).on('change', function(e) {
+
+            	$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_startDate');
+          
+        });
       	$(".select2").select2();
       	var data = ${users};
       	userAllList(data, '#cam_assignTo', '');
