@@ -20,7 +20,8 @@
 	<section class="content-header">
 		<h1>Update Meeting</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Update Meeting</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#"> Update Meeting</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
@@ -119,6 +120,16 @@ $(document).ready(function() {
         singleDatePicker: true,
         showDropdowns: true,
         format: 'DD/MM/YYYY' 
+    }).on('change', function(e) {
+
+        if($("#me_startDate" != "")){
+        	$('#form-call').bootstrapValidator('revalidateField', 'me_startDate');
+         }
+
+        if($("#me_endDate" != "")){
+        	$('#form-call').bootstrapValidator('revalidateField', 'me_endDate');
+         }
+    	 
     });
 
     
@@ -151,6 +162,10 @@ $(document).ready(function() {
 					validators: {
 						notEmpty: {
 							message: 'The Subject is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The Subject must be less than 255 characters long.'
 						}
 					}
 				},
@@ -158,13 +173,38 @@ $(document).ready(function() {
 					validators: {
 						notEmpty: {
 							message: 'The Start Date is required and can not be empty!'
-						}
+						},
+						date: {
+	                        format: 'DD/MM/YYYY',
+	                        message: 'The value is not a valid date'
+	                    }
 					}
 				},
 				me_endDate: {
 					validators: {
 						notEmpty: {
 							message: 'The End Date is required and can not be empty!'
+						},
+						date: {
+	                        format: 'DD/MM/YYYY',
+	                        message: 'The value is not a valid date'
+	                    }
+					}
+				},
+				me_description: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The description must be less than 255 characters long.'
+						}
+					}
+				}
+				,
+				me_location: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The location must be less than 255 characters long.'
 						}
 					}
 				}
@@ -301,19 +341,16 @@ $(document).ready(function() {
 
 						
 						<input type="hidden" id="me_id">
-						<div class="col-sm-2">
-							<label class="font-label">Subject :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-12">
+							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
 								<input type="text" class="form-control" name="me_subject" id="me_subject">
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Start Date :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Start date <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -323,10 +360,9 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">End Date :</label>
-						</div>
-						<div class="col-sm-4">
+					
+						<div class="col-sm-6">
+							<label class="font-label">End date <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -336,16 +372,15 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Duration :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Duration </label>
 							<div class="bootstrap-timepicker">
 			                    <div class="form-group">
 			                    	<select class="form-control select2"  name="me_duration" id="me_duration" style="width: 100%;">
 				                      <option value="">--Select Duration--</option>   
-				                      <option value="15 minutes">15 minutes</option> .
+				                      <option value="15 minutes">15 minutes</option>
 				                      <option value="30 minutes">30 minutes</option>
 				                      <option value="45 minutes">45 minutes</option> 
 				                      <option value="1 hour">1 hour</option> 
@@ -361,77 +396,74 @@ $(document).ready(function() {
 			                    </div>
 			                  </div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Assigned to : </label>
-						</div>
-						<div class="col-sm-4" >
+						
+						<div class="col-sm-6">
+							<label class="font-label">Assigned to </label>
 							<div class="form-group">
 								<select class="form-control select2"  name="me_assignTo" id="me_assignTo" style="width: 100%;">
 			                      <option value=""></option>           
 			                    </select>
 							</div>
 						</div>
+					
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
+						<div class="col-sm-12">
 							<label class="font-label">Description :</label>
-						</div>
-						<div class="col-sm-10">
 							<div class="form-group">
 								<textarea style="height: 120px" rows="" cols="" name="me_description" id="me_description"	class="form-control"></textarea>
 							</div>
 						</div>
+						
 					</div>
 
 					<div class="col-sm-6">
 
 
-						<div class="col-sm-2" data-ng-init="listMeetignStatus()" >
+						<div class="col-sm-6" data-ng-init="listMeetignStatus()" >
 							<label class="font-label">Status :</label>
-						</div>
-						<div class="col-sm-4">
 							<div class="form-group">
-								<select class="form-control select2" name="me_status" id="me_status">
+								<select class="form-control select2" name="me_status" id="me_status" style="width: 100%;">
 									<option value="">--SELECT Status</option>
 									<option ng-repeat="st in status" value="{{st.statusId}}">{{st.statusName}}</option>
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-2">
+					
+						<div class="col-sm-6">
 							<label class="font-label">Location :</label>
-						</div>
-						<div class="col-sm-4">
 							<div class="form-group" id="">
 								<input type="text" class="form-control" name="me_location" id="me_location">
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Related To :</label>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<select class="form-control select2" name="me_relateTo" id="me_relateTo">
+						<div class="col-sm-6">
+							<label class="font-label">Related to </label>
+							<div class="form-group">								
+								<select class="form-control select2" name="me_relateTo" id="me_relateTo" style="width: 100%;">
 									<option value="">--SELECT Related--</option>
 									<optgroup label="Marketing">
-										<option value="campaign">Campaign</option>
-										<option value="lead">Lead</option>
+										<option value="Campaign">Campaign</option>
+										<option value="Lead">Lead</option>
 									</optgroup>
 									<optgroup label="Sales">
-										<option value="customer">Customer</option>
-										<option value="contact">Contact</option>
-										<option value="opportunity">Opportunity</option>
+										<option value="Customer">Customer</option>
+										<option value="Contact">Contact</option>
+										<option value="Opportunity">Opportunity</option>
 									</optgroup>
 									<optgroup label="Activities">
-										<option value="task">Tasks</option>
+										<option value="Task">Tasks</option>
 									</optgroup>
 									<optgroup label="Support">
-										<option value="case">Case</option>
+										<option value="Case">Case</option>
 									</optgroup>
 									
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+						<label class="font-label">&nbsp; </label>
 							<div class="form-group">
 								<select class="form-control select2" name="me_reportType" id="me_reportType">
 									<option value="">--SELECT--</option>
@@ -446,12 +478,6 @@ $(document).ready(function() {
 
 
 				</div>
-				
-				
-				
-				
-				
-			
 				
 
 			</form>

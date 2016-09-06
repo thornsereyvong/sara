@@ -133,6 +133,25 @@ $(document).ready(function() {
 	
 	listDataByCampID();
 	
+	 $('#cam_startDate').daterangepicker({
+         singleDatePicker: true,
+         showDropdowns: true,
+         format: 'DD/MM/YYYY'
+     }).on('change', function(e) {
+
+         	$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_startDate');
+       
+     });
+ 	$('#cam_endDate').daterangepicker({
+         singleDatePicker: true,
+         showDropdowns: true,
+         format: 'DD/MM/YYYY'
+     }).on('change', function(e) {
+
+         	$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_endDate');
+       
+     });
+    
 	function clearForm(){
 		$("#cam_startDate").val("");
 		$("#cam_parent").val("");
@@ -182,6 +201,8 @@ $(document).ready(function() {
 	
 	$("#btn_clear").click(function(){
 		$("#form-campaigns").bootstrapValidator('resetForm', 'true');
+		$('#form-campaigns').bootstrapValidator('resetForm', 'cam_status');
+      	$('#form-campaigns').bootstrapValidator('resetForm', 'cam_type');
 	});
 	
 	$("#btn_save").click(function(){
@@ -386,6 +407,8 @@ $(document).ready(function() {
 					$('#form-campaigns')[0].reset();
 					$("#cam_parent").select2("val","");
 					$("#cam_assignTo").select2("val","");
+					$('#form-campaigns').bootstrapValidator('resetForm', 'cam_status');
+			      	$('#form-campaigns').bootstrapValidator('resetForm', 'cam_type');
 					swal({
 	            		title:"Success",
 	            		text:"User have been Update campaign!",
