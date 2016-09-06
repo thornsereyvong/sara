@@ -9,39 +9,72 @@
    padding-top: 4px;
    }
 </style>
-<div class="content-wrapper" ng-app="campaign" ng-controller="campController">
-   <!-- Content Header (Page header) -->
-   <section class="content-header">
-      <h1>Create Campaign</h1>
-      <ol class="breadcrumb">
-         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-         <li class="active"><a href="#">Create Campaign</a></li>
-      </ol>
-   </section>
-   <script type="text/javascript">
-      var app = angular.module('campaign', [ 'oitozero.ngSweetAlert', ]);
-      var self = this;
-      app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http) {
-      		$scope.startupAddPage = function() {
-      			$http.get("${pageContext.request.contextPath}/campaign/startup").success(function(response) {
-      				$scope.campaigns = response.CAMP_PARENT;
-      				$scope.camp_status = response.CAMP_STATUS;
-      				$scope.camp_type = response.CAMP_TYPE;
-      			});
-      		};
-      	}]);
-      /* swal({  
-       title: "HTML <small>Title</small>!", 
-       text: "A custom <span style="color:#F8BB86">html<span> message.",
-       html: true
-       }); */
-      
-      $(document).ready(function() {
-    	  $('#cam_startDate').daterangepicker({
-              singleDatePicker: true,
-              showDropdowns: true,
-              format: 'DD/MM/YYYY'
-          }).on('change', function(e) {
+<div class="content-wrapper" ng-app="campaign" ng-controller="campController"> 
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>Create Campaign</h1>
+    <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a href="#">Create Campaign</a></li>
+    </ol>
+  </section>
+  <script type="text/javascript">
+		var app = angular.module('campaign', [ 'oitozero.ngSweetAlert', ]);
+		var self = this;
+		app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http) {
+				$scope.startupAddPage = function(username) {
+					$http({
+					    method: 'POST',
+					    url: '${pageContext.request.contextPath}/campaign/startup',
+					    headers: {
+					    	'Accept': 'application/json',
+					        'Content-Type': 'application/json'
+					    },
+					    data: {
+					    	"username":username
+					    }
+					}).success(function(response) {
+						$scope.camp_parents = response.CAMP_PARENT;
+						$scope.users = response.ASSIGN_TO;
+						$scope.camp_status = response.CAMP_STATUS;
+						$scope.camp_type = response.CAMP_TYPE;
+					});
+				};
+			}]);
+		$(document).ready(function() {
+
+			$(".select2").select2();
+			$("#cam_name").change(function() {
+				var name = $("#cam_name").val();
+				$.ajax({
+					url : "${pageContext.request.contextPath}/campaign/list/validate/"+ name,
+					method : "GET",
+					header : "application/json",
+					statusCode : {
+								404 : function(xhr) {
+									var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-ok" data-bv-icon-for="cam_name" style="display: block;"></i>';
+									$("#div_camName").find("i").remove();
+									$("#div_camName").find("small").remove();
+									$("#div_camName").removeClass("form-group has-feedback has-error").addClass("form-group has-feedback has-success");
+									$("#div_camName").append(i);
+									$("#btn_save").removeAttr("disabled");
+								}
+															},
+					success : function(data) {
+						var dataObject = data.MESSAGE;
+						if (dataObject == "EXIST") {
+							var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-remove" data-bv-icon-for="cam_name" style="display: block;"></i>';
+							var small = '<small class="help-block" data-bv-validator="notEmpty" data-bv-for="cam_name" data-bv-result="INVALID" style="">The Campaign Name is already exit ! </small>';
+							$("#div_camName").find("i").remove();
+							$("#div_camName").find("small").remove();
+							$("#div_camName").removeClass("form-group has-feedback has-success").addClass("form-group has-feedback has-error");
+							$("#div_camName").append(i+ small);
+							$("#btn_save").attr("disabled","disabled");
+					}
+
+				}
+			});
+		});
 
               	$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_startDate');
             

@@ -42,10 +42,10 @@ public class CrmCampaignController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/campaign/startup",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> startupAddPage(){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/add/startup", HttpMethod.GET, request, Map.class);
+	@RequestMapping(value="/campaign/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> startupAddPage(@RequestBody String json){	
+		HttpEntity<String> request = new HttpEntity<String>(json,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/add/startup", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
@@ -65,8 +65,6 @@ public class CrmCampaignController {
 		}
 		
 	}
-	
-	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/list/{campID}",method = RequestMethod.GET)
@@ -120,5 +118,4 @@ public class CrmCampaignController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
-	
 }
