@@ -28,12 +28,9 @@ var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 
-
 }]);
 
-
 function listStatusID(statusids){
-	
 	$.ajax({
 		url: "${pageContext.request.contextPath}/call_status/list",
 		method: "GET",
@@ -48,7 +45,7 @@ function listStatusID(statusids){
 			$("#status").select2("val",statusids);
 			
 			} 
-		});
+	});
 }
 
 function listDataByCampID(){
@@ -71,7 +68,7 @@ function listDataByCampID(){
 	$("#subject").val(result.callSubject);
 	$("#duration").val(result.callDuration);
 	$("#description").val(result.callDes);
-
+	$.session.set("assignTo",result.userID);
 	userAllList(user_id,'#assignTo',result.userID);
 	
 	if(result.callStatusId == null || result.callStatusId == ""){
@@ -88,8 +85,6 @@ function listDataByCampID(){
 
 
 $(document).ready(function() {
-	
-	
 	
 	$(".select2").select2();
 	
@@ -117,8 +112,6 @@ $(document).ready(function() {
 	 $("#btn_save").click(function(){
 		$("#form-call").submit();
 	});
-
-
 		
 	$('#form-call').bootstrapValidator({
 			message: 'This value is not valid',
@@ -187,12 +180,14 @@ $(document).ready(function() {
 
 			var createDate = $("#startDate").val();
 			var newCreateDate = createDate.split("/").reverse().join("-");
-			
-			    var assign = "";	
-				if($("#assignTo").val()  != ""){
+
+			    var assign = "";
+			    if($("#assignTo").val() === null){
+					assign = {"userID": $.session.get("assignTo")};
+				}else if($("#assignTo").val() != ""){
 					assign = {"userID": $("#assignTo").val()};
-				}else{
-					assign = null;
+				} else{
+					assign = {"userID": $.session.get("assignTo")};
 				}
 
 				var status = "";	
@@ -201,9 +196,7 @@ $(document).ready(function() {
 				}else{
 					status = null;
 				}
-
-
-			
+	
 			$.ajax({
 				url : "${pageContext.request.contextPath}/call/edit",
 				type : "PUT",

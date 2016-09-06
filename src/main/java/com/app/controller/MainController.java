@@ -864,8 +864,8 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/update-call/{custID}")
-	public String updateCall(ModelMap model, @PathVariable String custID) {
+	@RequestMapping("/update-call/{callId}")
+	public String updateCall(ModelMap model, @PathVariable String callId) {
 		model.addAttribute("menu", "updateCall");
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL");
 		
@@ -873,7 +873,7 @@ public class MainController {
 			if (camMap.get("roleEdit").equals("YES")) {
 				String json;
 				try {
-					json = new ObjectMapper().writeValueAsString(callController.CallID(custID));
+					json = new ObjectMapper().writeValueAsString(callController.CallID(callId));
 					model.addAttribute("calls", json);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
