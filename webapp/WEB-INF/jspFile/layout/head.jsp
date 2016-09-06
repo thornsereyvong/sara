@@ -38,6 +38,7 @@
 	.width-100{ width: 100px; }
 	.width-80{ width: 80px; }
 	.width-90{ width: 80px; }
+	.requrie{color: #b9292d;}
 </style>
 
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.min.js"></script>

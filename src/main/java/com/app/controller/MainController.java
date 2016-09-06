@@ -448,12 +448,9 @@ public class MainController {
 			if (camMap.get("roleEdit").equals("YES")) {
 
 				String json;
-				String parent;
 				try {
 					json = new ObjectMapper().writeValueAsString(campController.findCampaignById(camID));
-					parent = new ObjectMapper().writeValueAsString(campController.campNotQu(camID));
 					model.addAttribute("campaign", json);
-					model.addAttribute("parent", parent);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
 				}
@@ -1194,8 +1191,6 @@ public class MainController {
 		}else{
 			return "permission";
 		}
-		
-		
 	}
 
 	@RequestMapping("/update-note/{custID}")

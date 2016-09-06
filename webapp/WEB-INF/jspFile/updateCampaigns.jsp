@@ -30,49 +30,28 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 }]);
 
-
-
- function listStatusID(statusids){
-	
-		$.ajax({
-			url: "${pageContext.request.contextPath}/camp_status/list",
-			method: "GET",
-			header: "application/json",
-			success: function(data){
-				var dataObject = data.DATA;
-				 $("#cam_status").empty().append('<option value="">-- SELECT Status --</option>');
-				$.each(data.DATA, function(key, value){
-					var div = "<option value='"+value.statusID+"' >"+value.statusName+"</option>";
-					$("#cam_status").append(div);
-				});  
-				$("#cam_status").select2("val",statusids);
-				
-				} 
-			});
+ function listStatusID(statusids, status){
+		$("#cam_status").empty().append('<option value="">-- SELECT Status --</option>');
+		$.each(status, function(key, value){
+			var div = "<option value='"+value.statusID+"' >"+value.statusName+"</option>";
+			$("#cam_status").append(div);
+		});  
+		$("#cam_status").select2("val",statusids);
 	}
 
- function listTypeID(type){
-		$.ajax({
-			url: "${pageContext.request.contextPath}/camp_type/list",
-			method: "GET",
-			header: "application/json",
-			success: function(data){
-				var dataObject = data.DATA;
-				 $("#cam_type").empty().append('<option value="">-- SELECT Type --</option>');
-				$.each(dataObject, function(key, value){
-					var div = "<option value='"+value.typeID+"' >"+value.typeName+"</option>";
-					$("#cam_type").append(div);
-				});  
-				$("#cam_type").select2("val",type);
-				} 
-			});
+ function listTypeID(typeId,type){
+		$("#cam_type").empty().append('<option value="">-- SELECT Type --</option>');
+		$.each(type, function(key, value){
+			var div = "<option value='"+value.typeID+"' >"+value.typeName+"</option>";
+			$("#cam_type").append(div);
+		});  
+		$("#cam_type").select2("val",typeId);
 	}
 
  function listParentID(parent,not_equal){
-	    var parent = ${parent};
 	    $("#cam_parent").empty().append('<option value="">-- SELECT Parent --</option>');
-	    if(parent.body.DATA != ""){
-				$.each(parent.body.DATA, function(key, value){
+	    if(parent!= ""){
+				$.each(parent, function(key, value){
 						var div = "<option value='"+value.campID+"' >"+value.campName+"</option>";
 					$("#cam_parent").append(div);
 				});  
@@ -122,30 +101,27 @@ function listDataByCampID(){
 	$("#cam_expectedResponse").val(result.expectedResponse);
 
 	//listCampUserID(result.assignTo);
-
 	
 	userAllList(user_id,'#cam_assignTo',result.userID);
-	
-	
 	
 	
 	if(result.statusID == null || result.statusID == ""){
 		listStatusID("");
 	}else{	
-		listStatusID(result.statusID);
+		listStatusID(result.statusID, data.body.CAMP_STATUS);
 	}
 
 	if(result.typeID == null || result.typeID == ""){
 		listTypeID("");
 	}else{
-		listTypeID(result.typeID);
+		listTypeID(result.typeID, data.body.CAMP_TYPE);
 	}
 
 	
 	if(result.parentID == null || result.parentID == ""){
 		listParentID("",result.campID);
 	}else{
-		listParentID(result.parentID, result.campID);
+		listParentID(data.body.CAMP_PARENT, result.campID);
 	}
 	
 }
@@ -241,11 +217,23 @@ $(document).ready(function() {
 				}
 			},
 			
-			cam_endDate: {
-				validators: {
-					notEmpty: {
-						message: 'The Campaign EndDate is required and can not be empty!'
-					}
+			cam_endDate : {
+				validators : {
+					notEmpty : {
+						message : 'The Campaign EndDate is required and can not be empty!'
+					},
+					date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'The value is not a valid date'
+                    }
+				}
+			},
+			cam_startDate : {
+				validators : {	
+					date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'The value is not a valid date'
+                    }
 				}
 			},
 			cam_budget: {
@@ -426,18 +414,15 @@ $(document).ready(function() {
 				<div class="row">
 					<input type="hidden" name="cam_id" id="cam_id" >
 					<div class="col-sm-6">
-						<div class="col-sm-2">
-							<label class="font-label">Campains Name :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Name <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="div_camName">
 								<input type="text" class="form-control" name="cam_name" id="cam_name" value="">
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Start Date :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Start date </label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -447,10 +432,9 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">End Date :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">End date <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 						        <div class="input-group">
 									<div class="input-group-addon">
@@ -460,63 +444,57 @@ $(document).ready(function() {
 								</div>
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Description :</label>
-						</div>
-						<div class="col-sm-10">
+						<div class="col-sm-12">
+							<label class="font-label">Description </label>
 							<div class="form-group">
 								<textarea style="height: 120px" rows="" cols="" name="cam_description" id="cam_description"
 									class="form-control"></textarea>
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Assigned to : </label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Assigned to</label>
 							<div class="form-group">
 								<select class="form-control select2"  name="cam_assignTo" id="cam_assignTo" style="width: 100%;">
 									<option value=""></option>
 			                    </select>
 							</div>
 						</div>
+						
 					</div>
 
 					<div class="col-sm-6">
 
-						<div class="col-sm-2">
-							<label class="font-label">Status :</label>
-						</div>
-						<div class="col-sm-4" >
-						
+						<div class="col-sm-6">
+							<label class="font-label">Status <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<select class="form-control select2" name="cam_status" id="cam_status">
 									
 								</select>
 							</div>
 						</div>
-	
-						<div class="col-sm-2">
-							<label class="font-label">Type :</label>
-						</div>
-						<div class="col-sm-4" >
+						
+						<div class="col-sm-6">
+							<label class="font-label">Type <span class="requrie">(Required)</span></label>
 							<div class="form-group" >
 								<select class="form-control select2" name="cam_type" id="cam_type">
 									
 								</select>
 							</div>
 						</div>
+						
 
-						<div class="col-sm-2">
-							<label class="font-label">Parent ID :</label>
-						</div>
-						<div class="col-sm-4" >
+						<div class="col-sm-6">
+							<label class="font-label">Parent ID </label>
 							<div class="form-group">
 								<select class="form-control select2" name="cam_parent" id="cam_parent">
 									
 								</select>
 							</div>
 						</div>
+						
 
 					</div>
 					
@@ -533,68 +511,62 @@ $(document).ready(function() {
 				<div class="col-sm-12">
 						<hr />
 				</div>
-				
+				<div class="row">
 				<div class="col-sm-6">
 				
-					<div class="col-sm-2">
-							<label class="font-label">Budget:</label>
-						</div>
-						<div class="col-sm-4">
+					<div class="col-sm-6">
+							<label class="font-label">Budget</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_budget" id="cam_budget">
 							</div>
 						</div>
-					<div class="col-sm-2">
-							<label class="font-label">Actual Cost:</label>
-						</div>
-						<div class="col-sm-4">
+						
+					<div class="col-sm-6">
+							<label class="font-label">Actual Cost</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_actualCost" id="cam_actualCost">
 							</div>
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Number Send:</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Number Send</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_numSend" id="cam_numSend">
 							</div>
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Expected Response:</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Expected Response</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_expectedResponse" id="cam_expectedResponse">
 							</div>
 						</div>
+						
 					
 						
 				</div>
 				
 				<div class="col-sm-6">
 				
-					<div class="col-sm-2">
-							<label class="font-label">Expected Cost:</label>
-						</div>
-						<div class="col-sm-4">
+					<div class="col-sm-6">
+							<label class="font-label">Expected Cost</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_expectedCost" id="cam_expectedCost">
 							</div>
 						</div>
-					<div class="col-sm-2">
-							<label class="font-label">Expected Revenue:</label>
-						</div>
-						<div class="col-sm-4">
+						
+					<div class="col-sm-6">
+							<label class="font-label">Expected Revenue</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_expectedRevenue" id="cam_expectedRevenue">
 							</div>
 						</div>
 						
+						
 				</div>
-
+			</div>
 			</form>
 			</div>
 			<!-- /.box-body -->
