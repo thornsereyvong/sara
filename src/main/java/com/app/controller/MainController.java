@@ -552,11 +552,11 @@ public class MainController {
 
 	}
 
-	@RequestMapping("/view-leads")
-	public String viewLeads(ModelMap model) {
+	@RequestMapping("/view-leads/{leadId}")
+	public String viewLeads(ModelMap model, @PathVariable("leadId") String leadId) {
 
 		model.addAttribute("menu", "viewLeads");
-
+		model.addAttribute("leadId", leadId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("LE");
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
