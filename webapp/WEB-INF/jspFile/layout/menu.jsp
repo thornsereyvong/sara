@@ -142,7 +142,7 @@ $(document).ready(function(){
             
             
             <li class='treeview ' id="quote" >
-              <a href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Quote</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><i class="fa fa-money" aria-hidden="true"></i> <span>Quote</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu" id="ul_quote">
               
                  <li id="ul_li_quote">
@@ -154,7 +154,7 @@ $(document).ready(function(){
               </ul>
             </li>
             <li class='treeview ' id="sale_order" >
-              <a href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Sale Order</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><i class="fa fa-balance-scale" aria-hidden="true"></i> <span>Sale Order</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu" id="ul_sale_order">
               
                  <li id="ul_li_sale_order">
