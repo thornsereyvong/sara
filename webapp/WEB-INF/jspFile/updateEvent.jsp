@@ -98,14 +98,27 @@ function listDataByCampID(){
 $(document).ready(function() {
  
 	var data = ${users};
+	
 	$(".select2").select2();
+	
 	listDataByCampID();
+	
 	$('.date2').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         format: 'DD/MM/YYYY' 
-    });
+    }).on('change', function(e) {
 
+		if($("#startDate").val() != ""){
+			$('#form-call').bootstrapValidator('revalidateField', 'startDate');
+		}
+
+		if($("#endDate").val() != ""){
+			$('#form-call').bootstrapValidator('revalidateField', 'endDate');
+		}
+    	
+  
+	});
 
 	userAllList(data,'#assignTo','');
 	
@@ -131,6 +144,18 @@ $(document).ready(function() {
 					validators: {
 						notEmpty: {
 							message: 'The Subject is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The Subject must be less than 255 characters long.'
+						}
+					}
+				},
+				description: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The description must be less than 255 characters long.'
 						}
 					}
 				},
@@ -138,17 +163,34 @@ $(document).ready(function() {
 					validators: {
 						notEmpty: {
 							message: 'The Start Date is required and can not be empty!'
-						}
+						},
+						date: {
+	                        format: 'DD/MM/YYYY',
+	                        message: 'The value is not a valid date'
+	                    }
 					}
 				},
 				endDate: {
 					validators: {
 						notEmpty: {
 							message: 'The End Date is required and can not be empty!'
+						},
+						date: {
+	                        format: 'DD/MM/YYYY',
+	                        message: 'The value is not a valid date'
+	                    }
+					}
+				},
+				budget : {
+						validators : {
+							numeric: {
+				                message: 'The value is not a number',
+				                // The default separators
+				                thousandsSeparator: '',
+				                decimalSeparator: '.'
+				            }
 						}
 					}
-				}
-				
 			}
 		}).on('success.form.bv', function(e) {
 
@@ -275,18 +317,15 @@ $(document).ready(function() {
 
 						
 						<input type="hidden" id="id">
-						<div class="col-sm-2">
-							<label class="font-label">Name :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Name <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
 								<input type="text" class="form-control" name="name" id="name">
 							</div>
 						</div>
-						<div class="col-sm-2" data-ng-init="listMeetignStatus()">
-							<label class="font-label">Location : </label>
-						</div>
-						<div class="col-sm-4" >
+						
+						<div class="col-sm-6" data-ng-init="listMeetignStatus()">
+							<label class="font-label">Location  </label>
 							<div class="form-group">
 								<select class="form-control select2"  name="location" id="location" style="width: 100%;">
 			                      <option value="">-- Select Location</option>
@@ -294,12 +333,11 @@ $(document).ready(function() {
 			                    </select>
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Duration :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Duration</label>
 							<div class="bootstrap-timepicker">
 			                    <div class="form-group">
 			                    	<select class="form-control select2"  name="duration" id="duration" style="width: 100%;">
@@ -320,32 +358,29 @@ $(document).ready(function() {
 			                    </div>
 			                  </div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Assigned to : </label>
-						</div>
-						<div class="col-sm-4" >
+						
+						<div class="col-sm-6">
+							<label class="font-label">Assigned to</label>
 							<div class="form-group">
 								<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
 			                      <option value=""></option>           
 			                    </select>
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
+						<div class="col-sm-12">
 							<label class="font-label">Description :</label>
-						</div>
-						<div class="col-sm-10">
 							<div class="form-group">
 								<textarea style="height: 120px" rows="" cols="" name="description" id="description"	class="form-control"></textarea>
 							</div>
 						</div>
+						
 					</div>
 
 					<div class="col-sm-6">
-						<div class="col-sm-2">
-							<label class="font-label">Start Date :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Start date </label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -355,10 +390,9 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">End Date :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">End date </label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -368,15 +402,15 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Budget :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Budget </label>
 							<div class="form-group" id="">
 								<input type="text" class="form-control" name="budget" id="budget">
 							</div>
 						</div>
+						
 					</div>
 					
 

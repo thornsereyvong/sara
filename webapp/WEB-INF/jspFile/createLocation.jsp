@@ -33,7 +33,8 @@ padding-right: 10px;
 	<section class="content-header">
 		<h1>Create Location</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Create Location</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#">Create Location</a></li>
 		</ol>
 	</section>
 
@@ -72,7 +73,76 @@ $(document).ready(function() {
 			name: {
 				validators: {
 					notEmpty: {
-						message: 'The location name ID is required and can not be empty!'
+						message: 'The location is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The name must be less than 255 characters long.'
+					}
+				}
+			},
+			no: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The no must be less than 255 characters long.'
+					}
+				}
+			},
+			street: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The street must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			village: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The village must be less than 255 characters long.'
+					}
+				}
+			},
+			commune: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The commune must be less than 255 characters long.'
+					}
+				}
+			},
+			district: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The district must be less than 255 characters long.'
+					}
+				}
+			},
+			state: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The state must be less than 255 characters long.'
+					}
+				}
+			},
+			city: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The city must be less than 255 characters long.'
+					}
+				}
+			},
+			country: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The country must be less than 255 characters long.'
 					}
 				}
 			}
@@ -171,85 +241,72 @@ $(document).ready(function() {
 				</div>
 				
 				<div class="col-sm-6">
-					<div class="col-sm-2">
-							<label class="font-label">* Location Name :</label>
-						</div>
-						<div class="col-sm-4">
+					<div class="col-sm-12">
+							<label class="font-label">Location Name <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="name" name="name">
 							</div>	
 						</div>
+						
 						<div class="clearfix"></div>
-					<div class="col-sm-2">
-							<label class="font-label">No :</label>
-						</div>
-						<div class="col-sm-4">
+					<div class="col-sm-6">
+							<label class="font-label">No </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="no" name="no">
 							</div>	
 						</div>
-					<div class="col-sm-2">
-							<label class="font-label">Street :</label>
-						</div>
-						<div class="col-sm-4">
+						
+					<div class="col-sm-6">
+							<label class="font-label">Street </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="street" name="street">
 							</div>	
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Village :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Village </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="village" name="village">
 							</div>	
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Commune :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Commune </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="commune" name="commune">
 							</div>	
-						</div>
-						
-						
-						
+						</div>	
 				</div>
 				<div class="col-sm-6">
 						
-						<div class="col-sm-2">
-							<label class="font-label">District :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">District </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="district" name="district">
 							</div>	
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">City :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">City </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="city" name="city">
 							</div>	
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">State :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">State </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="state" name="state">
-							</div>	
+							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Country :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Country </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="country" name="country">
-							</div>	
+							</div>
 						</div>
+						
 				</div>
 				
 

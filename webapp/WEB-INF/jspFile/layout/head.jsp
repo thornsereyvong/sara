@@ -39,6 +39,7 @@
 	.width-80{ width: 80px; }
 	.width-90{ width: 80px; }
 	.requrie{color: #b9292d;}
+	.select2{ width: 100%; }
 </style>
 
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.min.js"></script>

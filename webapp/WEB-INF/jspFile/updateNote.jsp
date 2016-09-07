@@ -105,6 +105,18 @@ $(document).ready(function() {
 					validators: {
 						notEmpty: {
 							message: 'The Subject is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The Subject must be less than 255 characters long.'
+						}
+					}
+				},
+				me_description: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The description must be less than 255 characters long.'
 						}
 					}
 				}
@@ -210,58 +222,56 @@ $(document).ready(function() {
 
 						
 						<input type="hidden" id="me_id">
-						<div class="col-sm-2">
-							<label class="font-label">* Subject :</label>
-						</div>
-						<div class="col-sm-10">
+						<div class="col-sm-12">
+							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
 								<input type="text" class="form-control" name="me_subject" id="me_subject">
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
 						
 						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Description :</label>
-						</div>
-						<div class="col-sm-10">
+						<div class="col-sm-12">
+							<label class="font-label">Description </label>
 							<div class="form-group">
 								<textarea style="height: 120px" rows="" cols="" name="me_description" id="me_description"	class="form-control"></textarea>
 							</div>
 						</div>
+						
 					</div>
 
 					<div class="col-sm-6">
 
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
+						<div class="col-sm-6">
 							<label class="font-label">Related To :</label>
-						</div>
-						<div class="col-sm-4">
 							<div class="form-group">
 								<select class="form-control select2" name="me_relateTo" id="me_relateTo">
 									<option value="">--SELECT Related--</option>
 									<optgroup label="Marketing">
-										<option value="campaign">Campaign</option>
-										<option value="lead">Lead</option>
+										<option value="Campaign">Campaign</option>
+										<option value="Lead">Lead</option>
 									</optgroup>
 									<optgroup label="Sales">
-										<option value="customer">Customer</option>
-										<option value="contact">Contact</option>
-										<option value="opportunity">Opportunity</option>
+										<option value="Customer">Customer</option>
+										<option value="Contact">Contact</option>
+										<option value="Opportunity">Opportunity</option>
 									</optgroup>
 									<optgroup label="Activities">
-										<option value="task">Tasks</option>
+										<option value="Task">Tasks</option>
 									</optgroup>
 									<optgroup label="Support">
-										<option value="case">Case</option>
+										<option value="Case">Case</option>
 									</optgroup>
 									
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">&nbsp;</label>
 							<div class="form-group">
 								<select class="form-control select2" name="me_reportType" id="me_reportType">
 									<option value="">--SELECT--</option>
@@ -271,7 +281,6 @@ $(document).ready(function() {
 
 					</div>
 					
-
 					<div class="clearfix"></div>
 
 

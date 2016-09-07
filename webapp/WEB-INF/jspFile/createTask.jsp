@@ -354,7 +354,7 @@ $(document).ready(function() {
 						<div class="col-sm-6" data-ng-init="listMeetignStatus()" >
 							<label class="font-label">Status <span class="requrie">(Required)</span></label>
 							<div class="form-group">
-								<select class="form-control select2" name="ts_status" id="ts_status">
+								<select class="form-control select2" name="ts_status" id="ts_status" style="width: 100%;">
 									<option value="">--SELECT Status</option>
 									<option ng-repeat="st in status" value="{{st.taskStatusId}}">{{st.taskStatusName}}</option>
 								</select>
@@ -366,7 +366,7 @@ $(document).ready(function() {
 						<div class="col-sm-6">
 							<label class="font-label">Related To :</label>
 							<div class="form-group">
-								<select class="form-control select2" name="ts_relateTo" id="ts_relateTo">
+								<select class="form-control select2" name="ts_relateTo" id="ts_relateTo" style="width: 100%;">
 									<option value="">--SELECT Related--</option>
 									<optgroup label="Marketing">
 										<option value="Campaign">Campaign</option>
@@ -391,7 +391,7 @@ $(document).ready(function() {
 						<div class="col-sm-6">
 							<label class="font-label">&nbsp;</label>
 							<div class="form-group">
-								<select class="form-control select2" name="ts_reportType" id="ts_reportType">
+								<select class="form-control select2" name="ts_reportType" id="ts_reportType" style="width: 100%;">
 									<option value="">--SELECT--</option>
 								</select>
 							</div>
@@ -400,7 +400,7 @@ $(document).ready(function() {
 					<div class="col-sm-6" data-ng-init="listContact()">
 							<label class="font-label">Contact :</label>
 							<div class="form-group" id="">
-								<select class="form-control select2" name="ts_contact" id="ts_contact">
+								<select class="form-control select2" name="ts_contact" id="ts_contact" style="width: 100%;">
 									<option value="">--SELECT Contact</option>
 									<option ng-repeat="st in contact" value="{{st.conID}}">{{st.conFirstName}} {{st.conLastName}}</option>
 									
