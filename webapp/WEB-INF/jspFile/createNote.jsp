@@ -118,8 +118,7 @@ $(document).ready(function() {
 				      "noteRelatedToModuleType":  $("#me_relateTo").val(),
 				      "noteRelatedToModuleId": $("#me_reportType").val(),
 				      "noteDes": $("#me_description").val(),
-				      "noteCreateBy": $.session.get("parentID"),
-				      "noteCreateDate": year+"-"+month+"-"+day	
+				      "noteCreateBy": $.session.get("parentID")
 					}),
 				beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
