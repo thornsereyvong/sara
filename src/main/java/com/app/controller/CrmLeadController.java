@@ -48,6 +48,15 @@ public class CrmLeadController {
 		
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/view/{leadID}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> viewLeadById(@PathVariable("leadID") String leadID){	
+		System.out.println("LeadId"+leadID);
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/view/"+leadID, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/add",method = RequestMethod.POST)
