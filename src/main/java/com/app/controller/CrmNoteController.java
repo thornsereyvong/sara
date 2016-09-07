@@ -44,9 +44,11 @@ public class CrmNoteController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/note/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addNote(@RequestBody CrmNote status){
+	public ResponseEntity<Map<String, Object>> addNote(@RequestBody CrmNote obj){
 		
-		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
+		System.out.println(obj.getNoteDes());
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(obj,header);
 		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/note/add", HttpMethod.POST, request, Map.class);
 		
@@ -68,9 +70,9 @@ public class CrmNoteController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/note/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateNote(@RequestBody CrmNote status){
+	public ResponseEntity<Map<String, Object>> updateNote(@RequestBody CrmNote obj){
 		
-		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
+		HttpEntity<Object> request = new HttpEntity<Object>(obj,header);
 		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/note/edit", HttpMethod.PUT, request, Map.class);
 		
