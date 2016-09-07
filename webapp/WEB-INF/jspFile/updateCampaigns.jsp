@@ -471,7 +471,7 @@ $(document).ready(function() {
 				<div class="row">
 					<input type="hidden" name="cam_id" id="cam_id" >
 					<div class="col-sm-6">
-						<div class="col-sm-6">
+						<div class="col-sm-12">
 							<label class="font-label">Name <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="div_camName">
 								<input type="text" class="form-control" name="cam_name" id="cam_name" value="">
@@ -646,4 +646,3 @@ $(document).ready(function() {
 
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-
