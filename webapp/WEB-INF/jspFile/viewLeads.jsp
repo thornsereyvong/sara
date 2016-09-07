@@ -14,12 +14,20 @@
 var app = angular.module('viewLead', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
 var self = this;
 var leadId = "${leadId}";
+var server = "${pageContext.request.contextPath}";
+var noteIdEdit = "";
 app.controller('viewLeadController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.listLeads = function(){
 		$http.get("${pageContext.request.contextPath}/lead/view/"+leadId).success(function(response){
 			$scope.lead = response.LEAD;
+			setSelect($scope.lead.salutation);
+			$scope.listNote(response.NOTES);
 		});
-	} ;
+	};
+	
+	
+	
+    
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -30,10 +38,111 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	$scope.addNote = function(){
 		$('#frmAddNote').submit();
 	}
+	$scope.editNoteById = function(noteId){
+		$scope.getNoteById(noteId); 
+	}
+	$scope.deleteNoteById = function(noteId){
+		$scope.resetFrmNote();
+		SweetAlert.swal({
+            title: "Are you sure?", //Bold text
+            text: "This note will not be able to recover!", //light text
+            type: "warning", //type -- adds appropiriate icon
+            showCancelButton: true, // displays cancel btton
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete!",
+            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
+            closeOnCancel: false
+        }, 
+        function(isConfirm){ //Function that triggers on user action.
+           
+	            var str = 'YES';
+	            
+	            if(isConfirm){
+
+					if(str == "YES"){
+						$http.delete("${pageContext.request.contextPath}/note/remove/"+noteId)
+			            .success(function(){
+			            		SweetAlert.swal({
+					            		title:"Deleted",
+					            		text:"Note have been deleted!",
+					            		type:"success",  
+					            		timer: 2000,   
+					            		showConfirmButton: false
+			            		});
+			            		$scope.getListNoteByLead();		
+					      });
+					}else{
+						SweetAlert.swal({
+			                title:"Cancelled",
+			                text:"You don't have permission delete!",
+			                type:"error",
+			                timer:2000,
+			                showConfirmButton: false});
+					}    
+            } else {
+                SweetAlert.swal({
+	                title:"Cancelled",
+	                text:"This note is safe!",
+	                type:"error",
+	                timer:2000,
+	                showConfirmButton: false});
+            }
+        });
+	}
+	$scope.resetFrmNote = function(){
+		noteIdEdit = "";
+		$("#btnAddNote").text('Note');
+		$('#frmAddNote').bootstrapValidator('resetForm', true);
+	}
+	$scope.listNote = function(data){
+		$scope.notes = data;
+		
+	};
+	var indexedTeams = [];
+    
+    $scope.noteToFilter = function() {
+        indexedTeams = [];
+        return $scope.notes;
+    }
+    
+    $scope.filterNote = function(note) {
+        var teamIsNew = indexedTeams.indexOf(note.noteCreateDate) == -1;
+        if (teamIsNew) {
+            indexedTeams.push(note.noteCreateDate);
+        }
+        return teamIsNew;
+    }
+	
+    $scope.getNoteById = function(noteId){
+    	 angular.forEach($scope.notes, function(value, key) {
+	   		if(value.noteId === noteId) {
+	   			noteIdEdit = noteId;
+    	        $("#note_subject").val(value.noteSubject);
+    	        $("#note_description").val(value.noteDes);
+    	        $("#btnAddNote").text('Update');
+    	   	}
+   		});
+    }
+    $scope.getListNoteByLead = function(){
+		$http.get("${pageContext.request.contextPath}/lead/view/"+leadId).success(function(response){
+			$scope.listNote(response.NOTES);
+		});
+	};
+    
+	
+	
+	// lead
+	
+	
+	$scope.editDetailLead = function(){
+		$(".show-edit").show();
+		$(".show-text-detail").hide();
+		$("#showBtnEditLead").show();
+	}
 	
 	
 	
-	
+    
 	
 	$scope.call_click = function(){
 		$("#btn_show_call").click();
@@ -51,60 +160,14 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$("#btn_show_email").click();
 	}
 	
-	$scope.deleteLead = function(leadID){
-		SweetAlert.swal({
-            title: "Are you sure?", //Bold text
-            text: "This Lead will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-		var str = '<%=roleDelete%>';
-        	
-            if(isConfirm){
-
-            	if(str == "YES"){
-            		 $http.delete("${pageContext.request.contextPath}/lead/remove/"+leadID)
-     	            .success(function(){
-     	            		SweetAlert.swal({
-     			            		title:"Deleted",
-     			            		text:"Lead have been deleted!",
-     			            		type:"success",  
-     			            		timer: 2000,   
-     			            		showConfirmButton: false
-     	            		});
-     	            		$scope.listLeads();
-     	            		window.location.href = "${pageContext.request.contextPath}/view-leads";
-     		            });
-				}else{
-					SweetAlert.swal({
-		                title:"Cancelled",
-		                text:"You don't have permission delete!",
-		                type:"error",
-		                timer:2000,
-		                showConfirmButton: false});
-				}
-                
-            } else {
-                SweetAlert.swal({
-	                title:"Cancelled",
-	                text:"This Lead is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
-	};
 	
 }]);
 
+function setSelect(option1){
+	$("#leadSalutation option[value='"+option1+"']").attr('selected','selected');
+}
 
 $(function(){
-	
 	$(".timepicker").timepicker({
         showInputs: false,
         defaultTime: false,
@@ -153,47 +216,255 @@ $(function(){
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		var frmNoteData = {"noteSubject":getValueStringById("note_subject"), "noteSubject":getValueStringById("noteDes"),"noteRelatedToModuleType":"Lead","noteRelatedToModuleId":leadId,"noteCreateBy":${} };
-		$.ajax({ 
-		    url: server+"/note/add", 
-		    type: 'POST',
-		    data: JSON.stringify(frmNoteData),
-		    beforeSend: function(xhr) {
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Content-Type", "application/json");
-            },
-		    success: function(data) {	
-		    	
-		    	dis(data)
-		    	
-		    	
-		    	/* if(data.message == 'success'){		
-					swal({
-						  title: "Employee ID "+data.emp_ID+" has been inserte.",
-						  text: "",
-						  type: "success",
-						  showCancelButton: false,
-						  confirmButtonClass: "btn-info",
-						  confirmButtonText: "Yes",
-						  closeOnConfirm: false
-						},
-						function(){							
-							if(act_btn_save == "save"){
-								window.location.href = server+"/employee";
-							}else if(act_btn_save == "save_new"){
-								location.reload();
-							}													
-						});
-		    	}else{
-		    		sweetAlert("Insert Unsuccessfully!", "", "error");
-		    	} */
-		    },
-		    error:function(data,status,er) { 
-		        console.log("error: "+data+" status: "+status+" er:"+er);
-		    }
-		});
+		var frmNoteData = {"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), "noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":"Lead","noteRelatedToModuleId":leadId,"noteCreateBy":"${SESSION}"};		
 		
+		if($("#btnAddNote").text()=='Note'){
+			$.ajax({ 
+			    url: server+"/note/add", 
+			    type: 'POST',
+			    data: JSON.stringify(frmNoteData),
+			    beforeSend: function(xhr) {
+	                xhr.setRequestHeader("Accept", "application/json");
+	                xhr.setRequestHeader("Content-Type", "application/json");
+	            },
+			    success: function(data) {
+			    	
+			    	if(data.MESSAGE == "INSERTED"){	
+			    		swal({
+		            		title:"Success",
+		            		text:"User have been created new Note!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+			    		angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
+			    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
+			    	}else{
+			    		sweetAlert("Insert Unsuccessfully!", "", "error");
+			    	}
+			    	 
+			    },
+			    error:function(data,status,er) { 
+			        console.log("error: "+data+" status: "+status+" er:"+er);
+			        sweetAlert("Insert Unsuccessfully!", "", "error");
+			    }
+			});
+		}else if($("#btnAddNote").text()=="Update"){
+			$.ajax({ 
+			    url: server+"/note/edit", 
+			    type: 'PUT',
+			    data: JSON.stringify(frmNoteData),
+			    beforeSend: function(xhr) {
+	                xhr.setRequestHeader("Accept", "application/json");
+	                xhr.setRequestHeader("Content-Type", "application/json");
+	            },
+			    success: function(data) {
+			    	if(data.MESSAGE == "UPDATED"){	
+			    		swal({
+		            		title:"Successfully",
+		            		text:"User have been update Note!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+			    		angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
+			    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
+			    	}else{
+			    		sweetAlert("Update Unsuccessfully!", "", "error");
+			    	}
+			    	 
+			    },
+			    error:function(data,status,er) { 
+			        console.log("error: "+data+" status: "+status+" er:"+er);
+			        sweetAlert("Update Unsuccessfully!", "", "error");
+			    }
+			});
+		}
 	});	
+	
+	
+	$('#frmLeadDetail').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			lea_ca: {
+				validators: {
+					notEmpty: {
+						message: 'The Campaign is required and can not be empty!'
+					},
+					stringLength: {
+						max: 100,
+						message: 'The must be less than 100 characters long.'
+					}
+				}
+			},
+			lea_firstName: {
+				validators: {
+					notEmpty: {
+						message: 'The first name is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The first name must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_lastName: {
+				validators: {
+					notEmpty: {
+						message: 'The last name is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The last name must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_phone: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The phone must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			lea_mobilePhone: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The mobile phone must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_title: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The title must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			lea_website: {
+				validators: {
+					uri: {
+                        message: 'The website address is not valid.'
+                    },
+                    stringLength: {
+						max: 255,
+						message: 'The web site must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			lea_department: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The department must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			lea_email: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The department must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_accountName: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The Company must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_no: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The no must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_street: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The street must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_village: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The village must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			lea_commune: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The commune must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_district: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The district must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_state: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The state must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_city: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The city must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_country: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The country must be less than 255 characters long.'
+					}
+				}
+			},
+			lea_description: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The description must be less than 255 characters long.'
+					}
+				}
+			}
+		}
+	}).on('success.form.bv', function(e) {
+		//var frmNoteData = {"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), "noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":"Lead","noteRelatedToModuleId":leadId,"noteCreateBy":"${SESSION}"};		
+		//$(".show-text-detail").find("small").css("margin-left", "30%");
+	});
 	
 	
 });
@@ -205,6 +476,10 @@ $(function(){
 	color: #2196F3;
 }
 
+.show-edit{
+	width: 70% !important;
+	margin: -25px 30% -5px !important;
+}
 .iTable {
 	
 }
@@ -322,7 +597,7 @@ $(function(){
 	border-left-color: rgb(75, 202, 129) !important;
 }
 </style>
-<div class="content-wrapper" ng-app="viewLead"
+<div class="content-wrapper" id="viewLeadController" ng-app="viewLead"
 	ng-controller="viewLeadController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
@@ -731,110 +1006,122 @@ $(function(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="note_tap">
+										<div class="tab-pane" id="note_tap" data-ng-init="listNote()">
 											<div class="post clearfix">
 											<form id="frmAddNote">
 												<div class="form-group">
-													<input ng-model="note_subject"  style="margin-top: 10px;" type="text" class="form-control"  name="note_subject" id="note_subject"
+													<input ng-model="note_subject" data-ng-init="note_subject" style="margin-top: 10px;" type="text" class="form-control"  name="note_subject" id="note_subject"
 																placeholder="Subject">
 												</div>
 												<div class="form-group">
-													<textarea ng-model="note_description" style="margin-top: 10px;" rows="3" cols="" name="note_description" id="note_description" class="form-control" placeholder="Description"></textarea>
+													<textarea ng-model="note_description" data-ng-init="note_description" style="margin-top: 10px;" rows="3" cols="" name="note_description" id="note_description" class="form-control" placeholder="Description"></textarea>
 												</div>
-												<button style="margin-top: 10px;" type="button" ng-click="addNote()" class="btn btn-primary pull-right">Note</button>
+												<button style="margin-top: 10px; margin-left:10px;" ng-click="resetFrmNote()" type="button" ng-click="resetNote()" class="btn btn-danger pull-right">Reset</button>
+												<button style="margin-top: 10px;" type="button" id="btnAddNote" ng-click="addNote()" class="btn btn-primary pull-right">Note</button>
 											</form>
 											</div>
 											<div class="clearfix"></div>
-											<ul class="timeline  timeline-inverse">
-
-												<!-- timeline time label -->
-												<li class="time-label"><span class="bg-red">
-														06-09-2014 </span></li>
-												<!-- /.timeline-label -->
-												<!-- timeline item -->
-												<li><i class="fa  fa-edit bg-blue"></i>
+											<ul class="timeline timeline-inverse"  ng-repeat="notePerDate in noteToFilter() | filter:filterNote">
+												
+												<!-- START DATE -->
+												<li class="time-label">
+													<span class="bg-red">{{notePerDate.noteCreateDate}}</span>
+												</li>
+												<li ng-repeat="note in notes | filter:{noteCreateDate: notePerDate.noteCreateDate}">
+													<i class="fa  fa-edit bg-blue"></i>
 													<div class="timeline-item">
-														<span class="time"><i class="fa fa-clock-o"></i>
-															12:05</span>
-														<h3 class="timeline-header">Title Name</h3>
-														<div class="timeline-body">Etsy doostang zoodles
-															disqus groupon greplin oooj voxy zoodles, weebly ning
-															heekya handango imeem plugg dopplr jibjab, movity jajah
-															plickers sifteo edmodo ifttt zimbra. Babblely odeo
-															kaboodle quora plaxo ideeli hulu weebly balihoo...</div>
+														<span class="time"><i class="fa fa-clock-o"></i> &nbsp;{{notePerDate.noteTime}}</span>
+														<h3 class="timeline-header">{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a></h3>
+														<div class="timeline-body">{{note.noteDes}}</div>
 														<div class="timeline-footer">
-															<a class="btn btn-primary btn-xs">Read more</a> <a
-																class="btn btn-danger btn-xs">Delete</a>
+															<a class="btn btn-primary btn-xs" ng-click="editNoteById(note.noteId)">Edit</a> 
+															<a class="btn btn-danger btn-xs" ng-click="deleteNoteById(note.noteId)">Delete</a>
 														</div>
-													</div></li>
-												<!-- END timeline item -->
-												<!-- timeline time label -->
-												<li class="time-label"><span class="bg-green"> 3
-														Jan. 2014 </span></li>
-												<!-- /.timeline-label -->
-												<!-- timeline item -->
-												<li><i class="fa  fa-edit bg-blue"></i>
-													<div class="timeline-item">
-														<span class="time"><i class="fa fa-clock-o"></i>
-															12:05</span>
-														<h3 class="timeline-header">Title Name</h3>
-														<div class="timeline-body">Etsy doostang zoodles
-															disqus groupon greplin oooj voxy zoodles, weebly ning
-															heekya handango imeem plugg dopplr jibjab, movity jajah
-															plickers sifteo edmodo ifttt zimbra. Babblely odeo
-															kaboodle quora plaxo ideeli hulu weebly balihoo...</div>
-														<div class="timeline-footer">
-															<a class="btn btn-primary btn-xs">Read more</a> <a
-																class="btn btn-danger btn-xs">Delete</a>
-														</div>
-													</div></li>
-												<li><i class="fa  fa-edit bg-blue"></i>
-													<div class="timeline-item">
-														<span class="time"><i class="fa fa-clock-o"></i>
-															12:05</span>
-														<h3 class="timeline-header">Title Name</h3>
-														<div class="timeline-body">Etsy doostang zoodles
-															disqus groupon greplin oooj voxy zoodles, weebly ning
-															heekya handango imeem plugg dopplr jibjab, movity jajah
-															plickers sifteo edmodo ifttt zimbra. Babblely odeo
-															kaboodle quora plaxo ideeli hulu weebly balihoo...</div>
-														<div class="timeline-footer">
-															<a class="btn btn-primary btn-xs">Read more</a> <a
-																class="btn btn-danger btn-xs">Delete</a>
-														</div>
-													</div></li>
-
-												<!-- END timeline item -->
-												<li><i class="fa fa-clock-o bg-gray"></i></li>
+													</div>
+												</li>
+												
+												
 											</ul>
 										</div>
 
 
 										<div class="tab-pane " id="settings">
 											<div class="row">
+												<form id="frmLeadDetail">
 												<div class="col-md-4">
 													<ul class="list-group list-group-unbordered">
 														<li class="list-group-item"><b>Overview</b> <a
-															class="pull-right cusor_pointer"><i
+															class="pull-right cusor_pointer" ng-click="editDetailLead()"><i
 																class="fa fa-pencil"></i> Edit</a></li>
-														<li class="list-group-item item_border">First Name <a
-															class="pull-right">{{lead.salutation}} {{lead.firstName}}</a></li>
-														<li class="list-group-item">Last Name <a
-															class="pull-right">{{lead.lastName}}</a></li>
-														<li class="list-group-item item_border">Title <a
-															class="pull-right">{{lead.title}}</a></li>
-														<li class="list-group-item item_border">Department <a
-															class="pull-right">IT</a></li>
-														<li class="list-group-item item_border">Company <a
-															class="pull-right">{{lead.accountName}}</a></li>
-														<li class="list-group-item item_border">Phone <a
-															class="pull-right">{{lead.phone}}</a></li>
-														<li class="list-group-item item_border">Mobile <a
-															class="pull-right">{{lead.mobile}}</a></li>
-														<li class="list-group-item item_border">Web Site <a
-															class="pull-right">{{lead.website}}</a></li>
-														<li class="list-group-item item_border">Email <a
-															class="pull-right">{{lead.email}}</a></li>
+														<li class="list-group-item item_border">
+																Salutation
+															<a class="pull-right show-text-detail">{{lead.salutation}}</a>
+															<div class="form-group show-edit" style="display:none;" >																							
+																<select class="form-control" name="leadSalutation" id="leadSalutation">		                                      
+							                                       <option value="Mr.">Mr.</option>
+							                                       <option value="Ms.">Ms.</option>
+							                                       <option value="Mrs.">Mrs.</option>
+							                                       <option value="Dr.">Dr.</option>
+							                                       <option value="Prof.">Prof.</option>
+							                                    </select>
+															</div>
+														</li>
+														
+														<li class="list-group-item item_border">First Name 
+															<a class="pull-right show-text-detail">{{lead.firstName}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_firstName" id="lea_firstName" class="form-control" value="{{lead.firstName}}">																						
+																<div class="clearfix"></div>
+															</div>
+														</li>
+														<li class="list-group-item item_border">Last Name 
+															<a class="pull-right show-text-detail">{{lead.lastName}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_lastName" id="lea_lastName" class="form-control" value="{{lead.lastName}}">	
+															</div>
+														</li>
+														<li class="list-group-item item_border">Title 
+															<a class="pull-right show-text-detail">{{lead.title}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_title" id="lea_title" class="form-control" value="{{lead.title}}">	
+															</div>
+														</li>
+														<li class="list-group-item item_border">Department 
+															<a class="pull-right show-text-detail">{{lead.department}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_department" id="lea_department" class="form-control" value="{{lead.department}}">	
+															</div>
+														</li>
+														<li class="list-group-item item_border">Company
+															<a class="pull-right show-text-detail">{{lead.accountName}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_accountName" id="lea_accountName" class="form-control" value="{{lead.accountName}}">		
+															</div>
+														</li>
+														<li class="list-group-item item_border">Phone
+															<a class="pull-right show-text-detail">{{lead.phone}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_phone" id="lea_phone" class="form-control" value="{{lead.phone}}">		
+															</div>
+														</li>
+														<li class="list-group-item item_border">Mobile
+															<a class="pull-right show-text-detail">{{lead.mobile}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_mobilePhone" id="lea_mobilePhone" class="form-control" value="{{lead.mobile}}">		
+															</div>
+														</li>
+														<li class="list-group-item item_border">Web Site
+															<a class="pull-right show-text-detail">{{lead.website}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_website" id="lea_website" class="form-control" value="{{lead.website}}">		
+															</div>
+														</li>
+														<li class="list-group-item item_border">Email
+															<a class="pull-right show-text-detail">{{lead.email}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_email" id="lea_email"class="form-control" value="{{lead.email}}">		
+															</div>
+														</li>
 													</ul>
 												</div>
 												<div class="col-md-4">
@@ -842,22 +1129,54 @@ $(function(){
 														<li class="list-group-item"><b>Address</b> <a
 															class="pull-right cusor_pointer"><i
 																class="fa fa-pencil"></i> Edit</a></li>
-														<li class="list-group-item item_border">No <a
-															class="pull-right ">{{lead.no}}</a></li>
-														<li class="list-group-item item_border">Street <a
-															class="pull-right">{{lead.street}}</a></li>
-														<li class="list-group-item item_border">Village <a
-															class="pull-right">{{lead.village}}</a></li>
-														<li class="list-group-item item_border">Commune <a
-															class="pull-right">{{lead.commune}}</a></li>
-														<li class="list-group-item item_border">District <a
-															class="pull-right">{{lead.district}}</a></li>
-														<li class="list-group-item item_border">City <a
-															class="pull-right">{{lead.city}}</a></li>
-														<li class="list-group-item item_border">State <a
-															class="pull-right">{{lead.state}}</a></li>
-														<li class="list-group-item item_border">Country <a
-															class="pull-right">{{lead.country}}</a></li>
+														<li class="list-group-item item_border">No 
+															<a class="pull-right show-text-detail">{{lead.no}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_no" id="lea_no" class="form-control" value="{{lead.no}}">	
+															</div>
+														</li>
+														<li class="list-group-item item_border">Street 
+															<a class="pull-right show-text-detail">{{lead.street}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_street" id="lea_street" class="form-control" value="{{lead.street}}">	
+															</div>	
+														</li>
+														<li class="list-group-item item_border">Village
+															<a class="pull-right show-text-detail">{{lead.village}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_village" id="lea_village" class="form-control" value="{{lead.village}}">	
+															</div>		
+														</li>
+														<li class="list-group-item item_border">Commune
+															<a class="pull-right show-text-detail">{{lead.commune}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_commune" id="lea_commune" class="form-control" value="{{lead.commune}}">	
+															</div>
+														</li>
+														<li class="list-group-item item_border">District
+															<a class="pull-right show-text-detail">{{lead.district}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_district" id="lea_district" class="form-control" value="{{lead.district}}">	
+															</div>	
+														</li>
+														<li class="list-group-item item_border">City
+															<a class="pull-right show-text-detail">{{lead.city}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_city" id="lea_city" class="form-control" value="{{lead.city}}">	
+															</div>	
+														</li>
+														<li class="list-group-item item_border">State
+															<a class="pull-right show-text-detail">{{lead.state}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_state" id="lea_state" class="form-control" value="{{lead.state}}">	
+															</div>	
+														</li>
+														<li class="list-group-item item_border">Country
+															<a class="pull-right show-text-detail">{{lead.country}}</a>
+															<div class="form-group show-edit" style="display:none;" >
+																<input type="text" name="lea_country" id="lea_country" class="form-control" value="{{lead.country}}">	
+															</div>	
+														</li>
 													</ul>
 												</div>
 												<div class="col-md-4">
@@ -877,6 +1196,11 @@ $(function(){
 															class="pull-right">{{lead.assignToUsername}}</a></li>
 													</ul>
 												</div>
+												<div class="col-md-12 text-center" id="showBtnEditLead" style="display:none;">
+													<button class="btn btn-primary">Save</button>
+													<button class="btn btn-danger">Cancel</button>
+												</div>
+												</form>
 
 											</div>
 										</div>
@@ -1355,7 +1679,9 @@ $(function(){
 			</div>
 		</div>
 	</div>
+	<div id="errors"></div>
 </div>
-<div id="error"></div>
+
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
+<script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
 
