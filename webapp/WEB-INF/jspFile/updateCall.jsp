@@ -243,11 +243,6 @@ $(document).ready(function() {
 				}); 
 			
 		});	
-
-
-		
-	
-	
 });
 </script>
 	<section class="content">
