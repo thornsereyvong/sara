@@ -12,11 +12,21 @@
 var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-	$scope.listOpportunity = function(){
-		$http.get("${pageContext.request.contextPath}/opportunity/list").success(function(response){
-				$scope.opportunity = response.DATA;
-			});
-		} ;
+	$scope.listOpportunity = function(username){
+		$http({
+		    method: 'POST',
+		    url: '${pageContext.request.contextPath}/opportunity/list',
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {
+		    	"username":username
+		    }
+		}).success(function(response){
+			$scope.opportunity = response.DATA;
+		});
+	} ;
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -133,7 +143,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 				    <br/>
 				  </div>
 				  <div class="clearfix"></div>
-			<div class="tablecontainer table-responsive" data-ng-init="listOpportunity()" >
+			<div class="tablecontainer table-responsive" data-ng-init="listOpportunity('${SESSION}')" >
 				<%	
 					if(roleList.equals("YES")){
 				%> 

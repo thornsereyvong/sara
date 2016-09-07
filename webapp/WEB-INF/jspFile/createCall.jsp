@@ -39,8 +39,6 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 }]);
 
 
-
-
 $(document).ready(function() {
 	
 	var data = ${users};

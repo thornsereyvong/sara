@@ -38,10 +38,10 @@ public class CrmOpportunityController {
 	private String URL;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/opportunity/list",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllOpportunity(){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/list", HttpMethod.GET, request, Map.class);
+	@RequestMapping(value="/opportunity/list",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> getAllOpportunity(@RequestBody String json){	
+		HttpEntity<String> request = new HttpEntity<String>(json, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
