@@ -140,7 +140,7 @@
       $("#btn_save").click(function() {
       	$("#form-campaigns").submit();
       });
-      });
+ });
    </script>
    <section class="content">
       <!-- Default box -->
@@ -311,7 +311,7 @@
          <!-- /.box-body -->
          <div class="box-footer"></div>
          <!-- /.box-footer--> 
-=======
+
                 </div>
               </div>
               <div class="clearfix"></div>
@@ -416,7 +416,7 @@
             </div>
           </div>
         </form>
->>>>>>> a8a21aef9d409b31f0ccb256fcf0733e793dc77d
+
       </div>
       <!-- /.box --> 
    </section>
