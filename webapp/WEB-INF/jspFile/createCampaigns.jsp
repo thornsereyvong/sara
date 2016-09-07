@@ -43,6 +43,19 @@
 			}]);
 		$(document).ready(function() {
 			$(".select2").select2();
+			
+			$('.date2').daterangepicker({
+		        singleDatePicker: true,
+		        showDropdowns: true,
+		        format: 'DD/MM/YYYY' 
+		    }).on('change', function(e) {
+
+				if($("#cam_endDate").val() != ""){
+					$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_endDate');
+				}	
+		  
+			});
+			
 			$("#cam_name").change(function() {
 				var name = $("#cam_name").val();
 				$.ajax({
@@ -111,7 +124,7 @@
           </div>
           <div class="row">
             <div class="col-sm-6">
-              <div class="col-sm-6">
+              <div class="col-sm-12">
                 <label class="font-label">Name <span class="requrie">(Required)</span></label>
                 <div class="form-group" id="div_camName">
                   <input type="text" class="form-control" name="cam_name" id="cam_name">
@@ -122,17 +135,17 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-                    <input type="text" class="form-control pull-right" name="cam_startDate" id="cam_startDate">
+                    <input type="text" class="form-control pull-right date2" name="cam_startDate" id="cam_startDate">
                   </div>
                 </div>
               </div>
-              <div class="clearfix"></div>
+
               <div class="col-sm-6">
                 <label class="font-label">End date <span class="requrie">(Required)</span></label>
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-                    <input type="text" class="form-control pull-right" name="cam_endDate" id="cam_endDate">
+                    <input type="text" class="form-control pull-right date2" name="cam_endDate" id="cam_endDate">
                   </div>
                 </div>
               </div>
