@@ -11,20 +11,45 @@
 
 <script type="text/javascript">
 
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('viewLead', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
 var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+var leadId = "${leadId}";
+app.controller('viewLeadController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.listLeads = function(){
-		$http.get("${pageContext.request.contextPath}/lead/list").success(function(response){
-				$scope.leads = response.DATA;
-			});
-		} ;
+		$http.get("${pageContext.request.contextPath}/lead/view/"+leadId).success(function(response){
+			$scope.lead = response.LEAD;
+		});
+	} ;
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
 	
+	// note
+	$scope.addNote = function(){
+		$('#frmAddNote').submit();
+	}
+	
+	
+	
+	
+	
+	$scope.call_click = function(){
+		$("#btn_show_call").click();
+	}
+	$scope.meet_click = function(){
+		$("#btn_show_meet").click();
+	}
+	$scope.task_click = function(){
+		$("#btn_show_task").click();
+	}
+	$scope.event_click = function(){
+		$("#btn_show_event").click();
+	}
+	$scope.email_click = function(){
+		$("#btn_show_email").click();
+	}
 	
 	$scope.deleteLead = function(leadID){
 		SweetAlert.swal({
@@ -77,10 +102,78 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	
 }]);
 
+
+$(function(){
+	
+	$(".timepicker").timepicker({
+        showInputs: false,
+        defaultTime: false,
+        showMeridian : false
+      });
+	$('#startDate').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD/MM/YYYY' 
+    });
+	
+	$('#startDateMeeting').daterangepicker({ singleDatePicker: true,timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A'});
+	$('#endDateMeeting').daterangepicker({ singleDatePicker: true,timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A'});	
+	
+	
+	
+	$('#frmAddNote').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			note_subject: {
+				validators: {
+					notEmpty: {
+						message: 'The subject is required and can not be empty!'
+					}
+				}
+			},
+			note_description: {
+				validators: {
+					notEmpty: {
+						message: 'The description is required and can not be empty!'
+					}
+				}
+			}
+		}
+	}).on('success.form.bv', function(e) {
+
+		
+	});	
+	
+	
+});
+
+
 </script>
 <style>
 .icon_color {
 	color: #2196F3;
+}
+
+.iTable {
+	
+}
+
+.iTD {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.item_border {
+	border: 1px solid #f0f0f0;
+}
+
+.font-size-icon-30 {
+	font-size: 20px;
 }
 
 .pagination {
@@ -91,12 +184,16 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	margin-buttom: 10px;
 }
 
+.cusor_pointer {
+	cursor: pointer;
+}
+
 .breadcrumb1 {
 	padding: 0;
 	background: #D4D4D4;
 	list-style: none;
 	overflow: hidden;
-	margin: 20px;
+	margin: 10px;
 }
 
 .breadcrumb1>li+li:before {
@@ -109,20 +206,20 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 .breadcrumb1 li.active a {
 	background: brown; /* fallback color */
-	background: #ffc107;
+	background: rgb(75, 202, 129);
 }
 
 .breadcrumb1 li.completed a {
 	background: brown; /* fallback color */
-	background: hsla(153, 57%, 51%, 1);
+	background: hsl(192, 100%, 41%);
 }
 
 .breadcrumb1 li.active a:after {
-	border-left: 30px solid #ffc107;
+	border-left: 30px solid rgb(75, 202, 129);
 }
 
 .breadcrumb1 li.completed a:after {
-	border-left: 30px solid hsla(153, 57%, 51%, 1);
+	border-left: 30px solid hsl(192, 100%, 41%);
 }
 
 .breadcrumb1 li a {
@@ -172,15 +269,15 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 }
 
 .breadcrumb1 li a:hover {
-	background: #ffc107;
+	background: rgb(75, 202, 129);
 }
 
 .breadcrumb1 li a:hover:after {
-	border-left-color: #ffc107 !important;
+	border-left-color: rgb(75, 202, 129) !important;
 }
 </style>
-<div class="content-wrapper" ng-app="campaign"
-	ng-controller="campController">
+<div class="content-wrapper" ng-app="viewLead"
+	ng-controller="viewLeadController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>View Lead</h1>
@@ -191,217 +288,1028 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		</ol>
 	</section>
 
-	<section class="content">
+	<section class="content" data-ng-init="listLeads()">
 
 
 		<div class="row">
+
 			<div class="col-md-12">
-				<div class="box box-primary">
-					<div class="box-body">
-						<div class="col-md-2">
-							<img class="profile-user-img img-responsive"
-								src="${pageContext.request.contextPath}/resources/images/logo_red.png"
-								alt="User profile picture">
-							<h3 class="profile-username text-center">Nina Mcintire</h3>
-						</div>
-						<div class="col-md-10">
-							<ul class="breadcrumb1">
-								<li class="completed"><a href="#"> <i
-										class="fa fa-check-circle"></i> New
-								</a></li>
-								<li class="active"><a href="#"> <i
-										class="fa fa-check-circle"></i> Assigned
-								</a></li>
-								<li><a href="#"> <i class="fa fa-lock"></i> In Process
-								</a></li>
-								<li><a href="#"> <i class="fa fa-lock"></i> Converted
-								</a></li>
-
-								<li class="dead"><a href="#"> <i class="fa fa-lock"></i>
-										Dead
-								</a></li>
-							</ul>
-
-						</div>
-						
-						<div class="clearfix"></div><br/><br/>
-							<div class="nav-tabs-custom">
-								<ul class="nav nav-tabs">
-									<li class="active"><a href="#activity" data-toggle="tab"
-										aria-expanded="true">Activity</a></li>
-									<li class=""><a href="#timeline" data-toggle="tab"
-										aria-expanded="false">Notes</a></li>
-									<li class=""><a href="#settings" data-toggle="tab"
-										aria-expanded="false">Details</a></li>
-								</ul>
-								<div class="tab-content">
-									<div class="tab-pane active" id="activity">
-										
-										<section id="emp_info">
-											<p class="page-header">Log Call</p>
-											<div class="row">
-											
-											</div>
-										</section>
-										
-									
-									</div>
-									<!-- /.tab-pane -->
-									<div class="tab-pane" id="timeline">
-										<div class="col-md-5">
-											<form class="form-horizontal">
-												<div class="form-group">
-													<label for="inputName" class="col-sm-2 control-label">Subject</label>
-													<div class="col-sm-10">
-														<input type="text" class="form-control" id="inputName"
-															placeholder="">
-													</div>
-												</div>
-												<div class="form-group">
-													<label for="inputEmail" class="col-sm-2 control-label">Description</label>
-													<div class="col-sm-10">
-														<textarea rows="3" cols="" name="me_description"
-															id="me_description" class="form-control"></textarea>
-													</div>
-												</div>
-												<button type="submit" class="btn btn-info pull-right">Note</button>
-											</form>
-										</div>
-
-										<div class="clearfix"></div>
-										<ul class="timeline timeline-inverse">
-											<!-- timeline time label -->
-											<li class="time-label"><span class="bg-red"> 10
-													Feb. 2014 </span></li>
-											<!-- /.timeline-label -->
-											<!-- timeline item -->
-											<li><i class="fa fa-envelope bg-blue"></i>
-												<div class="timeline-item">
-													<span class="time"><i class="fa fa-clock-o"></i>
-														12:05</span>
-													<h3 class="timeline-header">
-														<a href="#">Support Team</a> sent you an email
-													</h3>
-													<div class="timeline-body">Etsy doostang zoodles
-														disqus groupon greplin oooj voxy zoodles, weebly ning
-														heekya handango imeem plugg dopplr jibjab, movity jajah
-														plickers sifteo edmodo ifttt zimbra. Babblely odeo
-														kaboodle quora plaxo ideeli hulu weebly balihoo...</div>
-													<div class="timeline-footer">
-														<a class="btn btn-primary btn-xs">Read more</a> <a
-															class="btn btn-danger btn-xs">Delete</a>
-													</div>
-												</div></li>
-											<!-- END timeline item -->
-											<!-- timeline item -->
-											<li><i class="fa fa-user bg-aqua"></i>
-												<div class="timeline-item">
-													<span class="time"><i class="fa fa-clock-o"></i> 5
-														mins ago</span>
-													<h3 class="timeline-header no-border">
-														<a href="#">Sarah Young</a> accepted your friend request
-													</h3>
-												</div></li>
-											<!-- END timeline item -->
-											<!-- timeline item -->
-											<li><i class="fa fa-comments bg-yellow"></i>
-												<div class="timeline-item">
-													<span class="time"><i class="fa fa-clock-o"></i> 27
-														mins ago</span>
-													<h3 class="timeline-header">
-														<a href="#">Jay White</a> commented on your post
-													</h3>
-													<div class="timeline-body">Take me to your leader!
-														Switzerland is small and neutral! We are more like
-														Germany, ambitious and misunderstood!</div>
-													<div class="timeline-footer">
-														<a class="btn btn-warning btn-flat btn-xs">View
-															comment</a>
-													</div>
-												</div></li>
-											<!-- END timeline item -->
-											<!-- timeline time label -->
-											<li class="time-label"><span class="bg-green"> 3
-													Jan. 2014 </span></li>
-											<!-- /.timeline-label -->
-											<!-- timeline item -->
-											<li><i class="fa fa-camera bg-purple"></i>
-												<div class="timeline-item">
-													<span class="time"><i class="fa fa-clock-o"></i> 2
-														days ago</span>
-													<h3 class="timeline-header">
-														<a href="#">Mina Lee</a> uploaded new photos
-													</h3>
-													<div class="timeline-body">
-														<img src="http://placehold.it/150x100" alt="..."
-															class="margin"> <img
-															src="http://placehold.it/150x100" alt="..."
-															class="margin"> <img
-															src="http://placehold.it/150x100" alt="..."
-															class="margin"> <img
-															src="http://placehold.it/150x100" alt="..."
-															class="margin">
-													</div>
-												</div></li>
-											<!-- END timeline item -->
-											<li><i class="fa fa-clock-o bg-gray"></i></li>
-										</ul>
-									</div>
-									<!-- /.tab-pane -->
-
-									<div class="tab-pane" id="settings">
-										<div class="row">
-											<div class="col-md-4">
-												<strong><i class="fa fa-map-marker margin-r-5"></i>
-													Location</strong>
-												<ul class="list-group list-group-unbordered">
-													<li class="list-group-item"><b>Followers</b> <a
-														class="pull-right">1,322</a></li>
-													<li class="list-group-item"><b>Following</b> <a
-														class="pull-right">543</a></li>
-													<li class="list-group-item"><b>Friends</b> <a
-														class="pull-right">13,287</a></li>
-												</ul>
-											</div>
-											<div class="col-md-4">
-												<ul class="list-group list-group-unbordered">
-													<li class="list-group-item"><b>Followers</b> <a
-														class="pull-right">1,322</a></li>
-													<li class="list-group-item"><b>Following</b> <a
-														class="pull-right">543</a></li>
-													<li class="list-group-item"><b>Friends</b> <a
-														class="pull-right">13,287</a></li>
-												</ul>
-											</div>
-											<div class="col-md-4">
-												<ul class="list-group list-group-unbordered">
-													<li class="list-group-item"><b>Followers</b> <a
-														class="pull-right">1,322</a></li>
-													<li class="list-group-item"><b>Following</b> <a
-														class="pull-right">543</a></li>
-													<li class="list-group-item"><b>Friends</b> <a
-														class="pull-right">13,287</a></li>
-												</ul>
-											</div>
-
-										</div>
-									</div>
-									<!-- /.tab-pane -->
+				<!-- Widget: user widget style 1 -->
+				<div class="box box-widget widget-user">
+					<!-- Add the bg color to the header using any of the bg-* classes -->
+					<div class="widget-user-header bg-aqua-active">
+						<h3 class="widget-user-username">{{lead.salutation}} {{lead.firstName}} {{lead.lastName}} </h3>
+						<h5 class="widget-user-desc">{{lead.title}}</h5>
+					</div>
+					<div class="widget-user-image">
+						<img class="img-circle"
+							src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
+							alt="User Avatar">
+					</div>
+					<div class="box-footer">
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="description-block">
+									<h5 class="description-header">{{lead.accountName}}</h5>
+									<span class="description-text">Company</span>
 								</div>
-								<!-- /.tab-content -->
 							</div>
-					
+							<div class="col-sm-3 border-right">
+								<div class="description-block">
+									<h5 class="description-header">{{lead.sourceName}}</h5>
+									<span class="description-text">Lead Source</span>
+								</div>
+							</div>
+							<div class="col-sm-3 border-right">
+								<div class="description-block">
+									<h5 class="description-header">{{lead.assignToUsername}}</h5>
+									<span class="description-text">Assign To</span>
+								</div>
+							</div>
+							<div class="col-sm-3 border-right">
+								<div class="description-block">
+									<h5 class="description-header">{{lead.phone}}</h5>
+									<span class="description-text">Tel</span>
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<ul class="breadcrumb1">
+									<li class="completed"><a href="#"><i
+											class="fa fa-check-circle"></i> New</a></li>
+									<li class="completed"><a href="#"> <i
+											class="fa fa-check-circle"></i> Assigned
+									</a></li>
+									<li class="active"><a href="#"> <i class="fa fa-lock"></i>
+											In Process
+									</a></li>
+									<li><a href="#"> <i class="fa fa-lock"></i> Converted
+									</a></li>
+									<li class="dead"><a href="#"> <i class="fa fa-lock"></i>
+											Dead
+									</a></li>
+								</ul>
+							</div>
+
+							<div class="clearfix"></div>
+							<br />
+							<div class="col-md-12">
+								<div class="nav-tabs-custom">
+									<ul class="nav nav-tabs">
+										<li class="active"><a href="#activity" data-toggle="tab"
+											aria-expanded="true">ACTIVITY</a></li>
+										<li class=""><a href="#collaborate" data-toggle="tab"
+											aria-expanded="false">COLLABORATE</a></li>
+										<li class=""><a href="#note_tap" data-toggle="tab"
+											aria-expanded="false">NOTES</a></li>
+										<li class=""><a href="#settings" data-toggle="tab"
+											aria-expanded="false">DETAILS</a></li>
+										<li class=""><a href="#remark_tab" data-toggle="tab"
+											aria-expanded="false">REMARK</a></li>
+									</ul>
+									<div class="tab-content">
+										<div class="tab-pane active" id="activity">
+											<div class="row">
+
+												<div class="col-md-12">
+													<a class="btn btn-app" ng-click="call_click()"> <span
+														class="badge bg-yellow">3</span> <i class="fa fa-phone"></i>
+														Call
+													</a> <a class="btn btn-app" ng-click="meet_click()"> <span class="badge bg-blue">3</span>
+														<i class="fa fa-users"></i> Meeting
+													</a> 
+													<a class="btn btn-app" ng-click="task_click()"> <span class="badge bg-aqua">3</span>
+														<i class="fa fa-list-alt "></i> Task
+													</a> 
+													<a class="btn btn-app" ng-click="event_click()"> <span
+														class="badge bg-light-blue">3</span> <i
+														class="fa  fa-calendar-check-o"></i> Event
+													</a> 
+													<a class="btn btn-app" ng-click="email_click()"> <span class="badge bg-green">3</span>
+														<i class="fa fa-envelope"></i> Email
+													</a>
+												</div>
+
+												<div class="col-md-12">
+													<div class="col-md-2">
+														<div class="form-group">
+															<select style="margin-left: -5px;" class="form-control"
+																name="show_activity" id="show_activity">
+																<option value="All">All</option>
+																<option value="Call">Call</option>
+																<option value="Meeting">Meeting</option>
+																<option value="Task">Task</option>
+																<option value="Event">Event</option>
+																<option value="Email">Email</option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-md-12">
+
+													<div class="mailbox-messages">
+														<table class="table table-hover table-striped">
+															<tbody>
+																<tr>
+																	<td class="mailbox-star "><a href="#"><i
+																			class="fa fa-phone text-yellow font-size-icon-30"></i></a></td>
+																	<td><b>Call</b></td>
+																	<td class="mailbox-name "><a href="read-mail.html">Alexander
+																			Pierce</a></td>
+																	<td class="mailbox-subject "><b>AdminLTE 2.0
+																			Issue</b> - Trying to find a solution to this problem...</td>
+
+																	<td class="mailbox-date"><div class="col-sm-2">
+																			<div class="btn-group">
+																				<button type="button"
+																					class="btn btn-default dropdown-toggle"
+																					data-toggle="dropdown" aria-expanded="false">
+																					<span class="caret"></span> <span class="sr-only">Toggle
+																						Dropdown</span>
+																				</button>
+																				<ul class="dropdown-menu" role="menu">
+																					<li><a
+																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
+																							class="fa fa-pencil"></i> Edit</a></li>
+																					<li ng-click="deleteLead(cc.leadID)"><a
+																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																					<li><a
+																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
+																							class="fa fa-eye"></i> View</a></li>
+
+																				</ul>
+																			</div>
+																		</div></td>
+																</tr>
+																<tr>
+																	<td class="mailbox-star"><a href="#"><i
+																			class="fa fa-users text-blue font-size-icon-30"></i></a></td>
+																	<td><b>Meeting</b></td>
+																	<td class="mailbox-name"><a href="read-mail.html">Alexander
+																			Pierce</a></td>
+																	<td class="mailbox-subject"><b>AdminLTE 2.0
+																			Issue</b> - Trying to find a solution to this problem...</td>
+
+																	<td class="mailbox-date"><div class="col-sm-2">
+																			<div class="btn-group">
+																				<button type="button"
+																					class="btn btn-default dropdown-toggle"
+																					data-toggle="dropdown" aria-expanded="false">
+																					<span class="caret"></span> <span class="sr-only">Toggle
+																						Dropdown</span>
+																				</button>
+																				<ul class="dropdown-menu" role="menu">
+																					<li><a
+																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
+																							class="fa fa-pencil"></i> Edit</a></li>
+																					<li ng-click="deleteLead(cc.leadID)"><a
+																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																					<li><a
+																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
+																							class="fa fa-eye"></i> View</a></li>
+
+																				</ul>
+																			</div>
+																		</div></td>
+																</tr>
+																<tr>
+																	<td class="mailbox-star"><a href="#"><i
+																			class="fa fa-list-alt text-aqua font-size-icon-30"></i></a></td>
+																	<td><b>Task</b></td>
+																	<td class="mailbox-name"><a href="read-mail.html">Alexander
+																			Pierce</a></td>
+																	<td class="mailbox-subject"><b>AdminLTE 2.0
+																			Issue</b> - Trying to find a solution to this problem...</td>
+
+																	<td class="mailbox-date"><div class="col-sm-2">
+																			<div class="btn-group">
+																				<button type="button"
+																					class="btn btn-default dropdown-toggle"
+																					data-toggle="dropdown" aria-expanded="false">
+																					<span class="caret"></span> <span class="sr-only">Toggle
+																						Dropdown</span>
+																				</button>
+																				<ul class="dropdown-menu" role="menu">
+																					<li><a
+																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
+																							class="fa fa-pencil"></i> Edit</a></li>
+																					<li ng-click="deleteLead(cc.leadID)"><a
+																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																					<li><a
+																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
+																							class="fa fa-eye"></i> View</a></li>
+
+																				</ul>
+																			</div>
+																		</div></td>
+																</tr>
+																<tr>
+																	<td class="mailbox-star"><a href="#"><i
+																			class="fa fa-envelope text-green font-size-icon-30"></i></a></td>
+																	<td><b>Email</b></td>
+																	<td class="mailbox-name"><a href="read-mail.html">Alexander
+																			Pierce</a></td>
+																	<td class="mailbox-subject"><b>AdminLTE 2.0
+																			Issue</b> - Trying to find a solution to this problem...</td>
+
+																	<td class="mailbox-date"><div class="col-sm-2">
+																			<div class="btn-group">
+																				<button type="button"
+																					class="btn btn-default dropdown-toggle"
+																					data-toggle="dropdown" aria-expanded="false">
+																					<span class="caret"></span> <span class="sr-only">Toggle
+																						Dropdown</span>
+																				</button>
+																				<ul class="dropdown-menu" role="menu">
+																					<li><a
+																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
+																							class="fa fa-pencil"></i> Edit</a></li>
+																					<li ng-click="deleteLead(cc.leadID)"><a
+																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																					<li><a
+																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
+																							class="fa fa-eye"></i> View</a></li>
+
+																				</ul>
+																			</div>
+																		</div></td>
+																</tr>
+																<tr>
+																	<td class="mailbox-star"><a href="#"><i
+																			class="fa fa-calendar-check-o text-light-blue font-size-icon-30"></i></a></td>
+																	<td><b>Event</b></td>
+																	<td class="mailbox-name"><a href="read-mail.html">Alexander
+																			Pierce</a></td>
+																	<td class="mailbox-subject"><b>AdminLTE 2.0
+																			Issue</b> - Trying to find a solution to this problem...</td>
+
+																	<td class="mailbox-date"><div class="col-sm-2">
+																			<div class="btn-group">
+																				<button type="button"
+																					class="btn btn-default dropdown-toggle"
+																					data-toggle="dropdown" aria-expanded="false">
+																					<span class="caret"></span> <span class="sr-only">Toggle
+																						Dropdown</span>
+																				</button>
+																				<ul class="dropdown-menu" role="menu">
+																					<li><a
+																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
+																							class="fa fa-pencil"></i> Edit</a></li>
+																					<li ng-click="deleteLead(cc.leadID)"><a
+																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																					<li><a
+																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
+																							class="fa fa-eye"></i> View</a></li>
+
+																				</ul>
+																			</div>
+																		</div></td>
+																</tr>
 
 
+															</tbody>
+														</table>
+														<!-- /.table -->
+													</div>
+
+												</div>
+
+
+											</div>
+
+										</div>
+
+
+
+										<div class="tab-pane" id="collaborate">
+
+											<div class="col-md-12"></div>
+
+											<div class="post clearfix">
+												<textarea rows="3" cols="" name="post_des" id="post_des"
+													class="form-control" placeholder="Post"></textarea>
+												<button style="margin-top: 10px;"
+													class="btn btn-primary pull-right">POST</button>
+											</div>
+											<div class="post clearfix">
+												<div class="user-block">
+													<img class="img-circle img-bordered-sm"
+														src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
+														alt="user image"> <span class="username"> <a
+														href="#">Jonathan Burke Jr.</a> <a href="#"
+														class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+													</span> <span class="description">Shared publicly - 7:30 PM
+														today</span>
+												</div>
+												<!-- /.user-block -->
+												<p>Lorem ipsum represents a long-held tradition for
+													designers, typographers and the like. Some people hate it
+													and argue for its demise, but others ignore the hate as
+													they create awesome tools to help create filler text for
+													everyone from bacon lovers to Charlie Sheen fans.</p>
+												<ul class="list-inline">
+
+													<li><a href="#" class="link-black text-sm"><i
+															class="fa fa-thumbs-o-up margin-r-5"></i> Like</a></li>
+													<li class="pull-right"><a href="#"
+														class="link-black text-sm"><i
+															class="fa fa-comments-o margin-r-5"></i> Comments (5)</a></li>
+												</ul>
+
+												<input class="form-control input-sm" type="text"
+													placeholder="Type a comment">
+											</div>
+											<div class="post clearfix">
+												<div class="user-block">
+													<img class="img-circle img-bordered-sm"
+														src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
+														alt="user image"> <span class="username"> <a
+														href="#">Jonathan Burke Jr.</a> <a href="#"
+														class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+													</span> <span class="description">Shared publicly - 7:30 PM
+														today</span>
+												</div>
+												<!-- /.user-block -->
+												<p>Lorem ipsum represents a long-held tradition for
+													designers, typographers and the like. Some people hate it
+													and argue for its demise, but others ignore the hate as
+													they create awesome tools to help create filler text for
+													everyone from bacon lovers to Charlie Sheen fans.</p>
+												<ul class="list-inline">
+
+													<li><a href="#" class="link-black text-sm"><i
+															class="fa fa-thumbs-o-up margin-r-5"></i> Like</a></li>
+													<li class="pull-right"><a href="#"
+														class="link-black text-sm"><i
+															class="fa fa-comments-o margin-r-5"></i> Comments (2)</a></li>
+												</ul>
+												<div class="box-footer box-comments">
+													<div class="box-comment">
+														<!-- User image -->
+														<img class="img-circle img-sm"
+															src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
+															alt="user image">
+														<div class="comment-text">
+															<span class="username"> Maria Gonzales <span
+																class="text-muted pull-right">8:03 PM Today</span>
+															</span>
+															<!-- /.username -->
+															It is a long established fact that a reader will be
+															distracted by the readable content of a page when looking
+															at its layout.
+														</div>
+														<!-- /.comment-text -->
+													</div>
+													<!-- /.box-comment -->
+													<div class="box-comment">
+														<!-- User image -->
+														<img class="img-circle img-sm"
+															src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
+															alt="user image">
+														<div class="comment-text">
+															<span class="username"> Luna Stark <span
+																class="text-muted pull-right">8:03 PM Today</span>
+															</span>
+															<!-- /.username -->
+															It is a long established fact that a reader will be
+															distracted by the readable content of a page when looking
+															at its layout.
+														</div>
+														<!-- /.comment-text -->
+													</div>
+													<!-- /.box-comment -->
+												</div>
+												<input class="form-control input-sm" type="text"
+													placeholder="Type a comment">
+											</div>
+										</div>
+
+										<div class="tab-pane" id="note_tap">
+											<div class="post clearfix">
+											<form id="frmAddNote">
+												<div class="form-group">
+													<input ng-model="note_subject"  style="margin-top: 10px;" type="text" class="form-control"  name="note_subject" id="note_subject"
+																placeholder="Subject">
+												</div>
+												<div class="form-group">
+													<textarea ng-model="note_description" style="margin-top: 10px;" rows="3" cols="" name="note_description" id="note_description" class="form-control" placeholder="Description"></textarea>
+												</div>
+												<button style="margin-top: 10px;" type="button" ng-click="addNote()" class="btn btn-primary pull-right">Note</button>
+											</form>
+											</div>
+											<div class="clearfix"></div>
+											<ul class="timeline  timeline-inverse">
+
+												<!-- timeline time label -->
+												<li class="time-label"><span class="bg-red">
+														06-09-2014 </span></li>
+												<!-- /.timeline-label -->
+												<!-- timeline item -->
+												<li><i class="fa  fa-edit bg-blue"></i>
+													<div class="timeline-item">
+														<span class="time"><i class="fa fa-clock-o"></i>
+															12:05</span>
+														<h3 class="timeline-header">Title Name</h3>
+														<div class="timeline-body">Etsy doostang zoodles
+															disqus groupon greplin oooj voxy zoodles, weebly ning
+															heekya handango imeem plugg dopplr jibjab, movity jajah
+															plickers sifteo edmodo ifttt zimbra. Babblely odeo
+															kaboodle quora plaxo ideeli hulu weebly balihoo...</div>
+														<div class="timeline-footer">
+															<a class="btn btn-primary btn-xs">Read more</a> <a
+																class="btn btn-danger btn-xs">Delete</a>
+														</div>
+													</div></li>
+												<!-- END timeline item -->
+												<!-- timeline time label -->
+												<li class="time-label"><span class="bg-green"> 3
+														Jan. 2014 </span></li>
+												<!-- /.timeline-label -->
+												<!-- timeline item -->
+												<li><i class="fa  fa-edit bg-blue"></i>
+													<div class="timeline-item">
+														<span class="time"><i class="fa fa-clock-o"></i>
+															12:05</span>
+														<h3 class="timeline-header">Title Name</h3>
+														<div class="timeline-body">Etsy doostang zoodles
+															disqus groupon greplin oooj voxy zoodles, weebly ning
+															heekya handango imeem plugg dopplr jibjab, movity jajah
+															plickers sifteo edmodo ifttt zimbra. Babblely odeo
+															kaboodle quora plaxo ideeli hulu weebly balihoo...</div>
+														<div class="timeline-footer">
+															<a class="btn btn-primary btn-xs">Read more</a> <a
+																class="btn btn-danger btn-xs">Delete</a>
+														</div>
+													</div></li>
+												<li><i class="fa  fa-edit bg-blue"></i>
+													<div class="timeline-item">
+														<span class="time"><i class="fa fa-clock-o"></i>
+															12:05</span>
+														<h3 class="timeline-header">Title Name</h3>
+														<div class="timeline-body">Etsy doostang zoodles
+															disqus groupon greplin oooj voxy zoodles, weebly ning
+															heekya handango imeem plugg dopplr jibjab, movity jajah
+															plickers sifteo edmodo ifttt zimbra. Babblely odeo
+															kaboodle quora plaxo ideeli hulu weebly balihoo...</div>
+														<div class="timeline-footer">
+															<a class="btn btn-primary btn-xs">Read more</a> <a
+																class="btn btn-danger btn-xs">Delete</a>
+														</div>
+													</div></li>
+
+												<!-- END timeline item -->
+												<li><i class="fa fa-clock-o bg-gray"></i></li>
+											</ul>
+										</div>
+
+
+										<div class="tab-pane " id="settings">
+											<div class="row">
+												<div class="col-md-4">
+													<ul class="list-group list-group-unbordered">
+														<li class="list-group-item"><b>Overview</b> <a
+															class="pull-right cusor_pointer"><i
+																class="fa fa-pencil"></i> Edit</a></li>
+														<li class="list-group-item item_border">First Name <a
+															class="pull-right">{{lead.salutation}} {{lead.firstName}}</a></li>
+														<li class="list-group-item">Last Name <a
+															class="pull-right">{{lead.lastName}}</a></li>
+														<li class="list-group-item item_border">Title <a
+															class="pull-right">{{lead.title}}</a></li>
+														<li class="list-group-item item_border">Department <a
+															class="pull-right">IT</a></li>
+														<li class="list-group-item item_border">Company <a
+															class="pull-right">{{lead.accountName}}</a></li>
+														<li class="list-group-item item_border">Phone <a
+															class="pull-right">{{lead.phone}}</a></li>
+														<li class="list-group-item item_border">Mobile <a
+															class="pull-right">{{lead.mobile}}</a></li>
+														<li class="list-group-item item_border">Web Site <a
+															class="pull-right">{{lead.website}}</a></li>
+														<li class="list-group-item item_border">Email <a
+															class="pull-right">{{lead.email}}</a></li>
+													</ul>
+												</div>
+												<div class="col-md-4">
+													<ul class="list-group list-group-unbordered">
+														<li class="list-group-item"><b>Address</b> <a
+															class="pull-right cusor_pointer"><i
+																class="fa fa-pencil"></i> Edit</a></li>
+														<li class="list-group-item item_border">No <a
+															class="pull-right ">{{lead.no}}</a></li>
+														<li class="list-group-item item_border">Street <a
+															class="pull-right">{{lead.street}}</a></li>
+														<li class="list-group-item item_border">Village <a
+															class="pull-right">{{lead.village}}</a></li>
+														<li class="list-group-item item_border">Commune <a
+															class="pull-right">{{lead.commune}}</a></li>
+														<li class="list-group-item item_border">District <a
+															class="pull-right">{{lead.district}}</a></li>
+														<li class="list-group-item item_border">City <a
+															class="pull-right">{{lead.city}}</a></li>
+														<li class="list-group-item item_border">State <a
+															class="pull-right">{{lead.state}}</a></li>
+														<li class="list-group-item item_border">Country <a
+															class="pull-right">{{lead.country}}</a></li>
+													</ul>
+												</div>
+												<div class="col-md-4">
+													<ul class="list-group list-group-unbordered">
+														<li class="list-group-item"><b>More Information &
+																Others</b> <a class="pull-right cusor_pointer"><i
+																class="fa fa-pencil"></i> Edit</a></li>
+														<li class="list-group-item item_border">Status <a
+															class="pull-right ">{{lead.statusName}}</a></li>
+														<li class="list-group-item item_border">Industry <a
+															class="pull-right">{{lead.industName}}</a></li>
+														<li class="list-group-item item_border">Source <a
+															class="pull-right">{{lead.sourceName}}</a></li>
+														<li class="list-group-item item_border">Campaign <a
+															class="pull-right">{{lead.campName}}</a></li>
+														<li class="list-group-item item_border">Assign To <a
+															class="pull-right">{{lead.assignToUsername}}</a></li>
+													</ul>
+												</div>
+
+											</div>
+										</div>
+
+										<div class="tab-pane" id="remark_tab">
+											<div class="row">
+
+												<div class="col-md-12">
+													<ul class="list-group list-group-unbordered">
+														<li style="border-top: 0px;" class="list-group-item"><b>Description</b>
+															<a class="pull-right cusor_pointer"><i
+																class="fa fa-pencil"></i> Edit</a></li>
+
+													</ul>
+												</div>
+												<div class="col-md-12">{{lead.description}}</div>
+											</div>
+										</div>
+
+									</div>
+									<!-- /.tab-content -->
+								</div>
+							</div>
+
+						</div>
+						<!-- /.row -->
 					</div>
 				</div>
+				<!-- /.widget-user -->
 			</div>
-
-
-
 		</div>
 	</section>
-</div>
 
+
+	<input type="hidden" id="btn_show_call" data-toggle="modal"
+		data-target="#frmCall" />
+	<div class="modal fade modal-default" id="frmCall" role="dialog">
+		<div class="modal-dialog  modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Create Call</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Subject <span class="requrie">(Required)</span></label>
+									<input id="txtDisInv" class="form-control" type="text"
+										placeholder="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Start Date<span class="requrie">(Required)</span></label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input data-date-format="dd-M-yyyy" data-default-date=""
+											value="" name="startDate" id="startDate" type="text"
+											class="form-control pull-right active">
+									</div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="bootstrap-timepicker">
+									<div class="form-group">
+										<label>Duration <span class="requrie">(Required)</span></label>
+										<div class="input-group">
+											<input type="text" class="form-control timepicker"
+												name="duration" id="duration">
+											<div class="input-group-addon">
+												<i class="fa fa-clock-o"></i>
+											</div>
+
+										</div>
+										<!-- /.input group -->
+									</div>
+									<!-- /.form group -->
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Assign To </label>
+									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
+				                      <option value=""></option>           
+				                    </select>
+								</div>
+							</div>
+							
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Status <span class="requrie">(Required)</span></label>
+									<select class="form-control select2" name="status" id="status" style="width: 100%;">
+										<option value="">--SELECT Status</option>
+										<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Description </label>
+									<textarea  rows="4" cols="" name="description" id="description"	class="form-control"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnSaveCallCancel" class="btn btn-danger"
+						data-dismiss="modal">Cancel</button>
+					&nbsp;&nbsp;
+					<button type="button" id="btnSaveCall"
+						class="btn btn-primary pull-right" data-dismiss="modal">Save</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="btn_show_meet" data-toggle="modal"
+		data-target="#frmMeet" />
+	<div class="modal fade modal-default" id="frmMeet" role="dialog">
+		<div class="modal-dialog  modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Create Meeting</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Subject <span class="requrie">(Required)</span></label>
+									<input id="txtDisInv" class="form-control" type="text"
+										placeholder="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Duration <span class="requrie">(Required)</span></label>
+									<select class="form-control select2"  name="me_duration" id="me_duration" style="width: 100%;">
+				                      <option value="">--Select Duration--</option>   
+				                      <option value="15 minutes">15 minutes</option>
+				                      <option value="30 minutes">30 minutes</option>
+				                      <option value="45 minutes">45 minutes</option> 
+				                      <option value="1 hour">1 hour</option> 
+				                      <option value="1:30 hours">1:30 hours</option> 
+				                      <option value="2 hours">2 hours</option> 
+				                      <option value="3 hours">3 hours</option> 
+				                      <option value="6 hours">6 hours</option> 
+				                      <option value="1 day">1 day</option>
+				                      <option value="2 days">2 days</option>
+				                      <option value="3 days">3 days</option>
+				                      <option value="1 week">1 week</option>         
+				                    </select>
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Start Date<span class="requrie">(Required)</span></label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
+											value="" name="startDateMeeting" id="startDateMeeting" type="text"
+											class="form-control pull-right active">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>End Date<span class="requrie">(Required)</span></label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
+											value="" name="endDateMeeting" id="endDateMeeting" type="text"
+											class="form-control pull-right active">
+									</div>
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Assign To </label>
+									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
+				                      <option value=""></option>           
+				                    </select>
+								</div>
+							</div>
+							
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Status</label>
+									<select class="form-control select2" name="status" id="status" style="width: 100%;">
+										<option value="">--SELECT Status</option>
+										<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Location </label>
+									<input id="txtDisInv" class="form-control" type="text"
+										placeholder="">
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Description </label>
+									<textarea  rows="4" cols="" name="description" id="description"	class="form-control"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnSaveCallCancel" class="btn btn-danger"
+						data-dismiss="modal">Cancel</button>
+					&nbsp;&nbsp;
+					<button type="button" id="btnSaveCall"
+						class="btn btn-primary pull-right" data-dismiss="modal">Save</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="btn_show_task" data-toggle="modal"
+		data-target="#frmTask" />
+	<div class="modal fade modal-default" id="frmTask" role="dialog">
+		<div class="modal-dialog  modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Create Task</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Subject <span class="requrie">(Required)</span></label>
+									<input id="txtDisInv" class="form-control" type="text"
+										placeholder="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Priority <span class="requrie">(Required)</span></label>
+									<select class="form-control select2"  name="ts_priority" id="ts_priority" style="width: 100%;">
+				                      <option value="">--Select Priority--</option>   
+				                      <option value="High">High</option>
+				                      <option value="Medium">Medium</option>
+				                      <option value="Low">Low</option> 
+				                            
+				                    </select>
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Start Date</label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
+											value="" name="startDateMeeting" id="startDateMeeting" type="text"
+											class="form-control pull-right active">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Due Date</label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
+											value="" name="endDateMeeting" id="endDateMeeting" type="text"
+											class="form-control pull-right active">
+									</div>
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Assign To </label>
+									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
+				                      <option value=""></option>           
+				                    </select>
+								</div>
+							</div>
+							
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Status</label>
+									<select class="form-control select2" name="status" id="status" style="width: 100%;">
+										<option value="">--SELECT Status</option>
+										<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Contact</label>
+									<select class="form-control select2" name="status" id="status" style="width: 100%;">
+										<option value="">--SELECT Contact</option>
+										<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Description </label>
+									<textarea  rows="4" cols="" name="description" id="description"	class="form-control"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnSaveCallCancel" class="btn btn-danger"
+						data-dismiss="modal">Cancel</button>
+					&nbsp;&nbsp;
+					<button type="button" id="btnSaveCall"
+						class="btn btn-primary pull-right" data-dismiss="modal">Save</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="btn_show_event" data-toggle="modal"
+		data-target="#frmEvent" />
+	<div class="modal fade modal-default" id="frmEvent" role="dialog">
+		<div class="modal-dialog  modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Create Event</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Subject <span class="requrie">(Required)</span></label>
+									<input id="txtDisInv" class="form-control" type="text"
+										placeholder="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Duration <span class="requrie">(Required)</span></label>
+									<select class="form-control select2"  name="me_duration" id="me_duration" style="width: 100%;">
+				                      <option value="">--Select Duration--</option>   
+				                      <option value="15 minutes">15 minutes</option>
+				                      <option value="30 minutes">30 minutes</option>
+				                      <option value="45 minutes">45 minutes</option> 
+				                      <option value="1 hour">1 hour</option> 
+				                      <option value="1:30 hours">1:30 hours</option> 
+				                      <option value="2 hours">2 hours</option> 
+				                      <option value="3 hours">3 hours</option> 
+				                      <option value="6 hours">6 hours</option> 
+				                      <option value="1 day">1 day</option>
+				                      <option value="2 days">2 days</option>
+				                      <option value="3 days">3 days</option>
+				                      <option value="1 week">1 week</option>         
+				                    </select>
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Start Date<span class="requrie">(Required)</span></label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
+											value="" name="startDateMeeting" id="startDateMeeting" type="text"
+											class="form-control pull-right active">
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>End Date<span class="requrie">(Required)</span></label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
+											value="" name="endDateMeeting" id="endDateMeeting" type="text"
+											class="form-control pull-right active">
+									</div>
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Assign To </label>
+									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
+				                      <option value=""></option>           
+				                    </select>
+								</div>
+							</div>
+							
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Budget</label>
+									<input id="txtDisInv" class="form-control" type="text"
+										placeholder="">
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Location </label>
+									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
+				                      <option value=""></option>           
+				                    </select>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Description </label>
+									<textarea  rows="4" cols="" name="description" id="description"	class="form-control"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnSaveCallCancel" class="btn btn-danger"
+						data-dismiss="modal">Cancel</button>
+					&nbsp;&nbsp;
+					<button type="button" id="btnSaveCall"
+						class="btn btn-primary pull-right" data-dismiss="modal">Save</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="error"></div>
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 
