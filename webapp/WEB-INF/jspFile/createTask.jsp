@@ -20,7 +20,8 @@
 	<section class="content-header">
 		<h1> Create Task</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Create Task</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#"> Create Task</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
@@ -68,15 +69,16 @@ $(document).ready(function() {
     });
 
     
-	$(".timepicker").timepicker({
-        showInputs: false,
-        defaultTime: false
-      });
+	
     
 	userAllList(data,'#ts_assignTo','');
 	
 	$("#btn_clear").click(function(){
 		$("#form-call").bootstrapValidator('resetForm', 'true');
+		$("#ts_status").select2("val","");
+		$("#ts_priority").select2("val","");
+		$("#form-call").bootstrapValidator('resetForm', 'ts_status');
+		$("#form-call").bootstrapValidator('resetForm', 'ts_priority');
 	});
 	
 	 $("#btn_save").click(function(){
@@ -97,6 +99,10 @@ $(document).ready(function() {
 					validators: {
 						notEmpty: {
 							message: 'The Subject is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The Subject must be less than 255 characters long.'
 						}
 					}
 				},
@@ -113,7 +119,32 @@ $(document).ready(function() {
 							message: 'The Priorty is required and can not be empty!'
 						}
 					}
+				},
+				ts_startDate: {
+					validators: {
+						date: {
+	                        format: 'DD/MM/YYYY',
+	                        message: 'The value is not a valid date'
+	                    }
+					}
+				},
+				ts_dueDate: {
+					validators: {
+						date: {
+	                        format: 'DD/MM/YYYY',
+	                        message: 'The value is not a valid date'
+	                    }
+					}
+				},
+				ts_description: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The description must be less than 255 characters long.'
+						}
+					}
 				}
+				
 				
 			}
 		}).on('success.form.bv', function(e) {
@@ -185,6 +216,8 @@ $(document).ready(function() {
 						$("#ts_assignTo").select2("val","");
 						$("#ts_priority").select2("val","");
 						
+						$("#form-call").bootstrapValidator('resetForm', 'ts_status');
+						$("#form-call").bootstrapValidator('resetForm', 'ts_priority');
 						swal({
 		            		title:"Success",
 		            		text:"User have been created new Task!",
@@ -248,19 +281,16 @@ $(document).ready(function() {
 
 						
 
-						<div class="col-sm-2">
-							<label class="font-label">* Subject :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
 								<input type="text" class="form-control" name="ts_subject" id="ts_subject">
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Start Date :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Start date </label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -270,10 +300,9 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Due Date :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Due date :</label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -283,11 +312,10 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">* Priority :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Priority <span class="requrie">(Required)</span></label>
 							<div class="bootstrap-timepicker">
 			                    <div class="form-group">
 			                    	<select class="form-control select2"  name="ts_priority" id="ts_priority" style="width: 100%;">
@@ -300,34 +328,31 @@ $(document).ready(function() {
 			                    </div>
 			                  </div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Assigned to : </label>
-						</div>
-						<div class="col-sm-4" >
+						
+						<div class="col-sm-6">
+							<label class="font-label">Assigned to </label>
 							<div class="form-group">
 								<select class="form-control select2"  name="ts_assignTo" id="ts_assignTo" style="width: 100%;">
 			                      <option value=""></option>           
 			                    </select>
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
+						<div class="col-sm-12">
 							<label class="font-label">Description :</label>
-						</div>
-						<div class="col-sm-10">
 							<div class="form-group">
 								<textarea style="height: 120px" rows="" cols="" name="ts_description" id="ts_description"	class="form-control"></textarea>
 							</div>
 						</div>
+						
 					</div>
 
 					<div class="col-sm-6">
 
 
-						<div class="col-sm-2" data-ng-init="listMeetignStatus()" >
-							<label class="font-label">* Status :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6" data-ng-init="listMeetignStatus()" >
+							<label class="font-label">Status <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<select class="form-control select2" name="ts_status" id="ts_status">
 									<option value="">--SELECT Status</option>
@@ -336,34 +361,35 @@ $(document).ready(function() {
 							</div>
 						</div>
 						
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
+						<div class="col-sm-6">
 							<label class="font-label">Related To :</label>
-						</div>
-						<div class="col-sm-4">
 							<div class="form-group">
 								<select class="form-control select2" name="ts_relateTo" id="ts_relateTo">
 									<option value="">--SELECT Related--</option>
 									<optgroup label="Marketing">
-										<option value="campaign">Campaign</option>
-										<option value="lead">Lead</option>
+										<option value="Campaign">Campaign</option>
+										<option value="Lead">Lead</option>
 									</optgroup>
 									<optgroup label="Sales">
-										<option value="customer">Customer</option>
-										<option value="contact">Contact</option>
-										<option value="opportunity">Opportunity</option>
+										<option value="Customer">Customer</option>
+										<option value="Contact">Contact</option>
+										<option value="Opportunity">Opportunity</option>
 									</optgroup>
 									<optgroup label="Activities">
-										<option value="task">Tasks</option>
+										<option value="Task">Tasks</option>
 									</optgroup>
 									<optgroup label="Support">
-										<option value="case">Case</option>
+										<option value="Case">Case</option>
 									</optgroup>
 									
 								</select>
-							</div>
+						</div>
+						
 						</div>
 						<div class="col-sm-6">
+							<label class="font-label">&nbsp;</label>
 							<div class="form-group">
 								<select class="form-control select2" name="ts_reportType" id="ts_reportType">
 									<option value="">--SELECT--</option>
@@ -371,10 +397,8 @@ $(document).ready(function() {
 							</div>
 						</div>
 					<div class="clearfix"></div>
-					<div class="col-sm-2" data-ng-init="listContact()">
+					<div class="col-sm-6" data-ng-init="listContact()">
 							<label class="font-label">Contact :</label>
-						</div>
-						<div class="col-sm-4">
 							<div class="form-group" id="">
 								<select class="form-control select2" name="ts_contact" id="ts_contact">
 									<option value="">--SELECT Contact</option>
@@ -383,7 +407,7 @@ $(document).ready(function() {
 								</select>
 							</div>
 						</div>
-
+						
 
 					</div>
 					

@@ -63,16 +63,7 @@
        $(function () {
     	  $(".select2").select2();
     	$(".date").datepicker();
-    	$('#cam_startDate').daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            format: 'DD/MM/YYYY'
-        });
-    	$('#cam_endDate').daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            format: 'DD/MM/YYYY'
-        });
+    	
       }); 
     </script>
    
