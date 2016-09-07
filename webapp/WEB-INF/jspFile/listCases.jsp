@@ -174,8 +174,20 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 							<td>{{cc.priorityName}}</td>
 							<td>{{cc.custName}} </td>	
 							<td>
-								<a href="${pageContext.request.contextPath}/update-case/{{cc.caseId}}" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-								<button type="button" ng-click="deleteCon(cc.caseId)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>
+								<div class="col-sm-2">
+									<div class="btn-group">
+				                      <button type="button" class="btn btn-default btn-flat" data-toggle="dropdown" aria-expanded="false">
+				                        <span class="caret"></span>
+				                        <span class="sr-only">Toggle Dropdown</span>
+				                      </button>
+				                      <ul class="dropdown-menu" role="menu">
+				                        <li><a href="${pageContext.request.contextPath}/update-case/{{cc.caseId}}"><i class="fa fa-pencil"></i> Edit</a></li>
+				                        <li><a href="#" ng-click="deleteCon(cc.caseId)"><i class="fa fa-trash"></i> Delete</a></li>
+				                        <li><a href="#"><i class="fa fa-eye"></i> View</a></li>
+				                      </ul>
+				                    </div>
+			                   	</div>
+			                  
 							</td>
 						</tr>
 				

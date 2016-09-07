@@ -159,9 +159,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 							<th style="cursor: pointer;" ng-click="sort('industID.industName')">Industry
 								<span class="glyphicon sort-icon" ng-show="sortKey=='industID.industName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('accountTypeID.accountName')">Type
-								<span class="glyphicon sort-icon" ng-show="sortKey=='accountTypeID.accountName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
+							
 											
 							<th>Action</th>
 						</tr>
@@ -172,10 +170,22 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 							<td>{{cc.custTel1}}</td>
 							<td>{{cc.custEmail}}</td>
 							<td>{{cc.industID.industName}}</td>
-							<td>{{cc.accountTypeID.accountName}}</td>	
+							
 							<td>
-								<a href="${pageContext.request.contextPath}/update-customer/{{cc.custID}}" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-								<button type="button" ng-click="deleteCustomer(cc.custID)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>
+								<div class="col-sm-2">
+									<div class="btn-group">
+				                      <button type="button" class="btn btn-default btn-flat" data-toggle="dropdown" aria-expanded="false">
+				                        <span class="caret"></span>
+				                        <span class="sr-only">Toggle Dropdown</span>
+				                      </button>
+				                      <ul class="dropdown-menu" role="menu">
+				                        <li><a href="${pageContext.request.contextPath}/update-customer/{{cc.custID}}"><i class="fa fa-pencil"></i> Edit</a></li>
+				                        <li><a href="#" ng-click="deleteCustomer(cc.custID)"><i class="fa fa-trash"></i> Delete</a></li>
+				                        <li><a href="#"><i class="fa fa-eye"></i> View</a></li>
+				                      </ul>
+				                    </div>
+			                   	</div>
+								
 							</td>
 						</tr>
 				
