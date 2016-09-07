@@ -98,17 +98,15 @@ $(document).ready(function() {
 		var relate = $("#reportType").val();
 		funcRelateTo("#reportTo",relate,"");
 	});
-	
 	$('#startDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         format: 'DD/MM/YYYY' 
-    });
-	$(".timepicker").timepicker({
-        showInputs: false,
-        defaultTime: false
-      });
-    
+    }).on('change', function(e) {
+     	$('#form-call').bootstrapValidator('revalidateField', 'startDate');
+ 	});
+
+ 
 
 	$("#btn_clear").click(function(){
 		$("#form-call").bootstrapValidator('resetForm', 'true');
@@ -232,6 +230,8 @@ $(document).ready(function() {
 						$("#status").select2("val","");
 						$("#reportType").select2("val","");
 						$("#reportTo").select2("val","");
+						$("#assignTo").select2("val","");
+						$('#form-call').bootstrapValidator('resetForm', 'status');
 						
 						swal({
 		            		title:"Success",

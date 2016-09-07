@@ -55,12 +55,11 @@ $(document).ready(function() {
         singleDatePicker: true,
         showDropdowns: true,
         format: 'DD/MM/YYYY' 
-    });
-	$(".timepicker").timepicker({
-        showInputs: false,
-        defaultTime: false
-      });
+    }).on('change', function(e) {
+     	$('#form-call').bootstrapValidator('revalidateField', 'startDate');
+ 	});
     
+	
 	userAllList(data,'#assignTo','');
 	
 	$("#btn_clear").click(function(){
@@ -185,7 +184,8 @@ $(document).ready(function() {
 						$("#status").select2("val","");
 						$("#reportType").select2("val","");
 						$("#reportTo").select2("val","");
-						
+						$("#assignTo").select2("val","");
+						$('#form-call').bootstrapValidator('resetForm', 'status');
 						swal({
 		            		title:"Success",
 		            		text:"User have been created new Call!",
