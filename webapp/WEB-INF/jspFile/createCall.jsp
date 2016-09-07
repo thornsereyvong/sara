@@ -57,7 +57,8 @@ $(document).ready(function() {
     });
 	$(".timepicker").timepicker({
         showInputs: false,
-        defaultTime: false
+        defaultTime: false,
+        showMeridian : false
       });
     
 	userAllList(data,'#assignTo','');
