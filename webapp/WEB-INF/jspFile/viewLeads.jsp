@@ -133,6 +133,10 @@ $(function(){
 				validators: {
 					notEmpty: {
 						message: 'The subject is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The subject must be less than 255 characters long!'
 					}
 				}
 			},
@@ -140,12 +144,54 @@ $(function(){
 				validators: {
 					notEmpty: {
 						message: 'The description is required and can not be empty!'
+					},
+					stringLength: {
+						max: 1000,
+						message: 'The description must be less than 1000 characters long!'
 					}
 				}
 			}
 		}
 	}).on('success.form.bv', function(e) {
-
+		var frmNoteData = {"noteSubject":getValueStringById("note_subject"), "noteSubject":getValueStringById("noteDes"),"noteRelatedToModuleType":"Lead","noteRelatedToModuleId":leadId,"noteCreateBy":${} };
+		$.ajax({ 
+		    url: server+"/note/add", 
+		    type: 'POST',
+		    data: JSON.stringify(frmNoteData),
+		    beforeSend: function(xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+            },
+		    success: function(data) {	
+		    	
+		    	dis(data)
+		    	
+		    	
+		    	/* if(data.message == 'success'){		
+					swal({
+						  title: "Employee ID "+data.emp_ID+" has been inserte.",
+						  text: "",
+						  type: "success",
+						  showCancelButton: false,
+						  confirmButtonClass: "btn-info",
+						  confirmButtonText: "Yes",
+						  closeOnConfirm: false
+						},
+						function(){							
+							if(act_btn_save == "save"){
+								window.location.href = server+"/employee";
+							}else if(act_btn_save == "save_new"){
+								location.reload();
+							}													
+						});
+		    	}else{
+		    		sweetAlert("Insert Unsuccessfully!", "", "error");
+		    	} */
+		    },
+		    error:function(data,status,er) { 
+		        console.log("error: "+data+" status: "+status+" er:"+er);
+		    }
+		});
 		
 	});	
 	
