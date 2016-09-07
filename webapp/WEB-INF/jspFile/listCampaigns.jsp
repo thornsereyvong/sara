@@ -185,8 +185,8 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 				                        <span class="sr-only">Toggle Dropdown</span>
 				                      </button>
 				                      <ul class="dropdown-menu" role="menu">
-				                        <li><a href="#"><i class="fa fa-pencil"></i> Edit</a></li>
-				                        <li><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
+				                        <li><a href="${pageContext.request.contextPath}/update-campaign/{{cc.campID}}"><i class="fa fa-pencil"></i> Edit</a></li>
+				                        <li><a href="#" ng-click="deleteCamp(cc.campID)"><i class="fa fa-trash"></i> Delete</a></li>
 				                        <li><a href="#"><i class="fa fa-eye"></i> View</a></li>
 				                      </ul>
 				                    </div>

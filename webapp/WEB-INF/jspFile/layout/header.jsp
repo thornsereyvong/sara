@@ -60,19 +60,30 @@ function funcSelectContact(id, cust, vals){
 }
 
 function funcRelateTo(id, cust, vals){
+	var all = "";
+	var urs = cust.toLowerCase();
+
+	if(urs == "opportunity"){
+		all = "_all";
+	}
+
+	if(urs == "lead"){
+		all = "_all";
+	}
+	
 	
 	if(cust != ""){
 		$(id).empty().append('<option value="">-- SELECT '+cust+' --</option>');
 		$(id).select2("val","");
 		$.ajax({
-				url: "${pageContext.request.contextPath}/"+cust+"/list",
+				url: "${pageContext.request.contextPath}/"+urs+"/list"+all,
 				method: "GET",
 				header: "application/json",
 				success: function(dataString){
 					var dataObject = dataString.DATA;
 					
 					switch (cust) {
-						 case "customer":
+						 case "Customer":
 							 	
 								$.each(dataObject, function(key, value){
 									var div = "<option value='"+value.custID+"' >"+value.custName+"</option>";
@@ -84,7 +95,7 @@ function funcRelateTo(id, cust, vals){
 								} 
 								
 						        break;
-						 case "lead":
+						 case "Lead":
 								$.each(dataObject, function(key, value){
 									var div = "<option value='"+value.leadID+"' >"+value.salutation+" "+value.firstName+"  "+value.lastName+"</option>";
 									$(id).append(div);
@@ -94,7 +105,7 @@ function funcRelateTo(id, cust, vals){
 								} 
 								
 						        break;
-						 case "campaign":
+						 case "Campaign":
 								$.each(dataObject, function(key, value){
 									var div = "<option value='"+value.campID+"' >"+value.campName+" </option>";
 									$(id).append(div);
@@ -105,7 +116,7 @@ function funcRelateTo(id, cust, vals){
 								} 
 								
 						        break;
-						 case "contact":
+						 case "Contact":
 							 
 								$.each(dataObject, function(key, value){
 									var div = "<option value='"+value.conID+"' >"+value.conFirstName+"  "+value.conLastName+"</option>";
@@ -118,7 +129,7 @@ function funcRelateTo(id, cust, vals){
 								} 	
 											
 								break;
-						 case "opportunity":
+						 case "Opportunity":
 								$.each(dataObject, function(key, value){
 									var div = "<option value='"+value.opId+"' >"+value.opName+"</option>";
 									$(id).append(div);	
@@ -128,7 +139,7 @@ function funcRelateTo(id, cust, vals){
 								} 
 								
 						        break;
-						 case "case":
+						 case "Case":
 								$.each(dataObject, function(key, value){
 									var div = "<option value='"+value.caseId+"' >"+value.subject+"</option>";
 									$(id).append(div);
@@ -138,7 +149,7 @@ function funcRelateTo(id, cust, vals){
 								} 
 								
 						        break;
-						 case "task":
+						 case "Task":
 								 $.each(dataObject, function(key, value){
 									var div = "<option value='"+value.taskId+"' >"+value.taskSubject+"</option>";
 									$(id).append(div);
@@ -204,7 +215,6 @@ function userReportList(id,vals){
 		
 	});	
 }
-
 
 
 </script>

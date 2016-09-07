@@ -14,35 +14,36 @@
   <section class="content-header">
     <h1>Create Campaign</h1>
     <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Create
-        Campaign</a></li>
+    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li class="active"><a href="#">Create Campaign</a></li>
     </ol>
   </section>
   <script type="text/javascript">
 		var app = angular.module('campaign', [ 'oitozero.ngSweetAlert', ]);
 		var self = this;
 		app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http) {
-				$scope.startupAddPage = function() {
-					$http.get("${pageContext.request.contextPath}/campaign/startup").success(function(response) {
-						$scope.campaigns = response.CAMP_PARENT;
-						alert(response.CAMP_PARENT);
+				$scope.startupAddPage = function(username) {
+					$http({
+					    method: 'POST',
+					    url: '${pageContext.request.contextPath}/campaign/startup',
+					    headers: {
+					    	'Accept': 'application/json',
+					        'Content-Type': 'application/json'
+					    },
+					    data: {
+					    	"username":username
+					    }
+					}).success(function(response) {
+						$scope.camp_parents = response.CAMP_PARENT;
+						$scope.users = response.ASSIGN_TO;
 						$scope.camp_status = response.CAMP_STATUS;
 						$scope.camp_type = response.CAMP_TYPE;
 					});
 				};
 			}]);
-
-		/* swal({  
-		 title: "HTML <small>Title</small>!", 
-		 text: "A custom <span style="color:#F8BB86">html<span> message.",
-		 html: true
-		 }); */
-
 		$(document).ready(function() {
 
 			$(".select2").select2();
-			var data = ${users};
-			userAllList(data, '#cam_assignTo', '');
 			$("#cam_name").change(function() {
 				var name = $("#cam_name").val();
 				$.ajax({
@@ -98,7 +99,7 @@
 						data-toggle="tooltip" title="Remove"> <i class="fa fa-times"></i> </button>
         </div>
       </div>
-      <div class="box-body" data-ng-init = "startupAddPage()">
+      <div class="box-body" data-ng-init = "startupAddPage('${SESSION}')">
         <form method="post" id="form-campaigns">
           <button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save </button>
           <a class="btn btn-info btn-app" id="btn_clear"> <i
@@ -117,8 +118,7 @@
               <div class="col-sm-6">
                 <label class="font-label">Name <span class="requrie">(Required)</span></label>
                 <div class="form-group" id="div_camName">
-                  <input type="text" class="form-control" name="cam_name"
-										id="cam_name">
+                  <input type="text" class="form-control" name="cam_name" id="cam_name">
                 </div>
               </div>
               <div class="col-sm-6">
@@ -126,8 +126,7 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-                    <input type="text" class="form-control pull-right"
-											name="cam_startDate" id="cam_startDate">
+                    <input type="text" class="form-control pull-right" name="cam_startDate" id="cam_startDate">
                   </div>
                 </div>
               </div>
@@ -137,8 +136,7 @@
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-                    <input type="text" class="form-control pull-right"
-											name="cam_endDate" id="cam_endDate">
+                    <input type="text" class="form-control pull-right" name="cam_endDate" id="cam_endDate">
                   </div>
                 </div>
               </div>
@@ -146,16 +144,15 @@
               <div class="col-sm-12">
                 <label class="font-label">Description </label>
                 <div class="form-group">
-                  <textarea style="height: 120px" rows="" cols=""
-										name="cam_description" id="cam_description"
-										class="form-control"></textarea>
+                  <textarea style="height: 120px" rows="" cols="" name="cam_description" id="cam_description" class="form-control"></textarea>
                 </div>
               </div>
-              <div class="col-sm-6" data-ng-init="listCampUser()">
+              <div class="col-sm-6">
                 <label class="font-label">Assigned to  </label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_assignTo" id="cam_assignTo" style="width: 100%;">
-                    <option value=""></option>
+                    <option value="">-- SELECT User --</option>
+                    <option ng-repeat="user in users" value="{{user.userID}}">{{user.username}}</option>
                   </select>
                 </div>
               </div>
@@ -164,7 +161,7 @@
               <div class="col-sm-6">
                 <label class="font-label">Status <span class="requrie">(Required)</span></label>
                 <div class="form-group">
-                  <select class="form-control select2" name="cam_status"
+                  <select class="form-control select2" name="cam_status" style="width:100%;"
 										id="cam_status">
                     <option value="">-- SELECT Status --</option>
                     <option ng-repeat="stat in camp_status" value="{{stat.statusID}}">{{stat.statusName}}</option>
@@ -174,19 +171,18 @@
               <div class="col-sm-6">
                 <label class="font-label">Type <span class="requrie">(Required)</span></label>
                 <div class="form-group">
-                  <select class="form-control select2" name="cam_type"
-										id="cam_type">
+                  <select class="form-control select2" name="cam_type" style="width: 100%;" id="cam_type">
                     <option value="">-- SELECT Type --</option>
                     <option ng-repeat="ty in camp_type" value="{{ty.typeID}}">{{ty.typeName}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-sm-6">
-                <label class="font-label">Parent Campaign </label>
+                <label class="font-label">Parent campaign </label>
                 <div class="form-group">
-                  <select class="form-control select2" name="cam_parent" id="cam_parent">
+                  <select class="form-control select2" name="cam_parent" style="width: 100%;" id="cam_parent">
                     <option value="">-- SELECT Parent --</option>
-                    <option ng-repeat="cam in campaigns" value="{{cam.campID}}">{{cam.campName}}</option>
+                    <option ng-repeat="cam in camp_parents" value="{{cam.campID}}">{{cam.campName}}</option>
                   </select>
                 </div>
               </div>
@@ -209,21 +205,21 @@
               </div>
             </div>
             <div class="col-sm-6">
-              <label class="font-label">Actual Cost</label>
+              <label class="font-label">Actual cost</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_actualCost"
 									id="cam_actualCost">
               </div>
             </div>
             <div class="col-sm-6">
-              <label class="font-label">Number Send</label>
+              <label class="font-label">Number send</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_numSend"
 									id="cam_numSend">
               </div>
             </div>
             <div class="col-sm-6">
-              <label class="font-label">Expected Response</label>
+              <label class="font-label">Expected response</label>
               <div class="form-group">
                 <input type="text" class="form-control"
 									name="cam_expectedResponse" id="cam_expectedResponse">
@@ -232,17 +228,16 @@
           </div>
           <div class="col-sm-6">
             <div class="col-sm-6">
-              <label class="font-label">Expected Cost</label>
+              <label class="font-label">Expected cost</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_expectedCost"
 									id="cam_expectedCost">
               </div>
             </div>
             <div class="col-sm-6">
-              <label class="font-label">Expected Revenue</label>
+              <label class="font-label">Expected revenue</label>
               <div class="form-group">
-                <input type="text" class="form-control"
-									name="cam_expectedRevenue" id="cam_expectedRevenue">
+                <input type="text" class="form-control" name="cam_expectedRevenue" id="cam_expectedRevenue">
               </div>
             </div>
           </div>

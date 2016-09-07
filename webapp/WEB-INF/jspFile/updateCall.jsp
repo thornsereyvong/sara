@@ -18,7 +18,8 @@
 	<section class="content-header">
 		<h1>Update Call</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Update Call</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#"> Update Call</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
@@ -27,12 +28,9 @@ var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 
-
 }]);
 
-
 function listStatusID(statusids){
-	
 	$.ajax({
 		url: "${pageContext.request.contextPath}/call_status/list",
 		method: "GET",
@@ -47,7 +45,7 @@ function listStatusID(statusids){
 			$("#status").select2("val",statusids);
 			
 			} 
-		});
+	});
 }
 
 function listDataByCampID(){
@@ -70,7 +68,7 @@ function listDataByCampID(){
 	$("#subject").val(result.callSubject);
 	$("#duration").val(result.callDuration);
 	$("#description").val(result.callDes);
-
+	$.session.set("assignTo",result.userID);
 	userAllList(user_id,'#assignTo',result.userID);
 	
 	if(result.callStatusId == null || result.callStatusId == ""){
@@ -87,8 +85,6 @@ function listDataByCampID(){
 
 
 $(document).ready(function() {
-	
-	
 	
 	$(".select2").select2();
 	
@@ -116,8 +112,6 @@ $(document).ready(function() {
 	 $("#btn_save").click(function(){
 		$("#form-call").submit();
 	});
-
-
 		
 	$('#form-call').bootstrapValidator({
 			message: 'This value is not valid',
@@ -131,6 +125,10 @@ $(document).ready(function() {
 					validators: {
 						notEmpty: {
 							message: 'The Subject is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The Subject must be less than 255 characters long.'
 						}
 					}
 				},
@@ -138,13 +136,21 @@ $(document).ready(function() {
 					validators: {
 						notEmpty: {
 							message: 'The Start Date is required and can not be empty!'
-						}
+						},
+						date: {
+	                        format: 'DD/MM/YYYY',
+	                        message: 'The value is not a valid date'
+	                    }
 					}
 				},
 				duration : {
 					validators: {
 						notEmpty: {
 							message: 'The Duration is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The Subject must be less than 255 characters long.'
 						}
 					}
 				},
@@ -152,6 +158,14 @@ $(document).ready(function() {
 					validators: {
 						notEmpty: {
 							message: 'The Status is required and can not be empty!'
+						}
+					}
+				},
+				description : {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The description must be less than 255 characters long.'
 						}
 					}
 				}
@@ -166,12 +180,14 @@ $(document).ready(function() {
 
 			var createDate = $("#startDate").val();
 			var newCreateDate = createDate.split("/").reverse().join("-");
-			
-			    var assign = "";	
-				if($("#assignTo").val()  != ""){
+
+			    var assign = "";
+			    if($("#assignTo").val() === null){
+					assign = {"userID": $.session.get("assignTo")};
+				}else if($("#assignTo").val() != ""){
 					assign = {"userID": $("#assignTo").val()};
-				}else{
-					assign = null;
+				} else{
+					assign = {"userID": $.session.get("assignTo")};
 				}
 
 				var status = "";	
@@ -180,9 +196,7 @@ $(document).ready(function() {
 				}else{
 					status = null;
 				}
-
-
-			
+	
 			$.ajax({
 				url : "${pageContext.request.contextPath}/call/edit",
 				type : "PUT",
@@ -277,19 +291,16 @@ $(document).ready(function() {
 					<div class="col-sm-6">
 
 						
-						<input type="hidden" id="id">
-						<div class="col-sm-2">
-							<label class="font-label">* Subject :</label>
-						</div>
-						<div class="col-sm-4">
+						<input type="hidden" class="form-control" name="id" id="id">
+						<div class="col-sm-6">
+							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
 								<input type="text" class="form-control" name="subject" id="subject">
 							</div>
 						</div>
-						<div class="col-sm-2">
-							<label class="font-label">* Start Date :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Start date <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -299,90 +310,76 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">* Duration :</label>
+						<div class="col-sm-6">
+							<label class="font-label">Duration <span class="requrie">(Required)</span></label>
+							<div class="form-group">
+		                    	 <input type="text" class="form-control" name="duration" id="duration" value="">
+		                    </div>	
 						</div>
-						<div class="col-sm-4">
-							<div class="bootstrap-timepicker">
-			                    <div class="form-group">
-			                     
-			                      <div class="input-group">
-			                        <input type="text" class="form-control timepicker" name="duration" id="duration">
-			                        <div class="input-group-addon">
-			                          <i class="fa fa-clock-o"></i>
-			                        </div>
-			                        
-			                      </div><!-- /.input group -->
-			                    </div><!-- /.form group -->
-			                  </div>
-						</div>
-						<div class="col-sm-2">
-							<label class="font-label">Assigned to : </label>
-						</div>
-						<div class="col-sm-4" data-ng-init="listCampUser()">
+						
+						<div class="col-sm-6"  data-ng-init="listCampUser()">
+							<label class="font-label">Assigned to  </label>
 							<div class="form-group">
 								<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
 			                      <option value=""></option>           
 			                    </select>
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Description :</label>
-						</div>
-						<div class="col-sm-10">
+						<div class="col-sm-12">
+							<label class="font-label">Description </label>
 							<div class="form-group">
 								<textarea style="height: 120px" rows="" cols="" name="description" id="description"	class="form-control"></textarea>
 							</div>
 						</div>
+						
 					</div>
 
 					<div class="col-sm-6">
 
-						
-
-						<div class="col-sm-2" data-ng-init="listStatus()" >
-							<label class="font-label">* Status :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6" data-ng-init="listStatus()" >
+							<label class="font-label">Status <span class="requrie">(Required)</span></label>
 							<div class="form-group">
-								<select class="form-control select2" name="status" id="status">
+								<select class="form-control select2" name="status" id="status" style="width: 100%;">
 									<option value="">--SELECT Status</option>
 									<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
 								</select>
 							</div>
 						</div>
+						
 						<div class="clearfix"></div>
-						<div class="col-sm-2">
-							<label class="font-label">Related To :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Related To </label>
 							<div class="form-group">
-								<select class="form-control select2" name="reportType" id="reportType">
+								<select class="form-control select2" name="reportType" id="reportType" style="width: 100%;">
 									<option value="">--SELECT Related--</option>
 									<optgroup label="Marketing">
-										<option value="campaign">Campaign</option>
-										<option value="lead">Lead</option>
+										<option value="Campaign">Campaign</option>
+										<option value="Lead">Lead</option>
 									</optgroup>
 									<optgroup label="Sales">
-										<option value="customer">Customer</option>
-										<option value="contact">Contact</option>
-										<option value="opportunity">Opportunity</option>
+										<option value="Customer">Customer</option>
+										<option value="Contact">Contact</option>
+										<option value="Opportunity">Opportunity</option>
 									</optgroup>
 									<optgroup label="Activities">
-										<option value="task">Tasks</option>
+										<option value="Task">Tasks</option>
 									</optgroup>
 									<optgroup label="Support">
-										<option value="case">Case</option>
+										<option value="Case">Case</option>
 									</optgroup>
 									
 								</select>
 							</div>
 						</div>
+						
 						<div class="col-sm-6">
+							<label class="font-label">&nbsp;</label>
 							<div class="form-group">
-								<select class="form-control select2" name="reportTo" id="reportTo">
+								<select class="form-control select2" name="reportTo" id="reportTo" style="width: 100%;">
 									<option value="">--SELECT--</option>
 								</select>
 							</div>
@@ -396,6 +393,13 @@ $(document).ready(function() {
 
 				</div>
 				
+				
+				
+				
+				
+			
+				
+
 			</form>
 			</div>
 			<!-- /.box-body -->

@@ -21,7 +21,8 @@
 	<section class="content-header">
 		<h1>Update Lead</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Update Lead</a></li>
+		    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#"> Update Lead</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
@@ -734,7 +735,7 @@ padding-right: 10px;
 					<div class="col-sm-6" data-ng-init="listLeadStatus()">
 							<label class="font-label">Status :</label>
 							<div class="form-group">
-								<select class="form-control select2" name="lea_status" id="lea_status">
+								<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
 									<option value="">-- SELECT Status --</option>
 									
 								</select>
@@ -744,7 +745,7 @@ padding-right: 10px;
 						<div class="col-sm-6" data-ng-init="listLeadIndustry()">
 							<label class="font-label">Industry :</label>
 							<div class="form-group" >
-								<select class="form-control select2" name="lea_industry" id="lea_industry">
+								<select class="form-control select2" name="lea_industry" id="lea_industry" style="width: 100%;">
 									<option value="">-- SELECT Industry --</option>
 									
 								</select>
@@ -755,7 +756,7 @@ padding-right: 10px;
 						<div class="col-sm-6" data-ng-init="listLeadSource()">
 							<label class="font-label">Source :</label>
 							<div class="form-group">
-								<select class="form-control select2" name="lea_source" id="lea_source">
+								<select class="form-control select2" name="lea_source" id="lea_source" style="width: 100%;">
 									<option value="">-- SELECT Source --</option>
 									
 								</select>
@@ -765,7 +766,7 @@ padding-right: 10px;
 						<div class="col-sm-6" data-ng-init="listCampaigns()">
 							<label class="font-label">Campaign </label>
 							<div class="form-group">
-								<select class="form-control select2" name="lea_ca" id="lea_ca">
+								<select class="form-control select2" name="lea_ca" id="lea_ca" style="width: 100%;">
 									<option value="">-- SELECT Campaign --</option>
 									
 								</select>

@@ -16,7 +16,8 @@
 	<section class="content-header">
 		<h1>Create Opportunity</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Create Opportunity</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#"> Create Opportunity</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
@@ -101,39 +102,53 @@ $(document).ready(function() {
 			op_name: {
 				validators: {
 					notEmpty: {
-						message: 'The Opportunity name is required and can not be empty!'
+						message: 'The  name is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The name must be less than 255 characters long.'
 					}
 				}
 			},
 			op_amount: {
 				validators: {
 					notEmpty: {
-						message: 'The Opportunity amount is required and can not be empty!'
+						message: 'The  amount is required and can not be empty!'
 					},
-					digits: {
-						message: 'The value can contain only digits'
-					}
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
 				}
 			},
 			op_customer: {
 				validators: {
 					notEmpty: {
-						message: 'The Opportunity customer is required and can not be empty!'
+						message: 'The  customer is required and can not be empty!'
 					}
 				}
 			},
 			op_colseDate: {
 				validators: {
 					notEmpty: {
-						message: 'The Opportunity close date is required and can not be empty!'
-					}
+						message: 'The  close date is required and can not be empty!'
+					},
+					date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'The value is not a valid date'
+                    }
 				}
 			},
 			op_probability: {
 				validators: {
-					digits: {
-						message: 'The value can contain only digits'
-					},
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            },
 					between: {
                         min: 1,
                         max: 100,
@@ -144,7 +159,25 @@ $(document).ready(function() {
 			op_stage: {
 				validators: {
 					notEmpty: {
-						message: 'The Opportunity stage is required and can not be empty!'
+						message: 'The  stage is required and can not be empty!'
+					}
+				}
+			}
+			,
+			op_nextStep: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The step must be less than 255 characters long.'
+					}
+				}
+			}
+			,
+			cam_description: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The description must be less than 255 characters long.'
 					}
 				}
 			}
@@ -285,40 +318,34 @@ $(document).ready(function() {
 				<div class="row">
 
 					<div class="col-sm-6">
-						<div class="col-sm-2">
-							<label class="font-label">Opportunity Name :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6">
+							<label class="font-label">Name <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<input type="text" class="form-control" id="op_name" name="op_name">
 							</div>
 						</div>
-
-						<div class="col-sm-2">
-							<label class="font-label">Amount :</label>
-						</div>
-						<div class="col-sm-4" >
+						
+						<div class="col-sm-6">
+							<label class="font-label">Amount <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<input type="text" class="form-control" id="op_amount" name="op_amount">
 							</div>
 						</div>
 						
-						<div class="col-sm-2" data-ng-init="listCustomer()">
-							<label class="font-label">Customer :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6" data-ng-init="listCustomer()">
+							<label class="font-label">Customer <span class="requrie">(Required)</span></label>
 							<div class="form-group">
-								<select class="form-control select2" name="op_customer" id="op_customer">
+								<select class="form-control select2" name="op_customer" id="op_customer" style="width: 100%;">
 									<option value="">-- SELECT Customer --</option>
 									<option ng-repeat="u in customer" value="{{u.custID}}">{{u.custName}}</option>
 								</select>
 							</div>
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Close Date :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6">
+							<label class="font-label">Close date <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -330,83 +357,76 @@ $(document).ready(function() {
 						</div>
 						
 						
-						<div class="col-sm-2">
-							<label class="font-label">Probability (%) :</label>
-						</div>
-						<div class="col-sm-4" >
-							<div class="form-group">
-								<input type="text" class="form-control" id="op_probability" name="op_probability">
-							</div>
-						</div>
 						
-						<div class="col-sm-2" data-ng-init="listLeadSource()">
-							<label class="font-label">Lead Source :</label>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<select class="form-control select2" name="op_leadSource" id="op_leadSource">
-									<option value="">-- SELECT Lead Source --</option>
-									<option ng-repeat="u in source" value="{{u.sourceID}}">{{u.sourceName}}</option>
-									
-								</select>
-							</div>
-						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Next Step :</label>
-						</div>
-						<div class="col-sm-4" >
+						
+						
+						<div class="col-sm-6">
+							<label class="font-label">Next Step </label>
 							<div class="form-group">
 								<input type="text" class="form-control" id="op_nextStep" name="op_nextStep">
 							</div>
 						</div>
 						
-						<div class="col-sm-2"  data-ng-init="listCampaigns()" >
-							<label class="font-label">Campaign :</label>
-						</div>
-						<div class="col-sm-4">
+						
+						<div class="col-sm-6"  data-ng-init="listCampaigns()" >
+							<label class="font-label">Campaign </label>
 							<div class="form-group">
-								<select class="form-control select2" name="op_campaign" id="op_campaign">
+								<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
 									<option value="">-- SELECT Campaign --</option>
 									<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
 								</select>
 							</div>
 						</div>
 						
-						<div class="col-sm-2">
-							<label class="font-label">Description :</label>
-						</div>
-						<div class="col-sm-10">
+						
+						<div class="col-sm-12">
+							<label class="font-label">Description </label>
 							<div class="form-group">
 								<textarea style="height: 120px" rows="" cols="" name="cam_description" id="cam_description"
 									class="form-control"></textarea>
 							</div>
 						</div>
 						
+						
 					</div>
 
 					<div class="col-sm-6">
 						
-						<div class="col-sm-2"  data-ng-init="listType()" >
-							<label class="font-label">Type :</label>
-						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-6"  data-ng-init="listType()" >
+							<label class="font-label">Type </label>
 							<div class="form-group">
-								<select class="form-control select2" name="op_type" id="op_type">
+								<select class="form-control select2" name="op_type" id="op_type" style="width: 100%;">
 									<option value="">-- SELECT Type --</option>
 									<option ng-repeat="u in type" value="{{u.otId}}">{{u.otName}}</option> 
 								</select>
 							</div>
 						</div>
 						
-						<div class="col-sm-2" data-ng-init="listStage()">
-							<label class="font-label ">Stage :</label>
-						</div>
-						<div class="col-sm-4" >
+						<div class="col-sm-6" data-ng-init="listStage()">
+							<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
 							<div class="form-group">
-								<select class="form-control select2" name="op_stage" id="op_stage">
+								<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
 									<option value="">-- SELECT Stage --</option>
 									<option ng-repeat="u in stage" value="{{u.osId}}">{{u.osName}}</option> 
+								</select>
+							</div>
+						</div>
+						
+						<div class="col-sm-6">
+							<label class="font-label">Probability (%) </label>
+							<div class="form-group">
+								<input type="text" class="form-control" id="op_probability" name="op_probability">
+							</div>
+						</div>
+						
+						<div class="col-sm-6" data-ng-init="listLeadSource()">
+							<label class="font-label">Lead Source </label>
+							<div class="form-group">
+								<select class="form-control select2" name="op_leadSource" id="op_leadSource" style="width: 100%;">
+									<option value="">-- SELECT Lead Source --</option>
+									<option ng-repeat="u in source" value="{{u.sourceID}}">{{u.sourceName}}</option>
+									
 								</select>
 							</div>
 						</div>
@@ -430,17 +450,16 @@ $(document).ready(function() {
 				</div>
 				<div class="col-sm-12">
 				
-					<div class="col-sm-1">
+					<div class="col-sm-3" data-ng-init="listUser()">
 							<label class="font-label">Assigned to : </label>
-						</div>
-						<div class="col-sm-2" data-ng-init="listUser()">
 							<div class="form-group">
 								<select class="form-control select2"  name="op_assignTo" id="op_assignTo" style="width: 100%;">
 			                      <option value=""></option>
 			                      <option ng-repeat="u in user" value="{{u.userID}}">{{u.username}}</option>            
 			                    </select>
 							</div>
-						</div>	
+						</div>
+						
 						
 						
 				</div>

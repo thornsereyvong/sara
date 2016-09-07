@@ -58,7 +58,4 @@
 <script src="${pageContext.request.contextPath}/resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/bootstrap/menu/menu.js"></script>
-
-
-
 </head>
