@@ -98,6 +98,14 @@ public class CrmLeadController {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/edit/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> editLeadOnStartup(@RequestBody String json){
+		HttpEntity<String> request = new HttpEntity<String>(json,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/edit/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/edit",method = RequestMethod.PUT)
 	public ResponseEntity<Map<String, Object>> updateCampaign(@RequestBody CrmLead lead){
 		

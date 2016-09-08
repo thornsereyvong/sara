@@ -32,122 +32,65 @@ var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 
-	$scope.listCampaigns = function(){
-		$http.get("${pageContext.request.contextPath}/campaign/list")
-		.success(function(response){
-				$scope.campaigns = response.DATA;
-			});
-	};	
-		
-	$scope.listLeadStatus = function(){
-				$http.get("${pageContext.request.contextPath}/lead_status/list")
-				.success(function(response){
-						$scope.lead_status = response.DATA;
-					});
-				};
-	$scope.listLeadSource = function(){
-					$http.get("${pageContext.request.contextPath}/lead_source/list")
-					.success(function(response){
-							$scope.lead_source = response.DATA;
-						});
-					};
-	$scope.listLeadIndustry = function(){
-						$http.get("${pageContext.request.contextPath}/industry/list")
-						.success(function(response){
-								$scope.lead_industry = response.DATA;
-							});
-						};
-	/* $scope.listCampUser = function() {
-		$http.get("${pageContext.request.contextPath}/user/list")
-		.success(function(response){
-			$scope.camp_user = response.DATA;
+	$scope.editLeadOnStartup = function(username,leadId) {
+		$http({
+		    method: 'POST',
+		    url: '${pageContext.request.contextPath}/lead/edit/startup',
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {
+		    	"username":username,
+		    	"leadId": leadId
+		    }
+		}).success(function(response) {
+			setLeadDateToForm(response);
 		});
-		
-	}	 */
+	};
 
 }]);
 
-
-
-function listStatusID(statusids){
-	$.ajax({
-		url: "${pageContext.request.contextPath}/lead_status/list",
-		method: "GET",
-		header: "application/json",
-		success: function(data){
-			var dataObject = data.DATA;
-			 $("#lea_status").empty().append('<option value="">-- SELECT Status --</option>');
-			$.each(data.DATA, function(key, value){
-				var div = "<option value='"+value.statusID+"' >"+value.statusName+"</option>";
-				$("#lea_status").append(div);
-			});  
-			$("#lea_status").select2("val",statusids);
-			} 
-		});
+function listStatus(statusId, leadStatus){
+	$("#lea_status").empty().append('<option value="">-- SELECT Status --</option>');
+	$.each(leadStatus, function(key, value){
+		var div = "<option value='"+value.statusID+"' >"+value.statusName+"</option>";
+		$("#lea_status").append(div);
+	});  
+	$("#lea_status").select2("val",statusId);	
 }
 
-function listSourceID(source){
-	$.ajax({
-		url: "${pageContext.request.contextPath}/lead_source/list",
-		method: "GET",
-		header: "application/json",
-		success: function(data){
-			var dataObject = data.DATA;
-			 $("#lea_source").empty().append('<option value="">-- SELECT Source --</option>');
-			$.each(data.DATA, function(key, value){
-				var div = "<option value='"+value.sourceID+"' >"+value.sourceName+"</option>";
-				$("#lea_source").append(div);
-				
-			});  
-			$("#lea_source").select2("val",source);
-			} 
-		});
+function listSources(sourceId, leadSource){
+	$("#lea_source").empty().append('<option value="">-- SELECT Source --</option>');
+	$.each(leadSource, function(key, value){
+		var div = "<option value='"+value.sourceID+"' >"+value.sourceName+"</option>";
+		$("#lea_source").append(div);
+	});  
+	$("#lea_source").select2("val",sourceId);		
 }
 
-function listIndustryID(industry){
-	$.ajax({
-		url: "${pageContext.request.contextPath}/industry/list",
-		method: "GET",
-		header: "application/json",
-		success: function(data){
-			var dataObject = data.DATA;
-			 $("#lea_industry").empty().append('<option value="">-- SELECT Industry --</option>');
-			$.each(data.DATA, function(key, value){
-				var div = "<option value='"+value.industID+"' >"+value.industName+"</option>";
-				$("#lea_industry").append(div);
-			});  
-
-			$("#lea_industry").select2("val",industry);
-			
-			} 
-		});
-}
-
-function listParentID(parent){
+function listIndustries(industryId, industries){
 	
-	$.ajax({
-		url: "${pageContext.request.contextPath}/campaign/list",
-		method: "GET",
-		header: "application/json",
-		success: function(data){
-			var dataObject = data.DATA;
-			$("#lea_ca").empty().append('<option value="">-- SELECT Campiagn --</option>');
-			$.each(dataObject, function(key, value){
-					var div = "<option value='"+value.campID+"' >"+value.campName+"</option>";
-				$("#lea_ca").append(div);
-			});  
-			$("#lea_ca").select2("val",parent);
-			
-			} 
-		});
+	$("#lea_industry").empty().append('<option value="">-- SELECT Industry --</option>');
+	$.each(industries, function(key, value){
+		var div = "<option value='"+value.industID+"' >"+value.industName+"</option>";
+		$("#lea_industry").append(div);
+	});  
+
+	$("#lea_industry").select2("val",industryId);			
 }
 
-function listDataByCampID(){
-	
-	var data = ${lead};
-	var userid = ${users};
-	
-	var result = data.body.DATA;
+function listCampaigns(campId, campaigns){
+	$("#lea_ca").empty().append('<option value="">-- SELECT Campiagn --</option>');
+	$.each(campaigns, function(key, value){
+			var div = "<option value='"+value.campID+"' >"+value.campName+"</option>";
+		$("#lea_ca").append(div);
+	});  
+	$("#lea_ca").select2("val",campId);
+}
+
+function setLeadDateToForm(response){
+	var result = response.LEAD;
 	$("#lea_id").val(result.leadID);
 	$("#lea_salutation").val(result.salutation);
 	$("#lea_firstName").val(result.firstName);
@@ -168,47 +111,39 @@ function listDataByCampID(){
 	$("#lea_country").val(result.country);
 	$("#lea_accountName").val(result.accountName);
 	$("#lea_description").val(result.description);
-	
 
-	userAllList(userid,'#lea_assignTo',result.assignToUserID);
-	
-	
+	userAllList(response.ASSIGN_TO,'#lea_assignTo',result.assignToUserID);
+	$.session.set("assignTo",result.assignToUserID);
 	if(result.statusID == null || result.statusID == ""){
-		listStatusID("");
+		listStatus("", response.LEAD_STATUS);
 	}else{
-		listStatusID(result.statusID);
+		listStatus(result.statusID , response.LEAD_STATUS);
 	} 
 
 	if(result.industID == null || result.industID == ""){
-		listIndustryID("");
+		listIndustries("",response.INDUSTRY);
 	}else{
-		listIndustryID(result.industID);
+		listIndustries(result.industID,response.INDUSTRY);
 	} 
 
 	if(result.sourceID == null || result.sourceID == ""){
-		listSourceID("");
+		listSources("",response.LEAD_SOURCE);
 	}else{
-		listSourceID(result.sourceID);
+		listSources(result.sourceID,response.LEAD_SOURCE);
 	} 
 	
 	
 	if(result.campID == null || result.campID == ""){
-		listParentID("");
+		listCampaigns("",response.CAMPAIGN);
 	}else{
-		listParentID(result.campID);
+		listCampaigns(result.campID,response.CAMPAIGN);
 	} 
 	
 }
 
 
 $(document).ready(function() {
-
-	
 	$(".select2").select2();
-	listDataByCampID();
-	
-	
-	
 	$("#btn_clear").click(function(){
 		$("#form-leads").bootstrapValidator('resetForm', 'true');
 		$('#form-leads')[0].reset();
@@ -390,7 +325,7 @@ $(document).ready(function() {
 		var year = currentDate.getFullYear();
 
 
-var status = "";
+		var status = "";
 		
 		if($("#lea_status").val()  != ""){
 			status = {"statusID": $("#lea_status").val()};
@@ -423,10 +358,12 @@ var status = "";
 		}
 
 		var ato = "";
-		
-		if($("#lea_assignTo").val()  != ""){
+
+		if($("#lea_assignTo").val() === null){
+			ato = {"userID": $.session.get("assignTo")};
+		} else if($("#lea_assignTo").val()  != ""){
 			ato = {"userID": $("#lea_assignTo").val()};
-		}else{
+		} else{
 			ato = null;
 		}
 
@@ -470,6 +407,7 @@ var status = "";
 			success:function(data){
 					$("#form-leads").bootstrapValidator('resetForm', 'true');
 					$('#form-leads')[0].reset();	
+					$.session.remove("assignTo");
 					swal({
 	            		title:"Success",
 	            		text:"User have been Update Lead!",
@@ -486,7 +424,6 @@ var status = "";
 				errorMessage();
 				}
 			});
-			
 	});	
 	
 });
@@ -505,7 +442,6 @@ padding-right: 10px;
 }
 
 </style>
-
 	<section class="content">
 
 		<!-- Default box -->
@@ -524,7 +460,7 @@ padding-right: 10px;
 					</button>
 				</div>
 			</div>
-			<div class="box-body">
+			<div class="box-body" data-ng-init = "editLeadOnStartup('${SESSION}','${leadId}')">
 			
 			<form method="post" id="form-leads">
 				
