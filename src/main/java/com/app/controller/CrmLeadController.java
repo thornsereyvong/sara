@@ -33,7 +33,7 @@ public class CrmLeadController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/list",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> getAllCampaign(@RequestBody String json){	
+	public ResponseEntity<Map<String, Object>> getAllLead(@RequestBody String json){	
 		HttpEntity<String> request = new HttpEntity<String>(json,header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
@@ -58,18 +58,26 @@ public class CrmLeadController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/lead/view/{leadID}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> viewLeadById(@PathVariable("leadID") String leadID){	
-		System.out.println("LeadId"+leadID);
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/view/"+leadID, HttpMethod.GET, request, Map.class);
+	@RequestMapping(value="/lead/view",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> viewLead(@RequestBody String obj){
+		HttpEntity<String> request = new HttpEntity<String>(obj, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/view", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
-
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/view/{leadId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> viewLeadById(@PathVariable("leadId") String leadId){
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/view", HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addCampaign(@RequestBody CrmLead lead){
+	public ResponseEntity<Map<String, Object>> addLead(@RequestBody CrmLead lead){
 		HttpEntity<Object> request = new HttpEntity<Object>(lead,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -90,7 +98,7 @@ public class CrmLeadController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateCampaign(@RequestBody CrmLead lead){
+	public ResponseEntity<Map<String, Object>> updateLead(@RequestBody CrmLead lead){
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(lead,header);
 		
@@ -102,7 +110,7 @@ public class CrmLeadController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/remove/{leadID}",method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("leadID") String leadID){
+	public ResponseEntity<Map<String, Object>> deleteLead(@PathVariable("leadID") String leadID){
 		
 		HttpEntity<String> request = new HttpEntity<String>(header);
 		
@@ -111,6 +119,18 @@ public class CrmLeadController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
+	///api/lead/edit/startup
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> startupViewLead(@RequestBody String json){
 		
+		HttpEntity<String> request = new HttpEntity<String>(json,header);
+		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/edit/startup", HttpMethod.POST, request, Map.class);
+		 
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
 	
 }
