@@ -170,6 +170,13 @@ function addDays(day,date){
 	return (dd + '-'+ mm + '-'+ y);		
 }
 
+function getDateByFormat(ID){
+	var date  = $.trim($("#"+ID).val());
+	date = date.split('/');
+	return date[2]+"-"+date[1]+"-"+date[0];
+}
+
+
 function convertFromSQLToDate(value){
 	if(value != "0001-01-01" && value != null)
 		return addDays(0,value);

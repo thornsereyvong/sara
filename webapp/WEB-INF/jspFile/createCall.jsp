@@ -33,7 +33,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		.success(function(response){
 				$scope.status = response.DATA;
 			});
-		};	
+	};	
 	
 
 }]);

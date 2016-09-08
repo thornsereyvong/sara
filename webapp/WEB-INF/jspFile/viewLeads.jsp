@@ -20,7 +20,9 @@ var server = "${pageContext.request.contextPath}";
 var noteIdEdit = "";
 var response=[];
 var LEAD = [];
+var callIdForEdit = null;
 var leadStatusData = ["New", "Assigned", "In Process", "Converted", "Dead"];
+var startupCallForm = [];
 app.controller('viewLeadController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	angular.element(document).ready(function () {		
@@ -33,7 +35,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
     });
 	
 	$scope.listLeads = function(){
-			response = getLeadData();
+			response = getLeadData();					
 			LEAD = response.LEAD;
 			$scope.leadStatus = response.LEAD_STATUS;
 			$scope.leadSource = response.LEAD_SOURCE;
@@ -43,7 +45,16 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 			$scope.lead = response.LEAD;
 			$scope.listNote1(response.NOTES);
 			
+			
+			userAllList($scope.leadAssignTo,'#callAssignTo','');
+			
 			displayStatusLead(LEAD.statusID);
+			
+			$scope.listAllCallByLeadId = function(){
+				$http.get("${pageContext.request.contextPath}/call/list").success(function(response){
+					$scope.listAllCallByLead = response.DATA;
+				});			
+			}
 			
 	};
 	
@@ -173,10 +184,68 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	}
 	
     
-	
+	// Call path
 	$scope.call_click = function(){
 		$("#btn_show_call").click();
 	}
+	$scope.actEditCall = function(callId){				
+		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){			
+			addDataCallToForm(response.DATA);
+			callIdForEdit = callId;
+			$("#btnCallSave").text("Update");
+			$("#btn_show_call").click();
+		});		
+	}
+	$scope.actDeleteCall = function(callId){				
+		SweetAlert.swal({
+            title: "Are you sure?", //Bold text
+            text: "This call will not be able to recover!", //light text
+            type: "warning", //type -- adds appropiriate icon
+            showCancelButton: true, // displays cancel btton
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete!",
+            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
+            closeOnCancel: false
+        }, 
+        function(isConfirm){ //Function that triggers on user action.
+           
+	            var str = '<%=roleDelete%>';
+	        	
+	            if(isConfirm){
+
+	            	if(str == "YES"){
+	            		 $http.delete("${pageContext.request.contextPath}/call/remove/"+callId)
+	     	            .success(function(){
+	     	            		SweetAlert.swal({
+	     			            		title:"Deleted",
+	     			            		text:"Call have been deleted!",
+	     			            		type:"success",  
+	     			            		timer: 2000,   
+	     			            		showConfirmButton: false
+	     	            		});
+	     	            		$scope.listContact();
+	     		            });
+					}else{
+						SweetAlert.swal({
+			                title:"Cancelled",
+			                text:"You don't have permission delete!",
+			                type:"error",
+			                timer:2000,
+			                showConfirmButton: false});
+					} 
+            } else {
+                SweetAlert.swal({
+	                title:"Cancelled",
+	                text:"This call is safe!",
+	                type:"error",
+	                timer:2000,
+	                showConfirmButton: false});
+            }
+        });
+	}
+	// end call path
+	
+
 	$scope.meet_click = function(){
 		$("#btn_show_meet").click();
 	}
@@ -192,6 +261,39 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	
 	
 }]);
+
+
+app.controller('callController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+	
+	$scope.startupCallForm = function(){
+		$http.get("${pageContext.request.contextPath}/call_status/list")
+			.success(function(response){
+				$scope.callStatusStartup = response.DATA;
+	    });
+	}
+	
+	$scope.cancelCallClick = function(){
+		callIdForEdit = null;
+		$("#callStatus").select2('val',"");
+		$("#callAssignTo").select2('val',"");	
+		$("#btnCallSave").text("Save");
+		$('#frmAddCall').bootstrapValidator('resetForm', true);
+	}
+	
+	
+}]);
+
+
+
+function addDataCallToForm(data){
+	$("#callStatus").select2('val',data.callStatusId);
+	$("#callAssignTo").select2('val',data.userID);	
+	
+	setValueById('callStartDate', data.callStartDate);
+	setValueById('callSubject', data.callSubject);
+	setValueById('callDescription', data.callDes);
+	setValueById('callDuration', data.callDuration);
+}
 
 
 function getLeadData(){	
@@ -279,538 +381,6 @@ function addDataToDetailLead(){
 	
 	
 }
-
-$(function(){
-	
-	$(".timepicker").timepicker({
-        showInputs: false,
-        minuteStep: 5,
-        defaultTime: false,
-        showMeridian : false
-    });
-	$('#startDate').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        format: 'DD/MM/YYYY' 
-    });
-	
-	$('#startDateMeeting').daterangepicker({ singleDatePicker: true,timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A'});
-	$('#endDateMeeting').daterangepicker({ singleDatePicker: true,timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A'});	
-	
-	
-	$("#btnCallSave").click(function(){
-		$('#frmAddCall').submit();
-	});
-	
-	
-	$('#frmAddNote').bootstrapValidator({
-		message: 'This value is not valid',
-		feedbackIcons: {
-			valid: 'glyphicon glyphicon-ok',
-			invalid: 'glyphicon glyphicon-remove',
-			validating: 'glyphicon glyphicon-refresh'
-		},
-		fields: {
-			note_subject: {
-				validators: {
-					notEmpty: {
-						message: 'The subject is required and can not be empty!'
-					},
-					stringLength: {
-						max: 255,
-						message: 'The subject must be less than 255 characters long!'
-					}
-				}
-			},
-			note_description: {
-				validators: {
-					notEmpty: {
-						message: 'The description is required and can not be empty!'
-					},
-					stringLength: {
-						max: 1000,
-						message: 'The description must be less than 1000 characters long!'
-					}
-				}
-			}
-		}
-	}).on('success.form.bv', function(e) {
-		var frmNoteData = {"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), "noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":"Lead","noteRelatedToModuleId":leadId,"noteCreateBy":"${SESSION}"};		
-		
-		if($("#btnAddNote").text()=='Note'){
-			$.ajax({ 
-			    url: server+"/note/add", 
-			    type: 'POST',
-			    data: JSON.stringify(frmNoteData),
-			    beforeSend: function(xhr) {
-	                xhr.setRequestHeader("Accept", "application/json");
-	                xhr.setRequestHeader("Content-Type", "application/json");
-	            },
-			    success: function(data) {
-			    	
-			    	if(data.MESSAGE == "INSERTED"){	
-			    		swal({
-		            		title:"Success",
-		            		text:"User have been created new Note!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-			    		angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
-			    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
-			    	}else{
-			    		sweetAlert("Insert Unsuccessfully!", "", "error");
-			    	}
-			    	 
-			    },
-			    error:function(data,status,er) { 
-			        console.log("error: "+data+" status: "+status+" er:"+er);
-			        sweetAlert("Insert Unsuccessfully!", "", "error");
-			    }
-			});
-		}else if($("#btnAddNote").text()=="Update"){
-			$.ajax({ 
-			    url: server+"/note/edit", 
-			    type: 'PUT',
-			    data: JSON.stringify(frmNoteData),
-			    beforeSend: function(xhr) {
-	                xhr.setRequestHeader("Accept", "application/json");
-	                xhr.setRequestHeader("Content-Type", "application/json");
-	            },
-			    success: function(data) {
-			    	if(data.MESSAGE == "UPDATED"){	
-			    		swal({
-		            		title:"Successfully",
-		            		text:"User have been update Note!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-			    		angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
-			    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
-			    	}else{
-			    		sweetAlert("Update Unsuccessfully!", "", "error");
-			    	}
-			    	 
-			    },
-			    error:function(data,status,er) { 
-			        console.log("error: "+data+" status: "+status+" er:"+er);
-			        sweetAlert("Update Unsuccessfully!", "", "error");
-			    }
-			});
-		}
-	});	
-	
-	
-	$('#frmLeadDetail').bootstrapValidator({
-		message: 'This value is not valid',
-		feedbackIcons: {
-			valid: 'glyphicon glyphicon-ok',
-			invalid: 'glyphicon glyphicon-remove',
-			validating: 'glyphicon glyphicon-refresh'
-		},
-		fields: {
-			lea_salutation:{
-				validators: {
-					stringLength: {
-						max: 100,
-						message: 'The salutation must be less than 100 characters long.'
-					}
-				}
-			},
-			
-			lea_status: {
-				validators: {
-					
-				}
-			},
-			lea_industry: {
-				validators: {
-					
-				}
-			},
-			lea_source: {
-				validators: {
-					
-				}
-			},
-			lea_campaign: {
-				validators: {
-					notEmpty: {
-						message: 'The campaign is required and can not be empty!'
-					},
-					stringLength: {
-						max: 100,
-						message: 'The campaign must be less than 100 characters long.'
-					}
-				}
-			},
-			lea_firstName: {
-				validators: {
-					notEmpty: {
-						message: 'The first name is required and can not be empty!'
-					},
-					stringLength: {
-						max: 255,
-						message: 'The first name must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_lastName: {
-				validators: {
-					notEmpty: {
-						message: 'The last name is required and can not be empty!'
-					},
-					stringLength: {
-						max: 255,
-						message: 'The last name must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_phone: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The phone must be less than 255 characters long.'
-					}
-				}
-			}
-			,
-			lea_mobilePhone: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The mobile phone must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_title: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The title must be less than 255 characters long.'
-					}
-				}
-			}
-			,
-			lea_website: {
-				validators: {
-					uri: {
-                        message: 'The website address is not valid.'
-                    },
-                    stringLength: {
-						max: 255,
-						message: 'The web site must be less than 255 characters long.'
-					}
-				}
-			}
-			,
-			lea_department: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The department must be less than 255 characters long.'
-					}
-				}
-			}
-			,
-			lea_email: {
-				validators: {
-					regexp: {
-                        regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
-                        message: 'The value is not a valid email address'
-                    },
-					stringLength: {
-						max: 255,
-						message: 'The department must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_accountName: {
-				validators: {
-					notEmpty: {
-						message: 'The company is required and can not be empty!'
-					},
-					stringLength: {
-						max: 255,
-						message: 'The Company must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_no: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The no must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_street: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The street must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_village: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The village must be less than 255 characters long.'
-					}
-				}
-			}
-			,
-			lea_commune: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The commune must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_district: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The district must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_state: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The state must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_city: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The city must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_country: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The country must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_description: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The description must be less than 255 characters long.'
-					}
-				}
-			}
-		}
-	}).on('success.form.bv', function(e) {
-		var frmLeadDetailData = {
-			"leadID": leadId,
-			"salutation": $.trim($("#lea_salutation").val()),
-		    "firstName": $.trim($("#lea_firstName").val()),
-		    "lastName": $.trim($("#lea_lastName").val()),
-		    "title": $.trim($("#lea_title").val()),
-		    "department": $.trim($("#lea_department").val()),
-		    "phone": $.trim($("#lea_phone").val()),
-		    "mobile": $.trim($("#lea_mobilePhone").val()),
-		    "website": $.trim($("#lea_website").val()),
-		    "accountName": $.trim($("#lea_accountName").val()),
-		    "no":  $.trim($("#lea_no").val()),
-		    "street": $.trim($("#lea_street").val()),
-		    "village": $.trim($("#lea_village").val()),
-		    "commune": $.trim($("#lea_commune").val()),
-		    "district": $.trim($("#lea_district").val()),
-		    "city": $.trim($("#lea_city").val()),
-		    "state": $.trim($("#lea_state").val()),
-		    "country": $.trim($("#lea_country").val()),
-		    "description": $.trim($("#lea_description").val()),
-		    "status": {"statusID":getIntToNull("lea_status")},
-		    "industry": {"industID":getIntToNull("lea_industry")},
-		    "source": {"sourceID":getIntToNull("lea_source")},
-		    "campaign": {"campID":getStringToNull("lea_campaign")},
-		    "assignTo": {"userID":getStringToNull("lea_assignto")},
-		    "modifyBy": "${SESSION}",
-		    "email": $.trim($("#lea_email").val())
-	  	};	
-		
-		/* alert(getStringToNull("lea_assignto"))
-		
-		dis(frmLeadDetailData); */
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/lead/edit",
-			type : "PUT",
-			data : JSON.stringify(frmLeadDetailData),
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-			},
-			success:function(data){	
-				if(data.MESSAGE == "UPDATED"){					
-					swal({
-		        		title:"Successfully",
-		        		text:"User have been Update Lead!",
-		        		type:"success",  
-		        		timer: 2000,   
-		        		showConfirmButton: false
-					});
-					setTimeout(function(){
-						location.reload();
-					}, 2000);
-				}else{
-					
-				}												
-			},
-			error:function(){
-				
-			}
-		});			
-	});		
-	
-	
-	
-	
-	
-	$('#frmAddCall').bootstrapValidator({
-		message: 'This value is not valid',
-		feedbackIcons: {
-			valid: 'glyphicon glyphicon-ok',
-			invalid: 'glyphicon glyphicon-remove',
-			validating: 'glyphicon glyphicon-refresh'
-		},
-		fields: {
-			callSubject: {
-				validators: {
-					notEmpty: {
-						message: 'The subject is required and can not be empty!'
-					},
-					stringLength: {
-						max: 255,
-						message: 'The subject must be less than 255 characters long.'
-					}
-				}
-			},
-			callStartDate: {
-				validators: {
-					notEmpty: {
-						message: 'The start date is required and can not be empty!'
-					},
-					date: {
-                        format: 'DD/MM/YYYY',
-                        message: 'The value is not a valid date'
-                    }
-				}
-			},
-			callDuration : {
-				validators: {
-					notEmpty: {
-						message: 'The duration is required and can not be empty!'
-					},
-					stringLength: {
-						max: 255,
-						message: 'The dubject must be less than 255 characters long.'
-					}
-				}
-			},
-			callStatus : {
-				validators: {
-					notEmpty: {
-						message: 'The status is required and can not be empty!'
-					}
-				}
-			},
-			callDescription : {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The description must be less than 255 characters long.'
-					}
-				}
-			}
-			
-		}
-	}).on('success.form.bv', function(e) {
-			
-		/* var currentDate = new Date();
-		var day = currentDate.getDate();
-		var month = currentDate.getMonth() + 1;
-		var year = currentDate.getFullYear();
-
-		var createDate = $("#startDate").val();
-		var newCreateDate = createDate.split("/").reverse().join("-");
-		
-		    var assign = "";	
-			if($("#assignTo").val()  != ""){
-				assign = {"userID": $("#assignTo").val()};
-			}else{
-				assign = null;
-			}
-
-			var status = "";	
-			if($("#status").val()  != ""){
-				status = {"callStatusId": $("#status").val()};
-			}else{
-				status = null;
-			}
-
-
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/call/add",
-			type : "POST",
-			data : JSON.stringify({ 
-
-			      "callStartDate": newCreateDate,
-			      "callDuration": $("#duration").val(),
-			      "callCreateBy": $.session.get("parentID"),
-			      "callStatus": status,
-			      "callDes": $("#description").val(),
-			      "callSubject": $("#subject").val(),
-			      "callAssignTo": assign,
-			      "callRelatedToFieldId": $("#reportTo").val(),
-			      "callRelatedToModuleType": $("#reportType").val(),
-			      "callCreateDate": year+"-"+month+"-"+day
-			      
-				}),
-			beforeSend: function(xhr) {
-					    xhr.setRequestHeader("Accept", "application/json");
-					    xhr.setRequestHeader("Content-Type", "application/json");
-					    },
-			success:function(data){
-				
-					$("#form-call").bootstrapValidator('resetForm', 'true');
-					$('#form-call')[0].reset();
-					$("#status").select2("val","");
-					$("#reportType").select2("val","");
-					$("#reportTo").select2("val","");
-					$("#assignTo").select2("val","");
-					$('#form-call').bootstrapValidator('resetForm', 'status');
-					swal({
-	            		title:"Success",
-	            		text:"User have been created new Call!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
-				},
-			error:function(){
-				errorMessage();
-				}
-			});  */
-		
-	});	
-	
-	
-});
-
 
 </script>
 <style>
@@ -1068,17 +638,28 @@ $(function(){
 
 													<div class="mailbox-messages">
 														<table class="table table-hover table-striped">
-															<tbody>
+															
+															<thead data-ng-init="listAllCallByLeadId()"></thead>
+															<tbody ng-repeat="call in listAllCallByLead">
+																
 																<tr>
-																	<td class="mailbox-star "><a href="#"><i
-																			class="fa fa-phone text-yellow font-size-icon-30"></i></a></td>
-																	<td><b>Call</b></td>
-																	<td class="mailbox-name "><a href="read-mail.html">Alexander
-																			Pierce</a></td>
-																	<td class="mailbox-subject "><b>AdminLTE 2.0
-																			Issue</b> - Trying to find a solution to this problem...</td>
-
-																	<td class="mailbox-date"><div class="col-sm-2">
+																	<td>
+																		<a href="#"><i class="fa fa-phone text-yellow font-size-icon-30"></i></a>
+																	</td>
+																	<td colspan="2"><a href="#">{{call.callSubject}}</a></td>
+																	<td class="mailbox-star "><i class="fa fa-calendar"></i> {{call.callStartDate | date:'dd/MM/yyyy'}}</td>
+																	<td><i class="fa fa-clock-o"></i> {{call.callDuration}}</td>
+																	<th><a href="#">by {{call.callCreateBy}}</a></th>
+																</tr>
+																<tr>
+																	<td class="mailbox-name " data-dd-collapse-text="100" colspan="4">
+																		<a href="#">{{call.callDes}}</a>
+																	</td>
+																	<td>
+																		<a href="#">Assign To {{call.username}}</a>
+																	</td>
+																	<td class="mailbox-date">
+																		<div class="col-sm-2">
 																			<div class="btn-group">
 																				<button type="button"
 																					class="btn btn-default dropdown-toggle"
@@ -1087,20 +668,28 @@ $(function(){
 																						Dropdown</span>
 																				</button>
 																				<ul class="dropdown-menu" role="menu">
-																					<li><a
-																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
-																							class="fa fa-pencil"></i> Edit</a></li>
-																					<li ng-click="deleteLead(cc.leadID)"><a
+																					<li>
+																						<a ng-click="actEditCall(call.callId)">
+																							<i class="fa fa-pencil"></i> Edit
+																					 	</a>
+																					</li>
+																					<li ng-click="actDeleteCall(call.callId)"><a
 																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																					<li><a
-																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
-																							class="fa fa-eye"></i> View</a></li>
+																					<li>
+																						<a href="#">
+																							<i class="fa fa-eye"></i> View
+																					    </a>
+																					</li>
 
 																				</ul>
 																			</div>
-																		</div></td>
+																		</div>
+																	</td>
 																</tr>
-																<tr>
+															</tbody>
+															
+															
+															<%-- <tr>
 																	<td class="mailbox-star"><a href="#"><i
 																			class="fa fa-users text-blue font-size-icon-30"></i></a></td>
 																	<td><b>Meeting</b></td>
@@ -1223,10 +812,9 @@ $(function(){
 																				</ul>
 																			</div>
 																		</div></td>
-																</tr>
-
-
-															</tbody>
+																</tr> --%>
+															
+															
 														</table>
 														<!-- /.table -->
 													</div>
@@ -1609,40 +1197,36 @@ $(function(){
 	</section>
 
 
-	<input type="hidden" id="btn_show_call" data-toggle="modal"
-		data-target="#frmCall" />
-	<div class="modal fade modal-default" id="frmCall" role="dialog">
-		<div class="modal-dialog  modal-lg">
+	<input type="hidden" id="btn_show_call" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
+	<div ng-controller="callController" class="modal fade modal-default" id="frmCall" role="dialog" >
+		<div class="modal-dialog  modal-lg" data-ng-init="startupCallForm()">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<button type="button" ng-click="cancelCallClick()"   class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title"><b>Create Call</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<form id="frmAddCall">
 							<div class="col-md-12">
-								<div class="col-md-6">
+								<div class="col-md-12">
 									<div class="form-group">
 										<label>Subject <span class="requrie">(Required)</span></label>
 										<input id="callSubject" name="callSubject" class="form-control" type="text"
 											placeholder="">
 									</div>
 								</div>
+								<div class="clearfix"></div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Start Date<span class="requrie">(Required)</span></label>
 										<div class="input-group">
-											<div class="input-group-addon">
-												<i class="fa fa-calendar"></i>
-											</div>
-											<input 
-												value="" name="callStartDate" id="callStartDate" type="text"
-												class="form-control pull-right active">
+											<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+											<input value="" name="callStartDate" id="callStartDate" type="text"
+												class="form-control date pull-right active">
 										</div>
 									</div>
 								</div>
-								<div class="clearfix"></div>
 								<div class="col-md-6">
 									<div class="bootstrap-timepicker">
 										<div class="form-group">
@@ -1651,19 +1235,9 @@ $(function(){
 												<div class="input-group-addon">
 													<i class="fa fa-clock-o"></i>
 												</div>
-												<input type="text" class="form-control timepicker" name="callDuration" id="callDuration">
+												<input type="text" class="form-control timepicker active" name="callDuration" id="callDuration">
 											</div>
-											<!-- /.input group -->
 										</div>
-										<!-- /.form group -->
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label>Assign To </label>
-										<select class="form-control select2"  name="callAssignTo" id="callAssignTo" style="width: 100%;">
-					                      <option value=""></option>           
-					                    </select>
 									</div>
 								</div>
 								<div class="clearfix"></div>
@@ -1671,9 +1245,17 @@ $(function(){
 									<div class="form-group">
 										<label>Status <span class="requrie">(Required)</span></label>
 										<select class="form-control select2" name="callStatus" id="callStatus" style="width: 100%;">
-											<option value="">--SELECT Status</option>
-											<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+											<option value="">--SELECT A Status</option>
+											<option ng-repeat="st in callStatusStartup" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
 										</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Assign To </label>
+										<select class="form-control select2"  name="callAssignTo" id="callAssignTo" style="width: 100%;">
+					                      <option value="">--SELECT A Assign To</option>       
+					                    </select>
 									</div>
 								</div>
 								<div class="clearfix"></div>
@@ -1691,7 +1273,7 @@ $(function(){
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="btnCallCancel" name="btnCallCancel"  class="btn btn-danger"
+					<button type="button" id="btnCallCancel" ng-click="cancelCallClick()" name="btnCallCancel"  class="btn btn-danger"
 						data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
 					<button type="button"
@@ -2058,4 +1640,4 @@ $(function(){
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 <script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
-
+<script src="${pageContext.request.contextPath}/resources/js.mine/lead/viewLead.js"></script>
