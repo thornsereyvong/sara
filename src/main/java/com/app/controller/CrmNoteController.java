@@ -91,4 +91,21 @@ public class CrmNoteController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/note/list/lead/{relateId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listNoteByRelateLead(@PathVariable("relateId") String relateId){		
+		HttpEntity<Object> request = new HttpEntity<Object>(header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/note/list/lead/"+relateId, HttpMethod.GET, request, Map.class);		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/note/list/opp/{relateId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listNoteByRelateOpp(@PathVariable("relateId") String relateId){		
+		HttpEntity<Object> request = new HttpEntity<Object>(header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/note/list/opp/"+relateId, HttpMethod.GET, request, Map.class);		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
+	}
+	
 }

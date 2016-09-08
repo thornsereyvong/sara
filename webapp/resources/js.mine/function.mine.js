@@ -193,7 +193,19 @@ function getInt(ID){
 	return Number($.trim($("#"+ID).val()));
 }
 
+function getIntToNull(ID){
+	var obj = Number($.trim($("#"+ID).val()));
+	if(obj == 0)
+		return null;
+	return obj;
+}
 
+function getStringToNull(ID){
+	var obj = $.trim($("#"+ID).val());
+	if(obj == "")
+		return null;
+	return obj;
+}
 function getValueById(ID){
 	return toNum($("#"+ID).val());
 }
