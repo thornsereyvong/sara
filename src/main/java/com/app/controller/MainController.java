@@ -582,16 +582,7 @@ public class MainController {
 		if (camMap.get("roleAccess").equals("YES")) {
 
 			if (camMap.get("roleEdit").equals("YES")) {
-
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(leadController.findLeadById(leadID));
-					model.addAttribute("lead", json);
-
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-
+				model.addAttribute("leadId", leadID);
 				return "updateLeads";
 
 			} else {
