@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 
+
 import com.app.entities.CrmLead;
 
 
@@ -65,6 +66,14 @@ public class CrmLeadController {
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/view/"+leadID, HttpMethod.GET, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/add/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> addLeadOnStartup(@RequestBody String json){
+		HttpEntity<String> request = new HttpEntity<String>(json,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/add/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
