@@ -14,20 +14,41 @@
 var app = angular.module('viewLead', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
 var self = this;
 var leadId = "${leadId}";
+var username = "${SESSION}";
+var lLead = "";
 var server = "${pageContext.request.contextPath}";
 var noteIdEdit = "";
+var response=[];
+var LEAD = [];
+var leadStatusData = ["New", "Assigned", "In Process", "Converted", "Dead"];
 app.controller('viewLeadController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+	
+	angular.element(document).ready(function () {		
+		$("#lea_salutation option[value='"+response.LEAD.salutation+"']").attr('selected','selected');
+		$("#lea_status").select2('val',response.LEAD.statusID);
+		$("#lea_source").select2('val',response.LEAD.sourceID);
+		$("#lea_industry").select2('val',response.LEAD.industID);
+		$("#lea_campaign").select2('val',response.LEAD.campID);
+		$("#lea_assignto").select2('val',response.LEAD.assignToUserID);
+    });
+	
 	$scope.listLeads = function(){
-		$http.get("${pageContext.request.contextPath}/lead/view/"+leadId).success(function(response){
+			response = getLeadData();
+			LEAD = response.LEAD;
+			$scope.leadStatus = response.LEAD_STATUS;
+			$scope.leadSource = response.LEAD_SOURCE;
+			$scope.leadIndustry = response.INDUSTRY;
+			$scope.leadAssignTo = response.ASSIGN_TO;
+			$scope.leadCampaign = response.CAMPAIGN;
 			$scope.lead = response.LEAD;
-			setSelect($scope.lead.salutation);
-			$scope.listNote(response.NOTES);
-		});
+			$scope.listNote1(response.NOTES);
+			
+			displayStatusLead(LEAD.statusID);
+			
 	};
 	
-	
-	
     
+
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -94,9 +115,8 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$("#btnAddNote").text('Note');
 		$('#frmAddNote').bootstrapValidator('resetForm', true);
 	}
-	$scope.listNote = function(data){
-		$scope.notes = data;
-		
+	$scope.listNote1 = function(data){
+		$scope.notes = data;		
 	};
 	var indexedTeams = [];
     
@@ -123,9 +143,9 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
     	   	}
    		});
     }
-    $scope.getListNoteByLead = function(){
-		$http.get("${pageContext.request.contextPath}/lead/view/"+leadId).success(function(response){
-			$scope.listNote(response.NOTES);
+    $scope.getListNoteByLead = function(){    	
+		$http.get("${pageContext.request.contextPath}/note/list/lead/"+leadId).success(function(response){
+			$scope.listNote1(response.NOTES);
 		});
 	};
     
@@ -136,11 +156,21 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	
 	$scope.editDetailLead = function(){
 		$(".show-edit").show();
+		$(".show-edit-non-style").show();
+		
 		$(".show-text-detail").hide();
 		$("#showBtnEditLead").show();
+		
+		addDataToDetailLead();
 	}
 	
-	
+	$scope.cancelEditDetailLead = function(){
+		$('#frmLeadDetail').bootstrapValidator('resetForm', true);
+		$(".show-edit").hide();
+		$(".show-edit-non-style").hide();
+		$(".show-text-detail").show();
+		$("#showBtnEditLead").hide();
+	}
 	
     
 	
@@ -163,16 +193,101 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	
 }]);
 
-function setSelect(option1){
-	$("#leadSalutation option[value='"+option1+"']").attr('selected','selected');
+
+function getLeadData(){	
+	var data = JSON.parse(
+		$.ajax({
+			method: 'POST',
+		    url: '${pageContext.request.contextPath}/lead/view',
+		    async: false,
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: JSON.stringify({
+		    	"username":username,
+		    	"leadId":leadId
+		    })
+		}).responseText);	
+	return data;	
+}
+
+function getLeadById(){
+	var data = JSON.parse(
+		$.ajax({
+			method: 'GET',
+		    url: '${pageContext.request.contextPath}/lead/list/'+leadId,
+		    async: false
+		}).responseText);	
+	return data;
+}
+
+function clickStatus(num){
+	if(num == 4){
+		window.location.href = server+"/convert-lead/"+leadId;
+	}
+}
+
+function displayStatusLead(Status){	
+	var obj = "";	
+	for(var i=1; i<=leadStatusData.length; i++){		
+		if(i<Status){		
+			obj += "<li onClick='clickStatus("+i+")' class='completed'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";	
+		}else if(i==Status){			
+			if(Status == 5){
+				obj += "<li onClick='clickStatus("+i+")' class='dead'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";
+			}else{
+				obj += "<li onClick='clickStatus("+i+")' class='active'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";
+			}
+		}else{
+			obj += "<li onClick='clickStatus("+i+")' class=''>         <a href='#'><i class='fa fa-lock'></i> "+leadStatusData[i-1]+"</a></li>";
+		}
+	}
+	$("#objStatus").append(obj);
+}
+
+function addDataToDetailLead(){
+	
+	$("#lea_salutation option[value='"+LEAD.salutation+"']").attr('selected','selected');
+	$("#lea_status").select2('val',LEAD.statusID);
+	$("#lea_source").select2('val',LEAD.sourceID);
+	$("#lea_industry").select2('val',LEAD.industID);
+	$("#lea_campaign").select2('val',LEAD.campID);
+	$("#lea_assignto").select2('val',LEAD.assignToUserID);
+	
+	
+	setValueById('lea_firstName', LEAD.firstName);
+	setValueById('lea_lastName', LEAD.lastName);
+	setValueById('lea_title', LEAD.title);
+	setValueById('lea_department', LEAD.department);
+	setValueById('lea_phone', LEAD.phone);
+	setValueById('lea_mobilePhone', LEAD.mobile);
+	setValueById('lea_website', LEAD.website);
+	setValueById('lea_accountName', LEAD.accountName);
+	setValueById('lea_email', LEAD.email);
+	
+	setValueById('lea_no', LEAD.no);
+	setValueById('lea_street', LEAD.street);
+	setValueById('lea_village', LEAD.village);
+	setValueById('lea_commune', LEAD.commune);
+	setValueById('lea_district', LEAD.district);
+	setValueById('lea_city', LEAD.city);
+	setValueById('lea_state', LEAD.state);
+	setValueById('lea_country', LEAD.country);
+	setValueById('lea_description', LEAD.description);
+	
+	
+	
 }
 
 $(function(){
+	
 	$(".timepicker").timepicker({
         showInputs: false,
+        minuteStep: 5,
         defaultTime: false,
         showMeridian : false
-      });
+    });
 	$('#startDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
@@ -182,6 +297,10 @@ $(function(){
 	$('#startDateMeeting').daterangepicker({ singleDatePicker: true,timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A'});
 	$('#endDateMeeting').daterangepicker({ singleDatePicker: true,timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A'});	
 	
+	
+	$("#btnCallSave").click(function(){
+		$('#frmAddCall').submit();
+	});
 	
 	
 	$('#frmAddNote').bootstrapValidator({
@@ -291,14 +410,38 @@ $(function(){
 			validating: 'glyphicon glyphicon-refresh'
 		},
 		fields: {
-			lea_ca: {
+			lea_salutation:{
+				validators: {
+					stringLength: {
+						max: 100,
+						message: 'The salutation must be less than 100 characters long.'
+					}
+				}
+			},
+			
+			lea_status: {
+				validators: {
+					
+				}
+			},
+			lea_industry: {
+				validators: {
+					
+				}
+			},
+			lea_source: {
+				validators: {
+					
+				}
+			},
+			lea_campaign: {
 				validators: {
 					notEmpty: {
-						message: 'The Campaign is required and can not be empty!'
+						message: 'The campaign is required and can not be empty!'
 					},
 					stringLength: {
 						max: 100,
-						message: 'The must be less than 100 characters long.'
+						message: 'The campaign must be less than 100 characters long.'
 					}
 				}
 			},
@@ -373,6 +516,10 @@ $(function(){
 			,
 			lea_email: {
 				validators: {
+					regexp: {
+                        regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+                        message: 'The value is not a valid email address'
+                    },
 					stringLength: {
 						max: 255,
 						message: 'The department must be less than 255 characters long.'
@@ -381,6 +528,9 @@ $(function(){
 			},
 			lea_accountName: {
 				validators: {
+					notEmpty: {
+						message: 'The company is required and can not be empty!'
+					},
 					stringLength: {
 						max: 255,
 						message: 'The Company must be less than 255 characters long.'
@@ -462,9 +612,201 @@ $(function(){
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		//var frmNoteData = {"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), "noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":"Lead","noteRelatedToModuleId":leadId,"noteCreateBy":"${SESSION}"};		
-		//$(".show-text-detail").find("small").css("margin-left", "30%");
-	});
+		var frmLeadDetailData = {
+			"leadID": leadId,
+			"salutation": $.trim($("#lea_salutation").val()),
+		    "firstName": $.trim($("#lea_firstName").val()),
+		    "lastName": $.trim($("#lea_lastName").val()),
+		    "title": $.trim($("#lea_title").val()),
+		    "department": $.trim($("#lea_department").val()),
+		    "phone": $.trim($("#lea_phone").val()),
+		    "mobile": $.trim($("#lea_mobilePhone").val()),
+		    "website": $.trim($("#lea_website").val()),
+		    "accountName": $.trim($("#lea_accountName").val()),
+		    "no":  $.trim($("#lea_no").val()),
+		    "street": $.trim($("#lea_street").val()),
+		    "village": $.trim($("#lea_village").val()),
+		    "commune": $.trim($("#lea_commune").val()),
+		    "district": $.trim($("#lea_district").val()),
+		    "city": $.trim($("#lea_city").val()),
+		    "state": $.trim($("#lea_state").val()),
+		    "country": $.trim($("#lea_country").val()),
+		    "description": $.trim($("#lea_description").val()),
+		    "status": {"statusID":getIntToNull("lea_status")},
+		    "industry": {"industID":getIntToNull("lea_industry")},
+		    "source": {"sourceID":getIntToNull("lea_source")},
+		    "campaign": {"campID":getStringToNull("lea_campaign")},
+		    "assignTo": {"userID":getStringToNull("lea_assignto")},
+		    "modifyBy": "${SESSION}",
+		    "email": $.trim($("#lea_email").val())
+	  	};	
+		
+		/* alert(getStringToNull("lea_assignto"))
+		
+		dis(frmLeadDetailData); */
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/lead/edit",
+			type : "PUT",
+			data : JSON.stringify(frmLeadDetailData),
+			beforeSend: function(xhr) {
+			    xhr.setRequestHeader("Accept", "application/json");
+			    xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success:function(data){	
+				if(data.MESSAGE == "UPDATED"){					
+					swal({
+		        		title:"Successfully",
+		        		text:"User have been Update Lead!",
+		        		type:"success",  
+		        		timer: 2000,   
+		        		showConfirmButton: false
+					});
+					setTimeout(function(){
+						location.reload();
+					}, 2000);
+				}else{
+					
+				}												
+			},
+			error:function(){
+				
+			}
+		});			
+	});		
+	
+	
+	
+	
+	
+	$('#frmAddCall').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			callSubject: {
+				validators: {
+					notEmpty: {
+						message: 'The subject is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The subject must be less than 255 characters long.'
+					}
+				}
+			},
+			callStartDate: {
+				validators: {
+					notEmpty: {
+						message: 'The start date is required and can not be empty!'
+					},
+					date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'The value is not a valid date'
+                    }
+				}
+			},
+			callDuration : {
+				validators: {
+					notEmpty: {
+						message: 'The duration is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The dubject must be less than 255 characters long.'
+					}
+				}
+			},
+			callStatus : {
+				validators: {
+					notEmpty: {
+						message: 'The status is required and can not be empty!'
+					}
+				}
+			},
+			callDescription : {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The description must be less than 255 characters long.'
+					}
+				}
+			}
+			
+		}
+	}).on('success.form.bv', function(e) {
+			
+		/* var currentDate = new Date();
+		var day = currentDate.getDate();
+		var month = currentDate.getMonth() + 1;
+		var year = currentDate.getFullYear();
+
+		var createDate = $("#startDate").val();
+		var newCreateDate = createDate.split("/").reverse().join("-");
+		
+		    var assign = "";	
+			if($("#assignTo").val()  != ""){
+				assign = {"userID": $("#assignTo").val()};
+			}else{
+				assign = null;
+			}
+
+			var status = "";	
+			if($("#status").val()  != ""){
+				status = {"callStatusId": $("#status").val()};
+			}else{
+				status = null;
+			}
+
+
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/call/add",
+			type : "POST",
+			data : JSON.stringify({ 
+
+			      "callStartDate": newCreateDate,
+			      "callDuration": $("#duration").val(),
+			      "callCreateBy": $.session.get("parentID"),
+			      "callStatus": status,
+			      "callDes": $("#description").val(),
+			      "callSubject": $("#subject").val(),
+			      "callAssignTo": assign,
+			      "callRelatedToFieldId": $("#reportTo").val(),
+			      "callRelatedToModuleType": $("#reportType").val(),
+			      "callCreateDate": year+"-"+month+"-"+day
+			      
+				}),
+			beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+					    },
+			success:function(data){
+				
+					$("#form-call").bootstrapValidator('resetForm', 'true');
+					$('#form-call')[0].reset();
+					$("#status").select2("val","");
+					$("#reportType").select2("val","");
+					$("#reportTo").select2("val","");
+					$("#assignTo").select2("val","");
+					$('#form-call').bootstrapValidator('resetForm', 'status');
+					swal({
+	            		title:"Success",
+	            		text:"User have been created new Call!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+        			});
+				},
+			error:function(){
+				errorMessage();
+				}
+			});  */
+		
+	});	
 	
 	
 });
@@ -538,6 +880,16 @@ $(function(){
 .breadcrumb1 li.active a:after {
 	border-left: 30px solid rgb(75, 202, 129);
 }
+
+
+.breadcrumb1 li.dead a {
+	background: brown; /* fallback color */
+	background: red;
+}
+.breadcrumb1 li.dead a:after {
+	border-left: 30px solid red;
+}
+
 
 .breadcrumb1 li.completed a:after {
 	border-left: 30px solid hsl(192, 100%, 41%);
@@ -655,20 +1007,7 @@ $(function(){
 							</div>
 
 							<div class="col-md-12">
-								<ul class="breadcrumb1">
-									<li class="completed"><a href="#"><i
-											class="fa fa-check-circle"></i> New</a></li>
-									<li class="completed"><a href="#"> <i
-											class="fa fa-check-circle"></i> Assigned
-									</a></li>
-									<li class="active"><a href="#"> <i class="fa fa-lock"></i>
-											In Process
-									</a></li>
-									<li><a href="#"> <i class="fa fa-lock"></i> Converted
-									</a></li>
-									<li class="dead"><a href="#"> <i class="fa fa-lock"></i>
-											Dead
-									</a></li>
+								<ul class="breadcrumb1" id="objStatus">
 								</ul>
 							</div>
 
@@ -683,10 +1022,8 @@ $(function(){
 											aria-expanded="false">COLLABORATE</a></li>
 										<li class=""><a href="#note_tap" data-toggle="tab"
 											aria-expanded="false">NOTES</a></li>
-										<li class=""><a href="#settings" data-toggle="tab"
+										<li class=""><a href="#detail_tap" data-toggle="tab"
 											aria-expanded="false">DETAILS</a></li>
-										<li class=""><a href="#remark_tab" data-toggle="tab"
-											aria-expanded="false">REMARK</a></li>
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane active" id="activity">
@@ -1045,7 +1382,7 @@ $(function(){
 										</div>
 
 
-										<div class="tab-pane " id="settings">
+										<div class="tab-pane " id="detail_tap">
 											<div class="row">
 												<form id="frmLeadDetail">
 												<div class="col-md-4">
@@ -1057,7 +1394,7 @@ $(function(){
 																Salutation
 															<a class="pull-right show-text-detail">{{lead.salutation}}</a>
 															<div class="form-group show-edit" style="display:none;" >																							
-																<select class="form-control" name="leadSalutation" id="leadSalutation">		                                      
+																<select class="form-control" name="lea_salutation" id="lea_salutation">		                                      
 							                                       <option value="Mr.">Mr.</option>
 							                                       <option value="Ms.">Ms.</option>
 							                                       <option value="Mrs.">Mrs.</option>
@@ -1127,7 +1464,7 @@ $(function(){
 												<div class="col-md-4">
 													<ul class="list-group list-group-unbordered">
 														<li class="list-group-item"><b>Address</b> <a
-															class="pull-right cusor_pointer"><i
+															class="pull-right cusor_pointer" ng-click="editDetailLead()"><i
 																class="fa fa-pencil"></i> Edit</a></li>
 														<li class="list-group-item item_border">No 
 															<a class="pull-right show-text-detail">{{lead.no}}</a>
@@ -1182,43 +1519,80 @@ $(function(){
 												<div class="col-md-4">
 													<ul class="list-group list-group-unbordered">
 														<li class="list-group-item"><b>More Information &
-																Others</b> <a class="pull-right cusor_pointer"><i
+																Others</b> <a class="pull-right cusor_pointer" ng-click="editDetailLead()"><i
 																class="fa fa-pencil"></i> Edit</a></li>
-														<li class="list-group-item item_border">Status <a
-															class="pull-right ">{{lead.statusName}}</a></li>
-														<li class="list-group-item item_border">Industry <a
-															class="pull-right">{{lead.industName}}</a></li>
-														<li class="list-group-item item_border">Source <a
-															class="pull-right">{{lead.sourceName}}</a></li>
-														<li class="list-group-item item_border">Campaign <a
-															class="pull-right">{{lead.campName}}</a></li>
-														<li class="list-group-item item_border">Assign To <a
-															class="pull-right">{{lead.assignToUsername}}</a></li>
+														<li class="list-group-item item_border">Status
+															<a class="pull-right show-text-detail">{{lead.statusName}}</a>
+															<div class="form-group show-edit" style="display:none;" >																							
+																<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
+																	<option value="">-- SELECT Status --</option>
+																	<option ng-repeat="status in leadStatus" value="{{status.statusID}}">{{status.statusName}}</option> 
+																</select>
+															</div>
+														</li>
+														<li class="list-group-item item_border">Industry 
+															<a class="pull-right show-text-detail">{{lead.industName}}</a>
+															<div class="form-group show-edit" style="display:none;" >																							
+																<select class="form-control select2" name="lea_industry" id="lea_industry" style="width: 100%;">
+																	<option value="">-- SELECT Industry --</option>
+																	<option ng-repeat="industry in leadIndustry" value="{{industry.industID}}">{{industry.industName}}</option> 
+																</select>
+															</div>
+														</li>
+														<li class="list-group-item item_border">Source 
+															<a class="pull-right show-text-detail">{{lead.industName}}</a>
+															<div class="form-group show-edit" style="display:none;" >																							
+																<select class="form-control select2" name="lea_source" id="lea_source" style="width: 100%;">
+																	<option value="">-- SELECT Source --</option>
+																	<option ng-repeat="source in leadSource" value="{{source.sourceID}}">{{source.sourceName}}</option> 
+																</select>
+															</div>
+														</li>
+														<li class="list-group-item item_border">Campaign 
+															<a class="pull-right show-text-detail">{{lead.campName}}</a>
+															<div class="form-group show-edit" style="display:none;" >																							
+																<select class="form-control select2" name="lea_campaign" id="lea_campaign" style="width: 100%;">
+																	<option value="">-- SELECT Campaign --</option>
+																	<option ng-repeat="camp in leadCampaign" value="{{camp.campID}}">{{camp.campName}}</option> 
+																</select>
+															</div>
+														</li>
+														<li class="list-group-item item_border">Assign To
+															<a class="pull-right show-text-detail">{{lead.assignToUsername}}</a>
+															<div class="form-group show-edit" style="display:none;" >																							
+																<select class="form-control select2" name="lea_assignto" id="lea_assignto" style="width: 100%;">
+																	<option value="">-- SELECT Assign To --</option>
+																	<option ng-repeat="user in leadAssignTo" value="{{user.userID}}">{{user.username}}</option> 
+																</select>
+															</div>
+															
+														</li>
 													</ul>
 												</div>
-												<div class="col-md-12 text-center" id="showBtnEditLead" style="display:none;">
-													<button class="btn btn-primary">Save</button>
-													<button class="btn btn-danger">Cancel</button>
-												</div>
-												</form>
-
-											</div>
-										</div>
-
-										<div class="tab-pane" id="remark_tab">
-											<div class="row">
-
 												<div class="col-md-12">
 													<ul class="list-group list-group-unbordered">
 														<li style="border-top: 0px;" class="list-group-item"><b>Description</b>
-															<a class="pull-right cusor_pointer"><i
-																class="fa fa-pencil"></i> Edit</a></li>
-
+															<a class="pull-right cusor_pointer" ng-click="editDetailLead()"><i class="fa fa-pencil"></i> Edit</a>	
+														</li>
 													</ul>
 												</div>
-												<div class="col-md-12">{{lead.description}}</div>
+												<div class="col-md-12">
+													<div class="show-text-detail">{{lead.description}}</div>
+													<div class="form-group show-edit-non-style" style="display:none;">																							
+														<textarea rows="3" cols="" name="lea_description" id="lea_description" class="form-control" placeholder="Description">{{lead.description}}</textarea>
+													</div>
+												</div>
+												<br>
+												<div class="col-md-12 text-center" id="showBtnEditLead" style="display:none;">
+													<button class="btn btn-primary" ng-click="saveEditDetailLead()">Save</button>
+													<button class="btn btn-danger" ng-click="cancelEditDetailLead()">Cancel</button>
+												</div>
+												</form>
+												
 											</div>
+												
 										</div>
+
 
 									</div>
 									<!-- /.tab-content -->
@@ -1242,86 +1616,86 @@ $(function(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Create Call</h4>
+					<h4 class="modal-title"><b>Create Call</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-md-12">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Subject <span class="requrie">(Required)</span></label>
-									<input id="txtDisInv" class="form-control" type="text"
-										placeholder="">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Start Date<span class="requrie">(Required)</span></label>
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-calendar"></i>
-										</div>
-										<input data-date-format="dd-M-yyyy" data-default-date=""
-											value="" name="startDate" id="startDate" type="text"
-											class="form-control pull-right active">
-									</div>
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="col-md-6">
-								<div class="bootstrap-timepicker">
-									<div class="form-group">
-										<label>Duration <span class="requrie">(Required)</span></label>
-										<div class="input-group">
-											<input type="text" class="form-control timepicker"
-												name="duration" id="duration">
-											<div class="input-group-addon">
-												<i class="fa fa-clock-o"></i>
-											</div>
-
-										</div>
-										<!-- /.input group -->
-									</div>
-									<!-- /.form group -->
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Assign To </label>
-									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
-				                      <option value=""></option>           
-				                    </select>
-								</div>
-							</div>
-							
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Status <span class="requrie">(Required)</span></label>
-									<select class="form-control select2" name="status" id="status" style="width: 100%;">
-										<option value="">--SELECT Status</option>
-										<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
-									</select>
-								</div>
-							</div>
-							<div class="clearfix"></div>
+						<form id="frmAddCall">
 							<div class="col-md-12">
-								<div class="form-group">
-									<label>Description </label>
-									<textarea  rows="4" cols="" name="description" id="description"	class="form-control"></textarea>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Subject <span class="requrie">(Required)</span></label>
+										<input id="callSubject" name="callSubject" class="form-control" type="text"
+											placeholder="">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Start Date<span class="requrie">(Required)</span></label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input 
+												value="" name="callStartDate" id="callStartDate" type="text"
+												class="form-control pull-right active">
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6">
+									<div class="bootstrap-timepicker">
+										<div class="form-group">
+											<label>Duration <span class="requrie">(Required)</span></label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-clock-o"></i>
+												</div>
+												<input type="text" class="form-control timepicker" name="callDuration" id="callDuration">
+											</div>
+											<!-- /.input group -->
+										</div>
+										<!-- /.form group -->
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Assign To </label>
+										<select class="form-control select2"  name="callAssignTo" id="callAssignTo" style="width: 100%;">
+					                      <option value=""></option>           
+					                    </select>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Status <span class="requrie">(Required)</span></label>
+										<select class="form-control select2" name="callStatus" id="callStatus" style="width: 100%;">
+											<option value="">--SELECT Status</option>
+											<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-12">
+									<div class="form-group">
+										<label>Description </label>
+										<textarea  rows="3" cols="" name="callDescription" id="callDescription"	class="form-control"></textarea>
+									</div>
 								</div>
 							</div>
-						</div>
+						</form>
 					</div>
 
 
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="btnSaveCallCancel" class="btn btn-danger"
+					<button type="button" id="btnCallCancel" name="btnCallCancel"  class="btn btn-danger"
 						data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
-					<button type="button" id="btnSaveCall"
-						class="btn btn-primary pull-right" data-dismiss="modal">Save</button>
+					<button type="button"
+						class="btn btn-primary pull-right" id="btnCallSave" name="btnCallSave">Save</button>
 
 				</div>
 			</div>
