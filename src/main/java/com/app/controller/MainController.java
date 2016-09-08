@@ -437,8 +437,8 @@ public class MainController {
 
 	}
 
-	@RequestMapping(value = "/update-campaign/{camID}", method = RequestMethod.GET)
-	public String updateCampaigns(ModelMap model, @PathVariable String camID) {
+	@RequestMapping(value = "/update-campaign/{campID}", method = RequestMethod.GET)
+	public String updateCampaigns(ModelMap model, @PathVariable("campID") String campID) {
 		model.addAttribute("menu", "updateCampaigns");
 
 		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
@@ -446,15 +446,7 @@ public class MainController {
 		if (camMap.get("roleAccess").equals("YES")) {
 
 			if (camMap.get("roleEdit").equals("YES")) {
-
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(campController.findCampaignById(camID));
-					model.addAttribute("campaign", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-
+				model.addAttribute("campId", campID);
 				return "updateCampaigns";
 
 			} else {

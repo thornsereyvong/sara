@@ -25,7 +25,7 @@
 				$scope.startupAddPage = function(username) {
 					$http({
 					    method: 'POST',
-					    url: '${pageContext.request.contextPath}/campaign/startup',
+					    url: '${pageContext.request.contextPath}/add/startup',
 					    headers: {
 					    	'Accept': 'application/json',
 					        'Content-Type': 'application/json'

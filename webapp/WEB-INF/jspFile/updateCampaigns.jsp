@@ -27,20 +27,34 @@
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-
-
+	$scope.editCampaignOnStartup = function(username, campId) {
+		$http({
+		    method: 'POST',
+		    url: '${pageContext.request.contextPath}/edit/startup',
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {
+		    	"username": username,
+		    	"campID": campId
+		    }
+		}).success(function(response) {
+			addCampaignDataToForm(response);
+		});
+	};
 }]);
 
- function listStatusID(statusids, status){
+ function listCampaignStatus(statusId, status){
 		$("#cam_status").empty().append('<option value="">-- SELECT Status --</option>');
 		$.each(status, function(key, value){
 			var div = "<option value='"+value.statusID+"' >"+value.statusName+"</option>";
 			$("#cam_status").append(div);
 		});  
-		$("#cam_status").select2("val",statusids);
+		$("#cam_status").select2("val",statusId);
 	}
 
- function listTypeID(typeId,type){
+ function listCampaignType(typeId,type){
 		$("#cam_type").empty().append('<option value="">-- SELECT Type --</option>');
 		$.each(type, function(key, value){
 			var div = "<option value='"+value.typeID+"' >"+value.typeName+"</option>";
@@ -49,27 +63,22 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#cam_type").select2("val",typeId);
 	}
 
- function listParentID(parent,not_equal){
+ function listParentCampaign(campId,parentCampaign){
 	    $("#cam_parent").empty().append('<option value="">-- SELECT Parent --</option>');
-	    if(parent!= ""){
-				$.each(parent, function(key, value){
+	    if(parentCampaign!= ""){
+				$.each(parentCampaign, function(key, value){
 						var div = "<option value='"+value.campID+"' >"+value.campName+"</option>";
 					$("#cam_parent").append(div);
 				});  
-				$("#cam_parent").select2("val",parent);
+				$("#cam_parent").select2("val",campId);
 		   } 
 	    $("#cam_parent").select2("val","");
 	}
  
 
-function listDataByCampID(){
+function addCampaignDataToForm(response){
 	
-	var data = ${campaign};
-	var user_id = ${users};
-	
-	var result = data.body.DATA;
-	
-	
+	var result = response.CAMPAIGN; 
 	$("#cam_id").val(result.campID);
 	$("#cam_name").val(result.campName);
 
@@ -101,28 +110,25 @@ function listDataByCampID(){
 	$("#cam_numSend").val(result.numSend);
 	$("#cam_expectedResponse").val(result.expectedResponse);
 
-	//listCampUserID(result.assignTo);
-	
-	userAllList(user_id,'#cam_assignTo',result.userID);
+	userAllList(response.ASSIGN_TO,'#cam_assignTo',result.userID);
 	
 	
 	if(result.statusID == null || result.statusID == ""){
-		listStatusID("");
+		listCampaignStatus("", response.CAMP_STATUS);
 	}else{	
-		listStatusID(result.statusID, data.body.CAMP_STATUS);
+		listCampaignStatus(result.statusID, response.CAMP_STATUS);
 	}
 
 	if(result.typeID == null || result.typeID == ""){
-		listTypeID("");
+		listCampaignType("", response.CAMP_TYPE);
 	}else{
-		listTypeID(result.typeID, data.body.CAMP_TYPE);
+		listCampaignType(result.typeID, response.CAMP_TYPE);
 	}
-
 	
 	if(result.parentID == null || result.parentID == ""){
-		listParentID("",result.campID);
+		listParentCampaign("",response.CAMP_PARENT);
 	}else{
-		listParentID(data.body.CAMP_PARENT, result.campID);
+		listParentCampaign(result.campID,response.CAMP_PARENT);
 	}
 	
 }
@@ -130,9 +136,6 @@ function listDataByCampID(){
 
 $(document).ready(function() {
 	$(".select2").select2();
-	
-	listDataByCampID();
-	
 	 $('#cam_startDate').daterangepicker({
          singleDatePicker: true,
          showDropdowns: true,
@@ -449,7 +452,7 @@ $(document).ready(function() {
 					</button>
 				</div>
 			</div>
-			<div class="box-body">
+			<div class="box-body" data-ng-init = "editCampaignOnStartup('${SESSION}','${campId}')">
 			
 			<form method="post" id="form-campaigns">
 				
