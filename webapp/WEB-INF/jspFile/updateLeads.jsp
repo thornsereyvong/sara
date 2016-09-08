@@ -6,8 +6,6 @@
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
 
-
-
 <style>
 .font-label {
 	font-size: 13px;
@@ -46,6 +44,10 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		    }
 		}).success(function(response) {
 			setLeadDateToForm(response);
+			$.scope.child = response.CHILD;
+			if($scope.child === "NOT_EXIST"){
+				$("#lea_assignTo").prop("disabled", true);
+			}
 		});
 	};
 
@@ -366,8 +368,6 @@ $(document).ready(function() {
 		} else{
 			ato = null;
 		}
-
-		
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/lead/edit",
@@ -668,51 +668,44 @@ padding-right: 10px;
 				
 				<div class="row">
 				<div class="col-sm-6">
-					<div class="col-sm-6" data-ng-init="listLeadStatus()">
+					<div class="col-sm-6">
 							<label class="font-label">Status :</label>
 							<div class="form-group">
 								<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
 									<option value="">-- SELECT Status --</option>
-									
 								</select>
 							</div>
 						</div>
 						
-						<div class="col-sm-6" data-ng-init="listLeadIndustry()">
+						<div class="col-sm-6">
 							<label class="font-label">Industry :</label>
 							<div class="form-group" >
 								<select class="form-control select2" name="lea_industry" id="lea_industry" style="width: 100%;">
 									<option value="">-- SELECT Industry --</option>
-									
 								</select>
 							</div>
 						</div>
 					</div>
 					<div class="col-sm-6">
-						<div class="col-sm-6" data-ng-init="listLeadSource()">
+						<div class="col-sm-6">
 							<label class="font-label">Source :</label>
 							<div class="form-group">
 								<select class="form-control select2" name="lea_source" id="lea_source" style="width: 100%;">
 									<option value="">-- SELECT Source --</option>
-									
 								</select>
 							</div>
 						</div>
-						
-						<div class="col-sm-6" data-ng-init="listCampaigns()">
+						<div class="col-sm-6">
 							<label class="font-label">Campaign </label>
 							<div class="form-group">
 								<select class="form-control select2" name="lea_ca" id="lea_ca" style="width: 100%;">
 									<option value="">-- SELECT Campaign --</option>
-									
 								</select>
 							</div>
 						</div>
 						
 				</div>
 				</div>
-				
-				
 				
 				<div class="clearfix"></div>
 				
@@ -721,23 +714,19 @@ padding-right: 10px;
 				<div class="col-sm-12">
 						<hr style="margin-top: 3px;" />
 				</div>
+				
+				<div class="row">
 				<div class="col-sm-6">
-				
-				</div>
-				<div class="col-sm-12">
-				
-					<div class="row">
-					<div class="col-sm-3">
-							<label class="font-label">Assigned to</label>
-							<div class="form-group">
-								<select class="form-control select2"  name="lea_assignTo" id="lea_assignTo" style="width: 100%;">
-			                      <option value=""></option>
-			                              
-			                    </select>
-							</div>
+					<div class="col-sm-6">
+						<label class="font-label">Assigned to : </label>
+						<div class="form-group">
+							<select class="form-control select2"  name="lea_assignTo" id="lea_assignTo" style="width: 100%;">
+		                      	<option value="">-- SELECT User --</option>      
+			            	</select>
 						</div>
 					</div>
 				</div>
+			</div>
 				
 			</form>
 			</div>
@@ -745,10 +734,7 @@ padding-right: 10px;
 			<div class="box-footer"></div>
 			<!-- /.box-footer-->
 		</div>
-		
 		<!-- /.box -->
-
-
 	</section>
 	<!-- /.content -->
 

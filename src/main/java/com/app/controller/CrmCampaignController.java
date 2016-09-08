@@ -42,7 +42,7 @@ public class CrmCampaignController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/campaign/startup",method = RequestMethod.POST)
+	@RequestMapping(value="/add/startup",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> startupAddPage(@RequestBody String json){	
 		HttpEntity<String> request = new HttpEntity<String>(json,header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/add/startup", HttpMethod.POST, request, Map.class);
@@ -94,6 +94,13 @@ public class CrmCampaignController {
 		
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/edit/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> editCampaignOnStartup(@RequestBody String json){	
+		HttpEntity<String> request = new HttpEntity<String>(json,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/edit/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/edit",method = RequestMethod.PUT)

@@ -49,6 +49,10 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 					$scope.lead_source = response.LEAD_SOURCE;
 					$scope.lead_industry = response.INDUSTRY;
 					$scope.campaigns = response.CAMPAIGN;
+					$scope.child = response.CHILD;	
+					if($scope.child === "NOT_EXIST"){
+						$("#lea_assignTo").prop("disabled", true);
+					}
 				});
 			};
 	}]);
