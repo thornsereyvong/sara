@@ -1,12 +1,9 @@
 package com.app.configuration;
 
-import javax.sql.DataSource;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -28,17 +25,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		irv.setPrefix("/WEB-INF/jspFile/");
 		irv.setSuffix(".jsp");
 		return irv;
-	}
-	
-	@Bean
-	public DataSource getConnection(){
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/balancika");
-		dataSource.setUsername("root");
-		dataSource.setPassword("");
-		
-		return dataSource;
 	}
 	
 	@Override

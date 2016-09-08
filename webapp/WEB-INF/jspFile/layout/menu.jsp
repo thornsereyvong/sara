@@ -34,14 +34,14 @@ $(document).ready(function(){
         
           <ul  class="sidebar-menu">
           	<li id="dashboard">
-              <a href="${pageContext.request.contextPath}/">
-                <i class="fa fa-tachometer" aria-hidden="true"></i>
-                <span>Dashboard</span>
+              <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/Dashboard.png" style="width:16px;">
+                <!-- <i class="fa fa-tachometer" aria-hidden="true"></i> -->
+                &nbsp;&nbsp;<span>Dashboard</span>
               </a>
             </li>
           
             <li class='treeview' id="marketing">
-              <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <span>Marketing</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><img src="${pageContext.request.contextPath}/resources/images/Marketing.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-shopping-cart" aria-hidden="true"></i> --> <span>Marketing</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu" id="ul_marketing"  >
               
                 <li id="ul_li_campaign" >
@@ -60,7 +60,7 @@ $(document).ready(function(){
             </li>
             
             <li  class='treeview' id="sale">
-              <a href="#"><i class="fa fa-calculator" aria-hidden="true"></i> <span>Sales</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><img src="${pageContext.request.contextPath}/resources/images/Sales.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-calculator" aria-hidden="true"></i> --> <span>Sales</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu" id="ul_sale">
               
                 <li id="ul_li_customer">
@@ -85,7 +85,7 @@ $(document).ready(function(){
             </li>
             
             <li class='treeview' id="activ">
-              <a href="#"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> <span>Activities</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><img src="${pageContext.request.contextPath}/resources/images/activity.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-paper-plane-o" aria-hidden="true"></i> --> <span>Activities</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu" id="ul_activ" >
               
                  <li id="ul_li_call">
@@ -128,7 +128,7 @@ $(document).ready(function(){
             </li>
             
             <li class='treeview ' id="support" >
-              <a href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <span>Support</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><img src="${pageContext.request.contextPath}/resources/images/Support.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-life-ring" aria-hidden="true"></i> --> <span>Support</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu" id="ul_support">
               
                  <li id="ul_li_case">
@@ -142,7 +142,7 @@ $(document).ready(function(){
             
             
             <li class='treeview ' id="quote" >
-              <a href="#"><i class="fa fa-money" aria-hidden="true"></i> <span>Quote</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><img src="${pageContext.request.contextPath}/resources/images/Quote.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-money" aria-hidden="true"></i> --> <span>Quote</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu" id="ul_quote">
               
                  <li id="ul_li_quote">
@@ -154,7 +154,7 @@ $(document).ready(function(){
               </ul>
             </li>
             <li class='treeview ' id="sale_order" >
-              <a href="#"><i class="fa fa-balance-scale" aria-hidden="true"></i> <span>Sale Order</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><img src="${pageContext.request.contextPath}/resources/images/Sale-Order.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-balance-scale" aria-hidden="true"></i> --> <span>Sale Order</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu" id="ul_sale_order">
               
                  <li id="ul_li_sale_order">
@@ -169,7 +169,7 @@ $(document).ready(function(){
             	if(role.equals("CRM_ADMIN")){
             %>
             <li class='treeview ' id="admin" >
-              <a href="#"><i class="fa fa-cogs" aria-hidden="true"></i> <span>Administrator</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><img src="${pageContext.request.contextPath}/resources/images/Administrator.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-cogs" aria-hidden="true"></i> --> <span>Administrator</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu" id="ul_admin">
               
                  <li id="ul_li_add">

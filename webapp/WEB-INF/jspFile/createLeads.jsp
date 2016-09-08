@@ -32,41 +32,29 @@ var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 
-	$scope.listCampaigns = function(){
-		$http.get("${pageContext.request.contextPath}/campaign/list")
-		.success(function(response){
-				$scope.campaigns = response.DATA;
-			});
-	};	
-		
-	$scope.listLeadStatus = function(){
-				$http.get("${pageContext.request.contextPath}/lead_status/list")
-				.success(function(response){
-						$scope.lead_status = response.DATA;
-					});
-				};
-	$scope.listLeadSource = function(){
-					$http.get("${pageContext.request.contextPath}/lead_source/list")
-					.success(function(response){
-							$scope.lead_source = response.DATA;
-						});
-					};
-	$scope.listLeadIndustry = function(){
-						$http.get("${pageContext.request.contextPath}/industry/list")
-						.success(function(response){
-								$scope.lead_industry = response.DATA;
-							});
-						};
-	
-}]);
+			$scope.addLeadOnStartup = function(username) {
+				$http({
+				    method: 'POST',
+				    url: '${pageContext.request.contextPath}/lead/add/startup',
+				    headers: {
+				    	'Accept': 'application/json',
+				        'Content-Type': 'application/json'
+				    },
+				    data: {
+				    	"username":username
+				    }
+				}).success(function(response) {
+					$scope.users = response.ASSIGN_TO;
+					$scope.lead_status = response.LEAD_STATUS;
+					$scope.lead_source = response.LEAD_SOURCE;
+					$scope.lead_industry = response.INDUSTRY;
+					$scope.campaigns = response.CAMPAIGN;
+				});
+			};
+	}]);
 
 $(document).ready(function() {
 	$(".select2").select2();
-	
-	var data = ${users};
-	
-	userAllList(data,'#lea_assignTo','');
-	
 	$("#btn_clear").click(function(){
 		$("#form-leads").bootstrapValidator('resetForm', 'true');
 		$('#form-leads')[0].reset();
@@ -402,27 +390,24 @@ padding-right: 10px;
 				</div>
 
 				<div class="row">
-
 					<div class="col-sm-6">
-						
 						<div class="col-sm-6">
 							<label class="font-label">First Name <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 	                            <div class="input-group">
-	                            		<span class="input-group-btn">
-		                                    <select class="btn" style="height: 34px; width: 75px;text-align:center" name="lea_salutation" id="lea_salutation">		                                      
-		                                      <option value="Mr.">Mr.</option>
-		                                      <option value="Ms.">Ms.</option>
-		                                       <option value="Mrs.">Mrs.</option>
-		                                       <option value="Dr.">Dr.</option>
-		                                       <option value="Prof.">Prof.</option>
-		                                    </select>
-										</span>
-										<input type="text" name="lea_firstName" class="form-control" id="lea_firstName">
+	                            	<span class="input-group-btn">
+		                                 <select class="btn" style="height: 34px; width: 75px;text-align:center" name="lea_salutation" id="lea_salutation">		                                      
+		                                     <option value="Mr.">Mr.</option>
+		                                     <option value="Ms.">Ms.</option>
+		                                     <option value="Mrs.">Mrs.</option>
+		                                     <option value="Dr.">Dr.</option>
+		                                     <option value="Prof.">Prof.</option>
+		                                  </select>
+									</span>
+									<input type="text" name="lea_firstName" class="form-control" id="lea_firstName">
 								</div>
 							</div>	
 						</div>
-						
 						
 						<div class="col-sm-6">
 							<label class="font-label">Last Name <span class="requrie">(Required)</span></label>
@@ -458,46 +443,32 @@ padding-right: 10px;
 					</div>
 
 					<div class="col-sm-6">
-	
 						<div class="col-sm-6">
 							<label>Phone :</label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_phone" name="lea_phone">
 							</div>	
 						</div>
-						
-						
 						<div class="col-sm-6 ">
 							<label class="font-label">Mobile Phone </label>
 							<div class="form-group">
 								<input type="text"  class="form-control" id="lea_mobilePhone" name="lea_mobilePhone">
 							</div>	
 						</div>
-						
-						
 						<div class="col-sm-6">
 							<label class="font-label">Website </label>
 							<div class="form-group">
 								<input type="url" placeholder="http://www.example.com" class="form-control" id="lea_website" name="lea_website">
 							</div>	
 						</div>
-						
-						
 						<div class="col-sm-6">
 							<label class="font-label">Email </label>
 							<div class="form-group">
 								<input type="email"  class="form-control" id="lea_email" name="lea_email">
 							</div>	
 						</div>
-						
-						
-
 					</div>
-					
-					
-
-					<div class="clearfix"></div>
-
+				<div class="clearfix"></div>
 
 				</div>
 				
@@ -512,163 +483,146 @@ padding-right: 10px;
 				<div class="col-sm-6">
 				
 					<div class="col-sm-6">
-							<label class="font-label">No </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_no" name="lea_no">
-							</div>	
-						</div>
+						<label class="font-label">No </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="lea_no" name="lea_no">
+						</div>	
+					</div>
 						
 					<div class="col-sm-6">
-							<label class="font-label">Street </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_street" name="lea_street">
-							</div>	
+						<label class="font-label">Street </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="lea_street" name="lea_street">
+						</div>	
+					</div>
+						
+					<div class="col-sm-6">
+						<label class="font-label">Village </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="lea_village" name="lea_village">
 						</div>
+					</div>
 						
-						<div class="col-sm-6">
-							<label class="font-label">Village </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_village" name="lea_village">
-							</div>
+					<div class="col-sm-6">
+						<label class="font-label">Commune </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="lea_commune" name="lea_commune">
 						</div>
+					</div>
 						
-						<div class="col-sm-6">
-							<label class="font-label">Commune </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_commune" name="lea_commune">
-							</div>
+					<div class="col-sm-12">
+						<label class="font-label">Description </label>
+						<div class="form-group">
+							<textarea style="height: 120px" rows="" cols="" name="lea_description" id="lea_description"
+								class="form-control"></textarea>
 						</div>
-						
-						
-						<div class="col-sm-12">
-							<label class="font-label">Description </label>
-							<div class="form-group">
-								<textarea style="height: 120px" rows="" cols="" name="lea_description" id="lea_description"
-									class="form-control"></textarea>
-							</div>
-						</div>
-						
-						
+					</div>
 				</div>
 				<div class="col-sm-6">
-						<div class="col-sm-6">
-							<label class="font-label">District </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_district" name="lea_district">
-							</div>	
+					<div class="col-sm-6">
+						<label class="font-label">District </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="lea_district" name="lea_district">
+						</div>	
+					</div>
+					
+					<div class="col-sm-6">
+						<label class="font-label">City </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="lea_city" name="lea_city">
+						</div>	
+					</div>
+					
+					<div class="col-sm-6">
+						<label class="font-label">State </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="lea_state" name="lea_state">
 						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">City </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_city" name="lea_city">
-							</div>	
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">State </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_state" name="lea_state">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Country </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_country" name="lea_country">
-							</div>	
-						</div>
-						
+					</div>
+					
+					<div class="col-sm-6">
+						<label class="font-label">Country </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="lea_country" name="lea_country">
+						</div>	
+					</div>
 				</div>
 			  </div>
 				
-				<div class="clearfix"></div>
-				
-				<div class="col-sm-2"><h4>More Information </h4></div>
-				
-				<div class="col-sm-12">
-						<hr style="margin-top: 3px;" />
-				</div>
-				<div class="row">
+			<div class="clearfix"></div>
+			<div class="col-sm-2"><h4>More Information </h4></div>
+			<div class="col-sm-12"> <hr style="margin-top: 3px;" />
+			</div>
+			<div class="row" data-ng-init = "addLeadOnStartup('${SESSION}')">
 				<div class="col-sm-6">
-					<div class="col-sm-6" data-ng-init="listLeadStatus()">
-							<label class="font-label">Status </label>
-							<div class="form-group">
-								<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
-									<option value="">-- SELECT Status --</option>
-									<option ng-repeat="u in lead_status" value="{{u.statusID}}">{{u.statusName}}</option> 
-								</select>
-							</div>
-						</div>
-						
-						<div class="col-sm-6" data-ng-init="listLeadIndustry()">
-							<label class="font-label">Industry </label>
-							<div class="form-group" >
-								<select class="form-control select2" name="lea_industry" id="lea_industry" style="width: 100%;">
-									<option value="">-- SELECT Industry --</option>
-									<option ng-repeat="u in lead_industry" value="{{u.industID}}">{{u.industName}}</option> 
-								</select>
-							</div>
+					<div class="col-sm-6"">
+						<label class="font-label">Status </label>
+						<div class="form-group">
+							<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
+								<option value="">-- SELECT Status --</option>
+								<option ng-repeat="u in lead_status" value="{{u.statusID}}">{{u.statusName}}</option> 
+							</select>
 						</div>
 					</div>
-				  <div class="col-sm-6">		
-						<div class="col-sm-6" data-ng-init="listLeadSource()">
-							<label class="font-label">Source </label>
-							<div class="form-group">
-								<select class="form-control select2" name="lea_source" id="lea_source" style="width: 100%;">
-									<option value="">-- SELECT Source --</option>
-									<option ng-repeat="u in lead_source" value="{{u.sourceID}}">{{u.sourceName}}</option> 
-								</select>
-							</div>
-						</div>
 						
-						<div class="col-sm-6" data-ng-init="listCampaigns()">
-							<label class="font-label">Campaign</label>
-							<div class="form-group">
-								<select class="form-control select2" name="lea_ca" id="lea_ca" style="width: 100%;">
-									<option value="">-- SELECT Campaign --</option>
-									<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
-								</select>
-							</div>
+					<div class="col-sm-6">
+						<label class="font-label">Industry </label>
+						<div class="form-group" >
+							<select class="form-control select2" name="lea_industry" id="lea_industry" style="width: 100%;">
+								<option value="">-- SELECT Industry --</option>
+								<option ng-repeat="u in lead_industry" value="{{u.industID}}">{{u.industName}}</option> 
+							</select>
 						</div>
-					</div>	
+					</div>
 				</div>
-				
-				
-				
-				
-				<div class="clearfix"></div>
-				
-				<div class="col-sm-2"><h4>Other </h4></div>
-				
-				<div class="col-sm-12">
-						<hr style="margin-top: 3px;" />
-				</div>
-				
-
-					<div class="col-sm-3"  data-ng-init="listCampUser()">
-							<label class="font-label">Assigned to : </label>
-							<div class="form-group">
-								<select class="form-control select2"  name="lea_assignTo" id="lea_assignTo" style="width: 100%;">
-			                      <option value=""></option>
-			                                
-			                    </select>
-							</div>
+			  	<div class="col-sm-6">		
+					<div class="col-sm-6">
+						<label class="font-label">Source </label>
+						<div class="form-group">
+							<select class="form-control select2" name="lea_source" id="lea_source" style="width: 100%;">
+								<option value="">-- SELECT Source --</option>
+								<option ng-repeat="u in lead_source" value="{{u.sourceID}}">{{u.sourceName}}</option> 
+							</select>
 						</div>
-						
-			
-				
-			</form>
+					</div>
+					
+					<div class="col-sm-6">
+						<label class="font-label">Campaign</label>
+						<div class="form-group">
+							<select class="form-control select2" name="lea_ca" id="lea_ca" style="width: 100%;">
+								<option value="">-- SELECT Campaign --</option>
+								<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
+							</select>
+						</div>
+					</div>
+				</div>	
 			</div>
-			<!-- /.box-body -->
-			<div class="box-footer"></div>
+				
+			<div class="clearfix"></div>
+			<div class="col-sm-2"><h4>Other </h4></div>
+			<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="col-sm-6">
+						<label class="font-label">Assigned to : </label>
+						<div class="form-group">
+							<select class="form-control select2"  name="lea_assignTo" id="lea_assignTo" style="width: 100%;">
+		                      	<option value="">-- SELECT User --</option>
+								<option ng-repeat="user in users" value="{{user.userID}}">{{user.username}}</option>         
+			            	</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- /.box-body -->
+	<div class="box-footer"></div>
 			<!-- /.box-footer-->
-		</div>
+</div>
 		
 		<!-- /.box -->
-
-
-	</section>
+</section>
 	<!-- /.content -->
 
 

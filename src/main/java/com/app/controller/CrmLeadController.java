@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 
+
 import com.app.entities.CrmLead;
 
 
@@ -74,7 +75,13 @@ public class CrmLeadController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
-	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/add/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> addLeadOnStartup(@RequestBody String json){
+		HttpEntity<String> request = new HttpEntity<String>(json,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/add/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/add",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addLead(@RequestBody CrmLead lead){
@@ -95,6 +102,14 @@ public class CrmLeadController {
 		
 	}
 	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/edit/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> editLeadOnStartup(@RequestBody String json){
+		HttpEntity<String> request = new HttpEntity<String>(json,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/edit/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/edit",method = RequestMethod.PUT)

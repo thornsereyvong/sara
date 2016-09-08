@@ -36,6 +36,9 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.and()
 		.exceptionHandling().accessDeniedPage("/login");
 		http.authorizeRequests().anyRequest().authenticated();
+		http.sessionManagement().maximumSessions(1);
+		http.sessionManagement().sessionFixation().migrateSession();
+		http.sessionManagement().invalidSessionUrl("/login");
 		http.csrf().disable();
 	}
 	
