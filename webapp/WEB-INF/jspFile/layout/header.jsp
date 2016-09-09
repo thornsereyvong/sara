@@ -177,6 +177,7 @@ function funcRelateTo(id, cust, vals){
 
 
 function userAllList(fil, id, val){
+	$(id).empty().append('<option value="">-- SELECT Assign To --</option>');
 	$.each(fil, function(i, value){
 		var div = "<option value='"+value.userID+"'>"+value.username+"</option>";
 		$(id).append(div); 

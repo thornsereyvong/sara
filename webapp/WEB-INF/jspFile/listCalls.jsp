@@ -5,8 +5,12 @@
 <jsp:include page="${request.contextPath}/header"></jsp:include>
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
-<% String roleList = (String)request.getAttribute("role_list"); %>
-<% String roleDelete = (String)request.getAttribute("role_delete"); %>
+<%
+	String roleList = (String) request.getAttribute("role_list");
+%>
+<%
+	String roleDelete = (String) request.getAttribute("role_delete");
+%>
 
 
 <script type="text/javascript">
@@ -78,7 +82,8 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 </script>
 
-<div class="content-wrapper" ng-app="campaign" ng-controller="campController">
+<div class="content-wrapper" ng-app="campaign"
+	ng-controller="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Calls</h1>
@@ -90,7 +95,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	<section class="content">
 
 		<!-- Default box -->
-		
+
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<h3 class="box-title">&nbsp;</h3>
@@ -105,120 +110,152 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 					</button>
 				</div>
 				<div class="col-sm-12">
-					<hr style="margin-bottom: 5px;margin-top: 8px;" />
-				 </div> 
-				<div style="background: #fff;margin-top: 15px;">
-				 <div class="col-sm-12">
-				 	<a href="${pageContext.request.contextPath}/create-call" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
-				 	<a href="${pageContext.request.contextPath}/view-calls" class="btn btn-info btn-app" ><i class="fa fa-clone"	aria-hidden="true"></i> View</a>
-				 </div>
-				 
-				  
-				  <div class="col-sm-12">
-					<hr style="margin-bottom: 0;margin-top: 0px;" />
-				 </div> 
+					<hr style="margin-bottom: 5px; margin-top: 8px;" />
+				</div>
+				<div style="background: #fff; margin-top: 15px;">
+					<div class="col-sm-12">
+						<a href="${pageContext.request.contextPath}/create-call"
+							class="btn btn-info btn-app"><i class="fa fa-plus"
+							aria-hidden="true"></i> Create</a> <a
+							href="${pageContext.request.contextPath}/view-calls"
+							class="btn btn-info btn-app"><i class="fa fa-clone"
+							aria-hidden="true"></i> View</a>
+					</div>
+					<div class="col-sm-12">
+						<hr style="margin-bottom: 0; margin-top: 0px;" />
+					</div>
+				</div>
 			</div>
-			</div>
-			
-			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
-				
-			 
-			<div class="clearfix"></div>
 
-			<div class="panel panel-default">
-  				<div class="panel-body">
-  				
-				 <div class="col-sm-4">
-				  <form class="form-inline">
-				        <div class="form-group" style="padding-top: 10px;">
-				            <label >Search :</label>
-				            <input type="text" ng-model="search" class="form-control" placeholder="Search">
-				        </div>
-				    </form>
-				    <br/>
-				  </div>
-				  <div class="clearfix"></div>
-			<div class="tablecontainer table-responsive" data-ng-init="listContact()" > 
-				<%
-				
-				   if(roleList.equals("YES")){
-				%>
-				<table class="table table-hover" >
-						<tr>
-							<th style="cursor: pointer;" ng-click="sort('callId')">Call ID
-								<span class="glyphicon sort-icon" ng-show="sortKey=='callId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('callSubject')">Subject
-								<span class="glyphicon sort-icon" ng-show="sortKey=='callSubject'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('callStartDate')">Start Date 
-								<span class="glyphicon sort-icon" ng-show="sortKey=='callStartDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('callDuration')">Duration 
-								<span class="glyphicon sort-icon" ng-show="sortKey=='callDuration'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('callStatusName')">Status 
-								<span class="glyphicon sort-icon" ng-show="sortKey=='callStatusName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('callRelatedToModuleType')">Relate To
-								<span class="glyphicon sort-icon" ng-show="sortKey=='callRelatedToModuleType'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-											
-							<th>Action</th>
-						</tr>
+			<div class="box-body"
+				style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
 
-						<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
-							<td>{{cc.callId}}</td>
-							<td>{{cc.callSubject}} </td>
-							<td>{{cc.callStartDate | date:'dd-MM-yyyy'}}</td>
-							<td>{{cc.callDuration}}</td>
-							<td>{{cc.callStatusName}}</td>
-							<td>{{cc.callRelatedToModuleType}}</td>	
-							<td>
-								<div class="col-sm-2">
-									<div class="btn-group">
-				                      <button type="button" class="btn btn-default btn-flat" data-toggle="dropdown" aria-expanded="false">
-				                        <span class="caret"></span>
-				                        <span class="sr-only">Toggle Dropdown</span>
-				                      </button>
-				                      <ul class="dropdown-menu" role="menu">
-				                        <li><a href="${pageContext.request.contextPath}/update-call/{{cc.callId}}"><i class="fa fa-pencil"></i> Edit</a></li>
-				                        <li><a href="#" ng-click="deleteCon(cc.callId)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="#"><i class="fa fa-eye"></i> View</a></li>
-				                      </ul>
-				                    </div>
-			                   	</div>
-								
-							</td>
-						</tr> 
-				
-				</table>
-				<dir-pagination-controls
-			       max-size="5"
-			       direction-links="true"
-			       boundary-links="true" >
-			    </dir-pagination-controls>
-			    <%	   
-				   }else{
-					   
-				%>
-					<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>
-				<%
-				   }
-				
-				%>
-				
-			</div>	
-				
 
-			  </div>
-		</div>
+				<div class="clearfix"></div>
+
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="col-sm-4">
+							<form class="form-inline">
+								<div class="form-group" style="padding-top: 10px;">
+									<label>Search :</label> <input type="text" ng-model="search"
+										class="form-control" placeholder="Search">
+								</div>
+							</form>
+							<br />
+						</div>
+						<div class="clearfix"></div>
+						<div class="tablecontainer table-responsive" data-ng-init="listContact()">
+							<%
+								if (roleList.equals("YES")) {
+							%>
+							<table class="table table-hover">
+								<tr>
+									<th style="cursor: pointer;" ng-click="sort('callId')">Call
+										ID <span class="glyphicon sort-icon"
+										ng-show="sortKey=='callId'"
+										ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('callSubject')">Subject
+										<span class="glyphicon sort-icon"
+										ng-show="sortKey=='callSubject'"
+										ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('callStartDate')">Start
+										Date <span class="glyphicon sort-icon"
+										ng-show="sortKey=='callStartDate'"
+										ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('callDuration')">Duration
+										<span class="glyphicon sort-icon"
+										ng-show="sortKey=='callDuration'"
+										ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('callStatusName')">Status
+										<span class="glyphicon sort-icon"
+										ng-show="sortKey=='callStatusName'"
+										ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;"
+										ng-click="sort('callRelatedToModuleType')">Relate To <span
+										class="glyphicon sort-icon"
+										ng-show="sortKey=='callRelatedToModuleType'"
+										ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></th>
+
+									<th>Action</th>
+								</tr>
+
+								<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
+									<td>{{cc.callId}}</td>
+									<td>{{cc.callSubject}}</td>
+									<td>{{cc.callStartDate | date:'dd-MM-yyyy'}}</td>
+									<td>{{cc.callDuration}}</td>
+									<td>{{cc.callStatusName}}</td>
+									<td>{{cc.callRelatedToModuleType}}</td>
+									<td>
+										<div class="col-sm-2 visible-lg-block">
+											<div class="btn-group">
+												<button type="button" class="btn btn-default btn-flat"
+													data-toggle="dropdown" aria-expanded="false">
+													<span class="caret"></span> <span class="sr-only">Toggle
+														Dropdown</span>
+												</button>
+												<ul class="dropdown-menu pull-left" role="menu">
+													<li><a
+														href="${pageContext.request.contextPath}/update-call/{{cc.callId}}"><i
+															class="fa fa-pencil"></i> Edit</a></li>
+													<li><a href="#" ng-click="deleteCon(cc.callId)"><i
+															class="fa fa-trash"></i> Delete</a></li>
+													<li><a href="#"><i class="fa fa-eye"></i> View</a></li>
+												</ul>
+											</div>
+										</div>
+
+										<div class="col-xs-2 visible-xs-block visible-sm-block visible-md-block">
+											<div class="btn-group">
+												<button type="button" class="btn btn-default btn-flat"
+													data-toggle="dropdown" aria-expanded="false">
+													<span class="caret"></span> <span class="sr-only">Toggle
+														Dropdown</span>
+												</button>
+												<ul class="dropdown-menu pull-right" role="menu">
+													<li><ahref="${pageContext.request.contextPath}/update-call/{{cc.callId}}">
+														<i class="fa fa-pencil"></i> Edit</a></li>
+													<li><a href="#" ng-click="deleteCon(cc.callId)">
+														<i class="fa fa-trash"></i> Delete</a></li>
+													<li><a href="#"><i class="fa fa-eye"></i> View</a></li>
+												</ul>
+											</div>
+										</div>
+
+									</td>
+								</tr>
+
+							</table>
+							<dir-pagination-controls max-size="5" direction-links="true"
+								boundary-links="true"> </dir-pagination-controls>
+							<%
+								} else {
+							%>
+							<div class="alert alert-warning" role="alert">
+								<i class="glyphicon glyphicon-cog"></i> You don't have
+								permission list data
+							</div>
+							<%
+								}
+							%>
+
+						</div>
+
+
+					</div>
+				</div>
 			</div>
 			<!-- /.box-body -->
 			<div class="box-footer"></div>
 			<!-- /.box-footer-->
 		</div>
-		
+
 		<!-- /.box -->
 
 
