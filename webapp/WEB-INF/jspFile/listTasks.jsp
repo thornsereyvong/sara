@@ -165,7 +165,6 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 											
 							<th>Action</th>
 						</tr>
-
 						<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
 							<td>{{cc.taskId}}</td>
 							<td>{{cc.taskSubject}}</td>
@@ -190,7 +189,6 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 			                  
 							</td>
 						</tr>
-				
 				</table>
 				<dir-pagination-controls
 			       max-size="5"
