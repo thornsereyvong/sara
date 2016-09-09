@@ -1,5 +1,10 @@
 <% String menu = (String)request.getAttribute("menu"); %>
 <% String role = (String)request.getAttribute("role_CRM_ADMIN"); %>
+<style>
+.color_menu{
+	color:#b9292d;
+}
+</style>
 <script>
 
 function removeCla(id,ul,ul_li,icon){
@@ -7,7 +12,7 @@ function removeCla(id,ul,ul_li,icon){
    	$(ul).css('display', '');
    	$(ul).css('display', 'block');
 	$(ul_li).removeAttr("class").attr('class', 'active');
-   	$(icon).removeAttr("class").attr('class', 'fa fa-check-circle');
+   	$(icon).removeAttr("class").attr('class', 'fa fa-check-circle color_menu');
 }
 
 $(document).ready(function(){
@@ -35,7 +40,6 @@ $(document).ready(function(){
           <ul  class="sidebar-menu">
           	<li id="dashboard">
               <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/Dashboard.png" style="width:16px;">
-                <!-- <i class="fa fa-tachometer" aria-hidden="true"></i> -->
                 &nbsp;&nbsp;<span>Dashboard</span>
               </a>
             </li>
@@ -46,13 +50,13 @@ $(document).ready(function(){
               
                 <li id="ul_li_campaign" >
 	              <a href="${pageContext.request.contextPath}/list-campaigns"> 
-	              	<i class='fa fa-circle-o' aria-hidden='true' id="marketing_icon_campaign"></i>
+	              	<i class='fa fa-circle-o color_menu' aria-hidden='true' id="marketing_icon_campaign"></i>
 	              	<span>Campaigns</span></a>
 	            </li>
 	            
 	              <li id="ul_li_lead">
 		              <a href="${pageContext.request.contextPath}/list-leads">
-		              	<i class='fa fa-circle-o' aria-hidden='true' id="marketing_icon_lead"></i>
+		              	<i class='fa fa-circle-o color_menu' aria-hidden='true' id="marketing_icon_lead"></i>
 		               <span>Leads</span> </a>
 		          </li>
 		         
@@ -65,19 +69,19 @@ $(document).ready(function(){
               
                 <li id="ul_li_customer">
              		 <a href="${pageContext.request.contextPath}/list-customers">
-	              		<i class='fa fa-circle-o' aria-hidden='true' id="sale_icon_customer"></i>
+	              		<i class='fa fa-circle-o color_menu' aria-hidden='true' id="sale_icon_customer"></i>
              		<span>Customers</span> </a>
            		 </li>
            		 
                 <li id="ul_li_contact">
               		<a href="${pageContext.request.contextPath}/list-contacts">
-	              		<i class='fa fa-circle-o' aria-hidden='true' id="sale_icon_contact"></i> 
+	              		<i class='fa fa-circle-o color_menu' aria-hidden='true' id="sale_icon_contact"></i> 
               		<span>Contacts</span></a>
            		 </li>
 	            
                  <li id="ul_li_opportunity">
              		 <a href="${pageContext.request.contextPath}/list-opportunity">
-             		 	<i class='fa fa-circle-o' aria-hidden='true' id="sale_icon_opportunity"></i>
+             		 	<i class='fa fa-circle-o color_menu' aria-hidden='true' id="sale_icon_opportunity"></i>
              		 <span>Opportunity</span> </a>
           		 </li>
               
@@ -90,37 +94,37 @@ $(document).ready(function(){
               
                  <li id="ul_li_call">
              		 <a href="${pageContext.request.contextPath}/list-calls">
-             		 	<i class='fa fa-circle-o' aria-hidden='true' id="activ_icon_call"></i>
+             		 	<i class='fa fa-circle-o color_menu' aria-hidden='true' id="activ_icon_call"></i>
              		<span>Calls</span> </a>
            		 </li>
            		 
            		 <li id="ul_li_meeting">
              		 <a href="${pageContext.request.contextPath}/list-meetings">
-             			<i class='fa fa-circle-o' aria-hidden='true' id="activ_icon_meeting"></i>
+             			<i class='fa fa-circle-o color_menu' aria-hidden='true' id="activ_icon_meeting"></i>
              		<span>Meetings</span> </a>
            		 </li>
            		 
            		 <li  id="ul_li_task">
              		 <a href="${pageContext.request.contextPath}/list-tasks">
-             			 <i class='fa fa-circle-o' aria-hidden='true' id="activ_icon_task"></i>
+             			 <i class='fa fa-circle-o color_menu' aria-hidden='true' id="activ_icon_task"></i>
              		<span>Tasks</span> </a>
            		 </li>
            		 
            		 <li id="ul_li_note">
              		 <a href="${pageContext.request.contextPath}/list-notes">
-             			<i class='fa fa-circle-o' aria-hidden='true' id="activ_icon_note"></i>
+             			<i class='fa fa-circle-o color_menu' aria-hidden='true' id="activ_icon_note"></i>
              		<span>Notes</span> </a>
            		 </li>
            		 
            		  <li id="ul_li_event">
              		 <a href="${pageContext.request.contextPath}/list-events">
-             			<i class='fa fa-circle-o' aria-hidden='true' id="activ_icon_event"></i>
+             			<i class='fa fa-circle-o color_menu' aria-hidden='true' id="activ_icon_event"></i>
              		<span>Events</span> </a>
            		 </li>
            		 
            		 <li id="ul_li_loca">
              		 <a href="${pageContext.request.contextPath}/list-locations">
-             			<i class='fa fa-circle-o' aria-hidden='true' id="activ_icon_loca"></i>
+             			<i class='fa fa-circle-o color_menu' aria-hidden='true' id="activ_icon_loca"></i>
              		<span>Locations</span> </a>
            		 </li>
            		 
@@ -133,7 +137,7 @@ $(document).ready(function(){
               
                  <li id="ul_li_case">
              		 <a href="${pageContext.request.contextPath}/list-cases">
-             			<i class='fa fa-circle-o' aria-hidden='true' id="support_icon_case"></i>
+             			<i class='fa fa-circle-o color_menu' aria-hidden='true' id="support_icon_case"></i>
              		<span>Cases</span> </a>
            		 </li>
            		 
