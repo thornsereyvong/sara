@@ -27,7 +27,7 @@
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-	$scope.editCampaignOnStartup = function(username, campId) {
+	$scope.editCampaignOnStartup = function() {
 		$http({
 		    method: 'POST',
 		    url: '${pageContext.request.contextPath}/edit/startup',
@@ -36,11 +36,14 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		        'Content-Type': 'application/json'
 		    },
 		    data: {
-		    	"username": username,
-		    	"campID": campId
+		    	"username": '${SESSION}',
+		    	"campID": '${campId}'
 		    }
 		}).success(function(response) {
 			addCampaignDataToForm(response);
+			if(response.CHILD == "EXIST"){
+				
+			}
 		});
 	};
 }]);
@@ -452,7 +455,7 @@ $(document).ready(function() {
 					</button>
 				</div>
 			</div>
-			<div class="box-body" data-ng-init = "editCampaignOnStartup('${SESSION}','${campId}')">
+			<div class="box-body" data-ng-init = "editCampaignOnStartup()">
 			
 			<form method="post" id="form-campaigns">
 				
@@ -547,7 +550,7 @@ $(document).ready(function() {
 						
 
 						<div class="col-sm-6">
-							<label class="font-label">Parent ID </label>
+							<label class="font-label">Parent campaign </label>
 							<div class="form-group">
 								<select class="form-control select2" name="cam_parent" id="cam_parent" style="width: 100%;">
 									
@@ -582,7 +585,7 @@ $(document).ready(function() {
 						</div>
 						
 					<div class="col-sm-6">
-							<label class="font-label">Actual Cost</label>
+							<label class="font-label">Actual cost</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_actualCost" id="cam_actualCost">
 							</div>
@@ -590,7 +593,7 @@ $(document).ready(function() {
 						
 						
 						<div class="col-sm-6">
-							<label class="font-label">Number Send</label>
+							<label class="font-label">Number send</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_numSend" id="cam_numSend">
 							</div>
@@ -598,7 +601,7 @@ $(document).ready(function() {
 						
 						
 						<div class="col-sm-6">
-							<label class="font-label">Expected Response</label>
+							<label class="font-label">Expected response</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_expectedResponse" id="cam_expectedResponse">
 							</div>
@@ -611,14 +614,14 @@ $(document).ready(function() {
 				<div class="col-sm-6">
 				
 					<div class="col-sm-6">
-							<label class="font-label">Expected Cost</label>
+							<label class="font-label">Expected cost</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_expectedCost" id="cam_expectedCost">
 							</div>
 						</div>
 						
 					<div class="col-sm-6">
-							<label class="font-label">Expected Revenue</label>
+							<label class="font-label">Expected revenue</label>
 							<div class="form-group">
 								<input type="text" class="form-control" name="cam_expectedRevenue" id="cam_expectedRevenue">
 							</div>
