@@ -176,6 +176,10 @@ function getDateByFormat(ID){
 	return date[2]+"-"+date[1]+"-"+date[0];
 }
 
+function getDateTimeByFormat(ID){
+	
+}
+
 
 function convertFromSQLToDate(value){
 	if(value != "0001-01-01" && value != null)

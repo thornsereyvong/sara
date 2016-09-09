@@ -116,4 +116,14 @@ public class CrmMeetingController {
 		
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/meeting/list-by-lead/{id}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listMeetingByLeadId(@PathVariable("id") String id){		
+		HttpEntity<Object> request = new HttpEntity<Object>(header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/meeting/list/lead/"+id, HttpMethod.GET, request, Map.class);		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
+	
 }

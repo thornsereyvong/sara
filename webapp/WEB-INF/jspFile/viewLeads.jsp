@@ -21,6 +21,9 @@ var noteIdEdit = "";
 var response=[];
 var LEAD = [];
 var callIdForEdit = null;
+var meetIdForEdit = null;
+var taskIdForEdit = null;
+var eventIdForEdit = null;
 var leadStatusData = ["New", "Assigned", "In Process", "Converted", "Dead"];
 var startupCallForm = [];
 app.controller('viewLeadController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
@@ -44,22 +47,29 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 			$scope.leadCampaign = response.CAMPAIGN;
 			$scope.lead = response.LEAD;
 			$scope.listNote1(response.NOTES);
-			
-			
+					
 			userAllList($scope.leadAssignTo,'#callAssignTo','');
+			userAllList($scope.leadAssignTo,'#meetAssignTo','');
+			userAllList($scope.leadAssignTo,'#taskAssignTo','');
+			userAllList($scope.leadAssignTo,'#eventAssignTo','');
+			
 			
 			displayStatusLead(LEAD.statusID);
 			
-			$scope.listAllCallByLeadId = function(){
-				$http.get("${pageContext.request.contextPath}/call/list").success(function(response){
-					$scope.listAllCallByLead = response.DATA;
-				});			
-			}
 			
-	};
+			$scope.listAllCallByLeadId(response.CALLS);	
+			$scope.listAllMeetByLeadId(response.METTINGS);	
+			$scope.listAllTaskByLeadId(response.TASKS);
+			$scope.listAllEventByLeadId(response.EVENTS);
+			
+			
+			$scope.listAllEmailByLeadId = function(){	
+				$scope.listAllEmailByLead = [];	
+			}
+		
+			//dis(response.EVENTS);
+	}
 	
-    
-
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -101,7 +111,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 					            		timer: 2000,   
 					            		showConfirmButton: false
 			            		});
-			            		$scope.getListNoteByLead();		
+			            		$scope.getListNoteByLead();
 					      });
 					}else{
 						SweetAlert.swal({
@@ -183,8 +193,30 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$("#showBtnEditLead").hide();
 	}
 	
+	
+	// show activity 
+	
+	$scope.show_activity = "All";
+	
+	$scope.showActivityByModule = function(){
+		alert($scope.show_activity);
+	}
+	// end show activity
+	
+	
+	
+	
     
 	// Call path
+	$scope.listAllCallByLeadId = function(data){
+		$scope.listAllCallByLead = data;	
+	}
+	$scope.listDataCallByRalateType = function(){
+		$http.get("${pageContext.request.contextPath}/call/list-by-lead/"+leadId).success(function(response){	
+			$scope.listAllCallByLeadId(response.CALLS);	
+		});	
+	}
+	
 	$scope.call_click = function(){
 		$("#btn_show_call").click();
 	}
@@ -223,7 +255,8 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	     			            		timer: 2000,   
 	     			            		showConfirmButton: false
 	     	            		});
-	     	            		$scope.listContact();
+	     	            		
+	     	            		$scope.listDataCallByRalateType();
 	     		            });
 					}else{
 						SweetAlert.swal({
@@ -245,16 +278,242 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	}
 	// end call path
 	
-
+	// meeting path
+	
+	$scope.listAllMeetByLeadId = function(data){
+		$scope.listAllMeetByLead = data;	
+	}
+	
+	$scope.listDataMeetByRalateType = function(){
+		$http.get("${pageContext.request.contextPath}/meeting/list-by-lead/"+leadId).success(function(response){		
+			$scope.listAllMeetByLeadId(response.MEETINGS);	
+		});	
+	}
+	
 	$scope.meet_click = function(){
 		$("#btn_show_meet").click();
 	}
+	$scope.actEditMeeting = function(meetingId){				
+		$http.get("${pageContext.request.contextPath}/meeting/list/"+meetingId).success(function(response){			
+			addDataMeetToForm(response.DATA);
+			meetIdForEdit = meetingId;
+			$("#btnMeetSave").text("Update");
+			$("#btn_show_meet").click();
+		});		
+	}
+	$scope.actDeleteMeeting = function(meetingId){				
+		SweetAlert.swal({
+            title: "Are you sure?", //Bold text
+            text: "This meeting will not be able to recover!", //light text
+            type: "warning", //type -- adds appropiriate icon
+            showCancelButton: true, // displays cancel btton
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete!",
+            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
+            closeOnCancel: false
+        }, 
+        function(isConfirm){ //Function that triggers on user action.
+           
+	            var str = '<%=roleDelete%>';
+	        	
+	            if(isConfirm){
+
+	            	if(str == "YES"){
+	            		 $http.delete("${pageContext.request.contextPath}/meeting/remove/"+meetingId)
+	     	            .success(function(){
+	     	            		SweetAlert.swal({
+	     			            		title:"Deleted",
+	     			            		text:"Meeting have been deleted!",
+	     			            		type:"success",  
+	     			            		timer: 2000,   
+	     			            		showConfirmButton: false
+	     	            		});
+	     	            		
+	     	            		$scope.listDataMeetByRalateType();
+	     		            });
+					}else{
+						SweetAlert.swal({
+			                title:"Cancelled",
+			                text:"You don't have permission delete!",
+			                type:"error",
+			                timer:2000,
+			                showConfirmButton: false});
+					} 
+            } else {
+                SweetAlert.swal({
+	                title:"Cancelled",
+	                text:"This meeting is safe!",
+	                type:"error",
+	                timer:2000,
+	                showConfirmButton: false});
+            }
+        });
+	}
+	
+	
+	
+	// end meeting path
+	
+	// Task path
+	
 	$scope.task_click = function(){
 		$("#btn_show_task").click();
 	}
+	$scope.listAllTaskByLeadId = function(data){
+		$scope.listAllTaskByLead = data;	
+	}
+	$scope.listDataTaskByRalateType = function(){
+		$http.get("${pageContext.request.contextPath}/task/list-by-lead/"+leadId).success(function(response){		
+			$scope.listAllTaskByLeadId(response.TASKS);	
+		});	
+	}
+	$scope.actEditTask = function(taskId){				
+		$http.get("${pageContext.request.contextPath}/task/list/"+taskId).success(function(response){			
+			addDataTaskToForm(response.DATA);
+			taskIdForEdit = taskId;
+			$("#btnTaskSave").text("Update");
+			$("#btn_show_task").click();
+		});		
+	}
+	
+	$scope.actDeleteTask = function(taskId){				
+		SweetAlert.swal({
+            title: "Are you sure?", //Bold text
+            text: "This task will not be able to recover!", //light text
+            type: "warning", //type -- adds appropiriate icon
+            showCancelButton: true, // displays cancel btton
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete!",
+            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
+            closeOnCancel: false
+        }, 
+        function(isConfirm){ //Function that triggers on user action.
+           
+	            var str = '<%=roleDelete%>';
+	        	
+	            if(isConfirm){
+
+	            	if(str == "YES"){
+	            		 $http.delete("${pageContext.request.contextPath}/task/remove/"+taskId)
+	     	            .success(function(){
+	     	            		SweetAlert.swal({
+	     			            		title:"Deleted",
+	     			            		text:"Task have been deleted!",
+	     			            		type:"success",  
+	     			            		timer: 2000,   
+	     			            		showConfirmButton: false
+	     	            		});
+	     	            		
+	     	            		$scope.listDataTaskByRalateType();
+	     		            });
+					}else{
+						SweetAlert.swal({
+			                title:"Cancelled",
+			                text:"You don't have permission delete!",
+			                type:"error",
+			                timer:2000,
+			                showConfirmButton: false});
+					} 
+            } else {
+                SweetAlert.swal({
+	                title:"Cancelled",
+	                text:"This task is safe!",
+	                type:"error",
+	                timer:2000,
+	                showConfirmButton: false});
+            }
+        });
+	}
+	
+	
+	
+	// end Task path
+	
+	
+	
+	
+	
+	// event path
+	
+	
 	$scope.event_click = function(){
 		$("#btn_show_event").click();
 	}
+
+	$scope.listAllEventByLeadId = function(data){
+		$scope.listAllEventByLead = data;	
+	}
+	$scope.listDataEventByRalateType = function(){
+		$http.get("${pageContext.request.contextPath}/event/list-by-lead/"+leadId).success(function(response){	
+			dis(response)
+			$scope.listAllEventByLeadId(response.EVENTS);	
+		});	
+	}
+	$scope.actEditEvent = function(eventId){				
+		$http.get("${pageContext.request.contextPath}/event/list/"+eventId).success(function(response){			
+			addDataEventToForm(response.DATA);
+			eventIdForEdit = eventId;
+			$("#btnEventSave").text("Update");
+			$("#btn_show_event").click();
+		});		
+	}
+	
+	$scope.actDeleteEvent = function(eventId){				
+		SweetAlert.swal({
+            title: "Are you sure?", //Bold text
+            text: "This event will not be able to recover!", //light text
+            type: "warning", //type -- adds appropiriate icon
+            showCancelButton: true, // displays cancel btton
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete!",
+            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
+            closeOnCancel: false
+        }, 
+        function(isConfirm){ //Function that triggers on user action.
+           
+	            var str = '<%=roleDelete%>';
+	        	
+	            if(isConfirm){
+
+	            	if(str == "YES"){
+	            		 $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId)
+	     	            .success(function(){
+	     	            		SweetAlert.swal({
+	     			            		title:"Deleted",
+	     			            		text:"Event have been deleted!",
+	     			            		type:"success",  
+	     			            		timer: 2000,   
+	     			            		showConfirmButton: false
+	     	            		});
+	     	            		
+	     	            		$scope.listDataEventByRalateType();
+	     		            });
+					}else{
+						SweetAlert.swal({
+			                title:"Cancelled",
+			                text:"You don't have permission delete!",
+			                type:"error",
+			                timer:2000,
+			                showConfirmButton: false});
+					} 
+            } else {
+                SweetAlert.swal({
+	                title:"Cancelled",
+	                text:"This event is safe!",
+	                type:"error",
+	                timer:2000,
+	                showConfirmButton: false});
+            }
+        });
+	}
+	
+	
+	
+	// end event path
+	
+	
+	
+	
 	$scope.email_click = function(){
 		$("#btn_show_email").click();
 	}
@@ -264,25 +523,80 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 
 
 app.controller('callController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-	
 	$scope.startupCallForm = function(){
 		$http.get("${pageContext.request.contextPath}/call_status/list")
 			.success(function(response){
 				$scope.callStatusStartup = response.DATA;
 	    });
 	}
-	
 	$scope.cancelCallClick = function(){
 		callIdForEdit = null;
 		$("#callStatus").select2('val',"");
 		$("#callAssignTo").select2('val',"");	
 		$("#btnCallSave").text("Save");
 		$('#frmAddCall').bootstrapValidator('resetForm', true);
-	}
-	
-	
+	}	
 }]);
 
+
+
+app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+	$scope.startupMeetForm = function(){
+		$http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
+			$scope.meetStatusStartup = response.DATA;
+	    });
+	}
+	$scope.cancelMeetClick = function(){
+		 meetIdForEdit = null;
+		$("#meetDuration").select2('val',"");
+		$("#meetStatus").select2('val',"");
+		$("#meetAssignTo").select2('val',"");	
+		$("#btnMeetSave").text("Save");
+		$('#frmAddMeet').bootstrapValidator('resetForm', true);
+	}	
+}]);
+
+app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+	
+	$scope.startupTaskForm = function(){
+		$http.get("${pageContext.request.contextPath}/task_status/list").success(function(response){
+			$scope.taskStatusStartup = response.DATA;
+		});
+
+		$http.get("${pageContext.request.contextPath}/contact/list").success(function(response){
+			$scope.taskContactStartup = response.DATA;
+		});
+		
+	}
+	
+	$scope.cancelTaskClick = function(){
+		taskIdForEdit = null;
+		$("#taskPriority").select2('val',"");
+		$("#taskContact").select2('val',"");
+		$("#taskStatus").select2('val',"");
+		$("#taskAssignTo").select2('val',"");	
+		$("#btnTaskSave").text("Save");
+		$('#frmAddTask').bootstrapValidator('resetForm', true);
+	}	
+}]);
+
+app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+	
+	$scope.startupEventForm = function(){
+		$http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
+			$scope.eventLocationStartup = response.DATA;
+		});
+	}
+	
+	$scope.cancelEventClick = function(){
+		eventIdForEdit = null;
+		$("#eventDuration").select2('val',"");
+		$("#eventLocation").select2('val',"");
+		$("#eventAssignTo").select2('val',"");	
+		$("#btnEventSave").text("Save");
+		$('#frmAddEvent').bootstrapValidator('resetForm', true);
+	}	
+}]);
 
 
 function addDataCallToForm(data){
@@ -293,6 +607,45 @@ function addDataCallToForm(data){
 	setValueById('callSubject', data.callSubject);
 	setValueById('callDescription', data.callDes);
 	setValueById('callDuration', data.callDuration);
+}
+
+function addDataMeetToForm(data){
+	
+	$("#meetStatus").select2('val',data.statusId);
+	$("#meetAssignTo").select2('val',data.userID);	
+	$("#meetDuration").select2('val',data.meetingDuration);
+	
+	setValueById('meetEndDate', data.meetingEndDate);
+	setValueById('meetStartDate', data.meetingStartDate);
+	setValueById('meetSubject', data.meetingSubject);
+	setValueById('meetDescription', data.meetingDes);
+	setValueById('meetLocation', data.meetingLocation);
+}
+
+function addDataTaskToForm(data){
+	
+	$("#taskStatus").select2('val',data.taskStatusId);
+	$("#taskAssignTo").select2('val',data.userID);	
+	$("#taskPriority").select2('val',data.taskPriority);
+	$("#taskContact").select2('val',data.conID);
+	
+	setValueById('taskEndDate', data.taskDueDate);
+	setValueById('taskStartDate', data.taskStartDate);
+	setValueById('taskSubject', data.taskSubject);
+	setValueById('taskDescription', data.taskDes);
+}
+
+function addDataEventToForm(data){
+	
+	$("#eventDuration").select2('val',data.evDuration);
+	$("#eventAssignTo").select2('val',data.userID);	
+	$("#eventLocation").select2('val',data.locateId);
+	
+	setValueById('eventEndDate', data.evEndDate);
+	setValueById('eventStartDate', data.evStartDate);
+	setValueById('eventSubject', data.evName);
+	setValueById('eventDescription', data.evDes);
+	setValueById('eventBudget', data.evBudget);
 }
 
 
@@ -388,12 +741,23 @@ function addDataToDetailLead(){
 	color: #2196F3;
 }
 
-.show-edit{
+
+.iTable tbody{
+	border-top: 1px solid #d2d6de !important;
+}
+.iTable thead, tr, td{
+	border:0px !important;
+}
+
+
+
+.iTD-width-50 {
+	width: 50px;
+}
+
+.show-edit {
 	width: 70% !important;
 	margin: -25px 30% -5px !important;
-}
-.iTable {
-	
 }
 
 .iTD {
@@ -451,15 +815,14 @@ function addDataToDetailLead(){
 	border-left: 30px solid rgb(75, 202, 129);
 }
 
-
 .breadcrumb1 li.dead a {
 	background: brown; /* fallback color */
 	background: red;
 }
+
 .breadcrumb1 li.dead a:after {
 	border-left: 30px solid red;
 }
-
 
 .breadcrumb1 li.completed a:after {
 	border-left: 30px solid hsl(192, 100%, 41%);
@@ -541,7 +904,8 @@ function addDataToDetailLead(){
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{lead.salutation}} {{lead.firstName}} {{lead.lastName}} </h3>
+						<h3 class="widget-user-username">{{lead.salutation}}
+							{{lead.firstName}} {{lead.lastName}}</h3>
 						<h5 class="widget-user-desc">{{lead.title}}</h5>
 					</div>
 					<div class="widget-user-image">
@@ -599,234 +963,370 @@ function addDataToDetailLead(){
 										<div class="tab-pane active" id="activity">
 											<div class="row">
 
-												<div class="col-md-12">
-													<a class="btn btn-app" ng-click="call_click()"> <span
-														class="badge bg-yellow">3</span> <i class="fa fa-phone"></i>
-														Call
-													</a> <a class="btn btn-app" ng-click="meet_click()"> <span class="badge bg-blue">3</span>
+												<div class="col-md-12" >
+													<a style="margin-left: 0px;" class="btn btn-app" ng-click="call_click()"> 
+														<i class="fa fa-phone"></i> Call
+													</a> 
+													<a class="btn btn-app" ng-click="meet_click()"> 
 														<i class="fa fa-users"></i> Meeting
 													</a> 
-													<a class="btn btn-app" ng-click="task_click()"> <span class="badge bg-aqua">3</span>
+													<a class="btn btn-app" ng-click="task_click()"> 
 														<i class="fa fa-list-alt "></i> Task
 													</a> 
-													<a class="btn btn-app" ng-click="event_click()"> <span
-														class="badge bg-light-blue">3</span> <i
-														class="fa  fa-calendar-check-o"></i> Event
+													<a class="btn btn-app" ng-click="event_click()"> 
+														<i class="fa  fa-calendar-check-o"></i> Event
 													</a> 
-													<a class="btn btn-app" ng-click="email_click()"> <span class="badge bg-green">3</span>
+													<a class="btn btn-app" ng-click="email_click()"> 
 														<i class="fa fa-envelope"></i> Email
 													</a>
 												</div>
-
 												<div class="col-md-12">
-													<div class="col-md-2">
-														<div class="form-group">
-															<select style="margin-left: -5px;" class="form-control"
-																name="show_activity" id="show_activity">
-																<option value="All">All</option>
-																<option value="Call">Call</option>
-																<option value="Meeting">Meeting</option>
-																<option value="Task">Task</option>
-																<option value="Event">Event</option>
-																<option value="Email">Email</option>
-															</select>
+													<div class="panel-group" id="accordion">
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title">
+																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Calls</a>
+																	<span class="badge bg-blue pull-right">{{listAllCallByLead.length <= 0 ? '' : listAllCallByLead.length }}</span>
+																</h4>
+															</div>
+															<div id="collapse1" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																			<table class="table iTable"> 					
+																				<thead>
+																					<tr>
+																						<th>#</th>
+																						<th colspan="2">Subject</th>
+																						<th>Start Date</th>
+																						<th>Duration</th>
+																						<th>Assign To</th>
+																						<th>Create By</th>
+																					</tr>
+																				</thead>
+																				<tbody ng-repeat="call in listAllCallByLead">
+																					<tr>
+																						<td class="iTD-width-50">
+																							<a href="#">
+																								<i class="fa fa-phone text-yellow font-size-icon-30"></i>
+																							</a>
+																						</td>
+																						<td colspan="2">{{call.callSubject}}</td>
+																						<td> 
+																							{{call.callStartDate | date:'dd/MM/yyyy'}}
+																						</td>
+																						<td>{{call.callDuration}}</td>
+																						<td>{{call.username}}</td>
+																						<td>{{call.callCreateBy}}</td>
+																					</tr>
+																					<tr>
+																						<td colspan="6">
+																							<a href="#">{{call.callDes | limitTo:200}}{{call.callDes.length <= 200 ? '' : '...'}}</a>
+																						</td>
+																						<td class="mailbox-date">
+																							<div class="col-sm-2">
+																								<div class="btn-group">
+																									<button type="button"
+																										class="btn btn-default dropdown-toggle"
+																										data-toggle="dropdown" aria-expanded="false">
+																										<span class="caret"></span> <span class="sr-only">Toggle
+																											Dropdown</span>
+																									</button>
+																									<ul class="dropdown-menu" role="menu">
+																										<li><a ng-click="actEditCall(call.callId)">
+																												<i class="fa fa-pencil"></i> Edit
+																										</a></li>
+																										<li ng-click="actDeleteCall(call.callId)"><a
+																											href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																										<li><a href="#"> <i class="fa fa-eye"></i>
+																												View
+																										</a></li>
+					
+																									</ul>
+																								</div>
+																							</div>
+																						</td>
+																					</tr>
+																			</table>
+																		</div>
+																</div>
+															</div>
+														</div>
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title">
+																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse2"> Meetings</a>
+																	<span class="badge bg-blue pull-right">{{listAllMeetByLead.length <= 0 ? '' : listAllMeetByLead.length }}</span>
+																</h4>
+															</div>
+															<div id="collapse2" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																		<table class="table iTable"> 
+																			<thead>
+																				<tr>
+																					<th>#</th>
+																					<th colspan="2">Subject</th>
+																					<th>Status</th>
+																					<th>Start Date</th>
+																					<th>End Date</th>
+																					<th>Assign To</th>
+																					<th>Create By</th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="meet in listAllMeetByLead">
+																				<tr>
+																					<td class="iTD-width-50">
+																						<a href="#"><i class="fa fa-users text-aqua font-size-icon-30"></i></a>
+																					</td>
+																					<td colspan="2">{{meet.meetingSubject}}</td>
+																					<td>{{meet.statusName}}</td>
+																					<td>{{meet.meetingStartDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{meet.meetingEndDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{meet.username}}</td>
+																					<td>{{meet.meetingCreateBy}}</td>
+																				</tr>
+																				<tr>
+																					<td colspan="7">
+																						<a href="#">{{meet.meetingDes | limitTo:200}}{{meet.meetingDes.length <= 200 ? '' : '...'}}</a>
+																					</td>
+																					<td class="mailbox-date">
+																						<div class="col-sm-2">
+																							<div class="btn-group">
+																								<button type="button"
+																									class="btn btn-default dropdown-toggle"
+																									data-toggle="dropdown" aria-expanded="false">
+																									<span class="caret"></span> <span class="sr-only">Toggle
+																										Dropdown</span>
+																								</button>
+																								<ul class="dropdown-menu" role="menu">
+																									<li ng-click="actEditMeeting(meet.meetingId)">
+																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
+																									</li>
+																									<li ng-click="actDeleteMeeting(meet.meetingId)">
+																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																									<li>
+																										<a href="#"> <i class="fa fa-eye"></i>View</a>
+																									</li>
+				
+																								</ul>
+																							</div>
+																						</div>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>																
+																</div>
+															</div>
+														</div>
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title">
+																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> Tasks</a>
+																	<span class="badge bg-blue pull-right">{{listAllTaskByLead.length <= 0 ? '' : listAllTaskByLead.length }}</span>
+																</h4>
+															</div>
+															<div id="collapse3" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																		<table class="table iTable"> 
+																			<thead>
+																				<tr>
+																					<th>#</th>
+																					<th colspan="2">Subject</th>
+																					<th>Status</th>
+																					<th>Start Date</th>
+																					<th>End Date</th>
+																					<th>Assign To</th>
+																					<th>Create By</th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="task in listAllTaskByLead">
+																				<tr>
+																					<td class="iTD-width-50">
+																						<a href="#"><i class="fa fa-list-alt text-blue font-size-icon-30"></i></a>
+																					</td>
+																					<td colspan="2">{{task.taskSubject}}</td>
+																					<td>{{task.taskStatusName}}</td>
+																					<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{task.taskDueDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{task.username}}</td>
+																					<td>{{task.taskCreateBy}}</td>
+																				</tr>
+																				<tr>
+																					<td colspan="7">
+																						<a href="#">{{task.taskDes | limitTo:200}}{{task.taskDes.length <= 200 ? '' : '...'}}</a>
+																					</td>
+																					<td class="mailbox-date">
+																						<div class="col-sm-2">
+																							<div class="btn-group">
+																								<button type="button"
+																									class="btn btn-default dropdown-toggle"
+																									data-toggle="dropdown" aria-expanded="false">
+																									<span class="caret"></span> <span class="sr-only">Toggle
+																										Dropdown</span>
+																								</button>
+																								<ul class="dropdown-menu" role="menu">
+																									<li ng-click="actEditTask(task.taskId)">
+																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
+																									</li>
+																									<li ng-click="actDeleteTask(task.taskId)">
+																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																									<li>
+																										<a href="#"> <i class="fa fa-eye"></i>View</a>
+																									</li>
+				
+																								</ul>
+																							</div>
+																						</div>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title">
+																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> Events</a>
+																	<span class="badge bg-blue pull-right">{{listAllEventByLead.length <= 0 ? '' : listAllEventByLead.length }}</span>
+																</h4>
+															</div>
+															<div id="collapse4" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																		<table class="table iTable"> 
+																			<thead>
+																				<tr>
+																					<th>#</th>
+																					<th colspan="2">Name</th>
+																					<th>Location</th>
+																					<th>Start Date</th>
+																					<th>End Date</th>
+																					<th>Assign To</th>
+																					<th>Create By</th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="event in listAllEventByLead">
+																				<tr>
+																					<td class="iTD-width-50">
+																						<a href="#"><i class="fa  fa-calendar-check-o text-red font-size-icon-30"></i></a>
+																					</td>
+																					<td colspan="2">{{event.evName}}</td>
+																					<td>{{event.locateName}}</td>
+																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{event.username}}</td>
+																					<td>{{event.evCreateBy}}</td>
+																				</tr>
+																				<tr>
+																					<td colspan="7">
+																						<a href="#">{{event.evDes | limitTo:200}}{{event.evDes.length <= 200 ? '' : '...'}}</a>
+																					</td>
+																					<td class="mailbox-date">
+																						<div class="col-sm-2">
+																							<div class="btn-group">
+																								<button type="button"
+																									class="btn btn-default dropdown-toggle"
+																									data-toggle="dropdown" aria-expanded="false">
+																									<span class="caret"></span> <span class="sr-only">Toggle
+																										Dropdown</span>
+																								</button>
+																								<ul class="dropdown-menu" role="menu">
+																									<li ng-click="actEditEvent(event.evId)">
+																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
+																									</li>
+																									<li ng-click="actDeleteEvent(event.evId)">
+																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																									<li>
+																										<a href="#"> <i class="fa fa-eye"></i>View</a>
+																									</li>
+				
+																								</ul>
+																							</div>
+																						</div>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title">
+																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> Emails</a>
+																	<span class="badge bg-blue pull-right">{{listAllEmailByLead.length <= 0 ? '' : listAllEmailByLead.length }}</span>
+																</h4>
+															</div>
+															<div id="collapse5" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																		<table class="table iTable" data-ng-init="listAllEmailByLeadId()"> 
+																			<thead>
+																				<tr>
+																					<th>#</th>
+																					<th colspan="2">Subject</th>
+																					<th>Sent To</th>
+																					<th>Date</th>
+																					<th>Status</th>
+																					<th>Assign To</th>
+																					<th>Create By</th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="email in listAllEmailByLead">
+																				<tr>
+																					<td class="iTD-width-50">
+																						<a href="#"><i class="fa fa-envelope text-green font-size-icon-30"></i></a>
+																					</td>
+																					<td colspan="2">{{event.evName}}</td>
+																					<td>{{event.locateName}}</td>
+																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{event.username}}</td>
+																					<td>{{event.evCreateBy}}</td>
+																				</tr>
+																				<tr>
+																					<td colspan="7">
+																						<a href="#">{{event.evDes | limitTo:200}}{{event.evDes.length <= 200 ? '' : '...'}}</a>
+																					</td>
+																					<td class="mailbox-date">
+																						<div class="col-sm-2">
+																							<div class="btn-group">
+																								<button type="button"
+																									class="btn btn-default dropdown-toggle"
+																									data-toggle="dropdown" aria-expanded="false">
+																									<span class="caret"></span> <span class="sr-only">Toggle
+																										Dropdown</span>
+																								</button>
+																								<ul class="dropdown-menu" role="menu">
+																									<li ng-click="actEditEvent(event.evId)">
+																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
+																									</li>
+																									<li ng-click="actDeleteEvent(event.evId)">
+																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																									<li>
+																										<a href="#"> <i class="fa fa-eye"></i>View</a>
+																									</li>
+				
+																								</ul>
+																							</div>
+																						</div>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
-
-												<div class="col-md-12">
-
-													<div class="mailbox-messages">
-														<table class="table table-hover table-striped">
-															
-															<thead data-ng-init="listAllCallByLeadId()"></thead>
-															<tbody ng-repeat="call in listAllCallByLead">
-																
-																<tr>
-																	<td>
-																		<a href="#"><i class="fa fa-phone text-yellow font-size-icon-30"></i></a>
-																	</td>
-																	<td colspan="2"><a href="#">{{call.callSubject}}</a></td>
-																	<td class="mailbox-star "><i class="fa fa-calendar"></i> {{call.callStartDate | date:'dd/MM/yyyy'}}</td>
-																	<td><i class="fa fa-clock-o"></i> {{call.callDuration}}</td>
-																	<th><a href="#">by {{call.callCreateBy}}</a></th>
-																</tr>
-																<tr>
-																	<td class="mailbox-name " data-dd-collapse-text="100" colspan="4">
-																		<a href="#">{{call.callDes}}</a>
-																	</td>
-																	<td>
-																		<a href="#">Assign To {{call.username}}</a>
-																	</td>
-																	<td class="mailbox-date">
-																		<div class="col-sm-2">
-																			<div class="btn-group">
-																				<button type="button"
-																					class="btn btn-default dropdown-toggle"
-																					data-toggle="dropdown" aria-expanded="false">
-																					<span class="caret"></span> <span class="sr-only">Toggle
-																						Dropdown</span>
-																				</button>
-																				<ul class="dropdown-menu" role="menu">
-																					<li>
-																						<a ng-click="actEditCall(call.callId)">
-																							<i class="fa fa-pencil"></i> Edit
-																					 	</a>
-																					</li>
-																					<li ng-click="actDeleteCall(call.callId)"><a
-																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																					<li>
-																						<a href="#">
-																							<i class="fa fa-eye"></i> View
-																					    </a>
-																					</li>
-
-																				</ul>
-																			</div>
-																		</div>
-																	</td>
-																</tr>
-															</tbody>
-															
-															
-															<%-- <tr>
-																	<td class="mailbox-star"><a href="#"><i
-																			class="fa fa-users text-blue font-size-icon-30"></i></a></td>
-																	<td><b>Meeting</b></td>
-																	<td class="mailbox-name"><a href="read-mail.html">Alexander
-																			Pierce</a></td>
-																	<td class="mailbox-subject"><b>AdminLTE 2.0
-																			Issue</b> - Trying to find a solution to this problem...</td>
-
-																	<td class="mailbox-date"><div class="col-sm-2">
-																			<div class="btn-group">
-																				<button type="button"
-																					class="btn btn-default dropdown-toggle"
-																					data-toggle="dropdown" aria-expanded="false">
-																					<span class="caret"></span> <span class="sr-only">Toggle
-																						Dropdown</span>
-																				</button>
-																				<ul class="dropdown-menu" role="menu">
-																					<li><a
-																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
-																							class="fa fa-pencil"></i> Edit</a></li>
-																					<li ng-click="deleteLead(cc.leadID)"><a
-																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																					<li><a
-																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
-																							class="fa fa-eye"></i> View</a></li>
-
-																				</ul>
-																			</div>
-																		</div></td>
-																</tr>
-																<tr>
-																	<td class="mailbox-star"><a href="#"><i
-																			class="fa fa-list-alt text-aqua font-size-icon-30"></i></a></td>
-																	<td><b>Task</b></td>
-																	<td class="mailbox-name"><a href="read-mail.html">Alexander
-																			Pierce</a></td>
-																	<td class="mailbox-subject"><b>AdminLTE 2.0
-																			Issue</b> - Trying to find a solution to this problem...</td>
-
-																	<td class="mailbox-date"><div class="col-sm-2">
-																			<div class="btn-group">
-																				<button type="button"
-																					class="btn btn-default dropdown-toggle"
-																					data-toggle="dropdown" aria-expanded="false">
-																					<span class="caret"></span> <span class="sr-only">Toggle
-																						Dropdown</span>
-																				</button>
-																				<ul class="dropdown-menu" role="menu">
-																					<li><a
-																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
-																							class="fa fa-pencil"></i> Edit</a></li>
-																					<li ng-click="deleteLead(cc.leadID)"><a
-																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																					<li><a
-																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
-																							class="fa fa-eye"></i> View</a></li>
-
-																				</ul>
-																			</div>
-																		</div></td>
-																</tr>
-																<tr>
-																	<td class="mailbox-star"><a href="#"><i
-																			class="fa fa-envelope text-green font-size-icon-30"></i></a></td>
-																	<td><b>Email</b></td>
-																	<td class="mailbox-name"><a href="read-mail.html">Alexander
-																			Pierce</a></td>
-																	<td class="mailbox-subject"><b>AdminLTE 2.0
-																			Issue</b> - Trying to find a solution to this problem...</td>
-
-																	<td class="mailbox-date"><div class="col-sm-2">
-																			<div class="btn-group">
-																				<button type="button"
-																					class="btn btn-default dropdown-toggle"
-																					data-toggle="dropdown" aria-expanded="false">
-																					<span class="caret"></span> <span class="sr-only">Toggle
-																						Dropdown</span>
-																				</button>
-																				<ul class="dropdown-menu" role="menu">
-																					<li><a
-																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
-																							class="fa fa-pencil"></i> Edit</a></li>
-																					<li ng-click="deleteLead(cc.leadID)"><a
-																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																					<li><a
-																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
-																							class="fa fa-eye"></i> View</a></li>
-
-																				</ul>
-																			</div>
-																		</div></td>
-																</tr>
-																<tr>
-																	<td class="mailbox-star"><a href="#"><i
-																			class="fa fa-calendar-check-o text-light-blue font-size-icon-30"></i></a></td>
-																	<td><b>Event</b></td>
-																	<td class="mailbox-name"><a href="read-mail.html">Alexander
-																			Pierce</a></td>
-																	<td class="mailbox-subject"><b>AdminLTE 2.0
-																			Issue</b> - Trying to find a solution to this problem...</td>
-
-																	<td class="mailbox-date"><div class="col-sm-2">
-																			<div class="btn-group">
-																				<button type="button"
-																					class="btn btn-default dropdown-toggle"
-																					data-toggle="dropdown" aria-expanded="false">
-																					<span class="caret"></span> <span class="sr-only">Toggle
-																						Dropdown</span>
-																				</button>
-																				<ul class="dropdown-menu" role="menu">
-																					<li><a
-																						href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i
-																							class="fa fa-pencil"></i> Edit</a></li>
-																					<li ng-click="deleteLead(cc.leadID)"><a
-																						href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																					<li><a
-																						href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i
-																							class="fa fa-eye"></i> View</a></li>
-
-																				</ul>
-																			</div>
-																		</div></td>
-																</tr> --%>
-															
-															
-														</table>
-														<!-- /.table -->
-													</div>
-
-												</div>
-
-
 											</div>
-
 										</div>
-
-
 
 										<div class="tab-pane" id="collaborate">
 
@@ -931,41 +1431,57 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="note_tap" data-ng-init="listNote()">
+										<div class="tab-pane" id="note_tap">
 											<div class="post clearfix">
-											<form id="frmAddNote">
-												<div class="form-group">
-													<input ng-model="note_subject" data-ng-init="note_subject" style="margin-top: 10px;" type="text" class="form-control"  name="note_subject" id="note_subject"
-																placeholder="Subject">
-												</div>
-												<div class="form-group">
-													<textarea ng-model="note_description" data-ng-init="note_description" style="margin-top: 10px;" rows="3" cols="" name="note_description" id="note_description" class="form-control" placeholder="Description"></textarea>
-												</div>
-												<button style="margin-top: 10px; margin-left:10px;" ng-click="resetFrmNote()" type="button" ng-click="resetNote()" class="btn btn-danger pull-right">Reset</button>
-												<button style="margin-top: 10px;" type="button" id="btnAddNote" ng-click="addNote()" class="btn btn-primary pull-right">Note</button>
-											</form>
+												<form id="frmAddNote">
+													<div class="form-group">
+														<input ng-model="note_subject" data-ng-init="note_subject"
+															style="margin-top: 10px;" type="text"
+															class="form-control" name="note_subject"
+															id="note_subject" placeholder="Subject">
+													</div>
+													<div class="form-group">
+														<textarea ng-model="note_description"
+															data-ng-init="note_description" style="margin-top: 10px;"
+															rows="3" cols="" name="note_description"
+															id="note_description" class="form-control"
+															placeholder="Description"></textarea>
+													</div>
+													<button style="margin-top: 10px; margin-left: 10px;"
+														ng-click="resetFrmNote()" type="button"
+														ng-click="resetNote()" class="btn btn-danger pull-right">Reset</button>
+													<button style="margin-top: 10px;" type="button"
+														id="btnAddNote" ng-click="addNote()"
+														class="btn btn-primary pull-right">Note</button>
+												</form>
 											</div>
 											<div class="clearfix"></div>
-											<ul class="timeline timeline-inverse"  ng-repeat="notePerDate in noteToFilter() | filter:filterNote">
-												
+											<ul class="timeline timeline-inverse"
+												ng-repeat="notePerDate in noteToFilter() | filter:filterNote">
+
 												<!-- START DATE -->
-												<li class="time-label">
-													<span class="bg-red">{{notePerDate.noteCreateDate}}</span>
+												<li class="time-label"><span class="bg-red">{{notePerDate.noteCreateDate}}</span>
 												</li>
-												<li ng-repeat="note in notes | filter:{noteCreateDate: notePerDate.noteCreateDate}">
+												<li
+													ng-repeat="note in notes | filter:{noteCreateDate: notePerDate.noteCreateDate}">
 													<i class="fa  fa-edit bg-blue"></i>
 													<div class="timeline-item">
-														<span class="time"><i class="fa fa-clock-o"></i> &nbsp;{{notePerDate.noteTime}}</span>
-														<h3 class="timeline-header">{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a></h3>
+														<span class="time"><i class="fa fa-clock-o"></i>
+															&nbsp;{{notePerDate.noteTime}}</span>
+														<h3 class="timeline-header">
+															{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
+														</h3>
 														<div class="timeline-body">{{note.noteDes}}</div>
 														<div class="timeline-footer">
-															<a class="btn btn-primary btn-xs" ng-click="editNoteById(note.noteId)">Edit</a> 
-															<a class="btn btn-danger btn-xs" ng-click="deleteNoteById(note.noteId)">Delete</a>
+															<a class="btn btn-primary btn-xs"
+																ng-click="editNoteById(note.noteId)">Edit</a> <a
+																class="btn btn-danger btn-xs"
+																ng-click="deleteNoteById(note.noteId)">Delete</a>
 														</div>
 													</div>
 												</li>
-												
-												
+
+
 											</ul>
 										</div>
 
@@ -973,212 +1489,258 @@ function addDataToDetailLead(){
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
 												<form id="frmLeadDetail">
-												<div class="col-md-4">
-													<ul class="list-group list-group-unbordered">
-														<li class="list-group-item"><b>Overview</b> <a
-															class="pull-right cusor_pointer" ng-click="editDetailLead()"><i
-																class="fa fa-pencil"></i> Edit</a></li>
-														<li class="list-group-item item_border">
-																Salutation
-															<a class="pull-right show-text-detail">{{lead.salutation}}</a>
-															<div class="form-group show-edit" style="display:none;" >																							
-																<select class="form-control" name="lea_salutation" id="lea_salutation">		                                      
-							                                       <option value="Mr.">Mr.</option>
-							                                       <option value="Ms.">Ms.</option>
-							                                       <option value="Mrs.">Mrs.</option>
-							                                       <option value="Dr.">Dr.</option>
-							                                       <option value="Prof.">Prof.</option>
-							                                    </select>
-															</div>
-														</li>
-														
-														<li class="list-group-item item_border">First Name 
-															<a class="pull-right show-text-detail">{{lead.firstName}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_firstName" id="lea_firstName" class="form-control" value="{{lead.firstName}}">																						
-																<div class="clearfix"></div>
-															</div>
-														</li>
-														<li class="list-group-item item_border">Last Name 
-															<a class="pull-right show-text-detail">{{lead.lastName}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_lastName" id="lea_lastName" class="form-control" value="{{lead.lastName}}">	
-															</div>
-														</li>
-														<li class="list-group-item item_border">Title 
-															<a class="pull-right show-text-detail">{{lead.title}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_title" id="lea_title" class="form-control" value="{{lead.title}}">	
-															</div>
-														</li>
-														<li class="list-group-item item_border">Department 
-															<a class="pull-right show-text-detail">{{lead.department}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_department" id="lea_department" class="form-control" value="{{lead.department}}">	
-															</div>
-														</li>
-														<li class="list-group-item item_border">Company
-															<a class="pull-right show-text-detail">{{lead.accountName}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_accountName" id="lea_accountName" class="form-control" value="{{lead.accountName}}">		
-															</div>
-														</li>
-														<li class="list-group-item item_border">Phone
-															<a class="pull-right show-text-detail">{{lead.phone}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_phone" id="lea_phone" class="form-control" value="{{lead.phone}}">		
-															</div>
-														</li>
-														<li class="list-group-item item_border">Mobile
-															<a class="pull-right show-text-detail">{{lead.mobile}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_mobilePhone" id="lea_mobilePhone" class="form-control" value="{{lead.mobile}}">		
-															</div>
-														</li>
-														<li class="list-group-item item_border">Web Site
-															<a class="pull-right show-text-detail">{{lead.website}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_website" id="lea_website" class="form-control" value="{{lead.website}}">		
-															</div>
-														</li>
-														<li class="list-group-item item_border">Email
-															<a class="pull-right show-text-detail">{{lead.email}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_email" id="lea_email"class="form-control" value="{{lead.email}}">		
-															</div>
-														</li>
-													</ul>
-												</div>
-												<div class="col-md-4">
-													<ul class="list-group list-group-unbordered">
-														<li class="list-group-item"><b>Address</b> <a
-															class="pull-right cusor_pointer" ng-click="editDetailLead()"><i
-																class="fa fa-pencil"></i> Edit</a></li>
-														<li class="list-group-item item_border">No 
-															<a class="pull-right show-text-detail">{{lead.no}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_no" id="lea_no" class="form-control" value="{{lead.no}}">	
-															</div>
-														</li>
-														<li class="list-group-item item_border">Street 
-															<a class="pull-right show-text-detail">{{lead.street}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_street" id="lea_street" class="form-control" value="{{lead.street}}">	
-															</div>	
-														</li>
-														<li class="list-group-item item_border">Village
-															<a class="pull-right show-text-detail">{{lead.village}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_village" id="lea_village" class="form-control" value="{{lead.village}}">	
-															</div>		
-														</li>
-														<li class="list-group-item item_border">Commune
-															<a class="pull-right show-text-detail">{{lead.commune}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_commune" id="lea_commune" class="form-control" value="{{lead.commune}}">	
-															</div>
-														</li>
-														<li class="list-group-item item_border">District
-															<a class="pull-right show-text-detail">{{lead.district}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_district" id="lea_district" class="form-control" value="{{lead.district}}">	
-															</div>	
-														</li>
-														<li class="list-group-item item_border">City
-															<a class="pull-right show-text-detail">{{lead.city}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_city" id="lea_city" class="form-control" value="{{lead.city}}">	
-															</div>	
-														</li>
-														<li class="list-group-item item_border">State
-															<a class="pull-right show-text-detail">{{lead.state}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_state" id="lea_state" class="form-control" value="{{lead.state}}">	
-															</div>	
-														</li>
-														<li class="list-group-item item_border">Country
-															<a class="pull-right show-text-detail">{{lead.country}}</a>
-															<div class="form-group show-edit" style="display:none;" >
-																<input type="text" name="lea_country" id="lea_country" class="form-control" value="{{lead.country}}">	
-															</div>	
-														</li>
-													</ul>
-												</div>
-												<div class="col-md-4">
-													<ul class="list-group list-group-unbordered">
-														<li class="list-group-item"><b>More Information &
-																Others</b> <a class="pull-right cusor_pointer" ng-click="editDetailLead()"><i
-																class="fa fa-pencil"></i> Edit</a></li>
-														<li class="list-group-item item_border">Status
-															<a class="pull-right show-text-detail">{{lead.statusName}}</a>
-															<div class="form-group show-edit" style="display:none;" >																							
-																<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
-																	<option value="">-- SELECT Status --</option>
-																	<option ng-repeat="status in leadStatus" value="{{status.statusID}}">{{status.statusName}}</option> 
-																</select>
-															</div>
-														</li>
-														<li class="list-group-item item_border">Industry 
-															<a class="pull-right show-text-detail">{{lead.industName}}</a>
-															<div class="form-group show-edit" style="display:none;" >																							
-																<select class="form-control select2" name="lea_industry" id="lea_industry" style="width: 100%;">
-																	<option value="">-- SELECT Industry --</option>
-																	<option ng-repeat="industry in leadIndustry" value="{{industry.industID}}">{{industry.industName}}</option> 
-																</select>
-															</div>
-														</li>
-														<li class="list-group-item item_border">Source 
-															<a class="pull-right show-text-detail">{{lead.industName}}</a>
-															<div class="form-group show-edit" style="display:none;" >																							
-																<select class="form-control select2" name="lea_source" id="lea_source" style="width: 100%;">
-																	<option value="">-- SELECT Source --</option>
-																	<option ng-repeat="source in leadSource" value="{{source.sourceID}}">{{source.sourceName}}</option> 
-																</select>
-															</div>
-														</li>
-														<li class="list-group-item item_border">Campaign 
-															<a class="pull-right show-text-detail">{{lead.campName}}</a>
-															<div class="form-group show-edit" style="display:none;" >																							
-																<select class="form-control select2" name="lea_campaign" id="lea_campaign" style="width: 100%;">
-																	<option value="">-- SELECT Campaign --</option>
-																	<option ng-repeat="camp in leadCampaign" value="{{camp.campID}}">{{camp.campName}}</option> 
-																</select>
-															</div>
-														</li>
-														<li class="list-group-item item_border">Assign To
-															<a class="pull-right show-text-detail">{{lead.assignToUsername}}</a>
-															<div class="form-group show-edit" style="display:none;" >																							
-																<select class="form-control select2" name="lea_assignto" id="lea_assignto" style="width: 100%;">
-																	<option value="">-- SELECT Assign To --</option>
-																	<option ng-repeat="user in leadAssignTo" value="{{user.userID}}">{{user.username}}</option> 
-																</select>
-															</div>
-															
-														</li>
-													</ul>
-												</div>
-												<div class="col-md-12">
-													<ul class="list-group list-group-unbordered">
-														<li style="border-top: 0px;" class="list-group-item"><b>Description</b>
-															<a class="pull-right cusor_pointer" ng-click="editDetailLead()"><i class="fa fa-pencil"></i> Edit</a>	
-														</li>
-													</ul>
-												</div>
-												<div class="col-md-12">
-													<div class="show-text-detail">{{lead.description}}</div>
-													<div class="form-group show-edit-non-style" style="display:none;">																							
-														<textarea rows="3" cols="" name="lea_description" id="lea_description" class="form-control" placeholder="Description">{{lead.description}}</textarea>
+													<div class="col-md-4">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item"><b>Overview</b> <a
+																class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a></li>
+															<li class="list-group-item item_border">Salutation <a
+																class="pull-right show-text-detail">{{lead.salutation}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control" name="lea_salutation"
+																		id="lea_salutation">
+																		<option value="Mr.">Mr.</option>
+																		<option value="Ms.">Ms.</option>
+																		<option value="Mrs.">Mrs.</option>
+																		<option value="Dr.">Dr.</option>
+																		<option value="Prof.">Prof.</option>
+																	</select>
+																</div>
+															</li>
+
+															<li class="list-group-item item_border">First Name <a
+																class="pull-right show-text-detail">{{lead.firstName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}">
+																	<div class="clearfix"></div>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Last Name <a
+																class="pull-right show-text-detail">{{lead.lastName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_lastName"
+																		id="lea_lastName" class="form-control"
+																		value="{{lead.lastName}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Title <a
+																class="pull-right show-text-detail">{{lead.title}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Department <a
+																class="pull-right show-text-detail">{{lead.department}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_department"
+																		id="lea_department" class="form-control"
+																		value="{{lead.department}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Company <a
+																class="pull-right show-text-detail">{{lead.accountName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_accountName"
+																		id="lea_accountName" class="form-control"
+																		value="{{lead.accountName}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Phone <a
+																class="pull-right show-text-detail">{{lead.phone}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_phone" id="lea_phone"
+																		class="form-control" value="{{lead.phone}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Mobile <a
+																class="pull-right show-text-detail">{{lead.mobile}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_mobilePhone"
+																		id="lea_mobilePhone" class="form-control"
+																		value="{{lead.mobile}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Web Site <a
+																class="pull-right show-text-detail">{{lead.website}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_website" id="lea_website"
+																		class="form-control" value="{{lead.website}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Email <a
+																class="pull-right show-text-detail">{{lead.email}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_email" id="lea_email"
+																		class="form-control" value="{{lead.email}}">
+																</div>
+															</li>
+														</ul>
 													</div>
-												</div>
-												<br>
-												<div class="col-md-12 text-center" id="showBtnEditLead" style="display:none;">
-													<button class="btn btn-primary" ng-click="saveEditDetailLead()">Save</button>
-													<button class="btn btn-danger" ng-click="cancelEditDetailLead()">Cancel</button>
-												</div>
+													<div class="col-md-4">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item"><b>Address</b> <a
+																class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a></li>
+															<li class="list-group-item item_border">No <a
+																class="pull-right show-text-detail">{{lead.no}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_no" id="lea_no"
+																		class="form-control" value="{{lead.no}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Street <a
+																class="pull-right show-text-detail">{{lead.street}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_street" id="lea_street"
+																		class="form-control" value="{{lead.street}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Village <a
+																class="pull-right show-text-detail">{{lead.village}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_village" id="lea_village"
+																		class="form-control" value="{{lead.village}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Commune <a
+																class="pull-right show-text-detail">{{lead.commune}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_commune" id="lea_commune"
+																		class="form-control" value="{{lead.commune}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">District <a
+																class="pull-right show-text-detail">{{lead.district}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_district"
+																		id="lea_district" class="form-control"
+																		value="{{lead.district}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">City <a
+																class="pull-right show-text-detail">{{lead.city}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_city" id="lea_city"
+																		class="form-control" value="{{lead.city}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">State <a
+																class="pull-right show-text-detail">{{lead.state}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_state" id="lea_state"
+																		class="form-control" value="{{lead.state}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Country <a
+																class="pull-right show-text-detail">{{lead.country}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_country" id="lea_country"
+																		class="form-control" value="{{lead.country}}">
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="col-md-4">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item"><b>More Information
+																	& Others</b> <a class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a></li>
+															<li class="list-group-item item_border">Status <a
+																class="pull-right show-text-detail">{{lead.statusName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2" name="lea_status"
+																		id="lea_status" style="width: 100%;">
+																		<option value="">-- SELECT Status --</option>
+																		<option ng-repeat="status in leadStatus"
+																			value="{{status.statusID}}">{{status.statusName}}</option>
+																	</select>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Industry <a
+																class="pull-right show-text-detail">{{lead.industName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="lea_industry" id="lea_industry"
+																		style="width: 100%;">
+																		<option value="">-- SELECT Industry --</option>
+																		<option ng-repeat="industry in leadIndustry"
+																			value="{{industry.industID}}">{{industry.industName}}</option>
+																	</select>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Source <a
+																class="pull-right show-text-detail">{{lead.industName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2" name="lea_source"
+																		id="lea_source" style="width: 100%;">
+																		<option value="">-- SELECT Source --</option>
+																		<option ng-repeat="source in leadSource"
+																			value="{{source.sourceID}}">{{source.sourceName}}</option>
+																	</select>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Campaign <a
+																class="pull-right show-text-detail">{{lead.campName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="lea_campaign" id="lea_campaign"
+																		style="width: 100%;">
+																		<option value="">-- SELECT Campaign --</option>
+																		<option ng-repeat="camp in leadCampaign"
+																			value="{{camp.campID}}">{{camp.campName}}</option>
+																	</select>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Assign To <a
+																class="pull-right show-text-detail">{{lead.assignToUsername}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="lea_assignto" id="lea_assignto"
+																		style="width: 100%;">
+																		<option value="">-- SELECT Assign To --</option>
+																		<option ng-repeat="user in leadAssignTo"
+																			value="{{user.userID}}">{{user.username}}</option>
+																	</select>
+																</div>
+
+															</li>
+														</ul>
+													</div>
+													<div class="col-md-12">
+														<ul class="list-group list-group-unbordered">
+															<li style="border-top: 0px;" class="list-group-item"><b>Description</b>
+																<a class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a></li>
+														</ul>
+													</div>
+													<div class="col-md-12">
+														<div class="show-text-detail">{{lead.description}}</div>
+														<div class="form-group show-edit-non-style"
+															style="display: none;">
+															<textarea rows="3" cols="" name="lea_description"
+																id="lea_description" class="form-control"
+																placeholder="Description">{{lead.description}}</textarea>
+														</div>
+													</div>
+													<br>
+													<div class="col-md-12 text-center" id="showBtnEditLead"
+														style="display: none;">
+														<button class="btn btn-primary"
+															ng-click="saveEditDetailLead()">Save</button>
+														<button class="btn btn-danger"
+															ng-click="cancelEditDetailLead()">Cancel</button>
+													</div>
 												</form>
-												
+
 											</div>
-												
+
 										</div>
 
 
@@ -1198,12 +1760,15 @@ function addDataToDetailLead(){
 
 
 	<input type="hidden" id="btn_show_call" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
-	<div ng-controller="callController" class="modal fade modal-default" id="frmCall" role="dialog" >
+	<div ng-controller="callController" class="modal fade modal-default" id="frmCall" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupCallForm()">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" ng-click="cancelCallClick()"   class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Call</b></h4>
+					<button type="button" ng-click="cancelCallClick()" class="close"
+						data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">
+						<b>Create Call</b>
+					</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -1212,8 +1777,8 @@ function addDataToDetailLead(){
 								<div class="col-md-12">
 									<div class="form-group">
 										<label>Subject <span class="requrie">(Required)</span></label>
-										<input id="callSubject" name="callSubject" class="form-control" type="text"
-											placeholder="">
+										<input id="callSubject" name="callSubject"
+											class="form-control" type="text" placeholder="">
 									</div>
 								</div>
 								<div class="clearfix"></div>
@@ -1221,9 +1786,11 @@ function addDataToDetailLead(){
 									<div class="form-group">
 										<label>Start Date<span class="requrie">(Required)</span></label>
 										<div class="input-group">
-											<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-											<input value="" name="callStartDate" id="callStartDate" type="text"
-												class="form-control date pull-right active">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input value="" name="callStartDate" id="callStartDate"
+												type="text" class="form-control date pull-right active">
 										</div>
 									</div>
 								</div>
@@ -1235,7 +1802,8 @@ function addDataToDetailLead(){
 												<div class="input-group-addon">
 													<i class="fa fa-clock-o"></i>
 												</div>
-												<input type="text" class="form-control timepicker active" name="callDuration" id="callDuration">
+												<input type="text" class="form-control timepicker active"
+													name="callDuration" id="callDuration" placeholder="hours:minutes">
 											</div>
 										</div>
 									</div>
@@ -1244,25 +1812,28 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Status <span class="requrie">(Required)</span></label>
-										<select class="form-control select2" name="callStatus" id="callStatus" style="width: 100%;">
+										<select class="form-control select2" name="callStatus"
+											id="callStatus" style="width: 100%;">
 											<option value="">--SELECT A Status</option>
-											<option ng-repeat="st in callStatusStartup" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+											<option ng-repeat="st in callStatusStartup"
+												value="{{st.callStatusId}}">{{st.callStatusName}}</option>
 										</select>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>Assign To </label>
-										<select class="form-control select2"  name="callAssignTo" id="callAssignTo" style="width: 100%;">
-					                      <option value="">--SELECT A Assign To</option>       
-					                    </select>
+										<label>Assign To </label> <select class="form-control select2"
+											name="callAssignTo" id="callAssignTo" style="width: 100%;">
+											<option value="">--SELECT A Assign To</option>
+										</select>
 									</div>
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-md-12">
 									<div class="form-group">
 										<label>Description </label>
-										<textarea  rows="3" cols="" name="callDescription" id="callDescription"	class="form-control"></textarea>
+										<textarea rows="5" cols="" name="callDescription"
+											id="callDescription" class="form-control"></textarea>
 									</div>
 								</div>
 							</div>
@@ -1273,56 +1844,58 @@ function addDataToDetailLead(){
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="btnCallCancel" ng-click="cancelCallClick()" name="btnCallCancel"  class="btn btn-danger"
-						data-dismiss="modal">Cancel</button>
+					<button type="button" id="btnCallCancel"
+						ng-click="cancelCallClick()" name="btnCallCancel"
+						class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
-					<button type="button"
-						class="btn btn-primary pull-right" id="btnCallSave" name="btnCallSave">Save</button>
+					<button type="button" class="btn btn-primary pull-right"
+						id="btnCallSave" name="btnCallSave">Save</button>
 
 				</div>
 			</div>
 		</div>
 	</div>
-	<input type="hidden" id="btn_show_meet" data-toggle="modal"
-		data-target="#frmMeet" />
-	<div class="modal fade modal-default" id="frmMeet" role="dialog">
-		<div class="modal-dialog  modal-lg">
+	<input type="hidden" id="btn_show_meet" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmMeet" />
+	<div ng-controller="meetController"  class="modal fade modal-default" id="frmMeet" role="dialog">
+		<div class="modal-dialog  modal-lg" data-ng-init="startupMeetForm()">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Create Meeting</h4>
+					<button type="button" ng-click="cancelMeetClick()" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><b>Create Meeting</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
+						<form id="frmAddMeet">
 						<div class="col-md-12">
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Subject <span class="requrie">(Required)</span></label>
-									<input id="txtDisInv" class="form-control" type="text"
+									<input id="meetSubject" name="meetSubject" class="form-control" type="text"
 										placeholder="">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2"  name="me_duration" id="me_duration" style="width: 100%;">
-				                      <option value="">--Select Duration--</option>   
-				                      <option value="15 minutes">15 minutes</option>
-				                      <option value="30 minutes">30 minutes</option>
-				                      <option value="45 minutes">45 minutes</option> 
-				                      <option value="1 hour">1 hour</option> 
-				                      <option value="1:30 hours">1:30 hours</option> 
-				                      <option value="2 hours">2 hours</option> 
-				                      <option value="3 hours">3 hours</option> 
-				                      <option value="6 hours">6 hours</option> 
-				                      <option value="1 day">1 day</option>
-				                      <option value="2 days">2 days</option>
-				                      <option value="3 days">3 days</option>
-				                      <option value="1 week">1 week</option>         
-				                    </select>
+									<select class="form-control select2" name="meetDuration"
+										id="meetDuration" style="width: 100%;">
+										<option value="">-- Select A Duration --</option>
+										<option value="15 minutes">15 minutes</option>
+										<option value="30 minutes">30 minutes</option>
+										<option value="45 minutes">45 minutes</option>
+										<option value="1 hour">1 hour</option>
+										<option value="1:30 hours">1:30 hours</option>
+										<option value="2 hours">2 hours</option>
+										<option value="3 hours">3 hours</option>
+										<option value="6 hours">6 hours</option>
+										<option value="1 day">1 day</option>
+										<option value="2 days">2 days</option>
+										<option value="3 days">3 days</option>
+										<option value="1 week">1 week</option>
+									</select>
 								</div>
 							</div>
-							
+
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -1331,9 +1904,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
-											value="" name="startDateMeeting" id="startDateMeeting" type="text"
-											class="form-control pull-right active">
+										<input value="" name="meetStartDate" id="meetStartDate" type="text" class="form-control meet-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -1344,97 +1915,78 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
-											value="" name="endDateMeeting" id="endDateMeeting" type="text"
-											class="form-control pull-right active">
+										<input name="meetEndDate" id="meetEndDate" type="text" class="form-control meet-data-time pull-right active">
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Assign To </label>
-									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
-				                      <option value=""></option>           
-				                    </select>
-								</div>
-							</div>
-							
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Status</label>
-									<select class="form-control select2" name="status" id="status" style="width: 100%;">
-										<option value="">--SELECT Status</option>
-										<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+									<label>Assign To </label> 
+									<select class="form-control select2" name="meetAssignTo" id="meetAssignTo" style="width: 100%;">
+										<option value="">-- SELECT A Assign To --</option>
 									</select>
 								</div>
 							</div>
-							
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Status</label> 
+									<select class="form-control select2" name="meetStatus" id="meetStatus" style="width: 100%;">
+										<option value="">-- SELECT A Status --</option>
+										<option ng-repeat="st in meetStatusStartup" value="{{st.statusId}}">{{st.statusName}}</option>
+									</select>
+								</div>
+							</div>
+
 							<div class="clearfix"></div>
 							<div class="col-md-12">
 								<div class="form-group">
-									<label>Location </label>
-									<input id="txtDisInv" class="form-control" type="text"
-										placeholder="">
+									<label>Location </label> 
+									<input id="meetLocation" name="meetLocation" class="form-control" type="text" placeholder="">
 								</div>
 							</div>
 							<div class="clearfix"></div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Description </label>
-									<textarea  rows="4" cols="" name="description" id="description"	class="form-control"></textarea>
+									<textarea rows="4" cols="" name="meetDescription" id="meetDescription" class="form-control"></textarea>
 								</div>
 							</div>
 						</div>
+						</form>
 					</div>
-
-
-
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="btnSaveCallCancel" class="btn btn-danger"
-						data-dismiss="modal">Cancel</button>
+					<button type="button" id="btnMeetCancel" ng-click="cancelMeetClick()" name="btnMeetCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
-					<button type="button" id="btnSaveCall"
-						class="btn btn-primary pull-right" data-dismiss="modal">Save</button>
-
+					<button type="button" id="btnMeetSave" name="btnMeetSave" class="btn btn-primary pull-right">Save</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	<input type="hidden" id="btn_show_task" data-toggle="modal"
-		data-target="#frmTask" />
-	<div class="modal fade modal-default" id="frmTask" role="dialog">
-		<div class="modal-dialog  modal-lg">
+	<input type="hidden" id="btn_show_task" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmTask" />
+	<div ng-controller="taskController" class="modal fade modal-default" id="frmTask" role="dialog">
+		<div class="modal-dialog  modal-lg" data-ng-init="startupTaskForm()">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Create Task</h4>
+					<button type="button" ng-click="cancelTaskClick()" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><b>Create Task</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
+						<form id="frmAddTask">
 						<div class="col-md-12">
-							<div class="col-md-6">
+							<div class="col-md-12">
 								<div class="form-group">
 									<label>Subject <span class="requrie">(Required)</span></label>
-									<input id="txtDisInv" class="form-control" type="text"
+									<input id="taskSubject" name="taskSubject" class="form-control" type="text"
 										placeholder="">
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Priority <span class="requrie">(Required)</span></label>
-									<select class="form-control select2"  name="ts_priority" id="ts_priority" style="width: 100%;">
-				                      <option value="">--Select Priority--</option>   
-				                      <option value="High">High</option>
-				                      <option value="Medium">Medium</option>
-				                      <option value="Low">Low</option> 
-				                            
-				                    </select>
-								</div>
-							</div>
 							
+
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -1443,9 +1995,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
-											value="" name="startDateMeeting" id="startDateMeeting" type="text"
-											class="form-control pull-right active">
+										<input value="" name="taskStartDate" id="taskStartDate" type="text" class="form-control task-date pull-right active">
 									</div>
 								</div>
 							</div>
@@ -1456,39 +2006,48 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
-											value="" name="endDateMeeting" id="endDateMeeting" type="text"
-											class="form-control pull-right active">
+										<input name="taskEndDate" id="taskEndDate" type="text" class="form-control task-date pull-right active">
 									</div>
 								</div>
 							</div>
-							
+								
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Assign To </label>
-									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
-				                      <option value=""></option>           
-				                    </select>
-								</div>
-							</div>
-							
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Status</label>
-									<select class="form-control select2" name="status" id="status" style="width: 100%;">
-										<option value="">--SELECT Status</option>
-										<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+									<label>Priority <span class="requrie">(Required)</span></label>
+									<select class="form-control select2" id="taskPriority" name="taskPriority"  style="width: 100%;">
+										<option value="">-- Select A Priority --</option>
+										<option value="High">High</option>
+										<option value="Medium">Medium</option>
+										<option value="Low">Low</option>
 									</select>
 								</div>
 							</div>
-							
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Contact</label>
-									<select class="form-control select2" name="status" id="status" style="width: 100%;">
-										<option value="">--SELECT Contact</option>
-										<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+									<label>Assign To </label> 
+									<select class="form-control select2" name="taskAssignTo" id="taskAssignTo" style="width: 100%;">
+										<option value="">-- SELECT A Assign To --</option>
+									</select>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Status</label> 
+									<select class="form-control select2" name="taskStatus" id="taskStatus" style="width: 100%;">
+										<option value="">-- SELECT A Status --</option>
+										<option ng-repeat="st in taskStatusStartup" value="{{st.taskStatusId}}">{{st.taskStatusName}}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Contact</label> 
+									<select class="form-control select2" name="taskContact" id="taskContact" style="width: 100%;">
+										<option value="">-- SELECT A Contact --</option>
+										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conFirstname}} {{st.conLastName}}</option>
 									</select>
 								</div>
 							</div>
@@ -1496,66 +2055,40 @@ function addDataToDetailLead(){
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Description </label>
-									<textarea  rows="4" cols="" name="description" id="description"	class="form-control"></textarea>
+									<textarea rows="4" cols="" name="taskDescription" id="taskDescription"
+										class="form-control"></textarea>
 								</div>
 							</div>
 						</div>
+						</form>
 					</div>
-
-
-
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="btnSaveCallCancel" class="btn btn-danger"
-						data-dismiss="modal">Cancel</button>
-					&nbsp;&nbsp;
-					<button type="button" id="btnSaveCall"
-						class="btn btn-primary pull-right" data-dismiss="modal">Save</button>
-
+					<button type="button" id="btnTaskCancel" ng-click="cancelTaskClick()" name="btnTaskCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					 &nbsp;&nbsp;
+					<button type="button" id="btnTaskSave" name="btnTaskSave" class="btn btn-primary pull-right" >Save</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	<input type="hidden" id="btn_show_event" data-toggle="modal"
-		data-target="#frmEvent" />
-	<div class="modal fade modal-default" id="frmEvent" role="dialog">
-		<div class="modal-dialog  modal-lg">
+	<input type="hidden" id="btn_show_event" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmEvent" />
+	<div ng-controller="eventController" class="modal fade modal-default" id="frmEvent" role="dialog">
+		<div class="modal-dialog  modal-lg" data-ng-init="startupEventForm()">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Create Event</h4>
+					<button type="button" ng-click="cancelEventClick()" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><b>Create Event</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
+						<form id="frmAddEvent">
 						<div class="col-md-12">
-							<div class="col-md-6">
+							<div class="col-md-12">
 								<div class="form-group">
 									<label>Subject <span class="requrie">(Required)</span></label>
-									<input id="txtDisInv" class="form-control" type="text"
-										placeholder="">
+									<input id="eventSubject" name="eventSubject" class="form-control" type="text" placeholder="">
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2"  name="me_duration" id="me_duration" style="width: 100%;">
-				                      <option value="">--Select Duration--</option>   
-				                      <option value="15 minutes">15 minutes</option>
-				                      <option value="30 minutes">30 minutes</option>
-				                      <option value="45 minutes">45 minutes</option> 
-				                      <option value="1 hour">1 hour</option> 
-				                      <option value="1:30 hours">1:30 hours</option> 
-				                      <option value="2 hours">2 hours</option> 
-				                      <option value="3 hours">3 hours</option> 
-				                      <option value="6 hours">6 hours</option> 
-				                      <option value="1 day">1 day</option>
-				                      <option value="2 days">2 days</option>
-				                      <option value="3 days">3 days</option>
-				                      <option value="1 week">1 week</option>         
-				                    </select>
-								</div>
-							</div>
-							
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -1564,9 +2097,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
-											value="" name="startDateMeeting" id="startDateMeeting" type="text"
-											class="form-control pull-right active">
+										<input  name="eventStartDate" id="eventStartDate" type="text" class="form-control event-date-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -1577,59 +2108,74 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input data-date-format="dd-M-yyyy HH:mm:ss" data-default-date=""
-											value="" name="endDateMeeting" id="endDateMeeting" type="text"
-											class="form-control pull-right active">
+										<input name="eventEndDate" id="eventEndDate" type="text" class="form-control event-date-time pull-right active">
 									</div>
 								</div>
 							</div>
-							
+
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Assign To </label>
-									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
-				                      <option value=""></option>           
-				                    </select>
+									<label>Duration <span class="requrie">(Required)</span></label>
+									<select class="form-control select2" name="eventDuration" id="eventDuration" style="width: 100%;">
+										<option value="">-- SELECT A Duration --</option>
+										<option value="15 minutes">15 minutes</option>
+										<option value="30 minutes">30 minutes</option>
+										<option value="45 minutes">45 minutes</option>
+										<option value="1 hour">1 hour</option>
+										<option value="1:30 hours">1:30 hours</option>
+										<option value="2 hours">2 hours</option>
+										<option value="3 hours">3 hours</option>
+										<option value="6 hours">6 hours</option>
+										<option value="1 day">1 day</option>
+										<option value="2 days">2 days</option>
+										<option value="3 days">3 days</option>
+										<option value="1 week">1 week</option>
+									</select>
 								</div>
 							</div>
-							
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Budget</label>
-									<input id="txtDisInv" class="form-control" type="text"
-										placeholder="">
+									<label>Assign To </label> 
+									<select class="form-control select2" name="eventAssignTo" id="eventAssignTo" style="width: 100%;">
+										<option value="">-- SELECT A Assign To --</option>
+									</select>
 								</div>
 							</div>
-							
 							<div class="clearfix"></div>
-							<div class="col-md-12">
+							<div class="col-md-6">
 								<div class="form-group">
-									<label>Location </label>
-									<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
-				                      <option value=""></option>           
-				                    </select>
+									<label>Budget</label> 
+									<input id="eventBudget" name="eventBudget" class="form-control" type="text" placeholder="">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Location </label> 
+									<select class="form-control select2" name="eventLocation" id="eventLocation" style="width: 100%;">
+										<option value="">-- SELECT A Location --</option>
+										<option ng-repeat="loc in eventLocationStartup" value="{{loc.loId}}">{{loc.loName}}</option>
+									</select>
 								</div>
 							</div>
 							<div class="clearfix"></div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Description </label>
-									<textarea  rows="4" cols="" name="description" id="description"	class="form-control"></textarea>
+									<textarea rows="4" cols="" name="eventDescription" id="eventDescription" class="form-control"></textarea>
 								</div>
 							</div>
 						</div>
+						</form>
 					</div>
 
 
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="btnSaveCallCancel" class="btn btn-danger"
-						data-dismiss="modal">Cancel</button>
+					<button type="button" id="btnEventCancel" ng-click="cancelEventClick()" name="btnEventCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
-					<button type="button" id="btnSaveCall"
-						class="btn btn-primary pull-right" data-dismiss="modal">Save</button>
+					<button type="button" id="btnEventSave" name="btnEventSave"  class="btn btn-primary pull-right">Save</button>
 
 				</div>
 			</div>

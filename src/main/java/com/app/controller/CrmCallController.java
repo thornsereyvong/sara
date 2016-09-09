@@ -90,4 +90,17 @@ public class CrmCallController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/call/list-by-lead/{id}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listCallByLeadId(@PathVariable("id") String id){		
+		HttpEntity<Object> request = new HttpEntity<Object>(header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list/lead/"+id, HttpMethod.GET, request, Map.class);		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
+	
+	
 }

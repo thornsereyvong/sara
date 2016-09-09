@@ -6,21 +6,50 @@ $(function(){
         defaultTime: false,
         showMeridian : false
     });
-
-	$('.date').daterangepicker({
-        format: 'DD/MM/YYYY',
+	
+	
+	$('#callStartDate').daterangepicker({
+        format: 'DD/MM/YYYY h:mm A',
         singleDatePicker: true,
         showDropdowns: true,
-    });
+        timePicker: true, 
+        timePickerIncrement: 5,
+    }).on('change', function(e) {
+     	$('#frmAddCall').bootstrapValidator('revalidateField', 'callStartDate');
+ 	});
+	
+	$('.meet-data-time').daterangepicker({
+        format: 'DD/MM/YYYY h:mm A',
+        singleDatePicker: true,
+        showDropdowns: true,
+        timePicker: true, 
+        timePickerIncrement: 5,
+    }).on('change', function(e) {
+     	$('#frmAddMeet').bootstrapValidator('revalidateField', 'meetStartDate');
+     	$('#frmAddMeet').bootstrapValidator('revalidateField', 'meetEndDate');
+ 	});
 	
 	
-	$('#startDateMeeting').daterangepicker({ singleDatePicker: true,timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A'});
-	$('#endDateMeeting').daterangepicker({ singleDatePicker: true,timePicker: true, timePickerIncrement: 30, format: 'DD/MM/YYYY h:mm A'});	
+	$('.event-date-time').daterangepicker({
+        format: 'DD/MM/YYYY h:mm A',
+        singleDatePicker: true,
+        showDropdowns: true,
+        timePicker: true, 
+        timePickerIncrement: 5,
+    }).on('change', function(e) {
+     	$('#frmAddEvent').bootstrapValidator('revalidateField', 'eventStartDate');
+     	$('#frmAddEvent').bootstrapValidator('revalidateField', 'eventEndDate');
+ 	});
 	
 	
-	$("#btnCallSave").click(function(){
-		$('#frmAddCall').submit();
-	});
+	$('.task-date').daterangepicker({
+        format: 'DD/MM/YYYY',
+        singleDatePicker: true,
+        showDropdowns: true
+    }).on('change', function(e) {
+     	$('#frmAddTask').bootstrapValidator('revalidateField', 'taskStartDate');
+     	$('#frmAddTask').bootstrapValidator('revalidateField', 'taskEndDate');
+ 	});
 	
 	
 	$('#frmAddNote').bootstrapValidator({
@@ -361,10 +390,6 @@ $(function(){
 		    "email": $.trim($("#lea_email").val())
 	  	};	
 		
-		/* alert(getStringToNull("lea_assignto"))
-		
-		dis(frmLeadDetailData); */
-		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/lead/edit",
 			type : "PUT",
@@ -397,7 +422,9 @@ $(function(){
 	
 	
 	
-	
+	$("#btnCallSave").click(function(){
+		$('#frmAddCall').submit();
+	});
 	
 	$('#frmAddCall').bootstrapValidator({
 		message: 'This value is not valid',
@@ -424,7 +451,7 @@ $(function(){
 						message: 'The start date is required and can not be empty!'
 					},
 					date: {
-                        format: 'DD/MM/YYYY',
+                        format: 'DD/MM/YYYY h:mm A',
                         message: 'The value is not a valid date'
                     }
 				}
@@ -458,14 +485,12 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {
-		//$("#btnCallSave").text("Update");
 		if($("#btnCallSave").text() == 'Save'){
-			
 			$.ajax({
 				url : server+"/call/add",
 				type : "POST",
 				data : JSON.stringify({ 
-				      "callStartDate": getDateByFormat("callStartDate"),
+				      "callStartDate": getValueStringById("callStartDate"),
 				      "callDuration": getValueStringById("callDuration"),
 				      "callCreateBy": username,
 				      "callStatus": {"callStatusId":getIntToNull("callStatus")},
@@ -473,8 +498,7 @@ $(function(){
 				      "callSubject": getValueStringById("callSubject"),
 				      "callAssignTo": {"userID": getStringToNull("callAssignTo")},
 				      "callRelatedToFieldId": leadId,
-				      "callRelatedToModuleType": 'Lead',
-				      "callCreateDate": moment().format('YYYY-MM-DD')
+				      "callRelatedToModuleType": 'Lead'
 				      
 				}),
 				beforeSend: function(xhr) {
@@ -483,6 +507,7 @@ $(function(){
 			    },
 				success:function(data){	
 						if(data.MESSAGE == 'INSERTED'){
+							angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
 							
 							$('#frmAddCall').bootstrapValidator('resetForm', true);
 							$('#frmCall').modal('toggle');
@@ -517,16 +542,15 @@ $(function(){
 				type : "PUT",
 				data : JSON.stringify({ 
 					  "callId": callIdForEdit,
-					  "callStartDate": getDateByFormat("callStartDate"),
+					  "callStartDate": getValueStringById("callStartDate"),
 				      "callDuration": getValueStringById("callDuration"),
-				      "callCreateBy": username,
 				      "callStatus": {"callStatusId":getIntToNull("callStatus")},
 				      "callDes": getValueStringById("callDescription"),
 				      "callSubject": getValueStringById("callSubject"),
 				      "callAssignTo": {"userID": getStringToNull("callAssignTo")},
 				      "callRelatedToFieldId": leadId,
 				      "callRelatedToModuleType": 'Lead',
-				      "callCreateDate": moment().format('YYYY-MM-DD')
+				      "callModifiedBy" : username
 				}),
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader("Accept", "application/json");
@@ -534,6 +558,13 @@ $(function(){
 			    },
 				success:function(data){					
 					dis(data)
+					if(data.MESSAGE == 'UPDATED'){
+						angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
+					}else{
+						
+					}
+					
+					
 				},
 				error:function(){
 					errorMessage();
@@ -543,6 +574,427 @@ $(function(){
 		}
 		
 	});	
+	
+	
+	
+	
+	
+	
+	$("#btnMeetSave").click(function(){
+		$('#frmAddMeet').submit();
+	});
+	
+	$('#frmAddMeet').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			meetSubject: {
+				validators: {
+					notEmpty: {
+						message: 'The subject is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The subject must be less than 255 characters long!'
+					}
+				}
+			},
+			meetLocation: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The location must be less than 255 characters long!'
+					}
+				}
+			},
+			meetStartDate: {
+				validators: {
+					notEmpty: {
+						message: 'The start date is required and can not be empty!'
+					},
+					date: {
+                        format: 'DD/MM/YYYY h:mm A',
+                        message: 'The value is not a valid date!'
+                    }
+				}
+			},
+			meetEndDate: {
+				validators: {
+					notEmpty: {
+						message: 'The end date is required and can not be empty!'
+					},
+					date: {
+                        format: 'DD/MM/YYYY h:mm A',
+                        message: 'The value is not a valid date!'
+                    }
+				}
+			},
+			meetDuration : {
+				validators: {
+					notEmpty: {
+						message: 'The duration is required and can not be empty!'
+					}
+				}
+			},
+			meetStatus : {
+				validators: {
+					
+				}
+			},
+			meetDescription : {
+				validators: {
+					stringLength: {
+						max: 1000,
+						message: 'The description must be less than 1000 characters long!'
+					}
+				}
+			}
+			
+		}
+	}).on('success.form.bv', function(e) {
+		
+	
+		
+		if($("#btnMeetSave").text() == 'Save'){
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/meeting/add",
+				type : "POST",
+				data : JSON.stringify({
+
+					  "meetingSubject": getValueStringById("meetSubject"),
+				      "meetingAssignTo": {"userID": getStringToNull("meetAssignTo")},
+				      "meetingDes": getValueStringById("meetDescription"),
+				      "meetingStartDate": getValueStringById("meetStartDate"),
+				      "meetingDuration": getValueStringById("meetDuration"),
+				      "meetingEndDate":  getValueStringById("meetEndDate"),
+				      "meetingStatus": {"statusId":getIntToNull("meetStatus")},
+				      "meetingLocation":  getValueStringById("meetLocation"),
+				      "meetingRelatedToModuleType": 'Lead',
+				      "meetingRelatedToModuleId": leadId,
+				      "meetingCreateBy": username
+				}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success:function(data){					
+					dis(data)
+				},
+				error:function(){
+					
+				}
+			}); 
+			
+		}else{
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/meeting/edit",
+				type : "PUT",
+				data : JSON.stringify({
+					  "meetingId": meetIdForEdit,
+					  "meetingSubject": getValueStringById("meetSubject"),
+				      "meetingAssignTo": {"userID": getStringToNull("meetAssignTo")},
+				      "meetingDes": getValueStringById("meetDescription"),
+				      "meetingStartDate": getValueStringById("meetStartDate"),
+				      "meetingDuration": getValueStringById("meetDuration"),
+				      "meetingEndDate":  getValueStringById("meetEndDate"),
+				      "meetingStatus": {"statusId":getIntToNull("meetStatus")},
+				      "meetingLocation":  getValueStringById("meetLocation"),
+				      "meetingRelatedToModuleType": 'Lead',
+				      "meetingRelatedToModuleId": leadId,
+				      "meetingModifiedBy" : username
+				}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success:function(data){					
+					dis(data)
+				},
+				error:function(){
+					
+				}
+			}); 
+					
+		}
+		
+	});	
+	
+	
+	$("#btnTaskSave").click(function(){
+		$('#frmAddTask').submit();
+	});
+	
+	$('#frmAddTask').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			taskSubject: {
+				validators: {
+					notEmpty: {
+						message: 'The subject is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The subject must be less than 255 characters long!'
+					}
+				}
+			},
+			taskStartDate: {
+				validators: {
+					date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'The value is not a valid date!'
+                    }
+				}
+			},
+			taskEndDate: {
+				validators: {
+					date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'The value is not a valid date!'
+                    }
+				}
+			},
+			meetPriority : {
+				validators: {
+					notEmpty: {
+						message: 'The priority is required and can not be empty!'
+					}
+				}
+			},
+			
+			taskDescription : {
+				validators: {
+					stringLength: {
+						max: 1000,
+						message: 'The description must be less than 1000 characters long!'
+					}
+				}
+			}
+			
+		}
+	}).on('success.form.bv', function(e) {
+		
+	
+		
+		if($("#btnTaskSave").text() == 'Save'){
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/task/add",
+				type : "POST",
+				data : JSON.stringify({
+				      "taskStatus": {"taskStatusId":getIntToNull("taskStatus")},
+				      "taskPriority": getValueStringById("taskPriority"),
+				      "taskAssignTo": {"userID": getStringToNull("taskAssignTo")},
+				      "taskRelatedToId": leadId,
+				      "taskRelatedToModule": 'Lead',
+				      "taskDes": getValueStringById("taskDescription"),
+				      "taskDueDate": getValueStringById("taskEndDate"),
+				      "taskSubject":  getValueStringById("taskSubject"),
+				      "taskStartDate":  getValueStringById("taskStartDate"),
+				      "taskContact": {"conID":getIntToNull("taskContact")},
+				      "taskCreateBy": username					      
+				}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success:function(data){					
+					dis(data)
+				},
+				error:function(){
+					
+				}
+			});
+			
+		}else{
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/task/edit",
+				type : "PUT",
+				data : JSON.stringify({
+					  "taskId" : taskIdForEdit,
+					  "taskStatus": {"taskStatusId":getIntToNull("taskStatus")},
+				      "taskPriority": getValueStringById("taskPriority"),
+				      "taskAssignTo": {"userID": getStringToNull("taskAssignTo")},
+				      "taskRelatedToId": leadId,
+				      "taskRelatedToModule": 'Lead',
+				      "taskDes": getValueStringById("taskDescription"),
+				      "taskDueDate": getValueStringById("taskEndDate"),
+				      "taskSubject":  getValueStringById("taskSubject"),
+				      "taskStartDate":  getValueStringById("taskStartDate"),
+				      "taskContact": {"conID":getIntToNull("taskContact")},
+				      "taskModifiedBy": username
+				}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success:function(data){					
+					dis(data)
+				},
+				error:function(){
+					
+				}
+			}); 
+					
+		}
+		
+	});	
+	
+	
+	$("#btnEventSave").click(function(){
+		$('#frmAddEvent').submit();
+	});
+	
+	$('#frmAddEvent').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			eventSubject: {
+				validators: {
+					notEmpty: {
+						message: 'The subject is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The subject must be less than 255 characters long!'
+					}
+				}
+			},
+			eventLocation: {
+				
+			},
+			eventStartDate: {
+				validators: {
+					notEmpty: {
+						message: 'The start date is required and can not be empty!'
+					},
+					date: {
+                        format: 'DD/MM/YYYY h:mm A',
+                        message: 'The value is not a valid date!'
+                    }
+				}
+			},
+			eventEndDate: {
+				validators: {
+					notEmpty: {
+						message: 'The end date is required and can not be empty!'
+					},
+					date: {
+                        format: 'DD/MM/YYYY h:mm A',
+                        message: 'The value is not a valid date!'
+                    }
+				}
+			},
+			eventDuration : {
+				validators: {
+					notEmpty: {
+						message: 'The duration is required and can not be empty!'
+					}
+				}
+			},
+			eventDescription : {
+				validators: {
+					stringLength: {
+						max: 1000,
+						message: 'The description must be less than 1000 characters long!'
+					}
+				}
+			},			
+			eventBudget : {
+				validators: {
+					numeric: {
+                        message: 'The value is not a number',
+                        thousandsSeparator: '',
+                        decimalSeparator: '.'
+                    }
+				}
+			}
+			
+		}
+	}).on('success.form.bv', function(e) {
+		
+		alert()
+		
+		if($("#btnEventSave").text() == 'Save'){
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/event/add",
+				type : "POST",
+				data : JSON.stringify({
+				      "evName": getValueStringById("eventSubject"),
+				      "evlocation": {"loId": getStringToNull("eventLocation")},
+				      "evBudget": getValueStringById("eventBudget"),
+				      "evDes": getValueStringById("eventDescription"),
+				      "evCreateBy":  username,
+				      "evDuration": getValueStringById("eventDuration"),
+				      "evStartDate": getValueStringById("eventStartDate"),
+				      "evEndDate": getValueStringById("eventEndDate"),
+				      "assignTo": {"userID": getStringToNull("eventAssignTo")},
+				      "evRelatedToID" : leadId,
+				      "evRelatedToType" : "Lead"
+				}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success:function(data){					
+					dis(data)
+				},
+				error:function(){
+					
+				}
+			}); 
+			
+		}else{
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/event/edit",
+				type : "PUT",
+				data : JSON.stringify({
+					  "evId": eventIdForEdit,
+					  "evName": getValueStringById("eventSubject"),
+				      "evlocation": {"loId": getStringToNull("eventLocation")},
+				      "evBudget": getValueStringById("eventBudget"),
+				      "evDes": getValueStringById("eventDescription"),
+				      "evModifiedBy":  username,
+				      "evDuration": getValueStringById("eventDuration"),
+				      "evStartDate": getValueStringById("eventStartDate"),
+				      "evEndDate": getValueStringById("eventEndDate"),
+				      "assignTo": {"userID": getStringToNull("eventAssignTo")},
+				      "evRelatedToID" : leadId,
+				      "evRelatedToType" : "Lead"
+				}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+				},
+				success:function(data){					
+					dis(data)
+				},
+				error:function(){
+					
+				}
+			}); 
+					
+		}
+		
+	});
 	
 	
 });

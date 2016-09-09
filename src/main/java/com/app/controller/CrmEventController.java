@@ -115,4 +115,14 @@ public class CrmEventController {
 		
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/event/list-by-lead/{id}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listEventByLeadId(@PathVariable("id") String id){		
+		HttpEntity<Object> request = new HttpEntity<Object>(header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/event/list/lead/"+id, HttpMethod.GET, request, Map.class);		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
+	
 }
