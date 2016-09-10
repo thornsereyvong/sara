@@ -21,7 +21,7 @@
 	<section class="content-header">
 		<h1>Create Lead</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Create Lead</a></li>
 		</ol>
 	</section>
@@ -227,8 +227,8 @@ $(document).ready(function() {
 			lea_description: {
 				validators: {
 					stringLength: {
-						max: 255,
-						message: 'The description must be less than 255 characters long.'
+						max: 1000,
+						message: 'The description must be less than 1000 characters long.'
 					}
 				}
 			}
@@ -394,6 +394,7 @@ padding-right: 10px;
 				</div>
 
 				<div class="row">
+					<div class="col-sm-12">
 					<div class="col-sm-6">
 						<div class="col-sm-6">
 							<label class="font-label">First Name <span class="requrie">(Required)</span></label>
@@ -473,7 +474,7 @@ padding-right: 10px;
 						</div>
 					</div>
 				<div class="clearfix"></div>
-
+				</div>
 				</div>
 				
 				<div class="clearfix"></div>
@@ -484,6 +485,7 @@ padding-right: 10px;
 						<hr style="margin-top: 3px;" />
 				</div>
 				<div class="row">
+				<div class="col-sm-12">
 				<div class="col-sm-6">
 				
 					<div class="col-sm-6">
@@ -552,12 +554,13 @@ padding-right: 10px;
 					</div>
 				</div>
 			  </div>
-				
+			</div>	
 			<div class="clearfix"></div>
 			<div class="col-sm-2"><h4>More Information </h4></div>
 			<div class="col-sm-12"> <hr style="margin-top: 3px;" />
 			</div>
 			<div class="row" data-ng-init = "addLeadOnStartup('${SESSION}')">
+				<div class="col-sm-12">
 				<div class="col-sm-6">
 					<div class="col-sm-6"">
 						<label class="font-label">Status </label>
@@ -591,7 +594,7 @@ padding-right: 10px;
 					</div>
 					
 					<div class="col-sm-6">
-						<label class="font-label">Campaign</label>
+						<label class="font-label">Campaign <span class="requrie">(Required)</span></label>
 						<div class="form-group">
 							<select class="form-control select2" name="lea_ca" id="lea_ca" style="width: 100%;">
 								<option value="">-- SELECT Campaign --</option>
@@ -601,11 +604,12 @@ padding-right: 10px;
 					</div>
 				</div>	
 			</div>
-				
+			</div>	
 			<div class="clearfix"></div>
 			<div class="col-sm-2"><h4>Other </h4></div>
 			<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 			<div class="row">
+				<div class="col-sm-12">
 				<div class="col-sm-6">
 					<div class="col-sm-6">
 						<label class="font-label">Assigned to : </label>
@@ -616,6 +620,7 @@ padding-right: 10px;
 			            	</select>
 						</div>
 					</div>
+				</div>
 				</div>
 			</div>
 		</form>

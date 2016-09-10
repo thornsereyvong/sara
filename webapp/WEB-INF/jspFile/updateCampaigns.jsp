@@ -1,7 +1,7 @@
 <%@page import="com.app.entities.CrmCampaign"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <jsp:include page="${request.contextPath}/head"></jsp:include>
 <jsp:include page="${request.contextPath}/header"></jsp:include>
@@ -13,434 +13,575 @@
 	padding-top: 4px;
 }
 </style>
-<div class="content-wrapper" ng-app="campaign" ng-controller="campController" id="campController">
+<div class="content-wrapper" ng-app="campaign"
+	ng-controller="campController" id="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Update Campaign</h1>
 		<ol class="breadcrumb">
-		    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i
+					class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Update Campaign</a></li>
 		</ol>
 	</section>
-<script type="text/javascript">
+	<script type="text/javascript">
+		var app = angular.module('campaign', [ 'oitozero.ngSweetAlert', ]);
+		var self = this;
+		app
+				.controller(
+						'campController',
+						[
+								'SweetAlert',
+								'$scope',
+								'$http',
+								function(SweetAlert, $scope, $http) {
+									$scope.editCampaignOnStartup = function() {
+										$http(
+												{
+													method : 'POST',
+													url : '${pageContext.request.contextPath}/edit/startup',
+													headers : {
+														'Accept' : 'application/json',
+														'Content-Type' : 'application/json'
+													},
+													data : {
+														"username" : '${SESSION}',
+														"campID" : '${campId}'
+													}
+												}).success(function(response) {
+											addCampaignDataToForm(response);
+											if (response.CHILD == "EXIST") {
 
-var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
-var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-	$scope.editCampaignOnStartup = function() {
-		$http({
-		    method: 'POST',
-		    url: '${pageContext.request.contextPath}/edit/startup',
-		    headers: {
-		    	'Accept': 'application/json',
-		        'Content-Type': 'application/json'
-		    },
-		    data: {
-		    	"username": '${SESSION}',
-		    	"campID": '${campId}'
-		    }
-		}).success(function(response) {
-			addCampaignDataToForm(response);
-			if(response.CHILD == "EXIST"){
-				
-			}
-		});
-	};
-}]);
+											}
+										});
+									};
+								} ]);
 
- function listCampaignStatus(statusId, status){
-		$("#cam_status").empty().append('<option value="">-- SELECT Status --</option>');
-		$.each(status, function(key, value){
-			var div = "<option value='"+value.statusID+"' >"+value.statusName+"</option>";
-			$("#cam_status").append(div);
-		});  
-		$("#cam_status").select2("val",statusId);
-	}
-
- function listCampaignType(typeId,type){
-		$("#cam_type").empty().append('<option value="">-- SELECT Type --</option>');
-		$.each(type, function(key, value){
-			var div = "<option value='"+value.typeID+"' >"+value.typeName+"</option>";
-			$("#cam_type").append(div);
-		});  
-		$("#cam_type").select2("val",typeId);
-	}
-
- function listParentCampaign(campId,parentCampaign){
-	    $("#cam_parent").empty().append('<option value="">-- SELECT Parent --</option>');
-	    if(parentCampaign!= ""){
-				$.each(parentCampaign, function(key, value){
-						var div = "<option value='"+value.campID+"' >"+value.campName+"</option>";
-					$("#cam_parent").append(div);
-				});  
-				$("#cam_parent").select2("val",campId);
-		   } 
-	    $("#cam_parent").select2("val","");
-	}
- 
-
-function addCampaignDataToForm(response){
-	
-	var result = response.CAMPAIGN; 
-	$("#cam_id").val(result.campID);
-	$("#cam_name").val(result.campName);
-
-	
-	var d = new Date(result.startDate);
-	var dd = d.getDate();
-	var mm = d.getMonth()+1;
-	var yy = d.getFullYear();
-	
-	$("#cam_startDate").val(dd+"/"+mm+"/"+yy);
-
-	
-	var end = new Date(result.endDate);
-	
-	var dds = end.getDate();
-	var mms = end.getMonth()+1;
-	var yys = end.getFullYear();
-	
-	$("#cam_endDate").val(dds+"/"+mms+"/"+yys);
-
-	
-
-	$("#cam_description").val(result.description);
-	
-	$("#cam_budget").val(result.budget);
-	$("#cam_actualCost").val(result.actualCost);
-	$("#cam_expectedCost").val(result.expectedCost);
-	$("#cam_expectedRevenue").val(result.expectedRevenue);
-	$("#cam_numSend").val(result.numSend);
-	$("#cam_expectedResponse").val(result.expectedResponse);
-
-	userAllList(response.ASSIGN_TO,'#cam_assignTo',result.userID);
-	
-	
-	if(result.statusID == null || result.statusID == ""){
-		listCampaignStatus("", response.CAMP_STATUS);
-	}else{	
-		listCampaignStatus(result.statusID, response.CAMP_STATUS);
-	}
-
-	if(result.typeID == null || result.typeID == ""){
-		listCampaignType("", response.CAMP_TYPE);
-	}else{
-		listCampaignType(result.typeID, response.CAMP_TYPE);
-	}
-	
-	if(result.parentID == null || result.parentID == ""){
-		listParentCampaign("",response.CAMP_PARENT);
-	}else{
-		listParentCampaign(result.campID,response.CAMP_PARENT);
-	}
-	
-}
-
-
-$(document).ready(function() {
-	$(".select2").select2();
-	 $('#cam_startDate').daterangepicker({
-         singleDatePicker: true,
-         showDropdowns: true,
-         format: 'DD/MM/YYYY'
-     }).on('change', function(e) {
-
-         	$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_startDate');
-       
-     });
- 	$('#cam_endDate').daterangepicker({
-         singleDatePicker: true,
-         showDropdowns: true,
-         format: 'DD/MM/YYYY'
-     }).on('change', function(e) {
-
-         	$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_endDate');
-       
-     });
-    
-	function clearForm(){
-		$("#cam_startDate").val("");
-		$("#cam_parent").val("");
-		$("#cam_description").val("");
-		$("#cam_assignTo").val("");
-	}
-
-	$("#cam_name").change(function(){	
-		var name = $("#cam_name").val();
-		
-		$.ajax({
-			url: "${pageContext.request.contextPath}/campaign/list/validate/"+name,
-			method: "GET",
-			header: "application/json",
-			statusCode: {
-			    404: function(xhr) {
-				    
-			     }
-			 },
-			success: function(data){
-			   var dataObject = data.MESSAGE;	
-				if(dataObject == "EXIST"){
-					
-					var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-remove" data-bv-icon-for="cam_name" style="display: block;"></i>';
-					var small = '<small class="help-block" data-bv-validator="notEmpty" data-bv-for="cam_name" data-bv-result="INVALID" style="">The Campaign Name is already exit ! </small>';
-					$("#div_camName").find("i").remove();
-					$("#div_camName").find("small").remove();
-					$("#div_camName").removeClass("form-group has-feedback has-success").addClass("form-group has-feedback has-error");	
-					$("#div_camName").append(i+small);
-					$("#btn_save").attr("disabled","disabled");	
-				}else{
-					var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-ok" data-bv-icon-for="cam_name" style="display: block;"></i>';
-			    	$("#div_camName").find("i").remove();
-					$("#div_camName").find("small").remove();
-					$("#div_camName").removeClass("form-group has-feedback has-error").addClass("form-group has-feedback has-success");	
-					$("#div_camName").append(i);
-					$("#btn_save").removeAttr("disabled");	
-					
-					}
-				 
-			} 
-		});
-
-
-		
-	});
-	
-	$("#btn_clear").click(function(){
-		$("#form-campaigns").bootstrapValidator('resetForm', 'true');
-		$('#form-campaigns').bootstrapValidator('resetForm', 'cam_status');
-      	$('#form-campaigns').bootstrapValidator('resetForm', 'cam_type');
-	});
-	
-	$("#btn_save").click(function(){
-		$("#form-campaigns").submit();
-	});
-	
-	$('#form-campaigns').bootstrapValidator({
-		message: 'This value is not valid',
-		feedbackIcons: {
-			valid: 'glyphicon glyphicon-ok',
-			invalid: 'glyphicon glyphicon-remove',
-			validating: 'glyphicon glyphicon-refresh'
-		},
-		fields : {
-			cam_name : {
-				validators : {
-					notEmpty : {
-						message : 'The name is required and can not be empty!'
-					},
-					stringLength: {
-						max: 255,
-						message: 'The name must be less than 255 characters long.'
-					}
-				}
-			},
-			cam_description : {
-				validators : {
-					
-					stringLength: {
-						max: 255,
-						message: 'The name must be less than 255 characters long.'
-					}
-				}
-			},
-			
-			cam_status : {
-				validators : {
-					notEmpty : {
-						message : 'The tatus is required and can not be empty!'
-					}
-				}
-			},
-			cam_type : {
-				validators : {
-					notEmpty : {
-						message : 'The type is required and can not be empty!'
-					}
-				}
-			},
-
-			cam_endDate : {
-				validators : {
-					notEmpty : {
-						message : 'The  end date is required and can not be empty!'
-					},
-					date: {
-                        format: 'DD/MM/YYYY',
-                        message: 'The value is not a valid date'
-                    }
-				}
-			},
-			cam_startDate : {
-				validators : {	
-					date: {
-                        format: 'DD/MM/YYYY',
-                        message: 'The value is not a valid date'
-                    }
-				}
-			},
-			cam_budget : {
-				validators : {
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
-				}
-			},
-			cam_actualCost : {
-				validators : {
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
-				}
-			},
-			cam_numSend : {
-				validators : {
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
-				}
-			},
-			cam_expectedResponse : {
-				validators : {
-					
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
-				}
-			},
-			cam_expectedCost : {
-				validators : {
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
-				}
-			},
-			cam_expectedRevenue : {
-				validators : {
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
-				}
-			}
-		}
-	}).on('success.form.bv', function(e) {
-		
-		var currentDate = new Date();
-		var day = currentDate.getDate();
-		var month = currentDate.getMonth() + 1;
-		var year = currentDate.getFullYear();
-
-
-		var createDate = $("#cam_startDate").val();
-		var newCreateDate = createDate.split("/").reverse().join("-");
-		
-		var endDate = $("#cam_endDate").val();
-		var endCreateDate = endDate.split("/").reverse().join("-");
-
-		var parentID = "" ;
-		if($("#cam_parent").val() != ""){
-				parentID = {"campID":$("#cam_parent").val()};
-			}else{
-				parentID = null;
-			}
-		
-		var status = "";
-		if($("#cam_status").val() != ""){
-			status = {"statusID":$("#cam_status").val()};
-		}else{
-			status = null;
-		}
-
-		var type = "";
-		if($("#cam_type").val() != ""){
-			type = {"typeID":$("#cam_type").val()};
-		}else{
-			type = null;
-		}	
-
-		var assign = "";
-		if($("#cam_assignTo").val() != ""){
-			assign = {"userID":$("#cam_assignTo").val()};
-		}else{
-			assign = null;
-		}
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/campaign/edit",
-			type : "PUT",
-			data : JSON.stringify({ 
-				    "campID" : $("#cam_id").val(),
-					"campName" : $("#cam_name").val(),
-					"startDate" : newCreateDate,
-					"endDate" : endCreateDate,
-					"status" : status,
-					"type": type,
-					"description" : $("#cam_description").val(),
-					"parent" : parentID,
-					"budget" : $("#cam_budget").val(),
-					"assignTo" : assign,
-					"actualCost" : $("#cam_actualCost").val(),
-					"expectedCost" : $("#cam_expectedCost").val(),
-					"expectedRevenue" : $("#cam_expectedRevenue").val(),
-					"numSend" : $("#cam_numSend").val(),
-					"expectedResponse" : $("#cam_expectedResponse").val(),
-					"modifiedBy" : $.session.get("parentID"),
-				}),
-			
-			beforeSend: function(xhr) {
-					    xhr.setRequestHeader("Accept", "application/json");
-					    xhr.setRequestHeader("Content-Type", "application/json");
-					    },
-			success:function(data){
-					$("#form-campaigns").bootstrapValidator('resetForm', 'true');
-					$('#form-campaigns')[0].reset();
-					$("#cam_parent").select2("val","");
-					$("#cam_assignTo").select2("val","");
-					$('#form-campaigns').bootstrapValidator('resetForm', 'cam_status');
-			      	$('#form-campaigns').bootstrapValidator('resetForm', 'cam_type');
-					swal({
-	            		title:"Success",
-	            		text:"User have been Update campaign!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
-					setTimeout(function(){
-						window.location.href = "${pageContext.request.contextPath}/list-campaigns";
-					}, 2000);
-					
-				},
-			error:function(){
-				errorMessage();
-				}
+		function listCampaignStatus(statusId, status) {
+			$("#cam_status").empty().append(
+					'<option value="">-- SELECT Status --</option>');
+			$.each(status, function(key, value) {
+				var div = "<option value='"+value.statusID+"' >"
+						+ value.statusName + "</option>";
+				$("#cam_status").append(div);
 			});
-		
-	});	
+			$("#cam_status").select2("val", statusId);
+		}
 
-	
-});
-</script>
+		function listCampaignType(typeId, type) {
+			$("#cam_type").empty().append(
+					'<option value="">-- SELECT Type --</option>');
+			$.each(type, function(key, value) {
+				var div = "<option value='"+value.typeID+"' >" + value.typeName
+						+ "</option>";
+				$("#cam_type").append(div);
+			});
+			$("#cam_type").select2("val", typeId);
+		}
+
+		function listParentCampaign(campId, parentCampaign) {
+			$("#cam_parent").empty().append(
+					'<option value="">-- SELECT Parent --</option>');
+			if (parentCampaign != "") {
+				$.each(parentCampaign, function(key, value) {
+					var div = "<option value='"+value.campID+"' >"
+							+ value.campName + "</option>";
+					$("#cam_parent").append(div);
+				});
+				$("#cam_parent").select2("val", campId);
+			}
+			$("#cam_parent").select2("val", "");
+		}
+
+		function addCampaignDataToForm(response) {
+
+			var result = response.CAMPAIGN;
+			$("#cam_id").val(result.campID);
+			$("#cam_name").val(result.campName);
+
+			var d = new Date(result.startDate);
+			var dd = d.getDate();
+			var mm = d.getMonth() + 1;
+			var yy = d.getFullYear();
+
+			$("#cam_startDate").val(dd + "/" + mm + "/" + yy);
+
+			var end = new Date(result.endDate);
+
+			var dds = end.getDate();
+			var mms = end.getMonth() + 1;
+			var yys = end.getFullYear();
+
+			$("#cam_endDate").val(dds + "/" + mms + "/" + yys);
+
+			$("#cam_description").val(result.description);
+
+			$("#cam_budget").val(result.budget);
+			$("#cam_actualCost").val(result.actualCost);
+			$("#cam_expectedCost").val(result.expectedCost);
+			$("#cam_expectedRevenue").val(result.expectedRevenue);
+			$("#cam_numSend").val(result.numSend);
+			$("#cam_expectedResponse").val(result.expectedResponse);
+
+			userAllList(response.ASSIGN_TO, '#cam_assignTo', result.userID);
+
+			if (result.statusID == null || result.statusID == "") {
+				listCampaignStatus("", response.CAMP_STATUS);
+			} else {
+				listCampaignStatus(result.statusID, response.CAMP_STATUS);
+			}
+
+			if (result.typeID == null || result.typeID == "") {
+				listCampaignType("", response.CAMP_TYPE);
+			} else {
+				listCampaignType(result.typeID, response.CAMP_TYPE);
+			}
+
+			if (result.parentID == null || result.parentID == "") {
+				listParentCampaign("", response.CAMP_PARENT);
+			} else {
+				listParentCampaign(result.campID, response.CAMP_PARENT);
+			}
+
+		}
+
+		$(document)
+				.ready(
+						function() {
+							$(".select2").select2();
+							$('#cam_startDate').daterangepicker({
+								singleDatePicker : true,
+								showDropdowns : true,
+								format : 'DD/MM/YYYY'
+							}).on(
+									'change',
+									function(e) {
+
+										$('#form-campaigns')
+												.bootstrapValidator(
+														'revalidateField',
+														'cam_startDate');
+
+									});
+							$('#cam_endDate').daterangepicker({
+								singleDatePicker : true,
+								showDropdowns : true,
+								format : 'DD/MM/YYYY'
+							}).on(
+									'change',
+									function(e) {
+
+										$('#form-campaigns')
+												.bootstrapValidator(
+														'revalidateField',
+														'cam_endDate');
+
+									});
+
+							function clearForm() {
+								$("#cam_startDate").val("");
+								$("#cam_parent").val("");
+								$("#cam_description").val("");
+								$("#cam_assignTo").val("");
+							}
+
+							$("#cam_name")
+									.change(
+											function() {
+												var name = $("#cam_name").val();
+
+												$
+														.ajax({
+															url : "${pageContext.request.contextPath}/campaign/list/validate/"
+																	+ name,
+															method : "GET",
+															header : "application/json",
+															statusCode : {
+																404 : function(
+																		xhr) {
+
+																}
+															},
+															success : function(
+																	data) {
+																var dataObject = data.MESSAGE;
+																if (dataObject == "EXIST") {
+
+																	var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-remove" data-bv-icon-for="cam_name" style="display: block;"></i>';
+																	var small = '<small class="help-block" data-bv-validator="notEmpty" data-bv-for="cam_name" data-bv-result="INVALID" style="">The Campaign Name is already exit ! </small>';
+																	$(
+																			"#div_camName")
+																			.find(
+																					"i")
+																			.remove();
+																	$(
+																			"#div_camName")
+																			.find(
+																					"small")
+																			.remove();
+																	$(
+																			"#div_camName")
+																			.removeClass(
+																					"form-group has-feedback has-success")
+																			.addClass(
+																					"form-group has-feedback has-error");
+																	$(
+																			"#div_camName")
+																			.append(
+																					i
+																							+ small);
+																	$(
+																			"#btn_save")
+																			.attr(
+																					"disabled",
+																					"disabled");
+																} else {
+																	var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-ok" data-bv-icon-for="cam_name" style="display: block;"></i>';
+																	$(
+																			"#div_camName")
+																			.find(
+																					"i")
+																			.remove();
+																	$(
+																			"#div_camName")
+																			.find(
+																					"small")
+																			.remove();
+																	$(
+																			"#div_camName")
+																			.removeClass(
+																					"form-group has-feedback has-error")
+																			.addClass(
+																					"form-group has-feedback has-success");
+																	$(
+																			"#div_camName")
+																			.append(
+																					i);
+																	$(
+																			"#btn_save")
+																			.removeAttr(
+																					"disabled");
+
+																}
+
+															}
+														});
+
+											});
+
+							$("#btn_clear")
+									.click(
+											function() {
+												location.reload();
+											});
+
+							$("#btn_save").click(function() {
+								$("#form-campaigns").submit();
+							});
+
+							$('#form-campaigns')
+									.bootstrapValidator(
+											{
+												message : 'This value is not valid',
+												feedbackIcons : {
+													valid : 'glyphicon glyphicon-ok',
+													invalid : 'glyphicon glyphicon-remove',
+													validating : 'glyphicon glyphicon-refresh'
+												},
+												fields : {
+													cam_name : {
+														validators : {
+															notEmpty : {
+																message : 'The name is required and can not be empty!'
+															},
+															stringLength : {
+																max : 255,
+																message : 'The name must be less than 255 characters long.'
+															}
+														}
+													},
+													cam_description : {
+														validators : {
+
+															stringLength : {
+																max : 255,
+																message : 'The name must be less than 255 characters long.'
+															}
+														}
+													},
+
+													cam_status : {
+														validators : {
+															notEmpty : {
+																message : 'The tatus is required and can not be empty!'
+															}
+														}
+													},
+													cam_type : {
+														validators : {
+															notEmpty : {
+																message : 'The type is required and can not be empty!'
+															}
+														}
+													},
+
+													cam_endDate : {
+														validators : {
+															notEmpty : {
+																message : 'The  end date is required and can not be empty!'
+															},
+															date : {
+																format : 'DD/MM/YYYY',
+																message : 'The value is not a valid date'
+															}
+														}
+													},
+													cam_startDate : {
+														validators : {
+															date : {
+																format : 'DD/MM/YYYY',
+																message : 'The value is not a valid date'
+															}
+														}
+													},
+													cam_budget : {
+														validators : {
+															numeric : {
+																message : 'The value is not a number',
+																// The default separators
+																thousandsSeparator : '',
+																decimalSeparator : '.'
+															}
+														}
+													},
+													cam_actualCost : {
+														validators : {
+															numeric : {
+																message : 'The value is not a number',
+																// The default separators
+																thousandsSeparator : '',
+																decimalSeparator : '.'
+															}
+														}
+													},
+													cam_numSend : {
+														validators : {
+															numeric : {
+																message : 'The value is not a number',
+																// The default separators
+																thousandsSeparator : '',
+																decimalSeparator : '.'
+															}
+														}
+													},
+													cam_expectedResponse : {
+														validators : {
+
+															numeric : {
+																message : 'The value is not a number',
+																// The default separators
+																thousandsSeparator : '',
+																decimalSeparator : '.'
+															}
+														}
+													},
+													cam_expectedCost : {
+														validators : {
+															numeric : {
+																message : 'The value is not a number',
+																// The default separators
+																thousandsSeparator : '',
+																decimalSeparator : '.'
+															}
+														}
+													},
+													cam_expectedRevenue : {
+														validators : {
+															numeric : {
+																message : 'The value is not a number',
+																// The default separators
+																thousandsSeparator : '',
+																decimalSeparator : '.'
+															}
+														}
+													}
+												}
+											})
+									.on(
+											'success.form.bv',
+											function(e) {
+
+												var currentDate = new Date();
+												var day = currentDate.getDate();
+												var month = currentDate
+														.getMonth() + 1;
+												var year = currentDate
+														.getFullYear();
+
+												var createDate = $(
+														"#cam_startDate").val();
+												var newCreateDate = createDate
+														.split("/").reverse()
+														.join("-");
+
+												var endDate = $("#cam_endDate")
+														.val();
+												var endCreateDate = endDate
+														.split("/").reverse()
+														.join("-");
+
+												var parentID = "";
+												if ($("#cam_parent").val() != "") {
+													parentID = {
+														"campID" : $(
+																"#cam_parent")
+																.val()
+													};
+												} else {
+													parentID = null;
+												}
+
+												var status = "";
+												if ($("#cam_status").val() != "") {
+													status = {
+														"statusID" : $(
+																"#cam_status")
+																.val()
+													};
+												} else {
+													status = null;
+												}
+
+												var type = "";
+												if ($("#cam_type").val() != "") {
+													type = {
+														"typeID" : $(
+																"#cam_type")
+																.val()
+													};
+												} else {
+													type = null;
+												}
+
+												var assign = "";
+												if ($("#cam_assignTo").val() != "") {
+													assign = {
+														"userID" : $(
+																"#cam_assignTo")
+																.val()
+													};
+												} else {
+													assign = null;
+												}
+
+												$
+														.ajax({
+															url : "${pageContext.request.contextPath}/campaign/edit",
+															type : "PUT",
+															data : JSON
+																	.stringify({
+																		"campID" : $(
+																				"#cam_id")
+																				.val(),
+																		"campName" : $(
+																				"#cam_name")
+																				.val(),
+																		"startDate" : newCreateDate,
+																		"endDate" : endCreateDate,
+																		"status" : status,
+																		"type" : type,
+																		"description" : $(
+																				"#cam_description")
+																				.val(),
+																		"parent" : parentID,
+																		"budget" : $(
+																				"#cam_budget")
+																				.val(),
+																		"assignTo" : assign,
+																		"actualCost" : $(
+																				"#cam_actualCost")
+																				.val(),
+																		"expectedCost" : $(
+																				"#cam_expectedCost")
+																				.val(),
+																		"expectedRevenue" : $(
+																				"#cam_expectedRevenue")
+																				.val(),
+																		"numSend" : $(
+																				"#cam_numSend")
+																				.val(),
+																		"expectedResponse" : $(
+																				"#cam_expectedResponse")
+																				.val(),
+																		"modifiedBy" : $.session
+																				.get("parentID"),
+																	}),
+
+															beforeSend : function(
+																	xhr) {
+																xhr
+																		.setRequestHeader(
+																				"Accept",
+																				"application/json");
+																xhr
+																		.setRequestHeader(
+																				"Content-Type",
+																				"application/json");
+															},
+															success : function(
+																	data) {
+																$(
+																		"#form-campaigns")
+																		.bootstrapValidator(
+																				'resetForm',
+																				'true');
+																$('#form-campaigns')[0]
+																		.reset();
+																$("#cam_parent")
+																		.select2(
+																				"val",
+																				"");
+																$(
+																		"#cam_assignTo")
+																		.select2(
+																				"val",
+																				"");
+																$(
+																		'#form-campaigns')
+																		.bootstrapValidator(
+																				'resetForm',
+																				'cam_status');
+																$(
+																		'#form-campaigns')
+																		.bootstrapValidator(
+																				'resetForm',
+																				'cam_type');
+																swal({
+																	title : "Success",
+																	text : "User have been Update campaign!",
+																	type : "success",
+																	timer : 2000,
+																	showConfirmButton : false
+																});
+																setTimeout(
+																		function() {
+																			window.location.href = "${pageContext.request.contextPath}/list-campaigns";
+																		}, 2000);
+
+															},
+															error : function() {
+																errorMessage();
+															}
+														});
+
+											});
+
+						});
+	</script>
 	<section class="content">
 
 		<!-- Default box -->
-		
+
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<h3 class="box-title">&nbsp;</h3>
@@ -455,188 +596,213 @@ $(document).ready(function() {
 					</button>
 				</div>
 			</div>
-			<div class="box-body" data-ng-init = "editCampaignOnStartup()">
-			
-			<form method="post" id="form-campaigns">
-				
-				<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
-				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/list-campaigns"> <i class="fa fa-reply"></i> Back </a>
+			<div class="box-body" data-ng-init="editCampaignOnStartup()">
 
-				<div class="clearfix"></div>
-	
-				<div class="col-sm-2">
-					<h4>Overview</h4>
-				</div>
+				<form method="post" id="form-campaigns">
 
-				<div class="col-sm-12">
-					<hr style="margin-top: 3px;" />
-				</div>
-		
-				
-				<div class="row">
-					<input type="hidden" name="cam_id" id="cam_id" >
-					<div class="col-sm-6">
-						<div class="col-sm-12">
-							<label class="font-label">Name <span class="requrie">(Required)</span></label>
-							<div class="form-group" id="div_camName">
-								<input type="text" class="form-control" name="cam_name" id="cam_name" value="">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Start date </label>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<i class="fa fa-calendar"></i>
-									</div>
-									<input type="text" class="form-control pull-right" name="cam_startDate" id="cam_startDate">
-								</div> 
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">End date <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-						        <div class="input-group">
-									<div class="input-group-addon">
-										<i class="fa fa-calendar"></i>
-									</div>
-									<input type="text" class="form-control pull-right" name="cam_endDate" id="cam_endDate"> 
-								</div>
-							</div>
-						</div>
-						
-						<div class="clearfix"></div>
-						<div class="col-sm-12">
-							<label class="font-label">Description </label>
-							<div class="form-group">
-								<textarea style="height: 120px" rows="" cols="" name="cam_description" id="cam_description"
-									class="form-control"></textarea>
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Assigned to</label>
-							<div class="form-group">
-								<select class="form-control select2"  name="cam_assignTo" id="cam_assignTo" style="width: 100%;">
-									<option value=""></option>
-			                    </select>
-							</div>
-						</div>
-						
-					</div>
-
-					<div class="col-sm-6">
-
-						<div class="col-sm-6">
-							<label class="font-label">Status <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<select class="form-control select2" name="cam_status" id="cam_status" style="width: 100%;">
-									
-								</select>
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Type <span class="requrie">(Required)</span></label>
-							<div class="form-group" >
-								<select class="form-control select2" name="cam_type" id="cam_type" style="width: 100%;">
-									
-								</select>
-							</div>
-						</div>
-						
-
-						<div class="col-sm-6">
-							<label class="font-label">Parent campaign </label>
-							<div class="form-group">
-								<select class="form-control select2" name="cam_parent" id="cam_parent" style="width: 100%;">
-									
-								</select>
-							</div>
-						</div>
-						
-
-					</div>
-					
+					<button type="button" class="btn btn-info btn-app" id="btn_save">
+						<i class="fa fa-save"></i> Save
+					</button>
+					<a class="btn btn-info btn-app" id="btn_clear"> <i
+						class="fa fa-refresh" aria-hidden="true"></i>Clear
+					</a> <a class="btn btn-info btn-app"
+						href="${pageContext.request.contextPath}/list-campaigns"> <i
+						class="fa fa-reply"></i> Back
+					</a>
 
 					<div class="clearfix"></div>
 
+					<div class="col-sm-2">
+						<h4>Overview</h4>
+					</div>
 
-				</div>
-				
-				<div class="clearfix"></div>
-				
-				<div class="col-sm-2"><h4>Budget</h4></div>
-				
-				<div class="col-sm-12">
+					<div class="col-sm-12">
+						<hr style="margin-top: 3px;" />
+					</div>
+
+
+					<div class="row">
+						<div class="col-sm-12">
+							<input type="hidden" name="cam_id" id="cam_id">
+							<div class="col-sm-6">
+								<div class="col-sm-12">
+									<label class="font-label">Name <span class="requrie">(Required)</span></label>
+									<div class="form-group" id="div_camName">
+										<input type="text" class="form-control" name="cam_name"
+											id="cam_name" value="">
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<label class="font-label">Start date </label>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input type="text" class="form-control pull-right"
+												name="cam_startDate" id="cam_startDate">
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<label class="font-label">End date <span
+										class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input type="text" class="form-control pull-right"
+												name="cam_endDate" id="cam_endDate">
+										</div>
+									</div>
+								</div>
+
+								<div class="clearfix"></div>
+								<div class="col-sm-12">
+									<label class="font-label">Description </label>
+									<div class="form-group">
+										<textarea style="height: 120px" rows="" cols=""
+											name="cam_description" id="cam_description"
+											class="form-control"></textarea>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<label class="font-label">Assigned to</label>
+									<div class="form-group">
+										<select class="form-control select2" name="cam_assignTo"
+											id="cam_assignTo" style="width: 100%;">
+											<option value=""></option>
+										</select>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="col-sm-6">
+
+								<div class="col-sm-6">
+									<label class="font-label">Status <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select class="form-control select2" name="cam_status"
+											id="cam_status" style="width: 100%;">
+
+										</select>
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<label class="font-label">Type <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select class="form-control select2" name="cam_type"
+											id="cam_type" style="width: 100%;">
+
+										</select>
+									</div>
+								</div>
+
+
+								<div class="col-sm-6">
+									<label class="font-label">Parent campaign </label>
+									<div class="form-group">
+										<select class="form-control select2" name="cam_parent"
+											id="cam_parent" style="width: 100%;">
+
+										</select>
+									</div>
+								</div>
+
+
+							</div>
+
+
+							<div class="clearfix"></div>
+
+
+						</div>
+					</div>
+					<div class="clearfix"></div>
+
+					<div class="col-sm-2">
+						<h4>Budget</h4>
+					</div>
+
+					<div class="col-sm-12">
 						<hr />
-				</div>
-				<div class="row">
-				<div class="col-sm-6">
-				
-					<div class="col-sm-6">
-							<label class="font-label">Budget</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="cam_budget" id="cam_budget">
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="col-sm-6">
+
+								<div class="col-sm-6">
+									<label class="font-label">Budget</label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="cam_budget"
+											id="cam_budget">
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<label class="font-label">Actual cost</label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="cam_actualCost"
+											id="cam_actualCost">
+									</div>
+								</div>
+
+
+								<div class="col-sm-6">
+									<label class="font-label">Number send</label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="cam_numSend"
+											id="cam_numSend">
+									</div>
+								</div>
+
+
+								<div class="col-sm-6">
+									<label class="font-label">Expected response</label>
+									<div class="form-group">
+										<input type="text" class="form-control"
+											name="cam_expectedResponse" id="cam_expectedResponse">
+									</div>
+								</div>
+
+
+
+							</div>
+
+							<div class="col-sm-6">
+
+								<div class="col-sm-6">
+									<label class="font-label">Expected cost</label>
+									<div class="form-group">
+										<input type="text" class="form-control"
+											name="cam_expectedCost" id="cam_expectedCost">
+									</div>
+								</div>
+
+								<div class="col-sm-6">
+									<label class="font-label">Expected revenue</label>
+									<div class="form-group">
+										<input type="text" class="form-control"
+											name="cam_expectedRevenue" id="cam_expectedRevenue">
+									</div>
+								</div>
+
 							</div>
 						</div>
-						
-					<div class="col-sm-6">
-							<label class="font-label">Actual cost</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="cam_actualCost" id="cam_actualCost">
-							</div>
-						</div>
-						
-						
-						<div class="col-sm-6">
-							<label class="font-label">Number send</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="cam_numSend" id="cam_numSend">
-							</div>
-						</div>
-						
-						
-						<div class="col-sm-6">
-							<label class="font-label">Expected response</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="cam_expectedResponse" id="cam_expectedResponse">
-							</div>
-						</div>
-						
-					
-						
-				</div>
-				
-				<div class="col-sm-6">
-				
-					<div class="col-sm-6">
-							<label class="font-label">Expected cost</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="cam_expectedCost" id="cam_expectedCost">
-							</div>
-						</div>
-						
-					<div class="col-sm-6">
-							<label class="font-label">Expected revenue</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="cam_expectedRevenue" id="cam_expectedRevenue">
-							</div>
-						</div>
-						
-						
-				</div>
-			</div>
-			</form>
+					</div>
+				</form>
 			</div>
 			<!-- /.box-body -->
 			<div class="box-footer"></div>
 			<!-- /.box-footer-->
 		</div>
-		
+
 		<!-- /.box -->
 
 
