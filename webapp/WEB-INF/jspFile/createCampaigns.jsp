@@ -14,7 +14,7 @@
   <section class="content-header">
     <h1>Create Campaign</h1>
     <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
     <li class="active"><a href="#">Create Campaign</a></li>
     </ol>
   </section>
@@ -123,6 +123,7 @@
             <hr style="margin-top: 3px;" />
           </div>
           <div class="row">
+          	<div class="col-sm-12">
             <div class="col-sm-6">
               <div class="col-sm-12">
                 <label class="font-label">Name <span class="requrie">(Required)</span></label>
@@ -197,6 +198,7 @@
               </div>
             </div>
             <div class="clearfix"></div>
+          </div>
           </div>
           <div class="clearfix"></div>
           <div class="col-sm-2">

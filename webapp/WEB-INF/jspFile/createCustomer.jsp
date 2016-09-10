@@ -18,7 +18,7 @@
 	<section class="content-header">
 		<h1>Create Customer</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Create Customer</a></li>
 		</ol>
 	</section>
@@ -283,7 +283,7 @@ $(document).ready(function() {
 				</div>
 
 				<div class="row">
-
+					<div class="col-sm-12">
 					<div class="col-sm-6">
 
 						
@@ -349,7 +349,7 @@ $(document).ready(function() {
 
 					<div class="clearfix"></div>
 
-
+					</div>
 				</div>
 				
 				<div class="clearfix"></div>
@@ -360,6 +360,9 @@ $(document).ready(function() {
 						<hr style="margin-top: 8px;"/>
 				</div>
 				<div class="row">
+				
+				<div class="col-sm-12">
+				
 				<div class="col-sm-6">
 				
 					<div class="col-sm-6">
@@ -419,7 +422,46 @@ $(document).ready(function() {
 						
 					</div>	
 				</div>
-
+				</div>
+				<div class="clearfix"></div>
+				
+				<div class="col-sm-2"><h4>Setting</h4></div>
+				
+				<div class="col-sm-12">
+						<hr style="margin-top: 8px;"/>
+				</div>
+				<div class="row">
+				
+				<div class="col-sm-12">
+				
+				<div class="col-sm-6">
+				
+					<div class="col-sm-6">
+							<label class="font-label">Customer Group <span class="requrie">(Required)</span></label>
+							<div class="form-group">
+								<select class="form-control select2" name="c_group" id="c_group">
+									<option value="">-- SELECT Type</option>
+									<option ng-repeat="u in account" value="{{u.accountID}}">{{u.accountName}}</option> 
+								</select>
+							</div>
+						</div>
+						
+						
+					<div class="col-sm-6">
+							<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
+							<div class="form-group">
+								<select class="form-control select2" name="c_price" id="c_price">
+									<option value="">-- SELECT Type</option>
+									<option ng-repeat="u in account" value="{{u.accountID}}">{{u.accountName}}</option> 
+								</select>
+							</div>
+						</div>
+								
+						
+				</div>
+				
+				</div>
+				</div>
 			</form>
 			</div>
 			<!-- /.box-body -->
