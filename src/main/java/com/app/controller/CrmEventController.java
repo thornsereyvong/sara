@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
 import com.app.entities.CrmEvent;
 import com.app.utilities.RestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +35,7 @@ public class CrmEventController {
 	
 	@Autowired
 	private String URL;
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/event/list",method = RequestMethod.GET)
@@ -83,11 +85,11 @@ public class CrmEventController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/event/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addEvent(@RequestBody CrmEvent campaign){
-		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
+	public ResponseEntity<Map<String, Object>> addEvent(@RequestBody String json){
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(json,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/event/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	

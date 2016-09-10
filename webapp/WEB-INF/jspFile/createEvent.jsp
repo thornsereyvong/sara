@@ -53,7 +53,10 @@ $(document).ready(function() {
 	$('.date2').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        format: 'DD/MM/YYYY' 
+        format: 'DD/MM/YYYY h:mm A',
+        timePicker: true, 
+        timePickerIncrement: 5,
+       
     }).on('change', function(e) {
 
 		if($("#startDate").val() != ""){
@@ -77,8 +80,6 @@ $(document).ready(function() {
 	 $("#btn_save").click(function(){
 		$("#form-call").submit();
 	});
-
-
 		
 	$('#form-call').bootstrapValidator({
 			message: 'This value is not valid',
@@ -113,9 +114,9 @@ $(document).ready(function() {
 							message: 'The Start Date is required and can not be empty!'
 						},
 						date: {
-	                        format: 'DD/MM/YYYY',
-	                        message: 'The value is not a valid date'
-	                    }
+	                        format: 'DD/MM/YYYY h:mm A',
+	                        message: 'The value is not a valid date!'
+						}
 					}
 				},
 				endDate: {
@@ -124,9 +125,9 @@ $(document).ready(function() {
 							message: 'The End Date is required and can not be empty!'
 						},
 						date: {
-	                        format: 'DD/MM/YYYY',
-	                        message: 'The value is not a valid date'
-	                    }
+	                        format: 'DD/MM/YYYY h:mm A',
+	                        message: 'The value is not a valid date!'
+						}
 					}
 				},
 				budget : {
@@ -141,33 +142,26 @@ $(document).ready(function() {
 					}
 			}
 		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-
-			var createDate = $("#startDate").val();
-			var newCreateDate = createDate.split("/").reverse().join("-");
 			
-			var endDate = $("#endDate").val();
-			var endCreateDate = endDate.split("/").reverse().join("-");
-
-			
-
 		    var assign = "";	
 			if($("#assignTo").val()  != ""){
-				assign = {"userID": $("#assignTo").val()};
+				assign = $("#assignTo").val();
 			}else{
-				assign = null;
+				assign = "";
 			}
 
 			var location = "";	
 			if($("#location").val()  != ""){
-				location = {"loId": $("#location").val()};
+				location = $("#location").val();
 			}else{
-				location = null;
+				location = "";
+			}
+
+			var budget = "";	
+			if($("#budget").val()  == "" | $("#budget").val()  == null){
+				budget = "0";
+			}else{
+				budget = $("#budget").val();
 			}
 
 			$.ajax({
@@ -175,15 +169,14 @@ $(document).ready(function() {
 				type : "POST",
 				data : JSON.stringify({
 					  "evName": $("#name").val(),
-				      "evlocation": location,
-				      "evBudget": $("#budget").val(),
+				      "evLocation": location,
+				      "evBudget": budget,
 				      "evDes": $("#description").val(),
 				      "evCreateBy":  $.session.get("parentID"),
 				      "evDuration": $("#duration").val(),
-				      "evStartDate": newCreateDate,
-				      "evEndDate": endCreateDate,
-				      "assignTo": assign,
-				      "evCreateDate":  year+"-"+month+"-"+day 
+				      "evStartDate": $("#startDate").val(),
+				      "evEndDate": $("#endDate").val(),
+				      "assignTo": assign, 
 					}),
 				beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
@@ -209,13 +202,7 @@ $(document).ready(function() {
 					errorMessage();
 					}
 				});  
-			
 		});	
-
-
-		
-	
-	
 });
 </script>
 	<section class="content">
@@ -323,7 +310,7 @@ $(document).ready(function() {
 
 					<div class="col-sm-6">
 						<div class="col-sm-6">
-							<label class="font-label">Start date </label>
+							<label class="font-label">Start date <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -335,7 +322,7 @@ $(document).ready(function() {
 						</div>
 						
 						<div class="col-sm-6">
-							<label class="font-label">End date </label>
+							<label class="font-label">End date <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<div class="input-group">
 									<div class="input-group-addon">
