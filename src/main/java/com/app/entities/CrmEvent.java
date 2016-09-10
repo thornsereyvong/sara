@@ -1,5 +1,6 @@
 package com.app.entities;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -13,10 +14,10 @@ public class CrmEvent{
 	
 	private CrmEventLocation evlocation;
 	
-	private Date evStartDate;
+	private LocalDateTime evStartDate;
 	
 	
-	private Date evEndDate;
+	private LocalDateTime evEndDate;
 	
 	
 	private String evDuration;
@@ -34,7 +35,7 @@ public class CrmEvent{
 	private String evCreateBy;
 	
 	
-	private Date evCreateDate;
+	private LocalDateTime evCreateDate;
 	
 	
 	private String evModifiedBy;
@@ -66,19 +67,19 @@ public class CrmEvent{
 		this.evlocation = evlocation;
 	}
 
-	public Date getEvStartDate() {
+	public LocalDateTime getEvStartDate() {
 		return evStartDate;
 	}
 
-	public void setEvStartDate(Date evStartDate) {
+	public void setEvStartDate(LocalDateTime evStartDate) {
 		this.evStartDate = evStartDate;
 	}
 
-	public Date getEvEndDate() {
+	public LocalDateTime getEvEndDate() {
 		return evEndDate;
 	}
 
-	public void setEvEndDate(Date evEndDate) {
+	public void setEvEndDate(LocalDateTime evEndDate) {
 		this.evEndDate = evEndDate;
 	}
 
@@ -122,11 +123,11 @@ public class CrmEvent{
 		this.evCreateBy = evCreateBy;
 	}
 
-	public Date getEvCreateDate() {
+	public LocalDateTime getEvCreateDate() {
 		return evCreateDate;
 	}
 
-	public void setEvCreateDate(Date evCreateDate) {
+	public void setEvCreateDate(LocalDateTime evCreateDate) {
 		this.evCreateDate = evCreateDate;
 	}
 

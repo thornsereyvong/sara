@@ -255,8 +255,8 @@ $(document).ready(function() {
 				      "meetingLocation":  $("#me_location").val(),
 				      "meetingRelatedToModuleType": $("#me_relateTo").val(),
 				      "meetingRelatedToModuleId": $("#me_reportType").val(),
-				      "meetingCreateBy": $.session.get("parentID"),
-				      "meetingCreateDate": year+"-"+month+"-"+day		
+				      "meetingModifiedBy": $.session.get("parentID"),
+				      "meetingModifiedDate": year+"-"+month+"-"+day		
 				   
 					}),
 				beforeSend: function(xhr) {

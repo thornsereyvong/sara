@@ -202,14 +202,14 @@ $(document).ready(function() {
 					  "callId": $("#id").val(),
 				      "callStartDate": newCreateDate,
 				      "callDuration": $("#duration").val(),
-				      "callCreateBy": $.session.get("parentID"),
+				      "callModifiedBy": $.session.get("parentID"),
 				      "callStatus": status,
 				      "callDes": $("#description").val(),
 				      "callSubject": $("#subject").val(),
 				      "callAssignTo": assign,
 				      "callRelatedToFieldId": $("#reportTo").val(),
 				      "callRelatedToModuleType": $("#reportType").val(),
-				      "callCreateDate": year+"-"+month+"-"+day
+				      "callModifiedDate": year+"-"+month+"-"+day
 				      
 					}),
 				beforeSend: function(xhr) {
