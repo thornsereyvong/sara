@@ -41,6 +41,27 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 $(document).ready(function() {
 	
+	
+	$(".timepicker").timepicker({
+		format: 'h:mm',
+        showInputs: false,
+        minuteStep: 5,
+        defaultTime: false,
+        showMeridian : false
+    }).on('change', function(e) {
+     	$('#form-call').bootstrapValidator('revalidateField', 'duration');
+ 	});
+	$('.call-data-time').daterangepicker({
+        format: 'DD/MM/YYYY h:mm A',
+        singleDatePicker: true,
+        showDropdowns: true,
+        timePicker: true, 
+        timePickerIncrement: 5,
+    }).on('change', function(e) {
+     	$('#form-call').bootstrapValidator('revalidateField', 'startDate');
+ 	});
+	
+	
 	var data = ${users};
 	$(".select2").select2();
 	
@@ -48,20 +69,6 @@ $(document).ready(function() {
 		var relate = $("#reportType").val();
 		funcRelateTo("#reportTo",relate,"");
 	});
-	
-	$('#startDate').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        format: 'DD/MM/YYYY' 
-    }).on('change', function(e) {
-     	$('#form-call').bootstrapValidator('revalidateField', 'startDate');
- 	});
-	/* $(".timepicker").timepicker({
-        showInputs: false,
-        defaultTime: false,
-        showMeridian : false
-      });
- */
     
 	
 	userAllList(data,'#assignTo','');
@@ -101,7 +108,7 @@ $(document).ready(function() {
 							message: 'The Start Date is required and can not be empty!'
 						},
 						date: {
-	                        format: 'DD/MM/YYYY',
+	                        format: 'DD/MM/YYYY h:mm A',
 	                        message: 'The value is not a valid date'
 	                    }
 					}
@@ -109,11 +116,11 @@ $(document).ready(function() {
 				duration : {
 					validators: {
 						notEmpty: {
-							message: 'The Duration is required and can not be empty!'
+							message: 'The duration is required and can not be empty!'
 						},
 						stringLength: {
-							max: 255,
-							message: 'The Subject must be less than 255 characters long.'
+							max: 5,
+							message: 'The duration must be less than 5 characters long.'
 						}
 					}
 				},
@@ -127,8 +134,8 @@ $(document).ready(function() {
 				description : {
 					validators: {
 						stringLength: {
-							max: 255,
-							message: 'The description must be less than 255 characters long.'
+							max: 1000,
+							message: 'The description must be less than 1000 characters long.'
 						}
 					}
 				}
@@ -251,15 +258,13 @@ $(document).ready(function() {
 
 					<div class="col-sm-6">
 
-						
-
-						<div class="col-sm-6">
+						<div class="col-sm-12">
 							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
 								<input type="text" class="form-control" name="subject" id="subject">
 							</div>
 						</div>
-						
+						<div class="clearfix"></div>
 						<div class="col-sm-6">
 							<label class="font-label">Start date <span class="requrie">(Required)</span></label>
 							<div class="form-group">
@@ -267,35 +272,28 @@ $(document).ready(function() {
 									<div class="input-group-addon">
 										<i class="fa fa-calendar"></i>
 									</div>
-									<input type="text" class="form-control pull-right" name="startDate" id="startDate">
+									<input type="text" class="form-control call-data-time pull-right" name="startDate" id="startDate">
 								</div> 
 							</div>
 						</div>
 						
-						<div class="clearfix"></div>
-						<div class="col-sm-6">
-							<label class="font-label">Duration <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-		                    	 <input type="text" class="form-control" name="duration" id="duration" value="">
-		                    </div>	
-						</div>
 						
-						<div class="col-sm-6"  data-ng-init="listCampUser()">
-							<label class="font-label">Assigned to  </label>
-							<div class="form-group">
-								<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
-			                      <option value=""></option>           
-			                    </select>
+						<div class="col-sm-6">							
+		                    <div class="bootstrap-timepicker">
+								<div class="form-group">
+									<label>Duration <span class="requrie">(Required)</span></label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-clock-o"></i>
+										</div>
+										<input type="text" class="form-control timepicker active" name="duration" id="duration" placeholder="hours:minutes">
+									</div>
+								</div>
 							</div>
 						</div>
 						
-						<div class="clearfix"></div>
-						<div class="col-sm-12">
-							<label class="font-label">Description </label>
-							<div class="form-group">
-								<textarea style="height: 120px" rows="" cols="" name="description" id="description"	class="form-control"></textarea>
-							</div>
-						</div>
+						
+						
 						
 					</div>
 
@@ -310,7 +308,15 @@ $(document).ready(function() {
 								</select>
 							</div>
 						</div>
-						
+						<div class="col-sm-6"  data-ng-init="listCampUser()">
+							<label class="font-label">Assigned to  </label>
+							<div class="form-group">
+								<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
+			                      <option value=""></option>           
+			                    </select>
+							</div>
+							
+						</div>
 						<div class="clearfix"></div>
 						<div class="col-sm-6">
 							<label class="font-label">Related To </label>
@@ -347,8 +353,15 @@ $(document).ready(function() {
 						</div>
 
 					</div>
-					
-
+					<div class="clearfix"></div>
+					<div class="col-sm-12">
+						<div class="col-sm-12">
+							<label class="font-label">Description </label>
+							<div class="form-group">
+								<textarea style="height: 120px" rows="" cols="" name="description" id="description"	class="form-control"></textarea>
+							</div>
+						</div>
+					</div>
 					<div class="clearfix"></div>
 
 
