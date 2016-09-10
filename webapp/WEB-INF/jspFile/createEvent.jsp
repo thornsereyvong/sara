@@ -55,7 +55,7 @@ $(document).ready(function() {
         showDropdowns: true,
         format: 'DD/MM/YYYY h:mm A',
         timePicker: true, 
-        timePickerIncrement: 5,
+        timePickerIncrement: 5
        
     }).on('change', function(e) {
 
@@ -142,21 +142,6 @@ $(document).ready(function() {
 					}
 			}
 		}).on('success.form.bv', function(e) {
-			
-		    var assign = "";	
-			if($("#assignTo").val()  != ""){
-				assign = $("#assignTo").val();
-			}else{
-				assign = "";
-			}
-
-			var location = "";	
-			if($("#location").val()  != ""){
-				location = $("#location").val();
-			}else{
-				location = "";
-			}
-
 			var budget = "";	
 			if($("#budget").val()  == "" | $("#budget").val()  == null){
 				budget = "0";
@@ -169,14 +154,14 @@ $(document).ready(function() {
 				type : "POST",
 				data : JSON.stringify({
 					  "evName": $("#name").val(),
-				      "evLocation": location,
+				      "evLocation":  $("#location").val(),
 				      "evBudget": budget,
 				      "evDes": $("#description").val(),
 				      "evCreateBy":  $.session.get("parentID"),
 				      "evDuration": $("#duration").val(),
 				      "evStartDate": $("#startDate").val(),
 				      "evEndDate": $("#endDate").val(),
-				      "assignTo": assign, 
+				      "assignTo": $("#assignTo").val(), 
 					}),
 				beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");

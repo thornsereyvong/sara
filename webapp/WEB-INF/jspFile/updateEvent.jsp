@@ -56,26 +56,9 @@ function listDataByCampID(){
 	var data = ${event};
 	var result = data.body.DATA;
 	var user_id = ${users};
-
-
-	var d = new Date(result.evStartDate);
-	var dd = d.getDate();
-	var mm = d.getMonth()+1;
-	var yy = d.getFullYear();
 	
-	$("#startDate").val(dd+"/"+mm+"/"+yy);
-
-	
-	var end = new Date(result.evEndDate);
-	
-	var dds = end.getDate();
-	var mms = end.getMonth()+1;
-	var yys = end.getFullYear();
-	
-	$("#endDate").val(dds+"/"+mms+"/"+yys);
-
-	
-	
+	$("#startDate").val(result.evStartDate);
+	$("#endDate").val(result.evEndDate);
 	$("#id").val(result.evId);
 	$("#name").val(result.evName);
 	$("#budget").val(result.evBudget);
@@ -104,9 +87,11 @@ $(document).ready(function() {
 	listDataByCampID();
 	
 	$('.date2').daterangepicker({
-        singleDatePicker: true,
+		singleDatePicker: true,
         showDropdowns: true,
-        format: 'DD/MM/YYYY' 
+        format: 'DD/MM/YYYY h:mm A',
+        timePicker: true, 
+        timePickerIncrement: 5
     }).on('change', function(e) {
 
 		if($("#startDate").val() != ""){
@@ -165,9 +150,9 @@ $(document).ready(function() {
 							message: 'The Start Date is required and can not be empty!'
 						},
 						date: {
-	                        format: 'DD/MM/YYYY',
-	                        message: 'The value is not a valid date'
-	                    }
+	                        format: 'DD/MM/YYYY h:mm A',
+	                        message: 'The value is not a valid date!'
+						}
 					}
 				},
 				endDate: {
@@ -176,9 +161,9 @@ $(document).ready(function() {
 							message: 'The End Date is required and can not be empty!'
 						},
 						date: {
-	                        format: 'DD/MM/YYYY',
-	                        message: 'The value is not a valid date'
-	                    }
+	                        format: 'DD/MM/YYYY h:mm A',
+	                        message: 'The value is not a valid date!'
+						}
 					}
 				},
 				budget : {
@@ -193,49 +178,25 @@ $(document).ready(function() {
 					}
 			}
 		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-
-			var createDate = $("#startDate").val();
-			var newCreateDate = createDate.split("/").reverse().join("-");
-			
-			var endDate = $("#endDate").val();
-			var endCreateDate = endDate.split("/").reverse().join("-");
-
-			
-
-		    var assign = "";	
-			if($("#assignTo").val()  != ""){
-				assign = {"userID": $("#assignTo").val()};
+			var budget = "";	
+			if($("#budget").val()  == "" | $("#budget").val()  == null){
+				budget = "0";
 			}else{
-				assign = null;
+				budget = $("#budget").val();
 			}
-
-			var location = "";	
-			if($("#location").val()  != ""){
-				location = {"loId": $("#location").val()};
-			}else{
-				location = null;
-			}
-
-			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/event/edit",
 				type : "PUT",
 				data : JSON.stringify({
 					  "evId": $("#id").val(),
 					  "evName": $("#name").val(),
-				      "evlocation": location,
-				      "evBudget": $("#budget").val(),
+				      "evlocation": $("#location").val(),
+				      "evBudget": budget,
 				      "evDes": $("#description").val(),
 				      "evDuration": $("#duration").val(),
-				      "evStartDate": newCreateDate,
-				      "evEndDate": endCreateDate,
-				      "assignTo": assign,
+				      "evStartDate": $("#startDate").val(),
+				      "evEndDate": $("#endDate").val(),
+				      "assignTo": $("#assignTo").val(),
 				      "evModifiedBy":  $.session.get("parentID")
 					}),
 				beforeSend: function(xhr) {

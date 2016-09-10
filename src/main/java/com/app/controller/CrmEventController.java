@@ -14,18 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.app.entities.CrmEvent;
 import com.app.utilities.RestUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
 @RequestMapping(value="/")
 public class CrmEventController {
-	
-	//private final String URL = "";
-	@Autowired
-	private ObjectMapper objectMapper;
 	
 	@Autowired
 	private RestTemplate  restTemplate;
@@ -95,9 +89,9 @@ public class CrmEventController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/event/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateEvent(@RequestBody CrmEvent campaign){
+	public ResponseEntity<Map<String, Object>> updateEvent(@RequestBody String event){
 		
-		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
+		HttpEntity<Object> request = new HttpEntity<Object>(event,header);
 		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/event/edit", HttpMethod.PUT, request, Map.class);
 		
