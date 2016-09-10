@@ -18,7 +18,7 @@
 	<section class="content-header">
 		<h1>Update Call</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Update Call</a></li>
 		</ol>
 	</section>
@@ -118,7 +118,7 @@ $(document).ready(function() {
  
 
 	$("#btn_clear").click(function(){
-		$("#form-call").bootstrapValidator('resetForm', 'true');
+		location.reload();
 	});
 	
 	 $("#btn_save").click(function(){
@@ -176,8 +176,8 @@ $(document).ready(function() {
 				description : {
 					validators: {
 						stringLength: {
-							max: 255,
-							message: 'The description must be less than 255 characters long.'
+							max: 1000,
+							message: 'The description must be less than 1000 characters long.'
 						}
 					}
 				}
@@ -296,7 +296,7 @@ $(document).ready(function() {
 				</div>
 
 				<div class="row">
-
+					<div class="col-sm-12">
 					<div class="col-sm-6">
 
 						<div class="col-sm-12">
@@ -408,7 +408,7 @@ $(document).ready(function() {
 
 				</div>
 				
-				
+				</div>
 				
 				
 				

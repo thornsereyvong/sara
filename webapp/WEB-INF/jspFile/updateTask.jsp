@@ -20,6 +20,7 @@
 	<section class="content-header">
 		<h1> Update Task</h1>
 		<ol class="breadcrumb">
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i> Update Task</a></li>
 		</ol>
 	</section>
@@ -142,7 +143,7 @@ $(document).ready(function() {
 
 
 	$("#btn_clear").click(function(){
-		$("#form-call").bootstrapValidator('resetForm', 'true');
+		location.reload();
 	});
 	
 	 $("#btn_save").click(function(){
@@ -203,8 +204,8 @@ $(document).ready(function() {
 				ts_description: {
 					validators: {
 						stringLength: {
-							max: 255,
-							message: 'The description must be less than 255 characters long.'
+							max: 1000,
+							message: 'The description must be less than 1000 characters long.'
 						}
 					}
 				}
@@ -344,12 +345,12 @@ $(document).ready(function() {
 				</div>
 
 				<div class="row">
-
+					<div class="col-sm-12">
 					<div class="col-sm-6">
 
 						
-						<input type="hidden" id="ts_id">
-						<div class="col-sm-6">
+
+						<div class="col-sm-12">
 							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
 								<input type="text" class="form-control" name="ts_subject" id="ts_subject">
@@ -406,13 +407,7 @@ $(document).ready(function() {
 							</div>
 						</div>
 						
-						<div class="clearfix"></div>
-						<div class="col-sm-12">
-							<label class="font-label">Description :</label>
-							<div class="form-group">
-								<textarea style="height: 120px" rows="" cols="" name="ts_description" id="ts_description"	class="form-control"></textarea>
-							</div>
-						</div>
+						
 						
 					</div>
 
@@ -422,19 +417,28 @@ $(document).ready(function() {
 						<div class="col-sm-6" data-ng-init="listMeetignStatus()" >
 							<label class="font-label">Status <span class="requrie">(Required)</span></label>
 							<div class="form-group">
-								<select class="form-control select2" name="ts_status" id="ts_status">
+								<select class="form-control select2" name="ts_status" id="ts_status" style="width: 100%;">
 									<option value="">--SELECT Status</option>
 									<option ng-repeat="st in status" value="{{st.taskStatusId}}">{{st.taskStatusName}}</option>
 								</select>
 							</div>
 						</div>
-						
+						<div class="col-sm-6" data-ng-init="listContact()">
+							<label class="font-label">Contact :</label>
+							<div class="form-group" id="">
+								<select class="form-control select2" name="ts_contact" id="ts_contact" style="width: 100%;">
+									<option value="">--SELECT Contact</option>
+									<option ng-repeat="st in contact" value="{{st.conID}}">{{st.conFirstName}} {{st.conLastName}}</option>
+									
+								</select>
+							</div>
+						</div>
 						
 						<div class="clearfix"></div>
 						<div class="col-sm-6">
 							<label class="font-label">Related To :</label>
 							<div class="form-group">
-								<select class="form-control select2" name="ts_relateTo" id="ts_relateTo">
+								<select class="form-control select2" name="ts_relateTo" id="ts_relateTo" style="width: 100%;">
 									<option value="">--SELECT Related--</option>
 									<optgroup label="Marketing">
 										<option value="Campaign">Campaign</option>
@@ -459,30 +463,30 @@ $(document).ready(function() {
 						<div class="col-sm-6">
 							<label class="font-label">&nbsp;</label>
 							<div class="form-group">
-								<select class="form-control select2" name="ts_reportType" id="ts_reportType">
+								<select class="form-control select2" name="ts_reportType" id="ts_reportType" style="width: 100%;">
 									<option value="">--SELECT--</option>
 								</select>
 							</div>
 						</div>
 					<div class="clearfix"></div>
-					<div class="col-sm-6" data-ng-init="listContact()">
-							<label class="font-label">Contact :</label>
-							<div class="form-group" id="">
-								<select class="form-control select2" name="ts_contact" id="ts_contact">
-									<option value="">--SELECT Contact</option>
-									<option ng-repeat="st in contact" value="{{st.conID}}">{{st.conFirstName}} {{st.conLastName}}</option>
-									
-								</select>
-							</div>
-						</div>
+					
 						
 
 					</div>
-					
-
+					<div class="clearfix"></div>
+					<div class="col-sm-12">
+						<div class="col-sm-12">
+							<label class="font-label">Description :</label>
+							<div class="form-group">
+								<textarea style="height: 120px" rows="" cols="" name="ts_description" id="ts_description"	class="form-control"></textarea>
+							</div>
+						</div>
+					</div>
 					<div class="clearfix"></div>
 
 
+				</div>
+				
 				</div>
 				
 				

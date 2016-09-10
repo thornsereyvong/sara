@@ -33,7 +33,7 @@ padding-right: 10px;
 	<section class="content-header">
 		<h1>Update Location</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Update Location</a></li>
 		</ol>
 	</section>
@@ -72,8 +72,7 @@ $(document).ready(function() {
 	
 	listDataByCampID();
 	$("#btn_clear").click(function(){
-		$("#form-contact").bootstrapValidator('resetForm', 'true');
-		$('#form-contact')[0].reset();
+		location.reload();
 	});
 	
 	$("#btn_save").click(function(){

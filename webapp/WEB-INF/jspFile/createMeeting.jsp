@@ -19,7 +19,7 @@
 	<section class="content-header">
 		<h1>Create Meeting</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Create Meeting</a></li>
 		</ol>
 	</section>
@@ -60,35 +60,48 @@ $(document).ready(function() {
     }).on('change', function(e) {
 
         if($("#me_startDate" != "")){
-        	$('#form-call').bootstrapValidator('revalidateField', 'me_startDate');
+        	$('#form-meeting').bootstrapValidator('revalidateField', 'me_startDate');
          }
 
         if($("#me_endDate" != "")){
-        	$('#form-call').bootstrapValidator('revalidateField', 'me_endDate');
+        	$('#form-meeting').bootstrapValidator('revalidateField', 'me_endDate');
          }
     	 
     });
 
-
-    
 	$(".timepicker").timepicker({
+		format: 'h:mm',
         showInputs: false,
-        defaultTime: false
-      });
+        minuteStep: 5,
+        defaultTime: false,
+        showMeridian : false
+    }).on('change', function(e) {
+     	$('#form-meeting').bootstrapValidator('revalidateField', 'duration');
+ 	});
+	$('.meet-data-time').daterangepicker({
+        format: 'DD/MM/YYYY h:mm A',
+        singleDatePicker: true,
+        showDropdowns: true,
+        timePicker: true, 
+        timePickerIncrement: 5,
+    }).on('change', function(e) {
+    	$('#form-meeting').bootstrapValidator('revalidateField', 'me_startDate');
+    	$('#form-meeting').bootstrapValidator('revalidateField', 'me_endDate');
+ 	});
     
 	userAllList(data,'#me_assignTo','');
 	
 	$("#btn_clear").click(function(){
-		$("#form-call").bootstrapValidator('resetForm', 'true');
+		$("#form-meeting").bootstrapValidator('resetForm', 'true');
 	});
 	
 	 $("#btn_save").click(function(){
-		$("#form-call").submit();
+		$("#form-meeting").submit();
 	});
 
 
 		
-	$('#form-call').bootstrapValidator({
+	$('#form-meeting').bootstrapValidator({
 			message: 'This value is not valid',
 			feedbackIcons: {
 				valid: 'glyphicon glyphicon-ok',
@@ -113,7 +126,7 @@ $(document).ready(function() {
 							message: 'The Start Date is required and can not be empty!'
 						},
 						date: {
-	                        format: 'DD/MM/YYYY',
+	                        format: 'DD/MM/YYYY h:mm A',
 	                        message: 'The value is not a valid date'
 	                    }
 					}
@@ -124,7 +137,7 @@ $(document).ready(function() {
 							message: 'The End Date is required and can not be empty!'
 						},
 						date: {
-	                        format: 'DD/MM/YYYY',
+	                        format: 'DD/MM/YYYY h:mm A',
 	                        message: 'The value is not a valid date'
 	                    }
 					}
@@ -132,8 +145,8 @@ $(document).ready(function() {
 				me_description: {
 					validators: {
 						stringLength: {
-							max: 255,
-							message: 'The description must be less than 255 characters long.'
+							max: 1000,
+							message: 'The description must be less than 1000 characters long.'
 						}
 					}
 				}
@@ -203,8 +216,8 @@ $(document).ready(function() {
 						    },
 				success:function(data){
 					
-						$("#form-call").bootstrapValidator('resetForm', 'true');
-						$('#form-call')[0].reset();
+						$("#form-meeting").bootstrapValidator('resetForm', 'true');
+						$('#form-meeting')[0].reset();
 						$("#me_status").select2("val","");
 						$("#me_relateTo").select2("val","");
 						$("#me_reportType").select2("val","");
@@ -252,7 +265,7 @@ $(document).ready(function() {
 			</div>
 			<div class="box-body">
 			
-			<form method="post" id="form-call">
+			<form method="post" id="form-meeting">
 				
 				<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
 				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
@@ -269,7 +282,7 @@ $(document).ready(function() {
 				</div>
 
 				<div class="row">
-
+					<div class="col-sm-12">
 					<div class="col-sm-6">
 
 						
@@ -289,7 +302,7 @@ $(document).ready(function() {
 									<div class="input-group-addon">
 										<i class="fa fa-calendar"></i>
 									</div>
-									<input type="text" class="form-control pull-right date2" name="me_startDate" id="me_startDate">
+									<input type="text" class="form-control pull-right meet-data-time" name="me_startDate" id="me_startDate">
 								</div> 
 							</div>
 						</div>
@@ -301,7 +314,7 @@ $(document).ready(function() {
 									<div class="input-group-addon">
 										<i class="fa fa-calendar"></i>
 									</div>
-									<input type="text" class="form-control pull-right date2" name="me_endDate" id="me_endDate">
+									<input type="text" class="form-control pull-right meet-data-time" name="me_endDate" id="me_endDate">
 								</div> 
 							</div>
 						</div>
@@ -339,13 +352,7 @@ $(document).ready(function() {
 							</div>
 						</div>
 					
-						<div class="clearfix"></div>
-						<div class="col-sm-12">
-							<label class="font-label">Description :</label>
-							<div class="form-group">
-								<textarea style="height: 120px" rows="" cols="" name="me_description" id="me_description"	class="form-control"></textarea>
-							</div>
-						</div>
+						
 						
 					</div>
 
@@ -408,12 +415,20 @@ $(document).ready(function() {
 					
 
 					<div class="clearfix"></div>
-
-
+					<div class="clearfix"></div>
+					<div class="col-sm-12">
+						<div class="col-sm-12">
+							<label class="font-label">Description :</label>
+							<div class="form-group">
+								<textarea style="height: 120px" rows="" cols="" name="me_description" id="me_description"	class="form-control"></textarea>
+							</div>
+						</div>
+					</div>
 				</div>
 				
 				
-				
+				</div>
+			
 				
 				
 			

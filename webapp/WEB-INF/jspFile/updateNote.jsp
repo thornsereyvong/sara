@@ -18,9 +18,10 @@
 <div class="content-wrapper" ng-app="campaign" ng-controller="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>Create Note</h1>
+		<h1>Update Note</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Create Note</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i> Update Note</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
@@ -84,16 +85,16 @@ $(document).ready(function() {
 	
 	
 	$("#btn_clear").click(function(){
-		$("#form-call").bootstrapValidator('resetForm', 'true');
+		location.reload();
 	});
 	
 	 $("#btn_save").click(function(){
-		$("#form-call").submit();
+		$("#form-note").submit();
 	});
 
 
 		
-	$('#form-call').bootstrapValidator({
+	$('#form-note').bootstrapValidator({
 			message: 'This value is not valid',
 			feedbackIcons: {
 				valid: 'glyphicon glyphicon-ok',
@@ -115,8 +116,8 @@ $(document).ready(function() {
 				me_description: {
 					validators: {
 						stringLength: {
-							max: 255,
-							message: 'The description must be less than 255 characters long.'
+							max: 1000,
+							message: 'The description must be less than 1000 characters long.'
 						}
 					}
 				}
@@ -150,8 +151,8 @@ $(document).ready(function() {
 						    },
 				success:function(data){
 					
-						$("#form-call").bootstrapValidator('resetForm', 'true');
-						$('#form-call')[0].reset();
+						$("#form-note").bootstrapValidator('resetForm', 'true');
+						$('#form-note')[0].reset();
 						
 						$("#me_relateTo").select2("val","");
 						$("#me_reportType").select2("val","");
@@ -200,7 +201,7 @@ $(document).ready(function() {
 			</div>
 			<div class="box-body">
 			
-			<form method="post" id="form-call">
+			<form method="post" id="form-note">
 				
 				<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
 				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
@@ -217,11 +218,11 @@ $(document).ready(function() {
 				</div>
 
 				<div class="row">
-
+					<div class="col-sm-12">
 					<div class="col-sm-6">
 
 						
-						<input type="hidden" id="me_id">
+
 						<div class="col-sm-12">
 							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
@@ -232,13 +233,7 @@ $(document).ready(function() {
 						<div class="clearfix"></div>
 						
 						
-						<div class="clearfix"></div>
-						<div class="col-sm-12">
-							<label class="font-label">Description </label>
-							<div class="form-group">
-								<textarea style="height: 120px" rows="" cols="" name="me_description" id="me_description"	class="form-control"></textarea>
-							</div>
-						</div>
+						
 						
 					</div>
 
@@ -282,7 +277,17 @@ $(document).ready(function() {
 					</div>
 					
 					<div class="clearfix"></div>
-
+					<div class="col-sm-12">
+						<div class="col-sm-12">
+							<label class="font-label">Description </label>
+							<div class="form-group">
+								<textarea style="height: 120px" rows="" cols="" name="me_description" id="me_description"	class="form-control"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					
+					</div>
 
 				</div>
 

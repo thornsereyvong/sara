@@ -77,12 +77,23 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 //alert($.session.get("parentID"));
 
 </script>
-
+<script>
+	$(document).ready(function() {
+		$('.table-responsive').on('show.bs.dropdown', function () {
+		     $('.table-responsive').css( "overflow", "inherit" );
+		});
+	
+		$('.table-responsive').on('hide.bs.dropdown', function () {
+		     $('.table-responsive').css( "overflow", "auto" );
+		}); 
+	}); 
+</script>
 <div class="content-wrapper" ng-app="campaign" ng-controller="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Locations</h1>
 		<ol class="breadcrumb">
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i>Locations</a></li>
 		</ol>
 	</section>

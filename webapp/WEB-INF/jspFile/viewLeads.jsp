@@ -888,8 +888,7 @@ function addDataToDetailLead(){
 	<section class="content-header">
 		<h1>View Lead</h1>
 		<ol class="breadcrumb">
-			<li><a href="${pageContext.request.contextPath}"><i
-					class="fa fa-home"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i>View Lead</a></li>
 		</ol>
 	</section>

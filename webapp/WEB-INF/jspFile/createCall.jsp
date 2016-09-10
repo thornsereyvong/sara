@@ -18,7 +18,7 @@
 	<section class="content-header">
 		<h1>Create Call</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Create Call</a></li>
 		</ol>
 	</section>
@@ -255,7 +255,7 @@ $(document).ready(function() {
 				</div>
 
 				<div class="row">
-
+					<div class="col-sm-12">
 					<div class="col-sm-6">
 
 						<div class="col-sm-12">
@@ -368,7 +368,7 @@ $(document).ready(function() {
 				</div>
 				
 				
-				
+				</div>
 				
 				
 			

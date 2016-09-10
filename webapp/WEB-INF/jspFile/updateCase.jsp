@@ -19,7 +19,7 @@
 	<section class="content-header">
 		<h1>Update Case</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Update Case</a></li>
 		</ol>
 	</section>
@@ -196,8 +196,8 @@ $(document).ready(function() {
 			ca_resolution: {
 				validators: {
 					stringLength: {
-						max: 255,
-						message: 'The resolution must be less than 255 characters long.'
+						max: 1000,
+						message: 'The resolution must be less than 1000 characters long.'
 					}
 				}
 			}
@@ -205,8 +205,8 @@ $(document).ready(function() {
 			ca_description: {
 				validators: {
 					stringLength: {
-						max: 255,
-						message: 'The description must be less than 255 characters long.'
+						max: 1000,
+						message: 'The description must be less than 1000 characters long.'
 					}
 				}
 			}
@@ -342,6 +342,7 @@ $(document).ready(function() {
 				</div>
 
 				<div class="row">
+					<div class="col-sm-12">
 					<input type="hidden" id="ca_id" name="ca_id">
 					<div class="col-sm-6" data-ng-init="listCaseStatus()">
 						<div class="col-sm-6">
@@ -432,7 +433,7 @@ $(document).ready(function() {
 					
 					
 				</div>
-				
+			</div>	
 				
 			<div class="clearfix"></div>
 				
