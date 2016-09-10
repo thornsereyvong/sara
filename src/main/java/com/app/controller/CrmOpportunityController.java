@@ -94,4 +94,16 @@ public class CrmOpportunityController {
 		
 	}
 	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/view",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> viewOpportunity(@RequestBody String obj){
+		HttpEntity<String> request = new HttpEntity<String>(obj, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/view", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
+	
+	
 }

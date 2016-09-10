@@ -7,6 +7,15 @@ $(function(){
         showMeridian : false
     });
 	
+	$('#oppCloseDate').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD/MM/YYYY'
+    }).on('change', function(e) {
+     	$('#frmOpportDetail').bootstrapValidator('revalidateField', 'callStartDate');
+ 	});
+	
+	
 	$("#collapTags").select2();
 	//$(".tags").select2({tags: true});
 	$('#callStartDate').daterangepicker({
@@ -85,7 +94,7 @@ $(function(){
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		var frmNoteData = {"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), "noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":"Lead","noteRelatedToModuleId":leadId,"noteCreateBy":username};		
+		var frmNoteData = {"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), "noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":"Opportunity","noteRelatedToModuleId":oppId,"noteCreateBy":username};		
 		
 		if($("#btnAddNote").text()=='Note'){
 			$.ajax({ 
@@ -106,8 +115,8 @@ $(function(){
 		            		timer: 2000,   
 		            		showConfirmButton: false
 	        			});
-			    		angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
-			    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
+			    		angular.element(document.getElementById('viewOpportunityController')).scope().resetFrmNote();
+			    		angular.element(document.getElementById('viewOpportunityController')).scope().getListNoteByLead();
 			    	}else{
 			    		sweetAlert("Insert Unsuccessfully!", "", "error");
 			    	}
@@ -119,6 +128,9 @@ $(function(){
 			    }
 			});
 		}else if($("#btnAddNote").text()=="Update"){
+			
+			
+			
 			$.ajax({ 
 			    url: server+"/note/edit", 
 			    type: 'PUT',
@@ -136,8 +148,8 @@ $(function(){
 		            		timer: 2000,   
 		            		showConfirmButton: false
 	        			});
-			    		angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
-			    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
+			    		angular.element(document.getElementById('viewOpportunityController')).scope().resetFrmNote();
+			    		angular.element(document.getElementById('viewOpportunityController')).scope().getListNoteByLead();
 			    	}else{
 			    		sweetAlert("Update Unsuccessfully!", "", "error");
 			    	}
@@ -152,7 +164,7 @@ $(function(){
 	});	
 	
 	
-	$('#frmLeadDetail').bootstrapValidator({
+	$('#frmOpportDetail').bootstrapValidator({
 		message: 'This value is not valid',
 		feedbackIcons: {
 			valid: 'glyphicon glyphicon-ok',
@@ -160,239 +172,106 @@ $(function(){
 			validating: 'glyphicon glyphicon-refresh'
 		},
 		fields: {
-			lea_salutation:{
-				validators: {
-					stringLength: {
-						max: 100,
-						message: 'The salutation must be less than 100 characters long.'
-					}
-				}
-			},
-			
-			lea_status: {
-				validators: {
-					
-				}
-			},
-			lea_industry: {
-				validators: {
-					
-				}
-			},
-			lea_source: {
-				validators: {
-					
-				}
-			},
-			lea_campaign: {
+			oppName: {
 				validators: {
 					notEmpty: {
-						message: 'The campaign is required and can not be empty!'
-					},
-					stringLength: {
-						max: 100,
-						message: 'The campaign must be less than 100 characters long.'
-					}
-				}
-			},
-			lea_firstName: {
-				validators: {
-					notEmpty: {
-						message: 'The first name is required and can not be empty!'
+						message: 'The  name is required and can not be empty!'
 					},
 					stringLength: {
 						max: 255,
-						message: 'The first name must be less than 255 characters long.'
+						message: 'The name must be less than 255 characters long!'
 					}
 				}
 			},
-			lea_lastName: {
+			oppAmount: {
 				validators: {
 					notEmpty: {
-						message: 'The last name is required and can not be empty!'
+						message: 'The  amount is required and can not be empty!'
 					},
-					stringLength: {
-						max: 255,
-						message: 'The last name must be less than 255 characters long.'
-					}
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
 				}
 			},
-			lea_phone: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The phone must be less than 255 characters long.'
-					}
-				}
-			}
-			,
-			lea_mobilePhone: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The mobile phone must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_title: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The title must be less than 255 characters long.'
-					}
-				}
-			}
-			,
-			lea_website: {
-				validators: {
-					uri: {
-                        message: 'The website address is not valid.'
-                    },
-                    stringLength: {
-						max: 255,
-						message: 'The web site must be less than 255 characters long.'
-					}
-				}
-			}
-			,
-			lea_department: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The department must be less than 255 characters long.'
-					}
-				}
-			}
-			,
-			lea_email: {
-				validators: {
-					regexp: {
-                        regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
-                        message: 'The value is not a valid email address'
-                    },
-					stringLength: {
-						max: 255,
-						message: 'The department must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_accountName: {
+			oppCustomer: {
 				validators: {
 					notEmpty: {
-						message: 'The company is required and can not be empty!'
+						message: 'The  customer is required and can not be empty!'
+					}
+				}
+			},
+			oppCloseDate: {
+				validators: {
+					notEmpty: {
+						message: 'The  close date is required and can not be empty!'
 					},
-					stringLength: {
-						max: 255,
-						message: 'The Company must be less than 255 characters long.'
-					}
+					date: {
+                        format: 'DD/MM/YYYY',
+                        message: 'The value is not a valid date'
+                    }
 				}
 			},
-			lea_no: {
+			oppProbability: {
 				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The no must be less than 255 characters long.'
-					}
+					between: {
+                        min: 1,
+                        max: 100,
+                        message: 'The probability must be between 1 and 100'
+                    }
 				}
 			},
-			lea_street: {
+			oppStage: {
 				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The street must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_village: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The village must be less than 255 characters long.'
+					notEmpty: {
+						message: 'The  stage is required and can not be empty!'
 					}
 				}
 			}
 			,
-			lea_commune: {
+			oppNextStep: {
 				validators: {
 					stringLength: {
 						max: 255,
-						message: 'The commune must be less than 255 characters long.'
+						message: 'The step must be less than 255 characters long.'
 					}
 				}
-			},
-			lea_district: {
+			}
+			,
+			oppDescription: {
 				validators: {
 					stringLength: {
-						max: 255,
-						message: 'The district must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_state: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The state must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_city: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The city must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_country: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The country must be less than 255 characters long.'
-					}
-				}
-			},
-			lea_description: {
-				validators: {
-					stringLength: {
-						max: 255,
-						message: 'The description must be less than 255 characters long.'
+						max: 1000,
+						message: 'The description must be less than 1000 characters long.'
 					}
 				}
 			}
 		}
 	}).on('success.form.bv', function(e) {
+		
+		//alert(getJsonById("custID","oppCustomer","str"));
+		
 		var frmLeadDetailData = {
-			"leadID": leadId,
-			"salutation": $.trim($("#lea_salutation").val()),
-		    "firstName": $.trim($("#lea_firstName").val()),
-		    "lastName": $.trim($("#lea_lastName").val()),
-		    "title": $.trim($("#lea_title").val()),
-		    "department": $.trim($("#lea_department").val()),
-		    "phone": $.trim($("#lea_phone").val()),
-		    "mobile": $.trim($("#lea_mobilePhone").val()),
-		    "website": $.trim($("#lea_website").val()),
-		    "accountName": $.trim($("#lea_accountName").val()),
-		    "no":  $.trim($("#lea_no").val()),
-		    "street": $.trim($("#lea_street").val()),
-		    "village": $.trim($("#lea_village").val()),
-		    "commune": $.trim($("#lea_commune").val()),
-		    "district": $.trim($("#lea_district").val()),
-		    "city": $.trim($("#lea_city").val()),
-		    "state": $.trim($("#lea_state").val()),
-		    "country": $.trim($("#lea_country").val()),
-		    "description": $.trim($("#lea_description").val()),
-		    "status": {"statusID":getIntToNull("lea_status")},
-		    "industry": {"industID":getIntToNull("lea_industry")},
-		    "source": {"sourceID":getIntToNull("lea_source")},
-		    "campaign": {"campID":getStringToNull("lea_campaign")},
-		    "assignTo": {"userID":getStringToNull("lea_assignto")},
-		    "modifyBy": username,
-		    "email": $.trim($("#lea_email").val())
+			  "opId": oppId,
+			  "opName": getValueStringById("oppName"),
+			  "opAmount": getInt("oppAmount"),
+			  "customer":getJsonById("custID","oppCustomer","str"),
+			  "opCloseDate": getDateByFormat("oppCloseDate"),
+			  "opTypeID": getJsonById("otId","oppType","int"),
+			  "opStageId": getJsonById("osId","oppStage","int"),
+			  "opProbability": getValueStringById("oppProbability"),
+			  "opLeadSourceID": getJsonById("sourceID","oppLeadSource","int"),
+			  "opNextStep": getValueStringById("oppNextStep"),
+			  "opCampId": getJsonById("campID","oppCampaign","str"),
+			  "opDes": getValueStringById("oppDescription"),
+			  "opAssignedTo": getJsonById("userID","oppAssignTo","str"),
+			  "opModifyBy": username		
 	  	};	
 		
 		$.ajax({
-			url : "${pageContext.request.contextPath}/lead/edit",
+			url : server+"/opportunity/edit",
 			type : "PUT",
 			data : JSON.stringify(frmLeadDetailData),
 			beforeSend: function(xhr) {
@@ -400,10 +279,11 @@ $(function(){
 			    xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success:function(data){	
+				
 				if(data.MESSAGE == "UPDATED"){					
 					swal({
 		        		title:"Successfully",
-		        		text:"User have been Update Lead!",
+		        		text:"User have been update opportunity!",
 		        		type:"success",  
 		        		timer: 2000,   
 		        		showConfirmButton: false
@@ -412,11 +292,27 @@ $(function(){
 						location.reload();
 					}, 2000);
 				}else{
-					
-				}												
+					swal({
+		        		title:"Unsuccessfully",
+		        		text:"Please try again!",
+		        		type:"error",  
+		        		timer: 2000,   
+		        		showConfirmButton: false
+					});
+					setTimeout(function(){
+					}, 2000);
+				}										
 			},
-			error:function(){
-				
+			error:function(error){
+				swal({
+	        		title:"Unsuccessfully",
+	        		text:"Please try again!",
+	        		type:"error",  
+	        		timer: 2000,   
+	        		showConfirmButton: false
+				});
+				setTimeout(function(){
+				}, 2000);
 			}
 		});			
 	});		
@@ -494,12 +390,12 @@ $(function(){
 				      "callStartDate": getValueStringById("callStartDate"),
 				      "callDuration": getValueStringById("callDuration"),
 				      "callCreateBy": username,
-				      "callStatus": {"callStatusId":getIntToNull("callStatus")},
 				      "callDes": getValueStringById("callDescription"),
 				      "callSubject": getValueStringById("callSubject"),
-				      "callAssignTo": {"userID": getStringToNull("callAssignTo")},
-				      "callRelatedToFieldId": leadId,
-				      "callRelatedToModuleType": 'Lead'
+				      "callAssignTo": getJsonById("userID","callAssignTo","str"),
+				      "callStatus": getJsonById("callStatusId","callStatus","int"),
+				      "callRelatedToFieldId": oppId,
+				      "callRelatedToModuleType": 'Opportunity'
 				      
 				}),
 				beforeSend: function(xhr) {
@@ -508,7 +404,7 @@ $(function(){
 			    },
 				success:function(data){	
 						if(data.MESSAGE == 'INSERTED'){
-							angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
+							angular.element(document.getElementById('viewOpportunityController')).scope().listDataCallByRalateType();
 							
 							$('#frmAddCall').bootstrapValidator('resetForm', true);
 							$('#frmCall').modal('toggle');
@@ -543,12 +439,12 @@ $(function(){
 					  "callId": callIdForEdit,
 					  "callStartDate": getValueStringById("callStartDate"),
 				      "callDuration": getValueStringById("callDuration"),
-				      "callStatus": {"callStatusId":getIntToNull("callStatus")},
 				      "callDes": getValueStringById("callDescription"),
 				      "callSubject": getValueStringById("callSubject"),
-				      "callAssignTo": {"userID": getStringToNull("callAssignTo")},
-				      "callRelatedToFieldId": leadId,
-				      "callRelatedToModuleType": 'Lead',
+				      "callAssignTo": getJsonById("userID","callAssignTo","str"),
+				      "callStatus": getJsonById("callStatusId","callStatus","int"),
+				      "callRelatedToFieldId": oppId,
+				      "callRelatedToModuleType": 'Opportunity',
 				      "callModifiedBy" : username
 				}),
 				beforeSend: function(xhr) {
@@ -558,7 +454,7 @@ $(function(){
 				success:function(data){					
 					dis(data)
 					if(data.MESSAGE == 'UPDATED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
+						angular.element(document.getElementById('viewOpportunityController')).scope().listDataCallByRalateType();
 					}else{
 						
 					}
@@ -660,20 +556,20 @@ $(function(){
 		if($("#btnMeetSave").text() == 'Save'){
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/meeting/add",
+				url : server+"/meeting/add",
 				type : "POST",
 				data : JSON.stringify({
 
 					  "meetingSubject": getValueStringById("meetSubject"),
-				      "meetingAssignTo": {"userID": getStringToNull("meetAssignTo")},
 				      "meetingDes": getValueStringById("meetDescription"),
 				      "meetingStartDate": getValueStringById("meetStartDate"),
 				      "meetingDuration": getValueStringById("meetDuration"),
 				      "meetingEndDate":  getValueStringById("meetEndDate"),
-				      "meetingStatus": {"statusId":getIntToNull("meetStatus")},
+				      "meetingStatus": getJsonById("statusId","meetStatus","int"),
+				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
 				      "meetingLocation":  getValueStringById("meetLocation"),
-				      "meetingRelatedToModuleType": 'Lead',
-				      "meetingRelatedToModuleId": leadId,
+				      "meetingRelatedToModuleType": 'Opportunity',
+				      "meetingRelatedToModuleId": oppId,
 				      "meetingCreateBy": username
 				}),
 				beforeSend: function(xhr) {
@@ -691,20 +587,20 @@ $(function(){
 		}else{
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/meeting/edit",
+				url : server+"/meeting/edit",
 				type : "PUT",
 				data : JSON.stringify({
 					  "meetingId": meetIdForEdit,
 					  "meetingSubject": getValueStringById("meetSubject"),
-				      "meetingAssignTo": {"userID": getStringToNull("meetAssignTo")},
 				      "meetingDes": getValueStringById("meetDescription"),
 				      "meetingStartDate": getValueStringById("meetStartDate"),
 				      "meetingDuration": getValueStringById("meetDuration"),
 				      "meetingEndDate":  getValueStringById("meetEndDate"),
-				      "meetingStatus": {"statusId":getIntToNull("meetStatus")},
+				      "meetingStatus": getJsonById("statusId","meetStatus","int"),
+				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
 				      "meetingLocation":  getValueStringById("meetLocation"),
-				      "meetingRelatedToModuleType": 'Lead',
-				      "meetingRelatedToModuleId": leadId,
+				      "meetingRelatedToModuleType": 'Opportunity',
+				      "meetingRelatedToModuleId": oppId,
 				      "meetingModifiedBy" : username
 				}),
 				beforeSend: function(xhr) {
@@ -788,19 +684,19 @@ $(function(){
 		if($("#btnTaskSave").text() == 'Save'){
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/task/add",
+				url : server+"/task/add",
 				type : "POST",
 				data : JSON.stringify({
-				      "taskStatus": {"taskStatusId":getIntToNull("taskStatus")},
 				      "taskPriority": getValueStringById("taskPriority"),
-				      "taskAssignTo": {"userID": getStringToNull("taskAssignTo")},
-				      "taskRelatedToId": leadId,
-				      "taskRelatedToModule": 'Lead',
+				      "taskRelatedToId": oppId,
+				      "taskRelatedToModule": 'Opportunity',
 				      "taskDes": getValueStringById("taskDescription"),
 				      "taskDueDate": getValueStringById("taskEndDate"),
 				      "taskSubject":  getValueStringById("taskSubject"),
 				      "taskStartDate":  getValueStringById("taskStartDate"),
-				      "taskContact": {"conID":getIntToNull("taskContact")},
+				      "taskContact": getJsonById("conID","taskContact","str"),
+				      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
+				      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
 				      "taskCreateBy": username					      
 				}),
 				beforeSend: function(xhr) {
@@ -818,20 +714,20 @@ $(function(){
 		}else{
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/task/edit",
+				url : server+"/task/edit",
 				type : "PUT",
 				data : JSON.stringify({
 					  "taskId" : taskIdForEdit,
-					  "taskStatus": {"taskStatusId":getIntToNull("taskStatus")},
 				      "taskPriority": getValueStringById("taskPriority"),
-				      "taskAssignTo": {"userID": getStringToNull("taskAssignTo")},
-				      "taskRelatedToId": leadId,
-				      "taskRelatedToModule": 'Lead',
+				      "taskRelatedToId": oppId,
+				      "taskRelatedToModule": 'Opportunity',
 				      "taskDes": getValueStringById("taskDescription"),
 				      "taskDueDate": getValueStringById("taskEndDate"),
 				      "taskSubject":  getValueStringById("taskSubject"),
 				      "taskStartDate":  getValueStringById("taskStartDate"),
-				      "taskContact": {"conID":getIntToNull("taskContact")},
+				      "taskContact": getJsonById("conID","taskContact","str"),
+				      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
+				      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),				      
 				      "taskModifiedBy": username
 				}),
 				beforeSend: function(xhr) {
@@ -932,20 +828,20 @@ $(function(){
 		if($("#btnEventSave").text() == 'Save'){
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/event/add",
+				url : server+"/event/add",
 				type : "POST",
 				data : JSON.stringify({
 				      "evName": getValueStringById("eventSubject"),
-				      "evlocation": {"loId": getStringToNull("eventLocation")},
 				      "evBudget": getValueStringById("eventBudget"),
 				      "evDes": getValueStringById("eventDescription"),
 				      "evCreateBy":  username,
 				      "evDuration": getValueStringById("eventDuration"),
 				      "evStartDate": getValueStringById("eventStartDate"),
 				      "evEndDate": getValueStringById("eventEndDate"),
-				      "assignTo": {"userID": getStringToNull("eventAssignTo")},
-				      "evRelatedToID" : leadId,
-				      "evRelatedToType" : "Lead"
+				      "assignTo": getJsonById("userID","eventAssignTo","str"),
+				      "evlocation": getJsonById("loId","eventLocation","str"),
+				      "evRelatedToID" : oppId,
+				      "evRelatedToType" : "Opportunity"
 				}),
 				beforeSend: function(xhr) {
 				    xhr.setRequestHeader("Accept", "application/json");
@@ -962,21 +858,21 @@ $(function(){
 		}else{
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/event/edit",
+				url : server+"/event/edit",
 				type : "PUT",
 				data : JSON.stringify({
 					  "evId": eventIdForEdit,
 					  "evName": getValueStringById("eventSubject"),
-				      "evlocation": {"loId": getStringToNull("eventLocation")},
 				      "evBudget": getValueStringById("eventBudget"),
 				      "evDes": getValueStringById("eventDescription"),
 				      "evModifiedBy":  username,
 				      "evDuration": getValueStringById("eventDuration"),
 				      "evStartDate": getValueStringById("eventStartDate"),
 				      "evEndDate": getValueStringById("eventEndDate"),
-				      "assignTo": {"userID": getStringToNull("eventAssignTo")},
-				      "evRelatedToID" : leadId,
-				      "evRelatedToType" : "Lead"
+				      "assignTo": getJsonById("userID","eventAssignTo","str"),
+				      "evlocation": getJsonById("loId","eventLocation","str"),
+				      "evRelatedToID" : oppId,
+				      "evRelatedToType" : "Opportunity"
 				}),
 				beforeSend: function(xhr) {
 				    xhr.setRequestHeader("Accept", "application/json");
@@ -1025,7 +921,7 @@ $(function(){
 		alert()
 		
 		/*$.ajax({
-			url : "${pageContext.request.contextPath}/event/add",
+			url : server+"/event/add",
 			type : "POST",
 			data : JSON.stringify({
 			      "evName": getValueStringById("eventSubject"),
@@ -1054,97 +950,3 @@ $(function(){
 	});
 });
 
-
-/*
-
-<div class="post clearfix">
-<div class="user-block">
-	<img class="img-circle img-bordered-sm"
-		src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
-		alt="user image"> <span class="username"> <a
-		href="#">Jonathan Burke Jr.</a> <a href="#"
-		class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-	</span> <span class="description">Shared publicly - 7:30 PM
-		today</span>
-</div>
-<!-- /.user-block -->
-<p>Lorem ipsum represents a long-held tradition for
-	designers, typographers and the like. Some people hate it
-	and argue for its demise, but others ignore the hate as
-	they create awesome tools to help create filler text for
-	everyone from bacon lovers to Charlie Sheen fans.</p>
-<ul class="list-inline">
-
-	<li><a href="#" class="link-black text-sm"><i
-			class="fa fa-thumbs-o-up margin-r-5"></i> Like</a></li>
-	<li class="pull-right"><a href="#"
-		class="link-black text-sm"><i
-			class="fa fa-comments-o margin-r-5"></i> Comments (5)</a></li>
-</ul>
-
-<input class="form-control input-sm" type="text"
-	placeholder="Type a comment">
-</div>
-<div class="post clearfix">
-<div class="user-block">
-	<img class="img-circle img-bordered-sm"
-		src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
-		alt="user image"> <span class="username"> <a
-		href="#">Jonathan Burke Jr.</a> <a href="#"
-		class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-	</span> <span class="description">Shared publicly - 7:30 PM
-		today</span>
-</div>
-<!-- /.user-block -->
-<p>Lorem ipsum represents a long-held tradition for
-	designers, typographers and the like. Some people hate it
-	and argue for its demise, but others ignore the hate as
-	they create awesome tools to help create filler text for
-	everyone from bacon lovers to Charlie Sheen fans.</p>
-<ul class="list-inline">
-
-	<li><a href="#" class="link-black text-sm"><i
-			class="fa fa-thumbs-o-up margin-r-5"></i> Like</a></li>
-	<li class="pull-right"><a href="#"
-		class="link-black text-sm"><i
-			class="fa fa-comments-o margin-r-5"></i> Comments (2)</a></li>
-</ul>
-<div class="box-footer box-comments">
-	<div class="box-comment">
-		<!-- User image -->
-		<img class="img-circle img-sm"
-			src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
-			alt="user image">
-		<div class="comment-text">
-			<span class="username"> Maria Gonzales <span
-				class="text-muted pull-right">8:03 PM Today</span>
-			</span>
-			<!-- /.username -->
-			It is a long established fact that a reader will be
-			distracted by the readable content of a page when looking
-			at its layout.
-		</div>
-		<!-- /.comment-text -->
-	</div>
-	<!-- /.box-comment -->
-	<div class="box-comment">
-		<!-- User image -->
-		<img class="img-circle img-sm"
-			src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
-			alt="user image">
-		<div class="comment-text">
-			<span class="username"> Luna Stark <span
-				class="text-muted pull-right">8:03 PM Today</span>
-			</span>
-			<!-- /.username -->
-			It is a long established fact that a reader will be
-			distracted by the readable content of a page when looking
-			at its layout.
-		</div>
-		<!-- /.comment-text -->
-	</div>
-	<!-- /.box-comment -->
-</div>
-<input class="form-control input-sm" type="text"
-	placeholder="Type a comment">
-</div>*/

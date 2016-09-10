@@ -152,7 +152,7 @@ $(document).ready(function() {
 					between: {
                         min: 1,
                         max: 100,
-                        message: 'The latitude must be between 1 and 99'
+                        message: 'The probability must be between 1 and 100'
                     }
 				}
 			},

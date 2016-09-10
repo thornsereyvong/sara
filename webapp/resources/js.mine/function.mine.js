@@ -175,7 +175,10 @@ function getDateByFormat(ID){
 	date = date.split('/');
 	return date[2]+"-"+date[1]+"-"+date[0];
 }
-
+function conDateSqlToNormal(date, strCon){	
+	date = date.split('-');
+	return date[2]+""+strCon+""+date[1]+""+strCon+""+date[0];
+}
 function getDateTimeByFormat(ID){
 	
 }
@@ -203,6 +206,16 @@ function setValueById(ID,value){
 function getInt(ID){
 	return Number($.trim($("#"+ID).val()));
 }
+
+function getJsonById(key, ID,type){
+	var obj = $.trim($("#"+ID).val());
+	if(obj == "")
+		return null;
+	if(type=="str")
+		return JSON.parse('{"'+key+'" : "'+obj+'"}');
+	return JSON.parse('{"'+key+'" : '+obj+'}');
+}
+
 
 function getIntToNull(ID){
 	var obj = Number($.trim($("#"+ID).val()));

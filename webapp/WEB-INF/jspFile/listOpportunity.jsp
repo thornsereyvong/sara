@@ -82,7 +82,17 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 
 </script>
-
+<script>
+	$(document).ready(function() {
+		$('.table-responsive').on('show.bs.dropdown', function () {
+		     $('.table-responsive').css( "overflow", "inherit" );
+		});
+	
+		$('.table-responsive').on('hide.bs.dropdown', function () {
+		     $('.table-responsive').css( "overflow", "auto" );
+		}); 
+	}); 
+</script>
 <div class="content-wrapper" ng-app="campaign" ng-controller="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
@@ -182,13 +192,13 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 								<div class="col-sm-2">
 									<div class="btn-group">
 				                      <button type="button" class="btn btn-default btn-flat" data-toggle="dropdown" aria-expanded="false">
-				                        <span class="caret"></span>
-				                        <span class="sr-only">Toggle Dropdown</span>
-				                      </button>
+										<span class="caret"></span> <span class="sr-only">Toggle
+											Dropdown</span>
+									 </button>
 				                      <ul class="dropdown-menu" role="menu">
 				                        <li><a href="${pageContext.request.contextPath}/update-opportunity/{{cc.opId}}"><i class="fa fa-pencil"></i> Edit</a></li>
 				                        <li><a href="#" ng-click="deleteOpp(cc.opId)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="#"><i class="fa fa-eye"></i> View</a></li>
+				                        <li><a href="${pageContext.request.contextPath}/view-opportunity/{{cc.opId}}"><i class="fa fa-eye"></i> View</a></li>
 				                      </ul>
 				                    </div>
 			                   	</div>

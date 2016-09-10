@@ -382,17 +382,17 @@ $(function(){
 		    "state": $.trim($("#lea_state").val()),
 		    "country": $.trim($("#lea_country").val()),
 		    "description": $.trim($("#lea_description").val()),
-		    "status": {"statusID":getIntToNull("lea_status")},
-		    "industry": {"industID":getIntToNull("lea_industry")},
-		    "source": {"sourceID":getIntToNull("lea_source")},
-		    "campaign": {"campID":getStringToNull("lea_campaign")},
-		    "assignTo": {"userID":getStringToNull("lea_assignto")},
+		    "status": getJsonById("statusID","lea_status","int"),
+		    "industry": getJsonById("industID","lea_industry","int"),
+		    "source": getJsonById("sourceID","lea_source","int"),
+		    "campaign": getJsonById("campID","lea_campaign","str"),
+		    "assignTo": getJsonById("userID","lea_assignto","str"),
 		    "modifyBy": username,
 		    "email": $.trim($("#lea_email").val())
 	  	};	
 		
 		$.ajax({
-			url : "${pageContext.request.contextPath}/lead/edit",
+			url : server+"/lead/edit",
 			type : "PUT",
 			data : JSON.stringify(frmLeadDetailData),
 			beforeSend: function(xhr) {
@@ -494,10 +494,10 @@ $(function(){
 				      "callStartDate": getValueStringById("callStartDate"),
 				      "callDuration": getValueStringById("callDuration"),
 				      "callCreateBy": username,
-				      "callStatus": {"callStatusId":getIntToNull("callStatus")},
+				      "callStatus": getJsonById("callStatusId","callStatus","int"),
 				      "callDes": getValueStringById("callDescription"),
 				      "callSubject": getValueStringById("callSubject"),
-				      "callAssignTo": {"userID": getStringToNull("callAssignTo")},
+				      "callAssignTo": getJsonById("userID","callAssignTo","str"),
 				      "callRelatedToFieldId": leadId,
 				      "callRelatedToModuleType": 'Lead'
 				      
@@ -543,10 +543,10 @@ $(function(){
 					  "callId": callIdForEdit,
 					  "callStartDate": getValueStringById("callStartDate"),
 				      "callDuration": getValueStringById("callDuration"),
-				      "callStatus": {"callStatusId":getIntToNull("callStatus")},
 				      "callDes": getValueStringById("callDescription"),
 				      "callSubject": getValueStringById("callSubject"),
-				      "callAssignTo": {"userID": getStringToNull("callAssignTo")},
+				      "callAssignTo": getJsonById("userID","callAssignTo","str"),
+				      "callStatus": getJsonById("callStatusId","callStatus","int"),
 				      "callRelatedToFieldId": leadId,
 				      "callRelatedToModuleType": 'Lead',
 				      "callModifiedBy" : username
@@ -660,17 +660,17 @@ $(function(){
 		if($("#btnMeetSave").text() == 'Save'){
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/meeting/add",
+				url : server+"/meeting/add",
 				type : "POST",
 				data : JSON.stringify({
 
 					  "meetingSubject": getValueStringById("meetSubject"),
-				      "meetingAssignTo": {"userID": getStringToNull("meetAssignTo")},
+				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
 				      "meetingDes": getValueStringById("meetDescription"),
 				      "meetingStartDate": getValueStringById("meetStartDate"),
 				      "meetingDuration": getValueStringById("meetDuration"),
 				      "meetingEndDate":  getValueStringById("meetEndDate"),
-				      "meetingStatus": {"statusId":getIntToNull("meetStatus")},
+				      "meetingStatus": getJsonById("statusId","meetStatus","int"),
 				      "meetingLocation":  getValueStringById("meetLocation"),
 				      "meetingRelatedToModuleType": 'Lead',
 				      "meetingRelatedToModuleId": leadId,
@@ -691,17 +691,17 @@ $(function(){
 		}else{
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/meeting/edit",
+				url : server+"/meeting/edit",
 				type : "PUT",
 				data : JSON.stringify({
 					  "meetingId": meetIdForEdit,
-					  "meetingSubject": getValueStringById("meetSubject"),
-				      "meetingAssignTo": {"userID": getStringToNull("meetAssignTo")},
+					  "meetingSubject": getValueStringById("meetSubject"),				     
 				      "meetingDes": getValueStringById("meetDescription"),
 				      "meetingStartDate": getValueStringById("meetStartDate"),
 				      "meetingDuration": getValueStringById("meetDuration"),
 				      "meetingEndDate":  getValueStringById("meetEndDate"),
-				      "meetingStatus": {"statusId":getIntToNull("meetStatus")},
+				      "meetingStatus": getJsonById("statusId","meetStatus","int"),
+				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
 				      "meetingLocation":  getValueStringById("meetLocation"),
 				      "meetingRelatedToModuleType": 'Lead',
 				      "meetingRelatedToModuleId": leadId,
@@ -788,19 +788,19 @@ $(function(){
 		if($("#btnTaskSave").text() == 'Save'){
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/task/add",
+				url : server+"/task/add",
 				type : "POST",
 				data : JSON.stringify({
-				      "taskStatus": {"taskStatusId":getIntToNull("taskStatus")},
+				      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
 				      "taskPriority": getValueStringById("taskPriority"),
-				      "taskAssignTo": {"userID": getStringToNull("taskAssignTo")},
+				      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
 				      "taskRelatedToId": leadId,
 				      "taskRelatedToModule": 'Lead',
 				      "taskDes": getValueStringById("taskDescription"),
 				      "taskDueDate": getValueStringById("taskEndDate"),
 				      "taskSubject":  getValueStringById("taskSubject"),
 				      "taskStartDate":  getValueStringById("taskStartDate"),
-				      "taskContact": {"conID":getIntToNull("taskContact")},
+				      "taskContact": getJsonById("conID","taskContact","str"),
 				      "taskCreateBy": username					      
 				}),
 				beforeSend: function(xhr) {
@@ -818,20 +818,20 @@ $(function(){
 		}else{
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/task/edit",
+				url : server+"/task/edit",
 				type : "PUT",
 				data : JSON.stringify({
-					  "taskId" : taskIdForEdit,
-					  "taskStatus": {"taskStatusId":getIntToNull("taskStatus")},
-				      "taskPriority": getValueStringById("taskPriority"),
-				      "taskAssignTo": {"userID": getStringToNull("taskAssignTo")},
+					  "taskId" : taskIdForEdit,					 
+				      "taskPriority": getValueStringById("taskPriority"),				      
 				      "taskRelatedToId": leadId,
 				      "taskRelatedToModule": 'Lead',
 				      "taskDes": getValueStringById("taskDescription"),
 				      "taskDueDate": getValueStringById("taskEndDate"),
 				      "taskSubject":  getValueStringById("taskSubject"),
 				      "taskStartDate":  getValueStringById("taskStartDate"),
-				      "taskContact": {"conID":getIntToNull("taskContact")},
+				      "taskContact": getJsonById("conID","taskContact","str"),
+				      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
+				      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
 				      "taskModifiedBy": username
 				}),
 				beforeSend: function(xhr) {
@@ -932,18 +932,18 @@ $(function(){
 		if($("#btnEventSave").text() == 'Save'){
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/event/add",
+				url : server+"/event/add",
 				type : "POST",
 				data : JSON.stringify({
-				      "evName": getValueStringById("eventSubject"),
-				      "evlocation": {"loId": getStringToNull("eventLocation")},
+				      "evName": getValueStringById("eventSubject"),				     
 				      "evBudget": getValueStringById("eventBudget"),
 				      "evDes": getValueStringById("eventDescription"),
 				      "evCreateBy":  username,
 				      "evDuration": getValueStringById("eventDuration"),
 				      "evStartDate": getValueStringById("eventStartDate"),
 				      "evEndDate": getValueStringById("eventEndDate"),
-				      "assignTo": {"userID": getStringToNull("eventAssignTo")},
+				      "assignTo": getJsonById("userID","eventAssignTo","str"),
+				      "evlocation": getJsonById("loId","eventLocation","str"),
 				      "evRelatedToID" : leadId,
 				      "evRelatedToType" : "Lead"
 				}),
@@ -962,19 +962,19 @@ $(function(){
 		}else{
 			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/event/edit",
+				url : server+"/event/edit",
 				type : "PUT",
 				data : JSON.stringify({
 					  "evId": eventIdForEdit,
 					  "evName": getValueStringById("eventSubject"),
-				      "evlocation": {"loId": getStringToNull("eventLocation")},
 				      "evBudget": getValueStringById("eventBudget"),
 				      "evDes": getValueStringById("eventDescription"),
 				      "evModifiedBy":  username,
 				      "evDuration": getValueStringById("eventDuration"),
 				      "evStartDate": getValueStringById("eventStartDate"),
 				      "evEndDate": getValueStringById("eventEndDate"),
-				      "assignTo": {"userID": getStringToNull("eventAssignTo")},
+				      "assignTo": getJsonById("userID","eventAssignTo","str"),
+				      "evlocation": getJsonById("loId","eventLocation","str"),
 				      "evRelatedToID" : leadId,
 				      "evRelatedToType" : "Lead"
 				}),
@@ -1025,7 +1025,7 @@ $(function(){
 		alert()
 		
 		/*$.ajax({
-			url : "${pageContext.request.contextPath}/event/add",
+			url : server+"/event/add",
 			type : "POST",
 			data : JSON.stringify({
 			      "evName": getValueStringById("eventSubject"),

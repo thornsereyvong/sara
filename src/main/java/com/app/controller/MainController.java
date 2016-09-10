@@ -760,10 +760,10 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/view-opportunity")
-	public String viewOpportunity(ModelMap model) {
+	@RequestMapping("/view-opportunity/{oppId}")
+	public String viewOpportunity(ModelMap model,@PathVariable("oppId") String oppId) {
 		model.addAttribute("menu", "viewOpportunity");
-		
+		model.addAttribute("oppId", oppId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("OP");
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
