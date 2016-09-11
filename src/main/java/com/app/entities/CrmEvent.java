@@ -14,10 +14,10 @@ public class CrmEvent{
 	
 	private CrmEventLocation evlocation;
 	
-	private LocalDateTime evStartDate;
+	private String startDate;
 	
 	
-	private LocalDateTime evEndDate;
+	private String endDate;
 	
 	
 	private String evDuration;
@@ -66,21 +66,21 @@ public class CrmEvent{
 	public void setEvlocation(CrmEventLocation evlocation) {
 		this.evlocation = evlocation;
 	}
-
-	public LocalDateTime getEvStartDate() {
-		return evStartDate;
+	
+	public String getStartDate() {
+		return startDate;
+	}
+	
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	
+	public String getEndDate() {
+		return endDate;
 	}
 
-	public void setEvStartDate(LocalDateTime evStartDate) {
-		this.evStartDate = evStartDate;
-	}
-
-	public LocalDateTime getEvEndDate() {
-		return evEndDate;
-	}
-
-	public void setEvEndDate(LocalDateTime evEndDate) {
-		this.evEndDate = evEndDate;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	public String getEvDuration() {

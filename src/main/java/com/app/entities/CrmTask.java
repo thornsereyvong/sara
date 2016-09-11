@@ -1,48 +1,23 @@
 package com.app.entities;
 
-
 import java.util.Date;
-
 
 public class CrmTask{
 
-
 	private String taskId;
-
 	private String taskSubject;
-	
-	
-	private Date taskStartDate;
-
-	private Date taskDueDate;
-	
-
+	private String startDate;
+	private String dueDate;
 	private String taskPriority;
-
 	private CrmTaskStatus taskStatus;
-	
-
 	private String taskDes;
-	
-
 	private String taskRelatedToModule;
-	
-
 	private String taskRelatedToId;
-
 	private CrmContact taskContact;
-	
-
 	private CrmUser taskAssignTo;
-	
-
 	private String taskCreateBy;
-
 	private Date taskCreateDate;
-	
-
 	private String taskModifiedBy;
-
 	private Date taskModifiedDate;
 
 	public String getTaskId() {
@@ -61,20 +36,20 @@ public class CrmTask{
 		this.taskSubject = taskSubject;
 	}
 
-	public Date getTaskStartDate() {
-		return taskStartDate;
+	public String getStartDate() {
+		return startDate;
 	}
 
-	public void setTaskStartDate(Date taskStartDate) {
-		this.taskStartDate = taskStartDate;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 
-	public Date getTaskDueDate() {
-		return taskDueDate;
+	public String getDueDate() {
+		return dueDate;
 	}
 
-	public void setTaskDueDate(Date taskDueDate) {
-		this.taskDueDate = taskDueDate;
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	public String getTaskPriority() {

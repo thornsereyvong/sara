@@ -69,30 +69,11 @@ function listStatusID(statusids){
 }
 
 function getData(){
-	
 	var data = ${task};
 	var result = data.body.DATA;
 	var user_id = ${users};
-
-
-	var d = new Date(result.taskStartDate);
-	var dd = d.getDate();
-	var mm = d.getMonth()+1;
-	var yy = d.getFullYear();
-	
-	$("#ts_startDate").val(dd+"/"+mm+"/"+yy);
-
-	
-	var end = new Date(result.taskDueDate);
-	
-	var dds = end.getDate();
-	var mms = end.getMonth()+1;
-	var yys = end.getFullYear();
-	
-	$("#ts_dueDate").val(dds+"/"+mms+"/"+yys);
-
-	
-	
+	$("#ts_startDate").val(result.taskStartDate);
+	$("#ts_dueDate").val(result.taskDueDate);
 	$("#ts_id").val(result.taskId);
 	$("#ts_subject").val(result.taskSubject);
 	
@@ -138,7 +119,9 @@ $(document).ready(function() {
 	$('.date2').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        format: 'DD/MM/YYYY' 
+        format: 'DD/MM/YYYY h:mm A',
+        timePicker: true, 
+        timePickerIncrement: 5 
     });
 
 
@@ -188,17 +171,17 @@ $(document).ready(function() {
 				ts_startDate: {
 					validators: {
 						date: {
-	                        format: 'DD/MM/YYYY',
-	                        message: 'The value is not a valid date'
-	                    }
+	                        format: 'DD/MM/YYYY h:mm A',
+	                        message: 'The value is not a valid date!'
+						}
 					}
 				},
 				ts_dueDate: {
 					validators: {
 						date: {
-	                        format: 'DD/MM/YYYY',
-	                        message: 'The value is not a valid date'
-	                    }
+	                        format: 'DD/MM/YYYY h:mm A',
+	                        message: 'The value is not a valid date!'
+						}
 					}
 				},
 				ts_description: {
@@ -213,20 +196,6 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-
-			var createDate = $("#ts_startDate").val();
-			var newCreateDate = createDate.split("/").reverse().join("-");
-			
-			var endDate = $("#ts_dueDate").val();
-			var endCreateDate = endDate.split("/").reverse().join("-");
-
-			
 
 		    var assign = "";	
 			if($("#ts_assignTo").val()  != ""){
@@ -249,7 +218,6 @@ $(document).ready(function() {
 				contactssss = null;
 			}
 
-
 			$.ajax({
 				url : "${pageContext.request.contextPath}/task/edit",
 				type : "PUT",
@@ -261,9 +229,9 @@ $(document).ready(function() {
 				      "taskRelatedToId": $("#ts_reportType").val(),
 				      "taskRelatedToModule": $("#ts_relateTo").val(),
 				      "taskDes": $("#ts_description").val(),
-				      "taskDueDate": endCreateDate,
+				      "dueDate": $("#ts_dueDate").val(),
 				      "taskSubject":  $("#ts_subject").val(),
-				      "taskStartDate":  newCreateDate,
+				      "startDate":  $("#ts_startDate").val(),
 				      "taskContact": contactssss,
 				      "taskModifiedBy": $.session.get("parentID"),
 					}),
@@ -299,13 +267,7 @@ $(document).ready(function() {
 					errorMessage();
 					}
 				});  
-			
 		});	
-
-
-		
-	
-	
 });
 </script>
 	<section class="content">
@@ -347,9 +309,7 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-sm-12">
 					<div class="col-sm-6">
-
-						
-
+						<input type="hidden" id = "ts_id">
 						<div class="col-sm-12">
 							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">

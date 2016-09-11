@@ -8,8 +8,8 @@ public class CrmMeeting {
 	private String meetingId;
 
 	private String meetingSubject;
-	private Date meetingStartDate;
-	private Date meetingEndDate;
+	private String startDate;
+	private String endDate;
 	private String meetingDuration;
 	private CrmMeetingStatus meetingStatus;
 	private String meetingRelatedToModuleType;
@@ -21,9 +21,6 @@ public class CrmMeeting {
 	private Date meetingCreateDate;
 	private String meetingModifiedBy;
 	private Date meetingModifiedDate;
-	
-	
-	
 	
 	
 	public String getMeetingId() {
@@ -42,20 +39,20 @@ public class CrmMeeting {
 		this.meetingSubject = meetingSubject;
 	}
 
-	public Date getMeetingStartDate() {
-		return meetingStartDate;
+	public String getStartDate() {
+		return startDate;
 	}
 
-	public void setMeetingStartDate(Date meetingStartDate) {
-		this.meetingStartDate = meetingStartDate;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 
-	public Date getMeetingEndDate() {
-		return meetingEndDate;
+	public String getEndDate() {
+		return endDate;
 	}
 
-	public void setMeetingEndDate(Date meetingEndDate) {
-		this.meetingEndDate = meetingEndDate;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	public String getMeetingDuration() {

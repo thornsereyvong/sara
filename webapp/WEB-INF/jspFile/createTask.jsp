@@ -44,10 +44,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 				});
 			};	
 
-
 }]);
-
-
 
 
 $(document).ready(function() {
@@ -65,7 +62,9 @@ $(document).ready(function() {
 	$('.date2').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        format: 'DD/MM/YYYY' 
+        format: 'DD/MM/YYYY h:mm A',
+        timePicker: true, 
+        timePickerIncrement: 5 
     });
 
     
@@ -123,17 +122,17 @@ $(document).ready(function() {
 				ts_startDate: {
 					validators: {
 						date: {
-	                        format: 'DD/MM/YYYY',
-	                        message: 'The value is not a valid date'
-	                    }
+	                        format: 'DD/MM/YYYY h:mm A',
+	                        message: 'The value is not a valid date!'
+						}
 					}
 				},
 				ts_dueDate: {
 					validators: {
 						date: {
-	                        format: 'DD/MM/YYYY',
-	                        message: 'The value is not a valid date'
-	                    }
+	                        format: 'DD/MM/YYYY h:mm A',
+	                        message: 'The value is not a valid date!'
+						}
 					}
 				},
 				ts_description: {
@@ -148,20 +147,6 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-
-			var createDate = $("#ts_startDate").val();
-			var newCreateDate = createDate.split("/").reverse().join("-");
-			
-			var endDate = $("#ts_dueDate").val();
-			var endCreateDate = endDate.split("/").reverse().join("-");
-
-			
 
 		    var assign = "";	
 			if($("#ts_assignTo").val()  != ""){
@@ -184,7 +169,6 @@ $(document).ready(function() {
 				contactssss = null;
 			}
 
-
 			$.ajax({
 				url : "${pageContext.request.contextPath}/task/add",
 				type : "POST",
@@ -195,11 +179,10 @@ $(document).ready(function() {
 				      "taskRelatedToId": $("#ts_reportType").val(),
 				      "taskRelatedToModule": $("#ts_relateTo").val(),
 				      "taskDes": $("#ts_description").val(),
-				      "taskDueDate": endCreateDate,
+				      "dueDate": $("#ts_dueDate").val(),
 				      "taskSubject":  $("#ts_subject").val(),
-				      "taskStartDate":  newCreateDate,
+				      "startDate": $("#ts_startDate").val(),
 				      "taskContact": contactssss,
-				      "taskCreateDate": year+"-"+month+"-"+day,
 				      "taskCreateBy": $.session.get("parentID"),
 					}),
 				beforeSend: function(xhr) {

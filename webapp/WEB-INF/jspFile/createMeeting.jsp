@@ -163,20 +163,6 @@ $(document).ready(function() {
 			}
 		}).on('success.form.bv', function(e) {
 
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-
-			var createDate = $("#me_startDate").val();
-			var newCreateDate = createDate.split("/").reverse().join("-");
-			
-			var endDate = $("#me_endDate").val();
-			var endCreateDate = endDate.split("/").reverse().join("-");
-
-			
-
 		    var assign = "";	
 			if($("#me_assignTo").val()  != ""){
 				assign = {"userID": $("#me_assignTo").val()};
@@ -199,15 +185,14 @@ $(document).ready(function() {
 					  "meetingSubject": $("#me_subject").val(),
 				      "meetingAssignTo": assign,
 				      "meetingDes":$("#me_description").val(),
-				      "meetingStartDate": newCreateDate,
+				      "startDate": $("#me_startDate").val(),
 				      "meetingDuration": $("#me_duration").val(),
-				      "meetingEndDate":  endCreateDate,
+				      "endDate":  $("#me_endDate").val(),
 				      "meetingStatus": status,
 				      "meetingLocation":  $("#me_location").val(),
 				      "meetingRelatedToModuleType": $("#me_relateTo").val(),
 				      "meetingRelatedToModuleId": $("#me_reportType").val(),
-				      "meetingCreateBy": $.session.get("parentID"),
-				      "meetingCreateDate": year+"-"+month+"-"+day		
+				      "meetingCreateBy": $.session.get("parentID")		
 				   
 					}),
 				beforeSend: function(xhr) {

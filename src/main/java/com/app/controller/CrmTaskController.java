@@ -23,7 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping(value="/")
 public class CrmTaskController {
 	
-	//private final String URL = "";
 	@Autowired
 	private ObjectMapper objectMapper;
 	
@@ -61,8 +60,7 @@ public class CrmTaskController {
 		
 	}
 	
-	
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task/list/{campID}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> findtaskById(@PathVariable("campID") String campID){	
@@ -84,8 +82,8 @@ public class CrmTaskController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addtask(@RequestBody CrmTask campaign){
-		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
+	public ResponseEntity<Map<String, Object>> addtask(@RequestBody CrmTask task){
+		HttpEntity<Object> request = new HttpEntity<Object>(task,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
@@ -94,12 +92,10 @@ public class CrmTaskController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateTask(@RequestBody CrmTask campaign){
+	public ResponseEntity<Map<String, Object>> updateTask(@RequestBody CrmTask task){
 		
-		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
-		
+		HttpEntity<Object> request = new HttpEntity<Object>(task,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/edit", HttpMethod.PUT, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}

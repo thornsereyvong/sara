@@ -53,9 +53,11 @@ $(function(){
 	
 	
 	$('.task-date').daterangepicker({
-        format: 'DD/MM/YYYY',
+		format: 'DD/MM/YYYY h:mm A',
         singleDatePicker: true,
-        showDropdowns: true
+        showDropdowns: true,
+        timePicker: true, 
+        timePickerIncrement: 5,
     }).on('change', function(e) {
      	$('#frmAddTask').bootstrapValidator('revalidateField', 'taskStartDate');
      	$('#frmAddTask').bootstrapValidator('revalidateField', 'taskEndDate');
@@ -387,7 +389,7 @@ $(function(){
 				url : server+"/call/add",
 				type : "POST",
 				data : JSON.stringify({ 
-				      "callStartDate": getValueStringById("callStartDate"),
+				      "startDate": getValueStringById("callStartDate"),
 				      "callDuration": getValueStringById("callDuration"),
 				      "callCreateBy": username,
 				      "callDes": getValueStringById("callDescription"),
@@ -437,7 +439,7 @@ $(function(){
 				type : "PUT",
 				data : JSON.stringify({ 
 					  "callId": callIdForEdit,
-					  "callStartDate": getValueStringById("callStartDate"),
+					  "startDate": getValueStringById("callStartDate"),
 				      "callDuration": getValueStringById("callDuration"),
 				      "callDes": getValueStringById("callDescription"),
 				      "callSubject": getValueStringById("callSubject"),
@@ -452,7 +454,6 @@ $(function(){
 				    xhr.setRequestHeader("Content-Type", "application/json");
 			    },
 				success:function(data){					
-					dis(data)
 					if(data.MESSAGE == 'UPDATED'){
 						angular.element(document.getElementById('viewOpportunityController')).scope().listDataCallByRalateType();
 					}else{
@@ -562,9 +563,9 @@ $(function(){
 
 					  "meetingSubject": getValueStringById("meetSubject"),
 				      "meetingDes": getValueStringById("meetDescription"),
-				      "meetingStartDate": getValueStringById("meetStartDate"),
+				      "startDate": getValueStringById("meetStartDate"),
 				      "meetingDuration": getValueStringById("meetDuration"),
-				      "meetingEndDate":  getValueStringById("meetEndDate"),
+				      "endDate":  getValueStringById("meetEndDate"),
 				      "meetingStatus": getJsonById("statusId","meetStatus","int"),
 				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
 				      "meetingLocation":  getValueStringById("meetLocation"),
@@ -593,9 +594,9 @@ $(function(){
 					  "meetingId": meetIdForEdit,
 					  "meetingSubject": getValueStringById("meetSubject"),
 				      "meetingDes": getValueStringById("meetDescription"),
-				      "meetingStartDate": getValueStringById("meetStartDate"),
+				      "startDate": getValueStringById("meetStartDate"),
 				      "meetingDuration": getValueStringById("meetDuration"),
-				      "meetingEndDate":  getValueStringById("meetEndDate"),
+				      "endDate":  getValueStringById("meetEndDate"),
 				      "meetingStatus": getJsonById("statusId","meetStatus","int"),
 				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
 				      "meetingLocation":  getValueStringById("meetLocation"),
@@ -646,7 +647,7 @@ $(function(){
 			taskStartDate: {
 				validators: {
 					date: {
-                        format: 'DD/MM/YYYY',
+                        format: 'DD/MM/YYYY h:mm A',
                         message: 'The value is not a valid date!'
                     }
 				}
@@ -654,7 +655,7 @@ $(function(){
 			taskEndDate: {
 				validators: {
 					date: {
-                        format: 'DD/MM/YYYY',
+                        format: 'DD/MM/YYYY h:mm A',
                         message: 'The value is not a valid date!'
                     }
 				}
@@ -691,9 +692,9 @@ $(function(){
 				      "taskRelatedToId": oppId,
 				      "taskRelatedToModule": 'Opportunity',
 				      "taskDes": getValueStringById("taskDescription"),
-				      "taskDueDate": getValueStringById("taskEndDate"),
+				      "dueDate": getValueStringById("taskEndDate"),
 				      "taskSubject":  getValueStringById("taskSubject"),
-				      "taskStartDate":  getValueStringById("taskStartDate"),
+				      "startDate":  getValueStringById("taskStartDate"),
 				      "taskContact": getJsonById("conID","taskContact","str"),
 				      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
 				      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
@@ -722,11 +723,11 @@ $(function(){
 				      "taskRelatedToId": oppId,
 				      "taskRelatedToModule": 'Opportunity',
 				      "taskDes": getValueStringById("taskDescription"),
-				      "taskDueDate": getValueStringById("taskEndDate"),
+				      "dueDate": getValueStringById("taskEndDate"),
 				      "taskSubject":  getValueStringById("taskSubject"),
-				      "taskStartDate":  getValueStringById("taskStartDate"),
+				      "startDate":  getValueStringById("taskStartDate"),
 				      "taskContact": getJsonById("conID","taskContact","str"),
-				      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
+				      "status": getJsonById("taskStatusId","taskStatus","int"),
 				      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),				      
 				      "taskModifiedBy": username
 				}),
@@ -836,8 +837,8 @@ $(function(){
 				      "evDes": getValueStringById("eventDescription"),
 				      "evCreateBy":  username,
 				      "evDuration": getValueStringById("eventDuration"),
-				      "evStartDate": getValueStringById("eventStartDate"),
-				      "evEndDate": getValueStringById("eventEndDate"),
+				      "startDate": getValueStringById("eventStartDate"),
+				      "endDate": getValueStringById("eventEndDate"),
 				      "assignTo": getJsonById("userID","eventAssignTo","str"),
 				      "evlocation": getJsonById("loId","eventLocation","str"),
 				      "evRelatedToID" : oppId,

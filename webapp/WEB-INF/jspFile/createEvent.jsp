@@ -25,24 +25,16 @@
 		</ol>
 	</section>
 <script type="text/javascript">
-
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-
 	$scope.listMeetignStatus = function(){
 		$http.get("${pageContext.request.contextPath}/event_location/list")
 		.success(function(response){
 				$scope.status = response.DATA;
 			});
 		};	
-
-
 }]);
-
-
-
-
 $(document).ready(function() {
 	 
 	var data = ${users};
@@ -56,19 +48,15 @@ $(document).ready(function() {
         timePickerIncrement: 5
        
     }).on('change', function(e) {
-
 		if($("#startDate").val() != ""){
 			$('#form-call').bootstrapValidator('revalidateField', 'startDate');
 		}
-
 		if($("#endDate").val() != ""){
 			$('#form-call').bootstrapValidator('revalidateField', 'endDate');
 		}
     	
   
 	});
-
-
 	userAllList(data,'#assignTo','');
 	
 	$("#btn_clear").click(function(){
@@ -140,11 +128,18 @@ $(document).ready(function() {
 					}
 			}
 		}).on('success.form.bv', function(e) {
-			var budget = "";	
-			if($("#budget").val()  == "" | $("#budget").val()  == null){
-				budget = "0";
+			var assignToUser = "";	
+			if($("#assignTo").val()  == "" | $("#budget").val()  == null){
+				assignToUser = null;
 			}else{
-				budget = $("#budget").val();
+				assignToUser ={"userID":$("#budget").val()};
+			}
+
+			var location = "";
+			if($("#location").val() != ""){
+				location = {"loId": $("#location").val()};
+			}else{
+				location = null;
 			}
 				
 			$.ajax({
@@ -152,14 +147,14 @@ $(document).ready(function() {
 				type : "POST",
 				data : JSON.stringify({
 					  "evName": $("#name").val(),
-				      "evLocation":  $("#location").val(),
-				      "evBudget": budget,
+				      "evLocation": location,
+				      "evBudget": $("#budget").val(),
 				      "evDes": $("#description").val(),
 				      "evCreateBy":  $.session.get("parentID"),
 				      "evDuration": $("#duration").val(),
-				      "evStartDate": $("#startDate").val(),
-				      "evEndDate": $("#endDate").val(),
-				      "assignTo": $("#assignTo").val(), 
+				      "startDate": $("#startDate").val(),
+				      "endDate": $("#endDate").val(),
+				      "assignTo": assignToUser, 
 					}),
 				beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
@@ -352,4 +347,3 @@ $(document).ready(function() {
 
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-
