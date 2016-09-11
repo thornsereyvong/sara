@@ -45,14 +45,10 @@ public class CrmCallController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/call/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addCall(@RequestBody CrmCall status){
-		
-		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/add", HttpMethod.POST, request, Map.class);
-		
-		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
+	public ResponseEntity<Map<String, Object>> addCall(@RequestBody String JSON){		
+		HttpEntity<Object> request = new HttpEntity<Object>(JSON,header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/add", HttpMethod.POST, request, Map.class);		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
