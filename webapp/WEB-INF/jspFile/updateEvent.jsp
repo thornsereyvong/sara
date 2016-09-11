@@ -190,7 +190,7 @@ $(document).ready(function() {
 				data : JSON.stringify({
 					  "evId": $("#id").val(),
 					  "evName": $("#name").val(),
-				      "evlocation": $("#location").val(),
+				      "evLocation": $("#location").val(),
 				      "evBudget": budget,
 				      "evDes": $("#description").val(),
 				      "evDuration": $("#duration").val(),
@@ -230,10 +230,6 @@ $(document).ready(function() {
 			
 		});	
 
-
-		
-	
-	
 });
 </script>
 	<section class="content">
@@ -379,14 +375,6 @@ $(document).ready(function() {
 
 
 				</div>
-				
-				
-				
-				
-				
-			
-				
-
 			</form>
 			</div>
 			<!-- /.box-body -->
