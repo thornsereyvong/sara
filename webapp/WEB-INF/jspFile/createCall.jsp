@@ -40,8 +40,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 
 $(document).ready(function() {
-	
-	
+
 	$(".timepicker").timepicker({
 		format: 'h:mm',
         showInputs: false,
@@ -142,15 +141,6 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-			var createDate = $("#startDate").val();
-			var newCreateDate = createDate.split("/").reverse().join("-");
-			
 			    var assign = "";	
 				if($("#assignTo").val()  != ""){
 					assign = {"userID": $("#assignTo").val()};
@@ -164,15 +154,13 @@ $(document).ready(function() {
 				}else{
 					status = null;
 				}
-
-
 			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/call/add",
 				type : "POST",
 				data : JSON.stringify({ 
 
-				      "callStartDate": newCreateDate,
+				      "startDate":  $("#startDate").val(),
 				      "callDuration": $("#duration").val(),
 				      "callCreateBy": $.session.get("parentID"),
 				      "callStatus": status,
@@ -180,8 +168,7 @@ $(document).ready(function() {
 				      "callSubject": $("#subject").val(),
 				      "callAssignTo": assign,
 				      "callRelatedToFieldId": $("#reportTo").val(),
-				      "callRelatedToModuleType": $("#reportType").val(),
-				      "callCreateDate": year+"-"+month+"-"+day
+				      "callRelatedToModuleType": $("#reportType").val()
 				      
 					}),
 				beforeSend: function(xhr) {

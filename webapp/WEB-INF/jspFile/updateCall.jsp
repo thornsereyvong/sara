@@ -53,17 +53,7 @@ function listDataByCampID(){
 	var data = ${calls};
 	var result = data.body.DATA;
 	var user_id = ${users};
-
-
-	var d = new Date(result.callStartDate);
-	var dd = d.getDate();
-	var mm = d.getMonth()+1;
-	var yy = d.getFullYear();
-	
-	$("#startDate").val(dd+"/"+mm+"/"+yy);
-
-	
-	
+	$("#startDate").val(result.callStartDate);
 	$("#id").val(result.callId);
 	$("#subject").val(result.callSubject);
 	$("#duration").val(result.callDuration);
@@ -82,12 +72,8 @@ function listDataByCampID(){
 	funcRelateTo("#reportTo",result.callRelatedToModuleType,result.callRelatedToFieldId);
 }
 
-
-
 $(document).ready(function() {
-	
-	
-	
+
 	$(".timepicker").timepicker({
 		format: 'h:mm',
         showInputs: false,
@@ -184,15 +170,6 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-			var createDate = $("#startDate").val();
-			var newCreateDate = createDate.split("/").reverse().join("-");
-
 			    var assign = "";
 			    if($("#assignTo").val() === null){
 					assign = {"userID": $.session.get("assignTo")};
@@ -214,7 +191,7 @@ $(document).ready(function() {
 				type : "PUT",
 				data : JSON.stringify({ 
 					  "callId": $("#id").val(),
-				      "callStartDate": newCreateDate,
+				      "startDate": $("#startDate").val(),
 				      "callDuration": $("#duration").val(),
 				      "callModifiedBy": $.session.get("parentID"),
 				      "callStatus": status,
@@ -222,9 +199,7 @@ $(document).ready(function() {
 				      "callSubject": $("#subject").val(),
 				      "callAssignTo": assign,
 				      "callRelatedToFieldId": $("#reportTo").val(),
-				      "callRelatedToModuleType": $("#reportType").val(),
-				      "callModifiedDate": year+"-"+month+"-"+day
-				      
+				      "callRelatedToModuleType": $("#reportType").val()
 					}),
 				beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
@@ -298,6 +273,8 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-sm-12">
 					<div class="col-sm-6">
+						
+						<input type="hidden" id="id"/>
 
 						<div class="col-sm-12">
 							<label class="font-label">Subject <span class="requrie">(Required)</span></label>

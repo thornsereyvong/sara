@@ -1,44 +1,22 @@
 package com.app.entities;
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class CrmCall {
-
-
 	private String callId;
-
 	private String callSubject;
-	
-
-	private Date callStartDate;
-	
-
+	private String startDate;
 	private String callDuration;
-
 	private CrmCallStatus callStatus;
-	
-
 	private String callRelatedToModuleType;
-	
-
 	private String callRelatedToFieldId;
-	
-
 	private String callDes;
-	
-
 	private CrmUser callAssignTo;
-	
-
 	private String callCreateBy;
-
-	private Date callCreateDate;
-	
-
+	private LocalDateTime callCreateDate;
 	private String callModifiedBy;
-	
-
 	private Date callModifiedDate;
 	
 	public String getCallId() {
@@ -53,11 +31,11 @@ public class CrmCall {
 	public void setCallSubject(String callSubject) {
 		this.callSubject = callSubject;
 	}
-	public Date getCallStartDate() {
-		return callStartDate;
+	public String getStartDate() {
+		return startDate;
 	}
-	public void setCallStartDate(Date callStartDate) {
-		this.callStartDate = callStartDate;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 	public String getCallDuration() {
 		return callDuration;
@@ -101,10 +79,11 @@ public class CrmCall {
 	public void setCallCreateBy(String callCreateBy) {
 		this.callCreateBy = callCreateBy;
 	}
-	public Date getCallCreateDate() {
+	
+	public LocalDateTime getCallCreateDate() {
 		return callCreateDate;
 	}
-	public void setCallCreateDate(Date callCreateDate) {
+	public void setCallCreateDate(LocalDateTime callCreateDate) {
 		this.callCreateDate = callCreateDate;
 	}
 	public String getCallModifiedBy() {

@@ -69,9 +69,9 @@ public class CrmCallController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/call/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateCall(@RequestBody CrmCall status){
+	public ResponseEntity<Map<String, Object>> updateCall(@RequestBody CrmCall call){
 		
-		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
+		HttpEntity<Object> request = new HttpEntity<Object>(call,header);
 		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/edit", HttpMethod.PUT, request, Map.class);
 		

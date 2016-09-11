@@ -56,26 +56,9 @@ function listDataByCampID(){
 	var data = ${meeting};
 	var result = data.body.DATA;
 	var user_id = ${users};
-
-
-	var d = new Date(result.meetingStartDate);
-	var dd = d.getDate();
-	var mm = d.getMonth()+1;
-	var yy = d.getFullYear();
-	
-	$("#me_startDate").val(dd+"/"+mm+"/"+yy);
-
-	
+	$("#me_startDate").val(result.meetingStartDate);
 	var end = new Date(result.meetingEndDate);
-	
-	var dds = end.getDate();
-	var mms = end.getMonth()+1;
-	var yys = end.getFullYear();
-	
-	$("#me_endDate").val(dds+"/"+mms+"/"+yys);
-
-	
-	
+	$("#me_endDate").val(result.meetingEndDate);
 	$("#me_id").val(result.meetingId);
 	$("#me_subject").val(result.meetingSubject);
 	$("#me_location").val(result.meetingLocation);
@@ -226,21 +209,6 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-
-			var createDate = $("#me_startDate").val();
-			var newCreateDate = createDate.split("/").reverse().join("-");
-			
-			var endDate = $("#me_endDate").val();
-			var endCreateDate = endDate.split("/").reverse().join("-");
-
-			
-
 		    var assign = "";	
 			if($("#me_assignTo").val()  != ""){
 				assign = {"userID": $("#me_assignTo").val()};
@@ -263,16 +231,14 @@ $(document).ready(function() {
 					  "meetingSubject": $("#me_subject").val(),
 				      "meetingAssignTo": assign,
 				      "meetingDes":$("#me_description").val(),
-				      "meetingStartDate": newCreateDate,
+				      "startDate":  $("#me_startDate").val(),
 				      "meetingDuration": $("#me_duration").val(),
-				      "meetingEndDate":  endCreateDate,
+				      "endDate":  $("#me_endDate").val(),
 				      "meetingStatus": status,
 				      "meetingLocation":  $("#me_location").val(),
 				      "meetingRelatedToModuleType": $("#me_relateTo").val(),
 				      "meetingRelatedToModuleId": $("#me_reportType").val(),
-				      "meetingModifiedBy": $.session.get("parentID"),
-				      "meetingModifiedDate": year+"-"+month+"-"+day		
-				   
+				      "meetingModifiedBy": $.session.get("parentID")
 					}),
 				beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
@@ -354,7 +320,7 @@ $(document).ready(function() {
 					<div class="col-sm-12">
 					<div class="col-sm-6">
 
-						
+						<input type="hidden" id="me_id">
 
 						<div class="col-sm-12">
 							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
