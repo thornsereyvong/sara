@@ -178,11 +178,18 @@ $(document).ready(function() {
 					}
 			}
 		}).on('success.form.bv', function(e) {
-			var budget = "";	
-			if($("#budget").val()  == "" | $("#budget").val()  == null){
-				budget = "0";
+			var assignToUser = "";	
+			if($("#assignTo").val()  == "" | $("#budget").val()  == null){
+				assignToUser = null;
 			}else{
-				budget = $("#budget").val();
+				assignToUser ={"userID":$("#budget").val()};
+			}
+
+			var location = "";
+			if($("#location").val() != ""){
+				location = {"loId": $("#location").val()};
+			}else{
+				location = null;
 			}
 			$.ajax({
 				url : "${pageContext.request.contextPath}/event/edit",
@@ -190,13 +197,13 @@ $(document).ready(function() {
 				data : JSON.stringify({
 					  "evId": $("#id").val(),
 					  "evName": $("#name").val(),
-				      "evLocation": $("#location").val(),
-				      "evBudget": budget,
+				      "evLocation": location,
+				      "evBudget": $("#budget").val(),
 				      "evDes": $("#description").val(),
 				      "evDuration": $("#duration").val(),
-				      "evStartDate": $("#startDate").val(),
-				      "evEndDate": $("#endDate").val(),
-				      "assignTo": $("#assignTo").val(),
+				      "startDate": $("#startDate").val(),
+				      "endDate": $("#endDate").val(),
+				      "assignTo": assignToUser,
 				      "evModifiedBy":  $.session.get("parentID")
 					}),
 				beforeSend: function(xhr) {
