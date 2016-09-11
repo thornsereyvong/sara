@@ -263,6 +263,21 @@ function checkRegExp(string,patt) {
 	return false
 }
 
+
+function getTags(ID,key){
+	var obj = [];
+	var tags = $("#"+ID).val().toString();
+	if(tags !=null){
+		tags = tags.split(',');
+		for(var i=0;i<tags.length;i++){
+			obj.push(JSON.parse('{"'+key+'" : "'+tags[i]+'"}'));
+		}
+		return obj;
+	}	
+	return null;
+}
+
+
 function getDateById(ID){
 	var date =  $.trim($("#"+ID).val());
 	if(date != ""){

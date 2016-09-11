@@ -160,4 +160,18 @@ public class CrmUserController {
 		
 	}
 	
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/user/list/tags",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listTagsUser(){
+		HttpEntity<Object> request = new HttpEntity<Object>(header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/user_tags", HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
+	}
+	
+	
+	
+	
+	
 }

@@ -7,7 +7,7 @@ $(function(){
         showMeridian : false
     });
 	
-	$("#collapTags").select2();
+	$("#collabTags").select2();
 	//$(".tags").select2({tags: true});
 	$('#callStartDate').daterangepicker({
         format: 'DD/MM/YYYY h:mm A',
@@ -507,27 +507,28 @@ $(function(){
 						    xhr.setRequestHeader("Content-Type", "application/json");
 			    },
 				success:function(data){	
-						if(data.MESSAGE == 'INSERTED'){
-							angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
-							
-							$('#frmAddCall').bootstrapValidator('resetForm', true);
-							$('#frmCall').modal('toggle');
-							swal({
-			            		title:"Successfully",
-			            		text:"User have been created new call!",
-			            		type:"success",  
-			            		timer: 2000,   
-			            		showConfirmButton: false
-		        			});
-						}else{
-							swal({
-			            		title:"Unsuccessfully",
-			            		text:"Please try agian!",
-			            		type:"error",  
-			            		timer: 2000,   
-			            		showConfirmButton: false
-		        			});
-						}										
+					
+					if(data.MESSAGE == 'INSERTED'){
+						angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
+						
+						$('#frmAddCall').bootstrapValidator('resetForm', true);
+						$('#frmCall').modal('toggle');
+						swal({
+		            		title:"Successfully",
+		            		text:"User have been created new call!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+					}else{
+						swal({
+		            		title:"Unsuccessfully",
+		            		text:"Please try agian!",
+		            		type:"error",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+					}									
 				},
 				error:function(){
 					errorMessage();
@@ -995,11 +996,8 @@ $(function(){
 	});
 	
 	
-	$("#collapBtnPost").click(function(){
-		$('#frmCollap').submit();
-	});
 	
-	$('#frmCollap').bootstrapValidator({
+	$('#frmCollabComment').bootstrapValidator({
 		message: 'This value is not valid',
 		feedbackIcons: {
 			valid: 'glyphicon glyphicon-ok',
@@ -1007,7 +1005,36 @@ $(function(){
 			validating: 'glyphicon glyphicon-refresh'
 		},
 		fields: {
-			collapPostDescription: {
+			collabCommetText: {
+				validators: {
+					notEmpty: {
+						message: 'The comment is required and can not be empty!'
+					},
+					stringLength: {
+						max: 255,
+						message: 'The comment must be less than 255 characters long!'
+					}
+				}
+			}
+			
+		}
+	}).on('success.form.bv', function(e) {
+		
+	});
+	
+	/*$("#collabBtnPost").click(function(){
+		$('#frmCollab').submit();
+	});*/
+	
+	$('#frmCollab').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			collabPostDescription: {
 				validators: {
 					notEmpty: {
 						message: 'The post description is required and can not be empty!'
@@ -1021,25 +1048,46 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {
+		/*		
+		var deletePost = {
+			"postId" : postIdCurent,			
+			"deleteBy": username
+		};*/
 		
-		alert()
+		var addPost = {
+				"tags" : getTags("collabTags","tag"), 
+				"post" : getValueStringById("collabPostDescription"), 
+				"createBy": username ,
+				"detail" : [],
+			};
 		
-		/*$.ajax({
-			url : server+"/event/add",
+		
+		/*var addComment = {
+				"postId" : postIdCurent,
+				"comment" : getValueStringById("collabComment"),
+				"createBy" : username
+		};
+		
+		var deleteComment = {
+			"postDetailId" : postDetailCurent,
+			"deleteBy" : username
+		};
+		
+		
+		var like = {
+				"postDetailId" : postDetailCurent,
+				"By" : username,
+				"status" : boolLike //"true/false   true = like, false = Unlike" 
+		};*/
+		
+		/*var listcollab = {"leadId":leadId,"username":username}*/
+		
+		dis(addPost);
+		
+		$.ajax({
+			url : server+"/collaborate/add",
 			type : "POST",
-			data : JSON.stringify({
-			      "evName": getValueStringById("eventSubject"),
-			      "evlocation": {"loId": getStringToNull("eventLocation")},
-			      "evBudget": getValueStringById("eventBudget"),
-			      "evDes": getValueStringById("eventDescription"),
-			      "evCreateBy":  username,
-			      "evDuration": getValueStringById("eventDuration"),
-			      "evStartDate": getValueStringById("eventStartDate"),
-			      "evEndDate": getValueStringById("eventEndDate"),
-			      "assignTo": {"userID": getStringToNull("eventAssignTo")},
-			      "evRelatedToID" : leadId,
-			      "evRelatedToType" : "Lead"
-			}),
+			data : JSON.stringify(addPost),
 			beforeSend: function(xhr) {
 			    xhr.setRequestHeader("Accept", "application/json");
 			    xhr.setRequestHeader("Content-Type", "application/json");
@@ -1050,7 +1098,7 @@ $(function(){
 			error:function(){
 				
 			}
-		}); */
+		}); 
 	});
 });
 
