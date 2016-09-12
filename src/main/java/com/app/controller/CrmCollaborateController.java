@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import com.app.entities.CrmCollaboration;
 
 @RestController
 @RequestMapping(value="/")
@@ -62,33 +65,25 @@ public class CrmCollaborateController {
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/collaborate/add",method = RequestMethod.POST)
-		public ResponseEntity<Map<String, Object>> addCollaborate(@RequestBody String collab){			
-			HttpEntity<String> request = new HttpEntity<String>(collab,header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
-			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
-		}
-		
-		/*@SuppressWarnings({ "unchecked", "rawtypes" })
-		@RequestMapping(value="/collaborate/add",method = RequestMethod.GET)
-		public ResponseEntity<Map<String, Object>> addCollaborateDetail(@RequestBody String collab){			
-			HttpEntity<String> request = new HttpEntity<String>(collab,header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
-			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
-		}*/
-		
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@RequestMapping(value="/collaborate/edit",method = RequestMethod.GET)
-		public ResponseEntity<Map<String, Object>> editCollaborate(@RequestBody String collab){			
-			HttpEntity<String> request = new HttpEntity<String>(collab,header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
+		public ResponseEntity<Map<String, Object>> addCollaborate(@RequestBody CrmCollaboration collaboration){			
+			HttpEntity<Object> request = new HttpEntity<Object>(collaboration,header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/collaboration/add", HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
 		}
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@RequestMapping(value="/collaborate/delete/{collabId}",method = RequestMethod.GET)
-		public ResponseEntity<Map<String, Object>> deleteCollaborate(@PathVariable("collabId") String collabId){			
+		@RequestMapping(value="/collaborate/edit",method = RequestMethod.PUT)
+		public ResponseEntity<Map<String, Object>> editCollaboration(@RequestBody CrmCollaboration collaboration){			
+			HttpEntity<Object> request = new HttpEntity<Object>(collaboration,header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/collaboration/edit", HttpMethod.PUT, request, Map.class);			
+			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
+		}
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@RequestMapping(value="/collaborate/delete/{collabId}",method = RequestMethod.DELETE)
+		public ResponseEntity<Map<String, Object>> deleteCollaboration(@PathVariable("collabId") String collabId){			
 			HttpEntity<String> request = new HttpEntity<String>(header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/collaboration/remove/"+collabId, HttpMethod.DELETE, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
 		}
 		
