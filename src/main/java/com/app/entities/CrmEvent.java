@@ -3,45 +3,22 @@ package com.app.entities;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-
 public class CrmEvent{
-	
-	
 	private String evId;
-	
-	
 	private String evName;
-	
 	private CrmEventLocation evlocation;
-	
 	private String startDate;
-	
-	
 	private String endDate;
-	
-	
 	private String evDuration;
-	
-	
 	private double evBudget;
-	
-	
 	private String evDes;
-	
-	
 	private CrmUser assignTo;
-	
-	
 	private String evCreateBy;
-	
-	
 	private LocalDateTime evCreateDate;
-	
-	
 	private String evModifiedBy;
-	
-	
 	private Date evModifiedDate;
+	private String evRelatedToModuleType;
+	private String evRelatedToModuleId;
 
 	public String getEvId() {
 		return evId;
@@ -145,5 +122,21 @@ public class CrmEvent{
 
 	public void setEvModifiedDate(Date evModifiedDate) {
 		this.evModifiedDate = evModifiedDate;
+	}
+
+	public String getEvRelatedToModuleType() {
+		return evRelatedToModuleType;
+	}
+
+	public void setEvRelatedToModuleType(String evRelatedToModuleType) {
+		this.evRelatedToModuleType = evRelatedToModuleType;
+	}
+
+	public String getEvRelatedToModuleId() {
+		return evRelatedToModuleId;
+	}
+
+	public void setEvRelatedToModuleId(String evRelatedToModuleId) {
+		this.evRelatedToModuleId = evRelatedToModuleId;
 	}
 }
