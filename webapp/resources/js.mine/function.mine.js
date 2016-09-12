@@ -12,6 +12,17 @@ month_num['Oct'] = 10;
 month_num['Nov'] = 11;
 month_num['Dec'] = 12;
 
+
+function alertMsgErrorSweet(){
+	swal({
+		title:"Unsuccessfully",
+		text:"Please try agian!",
+		type:"error",  
+		timer: 2000,   
+		showConfirmButton: false
+	});
+}
+
 function checkDate(date) {
 	if (date != '') {
 		var dtRegex = new RegExp(/\b\d{1,2}[\/-]\w{1,3}[\/-]\d{4}\b/);
@@ -266,7 +277,10 @@ function checkRegExp(string,patt) {
 
 function getTags(ID,key){
 	var obj = [];
-	var tags = $("#"+ID).val().toString();
+	var tags = $.trim($("#"+ID).val());	
+	if(tags == "")
+		return null;
+	tags = tags.toString();
 	if(tags !=null){
 		tags = tags.split(',');
 		for(var i=0;i<tags.length;i++){

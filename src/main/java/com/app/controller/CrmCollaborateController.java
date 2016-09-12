@@ -31,11 +31,14 @@ public class CrmCollaborateController {
 		private String URL;
 		
 		
+		
+		
+		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@RequestMapping(value="/collaborate/list/lead/user",method = RequestMethod.GET)
+		@RequestMapping(value="/collaborate/list/lead/user",method = RequestMethod.POST)
 		public ResponseEntity<Map<String, Object>> getCollaborateByLeadIdByUsername(@RequestBody String obj){			
-			HttpEntity<String> request = new HttpEntity<String>(header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
+			HttpEntity<String> request = new HttpEntity<String>(obj,header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/collaboration/list", HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
 		}
 		

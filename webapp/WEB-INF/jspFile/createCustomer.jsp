@@ -26,32 +26,13 @@
 
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-
-	$scope.listCampaigns = function(){
-		$http.get("${pageContext.request.contextPath}/campaign/list")
-		.success(function(response){
-				$scope.campaigns = response.DATA;
-			});
-		};	
-		
-	$scope.listIndustry = function(){
-				$http.get("${pageContext.request.contextPath}/industry/list")
-				.success(function(response){
-						$scope.industry = response.DATA;
-					});
-				};
-	$scope.listAccount = function(){
-					$http.get("${pageContext.request.contextPath}/account_type/list")
-					.success(function(response){
-							$scope.account = response.DATA;
-						});
-					};
-				
-	$scope.listCampUser = function() {
-		$http.get("${pageContext.request.contextPath}/user/list")
-		.success(function(response){
-			$scope.camp_user = response.DATA;
+app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){		
+	$scope.startupCustomer = function() {
+		$http.get("${pageContext.request.contextPath}/customer/startup").success(function(response){
+			$scope.custGroup = response.GROUP;
+			$scope.industry = response.INDUSTRY;
+			$scope.priceCode = response.PRICE_CODE;
+			$scope.type = response.TYPE;
 		});
 		
 	}	
@@ -266,7 +247,7 @@ $(document).ready(function() {
 			</div>
 			<div class="box-body">
 			
-			<form method="post" id="form-customer">
+			<form method="post" id="form-customer" data-ng-init="startupCustomer()">
 				
 				<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
 				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
@@ -415,7 +396,7 @@ $(document).ready(function() {
 							<div class="form-group">
 								<select class="form-control select2" name="c_type" id="c_type">
 									<option value="">-- SELECT Type</option>
-									<option ng-repeat="u in account" value="{{u.accountID}}">{{u.accountName}}</option> 
+									<option ng-repeat="u in type" value="{{u.accountID}}">{{u.accountName}}</option> 
 								</select>
 							</div>
 						</div>
@@ -440,8 +421,8 @@ $(document).ready(function() {
 							<label class="font-label">Customer Group <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<select class="form-control select2" name="c_group" id="c_group">
-									<option value="">-- SELECT Type</option>
-									<option ng-repeat="u in account" value="{{u.accountID}}">{{u.accountName}}</option> 
+									<option value="">-- SELECT Customer Group --</option>
+									<option ng-repeat="u in custGroup" value="{{u.custGroupId}}">[{{u.custGroupId}}] {{u.custGroupName}}</option> 
 								</select>
 							</div>
 						</div>
@@ -451,8 +432,8 @@ $(document).ready(function() {
 							<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<select class="form-control select2" name="c_price" id="c_price">
-									<option value="">-- SELECT Type</option>
-									<option ng-repeat="u in account" value="{{u.accountID}}">{{u.accountName}}</option> 
+									<option value="">-- SELECT Price Code --</option>
+									<option ng-repeat="u in priceCode" value="{{u.priceCode}}">[{{u.priceCode}}] {{u.des}}</option> 
 								</select>
 							</div>
 						</div>
@@ -467,6 +448,9 @@ $(document).ready(function() {
 			<!-- /.box-body -->
 			<div class="box-footer"><div id="test_div"></div></div>
 			<!-- /.box-footer-->
+			
+			<div id="errors"></div>
+			
 		</div>
 		
 		<!-- /.box -->

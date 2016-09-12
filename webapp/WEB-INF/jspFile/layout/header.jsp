@@ -158,7 +158,7 @@ function funcRelateTo(id, cust, vals){
 									$(id).select2("val",vals);	
 								} 
 						        break;
-					
+						
 
 					
 					}		

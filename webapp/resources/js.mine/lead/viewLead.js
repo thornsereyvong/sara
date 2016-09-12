@@ -1,24 +1,20 @@
+var callStartDateOld = "";
+
 $(function(){
 	
-	$(".timepicker").timepicker({
-        showInputs: false,
-        minuteStep: 5,
-        defaultTime: false,
-        showMeridian : false
-    });
+	$("#collabTags").select2();
 	
 	
 	$("#callDuration").timepicker({
+		format: 'h:mm',
         showInputs: false,
         minuteStep: 5,
         defaultTime: false,
         showMeridian : false
-    }).on('change', function(e) {    	
-     	$('#frmAddCall').bootstrapValidator('revalidateField', 'callStartDate');
+    }).on('change', function(e) {
+     	$('#frmAddCall').bootstrapValidator('revalidateField', 'callDuration');
  	});
 	
-	$("#collabTags").select2();
-	//$(".tags").select2({tags: true});
 	$('#callStartDate').daterangepicker({
         format: 'DD/MM/YYYY h:mm A',
         singleDatePicker: true,
@@ -26,6 +22,12 @@ $(function(){
         timePicker: true, 
         timePickerIncrement: 5,
     }).on('change', function(e) {
+    	var date = getValueStringById("callStartDate");
+    	if(date === ""){
+    		setValueById("callStartDate",callStartDateOld);    		
+    	}else{
+    		callStartDateOld = date;
+    	}
      	$('#frmAddCall').bootstrapValidator('revalidateField', 'callStartDate');
  	});
 	
@@ -40,6 +42,16 @@ $(function(){
      	$('#frmAddMeet').bootstrapValidator('revalidateField', 'meetEndDate');
  	});
 	
+	$('.task-data-time').daterangepicker({
+        format: 'DD/MM/YYYY h:mm A',
+        singleDatePicker: true,
+        showDropdowns: true,
+        timePicker: true, 
+        timePickerIncrement: 5,
+    }).on('change', function(e) {
+     	$('#frmAddTask').bootstrapValidator('revalidateField', 'taskStartDate');
+     	$('#frmAddTask').bootstrapValidator('revalidateField', 'taskEndDate');
+ 	});
 	
 	$('.event-date-time').daterangepicker({
         format: 'DD/MM/YYYY h:mm A',
@@ -149,13 +161,13 @@ $(function(){
 			    		angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
 			    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
 			    	}else{
-			    		sweetAlert("Update Unsuccessfully!", "", "error");
+			    		alertMsgErrorSweet();
 			    	}
 			    	 
 			    },
 			    error:function(data,status,er) { 
 			        console.log("error: "+data+" status: "+status+" er:"+er);
-			        sweetAlert("Update Unsuccessfully!", "", "error");
+			        alertMsgErrorSweet();
 			    }
 			});
 		}
@@ -422,11 +434,11 @@ $(function(){
 						location.reload();
 					}, 2000);
 				}else{
-					
+					alertMsgErrorSweet();
 				}												
 			},
 			error:function(){
-				
+				alertMsgErrorSweet();
 			}
 		});			
 	});		
@@ -473,8 +485,8 @@ $(function(){
 						message: 'The duration is required and can not be empty!'
 					},
 					stringLength: {
-						max: 255,
-						message: 'The dubject must be less than 255 characters long.'
+						max: 5,
+						message: 'The dubject must be less than 5 characters long.'
 					}
 				}
 			},
@@ -516,13 +528,12 @@ $(function(){
 						    xhr.setRequestHeader("Accept", "application/json");
 						    xhr.setRequestHeader("Content-Type", "application/json");
 			    },
-				success:function(data){	
-					
+				success:function(data){						
 					if(data.MESSAGE == 'INSERTED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
-						
+						angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();							
+						$("#callStatus").select2('val',"");
+						$("#callAssignTo").select2('val',"");
 						$('#frmAddCall').bootstrapValidator('resetForm', true);
-						$('#frmCall').modal('toggle');
 						swal({
 		            		title:"Successfully",
 		            		text:"User have been created new call!",
@@ -530,18 +541,15 @@ $(function(){
 		            		timer: 2000,   
 		            		showConfirmButton: false
 	        			});
+						setTimeout(function(){
+							$('#frmCall').modal('toggle');
+						}, 2000);
 					}else{
-						swal({
-		            		title:"Unsuccessfully",
-		            		text:"Please try agian!",
-		            		type:"error",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
+						alertMsgErrorSweet();
 					}									
 				},
 				error:function(){
-					errorMessage();
+					alertMsgErrorSweet();
 				}
 			});
 			
@@ -566,17 +574,29 @@ $(function(){
 					xhr.setRequestHeader("Accept", "application/json");
 				    xhr.setRequestHeader("Content-Type", "application/json");
 			    },
-				success:function(data){					
-					dis(data)
+				success:function(data){
 					if(data.MESSAGE == 'UPDATED'){
 						angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
+						$("#callStatus").select2('val',"");
+						$("#callAssignTo").select2('val',"");
+						$('#frmAddCall').bootstrapValidator('resetForm', true);						
+						swal({
+		            		title:"Successfully",
+		            		text:"User have been updated new call!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						setTimeout(function(){
+							$('#frmCall').modal('toggle');
+						}, 2000);
 					}else{
-						
+						alertMsgErrorSweet();
 					}
 										
 				},
 				error:function(){
-					errorMessage();
+					alertMsgErrorSweet();
 				}
 			});
 			
@@ -674,7 +694,6 @@ $(function(){
 				url : server+"/meeting/add",
 				type : "POST",
 				data : JSON.stringify({
-
 					  "meetingSubject": getValueStringById("meetSubject"),
 				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
 				      "meetingDes": getValueStringById("meetDescription"),
@@ -691,11 +710,31 @@ $(function(){
 				    xhr.setRequestHeader("Accept", "application/json");
 				    xhr.setRequestHeader("Content-Type", "application/json");
 				},
-				success:function(data){					
-					dis(data)
+				success:function(data){						
+					if(data.MESSAGE == 'INSERTED'){
+						angular.element(document.getElementById('viewLeadController')).scope().listDataMeetByRalateType();						
+						$("#meetStatus").select2('val',"");
+						$("#meetAssignTo").select2('val',"");	
+						$("#meetDuration").select2('val',"");
+						$('#frmAddMeet').bootstrapValidator('resetForm', true);
+						
+						swal({
+		            		title:"Successfully",
+		            		text:"User have been created new meeting!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						setTimeout(function(){
+							$('#frmMeet').modal('toggle');
+						}, 2000);
+					}else{
+						alertMsgErrorSweet();
+					}
+					
 				},
 				error:function(){
-					
+					alertMsgErrorSweet();
 				}
 			}); 
 			
@@ -708,9 +747,9 @@ $(function(){
 					  "meetingId": meetIdForEdit,
 					  "meetingSubject": getValueStringById("meetSubject"),				     
 				      "meetingDes": getValueStringById("meetDescription"),
-				      "meetingStartDate": getValueStringById("meetStartDate"),
+				      "startDate": getValueStringById("meetStartDate"),
 				      "meetingDuration": getValueStringById("meetDuration"),
-				      "meetingEndDate":  getValueStringById("meetEndDate"),
+				      "endDate":  getValueStringById("meetEndDate"),
 				      "meetingStatus": getJsonById("statusId","meetStatus","int"),
 				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
 				      "meetingLocation":  getValueStringById("meetLocation"),
@@ -723,10 +762,30 @@ $(function(){
 				    xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success:function(data){					
-					dis(data)
+					if(data.MESSAGE == 'UPDATED'){
+						angular.element(document.getElementById('viewLeadController')).scope().listDataMeetByRalateType();
+						
+						$("#meetStatus").select2('val',"");
+						$("#meetAssignTo").select2('val',"");	
+						$("#meetDuration").select2('val',"");
+						$('#frmAddMeet').bootstrapValidator('resetForm', true);
+						
+						swal({
+		            		title:"Successfully",
+		            		text:"User have been updated this meeting!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						setTimeout(function(){
+							$('#frmMeet').modal('toggle');
+						}, 2000);
+					}else{
+						alertMsgErrorSweet();
+					}
 				},
 				error:function(){
-					
+					alertMsgErrorSweet();
 				}
 			}); 
 					
@@ -761,7 +820,7 @@ $(function(){
 			taskStartDate: {
 				validators: {
 					date: {
-                        format: 'DD/MM/YYYY',
+                        format: 'DD/MM/YYYY h:mm A',
                         message: 'The value is not a valid date!'
                     }
 				}
@@ -769,12 +828,12 @@ $(function(){
 			taskEndDate: {
 				validators: {
 					date: {
-                        format: 'DD/MM/YYYY',
+                        format: 'DD/MM/YYYY h:mm A',
                         message: 'The value is not a valid date!'
                     }
 				}
 			},
-			meetPriority : {
+			taskPriority : {
 				validators: {
 					notEmpty: {
 						message: 'The priority is required and can not be empty!'
@@ -793,9 +852,6 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {
-		
-	
-		
 		if($("#btnTaskSave").text() == 'Save'){
 			
 			$.ajax({
@@ -808,9 +864,9 @@ $(function(){
 				      "taskRelatedToId": leadId,
 				      "taskRelatedToModule": 'Lead',
 				      "taskDes": getValueStringById("taskDescription"),
-				      "taskDueDate": getValueStringById("taskEndDate"),
+				      "dueDate": getValueStringById("taskEndDate"),
 				      "taskSubject":  getValueStringById("taskSubject"),
-				      "taskStartDate":  getValueStringById("taskStartDate"),
+				      "startDate":  getValueStringById("taskStartDate"),
 				      "taskContact": getJsonById("conID","taskContact","str"),
 				      "taskCreateBy": username					      
 				}),
@@ -819,10 +875,33 @@ $(function(){
 				    xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success:function(data){					
-					dis(data)
+					if(data.MESSAGE == 'INSERTED'){
+						angular.element(document.getElementById('viewLeadController')).scope().listDataTaskByRalateType();						
+						
+						$("#taskStatus").select2('val',"");
+						$("#taskAssignTo").select2('val',"");	
+						$("#taskPriority").select2('val',"");
+						$("#taskContact").select2('val',"");
+						
+						
+						$('#frmAddTask').bootstrapValidator('resetForm', true);		
+						
+						swal({
+		            		title:"Successfully",
+		            		text:"User have been created a new task!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						setTimeout(function(){
+							$('#frmTask').modal('toggle');
+						}, 2000);
+					}else{
+						alertMsgErrorSweet();
+					}
 				},
 				error:function(){
-					
+					alertMsgErrorSweet();
 				}
 			});
 			
@@ -837,9 +916,9 @@ $(function(){
 				      "taskRelatedToId": leadId,
 				      "taskRelatedToModule": 'Lead',
 				      "taskDes": getValueStringById("taskDescription"),
-				      "taskDueDate": getValueStringById("taskEndDate"),
+				      "dueDate": getValueStringById("taskEndDate"),
 				      "taskSubject":  getValueStringById("taskSubject"),
-				      "taskStartDate":  getValueStringById("taskStartDate"),
+				      "startDate":  getValueStringById("taskStartDate"),
 				      "taskContact": getJsonById("conID","taskContact","str"),
 				      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
 				      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
@@ -850,10 +929,33 @@ $(function(){
 				    xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success:function(data){					
-					dis(data)
+					if(data.MESSAGE == 'UPDATED'){
+						angular.element(document.getElementById('viewLeadController')).scope().listDataTaskByRalateType();
+						
+						
+						$("#taskStatus").select2('val',"");
+						$("#taskAssignTo").select2('val',"");	
+						$("#taskPriority").select2('val',"");
+						$("#taskContact").select2('val',"");
+						
+						$('#frmAddTask').bootstrapValidator('resetForm', true);	
+						
+						swal({
+		            		title:"Successfully",
+		            		text:"User have been updated this task!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						setTimeout(function(){
+							$('#frmTask').modal('toggle');
+						}, 2000);
+					}else{
+						alertMsgErrorSweet();
+					}
 				},
 				error:function(){
-					
+					alertMsgErrorSweet();
 				}
 			}); 
 					
@@ -937,9 +1039,6 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {
-		
-		alert()
-		
 		if($("#btnEventSave").text() == 'Save'){
 			
 			$.ajax({
@@ -951,22 +1050,43 @@ $(function(){
 				      "evDes": getValueStringById("eventDescription"),
 				      "evCreateBy":  username,
 				      "evDuration": getValueStringById("eventDuration"),
-				      "evStartDate": getValueStringById("eventStartDate"),
-				      "evEndDate": getValueStringById("eventEndDate"),
+				      "startDate": getValueStringById("eventStartDate"),
+				      "endDate": getValueStringById("eventEndDate"),
 				      "assignTo": getJsonById("userID","eventAssignTo","str"),
 				      "evlocation": getJsonById("loId","eventLocation","str"),
-				      "evRelatedToID" : leadId,
-				      "evRelatedToType" : "Lead"
+				      "evRelatedToModuleId" : leadId,
+				      "evRelatedToModuleType" : "Lead"
 				}),
 				beforeSend: function(xhr) {
 				    xhr.setRequestHeader("Accept", "application/json");
 				    xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success:function(data){					
-					dis(data)
+					if(data.MESSAGE == 'INSERTED'){
+						angular.element(document.getElementById('viewLeadController')).scope().listDataEventByRalateType();						
+						
+						$("#eventDuration").select2('val',"");
+						$("#eventAssignTo").select2('val',"");	
+						$("#eventLocation").select2('val',"");
+						
+						$('#frmAddEvent').bootstrapValidator('resetForm', true);
+						
+						swal({
+		            		title:"Successfully",
+		            		text:"User have been created a new event!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						setTimeout(function(){
+							$('#frmEvent').modal('toggle');
+						}, 2000);
+					}else{
+						alertMsgErrorSweet();
+					}
 				},
 				error:function(){
-					
+					alertMsgErrorSweet();
 				}
 			}); 
 			
@@ -982,22 +1102,43 @@ $(function(){
 				      "evDes": getValueStringById("eventDescription"),
 				      "evModifiedBy":  username,
 				      "evDuration": getValueStringById("eventDuration"),
-				      "evStartDate": getValueStringById("eventStartDate"),
-				      "evEndDate": getValueStringById("eventEndDate"),
+				      "startDate": getValueStringById("eventStartDate"),
+				      "eEndDate": getValueStringById("eventEndDate"),
 				      "assignTo": getJsonById("userID","eventAssignTo","str"),
 				      "evlocation": getJsonById("loId","eventLocation","str"),
-				      "evRelatedToID" : leadId,
-				      "evRelatedToType" : "Lead"
+				      "evRelatedToModuleId" : leadId,
+				      "evRelatedToModuleType" : "Lead"
 				}),
 				beforeSend: function(xhr) {
 				    xhr.setRequestHeader("Accept", "application/json");
 				    xhr.setRequestHeader("Content-Type", "application/json");
 				},
 				success:function(data){					
-					dis(data)
+					if(data.MESSAGE == 'UPDATED'){
+						angular.element(document.getElementById('viewLeadController')).scope().listDataEventByRalateType();
+						
+						$("#eventDuration").select2('val',"");
+						$("#eventAssignTo").select2('val',"");	
+						$("#eventLocation").select2('val',"");
+						
+						$('#frmAddEvent').bootstrapValidator('resetForm', true);						
+						
+						swal({
+		            		title:"Successfully",
+		            		text:"User have been updated this event!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						setTimeout(function(){
+							$('#frmEvent').modal('toggle');
+						}, 2000);
+					}else{
+						alertMsgErrorSweet();
+					}
 				},
 				error:function(){
-					
+					alertMsgErrorSweet();
 				}
 			}); 
 					
@@ -1065,13 +1206,10 @@ $(function(){
 		};*/
 		
 		var addPost = {
-				"tags" : getTags("collabTags","tag"), 
-				"post" : getValueStringById("collabPostDescription"), 
-				"createBy": username ,
-				"detail" : [],
+				"tags" : getTags("collabTags","username"), 
+				"colDes" : getValueStringById("collabPostDescription"), 
+				"colUser": username
 			};
-		
-		
 		/*var addComment = {
 				"postId" : postIdCurent,
 				"comment" : getValueStringById("collabComment"),
@@ -1092,7 +1230,22 @@ $(function(){
 		
 		/*var listcollab = {"leadId":leadId,"username":username}*/
 		
-		dis(addPost);
+		//dis(addPost);
+		
+		
+		angular.element(document.getElementById('viewLeadController')).scope().addToListPost({
+	    	  "postId" :3,
+	          "text":"text3",
+	          "date":null,
+	          "deleteStatus" : true,
+	          "like":1,
+	          "status" : false,
+	          "comments":[
+                  {"comId" :7 ,"comment":"Yorum 4", "status":false},
+	              {"comId" :8 ,"comment":"Yorum 5", "status": true},
+	              {"comId" :9 ,"comment":"Yorum 6", "status":false}
+	          ]
+	      });
 		
 		$.ajax({
 			url : server+"/collaborate/add",
@@ -1104,10 +1257,24 @@ $(function(){
 			},
 			success:function(data){					
 				dis(data)
+				
+				if(data.MESSAGE == 'INSERTED'){							
+					$('#frmCollab').bootstrapValidator('resetForm', true);						
+					swal({
+	            		title:"Successfully",
+	            		text:"User have been created a new post!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+        			});
+					
+				}else{
+					alertMsgErrorSweet();
+				}				
 			},
 			error:function(){
-				
+				alertMsgErrorSweet();
 			}
-		}); 
+		});
 	});
 });

@@ -75,11 +75,26 @@ function listDataByCampID(){
 	$("#duration").select2("val",result.evDuration);
 	
 	
+	if(result.evRelatedToModuleType == null || result.evRelatedToModuleId == ""){		
+		$("#relateTo").select2("val","");
+	}else{	
+		$("#relateTo").select2("val",result.evRelatedToModuleType);
+	}
+	funcRelateTo("#reportType",result.evRelatedToModuleType, result.evRelatedToModuleId);
+	
 }
 
 
 $(document).ready(function() {
  
+	$("#relateTo").change(function(){
+		var relate = $("#relateTo").val();
+		$("#reportType").select2("val","");
+		$("#reportType").empty();
+		funcRelateTo("#reportType",relate,"");	
+	});
+	
+	
 	var data = ${users};
 	
 	$(".select2").select2();
@@ -177,34 +192,24 @@ $(document).ready(function() {
 						}
 					}
 			}
-		}).on('success.form.bv', function(e) {
-			var assignToUser = "";	
-			if($("#assignTo").val()  == "" | $("#budget").val()  == null){
-				assignToUser = null;
-			}else{
-				assignToUser ={"userID":$("#budget").val()};
-			}
-
-			var location = "";
-			if($("#location").val() != ""){
-				location = {"loId": $("#location").val()};
-			}else{
-				location = null;
-			}
+		}).on('success.form.bv', function(e) {		
 			$.ajax({
 				url : "${pageContext.request.contextPath}/event/edit",
 				type : "PUT",
 				data : JSON.stringify({
-					  "evId": $("#id").val(),
-					  "evName": $("#name").val(),
-				      "evLocation": location,
-				      "evBudget": $("#budget").val(),
-				      "evDes": $("#description").val(),
-				      "evDuration": $("#duration").val(),
-				      "startDate": $("#startDate").val(),
-				      "endDate": $("#endDate").val(),
-				      "assignTo": assignToUser,
+					  "evId": $("#id").val(),					 
+				      "evName": getValueStringById("name"),
+				      "evLocation": getJsonById("loId","location","str"),
+				      "evBudget": getValueStringById("budget"),
+				      "evDes": getValueStringById("description"),
+				      "evDuration": getValueStringById("duration"),
+				      "startDate": getValueStringById("startDate"),
+				      "endDate": getValueStringById("endDate"),
+				      "assignTo": getJsonById("userID","assignTo","str"), 
+				      "evRelatedToModuleId" : getValueStringById("reportType"),
+				      "evRelatedToModuleType" : getValueStringById("relateTo"),
 				      "evModifiedBy":  $.session.get("parentID")
+ 
 					}),
 				beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
@@ -366,7 +371,39 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
-						
+						<div class="clearfix"></div>
+						<div class="col-sm-6">
+							<label class="font-label">Related to </label>
+							<div class="form-group">								
+								<select class="form-control select2" name="relateTo" id="relateTo" style="width: 100%;">
+									<option value="">--SELECT Related--</option>
+									<optgroup label="Marketing">
+										<option value="Campaign">Campaign</option>
+										<option value="Lead">Lead</option>
+									</optgroup>
+									<optgroup label="Sales">
+										<option value="Customer">Customer</option>
+										<option value="Contact">Contact</option>
+										<option value="Opportunity">Opportunity</option>
+									</optgroup>
+									<optgroup label="Activities">
+										<option value="Task">Tasks</option>
+									</optgroup>
+									<optgroup label="Support">
+										<option value="Case">Case</option>
+									</optgroup>
+									
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6">
+						<label class="font-label">&nbsp; </label>
+							<div class="form-group">
+								<select class="form-control select2" name="reportType" id="reportType">
+									<option value="">--SELECT--</option>
+								</select>
+							</div>
+						</div>
 						<div class="clearfix"></div>
 						<div class="col-sm-6">
 							<label class="font-label">Budget </label>
@@ -383,6 +420,8 @@ $(document).ready(function() {
 
 				</div>
 			</form>
+			
+			<div id="errors"></div>
 			</div>
 			<!-- /.box-body -->
 			<div class="box-footer"><div id="test_div"></div></div>

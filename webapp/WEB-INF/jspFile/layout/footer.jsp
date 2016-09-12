@@ -40,7 +40,7 @@
    <!-- <script src="<?=$server?>admin/dist/js/pages/dashboard.js"></script>-->
     <!-- AdminLTE for demo purposes -->
     <script src="${pageContext.request.contextPath}/resources/dist/js/demo.js"></script>
-    
+     <script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
       $('.summernote').summernote({

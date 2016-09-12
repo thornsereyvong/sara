@@ -50,6 +50,7 @@ $(document).ready(function() {
     }).on('change', function(e) {
      	$('#form-call').bootstrapValidator('revalidateField', 'duration');
  	});
+	
 	$('.call-data-time').daterangepicker({
         format: 'DD/MM/YYYY h:mm A',
         singleDatePicker: true,

@@ -224,7 +224,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$scope.listAllCallByLead = data;	
 	}
 	$scope.listDataCallByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/call/list-by-lead/"+leadId).success(function(response){	
+		$http.get("${pageContext.request.contextPath}/call/list-by-opportunity/"+oppId).success(function(response){	
 			$scope.listAllCallByLeadId(response.CALLS);	
 		});	
 	}
@@ -233,10 +233,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$("#btn_show_call").click();
 	}
 	$scope.actEditCall = function(callId){				
-		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){			
-			
-			dis(response.DATA)
-			
+		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){
 			addDataCallToForm(response.DATA);
 			callIdForEdit = callId;
 			$("#btnCallSave").text("Update");
@@ -300,7 +297,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	}
 	
 	$scope.listDataMeetByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/meeting/list-by-lead/"+leadId).success(function(response){		
+		$http.get("${pageContext.request.contextPath}/meeting/list-by-opportunity/"+oppId).success(function(response){		
 			$scope.listAllMeetByLeadId(response.MEETINGS);	
 		});	
 	}
@@ -378,7 +375,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$scope.listAllTaskByLead = data;	
 	}
 	$scope.listDataTaskByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/task/list-by-lead/"+leadId).success(function(response){		
+		$http.get("${pageContext.request.contextPath}/task/list-by-opportunity/"+oppId).success(function(response){		
 			$scope.listAllTaskByLeadId(response.TASKS);	
 		});	
 	}
@@ -459,8 +456,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$scope.listAllEventByLead = data;	
 	}
 	$scope.listDataEventByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/event/list-by-lead/"+leadId).success(function(response){	
-			dis(response)
+		$http.get("${pageContext.request.contextPath}/event/list-by-opportunity/"+oppId).success(function(response){
 			$scope.listAllEventByLeadId(response.EVENTS);	
 		});	
 	}
@@ -693,9 +689,9 @@ function getLeadById(){
 }
 
 function clickStatus(num){
-	if(num == 4){
+	/* if(num == 4){
 		window.location.href = server+"/convert-lead/"+leadId;
-	}
+	} */
 }
 
 function displayStatusLead(Status){	
@@ -908,7 +904,7 @@ function addDataToDetailLead(){
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
-							src="${pageContext.request.contextPath}/resources/images/opportunity.png"
+							src="${pageContext.request.contextPath}/resources/images/module/avOpportunity.png"
 							alt="User Avatar">
 					</div>
 					<div class="box-footer">
@@ -1848,7 +1844,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input value="" name="taskStartDate" id="taskStartDate" type="text" class="form-control task-date pull-right active">
+										<input value="" name="taskStartDate" id="taskStartDate" type="text" class="form-control task-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -1859,7 +1855,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="taskEndDate" id="taskEndDate" type="text" class="form-control task-date pull-right active">
+										<input name="taskEndDate" id="taskEndDate" type="text" class="form-control task-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -2038,5 +2034,4 @@ function addDataToDetailLead(){
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-<script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js.mine/opportunity/viewOpport.js"></script>
