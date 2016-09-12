@@ -7,6 +7,16 @@ $(function(){
         showMeridian : false
     });
 	
+	
+	$("#callDuration").timepicker({
+        showInputs: false,
+        minuteStep: 5,
+        defaultTime: false,
+        showMeridian : false
+    }).on('change', function(e) {    	
+     	$('#frmAddCall').bootstrapValidator('revalidateField', 'callStartDate');
+ 	});
+	
 	$("#collabTags").select2();
 	//$(".tags").select2({tags: true});
 	$('#callStartDate').daterangepicker({
@@ -1101,98 +1111,3 @@ $(function(){
 		}); 
 	});
 });
-
-
-/*
-
-<div class="post clearfix">
-<div class="user-block">
-	<img class="img-circle img-bordered-sm"
-		src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
-		alt="user image"> <span class="username"> <a
-		href="#">Jonathan Burke Jr.</a> <a href="#"
-		class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-	</span> <span class="description">Shared publicly - 7:30 PM
-		today</span>
-</div>
-<!-- /.user-block -->
-<p>Lorem ipsum represents a long-held tradition for
-	designers, typographers and the like. Some people hate it
-	and argue for its demise, but others ignore the hate as
-	they create awesome tools to help create filler text for
-	everyone from bacon lovers to Charlie Sheen fans.</p>
-<ul class="list-inline">
-
-	<li><a href="#" class="link-black text-sm"><i
-			class="fa fa-thumbs-o-up margin-r-5"></i> Like</a></li>
-	<li class="pull-right"><a href="#"
-		class="link-black text-sm"><i
-			class="fa fa-comments-o margin-r-5"></i> Comments (5)</a></li>
-</ul>
-
-<input class="form-control input-sm" type="text"
-	placeholder="Type a comment">
-</div>
-<div class="post clearfix">
-<div class="user-block">
-	<img class="img-circle img-bordered-sm"
-		src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
-		alt="user image"> <span class="username"> <a
-		href="#">Jonathan Burke Jr.</a> <a href="#"
-		class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-	</span> <span class="description">Shared publicly - 7:30 PM
-		today</span>
-</div>
-<!-- /.user-block -->
-<p>Lorem ipsum represents a long-held tradition for
-	designers, typographers and the like. Some people hate it
-	and argue for its demise, but others ignore the hate as
-	they create awesome tools to help create filler text for
-	everyone from bacon lovers to Charlie Sheen fans.</p>
-<ul class="list-inline">
-
-	<li><a href="#" class="link-black text-sm"><i
-			class="fa fa-thumbs-o-up margin-r-5"></i> Like</a></li>
-	<li class="pull-right"><a href="#"
-		class="link-black text-sm"><i
-			class="fa fa-comments-o margin-r-5"></i> Comments (2)</a></li>
-</ul>
-<div class="box-footer box-comments">
-	<div class="box-comment">
-		<!-- User image -->
-		<img class="img-circle img-sm"
-			src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
-			alt="user image">
-		<div class="comment-text">
-			<span class="username"> Maria Gonzales <span
-				class="text-muted pull-right">8:03 PM Today</span>
-			</span>
-			<!-- /.username -->
-			It is a long established fact that a reader will be
-			distracted by the readable content of a page when looking
-			at its layout.
-		</div>
-		<!-- /.comment-text -->
-	</div>
-	<!-- /.box-comment -->
-	<div class="box-comment">
-		<!-- User image -->
-		<img class="img-circle img-sm"
-			src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
-			alt="user image">
-		<div class="comment-text">
-			<span class="username"> Luna Stark <span
-				class="text-muted pull-right">8:03 PM Today</span>
-			</span>
-			<!-- /.username -->
-			It is a long established fact that a reader will be
-			distracted by the readable content of a page when looking
-			at its layout.
-		</div>
-		<!-- /.comment-text -->
-	</div>
-	<!-- /.box-comment -->
-</div>
-<input class="form-control input-sm" type="text"
-	placeholder="Type a comment">
-</div>*/

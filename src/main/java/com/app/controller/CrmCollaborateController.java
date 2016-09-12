@@ -61,20 +61,20 @@ public class CrmCollaborateController {
 		}
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@RequestMapping(value="/collaborate/add",method = RequestMethod.GET)
+		@RequestMapping(value="/collaborate/add",method = RequestMethod.POST)
 		public ResponseEntity<Map<String, Object>> addCollaborate(@RequestBody String collab){			
 			HttpEntity<String> request = new HttpEntity<String>(collab,header);			
 			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
 		}
 		
-		@SuppressWarnings({ "unchecked", "rawtypes" })
+		/*@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/collaborate/add",method = RequestMethod.GET)
 		public ResponseEntity<Map<String, Object>> addCollaborateDetail(@RequestBody String collab){			
 			HttpEntity<String> request = new HttpEntity<String>(collab,header);			
 			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
-		}
+		}*/
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/collaborate/edit",method = RequestMethod.GET)
