@@ -152,6 +152,20 @@ $(document).ready(function() {
 							message: 'The whatApp must be less than 255 characters long.'
 						}
 					}
+				},
+				c_group: {
+					validators: {
+						notEmpty: {
+							message: 'The  customer group is required and can not be empty!'
+						}
+					}
+				},
+				c_group: {
+					validators: {
+						notEmpty: {
+							message: 'The  price code is required and can not be empty!'
+						}
+					}
 				}
 			}
 		}).on('success.form.bv', function(e) {

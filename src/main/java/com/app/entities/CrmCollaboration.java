@@ -1,18 +1,23 @@
 package com.app.entities;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Set;
 
-public class CrmCollaboration {
-
+public class CrmCollaboration{
 	private int colId;
-	
 	private String colDes;
-	
 	private String colUser;
-	
-	private List<CrmCollaborationTags> tags;
-	
+	private Set<CrmCollaborationTags> tags;
+	private Set<CrmCollaborationDetails> details;
+	private LocalDateTime colCreateDate;
+	private String colRelatedToModuleId;
+	private String colRelatedToModuleName;
+	private String colActivityType;
+	private String colActivityId;
+	private String colOwn;
 	private String createDate;
+	private int like;
+	private boolean checkLike;
 
 	public int getColId() {
 		return colId;
@@ -37,12 +42,20 @@ public class CrmCollaboration {
 	public void setColUser(String colUser) {
 		this.colUser = colUser;
 	}
-	
-	public List<CrmCollaborationTags> getTags() {
+
+	public LocalDateTime getColCreateDate() {
+		return colCreateDate;
+	}
+
+	public void setColCreateDate(LocalDateTime colCreateDate) {
+		this.colCreateDate = colCreateDate;
+	}
+
+	public Set<CrmCollaborationTags> getTags() {
 		return tags;
 	}
 
-	public void setTags(List<CrmCollaborationTags> tags) {
+	public void setTags(Set<CrmCollaborationTags> tags) {
 		this.tags = tags;
 	}
 	
@@ -52,5 +65,69 @@ public class CrmCollaboration {
 
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
+	}
+
+	public String getColRelatedToModuleId() {
+		return colRelatedToModuleId;
+	}
+
+	public void setColRelatedToModuleId(String colRelatedToModuleId) {
+		this.colRelatedToModuleId = colRelatedToModuleId;
+	}
+
+	public String getColRelatedToModuleName() {
+		return colRelatedToModuleName;
+	}
+
+	public void setColRelatedToModuleName(String colRelatedToModuleName) {
+		this.colRelatedToModuleName = colRelatedToModuleName;
+	}
+
+	public String getColActivityType() {
+		return colActivityType;
+	}
+
+	public void setColActivityType(String colActivityType) {
+		this.colActivityType = colActivityType;
+	}
+
+	public String getColActivityId() {
+		return colActivityId;
+	}
+
+	public void setColActivityId(String colActivityId) {
+		this.colActivityId = colActivityId;
+	}
+
+	public String getColOwn() {
+		return colOwn;
+	}
+
+	public void setColOwn(String colOwn) {
+		this.colOwn = colOwn;
+	}
+
+	public Set<CrmCollaborationDetails> getDetails() {
+		return details;
+	}
+
+	public void setDetails(Set<CrmCollaborationDetails> details) {
+		this.details = details;
+	}
+
+	public int getLike() {
+		return like;
+	}
+
+	public void setLike(int like) {
+		this.like = like;
+	}
+
+	public boolean isCheckLike() {
+		return checkLike;
+	}
+
+	public void setCheckLike(boolean checkLike) {
+		this.checkLike = checkLike;
 	}
 }

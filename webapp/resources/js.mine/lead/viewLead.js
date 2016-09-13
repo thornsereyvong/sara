@@ -1199,54 +1199,7 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {
-		/*		
-		var deletePost = {
-			"postId" : postIdCurent,			
-			"deleteBy": username
-		};*/
-		
-		var addPost = {
-				"tags" : getTags("collabTags","username"), 
-				"colDes" : getValueStringById("collabPostDescription"), 
-				"colUser": username
-			};
-		/*var addComment = {
-				"postId" : postIdCurent,
-				"comment" : getValueStringById("collabComment"),
-				"createBy" : username
-		};
-		
-		var deleteComment = {
-			"postDetailId" : postDetailCurent,
-			"deleteBy" : username
-		};
-		
-		
-		var like = {
-				"postDetailId" : postDetailCurent,
-				"By" : username,
-				"status" : boolLike //"true/false   true = like, false = Unlike" 
-		};*/
-		
-		/*var listcollab = {"leadId":leadId,"username":username}*/
-		
-		//dis(addPost);
-		
-		
-		angular.element(document.getElementById('viewLeadController')).scope().addToListPost({
-	    	  "postId" :3,
-	          "text":"text3",
-	          "date":null,
-	          "deleteStatus" : true,
-	          "like":1,
-	          "status" : false,
-	          "comments":[
-                  {"comId" :7 ,"comment":"Yorum 4", "status":false},
-	              {"comId" :8 ,"comment":"Yorum 5", "status": true},
-	              {"comId" :9 ,"comment":"Yorum 6", "status":false}
-	          ]
-	      });
-		
+		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":"Lead", "colRelatedToModuleId":leadId};		
 		$.ajax({
 			url : server+"/collaborate/add",
 			type : "POST",
@@ -1255,10 +1208,9 @@ $(function(){
 			    xhr.setRequestHeader("Accept", "application/json");
 			    xhr.setRequestHeader("Content-Type", "application/json");
 			},
-			success:function(data){					
-				dis(data)
-				
-				if(data.MESSAGE == 'INSERTED'){							
+			success:function(data){				
+				if(data.MESSAGE == 'INSERTED'){
+					$("#collabTags").select2("val","");
 					$('#frmCollab').bootstrapValidator('resetForm', true);						
 					swal({
 	            		title:"Successfully",
@@ -1267,7 +1219,7 @@ $(function(){
 	            		timer: 2000,   
 	            		showConfirmButton: false
         			});
-					
+					angular.element(document.getElementById('viewLeadController')).scope().addToListPost(data.COLLABORATION);
 				}else{
 					alertMsgErrorSweet();
 				}				
@@ -1278,3 +1230,45 @@ $(function(){
 		});
 	});
 });
+
+/*		
+var deletePost = {
+	"postId" : postIdCurent,			
+	"deleteBy": username
+};*/
+/*var addComment = {
+"postId" : postIdCurent,
+"comment" : getValueStringById("collabComment"),
+"createBy" : username
+};
+
+var deleteComment = {
+"postDetailId" : postDetailCurent,
+"deleteBy" : username
+};
+
+
+var like = {
+"postDetailId" : postDetailCurent,
+"By" : username,
+"status" : boolLike //"true/false   true = like, false = Unlike" 
+};*/
+
+/*var listcollab = {"leadId":leadId,"username":username}*/
+
+//dis(addPost);
+
+
+/*angular.element(document.getElementById('viewLeadController')).scope().addToListPost({
+"postId" :3,
+"text":"text3",
+"date":null,
+"deleteStatus" : true,
+"like":1,
+"status" : false,
+"comments":[
+  {"comId" :7 ,"comment":"Yorum 4", "status":false},
+  {"comId" :8 ,"comment":"Yorum 5", "status": true},
+  {"comId" :9 ,"comment":"Yorum 6", "status":false}
+]
+});*/
