@@ -113,7 +113,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	
 	$scope.postLike = function(key,collabId){		
 		var status = $scope.collaborates[key].checkLike;
-		    status = ($scope.collaborates[key].status == true) ? false : true ;	        		
+		    status = (status == true) ? false : true ;	   
 		$http({
 		    method: 'POST',
 		    url: "${pageContext.request.contextPath}/collaborate/like",
@@ -122,7 +122,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		        'Content-Type': 'application/json'
 		    },
 		    data: {"collapId":collabId, "username":username,"likeStatus":status.toString()}
-		}).success(function(response) {	
+		}).success(function(response) {	alert(status)
 			$scope.collaborates[key].checkLike = status;		
 		});
 	} 
@@ -193,7 +193,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
             closeOnConfirm: false, 
             closeOnCancel: false
         }, 
-        function(isConfirm){              	
+        function(isConfirm){      
         	 if(isConfirm){
 	       		  $http.delete("${pageContext.request.contextPath}/collaborate/delete/"+postId).success(function(){
 		        		  SweetAlert.swal({
@@ -1065,7 +1065,7 @@ function addDataToDetailLead(){
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
-							src="${pageContext.request.contextPath}/resources/images/module/avLead.png"
+							src="${pageContext.request.contextPath}/resources/images/module/AV.png"
 							alt="User Avatar">
 					</div>
 					<div class="box-footer">

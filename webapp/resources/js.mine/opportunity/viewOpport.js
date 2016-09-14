@@ -1067,8 +1067,6 @@ $(function(){
 	});
 	
 
-
-	
 	$('#frmCollab').bootstrapValidator({
 		message: 'This value is not valid',
 		feedbackIcons: {
@@ -1090,76 +1088,40 @@ $(function(){
 			}
 			
 		}
-	}).on('success.form.bv', function(e) {
-		/*		
-		var deletePost = {
-			"postId" : postIdCurent,			
-			"deleteBy": username
-		};*/
-		
-		var addPost = {
-				"tags" : getTags("collabTags","tag"), 
-				"post" : getValueStringById("collabPostDescription"), 
-				"createBy": username ,
-				"detail" : [],
-			};
-		
-		
-		/*var addComment = {
-				"postId" : postIdCurent,
-				"comment" : getValueStringById("collabComment"),
-				"createBy" : username
-		};
-		
-		var deleteComment = {
-			"postDetailId" : postDetailCurent,
-			"deleteBy" : username
-		};
-		
-		
-		var like = {
-				"postDetailId" : postDetailCurent,
-				"By" : username,
-				"status" : boolLike //"true/false   true = like, false = Unlike" 
-		};*/
-		
-		/*var listcollab = {"leadId":leadId,"username":username}*/
-		
-		dis(addPost);
-		
+	}).on('success.form.bv', function(e) {		
+			
+		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":"Opportunity", "colRelatedToModuleId":oppId};		
 		$.ajax({
 			url : server+"/collaborate/add",
-			type : "POST",
+			method : "POST",			
+			headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
 			data : JSON.stringify(addPost),
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-			},
-			success:function(data){					
-				dis(data)
-				
-				if(data.MESSAGE == 'INSERTED'){							
-					$('#frmAddEvent').bootstrapValidator('resetForm', true);						
+			success:function(data){
+				if(data.MESSAGE == 'INSERTED'){
+					angular.element(document.getElementById('viewOpportunityController')).scope().listCollabByLeadByUser();
+					$("#collabTags").select2("val","");
+					$('#frmCollab').bootstrapValidator('resetForm', true);						
 					swal({
 	            		title:"Successfully",
-	            		text:"User have been created a new event!",
+	            		text:"User have been created a new post!",
 	            		type:"success",  
 	            		timer: 2000,   
 	            		showConfirmButton: false
-        			});
-					setTimeout(function(){
-						$('#frmEvent').modal('toggle');
-					}, 2000);
+	    			});					
 				}else{
 					alertMsgErrorSweet();
-				}
-				
+				}	
 			},
 			error:function(){
 				alertMsgErrorSweet();
 			}
-		}); 
+		});				
 	});
+	
+	
 });
 
 
