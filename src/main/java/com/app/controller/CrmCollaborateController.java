@@ -116,4 +116,14 @@ public class CrmCollaborateController {
 			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/collaboration/details/add", HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
 		}
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@RequestMapping(value="/collaborate/comment/remove/{comId}",method = RequestMethod.DELETE)
+		public ResponseEntity<Map<String, Object>> deletedComment(@PathVariable("comId") int comId){									
+			HttpEntity<Object> request = new HttpEntity<Object>(header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"/api/collaboration/details/remove/"+comId, HttpMethod.PUT, request, Map.class);			
+			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
+		}
+		
+		
 }

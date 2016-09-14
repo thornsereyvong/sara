@@ -1198,18 +1198,20 @@ $(function(){
 			}
 			
 		}
-	}).on('success.form.bv', function(e) {
+	}).on('success.form.bv', function(e) {		
+			
 		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":"Lead", "colRelatedToModuleId":leadId};		
 		$.ajax({
 			url : server+"/collaborate/add",
-			type : "POST",
+			method : "POST",			
+			headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
 			data : JSON.stringify(addPost),
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-			},
-			success:function(data){				
+			success:function(data){
 				if(data.MESSAGE == 'INSERTED'){
+					angular.element(document.getElementById('viewLeadController')).scope().listCollabByLeadByUser();
 					$("#collabTags").select2("val","");
 					$('#frmCollab').bootstrapValidator('resetForm', true);						
 					swal({
@@ -1218,16 +1220,15 @@ $(function(){
 	            		type:"success",  
 	            		timer: 2000,   
 	            		showConfirmButton: false
-        			});
-					angular.element(document.getElementById('viewLeadController')).scope().addToListPost(data.COLLABORATION);
+	    			});					
 				}else{
 					alertMsgErrorSweet();
-				}				
+				}	
 			},
 			error:function(){
 				alertMsgErrorSweet();
 			}
-		});
+		});				
 	});
 });
 

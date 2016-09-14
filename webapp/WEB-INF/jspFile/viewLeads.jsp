@@ -74,7 +74,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 				$scope.listAllEmailByLead = [];	
 			}
 		
-			$scope.listCollabByLeadByUser();	
+			//$scope.listCollabByLeadByUser();	
 	}
 	
 	
@@ -108,46 +108,25 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	}
 	
 	$scope.addCollab = function(){
-		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":"Lead", "colRelatedToModuleId":leadId};		
-		$.ajax({
-			url : server+"/collaborate/add",
-			type : "POST",			
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-			},
-			data : JSON.stringify(addPost),
-			success:function(data){				
-				if(data.MESSAGE == 'INSERTED'){
-					$("#collabTags").select2("val","");
-					$('#frmCollab').bootstrapValidator('resetForm', true);						
-					swal({
-	            		title:"Successfully",
-	            		text:"User have been created a new post!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
-					setTimeout(function(){ 
-						$scope.collaborates.unshift(data.COLLABORATION);						
-					}, 2000);
-				}else{
-					alertMsgErrorSweet();
-				}
-				
-			},
-			error:function(){
-				alertMsgErrorSweet();
-			}
-		});		
+		$('#frmCollab').submit();
 	}
 	
-	$scope.addToListPost = function(data){ alert()
+	$scope.postLike = function(key,collabId){		
+		var status = $scope.collaborates[key].checkLike;
+		    status = ($scope.collaborates[key].status == true) ? false : true ;	        		
+		$http({
+		    method: 'POST',
+		    url: "${pageContext.request.contextPath}/collaborate/like",
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {"collapId":collabId, "username":username,"likeStatus":status.toString()}
+		}).success(function(response) {	
+			$scope.collaborates[key].checkLike = status;		
+		});
+	} 
 		
-		//dis($scope.collaborates);
-		
-	}
-	
 	
 	$scope.newcomment = {};
     $scope.postCommand = function(key,colId){
@@ -169,11 +148,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
     };
 	
     
-    $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){
-    	
-    	//alert("comment: "+keyChild+"/"+comId)
-    	
-    	    	
+    $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
     	SweetAlert.swal({
             title: "Are you sure?",
             text: "This comment will not be able to recover!", 
@@ -185,18 +160,17 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
             closeOnCancel: false
         }, 
         function(isConfirm){ 
-        	  if(isConfirm){
-        		  $scope.collaborates[keyParent].comments.splice(keyChild, 1);
-        		  $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId).success(function(){
+        	  if(isConfirm){        		
+        		  $http.delete("${pageContext.request.contextPath}/collaborate/comment/remove/"+comId).success(function(){
 	        		  SweetAlert.swal({
 	              		title:"Deleted",
 	              		text:"The comment have been deleted!",
 	              		type:"success",  
 	              		timer: 2000,   
 	              		showConfirmButton: false
-      			  	  }); 
-	        		  $scope.collaborates.splice(key, 1);
-        		  }); 
+      			  	  }); 	        		 
+        		  });
+        		  $scope.collaborates[keyParent].details.splice(keyChild, 1);
         	  }else{
         		  SweetAlert.swal({
   	                title:"Cancelled",
@@ -209,10 +183,6 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
     }
     
 	$scope.btnDeleteCollabPost = function(key,postId){
-    	
-    	//alert("post: "+key+"/"+postId)
-    	//alert($scope.collaborates[key].deleteStatus);
-
     	SweetAlert.swal({
             title: "Are you sure?",
             text: "This post will not be able to recover!", 
@@ -223,11 +193,9 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
             closeOnConfirm: false, 
             closeOnCancel: false
         }, 
-        function(isConfirm){      
-        	$scope.collaborates.splice(key, 1);        	
+        function(isConfirm){              	
         	 if(isConfirm){
-	       		  $scope.collaborates[keyParent].comments.splice(keyChild, 1);
-	       		  $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId).success(function(){
+	       		  $http.delete("${pageContext.request.contextPath}/collaborate/delete/"+postId).success(function(){
 		        		  SweetAlert.swal({
 		              		title:"Deleted",
 		              		text:"The post have been deleted!",
@@ -1515,7 +1483,7 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="collaborate">
+										<div class="tab-pane" id="collaborate" data-ng-init="listCollabByLeadByUser()">
 
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
 												<form id="frmCollab">													
