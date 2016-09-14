@@ -4,16 +4,13 @@
 <jsp:include page="${request.contextPath}/header"></jsp:include>
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
-
-
-
 <style>
 .font-label {
 	font-size: 13px;
 	padding-top: 4px;
 }
 </style>
-<div class="content-wrapper" ng-app="campaign" ng-controller="campController">
+<div class="content-wrapper" ng-app="campaign" id="campController" ng-controller="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Create Customer</h1>
@@ -26,6 +23,7 @@
 
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
+
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){		
 	$scope.startupCustomer = function() {
 		$http.get("${pageContext.request.contextPath}/customer/startup").success(function(response){
@@ -34,29 +32,44 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 			$scope.priceCode = response.PRICE_CODE;
 			$scope.type = response.TYPE;
 		});
-		
+		$scope.shipToAdd = [{"addr":""}];
 	}	
-
+	
+	
+	$scope.btnAddMoreShip = function(){
+		$scope.shipToAdd.push({"addr":""});
+	}
+	$scope.btnRemoveMoreShip = function(key){
+		$scope.shipToAdd.splice(key,1);
+	}
+	
+	$scope.newAddr = {};
+	$scope.getAddress = function(){ 
+		var shipToAddrAdd = [];
+		angular.forEach($scope.shipToAdd, function(value, key) {
+			var txtAddr = $.trim($scope.newAddr[key].addr);
+			if(txtAddr != ""){
+				alert(txtAddr)
+				shipToAddrAdd.push({"aId":key+1, "address":txtAddr});
+			}			
+		});			
+		if(shipToAddrAdd.length == 0)
+			return null;		
+		return shipToAddrAdd;
+	}
 }]);
-
-
-
 
 $(document).ready(function() {
 	$(".select2").select2();
-
 	$("#btn_clear").click(function(){
 		$("#form-customer").bootstrapValidator('resetForm', 'true');
 	});
 	
 	 $("#btn_save").click(function(){
-		$("#form-customer").submit();
-		
+		$("#form-customer").submit();		
 	});
-
-
-		
-		$('#form-customer').bootstrapValidator({
+	
+	 $('#form-customer').bootstrapValidator({
 			message: 'This value is not valid',
 			feedbackIcons: {
 				valid: 'glyphicon glyphicon-ok',
@@ -160,91 +173,92 @@ $(document).ready(function() {
 						}
 					}
 				},
-				c_group: {
+				c_price: {
 					validators: {
 						notEmpty: {
 							message: 'The  price code is required and can not be empty!'
 						}
 					}
+				},
+				c_shipAddr:{
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The address must be less than 255 characters long.'
+						}
+					}
+				},
+				c_billAddr:{
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The address must be less than 255 characters long.'
+						}
+					}
 				}
 			}
-		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-		    var industry = "";	
-			if($("#c_industry").val()  != ""){
-				industry = {"industID": $("#c_industry").val()};
-			}else{
-				industry = null;
-			}
-
-			var account = "";	
-			if($("#c_type").val()  != ""){
-				account = {"accountID": $("#c_type").val()};
-			}else{
-				account = null;
-			}
-
-
+		}).on('success.form.bv', function(e) {							
+			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
+			
+			dis({"custName": getValueStringById("cs_name"),
+				      "custTel1": getValueStringById("c_tel1"),
+				      "custTel2": getValueStringById("c_tel2"),
+				      "custFax": getValueStringById("c_fax"),
+				      "custEmail": getValueStringById("c_email"),
+				      "custWebsite": getValueStringById("c_website"),
+				      "custAddress": getValueStringById("c_address"),
+				      "facebook": getValueStringById("c_facebook"),
+				      "line": getValueStringById("c_line"),
+				      "viber": getValueStringById("c_viber"),
+				      "whatApp": getValueStringById("c_whatapp"),
+				      "industID": getJsonById("industID","c_industry","int"),
+					  "accountTypeID": getJsonById("accountID","c_type","int"),
+					  "custDetail" : ship});
+			
 			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/customer/add",
 				type : "POST",
 				data : JSON.stringify({ 
-				      "custName": $("#cs_name").val(),
-				      "custTel1": $("#c_tel1").val(),
-				      "custTel2": $("#c_tel2").val(),
-				      "custFax": $("#c_fax").val(),
-				      "custEmail": $("#c_email").val(),
-				      "custWebsite": $("#c_website").val(),
-				      "custAddress": $("#c_address").val(),
-				      "facebook": $("#c_facebook").val(),
-				      "line": $("#c_line").val(),
-				      "viber": $("#c_viber").val(),
-				      "whatApp": $("#c_whatapp").val(),
-				      "industID": industry,
-					  "accountTypeID": account	
-					}),
+				      "custName": getValueStringById("cs_name"),
+				      "custTel1": getValueStringById("c_tel1"),
+				      "custTel2": getValueStringById("c_tel2"),
+				      "custFax": getValueStringById("c_fax"),
+				      "custEmail": getValueStringById("c_email"),
+				      "custWebsite": getValueStringById("c_website"),
+				      "custAddress": getValueStringById("c_address"),
+				      "facebook": getValueStringById("c_facebook"),
+				      "line": getValueStringById("c_line"),
+				      "viber": getValueStringById("c_viber"),
+				      "whatApp": getValueStringById("c_whatapp"),
+				      "industID": getJsonById("industID","c_industry","int"),
+					  "accountTypeID": getJsonById("accountID","c_type","int"),
+					  "custDetail" : ship
+				}),
 				beforeSend: function(xhr) {
-						    xhr.setRequestHeader("Accept", "application/json");
-						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
-				success:function(data){
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+			    },
+				success:function(data){					
+					$("#form-customer").bootstrapValidator('resetForm', 'true');
+					$('#form-customer')[0].reset();
+					$("#c_industry").select2("val","");
+					$("#c_type").select2("val","");
 					
-						$("#form-customer").bootstrapValidator('resetForm', 'true');
-						$('#form-customer')[0].reset();
-						$("#c_industry").select2("val","");
-						$("#c_type").select2("val","");
-						
-						swal({
-		            		title:"Success",
-		            		text:"User have been created new Customer!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-					},
-				error:function(){
-					errorMessage();
-					}
-				}); 
-			
+					swal({
+	            		title:"Success",
+	            		text:"User have been created new Customer!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+        			});
+				},
+				error:function(){}
+			});			
 		});	
-
-
-		
-	
-	
 });
 </script>
 	<section class="content">
-
-		<!-- Default box -->
-		
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<h3 class="box-title">&nbsp;</h3>
@@ -259,225 +273,196 @@ $(document).ready(function() {
 					</button>
 				</div>
 			</div>
-			<div class="box-body">
-			
-			<form method="post" id="form-customer" data-ng-init="startupCustomer()">
-				
-				<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
-				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/list-customers"> <i class="fa fa-reply"></i> Back </a>
-
-				<div class="clearfix"></div>
-
-				<div class="col-sm-2">
-					<h4>Overview</h4>
-				</div>
-
-				<div class="col-sm-12">
-					<hr style="margin-top: 3px;" />
-				</div>
-
-				<div class="row">
-					<div class="col-sm-12">
-					<div class="col-sm-6">
-
-						
-
-						<div class="col-sm-6">
-							<label class="font-label">Name <span class="requrie">(Required)</span></label>
-							<div class="form-group" id="c_name">
-								<input type="text" class="form-control" name="cs_name" id="cs_name">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Tel <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="c_tel1" id="c_tel1">
-							</div>
-						</div>
-						
-						<div class="clearfix"></div>
-						<div class="col-sm-6">
-							<label class="font-label">Tel </label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="c_tel2" id="c_tel2">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Fax </label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="c_fax" id="c_fax">
-							</div>
-						</div>
-						
+			<div class="box-body">			
+				<form method="post" id="form-customer" data-ng-init="startupCustomer()">					
+					<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
+					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+					<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/list-customers"> <i class="fa fa-reply"></i> Back </a>
+	
+					<div class="clearfix"></div>
+					<div class="col-sm-2"><h4>Overview</h4></div>
+					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
+					<div class="row">
 						<div class="col-sm-12">
-							<label class="font-label">Address </label>
-							<div class="form-group">
-								<textarea style="height: 120px" rows="" cols="" name="c_address" id="c_address"	class="form-control"></textarea>
+							<div class="col-sm-6">
+								<div class="col-sm-6">
+									<label class="font-label">Name <span class="requrie">(Required)</span></label>
+									<div class="form-group" id="c_name">
+										<input type="text" class="form-control" name="cs_name" id="cs_name">
+									</div>
+								</div>							
+								<div class="col-sm-6">
+									<label class="font-label">Tel <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="c_tel1" id="c_tel1">
+									</div>
+								</div>							
+								
+								<div class="clearfix"></div>
+								<div class="col-sm-6">
+									<label class="font-label">Tel </label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="c_tel2" id="c_tel2">
+									</div>
+								</div>							
+								<div class="col-sm-6">
+									<label class="font-label">Fax </label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="c_fax" id="c_fax">
+									</div>
+								</div>																		
 							</div>
+							<div class="col-sm-6">
+								<div class="col-sm-6">
+									<label class="font-label">Email </label>
+									<div class="form-group">
+										<input type="email" class="form-control" name="c_email" id="c_email">
+									</div>
+								</div>							
+								<div class="col-sm-6">
+									<label class="font-label">Website </label>
+									<div class="form-group">
+										<input type="url" placeholder="http://www.example.com" class="form-control" name="c_website" id="c_website">
+									</div>
+								</div>
+							</div>							
+							<div class="clearfix"></div>
 						</div>
-						
-					</div>
-
-					<div class="col-sm-6">
-
-						<div class="col-sm-6">
-							<label class="font-label">Email </label>
-							<div class="form-group">
-								<input type="email" class="form-control" name="c_email" id="c_email">
-							</div>
-						</div>
-						
-
-						<div class="col-sm-6">
-							<label class="font-label">Website </label>
-							<div class="form-group">
-								<input type="url" placeholder="http://www.example.com" class="form-control" name="c_website" id="c_website">
-							</div>
-						</div>
-						
-
 					</div>
 					
-
-					<div class="clearfix"></div>
-
+					
+					<div class="clearfix"></div>				
+					<div class="col-sm-2"><h4>Address</h4></div>				
+					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
+					<div class="row">				
+						<div class="col-sm-12">					
+							<div class="col-sm-12">						
+								<div class="col-sm-12">
+									<label class="font-label">Bill To Address</label>
+									<div class="form-group">
+										<input type="text" placeholder="" class="form-control" name="c_billAddr" id="c_billAddr">
+									</div>
+								</div>															
+								<div class="col-sm-12" style="margin-bottom: 15px;">
+									<label class="font-label">Ship To Address</label>														
+									<div class="input-group" ng-repeat="(key, add) in shipToAdd" style="margin-bottom: 5px;">                            	
+										<input type="text" ng-model="newAddr[key].addr" name="c_shipAddr" class="form-control" id="c_shipAddr" >
+										<span class="input-group-btn">
+			                                 <button style="height: 34px;"  name="c_shipAddr" type="button" ng-click="btnRemoveMoreShip(key)" class="btn btn-danger"><i class="fa  fa-minus-square-o"></i></button>
+										</span>
+									</div>														
+									<button type="button" ng-click="btnAddMoreShip()" id="btnAddMoreShip" class="btn btn-primary"><i class="fa fa-plus-square-o"></i></button>
+								</div>																		
+							</div>					
+						</div>
 					</div>
-				</div>
-				
-				<div class="clearfix"></div>
-				
-				<div class="col-sm-2"><h4>Other</h4></div>
-				
-				<div class="col-sm-12">
-						<hr style="margin-top: 8px;"/>
-				</div>
-				<div class="row">
-				
-				<div class="col-sm-12">
-				
-				<div class="col-sm-6">
-				
-					<div class="col-sm-6">
-							<label class="font-label">Facebook</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="c_facebook" id="c_facebook">
-							</div>
-						</div>
-						
-						
-					<div class="col-sm-6">
-							<label class="font-label">Line</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="c_line" id="c_line">
-							</div>
-						</div>
-						
-						
-						<div class="col-sm-6">
-							<label class="font-label">Viber</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="c_viber" id="c_viber">
-							</div>
-						</div>
-						
-						
-						<div class="col-sm-6">
-							<label class="font-label">WhatApp</label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="c_whatapp" id="c_whatapp">
-							</div>
-						</div>
-						
-				</div>
-				
-				<div class="col-sm-6">
-				
-					<div class="col-sm-6" data-ng-init="listIndustry()">
-							<label class="font-label">Industry</label>
-							<div class="form-group">
-								<select class="form-control select2" name="c_industry" id="c_industry" style="width:100%">
-									<option value="">-- SELECT Industry</option>
-									<option ng-repeat="u in industry" value="{{u.industID}}">{{u.industName}}</option> 
-								</select>
-							</div>
-						</div>
-						
-					<div class="col-sm-6" data-ng-init="listAccount()">
-							<label class="font-label">Type</label>
-							<div class="form-group">
-								<select class="form-control select2" name="c_type" id="c_type">
-									<option value="">-- SELECT Type</option>
-									<option ng-repeat="u in type" value="{{u.accountID}}">{{u.accountName}}</option> 
-								</select>
-							</div>
-						</div>
-						
-					</div>	
-				</div>
-				</div>
-				<div class="clearfix"></div>
-				
-				<div class="col-sm-2"><h4>Setting</h4></div>
-				
-				<div class="col-sm-12">
-						<hr style="margin-top: 8px;"/>
-				</div>
-				<div class="row">
-				
-				<div class="col-sm-12">
-				
-				<div class="col-sm-6">
-				
-					<div class="col-sm-6">
-							<label class="font-label">Customer Group <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<select class="form-control select2" name="c_group" id="c_group">
-									<option value="">-- SELECT Customer Group --</option>
-									<option ng-repeat="u in custGroup" value="{{u.custGroupId}}">[{{u.custGroupId}}] {{u.custGroupName}}</option> 
-								</select>
-							</div>
-						</div>
-						
-						
-					<div class="col-sm-6">
-							<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<select class="form-control select2" name="c_price" id="c_price">
-									<option value="">-- SELECT Price Code --</option>
-									<option ng-repeat="u in priceCode" value="{{u.priceCode}}">[{{u.priceCode}}] {{u.des}}</option> 
-								</select>
-							</div>
-						</div>
+					
+					
+					<div class="clearfix"></div>				
+					<div class="col-sm-2"><h4>Other</h4></div>				
+					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
+					<div class="row">				
+						<div class="col-sm-12">
+							<div class="col-sm-6">				
+								<div class="col-sm-6">
+									<label class="font-label">Facebook</label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="c_facebook" id="c_facebook">
+									</div>
+								</div>												
+								<div class="col-sm-6">
+									<label class="font-label">Line</label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="c_line" id="c_line">
+									</div>
+								</div>											
+								<div class="col-sm-6">
+									<label class="font-label">Viber</label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="c_viber" id="c_viber">
+									</div>
+								</div>												
+								<div class="col-sm-6">
+									<label class="font-label">WhatApp</label>
+									<div class="form-group">
+										<input type="text" class="form-control" name="c_whatapp" id="c_whatapp">
+									</div>
+								</div>
 								
-						
-				</div>
-				
-				</div>
-				</div>
-			</form>
+							</div>				
+							<div class="col-sm-6">				
+								<div class="col-sm-6" data-ng-init="listIndustry()">
+									<label class="font-label">Industry</label>
+									<div class="form-group">
+										<select class="form-control select2" name="c_industry" id="c_industry" style="width:100%">
+											<option value="">-- SELECT Industry</option>
+											<option ng-repeat="u in industry" value="{{u.industID}}">{{u.industName}}</option> 
+										</select>
+									</div>
+								</div>						
+								<div class="col-sm-6" data-ng-init="listAccount()">
+									<label class="font-label">Type</label>
+									<div class="form-group">
+										<select style="width:100%" class="form-control select2" name="c_type" id="c_type">
+											<option value="">-- SELECT Type</option>
+											<option ng-repeat="u in type" value="{{u.accountID}}">{{u.accountName}}</option> 
+										</select>
+									</div>
+								</div>
+									
+							</div>	
+						</div>
+					</div>
+					
+					<div class="clearfix"></div>				
+					<div class="col-sm-2"><h4>Setting</h4></div>				
+					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
+					<div class="row">			
+						<div class="col-sm-12">					
+							<div class="col-sm-6">						
+								<div class="col-sm-6">
+									<label class="font-label">Customer Group <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select style="width:100%" class="form-control select2" name="c_group" id="c_group">
+											<option value="">-- SELECT Customer Group --</option>
+											<option ng-repeat="u in custGroup" value="{{u.custGroupId}}">[{{u.custGroupId}}] {{u.custGroupName}}</option> 
+										</select>
+									</div>
+								</div>															
+								<div class="col-sm-6">
+									<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select style="width:100%" class="form-control select2" name="c_price" id="c_price">
+											<option value="">-- SELECT Price Code --</option>
+											<option ng-repeat="u in priceCode" value="{{u.priceCode}}">[{{u.priceCode}}] {{u.des}}</option> 
+										</select>
+									</div>
+								</div>																		
+							</div>					
+						</div>
+					</div>
+					
+					<div class="clearfix"></div>				
+					<div class="col-sm-2"><h4>Attachment Picture</h4></div>				
+					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
+					<div class="row">				
+						<div class="col-sm-12">					
+							<div class="col-sm-6">					
+								<div class="col-sm-6">
+									<label class="font-label">Logo</label>
+									<div class="form-group">
+										<input style="width: 100%;" type="file" name="file" id="fileLogo" class="btn btn-default">
+									</div>
+								</div>							
+							</div>					
+						</div>
+					</div>
+				</form>
 			</div>
-			<!-- /.box-body -->
 			<div class="box-footer"><div id="test_div"></div></div>
-			<!-- /.box-footer-->
-			
 			<div id="errors"></div>
-			
 		</div>
-		
-		<!-- /.box -->
-
-
 	</section>
-	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 

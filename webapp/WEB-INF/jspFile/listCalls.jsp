@@ -88,6 +88,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	<section class="content-header">
 		<h1>Calls</h1>
 		<ol class="breadcrumb">
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i>Calls</a></li>
 		</ol>
 	</section>
@@ -255,25 +256,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 			<div class="box-footer"></div>
 			<!-- /.box-footer-->
 		</div>
-
-		<!-- /.box -->
-
-
 	</section>
-	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-
-
-
-<!-- /.content-wrapper -->
-
-
-
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 
