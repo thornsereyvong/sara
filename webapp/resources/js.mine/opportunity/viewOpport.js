@@ -20,7 +20,7 @@ $(function(){
         showDropdowns: true,
         format: 'DD/MM/YYYY'
     }).on('change', function(e) {
-     	$('#frmOpportDetail').bootstrapValidator('revalidateField', 'callStartDate');
+     	$('#frmOpportDetail').bootstrapValidator('revalidateField', 'oppCloseDate');
  	});
 	
 	
@@ -236,7 +236,7 @@ $(function(){
 			oppProbability: {
 				validators: {
 					between: {
-                        min: 1,
+                        min: 0,
                         max: 100,
                         message: 'The probability must be between 1 and 100'
                     }

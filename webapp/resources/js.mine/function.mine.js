@@ -300,7 +300,10 @@ function getDateById(ID){
 	}	
 	return date;
 }
-
+function fSQLTo(f,date){
+	date =  date.split('-');
+	return date[2]+f+date[1]+f+date[0];
+}
 function getFomatDateToSQL(date){
 	if(date != ""){
 		date =  date.split('-');

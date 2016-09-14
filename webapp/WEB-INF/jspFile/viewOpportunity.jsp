@@ -1781,7 +1781,7 @@ function addDataToDetailLead(){
 														style="display: none;">
 														<button class="btn btn-primary" type="button"
 															ng-click="saveEditDetailLead()">Save</button>
-														<button class="btn btn-danger"
+														<button type="button" class="btn btn-danger"
 															ng-click="cancelEditDetailLead()">Cancel</button>
 													</div>
 												</form>
