@@ -451,7 +451,7 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Logo</label>
 									<div class="form-group">
-										<input style="width: 100%;" type="file" name="file" id="fileLogo" class="btn btn-default">
+										<input style="width: 100%;" accept="image/*" type="file" name="file" id="fileLogo" class="btn btn-default">
 									</div>
 								</div>							
 							</div>					
