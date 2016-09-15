@@ -127,7 +127,7 @@ $(document).ready(function() {
       <div class="form-group has-feedback">
         <select class="form-control">
         	<option>-- Select Campany --</option>
-            <option>CCW</option>
+            <option>Balancika (Cambodia) Co.,ltd</option>
         </select>
        </div>
       

@@ -97,6 +97,13 @@ public class CrmCallController {
 		
 	}
 	
-	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/call/list-by-opportunity/{id}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listCallByOpportunityId(@PathVariable("id") String id){		
+		HttpEntity<Object> request = new HttpEntity<Object>(header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list/opp/"+id, HttpMethod.GET, request, Map.class);		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
 	
 }

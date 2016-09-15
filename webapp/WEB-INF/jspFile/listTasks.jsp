@@ -109,32 +109,15 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		<!-- Default box -->
 		<div class="box box-danger">
 			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-				<div class="col-sm-12">
-					<hr style="margin-bottom: 5px; margin-top: 8px;" />
-				</div>
+				
 				<div style="background: #fff; margin-top: 15px;">
 					<div class="col-sm-12">
 						<a href="${pageContext.request.contextPath}/create-task"
 							class="btn btn-info btn-app"><i class="fa fa-plus"
-							aria-hidden="true"></i> Create</a> <a
-							href="${pageContext.request.contextPath}/view-tasks"
-							class="btn btn-info btn-app"><i class="fa fa-clone"
-							aria-hidden="true"></i> View</a>
+							aria-hidden="true"></i> Create</a> 
+							
 					</div>
-					<div class="col-sm-12">
-						<hr style="margin-bottom: 0; margin-top: 0px;" />
-					</div>
+					
 				</div>
 			</div>
 

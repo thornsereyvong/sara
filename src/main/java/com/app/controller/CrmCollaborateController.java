@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmCollaboration;
+import com.app.entities.CrmCollaborationDetails;
 
 @RestController
 @RequestMapping(value="/")
@@ -31,11 +32,14 @@ public class CrmCollaborateController {
 		private String URL;
 		
 		
+		
+		
+		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@RequestMapping(value="/collaborate/list/lead/user",method = RequestMethod.GET)
+		@RequestMapping(value="/collaborate/list/lead/user",method = RequestMethod.POST)
 		public ResponseEntity<Map<String, Object>> getCollaborateByLeadIdByUsername(@RequestBody String obj){			
-			HttpEntity<String> request = new HttpEntity<String>(header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
+			HttpEntity<String> request = new HttpEntity<String>(obj,header);
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/collaboration/list", HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
 		}
 		
@@ -56,10 +60,10 @@ public class CrmCollaborateController {
 		}
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@RequestMapping(value="/collaborate/list/opportunity/username",method = RequestMethod.GET)
+		@RequestMapping(value="/collaborate/list/opportunity/username",method = RequestMethod.POST)
 		public ResponseEntity<Map<String, Object>> getCollaborateByOpportunityIdByUsername(@RequestBody String obj){			
-			HttpEntity<String> request = new HttpEntity<String>(header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
+			HttpEntity<String> request = new HttpEntity<String>(obj,header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/collaboration/list", HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
 		}
 		
@@ -97,12 +101,29 @@ public class CrmCollaborateController {
 		
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@RequestMapping(value="/collaborate/like",method = RequestMethod.GET)
-		public ResponseEntity<Map<String, Object>> likePost(@RequestBody String obj){									
-			HttpEntity<String> request = new HttpEntity<String>(header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list", HttpMethod.GET, request, Map.class);			
+		@RequestMapping(value="/collaborate/like",method = RequestMethod.POST)
+		public ResponseEntity<Map<String, Object>> likePost(@RequestBody String obj){	
+			System.out.println(obj.toString());
+			HttpEntity<Object> request = new HttpEntity<Object>(obj,header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/like/like", HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
 		}
 				
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@RequestMapping(value="/collaborate/add/comment",method = RequestMethod.POST)
+		public ResponseEntity<Map<String, Object>> addComment(@RequestBody CrmCollaborationDetails obj){									
+			HttpEntity<Object> request = new HttpEntity<Object>(obj,header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/collaboration/details/add", HttpMethod.POST, request, Map.class);			
+			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
+		}
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@RequestMapping(value="/collaborate/comment/remove/{comId}",method = RequestMethod.DELETE)
+		public ResponseEntity<Map<String, Object>> deletedComment(@PathVariable("comId") int comId){									
+			HttpEntity<Object> request = new HttpEntity<Object>(header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"/api/collaboration/details/remove/"+comId, HttpMethod.PUT, request, Map.class);			
+			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
+		}
+		
 		
 }

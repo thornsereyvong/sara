@@ -481,11 +481,11 @@ public class MainController {
 
 	}
 
-	@RequestMapping("/view-campaigns")
-	public String viewCampaigns(ModelMap model) {
+	@RequestMapping("/view-campaign/{campId}")
+	public String viewCampaigns(ModelMap model,@PathVariable("campId") String campId) {
 
 		model.addAttribute("menu", "viewCampaigns");
-
+		model.addAttribute("campId", campId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));

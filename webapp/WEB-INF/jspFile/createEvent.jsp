@@ -20,7 +20,7 @@
 	<section class="content-header">
 		<h1>Create Event</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Create Event</a></li>
 		</ol>
 	</section>
@@ -39,6 +39,12 @@ $(document).ready(function() {
 	 
 	var data = ${users};
 	$(".select2").select2();
+	
+	$("#relateTo").change(function(){
+		var relate = $("#relateTo").val();
+		funcRelateTo("#reportType",relate,"");
+	});
+	
 	
 	$('.date2').daterangepicker({
         singleDatePicker: true,
@@ -127,58 +133,53 @@ $(document).ready(function() {
 						}
 					}
 			}
-		}).on('success.form.bv', function(e) {
-			var assignToUser = "";	
-			if($("#assignTo").val()  == "" | $("#budget").val()  == null){
-				assignToUser = null;
-			}else{
-				assignToUser ={"userID":$("#budget").val()};
-			}
-
-			var location = "";
-			if($("#location").val() != ""){
-				location = {"loId": $("#location").val()};
-			}else{
-				location = null;
-			}
+		}).on('success.form.bv', function(e) {			
 				
 			$.ajax({
 				url : "${pageContext.request.contextPath}/event/add",
 				type : "POST",
 				data : JSON.stringify({
-					  "evName": $("#name").val(),
-				      "evLocation": location,
-				      "evBudget": $("#budget").val(),
-				      "evDes": $("#description").val(),
+					  "evName": getValueStringById("name"),
+				      "evLocation": getJsonById("loId","location","str"),
+				      "evBudget": getValueStringById("budget"),
+				      "evDes": getValueStringById("description"),
 				      "evCreateBy":  $.session.get("parentID"),
-				      "evDuration": $("#duration").val(),
-				      "startDate": $("#startDate").val(),
-				      "endDate": $("#endDate").val(),
-				      "assignTo": assignToUser, 
+				      "evDuration": getValueStringById("duration"),
+				      "startDate": getValueStringById("startDate"),
+				      "endDate": getValueStringById("endDate"),
+				      "assignTo": getJsonById("userID","assignTo","str"), 
+				      "evRelatedToModuleId" : getValueStringById("reportType"),
+				      "evRelatedToModuleType" : getValueStringById("relateTo")
 					}),
 				beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
 						    xhr.setRequestHeader("Content-Type", "application/json");
 						    },
 				success:function(data){
-					
-						$("#form-call").bootstrapValidator('resetForm', 'true');
-						$('#form-call')[0].reset();
-						$("#location").select2("val","");
-						$("#assignTo").select2("val","");
-						$("#duration").select2("val","");
+						if(data.MESSAGE == "INSERTED"){	
+							$("#relateTo").select2("val","");
+							$("#reportType").select2("val","");
+							$("#location").select2("val","");
+							$("#assignTo").select2("val","");
+							$("#duration").select2("val","");
+							$("#form-call").bootstrapValidator('resetForm', 'true');
+							$('#form-call')[0].reset();
+							swal({
+			            		title:"Success",
+			            		text:"User have been created new Event!",
+			            		type:"success",  
+			            		timer: 2000,   
+			            		showConfirmButton: false
+		        			});
+				    	}else{
+				    		alertMsgErrorSweet();
+				    	}
 						
-						swal({
-		            		title:"Success",
-		            		text:"User have been created new Event!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
+						
 					},
 				error:function(){
-					errorMessage();
-					}
+					alertMsgErrorSweet();
+				}
 				});  
 		});	
 });
@@ -310,7 +311,40 @@ $(document).ready(function() {
 								</div> 
 							</div>
 						</div>
+						<div class="clearfix"></div>
+						<div class="col-sm-6">
+							<label class="font-label">Related to </label>
+							<div class="form-group">								
+								<select class="form-control select2" name="relateTo" id="relateTo" style="width: 100%;">
+									<option value="">--SELECT Related--</option>
+									<optgroup label="Marketing">
+										<option value="Campaign">Campaign</option>
+										<option value="Lead">Lead</option>
+									</optgroup>
+									<optgroup label="Sales">
+										<option value="Customer">Customer</option>
+										<option value="Contact">Contact</option>
+										<option value="Opportunity">Opportunity</option>
+									</optgroup>
+									<optgroup label="Activities">
+										<option value="Task">Tasks</option>
+									</optgroup>
+									<optgroup label="Support">
+										<option value="Case">Case</option>
+									</optgroup>
+									
+								</select>
+							</div>
+						</div>
 						
+						<div class="col-sm-6">
+						<label class="font-label">&nbsp; </label>
+							<div class="form-group">
+								<select class="form-control select2" name="reportType" id="reportType">
+									<option value="">--SELECT--</option>
+								</select>
+							</div>
+						</div>
 						<div class="clearfix"></div>
 						<div class="col-sm-6">
 							<label class="font-label">Budget </label>

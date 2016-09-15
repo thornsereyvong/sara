@@ -1,12 +1,10 @@
 package com.app.entities;
 
-public class CrmCollaborationTags {
-	
+
+public class CrmCollaborationTags{
 	private int tagId;
-	
 	private String username;
 	
-
 	public int getTagId() {
 		return tagId;
 	}

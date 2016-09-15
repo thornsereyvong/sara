@@ -142,15 +142,7 @@ function listDataByOpp(){
 	$("#op_id").val(result.opId);
 	$("#op_name").val(result.opName);
 	$("#op_amount").val(result.opAmount);
-
-	var d = new Date(result.opCloseDate);
-	var dd = d.getDate();
-	var mm = d.getMonth()+1;
-	var yy = d.getFullYear();
-	
-	$("#op_colseDate").val(dd+"/"+mm+"/"+yy);
-
-	
+	$("#op_colseDate").val(fSQLTo("/",result.opCloseDate));
 	$("#op_probability").val(result.opProbability);
 	$("#op_nextStep").val(result.opNextStep);
 	$("#cam_description").val(result.opDes);
@@ -195,14 +187,13 @@ function listDataByOpp(){
 }
 
 $(document).ready(function() {
-    
-	$(".select2").select2();
-
 	$('#op_colseDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         format: 'DD/MM/YYYY'
-    });
+    }).on('change', function(e) {
+     	$('#form-opportunity').bootstrapValidator('revalidateField', 'op_colseDate');
+ 	});
     
 	listDataByOpp();
 	
@@ -211,13 +202,7 @@ $(document).ready(function() {
 	});
 	
 	$("#btn_clear").click(function(){
-		$("#form-opportunity").bootstrapValidator('resetForm', 'true');
-		$('#form-opportunity')[0].reset();
-		$("#op_customer").select2("val","");
-		$("#op_stage").select2("val","");
-		$("#op_type").select2("val","");
-		$("#op_leadSource").select2("val","");
-		$("#op_campaign").select2("val","");
+		location.reload();
 	});
 
 	
@@ -280,7 +265,7 @@ $(document).ready(function() {
 		                decimalSeparator: '.'
 		            },
 					between: {
-                        min: 1,
+                        min: 0,
                         max: 100,
                         message: 'The latitude must be between 1 and 99'
                     }
@@ -313,68 +298,24 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		var currentDate = new Date();
-		var day = currentDate.getDate();
-		var month = currentDate.getMonth() + 1;
-		var year = currentDate.getFullYear();
 
-
-		var type = "";	
-		if($("#op_type").val()  != "")
-			type = {"otId": $("#op_type").val()};
-		else
-			type = null;
-
-		var camp = "";	
-		if($("#op_campaign").val()  != "")
-			camp = {"campID": $("#op_campaign").val()};
-		else
-			camp = null;
-
-		var stage = "";
-		if($("#op_stage").val()  != "")
-			stage = {"osId": $("#op_stage").val()};
-		else
-			stage = null;
-
-		var source = "";
-		if($("#op_leadSource").val()  != "")
-			source = {"sourceID": $("#op_leadSource").val()};
-		else
-			source = null;
-
-		var custID = "";
-		if($("#op_customer").val()  != "")
-			custID = {"custID": $("#op_customer").val()};
-		else
-			custID = null;
-
-		var assing = "";
-		if($("#op_assignTo").val()  != "")
-			assing = {"userID": $("#op_assignTo").val()};
-		else
-			assing = null;
-
-		var createDate = $("#op_colseDate").val();
-		var opCloseDate = createDate.split("/").reverse().join("-");
-		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/opportunity/edit",
 			type : "PUT",
 			data : JSON.stringify({
-				 "opId": $("#op_id").val(),
-			      "opName": $("#op_name").val(),
+				  "opId": $("#op_id").val(),			     			    
+			      "opName": getValueStringById("op_name"),
 			      "opAmount": $("#op_amount").val(),
-			      "customer":custID,
-			      "opCloseDate": opCloseDate,
-			      "opTypeID": type,
-			      "opStageId": stage,
-			      "opProbability": $("#op_probability").val(),
-			      "opLeadSourceID": source,
-			      "opNextStep": $("#op_nextStep").val(),
-			      "opCampId": camp,
-			      "opDes": $("#cam_description").val(),
-			      "opAssignedTo": assing,
+			      "customer": getJsonById("custID","op_customer","str"),
+			      "opCloseDate": getDateByFormat("opCloseDate"),
+			      "opTypeID": getJsonById("otId","op_type","int"),
+			      "opStageId": getJsonById("osId","op_stage","int"),
+			      "opProbability": getValueStringById("op_probability"),
+			      "opLeadSourceID": getJsonById("sourceID","op_leadSource","int"),
+			      "opNextStep": getValueStringById("op_nextStep"),
+			      "opCampId": getJsonById("campID","op_campaign","str"),
+			      "opDes": getValueStringById("cam_description"),
+			      "opAssignedTo": getJsonById("userID","op_assignTo","str"),
 			      "opModifyBy": $.session.get("parentID")  
 			    }),	
 			beforeSend: function(xhr) {
@@ -382,18 +323,17 @@ $(document).ready(function() {
 					    xhr.setRequestHeader("Content-Type", "application/json");
 					    },
 			success:function(data){
-				
-					$("#form-opportunity").bootstrapValidator('resetForm', 'true');
-					$('#form-opportunity')[0].reset();		
 					$("#op_customer").select2("val","");
 					$("#op_stage").select2("val","");
 					$("#op_type").select2("val","");
 					$("#op_leadSource").select2("val","");
 					$("#op_campaign").select2("val","");
+					$("#form-opportunity").bootstrapValidator('resetForm', 'true');
+					$('#form-opportunity')[0].reset();	
 					
 					swal({
 	            		title:"Success",
-	            		text:"User have been Update Opportunity!",
+	            		text:"You have been Update Opportunity!",
 	            		type:"success",  
 	            		timer: 2000,   
 	            		showConfirmButton: false
@@ -403,223 +343,173 @@ $(document).ready(function() {
 						window.location.href = "${pageContext.request.contextPath}/list-opportunity/";
 					}, 2000);
 				},
-			error:function(){
-				
-				errorMessage();
-				}
-			});
-			
-	});	
-	
+				error:function(){errorMessage();}
+			});		
+	});		
 });
 </script>
 	<section class="content">
-
-		<!-- Default box -->
-		
 		<div class="box box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-			</div>
+		
 			<div class="box-body">
-			
-			<form method="post" id="form-opportunity">
 				
-				<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
-				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-				<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-opportunity"> <i class="fa fa-reply"></i> Back </a>
-
-				<div class="clearfix"></div>
-
-				<div class="col-sm-2">
-					<h4>Overview</h4>
-				</div>
-				<input type="hidden" class="form-control" id="op_id" name="op_id">
-				<div class="col-sm-12">
-					<hr style="margin-top: 3px;" />
-				</div>
-
-				<div class="row">
-
-					<div class="col-sm-6">
-						<div class="col-sm-6">
-							<label class="font-label">Name <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<input type="text" class="form-control" id="op_name" name="op_name">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Amount <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<input type="text" class="form-control" id="op_amount" name="op_amount">
-							</div>
-						</div>
-						
-						
-						<div class="col-sm-6" data-ng-init="listCustomer()">
-							<label class="font-label">Customer <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<select class="form-control select2" name="op_customer" id="op_customer" style="width: 100%;">
-									<option value="">-- SELECT Customer --</option>
-									
-								</select>
-							</div>
-						</div>
-						
-						
-						<div class="col-sm-6">
-							<label class="font-label">Close date <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<div class="input-group">
-									<div class="input-group-addon">
-										<i class="fa fa-calendar"></i>
-									</div>
-									<input type="text" class="form-control pull-right" name="op_colseDate" id="op_colseDate">
-								</div> 
-							</div>
-						</div>
-						
-						
-						
-						
-						
-						
-						<div class="col-sm-6">
-							<label class="font-label">Next Step </label>
-							<div class="form-group">
-								<input type="text" class="form-control" id="op_nextStep" name="op_nextStep">
-							</div>
-						</div>
-						
-						
-						<div class="col-sm-6"  data-ng-init="listCampaigns()" >
-							<label class="font-label">Campaign </label>
-							<div class="form-group">
-								<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
-									<option value="">-- SELECT Campaign --</option>
-									
-								</select>
-							</div>
-						</div>
-						
-						
-						<div class="col-sm-12">
-							<label class="font-label">Description </label>
-							<div class="form-group">
-								<textarea style="height: 120px" rows="" cols="" name="cam_description" id="cam_description"
-									class="form-control"></textarea>
-							</div>
-						</div>
-						
-						
-					</div>
-
-					<div class="col-sm-6">
-						
-						<div class="col-sm-6"  data-ng-init="listType()" >
-							<label class="font-label">Type </label>
-							<div class="form-group">
-								<select class="form-control select2" name="op_type" id="op_type" style="width: 100%;">
-									<option value="">-- SELECT Type --</option>
-									 
-								</select>
-							</div>
-						</div>
-						
-						<div class="col-sm-6" data-ng-init="listStage()">
-							<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
-									<option value="">-- SELECT Stage --</option>
-									
-								</select>
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Probability (%) </label>
-							<div class="form-group">
-								<input type="text" class="form-control" id="op_probability" name="op_probability">
-							</div>
-						</div>
-						
-						<div class="col-sm-6" data-ng-init="listLeadSource()">
-							<label class="font-label">Lead Source </label>
-							<div class="form-group">
-								<select class="form-control select2" name="op_leadSource" id="op_leadSource" style="width: 100%;">
-									<option value="">-- SELECT Lead Source --</option>
-									
-								</select>
-							</div>
-						</div>
-						
-
-					</div>
+				<form method="post" id="form-opportunity">
 					
-					
-				</div>
-				
-				
-			<div class="clearfix"></div>
-				
-				<div class="col-sm-2"><h4>Other </h4></div>
-				
-				<div class="col-sm-12">
+					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
+					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-opportunity"> <i class="fa fa-reply"></i> Back </a>
+	
+					<div class="clearfix"></div>
+	
+					<div class="col-sm-2">
+						<h4>Overview</h4>
+					</div>
+	
+					<div class="col-sm-12">
 						<hr style="margin-top: 3px;" />
-				</div>
-				<div class="col-sm-6">
-				
-				</div>
-				<div class="col-sm-12">
-				
-					<div class="col-sm-3" data-ng-init="listUser()">
+					</div>
+	
+					<div class="row">
+						<div  class="col-sm-12">
+							<div class="col-sm-6">
+								<div class="col-sm-6">
+									<label class="font-label">Name <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<input type="text" class="form-control" id="op_name" name="op_name">
+									</div>
+								</div>
+								
+								<div class="col-sm-6">
+									<label class="font-label">Amount <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<input type="text" class="form-control" id="op_amount" name="op_amount">
+									</div>
+								</div>
+								
+								
+								<div class="col-sm-6" data-ng-init="listCustomer()">
+									<label class="font-label">Customer <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select class="form-control select2" name="op_customer" id="op_customer" style="width: 100%;">
+											<option value="">-- SELECT Customer --</option>
+											<option ng-repeat="u in customer" value="{{u.custID}}">{{u.custName}}</option>
+										</select>
+									</div>
+								</div>
+								
+								
+								<div class="col-sm-6">
+									<label class="font-label">Close date <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input type="text" class="form-control pull-right" name="op_colseDate" id="op_colseDate">
+										</div> 
+									</div>
+								</div>
+								
+								
+								
+								
+								
+								
+								<div class="col-sm-6">
+									<label class="font-label">Next Step </label>
+									<div class="form-group">
+										<input type="text" class="form-control" id="op_nextStep" name="op_nextStep">
+									</div>
+								</div>
+								
+								
+								<div class="col-sm-6"  data-ng-init="listCampaigns()" >
+									<label class="font-label">Campaign </label>
+									<div class="form-group">
+										<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
+											<option value="">-- SELECT Campaign --</option>
+											<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
+										</select>
+									</div>
+								</div>
+							</div>
+		
+							<div class="col-sm-6">
+								<div class="col-sm-6" data-ng-init="listStage()">
+									<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
+											<option value="">-- SELECT Stage --</option>
+											<option ng-repeat="u in stage" value="{{u.osId}}">{{u.osName}}</option> 
+										</select>
+									</div>
+								</div>
+								
+								<div class="col-sm-6"  data-ng-init="listType()" >
+									<label class="font-label">Type </label>
+									<div class="form-group">
+										<select class="form-control select2" name="op_type" id="op_type" style="width: 100%;">
+											<option value="">-- SELECT Type --</option>
+											<option ng-repeat="u in type" value="{{u.otId}}">{{u.otName}}</option> 
+										</select>
+									</div>
+								</div>
+								
+								<div class="clearfix"></div>
+								
+								<div class="col-sm-6">
+									<label class="font-label">Probability (%) </label>
+									<div class="form-group">
+										<input type="text" class="form-control" id="op_probability" name="op_probability">
+									</div>
+								</div>
+								
+								<div class="col-sm-6" data-ng-init="listLeadSource()">
+									<label class="font-label">Lead Source </label>
+									<div class="form-group">
+										<select class="form-control select2" name="op_leadSource" id="op_leadSource" style="width: 100%;">
+											<option value="">-- SELECT Lead Source --</option>
+											<option ng-repeat="u in source" value="{{u.sourceID}}">{{u.sourceName}}</option>
+											
+										</select>
+									</div>
+								</div>
+								
+		
+							</div>
+							<div class="col-sm-12">
+								<div class="col-sm-12">
+									<label class="font-label">Description </label>
+									<div class="form-group">
+										<textarea rows="3" cols="" name="cam_description" id="cam_description"
+											class="form-control"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="clearfix"></div>
+					<div class="col-sm-2"><h4>Other </h4></div>				
+					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
+					<div class="col-sm-12">
+						<div class="col-sm-3" data-ng-init="listUser()">
 							<label class="font-label">Assigned to : </label>
 							<div class="form-group">
 								<select class="form-control select2"  name="op_assignTo" id="op_assignTo" style="width: 100%;">
 			                      <option value=""></option>
-			                                  
+			                      <option ng-repeat="u in user" value="{{u.userID}}">{{u.username}}</option>            
 			                    </select>
 							</div>
 						</div>
-						
-						
-						
-				</div>
-				
-				
-				
-
-			</form>
+					</div>
+				</form>
+			
 			</div>
-			<!-- /.box-body -->
 			<div class="box-footer"></div>
-			<!-- /.box-footer-->
 		</div>
-		
-		<!-- /.box -->
-
-
 	</section>
-	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-
-
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 

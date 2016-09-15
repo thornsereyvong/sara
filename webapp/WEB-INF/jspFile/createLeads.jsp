@@ -82,7 +82,7 @@ $(document).ready(function() {
 					},
 					stringLength: {
 						max: 100,
-						message: 'The must be less than 100 characters long.'
+						message: 'The Campaign must be less than 100 characters long.'
 					}
 				}
 			},
@@ -153,6 +153,9 @@ $(document).ready(function() {
 			},
 			lea_accountName: {
 				validators: {
+					notEmpty: {
+						message: 'The company name is required and can not be empty!'
+					},
 					stringLength: {
 						max: 255,
 						message: 'The Company must be less than 255 characters long.'
@@ -231,100 +234,67 @@ $(document).ready(function() {
 						message: 'The description must be less than 1000 characters long.'
 					}
 				}
+			},
+			lea_status: {
+				validators: {
+					notEmpty: {
+						message: 'The status is required and can not be empty!'
+					}
+				}
 			}
+			
+			
+			
 		}
 	}).on('success.form.bv', function(e) {
-		var currentDate = new Date();
-		var day = currentDate.getDate();
-		var month = currentDate.getMonth() + 1;
-		var year = currentDate.getFullYear();
+				
+		var frmDataLead = {
+				"salutation": getValueStringById("lea_salutation"),
+			    "firstName": getValueStringById("lea_firstName"),
+			    "lastName": getValueStringById("lea_lastName"),
+			    "title": getValueStringById("lea_title"),
+			    "department": getValueStringById("lea_department"),
+			    "phone": getValueStringById("lea_phone"),
+			    "mobile": getValueStringById("lea_mobilePhone"),
+			    "website": getValueStringById("lea_website"),
+			    "accountName": getValueStringById("lea_accountName"),
+			    "no":  getValueStringById("lea_no"),
+			    "street": getValueStringById("lea_street"),
+			    "village": getValueStringById("lea_village"),
+			    "commune": getValueStringById("lea_commune"),
+			    "district": getValueStringById("lea_district"),
+			    "city": getValueStringById("lea_city"),
+			    "state": getValueStringById("lea_state"),
+			    "country": getValueStringById("lea_country"),
+			    "description": getValueStringById("lea_description"),
+			    "status": getJsonById("statusID","lea_status","int"),
+			    "industry": getJsonById("industID","lea_industry","int"),
+			    "source": getJsonById("sourceID","lea_source","int"),
+			    "campaign": getJsonById("campID","lea_ca","str"),
+			    "assignTo": getJsonById("userID","lea_assignTo","str"),
+			    "createBy": $.session.get("parentID"),
+			    "email": getValueStringById("lea_email")
+		};
 
-
-		var status = "";
-		
-		if($("#lea_status").val()  != ""){
-			status = {"statusID": $("#lea_status").val()};
-		}else{
-			status = null;
-		}
-
-		var source = "";
-		
-		if($("#lea_source").val()  != ""){
-			source = {"sourceID": $("#lea_source").val()};
-		}else{
-			source = null;
-		}
-
-		var industry = "";
-		
-		if($("#lea_industry").val()  != ""){
-			industry = {"industID": $("#lea_industry").val()};
-		}else{
-			industry = null;
-		}
-
-		var camp = "";
-		
-		if($("#lea_ca").val()  != ""){
-			camp = {"campID": $("#lea_ca").val()};
-		}else{
-			camp = null;
-		}
-
-		var ato = "";
-		
-		if($("#lea_assignTo").val()  != ""){
-			ato = {"userID": $("#lea_assignTo").val()};
-		}else{
-			ato = null;
-		}
-
-		
-		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/lead/add",
 			type : "POST",
-			data : JSON.stringify({
-				"salutation": $("#lea_salutation").val(),
-			    "firstName": $("#lea_firstName").val(),
-			    "lastName": $("#lea_lastName").val(),
-			    "title": $("#lea_title").val(),
-			    "department": $("#lea_department").val(),
-			    "phone": $("#lea_phone").val(),
-			    "mobile": $("#lea_mobilePhone").val(),
-			    "website": $("#lea_website").val(),
-			    "accountName": $("#lea_accountName").val(),
-			    "no":  $("#lea_no").val(),
-			    "street": $("#lea_street").val(),
-			    "village": $("#lea_village").val(),
-			    "commune": $("#lea_commune").val(),
-			    "district": $("#lea_district").val(),
-			    "city": $("#lea_city").val(),
-			    "state": $("#lea_state").val(),
-			    "country": $("#lea_country").val(),
-			    "description": $("#lea_description").val(),
-			    "status": status,
-			    "industry": industry,
-			    "source": source,
-			    "campaign": camp,
-			    "assignTo": ato,
-			    "createBy": $.session.get("parentID"),
-			    "createDate":  year+"-"+month+"-"+day,
-			    "email": $("#lea_email").val()
-			    }),	
+			data : JSON.stringify(frmDataLead),	
 			beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
 					    xhr.setRequestHeader("Content-Type", "application/json");
 					    },
 			success:function(data){
-					$("#form-leads").bootstrapValidator('resetForm', 'true');
-					$('#form-leads')[0].reset();
+					
 					$("#lea_assignTo").select2("val","");
 					$("#lea_ca").select2("val","");	
 					$("#lea_industry").select2("val","");	
 					$("#lea_source").select2("val","");	
-					$("#lea_status").select2("val","");		
+					$("#lea_status").select2("val","");	
+					
+					$("#form-leads").bootstrapValidator('resetForm', 'true');
+					$('#form-leads')[0].reset();
+					
 					swal({
 	            		title:"Success",
 	            		text:"User have been created new Lead!",
@@ -358,23 +328,8 @@ padding-right: 10px;
 </style>
 
 	<section class="content">
-
-		<!-- Default box -->
-		
 		<div class="box box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-			</div>
+			
 			<div class="box-body">
 			
 			<form method="post" id="form-leads">
@@ -384,227 +339,221 @@ padding-right: 10px;
 				<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-leads"> <i class="fa fa-reply"></i> Back </a>
 
 				<div class="clearfix"></div>
-
-				<div class="col-sm-2">
-					<h4>Overview</h4>
-				</div>
-
-				<div class="col-sm-12">
-					<hr style="margin-top: 3px;" />
-				</div>
-
+				<div class="col-sm-2"><h4>Overview</h4></div>
+				<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 				<div class="row">
 					<div class="col-sm-12">
-					<div class="col-sm-6">
 						<div class="col-sm-6">
-							<label class="font-label">First Name <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-	                            <div class="input-group">
-	                            	<span class="input-group-btn">
-		                                 <select class="btn" style="height: 34px; width: 75px;text-align:center" name="lea_salutation" id="lea_salutation">		                                      
-		                                     <option value="Mr.">Mr.</option>
-		                                     <option value="Ms.">Ms.</option>
-		                                     <option value="Mrs.">Mrs.</option>
-		                                     <option value="Dr.">Dr.</option>
-		                                     <option value="Prof.">Prof.</option>
-		                                  </select>
-									</span>
-									<input type="text" name="lea_firstName" class="form-control" id="lea_firstName">
+							<div class="col-sm-6">
+								<label class="font-label">First Name <span class="requrie">(Required)</span></label>
+								<div class="form-group">
+		                            <div class="input-group">
+		                            	<span class="input-group-btn">
+			                                 <select class="btn" style="height: 34px; width: 75px;text-align:center" name="lea_salutation" id="lea_salutation">		                                      
+			                                     <option value="Mr.">Mr.</option>
+			                                     <option value="Ms.">Ms.</option>
+			                                     <option value="Mrs.">Mrs.</option>
+			                                     <option value="Dr.">Dr.</option>
+			                                     <option value="Prof.">Prof.</option>
+			                                  </select>
+										</span>
+										<input type="text" name="lea_firstName" class="form-control" id="lea_firstName">
+									</div>
+								</div>	
+							</div>
+							
+							<div class="col-sm-6">
+								<label class="font-label">Last Name <span class="requrie">(Required)</span></label>
+								<div class="form-group">
+									<input type="text" class="form-control" id="lea_lastName" name="lea_lastName">
 								</div>
-							</div>	
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-sm-6">
+								<label class="font-label">Company Name <span class="requrie">(Required)</span></label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_accountName" name="lea_accountName">
+								</div>	
+							</div>
+							<div class="col-sm-6">
+								<label class="font-label">Title </label>
+								<div class="form-group">
+									<input type="text" class="form-control" id="lea_title" name="lea_title">
+								</div>	
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-sm-6">
+								<label class="font-label">Department </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_department" name="lea_department">
+								</div>
+							</div>						
 						</div>
-						
 						<div class="col-sm-6">
-							<label class="font-label">Last Name <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<input type="text" class="form-control" id="lea_lastName" name="lea_lastName">
+							<div class="col-sm-6">
+								<label>Phone :</label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_phone" name="lea_phone">
+								</div>	
+							</div>
+							<div class="col-sm-6 ">
+								<label class="font-label">Mobile Phone </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_mobilePhone" name="lea_mobilePhone">
+								</div>	
+							</div>
+							<div class="col-sm-6">
+								<label class="font-label">Website </label>
+								<div class="form-group">
+									<input type="url" placeholder="http://www.example.com" class="form-control" id="lea_website" name="lea_website">
+								</div>	
+							</div>
+							<div class="col-sm-6">
+								<label class="font-label">Email </label>
+								<div class="form-group">
+									<input type="email"  class="form-control" id="lea_email" name="lea_email">
+								</div>	
 							</div>
 						</div>
-						
-						<div class="clearfix"></div>
-						<div class="col-sm-6">
-							<label class="font-label">Title </label>
-							<div class="form-group">
-								<input type="text" class="form-control" id="lea_title" name="lea_title">
-							</div>	
-						</div>
+						<div class="col-sm-12">
+							<div class="col-sm-12">
+								<label class="font-label">Description </label>
+								<div class="form-group">
+									<textarea  rows="3" cols="" name="lea_description" id="lea_description"
+										class="form-control"></textarea>
+								</div>
+							</div>
+						</div>		
+					</div>
 					
-						<div class="col-sm-6">
-							<label class="font-label">Department </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_department" name="lea_department">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Company Name </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_accountName" name="lea_accountName">
-							</div>	
-						</div>
-						
-
-						
-					</div>
-
-					<div class="col-sm-6">
-						<div class="col-sm-6">
-							<label>Phone :</label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_phone" name="lea_phone">
-							</div>	
-						</div>
-						<div class="col-sm-6 ">
-							<label class="font-label">Mobile Phone </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="lea_mobilePhone" name="lea_mobilePhone">
-							</div>	
-						</div>
-						<div class="col-sm-6">
-							<label class="font-label">Website </label>
-							<div class="form-group">
-								<input type="url" placeholder="http://www.example.com" class="form-control" id="lea_website" name="lea_website">
-							</div>	
-						</div>
-						<div class="col-sm-6">
-							<label class="font-label">Email </label>
-							<div class="form-group">
-								<input type="email"  class="form-control" id="lea_email" name="lea_email">
-							</div>	
-						</div>
-					</div>
-				<div class="clearfix"></div>
-				</div>
 				</div>
 				
-				<div class="clearfix"></div>
 				
-				<div class="col-sm-2"><h4>Address </h4></div>
-				
-				<div class="col-sm-12">
-						<hr style="margin-top: 3px;" />
-				</div>
+				<div class="clearfix"></div>				
+				<div class="col-sm-2"><h4>Address </h4></div>				
+				<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 				<div class="row">
-				<div class="col-sm-12">
-				<div class="col-sm-6">
-				
-					<div class="col-sm-6">
-						<label class="font-label">No </label>
-						<div class="form-group">
-							<input type="text"  class="form-control" id="lea_no" name="lea_no">
-						</div>	
-					</div>
-						
-					<div class="col-sm-6">
-						<label class="font-label">Street </label>
-						<div class="form-group">
-							<input type="text"  class="form-control" id="lea_street" name="lea_street">
-						</div>	
-					</div>
-						
-					<div class="col-sm-6">
-						<label class="font-label">Village </label>
-						<div class="form-group">
-							<input type="text"  class="form-control" id="lea_village" name="lea_village">
-						</div>
-					</div>
-						
-					<div class="col-sm-6">
-						<label class="font-label">Commune </label>
-						<div class="form-group">
-							<input type="text"  class="form-control" id="lea_commune" name="lea_commune">
-						</div>
-					</div>
-						
 					<div class="col-sm-12">
-						<label class="font-label">Description </label>
-						<div class="form-group">
-							<textarea style="height: 120px" rows="" cols="" name="lea_description" id="lea_description"
-								class="form-control"></textarea>
+						<div class="col-sm-6">
+						
+							<div class="col-sm-6">
+								<label class="font-label">No </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_no" name="lea_no">
+								</div>	
+							</div>
+								
+							<div class="col-sm-6">
+								<label class="font-label">Street </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_street" name="lea_street">
+								</div>	
+							</div>
+								
+							<div class="col-sm-6">
+								<label class="font-label">Village </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_village" name="lea_village">
+								</div>
+							</div>
+								
+							<div class="col-sm-6">
+								<label class="font-label">Commune </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_commune" name="lea_commune">
+								</div>
+							</div>
+								
+							
 						</div>
-					</div>
-				</div>
-				<div class="col-sm-6">
-					<div class="col-sm-6">
-						<label class="font-label">District </label>
-						<div class="form-group">
-							<input type="text"  class="form-control" id="lea_district" name="lea_district">
-						</div>	
-					</div>
-					
-					<div class="col-sm-6">
-						<label class="font-label">City </label>
-						<div class="form-group">
-							<input type="text"  class="form-control" id="lea_city" name="lea_city">
-						</div>	
-					</div>
-					
-					<div class="col-sm-6">
-						<label class="font-label">State </label>
-						<div class="form-group">
-							<input type="text"  class="form-control" id="lea_state" name="lea_state">
+						<div class="col-sm-6">
+							<div class="col-sm-6">
+								<label class="font-label">District </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_district" name="lea_district">
+								</div>	
+							</div>
+							
+							<div class="col-sm-6">
+								<label class="font-label">City </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_city" name="lea_city">
+								</div>	
+							</div>
+							
+							<div class="col-sm-6">
+								<label class="font-label">State </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_state" name="lea_state">
+								</div>
+							</div>
+							
+							<div class="col-sm-6">
+								<label class="font-label">Country </label>
+								<div class="form-group">
+									<input type="text"  class="form-control" id="lea_country" name="lea_country">
+								</div>	
+							</div>
 						</div>
+												
 					</div>
-					
-					<div class="col-sm-6">
-						<label class="font-label">Country </label>
-						<div class="form-group">
-							<input type="text"  class="form-control" id="lea_country" name="lea_country">
-						</div>	
-					</div>
-				</div>
-			  </div>
-			</div>	
+				</div>		
+				
+						
+						
 			<div class="clearfix"></div>
 			<div class="col-sm-2"><h4>More Information </h4></div>
 			<div class="col-sm-12"> <hr style="margin-top: 3px;" />
 			</div>
 			<div class="row" data-ng-init = "addLeadOnStartup('${SESSION}')">
 				<div class="col-sm-12">
-				<div class="col-sm-6">
-					<div class="col-sm-6"">
-						<label class="font-label">Status </label>
-						<div class="form-group">
-							<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
-								<option value="">-- SELECT Status --</option>
-								<option ng-repeat="u in lead_status" value="{{u.statusID}}">{{u.statusName}}</option> 
-							</select>
+					<div class="col-sm-6">
+						<div class="col-sm-6">
+							<label class="font-label">Campaign <span class="requrie">(Required)</span></label>
+							<div class="form-group">
+								<select class="form-control select2" name="lea_ca" id="lea_ca" style="width: 100%;">
+									<option value="">-- SELECT Campaign --</option>
+									<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
+								</select>
+							</div>
 						</div>
-					</div>
+						<div class="col-sm-6"">
+							<label class="font-label">Status <span class="requrie">(Required)</span></label>
+							<div class="form-group">
+								<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
+									<option value="">-- SELECT Status --</option>
+									<option ng-repeat="u in lead_status" value="{{u.statusID}}">{{u.statusName}}</option> 
+								</select>
+							</div>
+						</div>
+							
 						
-					<div class="col-sm-6">
-						<label class="font-label">Industry </label>
-						<div class="form-group" >
-							<select class="form-control select2" name="lea_industry" id="lea_industry" style="width: 100%;">
-								<option value="">-- SELECT Industry --</option>
-								<option ng-repeat="u in lead_industry" value="{{u.industID}}">{{u.industName}}</option> 
-							</select>
-						</div>
 					</div>
+				  	<div class="col-sm-6">		
+						<div class="col-sm-6">
+							<label class="font-label">Source </label>
+							<div class="form-group">
+								<select class="form-control select2" name="lea_source" id="lea_source" style="width: 100%;">
+									<option value="">-- SELECT Source --</option>
+									<option ng-repeat="u in lead_source" value="{{u.sourceID}}">{{u.sourceName}}</option> 
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<label class="font-label">Industry </label>
+							<div class="form-group" >
+								<select class="form-control select2" name="lea_industry" id="lea_industry" style="width: 100%;">
+									<option value="">-- SELECT Industry --</option>
+									<option ng-repeat="u in lead_industry" value="{{u.industID}}">{{u.industName}}</option> 
+								</select>
+							</div>
+						</div>
+						
+					</div>	
 				</div>
-			  	<div class="col-sm-6">		
-					<div class="col-sm-6">
-						<label class="font-label">Source </label>
-						<div class="form-group">
-							<select class="form-control select2" name="lea_source" id="lea_source" style="width: 100%;">
-								<option value="">-- SELECT Source --</option>
-								<option ng-repeat="u in lead_source" value="{{u.sourceID}}">{{u.sourceName}}</option> 
-							</select>
-						</div>
-					</div>
-					
-					<div class="col-sm-6">
-						<label class="font-label">Campaign <span class="requrie">(Required)</span></label>
-						<div class="form-group">
-							<select class="form-control select2" name="lea_ca" id="lea_ca" style="width: 100%;">
-								<option value="">-- SELECT Campaign --</option>
-								<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
-							</select>
-						</div>
-					</div>
-				</div>	
-			</div>
 			</div>	
+			
 			<div class="clearfix"></div>
 			<div class="col-sm-2"><h4>Other </h4></div>
 			<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
@@ -620,24 +569,21 @@ padding-right: 10px;
 			            	</select>
 						</div>
 					</div>
+					<div class="col-sm-6">
+						<label class="font-label">Image :</label>
+						<div class="form-group">
+							<input style="width: 100%;" accept="image/*" type="file" name="file" id="fileLogo" class="btn btn-default">
+						</div>
+					</div>	
 				</div>
 				</div>
 			</div>
+			
 		</form>
 	</div>
-	<!-- /.box-body -->
 	<div class="box-footer"></div>
-			<!-- /.box-footer-->
 </div>
-		
-		<!-- /.box -->
 </section>
-	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 

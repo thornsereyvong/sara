@@ -75,19 +75,6 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	
 }]);
 
-//alert($.session.get("parentID"));
-
-</script>
-<script>
-	$(document).ready(function() {
-		$('.table-responsive').on('show.bs.dropdown', function () {
-		     $('.table-responsive').css( "overflow", "inherit" );
-		});
-	
-		$('.table-responsive').on('hide.bs.dropdown', function () {
-		     $('.table-responsive').css( "overflow", "auto" );
-		}); 
-	}); 
 </script>
 <div class="content-wrapper" ng-app="campaign" ng-controller="campController">
 	<!-- Content Header (Page header) -->
@@ -105,30 +92,10 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		
 		<div class="box box-danger">
 			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-				<div class="col-sm-12">
-					<hr style="margin-bottom: 5px;margin-top: 8px;" />
-				 </div> 
 				<div style="background: #fff;margin-top: 15px;">
 				 <div class="col-sm-12">
-				 	<a href="${pageContext.request.contextPath}/create-case" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
-				 	<a href="${pageContext.request.contextPath}/view-cases" class="btn btn-info btn-app" ><i class="fa fa-clone"	aria-hidden="true"></i> View</a>
+				 	<a href="${pageContext.request.contextPath}/create-case" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>				 	
 				 </div>
-				 
-				  
-				  <div class="col-sm-12">
-					<hr style="margin-bottom: 0;margin-top: 0px;" />
-				 </div> 
 			</div>
 			</div>
 			

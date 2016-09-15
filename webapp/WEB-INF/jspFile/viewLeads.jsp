@@ -28,36 +28,13 @@ var eventIdForEdit = null;
 var leadStatusData = ["New", "Assigned", "In Process", "Converted", "Dead"];
 var startupCallForm = [];
 
-
-var postlist =  {
-	   				posts: [
-		            	{
-		                "text":"text",
-		                "date":null,
-		                "like":0,
-		                "comments":[
-		                    {"comment":"Yorum 1", "like":100},
-		                    {"comment":"Yorum 2", "like":200},
-		                    {"comment":"Yorum 3", "like":300}
-		                ]
-			            },
-			            {
-			                "text":"text2",
-			                "date":null,
-			                "like":0,
-			                "comments":[
-			                    {"comment":"Yorum 4", "like":500},
-			                    {"comment":"Yorum 5", "like":600}
-			                ]
-			            }
-		            ]
-		        };
-
-
-
+var finStartupCollab = false;
 
 app.controller('viewLeadController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
+	$scope.collaborates = [];
+	$scope.tags = [];
+	$scope.username = username; 
 	angular.element(document).ready(function () {		
 		$("#lea_salutation option[value='"+response.LEAD.salutation+"']").attr('selected','selected');
 		$("#lea_status").select2('val',response.LEAD.statusID);
@@ -96,46 +73,8 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 			$scope.listAllEmailByLeadId = function(){	
 				$scope.listAllEmailByLead = [];	
 			}
-			
-			
-			
-			
-			//response.COLLABORATION
-			
-			//$scope.displayCollaboration(postlist);
-			//dis(postlist)
-			
-			$scope.collaborates = [
-						      {
-						    	  "postId" :1,
-						          "text":"text",
-						          "like":10,
-						          "deleteStatus" : true,
-						          "status" : true,
-						          "comments":[
-						              {"comId" :1 ,"comment":"Yorum 1", "status":true},
-						              {"comId" :2 ,"comment":"Yorum 2", "status": false},
-						              {"comId" :3 ,"comment":"Yorum 3", "status":false}
-						          ]
-						      },
-						      {
-						    	  "postId" :2,
-						          "text":"text2",
-						          "date":null,
-						          "deleteStatus" : true,
-						          "like":1,
-						          "status" : false,
-						          "comments":[
-				                      {"comId" :4 ,"comment":"Yorum 4", "status":false},
-						              {"comId" :5 ,"comment":"Yorum 5", "status": true},
-						              {"comId" :6 ,"comment":"Yorum 6", "status":false}
-						          ]
-						      }
-						    ];
-			
-			
-			//$scope.collaborates = postlist;
 		
+			//$scope.listCollabByLeadByUser();	
 	}
 	
 	
@@ -147,18 +86,6 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	
 	// Tab Collaborate***************************
 	
-	$scope.StartupFormCollab = function(){
-		$http.get("${pageContext.request.contextPath}/user/list/tags").success(function(response){
-			$scope.listTags = response.DATA;
-		});
-	}
-	
-	$scope.displayCollaboration = function(data){
-		alert(data.posts.length)
-		$scope.collaborates = data;
-	}
-	
-	
 	$scope.listCollabByLeadByUser = function(){
 		$http({
 		    method: 'POST',
@@ -167,9 +94,10 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"leadId":leadId, "username":username}
+		    data: {"moduleId":leadId, "username":username}
 		}).success(function(response) {
-			$scope.displayCollaboration(response.DATA);
+			$scope.collaborates = response.DATA;
+			$scope.tags = response.TAG_TO;
 		});	
 	}
 	
@@ -183,37 +111,44 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$('#frmCollab').submit();
 	}
 	
-	
-	$scope.contacts = ["1", "2"];		  
-	
-	$scope.addCollabComment = function(postId){	
-		//alert(postId)		
-	    if(this.collabCommetText) {
-	      $scope.contacts.push($scope.collabCommetText);
-	      $scope.collabCommetText = "";
-	      $("#txtComment").val("");
-		}
-	}
-	
+	$scope.postLike = function(key,collabId){		
+		var status = $scope.collaborates[key].checkLike;
+		    status = (status == true) ? false : true ;	   
+		$http({
+		    method: 'POST',
+		    url: "${pageContext.request.contextPath}/collaborate/like",
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {"collapId":collabId, "username":username,"likeStatus":status.toString()}
+		}).success(function(response) {	alert(status)
+			$scope.collaborates[key].checkLike = status;		
+		});
+	} 
+		
 	
 	$scope.newcomment = {};
-    $scope.postCommand = function(key){
-		$scope.collaborates[key].comments.push($scope.newcomment[key]);
-      	$scope.newcomment = {};
-    };
-	
-    $scope.postLike = function(key) {
-        var status = $scope.collaborates[key].status;
-        status = ($scope.collaborates[key].status == true) ? false : true ;
-        $scope.collaborates[key].status = status;
+    $scope.postCommand = function(key,colId){
+    	var txtComment = $.trim($scope.newcomment[key].comment);
+    	if(txtComment != ""){
+    		$http({
+    		    method: 'POST',
+    		    url: "${pageContext.request.contextPath}/collaborate/add/comment",
+    		    headers: {
+    		    	'Accept': 'application/json',
+    		        'Content-Type': 'application/json'
+    		    },
+    		    data: {"postId":colId, "username":username,"comment":txtComment}
+    		}).success(function(response) {					
+    			$scope.collaborates[key].details.push(response.COMMENTS);
+    	      	$scope.newcomment = {};			
+    		});
+    	}     	
     };
 	
     
-    $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){
-    	
-    	//alert("comment: "+keyChild+"/"+comId)
-    	
-    	    	
+    $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
     	SweetAlert.swal({
             title: "Are you sure?",
             text: "This comment will not be able to recover!", 
@@ -224,36 +159,30 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
             closeOnConfirm: false, 
             closeOnCancel: false
         }, 
-        function(isConfirm){      
-        	
-        	$scope.collaborates[keyParent].comments.splice(keyChild, 1);
-        	
-        	SweetAlert.swal({
-        		title:"Deleted",
-        		text:"The comment have been deleted!",
-        		type:"success",  
-        		timer: 2000,   
-        		showConfirmButton: false
-			});  
-      		/*  $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId)
-	            .success(function(){
-	            		SweetAlert.swal({
-			            		title:"Deleted",
-			            		text:"The post have been deleted!",
-			            		type:"success",  
-			            		timer: 2000,   
-			            		showConfirmButton: false
-	            		});            		
-	            		$scope.collaborates.splice(key, 1);
-		   });	 */			
+        function(isConfirm){ 
+        	  if(isConfirm){        		
+        		  $http.delete("${pageContext.request.contextPath}/collaborate/comment/remove/"+comId).success(function(){
+	        		  SweetAlert.swal({
+	              		title:"Deleted",
+	              		text:"The comment have been deleted!",
+	              		type:"success",  
+	              		timer: 2000,   
+	              		showConfirmButton: false
+      			  	  }); 	        		 
+        		  });
+        		  $scope.collaborates[keyParent].details.splice(keyChild, 1);
+        	  }else{
+        		  SweetAlert.swal({
+  	                title:"Cancelled",
+  	                text:"This comment is safe!",
+  	                type:"error",
+  	                timer:2000,
+  	                showConfirmButton: false});
+        	  }        	        	        	       		
         });
     }
     
 	$scope.btnDeleteCollabPost = function(key,postId){
-    	
-    	//alert("post: "+key+"/"+postId)
-    	//alert($scope.collaborates[key].deleteStatus);
-
     	SweetAlert.swal({
             title: "Are you sure?",
             text: "This post will not be able to recover!", 
@@ -265,37 +194,27 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
             closeOnCancel: false
         }, 
         function(isConfirm){      
-        	$scope.collaborates.splice(key, 1);
-        	SweetAlert.swal({
-        		title:"Deleted",
-        		text:"The post have been deleted!",
-        		type:"success",  
-        		timer: 2000,   
-        		showConfirmButton: false
-			});  
-      		/*  $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId)
-	            .success(function(){
-	            		SweetAlert.swal({
-			            		title:"Deleted",
-			            		text:"The post have been deleted!",
-			            		type:"success",  
-			            		timer: 2000,   
-			            		showConfirmButton: false
-	            		});            		
-	            		$scope.collaborates.splice(key, 1);
-		   });	 */			
-        });
-    	
-    	
-    	
-    }
-    
-    
-	$scope.alertComfirm = function(){		
-		
-	};
-	
-	
+        	 if(isConfirm){
+	       		  $http.delete("${pageContext.request.contextPath}/collaborate/delete/"+postId).success(function(){
+		        		  SweetAlert.swal({
+		              		title:"Deleted",
+		              		text:"The post have been deleted!",
+		              		type:"success",  
+		              		timer: 2000,   
+		              		showConfirmButton: false
+	     			  	  }); 
+		        		  $scope.collaborates.splice(key, 1);
+	       		  }); 
+	       	  }else{
+	       		  SweetAlert.swal({
+	 	                title:"Cancelled",
+	 	                text:"This post is safe!",
+	 	                type:"error",
+	 	                timer:2000,
+	 	                showConfirmButton: false});
+	       	  }         			
+        });    	    	    	
+    }	
 	
 	// End Collaborate***************************
 	
@@ -668,7 +587,6 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	}
 	$scope.listDataEventByRalateType = function(){
 		$http.get("${pageContext.request.contextPath}/event/list-by-lead/"+leadId).success(function(response){	
-			dis(response)
 			$scope.listAllEventByLeadId(response.EVENTS);	
 		});	
 	}
@@ -1147,7 +1065,7 @@ function addDataToDetailLead(){
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
-							src="${pageContext.request.contextPath}/resources/images/user1-128x128.jpg"
+							src="${pageContext.request.contextPath}/resources/images/module/AV.png"
 							alt="User Avatar">
 					</div>
 					<div class="box-footer">
@@ -1565,25 +1483,24 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="collaborate" > <!-- data-ng-init="displayCollaboration()" -->
+										<div class="tab-pane" id="collaborate" data-ng-init="listCollabByLeadByUser()">
 
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
-												<form id="frmCollab" data-ng-init="StartupFormCollab()">
+												<form id="frmCollab">													
+													<div class="col-sm-12"  style="padding-right: 0px; padding-left: 0px;">
+														<div class="form-group">
+															<label>Post <span class="requrie">(Required)</span></label> 
+															<textarea rows="3" cols="" name="collabPostDescription" id="collabPostDescription" class="form-control" placeholder=""></textarea>
+														</div>
+													</div>
 													<div class="col-sm-12"  style="padding-right: 0px; padding-left: 0px;">
 														<div class="form-group">
 															<label>Tags </label> 
 															<select  class="form-control" multiple name="collabTags" id="collabTags" style="width: 100%;">
-																<option ng-repeat="tag in listTags" value="{{tag.userID}}">{{tag.username}}</option>																
+																<option ng-repeat="tag in tags" value="{{tag.username}}">{{tag.username}}</option>																
 															</select>
 														</div>
 													</div>
-													<div class="col-sm-12"  style="padding-right: 0px; padding-left: 0px;">
-														<div class="form-group">
-															<label>Description <span class="requrie">(Required)</span></label> 
-															<textarea rows="3" cols="" name="collabPostDescription" id="collabPostDescription" class="form-control" placeholder=""></textarea>
-														</div>
-													</div>
-													
 												</form>
 												<div class="col-sm-12"  style="padding-right: 0px; padding-left: 0px;">
 													<button style="margin-top: 10px; margin-left: 10px;" ng-click="resetFrmCollab()" type="button" class="btn btn-danger pull-right">Reset</button>
@@ -1594,47 +1511,50 @@ function addDataToDetailLead(){
 											<br>
 											<!-- content collab -->
 											
-											<div class="post clearfix" ng-repeat="(key_post,collab) in collaborates">
+											<div class="post clearfix" ng-repeat="(key_post,collab) in collaborates track by $index">
 												<div class="user-block">
 													<img class="img-circle img-bordered-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image"> 
 													<span class="username"> 
-														<a href="#">{{collab.text}}</a> <a style="color: #999;font-size: 13px;">on 10-09-2016 12:06 pm</a>
-														<span ng-if="collab.deleteStatus == true" ng-click="btnDeleteCollabPost(key_post,collab.postId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
+														<a href="#">{{collab.colUser}}</a> <a style="color: #999;font-size: 13px;">on {{collab.createDate}}</a>
+														<span ng-if="collab.colOwn == 'true'" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 													</span> 													
-													<span class="description"><i class="fa fa-tags"></i> sereyvong, vichet, chenda and A Kveak</span>
+													<span class="description"><i class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
 												</div>
-												<p>{{collab.text}} description........................................................................................</p>																													
+												<p>{{collab.colDes}}</p>																													
 												
 												<ul class="list-inline">
-													<li ng-click="postLike(key_post)">
+													<li>
 														<span href="#" class="link-black text-sm ">																													
-															<span ng-if="collab.status == true"><button class="btn btn-default btn-sm"><i  class="fa fa-thumbs-up like-btn"></i></button>&nbsp;&nbsp;&nbsp;You  {{collab.like <= 0 ? "" : collab.like==1 ? "and 1 other" : "and "+collab.like+" others"}}</span>
-															<span ng-if="collab.status == false"><button class="btn btn-default btn-sm"><i  class="fa fa-thumbs-o-up unlike-btn"></i></button>&nbsp;&nbsp;&nbsp;{{collab.like <= 0 ? "" : collab.like}}</span> 														
+															<span ng-if="collab.checkLike == true"><button ng-click="postLike(key_post,collab.colId)" class="btn btn-default btn-sm"><i  class="fa fa-thumbs-up like-btn"></i></button>&nbsp;&nbsp;&nbsp;You  {{collab.like <= 0 ? "" : collab.like==1 ? "and 1 other" : "and "+collab.like+" others"}}</span>
+															<span ng-if="collab.checkLike == false"><button ng-click="postLike(key_post,collab.colId)" class="btn btn-default btn-sm"><i  class="fa fa-thumbs-o-up unlike-btn"></i></button>&nbsp;&nbsp;&nbsp;{{collab.like <= 0 ? "" : collab.like}}</span> 														
 														</span>
 													</li>
 													<li class="pull-right">
-														<a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> Comments {{collab.comments.length <= 0 ? "" : "("+collab.comments.length+")"}}</a>
+														<a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> <span> Comments{{collab.details.length <= 0 ? "" : "("+collab.details.length+")"}}</span></a>
 													</li>
 												</ul>
 												
 												
 												<div style="padding-top: 15px;" class="box-footer box-comments">													
-													<div class="box-comment" ng-repeat="(key_comment, com) in collab.comments">
+													<div class="box-comment" ng-repeat="(key_comment, com) in collab.details">
 														<img class="img-circle img-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image">
 														<div class="comment-text">
 															<span class="username"> 
-																<span> {{com.comment}} <span class="text-muted"> on 10-09-2016 12:06 pm</span></span> 
-																<span ng-if="com.status == true" ng-click="btnDeleteCollabCom(key_post, key_comment,com.comId)"  class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
+																<span> {{com.username}} <span class="text-muted"> on {{com.formatCreateDate}}</span></span> 
+																<span ng-if="com.username == username" ng-click="btnDeleteCollabCom(key_post, key_comment,com.commentId)"  class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 															</span>
-															{{com.comment}} comment........................................................................................
+															{{com.comment}}
 														</div>
 													</div>
-												</div>												
-												<form id="" ng-submit="postCommand(key_post)">
+												</div>
+												
+																							
+												<form id="" ng-submit="postCommand(key_post, collab.colId)">
 													<div class="form-group">
 														<input ng-model="newcomment[key_post].comment" id="txtComment"  class="form-control input-sm" type="text" placeholder="Type a comment">
 													</div>
 												</form>
+												
 											</div>
 											
 											
@@ -1677,7 +1597,7 @@ function addDataToDetailLead(){
 														<span class="time"><i class="fa fa-clock-o"></i>
 															&nbsp;{{notePerDate.noteTime}}</span>
 														<h3 class="timeline-header">
-															{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
+															{{note.noteSubject}} <a style="font-size: 12px;">by {{note.noteCreateBy}}</a>
 														</h3>
 														<div class="timeline-body">{{note.noteDes}}</div>
 														<div class="timeline-footer">
@@ -1942,7 +1862,7 @@ function addDataToDetailLead(){
 														style="display: none;">
 														<button type="button" class="btn btn-primary"
 															ng-click="saveEditDetailLead()">Save</button>
-														<button class="btn btn-danger"
+														<button type="button" class="btn btn-danger"
 															ng-click="cancelEditDetailLead()">Cancel</button>
 													</div>
 												</form>
@@ -2022,7 +1942,6 @@ function addDataToDetailLead(){
 										<label>Status <span class="requrie">(Required)</span></label>
 										<select class="form-control select2" name="callStatus"
 											id="callStatus" style="width: 100%;">
-											<option value="">--SELECT A Status</option>
 											<option ng-repeat="st in callStatusStartup"
 												value="{{st.callStatusId}}">{{st.callStatusName}}</option>
 										</select>
@@ -2203,7 +2122,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input value="" name="taskStartDate" id="taskStartDate" type="text" class="form-control task-date pull-right active">
+										<input value="" name="taskStartDate" id="taskStartDate" type="text" class="form-control task-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -2214,7 +2133,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="taskEndDate" id="taskEndDate" type="text" class="form-control task-date pull-right active">
+										<input name="taskEndDate" id="taskEndDate" type="text" class="form-control task-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -2393,5 +2312,4 @@ function addDataToDetailLead(){
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-<script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js.mine/lead/viewLead.js"></script>

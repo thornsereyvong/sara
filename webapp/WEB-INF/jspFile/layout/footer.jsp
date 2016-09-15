@@ -40,7 +40,7 @@
    <!-- <script src="<?=$server?>admin/dist/js/pages/dashboard.js"></script>-->
     <!-- AdminLTE for demo purposes -->
     <script src="${pageContext.request.contextPath}/resources/dist/js/demo.js"></script>
-    
+     <script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
       $('.summernote').summernote({
@@ -66,6 +66,16 @@
     	
       }); 
     </script>
-   
+   <script>
+	$(document).ready(function() {
+		$('.table-responsive').on('show.bs.dropdown', function () {
+		     $('.table-responsive').css( "overflow", "inherit" );
+		});
+	
+		$('.table-responsive').on('hide.bs.dropdown', function () {
+		     $('.table-responsive').css( "overflow", "auto" );
+		}); 
+	}); 
+</script>
   </body>
 </html>
