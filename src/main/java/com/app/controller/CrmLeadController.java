@@ -40,6 +40,15 @@ public class CrmLeadController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
 	}
 	
+	// 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/convert/startup/{username}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> convertLeadStartup(@PathVariable("username") String username){	
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/convert/startup/"+username, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
+	}
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/list_all",method = RequestMethod.GET)

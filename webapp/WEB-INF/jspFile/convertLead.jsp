@@ -30,23 +30,33 @@ padding-right: 10px;
 
 var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
 var self = this;
+var leadId = "${leadId}";
+var username = "${SESSION}";
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-	$scope.listIndustry = function(){
-		$http.get("${pageContext.request.contextPath}/industry/list")
-		.success(function(response){
-				$scope.industry = response.DATA;
-			});
-		};
-$scope.listAccount = function(){
-			$http.get("${pageContext.request.contextPath}/account_type/list")
-			.success(function(response){
-					$scope.account = response.DATA;
-				});
-			};
+	$scope.startupPage = function(){
+		$http.get("${pageContext.request.contextPath}/lead/convert/startup/"+username).success(function(response){
+		
+			$scope.GROUP = response.GROUP;
+			$scope.CONTACT = response.CONTACT;
+			$scope.LEAD_STATUS = response.LEAD_STATUS;
+			$scope.INDUSTRY = response.INDUSTRY;
+			$scope.CUSTOMER = response.CUSTOMER;
+			$scope.LEAD_SOURCE = response.LEAD_SOURCE;
+			$scope.PRICE_CODE = response.PRICE_CODE;
+			$scope.ASSIGN_TO = response.ASSIGN_TO;
+			$scope.OPP_TYPES = response.OPP_TYPES;
+			$scope.CAMPAIGN = response.CAMPAIGN;
+			$scope.OPP_STAGES = response.OPP_STAGES;
+			$scope.LEAD = response.LEAD;
+			
+		});
+	}
+	
+	
 	
 }]);
 
-function listSourceID(source){
+/* function listSourceID(source){
 	$.ajax({
 		url: "${pageContext.request.contextPath}/lead_source/list",
 		method: "GET",
@@ -118,24 +128,205 @@ function listDataByCampID(){
 
 	//funcSelectCustomer("${pageContext.request.contextPath}/customer/list", "GET", "#con_customer", "Customer", result.custID);
 	
-}
+} */
 
 
 $(document).ready(function() {
-	$(".select2").select2();
-	listDataByCampID();
+	
+	
+	
+	$("#ConContact").change(function(){
+		var conId = getValueStringById("ConContact");
+		if(conId== ""){
+			$("#checkContact").prop('checked', true);
+			$('#collapseExample').collapse('show')
+		}else{
+			$("#checkContact").prop('checked', false);
+			$('#collapseExample').collapse('hide')
+		}
+	});
+	
+	$("#CustCustomer").change(function(){
+		var conId = getValueStringById("CustCustomer");
+		if(conId== ""){
+			$("#checkCustomer").prop('checked', true);
+			$('#custo').collapse('show')
+		}else{
+			$("#checkCustomer").prop('checked', false);
+			$('#custo').collapse('hide')
+		}
+	});
+	
+	/* $("#checkCustomer")
+	
+	$("#checkCustomer").change(function() {
+	    if(this.checked) {
+	    	$("#CustCustomer").select2("val","");
+	    }
+	}); */
+	
 
 	$("#btn_clear").click(function(){
 		$("#form-convert").bootstrapValidator('resetForm', 'true');
 		$('#form-convert')[0].reset();
 	});
 	
-	 $("#btn_save").click(function(){
-		$("#form-convert").submit();
-		
+	 $("#btn_save").click(function(){ alert()
+		//$("#form-convert").submit();
+		$('#frmContact').bootstrapValidator();
 	});
-		
-	$('#form-convert').bootstrapValidator({
+	
+	 $('#frmContact').bootstrapValidator({
+			message: 'This value is not valid',
+			feedbackIcons: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				con_firstName: {
+					validators: {
+						notEmpty: {
+							message: 'The first name is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The first name must be less than 255 characters long.'
+						}
+					}
+				},
+				
+				con_lastName: {
+					validators: {
+						notEmpty: {
+							message: 'The last name is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The last name must be less than 255 characters long.'
+						}
+					}
+				},
+				con_phone: {
+					validators: {
+						notEmpty: {
+							message: 'The phone is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The last name must be less than 255 characters long.'
+						}
+					}
+				},
+				con_mobilePhone: {
+					validators: {
+						
+						stringLength: {
+							max: 255,
+							message: 'The last name must be less than 255 characters long.'
+						}
+					}
+				},
+				con_title: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The title must be less than 255 characters long.'
+						}
+					}
+				},
+				con_department: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The department must be less than 255 characters long.'
+						}
+					}
+				},
+				con_email: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The email must be less than 255 characters long.'
+						}
+					}
+				}
+				,
+				con_no: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The no must be less than 255 characters long.'
+						}
+					}
+				}
+				,
+				con_street: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The street must be less than 255 characters long.'
+						}
+					}
+				}
+				,
+				con_village: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The village must be less than 255 characters long.'
+						}
+					}
+				},
+				con_commune: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The commune must be less than 255 characters long.'
+						}
+					}
+				},
+				con_district: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The district must be less than 255 characters long.'
+						}
+					}
+				},
+				con_state: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The state must be less than 255 characters long.'
+						}
+					}
+				},
+				con_city: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The city must be less than 255 characters long.'
+						}
+					}
+				},
+				con_country: {
+					validators: {
+						stringLength: {
+							max: 255,
+							message: 'The country must be less than 255 characters long.'
+						}
+					}
+				}
+			}
+		});
+	 
+	 
+	 
+	 
+	 
+	 
+	/* $('#form-convert').bootstrapValidator({
 		message: 'This value is not valid',
 		feedbackIcons: {
 			valid: 'glyphicon glyphicon-ok',
@@ -466,7 +657,7 @@ $(document).ready(function() {
 		 
 		
 	});
-
+ */
 	
 });
 
@@ -493,402 +684,545 @@ color:#2196F3;
 		</ol>
 	</section>
 
-	<section class="content">
+	<section class="content" data-ng-init="startupPage()">
 
 		<!-- Default box -->
-		<form method="POST" id="form-convert">
+		
 		<div class="box box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-				<div class="col-sm-12">
-					<hr style="margin-bottom: 5px;margin-top: 8px;" />
-				 </div> 
-				<div style="background: #fff;margin-top: 15px;">
-				
+			<div class="box-header with-border">				
+				<div style="background: #fff;margin-top: 15px;">				
 				 <div class="col-sm-12">
 				 	<a class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</a> 
 					<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
 					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-leads"> <i class="fa fa-reply"></i> Back </a>
-				 </div>
-				 
-				  
-				 
+				 </div> 
 			</div>
 			</div>
 			
 			<div class="box-body" >
-							
-					<div class="col-sm-12">
-						<div class="form-group">
-							<input type="checkbox" value="1"  class="minimal-red " checked="checked" id="checkContact" name="checkContact" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-							<label>Create Contact  *</label>
+				<div class="row">		
+					<div class="col-sm-12" style="border-bottom: 1px solid #f4f4f4;">
+						<div class="col-sm-3">					
+							<div class="form-group">
+								<input type="checkbox" value="1"  class="minimal-red " checked="checked" id="checkContact" name="checkContact" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+								<label>Create Contact Or Select Contact <span class="requrie">(Required)</span></label>						
+							</div>
 						</div>
-						<div class="collapse in" id="collapseExample" aria-expanded="true">
-						<div class="row">
-						  <div class="col-sm-12">
-						  		<form method="post" id="form-contact">
-							
-								<div class="clearfix"></div>
-				
-								<div class="col-sm-2">
-									<h4>Overview</h4>
+						<div class="col-sm-3">
+							<form id="ctrContact">
+								<div class="form-group">
+									<select class="form-control select2" name="ConContact" id="ConContact" style="width: 100%;">
+										<option value="">-- SELECT Contact --</option>
+										<option ng-repeat="u in CONTACT" value="{{u.conID}}">{{u.conFirstname}} {{u.conLastname}}</option>
+									</select>
 								</div>
-								<input type="hidden" id="lea_id">
-								<div class="col-sm-12">
-									<hr style="margin-top: 3px;" />
-								</div>
-				
-								<div class="row">
-				
-									<div class="col-sm-6">
-				
-										<div class="col-sm-6">
-							<label class="font-label">First name <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="con_firstName" id="con_firstName">
-							</div>
-						</div>
-						
-
-						<div class="col-sm-6">
-							<label class="font-label">Last name <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<input type="text" class="form-control" name="con_lastName" id="con_lastName">
-							</div>
-						</div>
-
-						<div class="col-sm-6">
-							<label>Title </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_title" name="con_title">
-							</div>
-						</div>
-						
-						
-						<div class="col-sm-6 ">
-							<label class="font-label">Department </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_department" name="con_department">
-							</div>	
-						</div>
-
-					</div>
-
-					<div class="col-sm-6">
-					
-						<div class="col-sm-6">
-							<label>Phone <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_phone" name="con_phone">
-							</div>	
-						</div>
-						
-						
-						<div class="col-sm-6">
-							<label class="font-label">Mobile phone :</label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_mobilePhone" name="con_mobilePhone">
-							</div>	
-						</div>
-							
-						<div class="col-sm-6">
-							<label class="font-label">Email :</label>
-							<div class="form-group">
-								<input type="email"  class="form-control" id="con_email" name="con_email">
-							</div>
-						</div>
-						
-
-					</div>
-					
-				
-				
-
-				</div>
-						<div class="clearfix"></div>
-				
-				<div class="col-sm-2"><h4>Address </h4></div>
-				
-				<div class="col-sm-12">
-						<hr style="margin-top: 3px;" />
-				</div>
-				<div class="row">
-				<div class="col-sm-6">
-				
-					<div class="col-sm-6">
-							<label class="font-label">No </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_no" name="con_no">
-							</div>	
-						</div>
-						
-					<div class="col-sm-6">
-							<label class="font-label">Street </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_street" name="con_street">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Village </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_village" name="con_village">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Commune </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_commune" name="con_commune">
-							</div>	
-						</div>
-						
-						
-						
-						
-				</div>
-				<div class="col-sm-6">
-						<div class="col-sm-6">
-							<label class="font-label">District </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_district" name="con_district">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">City </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_city" name="con_city">
-							</div>	
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">State</label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_state" name="con_state">
-							</div>	
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Country </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="con_country" name="con_country">
-							</div>
-						</div>
-					</div>		
-				</div>
-				
-				
-				<div class="col-sm-2"><h4>Other </h4></div>
-				
-				<div class="col-sm-12">
-						<hr style="margin-top: 3px;" />
-				</div>
-				<div class="row">
-				<div class="col-sm-12">
-
-						<div class="col-sm-3" data-ng-init="listLeadSource()">
-							<label class="font-label">Lead source </label>
-							<div class="form-group">
-								<select class="form-control select2" name="con_leadSource" id="con_leadSource" style="width:100%">
-									<option value="">-- SELECT Lead Source --</option>
-									<option ng-repeat="u in lead_source" value="{{u.sourceID}}">{{u.sourceName}}</option> 
-								</select>
-							</div>
-						</div>
-					</div> 
-										
-								</div>
-				
 							</form>
-						  </div>
-						  </div>
 						</div>
-					</div>
-					
-				<div class="col-sm-12"><hr></div>
-				<div class="">
-				<div class="col-sm-12">
-						<div class="form-group">
-							<input type="checkbox" value="1" class="minimal-red" checked="checked" id="checkCustomer"  name="checkCustomer" data-toggle="collapse" data-target="#custo" aria-expanded="true" aria-controls="custo">
-							<label>Create Customer  *</label>
-						</div>
-						<div class="collapse in" id="custo" aria-expanded="true">
+						<div class="clearfix"></div>
+						<div class="collapse in" id="collapseExample" aria-expanded="true">
 							<div class="row">
-								<div class="col-sm-6">	
-									<div class="col-sm-6">
-										<label class="font-label">Name <span class="requrie">(Required)</span></label>
-										<div class="form-group" id="name">
-											<input type="text" class="form-control" name="c_name" id="c_name">
-										</div>
-									</div>
-									
-									<div class="col-sm-6">
-										<label class="font-label">Tel <span class="requrie">(Required)</span></label>
-										<div class="form-group">
-											<input type="text" class="form-control" name="c_tel1" id="c_tel1">
-										</div>
-									</div>
-									
-									<div class="clearfix"></div>
-									<div class="col-sm-6">
-										<label class="font-label">Tel</label>
-										<div class="form-group">
-											<input type="text" class="form-control" name="c_tel2" id="c_tel2">
-										</div>
-									</div>
-									
-									<div class="col-sm-6">
-										<label class="font-label">Fax </label>
-										<div class="form-group">
-											<input type="text" class="form-control" name="c_fax" id="c_fax">
-										</div>
-									</div>
-									
-									
-								</div>
-			
-								<div class="col-sm-6">
-			
-									<div class="col-sm-6">
-										<label class="font-label">Email</label>
-										<div class="form-group">
-											<input type="text" class="form-control" name="c_email" id="c_email">
-										</div>
-									</div>
-									
-			
-									<div class="col-sm-6">
-										<label class="font-label">Website </label>
-										<div class="form-group">
-											<input type="text" class="form-control" name="c_website" id="c_website">
-										</div>
-									</div>
-									
-			
-								</div>
+							<form id="frmContact">
 								<div class="col-sm-12">
 									<div class="col-sm-12">
-										<label class="font-label">Address </label>
-										<div class="form-group">
-											<textarea style="height: 120px;width:100%" rows="" cols="" name="c_address" id="c_address"	class="form-control"></textarea>
+									  	<div class="clearfix"></div>
+										<div class="col-sm-2"><h4>Overview</h4></div>
+										<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="col-sm-12">
+													<div class="col-sm-3">
+														<label class="font-label">First name <span class="requrie">(Required)</span></label>
+														<div class="form-group">
+															<input type="text" class="form-control" name="con_firstName" id="con_firstName">
+														</div>
+													</div>
+													<div class="col-sm-3">
+														<label class="font-label">Last name <span class="requrie">(Required)</span></label>
+														<div class="form-group">
+															<input type="text" class="form-control" name="con_lastName" id="con_lastName">
+														</div>
+													</div>
+													<div class="col-sm-3">
+														<label>Phone <span class="requrie">(Required)</span></label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_phone" name="con_phone">
+														</div>	
+													</div>
+																			
+													<div class="col-sm-3">
+														<label class="font-label">Mobile phone :</label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_mobilePhone" name="con_mobilePhone">
+														</div>	
+													</div>
+													
+													<div class="clearfix"></div>
+													
+													<div class="col-sm-3">
+														<label>Title </label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_title" name="con_title">
+														</div>
+													</div>
+													
+													<div class="col-sm-3">
+														<label class="font-label">Department </label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_department" name="con_department">
+														</div>	
+													</div>
+														
+													<div class="col-sm-3">
+														<label class="font-label">Email :</label>
+														<div class="form-group">
+															<input type="email"  class="form-control" id="con_email" name="con_email">
+														</div>
+													</div>
+													<div class="clearfix"></div>							
+												</div>
+											</div>
+										</div>
+									
+										<div class="clearfix"></div>
+										<div class="col-sm-2"><h4>Address </h4></div>				
+										<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="col-sm-12">
+													<div class="col-sm-3">
+														<label class="font-label">No </label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_no" name="con_no">
+														</div>	
+													</div>
+													
+													<div class="col-sm-3">
+														<label class="font-label">Street </label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_street" name="con_street">
+														</div>
+													</div>
+													
+													<div class="col-sm-3">
+														<label class="font-label">Village </label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_village" name="con_village">
+														</div>
+													</div>
+													
+													<div class="col-sm-3">
+														<label class="font-label">Commune </label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_commune" name="con_commune">
+														</div>	
+													</div>
+													<div class="clearfix"></div>
+													<div class="col-sm-3">
+														<label class="font-label">District </label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_district" name="con_district">
+														</div>
+													</div>
+													
+													<div class="col-sm-3">
+														<label class="font-label">City </label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_city" name="con_city">
+														</div>	
+													</div>
+													
+													<div class="col-sm-3">
+														<label class="font-label">State</label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_state" name="con_state">
+														</div>	
+													</div>
+													
+													<div class="col-sm-3">
+														<label class="font-label">Country </label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="con_country" name="con_country">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									
+										<div class="col-sm-2"><h4>Other </h4></div>				
+										<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="col-sm-12">
+													<div class="col-sm-3">
+														<label class="font-label">Assign To</label>
+														<div class="form-group">
+															
+															<select class="form-control select2" name="con_assignedTo" id="con_assignedTo" style="width:100%">
+																<option value="">-- SELECT Assign to --</option>
+																<option ng-repeat="u in ASSIGN_TO" value="{{u.userID}}">{{u.username}}</option> 
+															</select>
+														</div>
+													</div>
+													<div class="col-sm-3">
+														<label class="font-label">Lead source </label>
+														<div class="form-group">
+															<select class="form-control select2" name="con_leadSource" id="con_leadSource" style="width:100%">
+																<option value="">-- SELECT Lead Source --</option>
+																<option ng-repeat="u in LEAD_SOURCE" value="{{u.sourceID}}">{{u.sourceName}}</option> 
+															</select>
+														</div>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+							  	</div>
+							  </div>
+						</form>
+						</div>
+					</div>  
+				</div>	
+				<div class="clearfix"></div>
+				<br>	
+				<div class="col-sm-12" style="border-bottom: 1px solid #f4f4f4;">
+					<div class="col-sm-3">					
+						<div class="form-group">
+							<input type="checkbox" value="1" class="minimal-red" checked="checked" id="checkCustomer"  name="checkCustomer" data-toggle="collapse" data-target="#custo" aria-expanded="true" aria-controls="custo">
+							<label>Create Customer Or Select Customer <span class="requrie">(Required)</span></label>						
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<form id="ctrCustomer">
+							<div class="form-group">
+								<select class="form-control select2" name="CustCustomer" id="CustCustomer" style="width: 100%;">
+									<option value="">-- SELECT Customer --</option>
+									<option ng-repeat="u in CUSTOMER" value="{{u.custID}}">{{u.custName}}</option>
+								</select>
+							</div>
+						</form>
+					</div>
+					<div class="clearfix"></div>
+					<div class="collapse in" id="custo" aria-expanded="true">
+						<div class="row"><form id="frmCustomer">
+							<div class="col-sm-12">
+								<div class="col-sm-12">
+								  	<div class="clearfix"></div>
+									<div class="col-sm-2"><h4>Overview</h4></div>
+									<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="col-sm-6">
+												<div class="col-sm-6">
+													<label class="font-label">Name <span class="requrie">(Required)</span></label>
+													<div class="form-group" id="c_name">
+														<input type="text" class="form-control" name="cs_name" id="cs_name">
+													</div>
+												</div>							
+												<div class="col-sm-6">
+													<label class="font-label">Tel <span class="requrie">(Required)</span></label>
+													<div class="form-group">
+														<input type="text" class="form-control" name="c_tel1" id="c_tel1">
+													</div>
+												</div>							
+												
+												<div class="clearfix"></div>
+												<div class="col-sm-6">
+													<label class="font-label">Tel </label>
+													<div class="form-group">
+														<input type="text" class="form-control" name="c_tel2" id="c_tel2">
+													</div>
+												</div>							
+												<div class="col-sm-6">
+													<label class="font-label">Fax </label>
+													<div class="form-group">
+														<input type="text" class="form-control" name="c_fax" id="c_fax">
+													</div>
+												</div>																		
+											</div>
+											<div class="col-sm-6">
+												<div class="col-sm-6">
+													<label class="font-label">Email </label>
+													<div class="form-group">
+														<input type="email" class="form-control" name="c_email" id="c_email">
+													</div>
+												</div>							
+												<div class="col-sm-6">
+													<label class="font-label">Website </label>
+													<div class="form-group">
+														<input type="url" placeholder="http://www.example.com" class="form-control" name="c_website" id="c_website">
+													</div>
+												</div>
+											</div>							
+											<div class="clearfix"></div>
 										</div>
 									</div>
 									
-								</div>
-			
-								<div class="clearfix"></div>
-			
-							
-				
-								<div class="col-sm-2"><h4>Other</h4></div>
-								
-								<div class="col-sm-12">
-										<hr style="margin-top: 8px;"/>
-								</div>
-								
-								<div class="col-sm-6">
-								
-									<div class="col-sm-6">
-											<label class="font-label">Facebook</label>
-											<div class="form-group">
-												<input type="text" class="form-control" name="c_facebook" id="c_facebook">
-											</div>
-										</div>
-										
-									<div class="col-sm-6">
-											<label class="font-label">Line</label>
-											<div class="form-group">
-												<input type="text" class="form-control" name="c_line" id="c_line">
-											</div>
-										</div>
-										
-										
-										<div class="col-sm-6">
-											<label class="font-label">Viber</label>
-											<div class="form-group">
-												<input type="text" class="form-control" name="c_viber" id="c_viber">
-											</div>
-										</div>
-										
-										<div class="col-sm-6">
-											<label class="font-label">WhatApp</label>
-											<div class="form-group">
-												<input type="text" class="form-control" name="c_whatapp" id="c_whatapp">
-											</div>
-										</div>
-										
-								</div>
-								
-								<div class="col-sm-6">
-								
-									<div class="col-sm-6" data-ng-init="listIndustry()">
-											<label class="font-label">Industry</label>
-											<div class="form-group">
-												<select class="form-control select2" name="c_industry" id="c_industry">
-													<option value="">-- SELECT Industry</option>
-													<option ng-repeat="u in industry" value="{{u.industID}}">{{u.industName}}</option> 
-												</select>
-											</div>
-										</div>
 									
-									<div class="col-sm-6" data-ng-init="listAccount()">
-											<label class="font-label">Type</label>
-											<div class="form-group">
-												<select class="form-control select2" name="c_type" id="c_type">
-													<option value="">-- SELECT Type</option>
-													<option ng-repeat="u in account" value="{{u.accountID}}">{{u.accountName}}</option> 
-												</select>
+									<div class="clearfix"></div>				
+									<div class="col-sm-2"><h4>Address</h4></div>				
+									<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
+									<div class="row">				
+										<div class="col-sm-12">					
+											<div class="col-sm-12">						
+												<div class="col-sm-12">
+													<label class="font-label">Bill To Address</label>
+													<div class="form-group">
+														<input type="text" placeholder="" class="form-control" name="c_billAddr" id="c_billAddr">
+													</div>
+												</div>															
+																													
+											</div>					
+										</div>
+									</div>
+									
+									
+									<div class="clearfix"></div>				
+									<div class="col-sm-2"><h4>Other</h4></div>				
+									<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
+									<div class="row">				
+										<div class="col-sm-12">
+											<div class="col-sm-6">				
+												<div class="col-sm-6">
+													<label class="font-label">Facebook</label>
+													<div class="form-group">
+														<input type="text" class="form-control" name="c_facebook" id="c_facebook">
+													</div>
+												</div>												
+												<div class="col-sm-6">
+													<label class="font-label">Line</label>
+													<div class="form-group">
+														<input type="text" class="form-control" name="c_line" id="c_line">
+													</div>
+												</div>											
+												<div class="col-sm-6">
+													<label class="font-label">Viber</label>
+													<div class="form-group">
+														<input type="text" class="form-control" name="c_viber" id="c_viber">
+													</div>
+												</div>												
+												<div class="col-sm-6">
+													<label class="font-label">WhatApp</label>
+													<div class="form-group">
+														<input type="text" class="form-control" name="c_whatapp" id="c_whatapp">
+													</div>
+												</div>
+												
+											</div>				
+											<div class="col-sm-6">				
+												<div class="col-sm-6">
+													<label class="font-label">Industry</label>
+													<div class="form-group">
+														<select class="form-control select2" name="c_industry" id="c_industry" style="width:100%">
+															<option value="">-- SELECT Industry</option>
+															<option ng-repeat="u in INDUSTRY" value="{{u.industID}}">{{u.industName}}</option> 
+														</select>
+													</div>
+												</div>						
+												<div class="col-sm-6">
+													<label class="font-label">Type</label>
+													<div class="form-group">
+														<select style="width:100%" class="form-control select2" name="c_type" id="c_type">
+															<option value="">-- SELECT Type</option>
+															<option ng-repeat="u in TYPE" value="{{u.accountID}}">{{u.accountName}}</option> 
+														</select>
+													</div>
+												</div>
+													
+											</div>	
+										</div>
+									</div>
+									
+									<div class="clearfix"></div>				
+									<div class="col-sm-2"><h4>Setting</h4></div>				
+									<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
+									<div class="row">			
+										<div class="col-sm-12">					
+											<div class="col-sm-6">						
+												<div class="col-sm-6">
+													<label class="font-label">Customer Group <span class="requrie">(Required)</span></label>
+													<div class="form-group">
+														<select style="width:100%" class="form-control select2" name="c_group" id="c_group">
+															<option value="">-- SELECT Customer Group --</option>
+															<option ng-repeat="u in GROUP" value="{{u.custGroupId}}">[{{u.custGroupId}}] {{u.custGroupName}}</option> 
+														</select>
+													</div>
+												</div>															
+												<div class="col-sm-6">
+													<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
+													<div class="form-group">
+														<select style="width:100%" class="form-control select2" name="c_price" id="c_price">
+															<option value="">-- SELECT Price Code --</option>
+															<option ng-repeat="u in PRICE_CODE" value="{{u.priceCode}}">[{{u.priceCode}}] {{u.des}}</option> 
+														</select>
+													</div>
+												</div>																		
+											</div>					
+										</div>
+									</div>
+						  		</div>
+						  	</div>
+						</form>
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="clearfix"></div>
+				<br>	
+				<div class="col-sm-12">
+					<div class="col-sm-3">					
+						<div class="form-group">
+							<input type="checkbox" value="0" class="minimal-red" id="checkOpportunity"  name="checkOpportunity" data-toggle="collapse" data-target="#opportCollab" aria-expanded="false" aria-controls="opportCollab">
+							<label>Create Opportunity </label>						
+						</div>
+					</div>
+					
+					<div class="clearfix"></div>
+					<div class="collapse" id="opportCollab" aria-expanded="false">
+						<div class="row">
+						<form id="frmOpportunity">
+							<div class="col-sm-12">
+								<div class="col-sm-12">
+								  	<div class="clearfix"></div>	
+									<div class="col-sm-2"><h4>Overview</h4></div>	
+									<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>	
+									<div class="row">
+										<div  class="col-sm-12">
+											<div class="col-sm-6">
+												<div class="col-sm-6">
+													<label class="font-label">Name <span class="requrie">(Required)</span></label>
+													<div class="form-group">
+														<input type="text" class="form-control" id="op_name" name="op_name">
+													</div>
+												</div>
+												
+												<div class="col-sm-6">
+													<label class="font-label">Amount <span class="requrie">(Required)</span></label>
+													<div class="form-group">
+														<input type="text" class="form-control" id="op_amount" name="op_amount">
+													</div>
+												</div>
+																				
+												
+												
+												
+												<div class="col-sm-6">
+													<label class="font-label">Close date <span class="requrie">(Required)</span></label>
+													<div class="form-group">
+														<div class="input-group">
+															<div class="input-group-addon">
+																<i class="fa fa-calendar"></i>
+															</div>
+															<input type="text" class="form-control pull-right" name="opCloseDate" id="opCloseDate">
+														</div> 
+													</div>
+												</div>
+				
+												<div class="col-sm-6">
+													<label class="font-label">Next Step </label>
+													<div class="form-group">
+														<input type="text" class="form-control" id="op_nextStep" name="op_nextStep">
+													</div>
+												</div>
+																				
+												<div class="col-sm-6">
+													<label class="font-label">Campaign </label>
+													<div class="form-group">
+														<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
+															<option value="">-- SELECT Campaign --</option>
+															<option ng-repeat="u in CAMPAIGN" value="{{u.campID}}">{{u.campName}}</option>
+														</select>
+													</div>
+												</div>
+											</div>
+						
+											<div class="col-sm-6">
+												<div class="col-sm-6">
+													<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
+													<div class="form-group">
+														<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
+															<option value="">-- SELECT Stage --</option>
+															<option ng-repeat="u in OPP_STAGES" value="{{u.osId}}">{{u.osName}}</option> 
+														</select>
+													</div>
+												</div>
+												
+												<div class="col-sm-6">
+													<label class="font-label">Type </label>
+													<div class="form-group">
+														<select class="form-control select2" name="op_type" id="op_type" style="width: 100%;">
+															<option value="">-- SELECT Type --</option>
+															<option ng-repeat="u in OPP_TYPES" value="{{u.otId}}">{{u.otName}}</option> 
+														</select>
+													</div>
+												</div>
+												
+												<div class="clearfix"></div>
+												
+												<div class="col-sm-6">
+													<label class="font-label">Probability (%) </label>
+													<div class="form-group">
+														<input type="text" class="form-control" id="op_probability" name="op_probability">
+													</div>
+												</div>
+												
+												<div class="col-sm-6">
+													<label class="font-label">Lead Source </label>
+													<div class="form-group">
+														<select class="form-control select2" name="op_leadSource" id="op_leadSource" style="width: 100%;">
+															<option value="">-- SELECT Lead Source --</option>
+															<option ng-repeat="u in LEAD_SOURCE" value="{{u.sourceID}}">{{u.sourceName}}</option>
+															
+														</select>
+													</div>
+												</div>
+												
+						
+											</div>
+											<div class="col-sm-12">
+												<div class="col-sm-12">
+													<label class="font-label">Description </label>
+													<div class="form-group">
+														<textarea rows="3" cols="" name="cam_description" id="cam_description"
+															class="form-control"></textarea>
+													</div>
+												</div>
 											</div>
 										</div>
-										
-										
+									</div>
+														
+									<div class="clearfix"></div>
+									<div class="col-sm-2"><h4>Other </h4></div>				
+									<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>					
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="col-sm-6">				
+												<div class="col-sm-6">
+													<label class="font-label">Assigned to  </label>
+													<div class="form-group">
+														<select class="form-control select2" name="op_assignTo" id="op_assignTo" style="width:100%">
+															<option value="">-- SELECT Assign To --</option>
+															<option ng-repeat="u in ASSIGN_TO" value="{{u.userID}}">{{u.username}}</option>
+														</select>
+													</div>
+												</div>
+											</div>																		
+										</div>
+									</div>
+										  		</div>
+										  	</div>
+										</form>
+										</div>
+									</div>
 								</div>
-			
 							</div>
-						</div>
-						
-						
-				
-				</div>
-				
-				</div>
-				
-			</div>
-			
-			
-			<!-- <div class="box-footer"></div> -->
-			<!-- /.box-footer-->
+						</div>			
+					</div>		
+				</div>		
+			</div>	
+			<div class="box-footer"></div>
+			<dis id="errors"></dis>
 		</div>
-		</form>
-		<!-- /.box -->
-
-
 	</section>
-	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-
-
-
-<!-- /.content-wrapper -->
-
-
-
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-

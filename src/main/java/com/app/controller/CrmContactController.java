@@ -74,6 +74,14 @@ public class CrmContactController {
 		
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/contact/add/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> addStartup(@RequestBody String obj){
+		HttpEntity<Object> request = new HttpEntity<Object>(obj,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/add/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/add",method = RequestMethod.POST)

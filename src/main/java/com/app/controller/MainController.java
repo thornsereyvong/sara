@@ -590,19 +590,13 @@ public class MainController {
 	@RequestMapping("/convert-lead/{leadID}")
 	public String convertLead(ModelMap model, @PathVariable String leadID) {
 		model.addAttribute("menu", "convertLead");
+		model.addAttribute("leadId", leadID);
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
 			
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleView").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(leadController.findLeadById(leadID));
-					model.addAttribute("conLead", json);
-
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
+				
 				return "convertLead";
 			}else{
 				return "permission";

@@ -49,6 +49,13 @@ app.controller('opportunityController',['SweetAlert','$scope','$http',function(S
 
 
 $(document).ready(function() {
+	
+	
+
+	
+	
+	
+	
 	$('#opCloseDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
