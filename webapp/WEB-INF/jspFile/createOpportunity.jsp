@@ -11,7 +11,7 @@
 	padding-top: 4px;
 }
 </style>
-<div class="content-wrapper" class="content-wrapper" ng-app="campaign" ng-controller="campController">
+<div class="content-wrapper" class="content-wrapper" ng-app="opportunityApp" ng-controller="opportunityController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Create Opportunity</h1>
@@ -23,64 +23,40 @@
 <script type="text/javascript">
 
 
-var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
+var app = angular.module('opportunityApp', ['oitozero.ngSweetAlert',]);
 var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-
-	$scope.listCampaigns = function(){
-		$http.get("${pageContext.request.contextPath}/campaign/list")
-		.success(function(response){
-				$scope.campaigns = response.DATA;
-			});
-	};	
-		
-	$scope.listStage = function(){
-				$http.get("${pageContext.request.contextPath}/op_stage/list")
-				.success(function(response){
-						$scope.stage = response.DATA;
-					});
-				};
-	$scope.listType = function(){
-					$http.get("${pageContext.request.contextPath}/op_type/list")
-					.success(function(response){
-							$scope.type = response.DATA;
-						});
-					};
-	$scope.listLeadSource = function(){
-						$http.get("${pageContext.request.contextPath}/lead_source/list")
-						.success(function(response){
-								$scope.source = response.DATA;
-							});
-						};
-
-	$scope.listCustomer = function() {
-		$http.get("${pageContext.request.contextPath}/customer/list")
-		.success(function(response){
-			$scope.customer = response.DATA;
+var username = "${SESSION}";
+app.controller('opportunityController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+	$scope.startupPage = function(){		
+		$http({
+		    method: 'POST',
+		    url: "${pageContext.request.contextPath}/opportunity/add/startup",
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {"username":username}
+		}).success(function(response) {
+			$scope.source = response.LEAD_SOURCE;
+			$scope.type = response.OPP_TYPES;
+			$scope.campaigns = response.CAMPAIGNS;
+			$scope.customer = response.CUSTOMERS;
+			$scope.stage = response.OPP_STAGES;
+			$scope.assignTo = response.ASSIGN_TO;
 		});
-		
-	};	
-
-	
-
+	};
 }]);
 
 
 $(document).ready(function() {
-	$('#op_colseDate').daterangepicker({
+	$('#opCloseDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         format: 'DD/MM/YYYY'
     }).on('change', function(e) {
-     	$('#form-opportunity').bootstrapValidator('revalidateField', 'op_colseDate');
+     	$('#form-opportunity').bootstrapValidator('revalidateField', 'opCloseDate');
  	});
-    
-	$(".select2").select2();
 
-	var userid = ${users};
-	
-	userAllList(userid,'#op_assignTo','');
-	
 	$("#btn_save").click(function(){
 		$("#form-opportunity").submit();
 	});
@@ -133,7 +109,7 @@ $(document).ready(function() {
 					}
 				}
 			},
-			op_colseDate: {
+			opCloseDate: {
 				validators: {
 					notEmpty: {
 						message: 'The  close date is required and can not be empty!'
@@ -191,7 +167,7 @@ $(document).ready(function() {
 			type : "POST",
 			data : JSON.stringify({
 			      "opName": getValueStringById("op_name"),
-			      "opAmount": $("#op_amount").val(),
+			      "opAmount": getInt("op_amount"),
 			      "customer": getJsonById("custID","op_customer","str"),
 			      "opCloseDate": getDateByFormat("opCloseDate"),
 			      "opTypeID": getJsonById("otId","op_type","int"),
@@ -205,54 +181,50 @@ $(document).ready(function() {
 			      "opCreateBy": $.session.get("parentID")
 			    }),	
 			beforeSend: function(xhr) {
-					    xhr.setRequestHeader("Accept", "application/json");
-					    xhr.setRequestHeader("Content-Type", "application/json");
-					    },
+		    	xhr.setRequestHeader("Accept", "application/json");
+		    	xhr.setRequestHeader("Content-Type", "application/json");
+		    },
 			success:function(data){
-					$("#op_customer").select2("val","");
-					$("#op_stage").select2("val","");
-					$("#op_type").select2("val","");
-					$("#op_leadSource").select2("val","");
-					$("#op_campaign").select2("val","");
-					$("#op_assignTo").select2("val","");
-					
-					
-					$("#form-opportunity").bootstrapValidator('resetForm', 'true');
-					$('#form-opportunity')[0].reset();	
-					
-					swal({
-	            		title:"Success",
-	            		text:"You have been created new a opportunity!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
+					if(data.MESSAGE == "INSERTED"){						
+						$("#op_customer").select2("val","");
+						$("#op_stage").select2("val","");
+						$("#op_type").select2("val","");
+						$("#op_leadSource").select2("val","");
+						$("#op_campaign").select2("val","");
+						$("#op_assignTo").select2("val","");												
+						$("#form-opportunity").bootstrapValidator('resetForm', 'true');
+						$('#form-opportunity')[0].reset();	
+						
+						swal({
+		            		title:"Success",
+		            		text:"You have been created new a opportunity!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+					}else{
+						alertMsgErrorSweet();	
+					}
 				},
 			error:function(){
-				errorMessage();
-				}
-			});
-			
-	});	
-	
+				alertMsgErrorSweet();	
+			}
+		});			
+	});		
 });
 </script>
 	<section class="content">
-
-		<!-- Default box -->
-		
 		<div class="box box-danger">
 			
 			<div class="box-body">
 			
-				<form method="post" id="form-opportunity">
+				<form method="post" id="form-opportunity" data-ng-init="startupPage()">
 					
 					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
 					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
 					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-opportunity"> <i class="fa fa-reply"></i> Back </a>
 	
-					<div class="clearfix"></div>
-	
+					<div class="clearfix"></div>	
 					<div class="col-sm-2"><h4>Overview</h4></div>	
 					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>	
 					<div class="row">
@@ -271,9 +243,8 @@ $(document).ready(function() {
 										<input type="text" class="form-control" id="op_amount" name="op_amount">
 									</div>
 								</div>
-								
-								
-								<div class="col-sm-6" data-ng-init="listCustomer()">
+																
+								<div class="col-sm-6">
 									<label class="font-label">Customer <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_customer" id="op_customer" style="width: 100%;">
@@ -291,7 +262,7 @@ $(document).ready(function() {
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input type="text" class="form-control pull-right" name="op_colseDate" id="op_colseDate">
+											<input type="text" class="form-control pull-right" name="opCloseDate" id="opCloseDate">
 										</div> 
 									</div>
 								</div>
@@ -303,7 +274,7 @@ $(document).ready(function() {
 									</div>
 								</div>
 																
-								<div class="col-sm-6"  data-ng-init="listCampaigns()" >
+								<div class="col-sm-6">
 									<label class="font-label">Campaign </label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
@@ -315,7 +286,7 @@ $(document).ready(function() {
 							</div>
 		
 							<div class="col-sm-6">
-								<div class="col-sm-6" data-ng-init="listStage()">
+								<div class="col-sm-6">
 									<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
@@ -325,7 +296,7 @@ $(document).ready(function() {
 									</div>
 								</div>
 								
-								<div class="col-sm-6"  data-ng-init="listType()" >
+								<div class="col-sm-6">
 									<label class="font-label">Type </label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_type" id="op_type" style="width: 100%;">
@@ -344,7 +315,7 @@ $(document).ready(function() {
 									</div>
 								</div>
 								
-								<div class="col-sm-6" data-ng-init="listLeadSource()">
+								<div class="col-sm-6">
 									<label class="font-label">Lead Source </label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_leadSource" id="op_leadSource" style="width: 100%;">
@@ -368,25 +339,29 @@ $(document).ready(function() {
 							</div>
 						</div>
 					</div>
-					
-					
+										
 					<div class="clearfix"></div>
 					<div class="col-sm-2"><h4>Other </h4></div>				
-					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
-					<div class="col-sm-12">
-						<div class="col-sm-3" data-ng-init="listUser()">
-							<label class="font-label">Assigned to : </label>
-							<div class="form-group">
-								<select class="form-control select2"  name="op_assignTo" id="op_assignTo" style="width: 100%;">
-			                      <option value=""></option>
-			                      <option ng-repeat="u in user" value="{{u.userID}}">{{u.username}}</option>            
-			                    </select>
-							</div>
+					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="col-sm-6">				
+								<div class="col-sm-6">
+									<label class="font-label">Assigned to  </label>
+									<div class="form-group">
+										<select class="form-control select2" name="op_assignTo" id="op_assignTo" style="width:100%">
+											<option value="">-- SELECT Assign To --</option>
+											<option ng-repeat="u in assignTo" value="{{u.userID}}">{{u.username}}</option>
+										</select>
+									</div>
+								</div>
+							</div>																		
 						</div>
 					</div>
 				</form>
 			</div>
 			<div class="box-footer"></div>
+			<dis id="errors"></dis>
 		</div>
 	</section>
 </div>

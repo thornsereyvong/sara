@@ -13,20 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
-
 import com.app.entities.CrmOpportunity;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
 @RequestMapping(value="/")
 public class CrmOpportunityController {
 	
-	//private final String URL = "";
-	@Autowired
-	private ObjectMapper objectMapper;
 	
 	@Autowired
 	private RestTemplate  restTemplate;
@@ -36,6 +30,25 @@ public class CrmOpportunityController {
 	
 	@Autowired
 	private String URL;
+	
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/add/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> getStartup(@RequestBody String username){	
+		HttpEntity<String> request = new HttpEntity<String>(username,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/add/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/edit/startup",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> getStartupWithEdit(@RequestBody String obj){	
+		HttpEntity<String> request = new HttpEntity<String>(obj,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/edit/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+		
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/opportunity/list",method = RequestMethod.POST)

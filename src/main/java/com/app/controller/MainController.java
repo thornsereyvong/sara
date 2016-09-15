@@ -719,18 +719,13 @@ public class MainController {
 	@RequestMapping("/update-opportunity/{oppID}")
 	public String updateOpportunity(ModelMap model, @PathVariable String oppID) {
 		model.addAttribute("menu", "updateOpportunity");
+		model.addAttribute("oppId", oppID);
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("OP");
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(oppController.findOpportunity(oppID));
-					model.addAttribute("opp", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
+				
 				return "updateOpportunity";
 			}else{
 				return "permission";
@@ -1264,22 +1259,15 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/update-case/{custID}")
-	public String updateCase(ModelMap model, @PathVariable String custID) {
+	@RequestMapping("/update-case/{caseId}")
+	public String updateCase(ModelMap model, @PathVariable("caseId") String caseId) {
 		model.addAttribute("menu", "updateCase");
-		
+		model.addAttribute("caseId", caseId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CS");
 
 		
 		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(caseController.findCaseById(custID));
-					model.addAttribute("cases", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
+			if (camMap.get("roleEdit").equals("YES")) {				
 				return "updateCase";
 			}else{
 				return "permission";	

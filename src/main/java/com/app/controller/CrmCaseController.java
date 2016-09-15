@@ -16,16 +16,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmCase;
 import com.app.utilities.RestUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
 @RequestMapping(value="/")
 public class CrmCaseController {
 	
-	//private final String URL = "";
-	@Autowired
-	private ObjectMapper objectMapper;
 	
 	@Autowired
 	private RestTemplate  restTemplate;
@@ -35,6 +31,24 @@ public class CrmCaseController {
 	
 	@Autowired
 	private String URL;
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/case/startup/{username}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getStartup(@PathVariable("username") String username){	
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case/startup/"+username, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/case/startup/{username}/{caseId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getStartupWithEdit(@PathVariable("username") String username ,@PathVariable("caseId") String caseId){	
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case/startup/"+username+"/"+caseId, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/case/list",method = RequestMethod.GET)

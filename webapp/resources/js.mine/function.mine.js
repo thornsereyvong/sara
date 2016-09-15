@@ -23,6 +23,12 @@ function alertMsgErrorSweet(){
 	});
 }
 
+function reloadForm(time){
+	setTimeout(function(){ location.reload(); },time);
+}
+
+
+
 function checkDate(date) {
 	if (date != '') {
 		var dtRegex = new RegExp(/\b\d{1,2}[\/-]\w{1,3}[\/-]\d{4}\b/);
@@ -183,6 +189,7 @@ function addDays(day,date){
 
 function getDateByFormat(ID){
 	var date  = $.trim($("#"+ID).val());
+	if(date=="") return null;
 	date = date.split('/');
 	return date[2]+"-"+date[1]+"-"+date[0];
 }
