@@ -240,11 +240,12 @@ $(document).ready(function() {
 				    xhr.setRequestHeader("Content-Type", "application/json");
 			    },
 				success:function(data){					
-					$("#form-customer").bootstrapValidator('resetForm', 'true');
-					$('#form-customer')[0].reset();
+					
 					$("#c_industry").select2("val","");
 					$("#c_type").select2("val","");
-					
+					$("#form-customer").bootstrapValidator('resetForm', 'true');
+					$('#form-customer')[0].reset();
+										
 					swal({
 	            		title:"Success",
 	            		text:"User have been created new Customer!",
