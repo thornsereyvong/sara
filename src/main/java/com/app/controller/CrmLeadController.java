@@ -42,10 +42,10 @@ public class CrmLeadController {
 	
 	// 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/lead/convert/startup/{username}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> convertLeadStartup(@PathVariable("username") String username){	
+	@RequestMapping(value="/lead/convert/startup/{username}/{leadId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> convertLeadStartup(@PathVariable("username") String username, @PathVariable("leadId") String leadId){	
 		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/convert/startup/"+username, HttpMethod.GET, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/convert/startup/"+username+"/"+leadId, HttpMethod.GET, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
 	}
 	

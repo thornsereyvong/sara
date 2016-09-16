@@ -250,7 +250,7 @@ $(document).ready(function() {
 										<input type="text" class="form-control" id="op_amount" name="op_amount">
 									</div>
 								</div>
-																
+								<div class="clearfix"></div>								
 								<div class="col-sm-6">
 									<label class="font-label">Customer <span class="requrie">(Required)</span></label>
 									<div class="form-group">
@@ -273,7 +273,7 @@ $(document).ready(function() {
 										</div> 
 									</div>
 								</div>
-
+								<div class="clearfix"></div>	
 								<div class="col-sm-6">
 									<label class="font-label">Next Step </label>
 									<div class="form-group">
