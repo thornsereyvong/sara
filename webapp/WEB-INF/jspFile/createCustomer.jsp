@@ -213,7 +213,7 @@ $(document).ready(function() {
 				      "whatApp": getValueStringById("c_whatapp"),
 				      "industID": getJsonById("industID","c_industry","int"),
 					  "accountTypeID": getJsonById("accountID","c_type","int"),
-					  "custDetail" : ship});
+					  "custDetails" : ship});
 			
 			
 			$.ajax({
@@ -233,7 +233,7 @@ $(document).ready(function() {
 				      "whatApp": getValueStringById("c_whatapp"),
 				      "industID": getJsonById("industID","c_industry","int"),
 					  "accountTypeID": getJsonById("accountID","c_type","int"),
-					  "custDetail" : ship
+					  "custDetails" : ship
 				}),
 				beforeSend: function(xhr) {
 				    xhr.setRequestHeader("Accept", "application/json");

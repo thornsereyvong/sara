@@ -668,19 +668,13 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/update-contact/{oppID}")
-	public String updateContacts(ModelMap model, @PathVariable String oppID) {
+	@RequestMapping("/update-contact/{conID}")
+	public String updateContacts(ModelMap model, @PathVariable String conID) {
 		model.addAttribute("menu", "updateContacts");
+		model.addAttribute("conId", conID);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CO");
 		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(contactController.findContactById(oppID));
-					model.addAttribute("contact", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
+			if (camMap.get("roleEdit").equals("YES")) {				
 				return "updateContacts";
 			}else{
 				return "permission";
@@ -688,9 +682,6 @@ public class MainController {
 		}else{
 			return "permission";
 		}
-			
-		
-		
 	}
 
 	/* close contact */

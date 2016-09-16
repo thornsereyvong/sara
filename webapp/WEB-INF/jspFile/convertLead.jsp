@@ -125,7 +125,7 @@ function getCustomer(){
 	      "whatApp": getValueStringById("c_whatapp"),
 	      "industID": getJsonById("industID","c_industry","int"),
 		  "accountTypeID": getJsonById("accountID","c_type","int"),
-		  "custDetail" : null
+		  "custDetails" : null
 		}
 	}else{
 		cust = {"custID": getValueStringById("CustCustomer")};
@@ -701,6 +701,7 @@ color:#2196F3;
 	<section class="content-header">
 		<h1>Convert Lead</h1>
 		<ol class="breadcrumb">
+		    <li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i>Convert Lead</a></li>
 		</ol>
 	</section>
@@ -766,8 +767,6 @@ color:#2196F3;
 																</span>
 																<input type="text" class="form-control" value="{{LEAD.firstName}}" name="con_firstName" id="con_firstName">
 															</div>
-														
-															
 														</div>
 													</div>
 													<div class="col-sm-3">

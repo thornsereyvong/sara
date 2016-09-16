@@ -33,7 +33,7 @@ padding-right: 10px;
 	<section class="content-header">
 		<h1>Create Contact</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"> Create Contact</a></li>
 		</ol>
 	</section>
@@ -48,21 +48,17 @@ app.controller('contactController',['SweetAlert','$scope','$http',function(Sweet
 
 	$scope.startupPage = function(){		
 		$http({
-		    method: 'POST',
-		    url: "${pageContext.request.contextPath}/contact/add/startup",
+		    method: 'GET',
+		    url: "${pageContext.request.contextPath}/contact/startup/"+username,
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
-		    },
-		    data: {"username":username}
+		    }
 		}).success(function(response) {
-			
-			dis(response)
-			
 			$scope.source = response.LEAD_SOURCE;
 			$scope.customer = response.CUSTOMERS;
 			$scope.assignTo = response.ASSIGN_TO;
-			$scope.reportTo = response.ASSIGN_TO;
+			$scope.reportTo = response.REPORT_TO;
 		});
 	};
 		
@@ -233,7 +229,8 @@ $(document).ready(function() {
 			url : "${pageContext.request.contextPath}/contact/add",
 			type : "POST",
 			data : JSON.stringify({
-			      "conFirstname": getValueStringById("con_firstName"),
+			      "conSalutation" : getValueStringById("con_salutation"),
+				  "conFirstname": getValueStringById("con_firstName"),
 			      "conLastname": getValueStringById("con_lastName"),
 			      "conPhone": getValueStringById("con_phone"),
 			      "conMobile": getValueStringById("con_mobilePhone"),
@@ -305,7 +302,18 @@ $(document).ready(function() {
 							<div class="col-sm-3">
 								<label class="font-label">First name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text" class="form-control" name="con_firstName" id="con_firstName">
+									<div class="input-group">
+		                            	<span class="input-group-btn">
+			                                 <select class="btn" style="height: 34px; width: 75px;text-align:center" name="con_salutation" id="con_salutation">		                                      
+			                                     <option value="Mr.">Mr.</option>
+			                                     <option value="Ms.">Ms.</option>
+			                                     <option value="Mrs.">Mrs.</option>
+			                                     <option value="Dr.">Dr.</option>
+			                                     <option value="Prof.">Prof.</option>
+			                                  </select>
+										</span>
+										<input type="text" class="form-control" name="con_firstName" id="con_firstName">
+									</div>
 								</div>
 							</div>
 							<div class="col-sm-3">
@@ -333,7 +341,8 @@ $(document).ready(function() {
 								<label class="font-label">Customer </label>
 								<div class="form-group">
 									<select class="form-control select2" name="con_customer" id="con_customer" style="width:100%">
-										<!-- <option value="">-- SELECT Customer --</option> -->
+										<option value="">-- SELECT Customer --</option>
+										<option ng-repeat="u in customer" value="{{u.custID}}">{{u.custName}}</option> 
 									</select>
 								</div>
 							</div>
@@ -433,20 +442,21 @@ $(document).ready(function() {
 					<div class="col-sm-12">
 						<div class="col-sm-12">
 							<div class="col-sm-3">
-								<label class="font-label">Assigned to</label>
+								<label class="font-label">Assign To</label>
 								<div class="form-group">
 									
 									<select class="form-control select2" name="con_assignedTo" id="con_assignedTo" style="width:100%">
-										<option value=""></option>
+										<option value="">-- SELECT Assign To --</option>
+										<option ng-repeat="u in assignTo" value="{{u.userID}}">{{u.username}}</option>
 									</select>
 								</div>
 							</div>
-							<div class="col-sm-3" data-ng-init="listLeadSource()">
+							<div class="col-sm-3">
 								<label class="font-label">Lead source </label>
 								<div class="form-group">
 									<select class="form-control select2" name="con_leadSource" id="con_leadSource" style="width:100%">
 										<option value="">-- SELECT Lead Source --</option>
-										<option ng-repeat="u in lead_source" value="{{u.sourceID}}">{{u.sourceName}}</option> 
+										<option ng-repeat="u in source" value="{{u.sourceID}}">{{u.sourceName}}</option> 
 									</select>
 								</div>
 							</div>
@@ -454,7 +464,8 @@ $(document).ready(function() {
 								<label class="font-label">Report to</label>
 								<div class="form-group">
 									<select class="form-control select2" name="con_report" id="con_report" style="width:100%">
-										<option value=""></option>
+										<option value="">-- SELECT Report To --</option>
+										<option ng-repeat="u in reportTo" value="{{u.conID}}">{{u.conSalutation}}{{u.conFirstname}} {{u.conLastname}}</option> 
 									</select>
 								</div>
 							</div>

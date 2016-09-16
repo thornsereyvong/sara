@@ -37,6 +37,27 @@ public class CrmContactController {
 	@Autowired
 	private String URL;
 	
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/contact/startup/{username}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getStartup(@PathVariable("username") String username){	
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/startup/"+username, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/contact/startup/{username}/{conId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getStartupWithEdit(@PathVariable("username") String username ,@PathVariable("conId") String conId){	
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/startup/"+username+"/"+conId, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/list",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getAllContact(){	

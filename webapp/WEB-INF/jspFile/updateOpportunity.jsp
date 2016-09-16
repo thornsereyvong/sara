@@ -19,8 +19,8 @@
 	<section class="content-header">
 		<h1>Update Opportunity</h1>
 		<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-			<li><a href="#"> Update Opportunity</a></li>
+		<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
+		<li><a href="#"> Update Opportunity</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
