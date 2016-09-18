@@ -46,16 +46,19 @@ public class CrmCustomerController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/customer/startup",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllCustomerStartup(){
-		
-		HttpEntity<String> request = new HttpEntity<String>(header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/customer/add/startup", HttpMethod.GET, request, Map.class);
-		
-		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
+	public ResponseEntity<Map<String, Object>> getAllCustomerStartup(){		
+		HttpEntity<String> request = new HttpEntity<String>(header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/customer/add/startup", HttpMethod.GET, request, Map.class);		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/customer/startup/{custId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getAllCustomerStartupById(@PathVariable("custId") String custId){		
+		HttpEntity<String> request = new HttpEntity<String>(header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/customer/edit/startup/"+custId, HttpMethod.GET, request, Map.class);		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/customer/add",method = RequestMethod.POST)

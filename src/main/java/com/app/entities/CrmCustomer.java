@@ -1,5 +1,8 @@
 package com.app.entities;
 
+import java.util.List;
+
+
 public class CrmCustomer {
 
 	private String custID;
@@ -18,6 +21,60 @@ public class CrmCustomer {
 	private CrmIndustry industID;
 
 	private CrmAccountType accountTypeID;
+	
+	private int approval;
+	
+	private String imageName;
+	
+	private List<CrmCustomerDetails> custDetails;
+	
+	private String priceCode;
+	
+	private String custGroupId;
+	
+	
+	
+	
+	
+	public int getApproval() {
+		return approval;
+	}
+
+	public void setApproval(int approval) {
+		this.approval = approval;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public List<CrmCustomerDetails> getCustDetails() {
+		return custDetails;
+	}
+
+	public void setCustDetails(List<CrmCustomerDetails> custDetails) {
+		this.custDetails = custDetails;
+	}
+
+	public String getPriceCode() {
+		return priceCode;
+	}
+
+	public void setPriceCode(String priceCode) {
+		this.priceCode = priceCode;
+	}
+
+	public String getCustGroupId() {
+		return custGroupId;
+	}
+
+	public void setCustGroupId(String custGroupId) {
+		this.custGroupId = custGroupId;
+	}
 
 	public String getCustID() {
 		return custID;

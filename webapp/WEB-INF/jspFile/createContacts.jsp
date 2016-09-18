@@ -247,7 +247,7 @@ $(document).ready(function() {
 			      "conCountry": getValueStringById("con_country"),
 			      "conAssignTo": getJsonById("userID","con_assignedTo","str"),
 			      "conLeadSource": getJsonById("sourceID","con_leadSource","int"),
-			      "conReportTo": getJsonById("userID","con_report","str"),
+			      "conReportTo": getJsonById("conID","con_report","str"),
 			      "conCreateBy": username,
 			      "customer": getJsonById("custID","con_customer","str")
 			    }),	

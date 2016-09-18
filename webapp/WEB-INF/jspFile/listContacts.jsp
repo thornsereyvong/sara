@@ -150,7 +150,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 
 						<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
 							<td>{{cc.conID}}</td>
-							<td>{{cc.conFirstName}} {{cc.conLastName}}</td>
+							<td>{{cc.conSalutation}}{{cc.conFirstName}} {{cc.conLastName}}</td>
 							<td>{{cc.conTitle}}</td>
 							
 							<td>{{cc.custName}}</td>

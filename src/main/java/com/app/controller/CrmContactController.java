@@ -117,7 +117,7 @@ public class CrmContactController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/edit",method = RequestMethod.PUT)
 	public ResponseEntity<Map<String, Object>> updateContact(@RequestBody CrmContact contact){
-		
+		System.out.println(contact.getConSalutation());
 		HttpEntity<Object> request = new HttpEntity<Object>(contact,header);
 		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/edit", HttpMethod.PUT, request, Map.class);

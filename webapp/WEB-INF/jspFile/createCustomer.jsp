@@ -49,7 +49,6 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		angular.forEach($scope.shipToAdd, function(value, key) {
 			var txtAddr = $.trim($scope.newAddr[key].addr);
 			if(txtAddr != ""){
-				alert(txtAddr)
 				shipToAddrAdd.push({"aId":key+1, "address":txtAddr});
 			}			
 		});			
@@ -200,22 +199,6 @@ $(document).ready(function() {
 		}).on('success.form.bv', function(e) {							
 			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
 			
-			dis({"custName": getValueStringById("cs_name"),
-				      "custTel1": getValueStringById("c_tel1"),
-				      "custTel2": getValueStringById("c_tel2"),
-				      "custFax": getValueStringById("c_fax"),
-				      "custEmail": getValueStringById("c_email"),
-				      "custWebsite": getValueStringById("c_website"),
-				      "custAddress": getValueStringById("c_address"),
-				      "facebook": getValueStringById("c_facebook"),
-				      "line": getValueStringById("c_line"),
-				      "viber": getValueStringById("c_viber"),
-				      "whatApp": getValueStringById("c_whatapp"),
-				      "industID": getJsonById("industID","c_industry","int"),
-					  "accountTypeID": getJsonById("accountID","c_type","int"),
-					  "custDetails" : ship});
-			
-			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/customer/add",
 				type : "POST",
@@ -233,47 +216,41 @@ $(document).ready(function() {
 				      "whatApp": getValueStringById("c_whatapp"),
 				      "industID": getJsonById("industID","c_industry","int"),
 					  "accountTypeID": getJsonById("accountID","c_type","int"),
-					  "custDetails" : ship
+					  "custDetails" : ship,
+					  "priceCode" : getValueStringById("c_price"),
+					  "custGroupId" : getValueStringById("c_group"),
+					  "imageName" : ""
 				}),
 				beforeSend: function(xhr) {
 				    xhr.setRequestHeader("Accept", "application/json");
 				    xhr.setRequestHeader("Content-Type", "application/json");
 			    },
-				success:function(data){					
-					
-					$("#c_industry").select2("val","");
-					$("#c_type").select2("val","");
-					$("#form-customer").bootstrapValidator('resetForm', 'true');
-					$('#form-customer')[0].reset();
-										
-					swal({
-	            		title:"Success",
-	            		text:"User have been created new Customer!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
+				success:function(data){		
+					if(data.MESSAGE == "INSERTED"){
+						swal({
+		            		title:"Success",
+		            		text:"You have been updated customer!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						reloadForm(2000);
+					}else{
+						alertMsgErrorSweet();	
+					}
 				},
-				error:function(){}
+				error:function(){
+					
+					alertMsgErrorSweet();	
+					
+				}
 			});			
 		});	
 });
 </script>
 	<section class="content">
 		<div class="box box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-			</div>
+			
 			<div class="box-body">			
 				<form method="post" id="form-customer" data-ng-init="startupCustomer()">					
 					<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 

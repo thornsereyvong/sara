@@ -1413,18 +1413,12 @@ public class MainController {
 	@RequestMapping("/update-customer/{custID}")
 	public String updateCustomer(ModelMap model, @PathVariable String custID) {
 		model.addAttribute("menu", "updateCustomer");
-		
+		model.addAttribute("custId", custID);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(custController.findCustomerID(custID));
-					model.addAttribute("cust", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
+				
 				return "updateCustomer";
 			}else{
 				return "permission";

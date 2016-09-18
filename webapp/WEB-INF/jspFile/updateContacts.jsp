@@ -50,10 +50,9 @@ app.controller('contactController',['SweetAlert','$scope','$http',function(Sweet
 	angular.element(document).ready(function () {					
 		setTimeout(function(){ 
 			$("#con_assignedTo").select2("val", $scope.CONTACT.assignToUserId)
-			$("#con_assignedTo").select2("val", $scope.CONTACT.assignToUserId);
-			$("#con_report").select2("val", $scope.CONTACT.reportToUserId);
+			$("#con_report").select2("val", $scope.CONTACT.reportToContactId);
 			$("#con_leadSource").select2("val", $scope.CONTACT.sourceID);
-			$("#con_salutation").select2("val",$scope.CONTACT.salutation);
+			$("#con_salutation").val($scope.CONTACT.conSalutation);
 		}, 1000);
     });
 	
@@ -236,11 +235,11 @@ $(document).ready(function() {
 				}
 			}
 		}
-	}).on('success.form.bv', function(e) {
-			
+	}).on('success.form.bv', function(e) {		
+		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/contact/edit",
-			type : "POST",
+			type : "PUT",
 			data : JSON.stringify({
 				  "conID" : conId,
 			      "conSalutation" : getValueStringById("con_salutation"),
@@ -261,7 +260,7 @@ $(document).ready(function() {
 			      "conCountry": getValueStringById("con_country"),
 			      "conAssignTo": getJsonById("userID","con_assignedTo","str"),
 			      "conLeadSource": getJsonById("sourceID","con_leadSource","int"),
-			      "conReportTo": getJsonById("userID","con_report","str"),
+			      "conReportTo": getJsonById("conID","con_report","str"),
 			      "conModifyBy": username,
 			      "customer": getJsonById("custID","con_customer","str")
 			    }),	
@@ -285,6 +284,9 @@ $(document).ready(function() {
 		            		timer: 2000,   
 		            		showConfirmButton: false
 	        			});
+						
+						reloadForm(2000);
+						
 					}else{
 						alertMsgErrorSweet();	
 					}

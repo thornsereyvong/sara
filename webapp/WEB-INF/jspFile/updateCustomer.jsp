@@ -13,7 +13,7 @@
 	padding-top: 4px;
 }
 </style>
-<div class="content-wrapper" ng-app="campaign" ng-controller="campController">
+<div class="content-wrapper" id="campController" ng-app="campaign" ng-controller="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1> Update Customer</h1>
@@ -26,36 +26,64 @@
 
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
-
+var custId = "${custId}";
+var username = "${SESSION}";
+var lastAid= 0;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){		
+	
+	
+	$scope.CUSTOMER = [];
+	angular.element(document).ready(function () {					
+		setTimeout(function(){
+			$("#c_group").select2("val",$scope.CUSTOMER.custGroupId);
+			$("#c_price").select2("val",$scope.CUSTOMER.priceCode);
+			$("#c_type").select2("val",$scope.CUSTOMER.accountTypeID);
+			$("#c_industry").select2("val",$scope.CUSTOMER.industID);
+		}, 1000);
+    });
+	
+	
+	
 	$scope.startupCustomer = function() {
-		$http.get("${pageContext.request.contextPath}/customer/startup").success(function(response){
+		$http.get("${pageContext.request.contextPath}/customer/startup/"+custId).success(function(response){
+			
+			
+			
 			$scope.custGroup = response.GROUP;
 			$scope.industry = response.INDUSTRY;
 			$scope.priceCode = response.PRICE_CODE;
 			$scope.type = response.TYPE;
+			$scope.shipToAdd = response.CUSTOMER.custDetails;
+			$scope.CUSTOMER = response.CUSTOMER;
+			
+			if(response.CUSTOMER.custDetails.length>0){
+				lastAid = Number($scope.shipToAdd[response.CUSTOMER.custDetails.length-1].aId)+1;
+			}else{
+				lastAid = 1;
+			}
+			
 		});
-		$scope.shipToAdd = [{"addr":""}];
+		
 	}	
 	
 	
-	$scope.btnAddMoreShip = function(){
-		$scope.shipToAdd.push({"addr":""});
+	$scope.btnAddMoreShip = function(){		
+		$scope.shipToAdd.push({ "custId": custId,"aId": lastAid,"address": ""}); 
+		lastAid++;
 	}
 	$scope.btnRemoveMoreShip = function(key){
 		$scope.shipToAdd.splice(key,1);
 	}
 	
-	$scope.newAddr = {};
+	$scope.shipToAdd = {};
 	$scope.getAddress = function(){ 
 		var shipToAddrAdd = [];
 		angular.forEach($scope.shipToAdd, function(value, key) {
-			var txtAddr = $.trim($scope.newAddr[key].addr);
+			var txtAddr = $.trim($scope.shipToAdd[key].address);
 			if(txtAddr != ""){
-				alert(txtAddr)
-				shipToAddrAdd.push({"aId":key+1, "address":txtAddr});
+				shipToAddrAdd.push({"custId":value.custId,"aId":value.aId, "address":txtAddr});
 			}			
-		});			
+		});
 		if(shipToAddrAdd.length == 0)
 			return null;		
 		return shipToAddrAdd;
@@ -201,28 +229,13 @@ $(document).ready(function() {
 				}
 			}
 		}).on('success.form.bv', function(e) {							
+
 			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
-			
-			dis({"custName": getValueStringById("cs_name"),
-				      "custTel1": getValueStringById("c_tel1"),
-				      "custTel2": getValueStringById("c_tel2"),
-				      "custFax": getValueStringById("c_fax"),
-				      "custEmail": getValueStringById("c_email"),
-				      "custWebsite": getValueStringById("c_website"),
-				      "custAddress": getValueStringById("c_address"),
-				      "facebook": getValueStringById("c_facebook"),
-				      "line": getValueStringById("c_line"),
-				      "viber": getValueStringById("c_viber"),
-				      "whatApp": getValueStringById("c_whatapp"),
-				      "industID": getJsonById("industID","c_industry","int"),
-					  "accountTypeID": getJsonById("accountID","c_type","int"),
-					  "custDetails" : ship});
-			
-			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/customer/add",
-				type : "POST",
-				data : JSON.stringify({ 
+				url : "${pageContext.request.contextPath}/customer/edit",
+				type : "PUT",
+				data : JSON.stringify({
+					  "custID" : custId,
 				      "custName": getValueStringById("cs_name"),
 				      "custTel1": getValueStringById("c_tel1"),
 				      "custTel2": getValueStringById("c_tel2"),
@@ -236,7 +249,10 @@ $(document).ready(function() {
 				      "whatApp": getValueStringById("c_whatapp"),
 				      "industID": getJsonById("industID","c_industry","int"),
 					  "accountTypeID": getJsonById("accountID","c_type","int"),
-					  "custDetails" : ship
+					  "custDetails" : ship,
+					  "priceCode" : getValueStringById("c_price"),
+					  "custGroupId" : getValueStringById("c_group"),
+					  "imageName" : ""
 				}),
 				beforeSend: function(xhr) {
 				    xhr.setRequestHeader("Accept", "application/json");
@@ -244,39 +260,29 @@ $(document).ready(function() {
 			    },
 				success:function(data){					
 					
-					$("#c_industry").select2("val","");
-					$("#c_type").select2("val","");
-					$("#form-customer").bootstrapValidator('resetForm', 'true');
-					$('#form-customer')[0].reset();
-										
-					swal({
-	            		title:"Success",
-	            		text:"User have been created new Customer!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
+					if(data.MESSAGE == "UPDATED"){
+						swal({
+		            		title:"Success",
+		            		text:"You have been updated customer!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						reloadForm(2000);
+					}else{
+						alertMsgErrorSweet();	
+					}
 				},
-				error:function(){}
-			});			
+				error:function(){
+					alertMsgErrorSweet();	
+				}
+			});	
 		});	
 });
 </script>
 	<section class="content">
 		<div class="box box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-			</div>
+			
 			<div class="box-body">			
 				<form method="post" id="form-customer" data-ng-init="startupCustomer()">					
 					<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
@@ -292,13 +298,13 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Name <span class="requrie">(Required)</span></label>
 									<div class="form-group" id="c_name">
-										<input type="text" class="form-control" name="cs_name" id="cs_name">
+										<input type="text" value="{{CUSTOMER.custName}}" class="form-control" name="cs_name" id="cs_name">
 									</div>
 								</div>							
 								<div class="col-sm-6">
 									<label class="font-label">Tel <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<input type="text" class="form-control" name="c_tel1" id="c_tel1">
+										<input type="text" value="{{CUSTOMER.custTel1}}" class="form-control" name="c_tel1" id="c_tel1">
 									</div>
 								</div>							
 								
@@ -306,13 +312,13 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Tel </label>
 									<div class="form-group">
-										<input type="text" class="form-control" name="c_tel2" id="c_tel2">
+										<input type="text" value="{{CUSTOMER.custTel2}}" class="form-control" name="c_tel2" id="c_tel2">
 									</div>
 								</div>							
 								<div class="col-sm-6">
 									<label class="font-label">Fax </label>
 									<div class="form-group">
-										<input type="text" class="form-control" name="c_fax" id="c_fax">
+										<input type="text" value="{{CUSTOMER.custFax}}" class="form-control" name="c_fax" id="c_fax">
 									</div>
 								</div>																		
 							</div>
@@ -320,13 +326,13 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Email </label>
 									<div class="form-group">
-										<input type="email" class="form-control" name="c_email" id="c_email">
+										<input type="email" value="{{CUSTOMER.custEmail}}" class="form-control" name="c_email" id="c_email">
 									</div>
 								</div>							
 								<div class="col-sm-6">
 									<label class="font-label">Website </label>
 									<div class="form-group">
-										<input type="url" placeholder="http://www.example.com" class="form-control" name="c_website" id="c_website">
+										<input type="url" value="{{CUSTOMER.custWebsite}}" placeholder="http://www.example.com" class="form-control" name="c_website" id="c_website">
 									</div>
 								</div>
 							</div>							
@@ -344,15 +350,15 @@ $(document).ready(function() {
 								<div class="col-sm-12">
 									<label class="font-label">Bill To Address</label>
 									<div class="form-group">
-										<input type="text" placeholder="" class="form-control" name="c_billAddr" id="c_billAddr">
+										<input type="text" value="{{CUSTOMER.custAddress}}" placeholder="" class="form-control" name="c_billAddr" id="c_billAddr">
 									</div>
 								</div>															
 								<div class="col-sm-12" style="margin-bottom: 15px;">
 									<label class="font-label">Ship To Address</label>														
 									<div class="input-group" ng-repeat="(key, add) in shipToAdd" style="margin-bottom: 5px;">                            	
-										<input type="text" ng-model="newAddr[key].addr" name="c_shipAddr" class="form-control" id="c_shipAddr" >
+										<input type="text" ng-model="shipToAdd[key].address"  name="c_shipAddr" class="form-control" id="c_shipAddr" >
 										<span class="input-group-btn">
-			                                 <button style="height: 34px;"  name="c_shipAddr" type="button" ng-click="btnRemoveMoreShip(key)" class="btn btn-danger"><i class="fa  fa-minus-square-o"></i></button>
+			                                 <button style="height: 34px;" name="c_shipAddr" type="button" ng-click="btnRemoveMoreShip(key)" class="btn btn-danger"><i class="fa  fa-minus-square-o"></i></button>
 										</span>
 									</div>														
 									<button type="button" ng-click="btnAddMoreShip()" id="btnAddMoreShip" class="btn btn-primary"><i class="fa fa-plus-square-o"></i></button>
@@ -371,25 +377,25 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Facebook</label>
 									<div class="form-group">
-										<input type="text" class="form-control" name="c_facebook" id="c_facebook">
+										<input type="text" value="{{CUSTOMER.facebook}}" class="form-control" name="c_facebook" id="c_facebook">
 									</div>
 								</div>												
 								<div class="col-sm-6">
 									<label class="font-label">Line</label>
 									<div class="form-group">
-										<input type="text" class="form-control" name="c_line" id="c_line">
+										<input type="text" value="{{CUSTOMER.line}}"  class="form-control" name="c_line" id="c_line">
 									</div>
 								</div>											
 								<div class="col-sm-6">
 									<label class="font-label">Viber</label>
 									<div class="form-group">
-										<input type="text" class="form-control" name="c_viber" id="c_viber">
+										<input type="text" value="{{CUSTOMER.viber}}" class="form-control" name="c_viber" id="c_viber">
 									</div>
 								</div>												
 								<div class="col-sm-6">
 									<label class="font-label">WhatApp</label>
 									<div class="form-group">
-										<input type="text" class="form-control" name="c_whatapp" id="c_whatapp">
+										<input type="text" value="{{CUSTOMER.whatApp}}" class="form-control" name="c_whatapp" id="c_whatapp">
 									</div>
 								</div>
 								

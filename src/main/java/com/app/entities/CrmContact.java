@@ -2,9 +2,12 @@ package com.app.entities;
 
 import java.util.Date;
 
+
 public class CrmContact {
 
 	private String conID;
+	
+	private String conSalutation;	
 
 	private String conFirstname;
 
@@ -40,8 +43,6 @@ public class CrmContact {
 
 	private CrmLeadSource conLeadSource;
 
-	private CrmUser conReportTo;
-
 	private String conCreateBy;
 
 	private String conCreateDate;
@@ -51,7 +52,10 @@ public class CrmContact {
 	private Date modifyDate;
 
 	private CrmCustomer customer;
-
+	
+	private CrmContact conReportTo;
+	
+	
 	public String getConID() {
 		return conID;
 	}
@@ -59,7 +63,15 @@ public class CrmContact {
 	public void setConID(String conID) {
 		this.conID = conID;
 	}
+	
+	public String getConSalutation() {
+		return conSalutation;
+	}
 
+	public void setConSalutation(String conSalutation) {
+		this.conSalutation = conSalutation;
+	}	
+	
 	public String getConFirstname() {
 		return conFirstname;
 	}
@@ -195,12 +207,13 @@ public class CrmContact {
 	public void setConLeadSource(CrmLeadSource conLeadSource) {
 		this.conLeadSource = conLeadSource;
 	}
+	
 
-	public CrmUser getConReportTo() {
+	public CrmContact getConReportTo() {
 		return conReportTo;
 	}
 
-	public void setConReportTo(CrmUser conReportTo) {
+	public void setConReportTo(CrmContact conReportTo) {
 		this.conReportTo = conReportTo;
 	}
 

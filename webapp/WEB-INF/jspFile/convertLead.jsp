@@ -81,6 +81,7 @@ function getContact(){
 	var con=[];	
 	if($("#checkContact").is(':checked') == true){
 		con = {
+			  "conSalutation" : getValueStringById("con_salutation"),
 			  "conFirstname": getValueStringById("con_firstName"),
 		      "conLastname": getValueStringById("con_lastName"),
 		      "conPhone": getValueStringById("con_phone"),
@@ -98,7 +99,7 @@ function getContact(){
 		      "conCountry": getValueStringById("con_country"),
 		      "conAssignTo": getJsonById("userID","con_assignedTo","str"),
 		      "conLeadSource": getJsonById("sourceID","con_leadSource","int"),
-		      "conReportTo": getJsonById("userID","con_report","str"),
+		      "conReportTo": getJsonById("conID","con_report","str"),
 		      "conCreateBy": username,
 		      "customer": null	
 		}
@@ -125,7 +126,10 @@ function getCustomer(){
 	      "whatApp": getValueStringById("c_whatapp"),
 	      "industID": getJsonById("industID","c_industry","int"),
 		  "accountTypeID": getJsonById("accountID","c_type","int"),
-		  "custDetails" : null
+		  "custDetails" : null,
+		  "priceCode" : getValueStringById("c_price"),
+		  "custGroupId" : getValueStringById("c_group"),
+		  "imageName" : ""
 		}
 	}else{
 		cust = {"custID": getValueStringById("CustCustomer")};
@@ -241,9 +245,7 @@ $(document).ready(function() {
 			}else{
 				dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": ""};
 			}
-			
-			dis(dataFrm);
-			
+					
 			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/lead/convert",
@@ -254,23 +256,23 @@ $(document).ready(function() {
 			    	xhr.setRequestHeader("Content-Type", "application/json");
 			    },
 				success:function(data){
+					if(data.CUST_MESSAGE == "SUCCESS" && data.CON_MESSAGE == "SUCCESS"){
+						swal({
+		            		title:"Success",
+		            		text:"You have been converted!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						setTimeout(function(){window.location.href = "${pageContext.request.contextPath}/list-leads/";}, 2000);
+					}else{
+						alertMsgErrorSweet();	
+					}
 					
-					dis(data)
 					
-						/* swal({
-					    		title:"Success",
-					            text:"User have been Convert Leads Success!",
-					            type:"success",  
-					            timer: 2000,   
-					            showConfirmButton: false
-					    });
-						setTimeout(function(){
-							window.location.href = "${pageContext.request.contextPath}/view-leads";
-						}, 2000); */
-
-					},
+				},
 				error:function(){
-					
+					alertMsgErrorSweet();	
 				}
 			});
 		}
