@@ -733,7 +733,13 @@ $(function(){
 					}
 				}
 			},
-			
+			taskStatus : {
+				validators: {
+					notEmpty: {
+						message: 'The status is required and can not be empty!'
+					}
+				}
+			},
 			taskDescription : {
 				validators: {
 					stringLength: {
@@ -996,7 +1002,7 @@ $(function(){
 				      "evModifiedBy":  username,
 				      "evDuration": getValueStringById("eventDuration"),
 				      "startDate": getValueStringById("eventStartDate"),
-				      "eEndDate": getValueStringById("eventEndDate"),
+				      "endDate": getValueStringById("eventEndDate"),
 				      "assignTo": getJsonById("userID","eventAssignTo","str"),
 				      "evlocation": getJsonById("loId","eventLocation","str"),
 			    	  "evRelatedToModuleId" : oppId,

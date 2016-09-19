@@ -162,7 +162,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 				                      <ul class="dropdown-menu" role="menu">
 				                        <li><a href="${pageContext.request.contextPath}/update-customer/{{cc.custID}}"><i class="fa fa-pencil"></i> Edit</a></li>
 				                        <li><a href="#" ng-click="deleteCustomer(cc.custID)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="#"><i class="fa fa-eye"></i> View</a></li>
+				                        <li><a href="${pageContext.request.contextPath}/view-customer/{{cc.custID}}"><i class="fa fa-eye"></i> View</a></li>
 				                      </ul>
 				                    </div>
 			                   	</div>

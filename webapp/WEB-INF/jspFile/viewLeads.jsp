@@ -60,7 +60,6 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 			userAllList($scope.leadAssignTo,'#taskAssignTo','');
 			userAllList($scope.leadAssignTo,'#eventAssignTo','');
 			
-			
 			displayStatusLead(LEAD.statusID);
 			
 			
@@ -1518,7 +1517,7 @@ function addDataToDetailLead(){
 														<a href="#">{{collab.colUser}}</a> <a style="color: #999;font-size: 13px;">on {{collab.createDate}}</a>
 														<span ng-if="collab.colOwn == 'true'" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 													</span> 													
-													<span class="description"><i class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
+													<span class="description"><i ng-if="collab.tags.length > 0 " class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
 												</div>
 												<p>{{collab.colDes}}</p>																													
 												
@@ -2152,19 +2151,20 @@ function addDataToDetailLead(){
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Assign To </label> 
-									<select class="form-control select2" name="taskAssignTo" id="taskAssignTo" style="width: 100%;">
-										<option value="">-- SELECT A Assign To --</option>
-									</select>
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Status</label> 
+									<label>Status <span class="requrie">(Required)</span></label> 
 									<select class="form-control select2" name="taskStatus" id="taskStatus" style="width: 100%;">
 										<option value="">-- SELECT A Status --</option>
 										<option ng-repeat="st in taskStatusStartup" value="{{st.taskStatusId}}">{{st.taskStatusName}}</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Assign To </label> 
+									<select class="form-control select2" name="taskAssignTo" id="taskAssignTo" style="width: 100%;">
+										<option value="">-- SELECT A Assign To --</option>
 									</select>
 								</div>
 							</div>

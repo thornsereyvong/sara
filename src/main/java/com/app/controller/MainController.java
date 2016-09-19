@@ -1373,9 +1373,10 @@ public class MainController {
 
 	}
 
-	@RequestMapping("/view-customers")
-	public String viewCustomer(ModelMap model) {
+	@RequestMapping("/view-customer/{custId}")
+	public String viewCustomer(ModelMap model, @PathVariable("custId") String custId) {
 		model.addAttribute("menu", "viewCustomer");
+		model.addAttribute("custId", custId);
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
 

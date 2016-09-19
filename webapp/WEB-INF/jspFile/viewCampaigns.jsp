@@ -44,12 +44,12 @@ var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Propos
 app.controller('viewOpportunityController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	angular.element(document).ready(function () {				
-		$("#oppStage").select2('val',response.OPPORTUNITY.osId);
+		/* $("#oppStage").select2('val',response.OPPORTUNITY.osId);
 		$("#oppType").select2('val',response.OPPORTUNITY.otId);
 		$("#oppLeadSource").select2('val',response.OPPORTUNITY.sourceID);
 		$("#oppCustomer").select2('val',response.OPPORTUNITY.custID);
 		$("#oppCampaign").select2('val',response.OPPORTUNITY.campID);
-		$("#oppAssignTo").select2('val',response.OPPORTUNITY.userId);
+		$("#oppAssignTo").select2('val',response.OPPORTUNITY.userId); */
     });
 	
 	$scope.collaborates = [];
@@ -72,17 +72,18 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			
 			$scope.campaign = response.CAMPAIGN;
 			
-			$scope.opportunity = response.OPPORTUNITY;
+			$scope.opportunity = response.OPPORTUNITIES;
 			$scope.listNote1(response.NOTES);
-					
+				
+			
 			userAllList($scope.oppAssignTo,'#callAssignTo','');
 			userAllList($scope.oppAssignTo,'#meetAssignTo','');
 			userAllList($scope.oppAssignTo,'#taskAssignTo','');
 			userAllList($scope.oppAssignTo,'#eventAssignTo','');
 			
-			//dis(response)
+		//dis(response.NOTES)
 			
-			displayStatusLead(OPPORTUNITY.osId);
+			//displayStatusLead(OPPORTUNITY.osId);
 			
 			
 			$scope.listAllCallByLeadId(response.CALLS);	
@@ -90,7 +91,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.listAllTaskByLeadId(response.TASKS);
 			$scope.listAllEventByLeadId(response.EVENTS);
 			
-			
+			/* $scope.listAllOppByCamp(response.OPPORTUNITIES); */
 			
 			$scope.listAllEmailByLeadId = function(){	
 				$scope.listAllEmailByLead = [];	
@@ -316,9 +317,9 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
     }
     
     $scope.filterNote = function(note) {
-        var teamIsNew = indexedTeams.indexOf(note.noteCreateDate) == -1;
+        var teamIsNew = indexedTeams.indexOf(note.createDate) == -1;
         if (teamIsNew) {
-            indexedTeams.push(note.noteCreateDate);
+            indexedTeams.push(note.createDate);
         }
         return teamIsNew;
     }
@@ -334,7 +335,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
    		});
     }
     $scope.getListNoteByLead = function(){    	
-		$http.get("${pageContext.request.contextPath}/note/list/opp/"+oppId).success(function(response){ 
+		$http.get("${pageContext.request.contextPath}/note/list/module/"+oppId).success(function(response){ 
 			$scope.listNote1(response.NOTES);
 		});
 	};
@@ -445,7 +446,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	}
 	
 	$scope.listDataMeetByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/meeting/list-by-opportunity/"+oppId).success(function(response){		
+		$http.get("${pageContext.request.contextPath}/meeting/list/module/"+oppId).success(function(response){		
 			$scope.listAllMeetByLeadId(response.MEETINGS);	
 		});	
 	}
@@ -523,7 +524,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$scope.listAllTaskByLead = data;	
 	}
 	$scope.listDataTaskByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/task/list-by-opportunity/"+oppId).success(function(response){		
+		$http.get("${pageContext.request.contextPath}/task/list/module/"+oppId).success(function(response){		
 			$scope.listAllTaskByLeadId(response.TASKS);	
 		});	
 	}
@@ -604,7 +605,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$scope.listAllEventByLead = data;	
 	}
 	$scope.listDataEventByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/event/list-by-opportunity/"+oppId).success(function(response){
+		$http.get("${pageContext.request.contextPath}/event/list/module/"+oppId).success(function(response){
 			$scope.listAllEventByLeadId(response.EVENTS);	
 		});	
 	}
@@ -878,7 +879,14 @@ function addDataToDetailLead(){
 
 </script>
 <style>
-
+.panel-heading1 h4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: normal;
+    width: 75%;
+    padding-top: 8px;
+}
 .trask-btn{
 	color: #dd4b39 !important;
 }
@@ -1071,28 +1079,29 @@ function addDataToDetailLead(){
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.campName}}</h5>
+									<h5 class="description-header">{{campaign.typeName}}</h5>
 									<span class="description-text">Type</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.campName}}</h5>
-									<span class="description-text">Start Date/End Date</span>
+									<h5 class="description-header">{{campaign.startDate | date:'dd/MM/yyyy'}}</h5>
+									<span class="description-text">Start Date</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.campName}}</h5>
-									<span class="description-text">Assign To</span>
+									<h5 class="description-header">{{campaign.endDate | date:'dd/MM/yyyy'}}</h5>
+									<span class="description-text">End Date</span>
 								</div>
 							</div>
 							
+							
 
-							<div class="col-sm-12">
+							<!-- <div class="col-sm-12">
 								<ul class="breadcrumb1" id="objStatus">
 								</ul>
-							</div>
+							</div> -->
 
 							<div class="clearfix"></div>
 							<br />
@@ -1514,7 +1523,7 @@ function addDataToDetailLead(){
 														<a href="#">{{collab.colUser}}</a> <a style="color: #999;font-size: 13px;">on {{collab.createDate}}</a>
 														<span ng-if="collab.colOwn == 'true'" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 													</span> 													
-													<span class="description"><i class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
+													<span class="description"><i ng-if="collab.tags.length > 0 " class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
 												</div>
 												<p>{{collab.colDes}}</p>																													
 												
@@ -1588,14 +1597,13 @@ function addDataToDetailLead(){
 												ng-repeat="notePerDate in noteToFilter() | filter:filterNote">
 
 												<!-- START DATE -->
-												<li class="time-label"><span class="bg-red">{{notePerDate.noteCreateDate}}</span>
+												<li class="time-label"><span class="bg-red">{{notePerDate.createDate}}</span>
 												</li>
-												<li
-													ng-repeat="note in notes | filter:{noteCreateDate: notePerDate.noteCreateDate}">
+												<li ng-repeat="note in notes | filter:{createDate: notePerDate.createDate}">
 													<i class="fa  fa-edit bg-blue"></i>
 													<div class="timeline-item">
 														<span class="time"><i class="fa fa-clock-o"></i>
-															&nbsp;{{notePerDate.noteTime}}</span>
+															&nbsp;{{notePerDate.createTime}}</span>
 														<h3 class="timeline-header">
 															{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
 														</h3>
@@ -1619,34 +1627,34 @@ function addDataToDetailLead(){
 												<form id="frmLeadDetail">
 													<div class="col-md-4">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Overview</b> <a
+															<li class="list-group-item"><b>Overview</b> <!-- <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a></li>
+																	Edit</a> --></li>
 															
 
 															<li class="list-group-item item_border">Name <a
-																class="pull-right show-text-detail">{{lead.firstName}}</a>
+																class="pull-right show-text-detail">{{campaign.campName}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_firstName"
+																	<!-- <input type="text" name="lea_firstName"
 																		id="lea_firstName" class="form-control"
-																		value="{{lead.firstName}}">
+																		value="{{lead.firstName}}"> -->
 																	<div class="clearfix"></div>
 																</div>
 															</li>
 															<li class="list-group-item item_border">Start Date <a
-																class="pull-right show-text-detail">{{lead.lastName}}</a>
+																class="pull-right show-text-detail">{{campaign.startDate | date:'dd/MM/yyyy'}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_lastName"
+																	<!-- <input type="text" name="lea_lastName"
 																		id="lea_lastName" class="form-control"
-																		value="{{lead.lastName}}">
+																		value="{{lead.lastName}}"> -->
 																</div>
 															</li>
 															<li class="list-group-item item_border">End Date <a
-																class="pull-right show-text-detail">{{lead.title}}</a>
+																class="pull-right show-text-detail">{{campaign.endDate | date:'dd/MM/yyyy'}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_title" id="lea_title"
-																		class="form-control" value="{{lead.title}}">
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
 																</div>
 															</li>
 															
@@ -1654,55 +1662,55 @@ function addDataToDetailLead(){
 													</div>
 													<div class="col-md-4">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>&nbsp;</b> <a
+															<!-- <li class="list-group-item"><b>&nbsp;</b> <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a></li>
-															<li class="list-group-item item_border">Status <a
-																class="pull-right show-text-detail">{{lead.statusName}}</a>
+																	Edit</a></li> -->
+															<li class="list-group-item">Status <a
+																class="pull-right show-text-detail">{{campaign.statusName}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2" name="lea_status"
+																	<!-- <select class="form-control select2" name="lea_status"
 																		id="lea_status" style="width: 100%;">
 																		<option value="">-- SELECT Status --</option>
 																		<option ng-repeat="status in leadStatus"
 																			value="{{status.statusID}}">{{status.statusName}}</option>
-																	</select>
+																	</select> -->
 																</div>
 															</li>
 															<li class="list-group-item item_border">Type <a
-																class="pull-right show-text-detail">{{lead.industName}}</a>
+																class="pull-right show-text-detail">{{campaign.typeName}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2"
+																	<!-- <select class="form-control select2"
 																		name="lea_industry" id="lea_industry"
 																		style="width: 100%;">
 																		<option value="">-- SELECT Industry --</option>
 																		<option ng-repeat="industry in leadIndustry"
 																			value="{{industry.industID}}">{{industry.industName}}</option>
-																	</select>
+																	</select> -->
 																</div>
 															</li>
 															<li class="list-group-item item_border">Parent <a
-																class="pull-right show-text-detail">{{lead.campName}}</a>
+																class="pull-right show-text-detail">{{campaign.parentName}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2"
+																	<!-- <select class="form-control select2"
 																		name="lea_campaign" id="lea_campaign"
 																		style="width: 100%;">
 																		<option value="">-- SELECT Campaign --</option>
 																		<option ng-repeat="camp in leadCampaign"
 																			value="{{camp.campID}}">{{camp.campName}}</option>
-																	</select>
+																	</select> -->
 																</div>
 															</li>
 															<li class="list-group-item item_border">Assign To <a
-																class="pull-right show-text-detail">{{lead.assignToUsername}}</a>
+																class="pull-right show-text-detail">{{campaign.username}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2"
+																	<!-- <select class="form-control select2"
 																		name="lea_assignto" id="lea_assignto"
 																		style="width: 100%;">
 																		<option value="">-- SELECT Assign To --</option>
 																		<option ng-repeat="user in leadAssignTo"
 																			value="{{user.userID}}">{{user.username}}</option>
-																	</select>
+																	</select> -->
 																</div>
 
 															</li>
@@ -1714,49 +1722,49 @@ function addDataToDetailLead(){
 													</div>
 													<div class="col-md-4">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Budget</b> <a class="pull-right cusor_pointer"
+															<li class="list-group-item"><b>Budget</b> <!-- <a class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a></li>
+																	Edit</a> --></li>
 																<li class="list-group-item item_border">Budget <a
-																class="pull-right show-text-detail">{{lead.no}}</a>
+																class="pull-right show-text-detail">{{campaign.budget | number:2}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_no" id="lea_no"
-																		class="form-control" value="{{lead.no}}">
+																	<!-- <input type="text" name="lea_no" id="lea_no"
+																		class="form-control" value="{{lead.no}}"> -->
 																</div>
 															</li>
 															<li class="list-group-item item_border">Actual cost <a
-																class="pull-right show-text-detail">{{lead.street}}</a>
+																class="pull-right show-text-detail">{{campaign.actualCost | number:2}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_street" id="lea_street"
-																		class="form-control" value="{{lead.street}}">
+																	<!-- <input type="text" name="lea_street" id="lea_street"
+																		class="form-control" value="{{lead.street}}"> -->
 																</div>
 															</li>
 															<li class="list-group-item item_border">Expected cost <a
-																class="pull-right show-text-detail">{{lead.village}}</a>
+																class="pull-right show-text-detail">{{campaign.expectedCost  | number:2}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_village" id="lea_village"
-																		class="form-control" value="{{lead.village}}">
+																	<!-- <input type="text" name="lea_village" id="lea_village"
+																		class="form-control" value="{{lead.village}}"> -->
 																</div>
 															</li>
 															<li class="list-group-item item_border">Expected response (%) <a
-																class="pull-right show-text-detail">{{lead.commune}}</a>
+																class="pull-right show-text-detail">{{campaign.expectedResponse}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_commune" id="lea_commune"
-																		class="form-control" value="{{lead.commune}}">
+																	<!-- <input type="text" name="lea_commune" id="lea_commune"
+																		class="form-control" value="{{lead.commune}}"> -->
 																</div>
 															</li>
 															<li class="list-group-item item_border">Expected revenue<a
-																class="pull-right show-text-detail">{{lead.commune}}</a>
+																class="pull-right show-text-detail">{{campaign.expectedRevenue | number:2}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_commune" id="lea_commune"
-																		class="form-control" value="{{lead.commune}}">
+																	<!-- <input type="text" name="lea_commune" id="lea_commune"
+																		class="form-control" value="{{lead.commune}}"> -->
 																</div>
 															</li>
 															<li class="list-group-item item_border">Number send<a
-																class="pull-right show-text-detail">{{lead.commune}}</a>
+																class="pull-right show-text-detail">{{campaign.numSend | number:2}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_commune" id="lea_commune"
-																		class="form-control" value="{{lead.commune}}">
+																	<!-- <input type="text" name="lea_commune" id="lea_commune"
+																		class="form-control" value="{{lead.commune}}"> -->
 																</div>
 															</li>
 														</ul>
@@ -1764,18 +1772,18 @@ function addDataToDetailLead(){
 													<div class="col-md-12">
 														<ul class="list-group list-group-unbordered">
 															<li style="border-top: 0px;" class="list-group-item"><b>Description</b>
-																<a class="pull-right cusor_pointer"
+																<!-- <a class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a></li>
+																	Edit</a> --></li>
 														</ul>
 													</div>
 													<div class="col-md-12">
-														<div class="show-text-detail">{{lead.description}}</div>
+														<div class="show-text-detail">{{campaign.description}}</div>
 														<div class="form-group show-edit-non-style"
 															style="display: none;">
-															<textarea rows="3" cols="" name="lea_description"
+															<!-- <textarea rows="3" cols="" name="lea_description"
 																id="lea_description" class="form-control"
-																placeholder="Description">{{lead.description}}</textarea>
+																placeholder="Description">{{campaign.statusName}}</textarea> -->
 														</div>
 													</div>
 													<br>
@@ -1793,7 +1801,74 @@ function addDataToDetailLead(){
 										</div>
 										<div class="tab-pane " id="opport_tap">
 											<div class="row">
-											
+												<div class="col-md-12">
+													<div class="panel-group" id="LOpp">
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 style="margin-top: 10px;" class="panel-title pull-left">
+																	<a data-toggle="collapse" data-parent="LOpp" href="#LOpp1">List Opportunity  <span class="badge bg-blue ">{{opportunity.length <= 0 ? '' : opportunity.length }}</span></a>
+																	
+																</h4>
+																<a href="${pageContext.request.contextPath}/create-opportunity" class="btn btn-default pull-right">New</a>
+																<div class="clearfix"></div>
+															</div>
+															<div id="LOpp1" class="panel-collapse collapse in">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																			<table class="table iTable"> 					
+																				<thead>
+																					<tr>
+																						<th class="text-center">#</th>
+																						<th>Name</th>
+																						<th>Customer</th>
+																						<th>Stage</th>
+																						<th>Amount</th>
+																						<th>Close Date</th>
+																						<th></th>
+																					</tr>
+																				</thead>
+																				<tbody ng-repeat="opp in opportunity">
+																					<tr>
+																						<td class="iTD-width-50">
+																							<a href="#">
+																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
+																							</a>
+																						</td>
+																						<td>{{opp.opName}}</td>
+																						<td>{{opp.custName}}</td>
+																						<td>{{opp.opStageId.osName}}</td>
+																						<td>{{opp.opAmount | number}}</td>
+																						<td>{{opp.opCloseDate | date:'dd/MM/yyyy'}}</td>
+																						<td class="mailbox-date">
+																							<div class="col-sm-2">
+																								<div class="btn-group">
+																									<button type="button"
+																										class="btn btn-default dropdown-toggle"
+																										data-toggle="dropdown" aria-expanded="false">
+																										<span class="caret"></span> <span class="sr-only">Toggle
+																											Dropdown</span>
+																									</button>
+																									<ul class="dropdown-menu" role="menu">
+																										<li><a href="${pageContext.request.contextPath}/update-opportunity/{{opp.opId}}" >
+																												<i class="fa fa-pencil"></i> Edit
+																										</a></li>																										
+																										<li><a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}"> <i class="fa fa-eye"></i>
+																												View
+																										</a></li>
+					
+																									</ul>
+																								</div>
+																							</div>
+																						</td>
+																					</tr>
+																					
+																			</table>
+																		</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 
@@ -2079,19 +2154,20 @@ function addDataToDetailLead(){
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Assign To </label> 
-									<select class="form-control select2" name="taskAssignTo" id="taskAssignTo" style="width: 100%;">
-										<option value="">-- SELECT A Assign To --</option>
-									</select>
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Status</label> 
+									<label>Status <span class="requrie">(Required)</span></label> 
 									<select class="form-control select2" name="taskStatus" id="taskStatus" style="width: 100%;">
 										<option value="">-- SELECT A Status --</option>
 										<option ng-repeat="st in taskStatusStartup" value="{{st.taskStatusId}}">{{st.taskStatusName}}</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="clearfix"></div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Assign To </label> 
+									<select class="form-control select2" name="taskAssignTo" id="taskAssignTo" style="width: 100%;">
+										<option value="">-- SELECT A Assign To --</option>
 									</select>
 								</div>
 							</div>
