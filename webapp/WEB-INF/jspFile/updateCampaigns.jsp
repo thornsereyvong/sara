@@ -27,35 +27,27 @@
 	<script type="text/javascript">
 		var app = angular.module('campaign', [ 'oitozero.ngSweetAlert', ]);
 		var self = this;
-		app
-				.controller(
-						'campController',
-						[
-								'SweetAlert',
-								'$scope',
-								'$http',
-								function(SweetAlert, $scope, $http) {
-									$scope.editCampaignOnStartup = function() {
-										$http(
-												{
-													method : 'POST',
-													url : '${pageContext.request.contextPath}/edit/startup',
-													headers : {
-														'Accept' : 'application/json',
-														'Content-Type' : 'application/json'
-													},
-													data : {
-														"username" : '${SESSION}',
-														"campID" : '${campId}'
-													}
-												}).success(function(response) {
-											addCampaignDataToForm(response);
-											if (response.CHILD == "EXIST") {
-
-											}
-										});
-									};
-								} ]);
+		var campId = "${campId}";
+		var username = "${SESSION}";
+		app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http) {
+			$scope.editCampaignOnStartup = function() {
+				$http({
+						method : 'POST',
+						url : '${pageContext.request.contextPath}/edit/startup',
+						headers : {
+							'Accept' : 'application/json',
+							'Content-Type' : 'application/json'
+						},
+						data : {
+							"username" : '${SESSION}',
+							"campID" : '${campId}'
+						}
+				}).success(function(response) {
+					addCampaignDataToForm(response);
+					if (response.CHILD == "EXIST") {}
+				});
+			};
+		}]);
 
 		function listCampaignStatus(statusId, status) {
 			$("#cam_status").empty().append(
@@ -98,24 +90,9 @@
 			var result = response.CAMPAIGN;
 			$("#cam_id").val(result.campID);
 			$("#cam_name").val(result.campName);
-
-			var d = new Date(result.startDate);
-			var dd = d.getDate();
-			var mm = d.getMonth() + 1;
-			var yy = d.getFullYear();
-
-			$("#cam_startDate").val(dd + "/" + mm + "/" + yy);
-
-			var end = new Date(result.endDate);
-
-			var dds = end.getDate();
-			var mms = end.getMonth() + 1;
-			var yys = end.getFullYear();
-
-			$("#cam_endDate").val(dds + "/" + mms + "/" + yys);
-
+			$("#cam_startDate").val(conDateSqlToNormal(result.startDate, "/"));
+			$("#cam_endDate").val(conDateSqlToNormal(result.endDate, "/"));
 			$("#cam_description").val(result.description);
-
 			$("#cam_budget").val(result.budget);
 			$("#cam_actualCost").val(result.actualCost);
 			$("#cam_expectedCost").val(result.expectedCost);
@@ -142,460 +119,261 @@
 			} else {
 				listParentCampaign(result.campID, response.CAMP_PARENT);
 			}
-
+			
+			
+			$('#form-campaigns').data('bootstrapValidator').resetField($('#cam_status'));
+			$('#form-campaigns').data('bootstrapValidator').resetField($('#cam_type'));
+			
 		}
 
-		$(document)
-				.ready(
-						function() {
-							$(".select2").select2();
-							$('#cam_startDate').daterangepicker({
-								singleDatePicker : true,
-								showDropdowns : true,
-								format : 'DD/MM/YYYY'
-							}).on(
-									'change',
-									function(e) {
+		$(document).ready(function() {
+			$(".select2").select2();
+			$('#cam_startDate').daterangepicker({
+				singleDatePicker : true,
+				showDropdowns : true,
+				format : 'DD/MM/YYYY'
+			}).on('change',function(e) {
+				$('#form-campaigns').bootstrapValidator('revalidateField','cam_startDate');
+			});
+			$('#cam_endDate').daterangepicker({
+				singleDatePicker : true,
+				showDropdowns : true,
+				format : 'DD/MM/YYYY'
+			}).on('change',function(e) {
+				$('#form-campaigns').bootstrapValidator('revalidateField','cam_endDate');
+			});
+			$('#cam_startDate').daterangepicker({
+		        singleDatePicker: true,
+		        showDropdowns: true,
+		        format: 'DD/MM/YYYY' 
+		    }).on('change', function(e) {
 
-										$('#form-campaigns')
-												.bootstrapValidator(
-														'revalidateField',
-														'cam_startDate');
+				if($("#cam_startDate").val() != ""){
+					$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_startDate');
+				}	
+		  
+			});
+			
+			function clearForm() {
+				$("#cam_startDate").val("");
+				$("#cam_parent").val("");
+				$("#cam_description").val("");
+				$("#cam_assignTo").val("");
+			}
 
-									});
-							$('#cam_endDate').daterangepicker({
-								singleDatePicker : true,
-								showDropdowns : true,
-								format : 'DD/MM/YYYY'
-							}).on(
-									'change',
-									function(e) {
+			$("#cam_name").change(function() {
+				var name = $("#cam_name").val();
+				$.ajax({
+					url : "${pageContext.request.contextPath}/campaign/list/validate/"+ name,
+					method : "GET",
+					header : "application/json",
+					statusCode : {
+								404 : function(xhr) {
+									var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-ok" data-bv-icon-for="cam_name" style="display: block;"></i>';
+									$("#div_camName").find("i").remove();
+									$("#div_camName").find("small").remove();
+									$("#div_camName").removeClass("form-group has-feedback has-error").addClass("form-group has-feedback has-success");
+									$("#div_camName").append(i);
+									$("#btn_save").removeAttr("disabled");
+								}
+					},
+					success : function(data) {
+						var dataObject = data.MESSAGE;
+						if (dataObject == "EXIST") {
+							var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-remove" data-bv-icon-for="cam_name" style="display: block;"></i>';
+							var small = '<small class="help-block" data-bv-validator="notEmpty" data-bv-for="cam_name" data-bv-result="INVALID" style="">The Campaign Name is already exit ! </small>';
+							$("#div_camName").find("i").remove();
+							$("#div_camName").find("small").remove();
+							$("#div_camName").removeClass("form-group has-feedback has-success").addClass("form-group has-feedback has-error");
+							$("#div_camName").append(i+ small);
+							$("#btn_save").attr("disabled","disabled");
+						}
+					}
+				});
+			});
+			$("#btn_clear").click(function() {
+				location.reload();
+			});
 
-										$('#form-campaigns')
-												.bootstrapValidator(
-														'revalidateField',
-														'cam_endDate');
-
-									});
-
-							function clearForm() {
-								$("#cam_startDate").val("");
-								$("#cam_parent").val("");
-								$("#cam_description").val("");
-								$("#cam_assignTo").val("");
+			$("#btn_save").click(function() {
+				$("#form-campaigns").submit();
+			});
+			$('#form-campaigns').bootstrapValidator({
+				message : 'This value is not valid',
+				feedbackIcons : {
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
+				},
+				fields : {
+					cam_name : {
+						validators : {
+							notEmpty : {
+								message : 'The name is required and can not be empty!'
+							},
+							stringLength: {
+								max: 255,
+								message: 'The name must be less than 255 characters long.'
 							}
-
-							$("#cam_name")
-									.change(
-											function() {
-												var name = $("#cam_name").val();
-
-												$
-														.ajax({
-															url : "${pageContext.request.contextPath}/campaign/list/validate/"
-																	+ name,
-															method : "GET",
-															header : "application/json",
-															statusCode : {
-																404 : function(
-																		xhr) {
-
-																}
-															},
-															success : function(
-																	data) {
-																var dataObject = data.MESSAGE;
-																if (dataObject == "EXIST") {
-
-																	var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-remove" data-bv-icon-for="cam_name" style="display: block;"></i>';
-																	var small = '<small class="help-block" data-bv-validator="notEmpty" data-bv-for="cam_name" data-bv-result="INVALID" style="">The Campaign Name is already exit ! </small>';
-																	$(
-																			"#div_camName")
-																			.find(
-																					"i")
-																			.remove();
-																	$(
-																			"#div_camName")
-																			.find(
-																					"small")
-																			.remove();
-																	$(
-																			"#div_camName")
-																			.removeClass(
-																					"form-group has-feedback has-success")
-																			.addClass(
-																					"form-group has-feedback has-error");
-																	$(
-																			"#div_camName")
-																			.append(
-																					i
-																							+ small);
-																	$(
-																			"#btn_save")
-																			.attr(
-																					"disabled",
-																					"disabled");
-																} else {
-																	var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-ok" data-bv-icon-for="cam_name" style="display: block;"></i>';
-																	$(
-																			"#div_camName")
-																			.find(
-																					"i")
-																			.remove();
-																	$(
-																			"#div_camName")
-																			.find(
-																					"small")
-																			.remove();
-																	$(
-																			"#div_camName")
-																			.removeClass(
-																					"form-group has-feedback has-error")
-																			.addClass(
-																					"form-group has-feedback has-success");
-																	$(
-																			"#div_camName")
-																			.append(
-																					i);
-																	$(
-																			"#btn_save")
-																			.removeAttr(
-																					"disabled");
-
-																}
-
-															}
-														});
-
-											});
-
-							$("#btn_clear")
-									.click(
-											function() {
-												location.reload();
-											});
-
-							$("#btn_save").click(function() {
-								$("#form-campaigns").submit();
-							});
-
-							$('#form-campaigns')
-									.bootstrapValidator(
-											{
-												message : 'This value is not valid',
-												feedbackIcons : {
-													valid : 'glyphicon glyphicon-ok',
-													invalid : 'glyphicon glyphicon-remove',
-													validating : 'glyphicon glyphicon-refresh'
-												},
-												fields : {
-													cam_name : {
-														validators : {
-															notEmpty : {
-																message : 'The name is required and can not be empty!'
-															},
-															stringLength : {
-																max : 255,
-																message : 'The name must be less than 255 characters long.'
-															}
-														}
-													},
-													cam_description : {
-														validators : {
-
-															stringLength : {
-																max : 255,
-																message : 'The name must be less than 255 characters long.'
-															}
-														}
-													},
-
-													cam_status : {
-														validators : {
-															notEmpty : {
-																message : 'The tatus is required and can not be empty!'
-															}
-														}
-													},
-													cam_type : {
-														validators : {
-															notEmpty : {
-																message : 'The type is required and can not be empty!'
-															}
-														}
-													},
-
-													cam_endDate : {
-														validators : {
-															notEmpty : {
-																message : 'The  end date is required and can not be empty!'
-															},
-															date : {
-																format : 'DD/MM/YYYY',
-																message : 'The value is not a valid date'
-															}
-														}
-													},
-													cam_startDate : {
-														validators : {
-															date : {
-																format : 'DD/MM/YYYY',
-																message : 'The value is not a valid date'
-															}
-														}
-													},
-													cam_budget : {
-														validators : {
-															numeric : {
-																message : 'The value is not a number',
-																// The default separators
-																thousandsSeparator : '',
-																decimalSeparator : '.'
-															}
-														}
-													},
-													cam_actualCost : {
-														validators : {
-															numeric : {
-																message : 'The value is not a number',
-																// The default separators
-																thousandsSeparator : '',
-																decimalSeparator : '.'
-															}
-														}
-													},
-													cam_numSend : {
-														validators : {
-															numeric : {
-																message : 'The value is not a number',
-																// The default separators
-																thousandsSeparator : '',
-																decimalSeparator : '.'
-															}
-														}
-													},
-													cam_expectedResponse : {
-														validators : {
-
-															numeric : {
-																message : 'The value is not a number',
-																// The default separators
-																thousandsSeparator : '',
-																decimalSeparator : '.'
-															}
-														}
-													},
-													cam_expectedCost : {
-														validators : {
-															numeric : {
-																message : 'The value is not a number',
-																// The default separators
-																thousandsSeparator : '',
-																decimalSeparator : '.'
-															}
-														}
-													},
-													cam_expectedRevenue : {
-														validators : {
-															numeric : {
-																message : 'The value is not a number',
-																// The default separators
-																thousandsSeparator : '',
-																decimalSeparator : '.'
-															}
-														}
-													}
-												}
-											})
-									.on(
-											'success.form.bv',
-											function(e) {
-
-												var currentDate = new Date();
-												var day = currentDate.getDate();
-												var month = currentDate
-														.getMonth() + 1;
-												var year = currentDate
-														.getFullYear();
-
-												var createDate = $(
-														"#cam_startDate").val();
-												var newCreateDate = createDate
-														.split("/").reverse()
-														.join("-");
-
-												var endDate = $("#cam_endDate")
-														.val();
-												var endCreateDate = endDate
-														.split("/").reverse()
-														.join("-");
-
-												var parentID = "";
-												if ($("#cam_parent").val() != "") {
-													parentID = {
-														"campID" : $(
-																"#cam_parent")
-																.val()
-													};
-												} else {
-													parentID = null;
-												}
-
-												var status = "";
-												if ($("#cam_status").val() != "") {
-													status = {
-														"statusID" : $(
-																"#cam_status")
-																.val()
-													};
-												} else {
-													status = null;
-												}
-
-												var type = "";
-												if ($("#cam_type").val() != "") {
-													type = {
-														"typeID" : $(
-																"#cam_type")
-																.val()
-													};
-												} else {
-													type = null;
-												}
-
-												var assign = "";
-												if ($("#cam_assignTo").val() != "") {
-													assign = {
-														"userID" : $(
-																"#cam_assignTo")
-																.val()
-													};
-												} else {
-													assign = null;
-												}
-
-												$
-														.ajax({
-															url : "${pageContext.request.contextPath}/campaign/edit",
-															type : "PUT",
-															data : JSON
-																	.stringify({
-																		"campID" : $(
-																				"#cam_id")
-																				.val(),
-																		"campName" : $(
-																				"#cam_name")
-																				.val(),
-																		"startDate" : newCreateDate,
-																		"endDate" : endCreateDate,
-																		"status" : status,
-																		"type" : type,
-																		"description" : $(
-																				"#cam_description")
-																				.val(),
-																		"parent" : parentID,
-																		"budget" : $(
-																				"#cam_budget")
-																				.val(),
-																		"assignTo" : assign,
-																		"actualCost" : $(
-																				"#cam_actualCost")
-																				.val(),
-																		"expectedCost" : $(
-																				"#cam_expectedCost")
-																				.val(),
-																		"expectedRevenue" : $(
-																				"#cam_expectedRevenue")
-																				.val(),
-																		"numSend" : $(
-																				"#cam_numSend")
-																				.val(),
-																		"expectedResponse" : $(
-																				"#cam_expectedResponse")
-																				.val(),
-																		"modifiedBy" : $.session
-																				.get("parentID"),
-																	}),
-
-															beforeSend : function(
-																	xhr) {
-																xhr
-																		.setRequestHeader(
-																				"Accept",
-																				"application/json");
-																xhr
-																		.setRequestHeader(
-																				"Content-Type",
-																				"application/json");
-															},
-															success : function(
-																	data) {
-																$(
-																		"#form-campaigns")
-																		.bootstrapValidator(
-																				'resetForm',
-																				'true');
-																$('#form-campaigns')[0]
-																		.reset();
-																$("#cam_parent")
-																		.select2(
-																				"val",
-																				"");
-																$(
-																		"#cam_assignTo")
-																		.select2(
-																				"val",
-																				"");
-																$(
-																		'#form-campaigns')
-																		.bootstrapValidator(
-																				'resetForm',
-																				'cam_status');
-																$(
-																		'#form-campaigns')
-																		.bootstrapValidator(
-																				'resetForm',
-																				'cam_type');
-																swal({
-																	title : "Success",
-																	text : "User have been Update campaign!",
-																	type : "success",
-																	timer : 2000,
-																	showConfirmButton : false
-																});
-																setTimeout(
-																		function() {
-																			window.location.href = "${pageContext.request.contextPath}/list-campaigns";
-																		}, 2000);
-
-															},
-															error : function() {
-																errorMessage();
-															}
-														});
-
-											});
-
-						});
+						}
+					},
+					cam_description : {
+						validators : {
+							
+							stringLength: {
+								max: 1000,
+								message: 'The description must be less than 1000 characters long.'
+							}
+						}
+					},
+					
+					cam_status : {
+						validators : {
+							notEmpty : {
+								message : 'The status is required and can not be empty!'
+							}
+						}
+					},
+					cam_type : {
+						validators : {
+							notEmpty : {
+								message : 'The type is required and can not be empty!'
+							}
+						}
+					},
+					cam_endDate : {
+						validators : {
+							notEmpty : {
+								message : 'The  end date is required and can not be empty!'
+							},
+							date: {
+		                        format: 'DD/MM/YYYY',
+		                        message: 'The value is not a valid date'
+		                    }
+						}
+					},
+					cam_startDate : {
+						validators : {	
+							date: {
+		                        format: 'DD/MM/YYYY',
+		                        message: 'The value is not a valid date'
+		                    }
+						}
+					},
+					cam_budget : {
+						validators : {
+							numeric: {
+				                message: 'The value is not a number',
+				                // The default separators
+				                thousandsSeparator: '',
+				                decimalSeparator: '.'
+				            }
+						}
+					},
+					cam_actualCost : {
+						validators : {
+							numeric: {
+				                message: 'The value is not a number',
+				                // The default separators
+				                thousandsSeparator: '',
+				                decimalSeparator: '.'
+				            }
+						}
+					},
+					cam_numSend : {
+						validators : {
+							numeric: {
+				                message: 'The value is not a number',
+				                // The default separators
+				                thousandsSeparator: '',
+				                decimalSeparator: '.'
+				            }
+						}
+					},
+					cam_expectedResponse : {
+						validators : {
+							between: {
+		                        min: 0,
+		                        max: 100,
+		                        message: 'The expected response must be between 0 and 100'
+		                    }
+						}
+					},
+					cam_expectedCost : {
+						validators : {
+							numeric: {
+				                message: 'The value is not a number',
+				                // The default separators
+				                thousandsSeparator: '',
+				                decimalSeparator: '.'
+				            }
+						}
+					},
+					cam_expectedRevenue : {
+						validators : {
+							numeric: {
+				                message: 'The value is not a number',
+				                // The default separators
+				                thousandsSeparator: '',
+				                decimalSeparator: '.'
+				            }
+						}
+					}
+				}
+			}).on('success.form.bv', function(e) {
+				
+				var dataFrm = {"campID" : campId,
+							   "campName" : getValueStringById("cam_name"),								
+							   "startDate" : getDateByFormat("cam_startDate"),
+				               "endDate" : getDateByFormat("cam_endDate"),
+				               "status" : getJsonById("statusID","cam_status","int"),
+				               "type" : getJsonById("typeID","cam_type","int"),
+				               "description" : getValueStringById("cam_description"),
+				               "parent" : getJsonById("campID","cam_parent","str"),
+				               "budget" : getInt("cam_budget"),
+				               "assignTo" : getJsonById("userID","cam_assignTo","str"),
+				               "actualCost" : getInt("cam_actualCost"),
+							   "expectedCost" : getInt("cam_expectedCost"),
+				               "expectedRevenue" : getInt("cam_expectedRevenue"),
+				               "numSend" : getInt("cam_numSend"),
+							   "expectedResponse" : getInt("cam_expectedResponse"),
+							   "modifyBy" : username
+				};
+				
+				
+				$.ajax({url : "${pageContext.request.contextPath}/campaign/edit",
+					type : "PUT",
+					data : JSON.stringify(dataFrm),
+						beforeSend : function(xhr) {
+							xhr.setRequestHeader("Accept","application/json");
+							xhr.setRequestHeader("Content-Type","application/json");
+						},
+						success : function(data) {
+							if(data.MESSAGE == "UPDATED"){
+								swal({
+				            		title:"Successfully",
+				            		text:"You have been updated this campaign!",
+				            		type:"success",  
+				            		timer: 2000,   
+				            		showConfirmButton: false
+			        			});
+								reloadForm(2000);
+							}else{
+								alertMsgErrorSweet();	
+							}
+						},
+						error : function() {
+							alertMsgErrorSweet();	
+						}
+				});
+			});
+		});
 	</script>
 	<section class="content">
 
 		<!-- Default box -->
 
 		<div class="box box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-			</div>
 			<div class="box-body" data-ng-init="editCampaignOnStartup()">
 
 				<form method="post" id="form-campaigns">
@@ -661,24 +439,9 @@
 								</div>
 
 								<div class="clearfix"></div>
-								<div class="col-sm-12">
-									<label class="font-label">Description </label>
-									<div class="form-group">
-										<textarea style="height: 120px" rows="" cols=""
-											name="cam_description" id="cam_description"
-											class="form-control"></textarea>
-									</div>
-								</div>
+								
 
-								<div class="col-sm-6">
-									<label class="font-label">Assigned to</label>
-									<div class="form-group">
-										<select class="form-control select2" name="cam_assignTo"
-											id="cam_assignTo" style="width: 100%;">
-											<option value=""></option>
-										</select>
-									</div>
-								</div>
+								
 
 							</div>
 
@@ -704,7 +467,7 @@
 									</div>
 								</div>
 
-
+								<div class="clearfix"></div>
 								<div class="col-sm-6">
 									<label class="font-label">Parent campaign </label>
 									<div class="form-group">
@@ -714,14 +477,29 @@
 										</select>
 									</div>
 								</div>
-
-
+								<div class="col-sm-6">
+									<label class="font-label">Assigned to</label>
+									<div class="form-group">
+										<select class="form-control select2" name="cam_assignTo"
+											id="cam_assignTo" style="width: 100%;">
+											<option value=""></option>
+										</select>
+									</div>
+								</div>
 							</div>
 
 
 							<div class="clearfix"></div>
-
-
+							<div class="col-sm-12">
+								<div class="col-sm-12">
+									<label class="font-label">Description </label>
+									<div class="form-group">
+										<textarea rows="4" cols=""
+											name="cam_description" id="cam_description"
+											class="form-control"></textarea>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="clearfix"></div>

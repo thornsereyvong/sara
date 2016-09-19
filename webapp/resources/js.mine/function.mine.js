@@ -193,7 +193,8 @@ function getDateByFormat(ID){
 	date = date.split('/');
 	return date[2]+"-"+date[1]+"-"+date[0];
 }
-function conDateSqlToNormal(date, strCon){	
+function conDateSqlToNormal(date, strCon){
+	if(date == "") return "";
 	date = date.split('-');
 	return date[2]+""+strCon+""+date[1]+""+strCon+""+date[0];
 }
@@ -297,7 +298,12 @@ function getTags(ID,key){
 	}	
 	return null;
 }
-
+function getDateToSQL(ID){
+	var date =  $.trim($("#"+ID).val());
+	if(date != ""){
+		
+	}
+}
 
 function getDateById(ID){
 	var date =  $.trim($("#"+ID).val());

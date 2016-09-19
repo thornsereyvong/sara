@@ -21,6 +21,7 @@
   <script type="text/javascript">
 		var app = angular.module('campaign', [ 'oitozero.ngSweetAlert', ]);
 		var self = this;
+		var username = "${SESSION}";
 		app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http) {
 				$scope.startupAddPage = function(username) {
 					$http({
@@ -55,6 +56,19 @@
 				}	
 		  
 			});
+			
+			$('#cam_startDate').daterangepicker({
+		        singleDatePicker: true,
+		        showDropdowns: true,
+		        format: 'DD/MM/YYYY' 
+		    }).on('change', function(e) {
+
+				if($("#cam_startDate").val() != ""){
+					$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_startDate');
+				}	
+		  
+			});
+			
 			
 			$("#cam_name").change(function() {
 				var name = $("#cam_name").val();
@@ -92,6 +106,177 @@
 		$("#btn_save").click(function() {
 			$("#form-campaigns").submit();
 		});
+		
+		
+		
+		$('#form-campaigns').bootstrapValidator({
+			message : 'This value is not valid',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
+			},
+			fields : {
+				cam_name : {
+					validators : {
+						notEmpty : {
+							message : 'The name is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The name must be less than 255 characters long.'
+						}
+					}
+				},
+				cam_description : {
+					validators : {
+						
+						stringLength: {
+							max: 1000,
+							message: 'The description must be less than 1000 characters long.'
+						}
+					}
+				},
+				
+				cam_status : {
+					validators : {
+						notEmpty : {
+							message : 'The status is required and can not be empty!'
+						}
+					}
+				},
+				cam_type : {
+					validators : {
+						notEmpty : {
+							message : 'The type is required and can not be empty!'
+						}
+					}
+				},
+				cam_endDate : {
+					validators : {
+						notEmpty : {
+							message : 'The  end date is required and can not be empty!'
+						},
+						date: {
+	                        format: 'DD/MM/YYYY',
+	                        message: 'The value is not a valid date'
+	                    }
+					}
+				},
+				cam_startDate : {
+					validators : {	
+						date: {
+	                        format: 'DD/MM/YYYY',
+	                        message: 'The value is not a valid date'
+	                    }
+					}
+				},
+				cam_budget : {
+					validators : {
+						numeric: {
+			                message: 'The value is not a number',
+			                // The default separators
+			                thousandsSeparator: '',
+			                decimalSeparator: '.'
+			            }
+					}
+				},
+				cam_actualCost : {
+					validators : {
+						numeric: {
+			                message: 'The value is not a number',
+			                // The default separators
+			                thousandsSeparator: '',
+			                decimalSeparator: '.'
+			            }
+					}
+				},
+				cam_numSend : {
+					validators : {
+						numeric: {
+			                message: 'The value is not a number',
+			                // The default separators
+			                thousandsSeparator: '',
+			                decimalSeparator: '.'
+			            }
+					}
+				},
+				cam_expectedResponse : {
+					validators : {
+						between: {
+	                        min: 0,
+	                        max: 100,
+	                        message: 'The expected response must be between 0 and 100'
+	                    }
+					}
+				},
+				cam_expectedCost : {
+					validators : {
+						numeric: {
+			                message: 'The value is not a number',
+			                // The default separators
+			                thousandsSeparator: '',
+			                decimalSeparator: '.'
+			            }
+					}
+				},
+				cam_expectedRevenue : {
+					validators : {
+						numeric: {
+			                message: 'The value is not a number',
+			                // The default separators
+			                thousandsSeparator: '',
+			                decimalSeparator: '.'
+			            }
+					}
+				}
+			}
+		}).on('success.form.bv', function(e) {
+			
+			var dataFrm = {"campName" : getValueStringById("cam_name"),
+						   "startDate" : getDateByFormat("cam_startDate"),
+			               "endDate" : getDateByFormat("cam_endDate"),
+			               "status" : getJsonById("statusID","cam_status","int"),
+			               "type" : getJsonById("typeID","cam_type","int"),
+			               "description" : getValueStringById("cam_description"),
+			               "parent" : getJsonById("campID","cam_parent","str"),
+			               "budget" : getInt("cam_budget"),
+			               "assignTo" : getJsonById("userID","cam_assignTo","str"),
+			               "actualCost" : getInt("cam_actualCost"),
+						   "expectedCost" : getInt("cam_expectedCost"),
+			               "expectedRevenue" : getInt("cam_expectedRevenue"),
+			               "numSend" : getInt("cam_numSend"),
+						   "expectedResponse" : getInt("cam_expectedResponse"),
+						   "createdBy" : username
+			};
+			
+			
+			$.ajax({url : "${pageContext.request.contextPath}/campaign/add",
+				type : "POST",
+				data : JSON.stringify(dataFrm),
+					beforeSend : function(xhr) {
+						xhr.setRequestHeader("Accept","application/json");
+						xhr.setRequestHeader("Content-Type","application/json");
+					},
+					success : function(data) {
+						if(data.MESSAGE == "INSERTED"){
+							swal({
+			            		title:"Successfully",
+			            		text:"You have been created a new campaign!",
+			            		type:"success",  
+			            		timer: 2000,   
+			            		showConfirmButton: false
+		        			});
+							reloadForm(2000);
+						}else{
+							alertMsgErrorSweet();	
+						}
+					},
+					error : function() {
+						alertMsgErrorSweet();	
+					}
+			});
+		});
 	});
 	</script>
   <section class="content"> 
@@ -99,15 +284,6 @@
     <!-- Default box -->
     
     <div class="box box-danger">
-      <div class="box-header with-border">
-        <h3 class="box-title">&nbsp;</h3>
-        <div class="box-tools pull-right">
-          <button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse"> <i class="fa fa-minus"></i> </button>
-          <button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove"> <i class="fa fa-times"></i> </button>
-        </div>
-      </div>
       <div class="box-body" data-ng-init = "startupAddPage('${SESSION}')">
         <form method="post" id="form-campaigns">
           <button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save </button>
@@ -150,22 +326,8 @@
                   </div>
                 </div>
               </div>
-              <div class="clearfix"></div>
-              <div class="col-sm-12">
-                <label class="font-label">Description </label>
-                <div class="form-group">
-                  <textarea style="height: 120px" rows="" cols="" name="cam_description" id="cam_description" class="form-control"></textarea>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <label class="font-label">Assigned to  </label>
-                <div class="form-group">
-                  <select class="form-control select2" name="cam_assignTo" id="cam_assignTo" style="width: 100%;">
-                    <option value="">-- SELECT User --</option>
-                    <option ng-repeat="user in users" value="{{user.userID}}">{{user.username}}</option>
-                  </select>
-                </div>
-              </div>
+              
+              
             </div>
             <div class="col-sm-6">
               <div class="col-sm-6">
@@ -196,8 +358,25 @@
                   </select>
                 </div>
               </div>
+              <div class="col-sm-6">
+                <label class="font-label">Assigned to  </label>
+                <div class="form-group">
+                  <select class="form-control select2" name="cam_assignTo" id="cam_assignTo" style="width: 100%;">
+                    <option value="">-- SELECT User --</option>
+                    <option ng-repeat="user in users" value="{{user.userID}}">{{user.username}}</option>
+                  </select>
+                </div>
+              </div>
             </div>
             <div class="clearfix"></div>
+            <div class="col-sm-12">
+              <div class="col-sm-12">
+                <label class="font-label">Description </label>
+                <div class="form-group">
+                  <textarea rows="4" cols="" name="cam_description" id="cam_description" class="form-control"></textarea>
+                </div>
+              </div>
+             </div>
           </div>
           </div>
           <div class="clearfix"></div>
@@ -222,6 +401,7 @@
 									id="cam_actualCost">
               </div>
             </div>
+            <div class="clearfix"></div>
             <div class="col-sm-6">
               <label class="font-label">Number send</label>
               <div class="form-group">
@@ -230,7 +410,7 @@
               </div>
             </div>
             <div class="col-sm-6">
-              <label class="font-label">Expected response</label>
+              <label class="font-label">Expected response (%)</label>
               <div class="form-group">
                 <input type="text" class="form-control"
 									name="cam_expectedResponse" id="cam_expectedResponse">
@@ -252,9 +432,11 @@
 									name="cam_expectedRevenue" id="cam_expectedRevenue">
               </div>
             </div>
+            <div class="clearfix"></div>
           </div>
         </form>
       </div>
+      <div id="errors"></div>
       <!-- /.box-body -->
       <div class="box-footer"></div>
       <!-- /.box-footer--> 
@@ -269,276 +451,5 @@
 
 <!-- /.content-wrapper --> 
 
-<script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
-						$('#form-campaigns')
-								.bootstrapValidator(
-										{
-											message : 'This value is not valid',
-											feedbackIcons : {
-												valid : 'glyphicon glyphicon-ok',
-												invalid : 'glyphicon glyphicon-remove',
-												validating : 'glyphicon glyphicon-refresh'
-											},
-											fields : {
-												cam_name : {
-													validators : {
-														notEmpty : {
-															message : 'The name is required and can not be empty!'
-														},
-														stringLength: {
-															max: 255,
-															message: 'The name must be less than 255 characters long.'
-														}
-													}
-												},
-												cam_description : {
-													validators : {
-														
-														stringLength: {
-															max: 255,
-															message: 'The name must be less than 255 characters long.'
-														}
-													}
-												},
-												
-												cam_status : {
-													validators : {
-														notEmpty : {
-															message : 'The tatus is required and can not be empty!'
-														}
-													}
-												},
-												cam_type : {
-													validators : {
-														notEmpty : {
-															message : 'The type is required and can not be empty!'
-														}
-													}
-												},
-												cam_endDate : {
-													validators : {
-														notEmpty : {
-															message : 'The  end date is required and can not be empty!'
-														},
-														date: {
-									                        format: 'DD/MM/YYYY',
-									                        message: 'The value is not a valid date'
-									                    }
-													}
-												},
-												cam_startDate : {
-													validators : {	
-														date: {
-									                        format: 'DD/MM/YYYY',
-									                        message: 'The value is not a valid date'
-									                    }
-													}
-												},
-												cam_budget : {
-													validators : {
-														numeric: {
-											                message: 'The value is not a number',
-											                // The default separators
-											                thousandsSeparator: '',
-											                decimalSeparator: '.'
-											            }
-													}
-												},
-												cam_actualCost : {
-													validators : {
-														numeric: {
-											                message: 'The value is not a number',
-											                // The default separators
-											                thousandsSeparator: '',
-											                decimalSeparator: '.'
-											            }
-													}
-												},
-												cam_numSend : {
-													validators : {
-														numeric: {
-											                message: 'The value is not a number',
-											                // The default separators
-											                thousandsSeparator: '',
-											                decimalSeparator: '.'
-											            }
-													}
-												},
-												cam_expectedResponse : {
-													validators : {
-														
-														numeric: {
-											                message: 'The value is not a number',
-											                // The default separators
-											                thousandsSeparator: '',
-											                decimalSeparator: '.'
-											            }
-													}
-												},
-												cam_expectedCost : {
-													validators : {
-														numeric: {
-											                message: 'The value is not a number',
-											                // The default separators
-											                thousandsSeparator: '',
-											                decimalSeparator: '.'
-											            }
-													}
-												},
-												cam_expectedRevenue : {
-													validators : {
-														numeric: {
-											                message: 'The value is not a number',
-											                // The default separators
-											                thousandsSeparator: '',
-											                decimalSeparator: '.'
-											            }
-													}
-												}
-											}
-										})
-								.on(
-										'success.form.bv',
-										function(e) {
-											var currentDate = new Date();
-											var day = currentDate.getDate();
-											var month = currentDate.getMonth() + 1;
-											var year = currentDate
-													.getFullYear();
-											var createDate = $("#cam_startDate")
-													.val();
-											var newCreateDate = createDate
-													.split("/").reverse().join(
-															"-");
-											var endDate = $("#cam_endDate")
-													.val();
-											var endCreateDate = endDate.split(
-													"/").reverse().join("-");
-											var parentID = "";
-											if ($("#cam_parent").val() != "") {
-												parentID = {
-													"campID" : $("#cam_parent")
-															.val()
-												};
-											} else {
-												parentID = null;
-											}
-											var status = "";
-											if ($("#cam_status").val() != "") {
-												status = {
-													"statusID" : $(
-															"#cam_status")
-															.val()
-												};
-											} else {
-												status = null;
-											}
-											var type = "";
-											if ($("#cam_type").val() != "") {
-												type = {
-													"typeID" : $("#cam_type")
-															.val()
-												};
-											} else {
-												type = null;
-											}
-											var assign = "";
-											if ($("#cam_assignTo").val() != "") {
-												assign = {
-													"userID" : $(
-															"#cam_assignTo")
-															.val()
-												};
-											} else {
-												assign = null;
-											}
-											$
-													.ajax({
-														url : "${pageContext.request.contextPath}/campaign/add",
-														type : "POST",
-														data : JSON
-																.stringify({
-																	"campName" : $(
-																			"#cam_name")
-																			.val(),
-																	"startDate" : newCreateDate,
-																	"endDate" : endCreateDate,
-																	"status" : status,
-																	"type" : type,
-																	"description" : $(
-																			"#cam_description")
-																			.val(),
-																	"parent" : parentID,
-																	"budget" : $(
-																			"#cam_budget")
-																			.val(),
-																	"assignTo" : assign,
-																	"actualCost" : $(
-																			"#cam_actualCost")
-																			.val(),
-																	"expectedCost" : $(
-																			"#cam_expectedCost")
-																			.val(),
-																	"expectedRevenue" : $(
-																			"#cam_expectedRevenue")
-																			.val(),
-																	"numSend" : $(
-																			"#cam_numSend")
-																			.val(),
-																	"expectedResponse" : $(
-																			"#cam_expectedResponse")
-																			.val(),
-																	"createdBy" : $.session
-																			.get("parentID"),
-																	"createdDate" : year
-																			+ "-"
-																			+ month
-																			+ "-"
-																			+ day
-																}),
-														beforeSend : function(xhr) {
-															xhr.setRequestHeader("Accept","application/json");
-															xhr.setRequestHeader("Content-Type","application/json");
-														},
-														success : function(data) {
-															$("#form-campaigns")
-																	.bootstrapValidator(
-																			'resetForm',
-																			'true');
-															$('#form-campaigns')[0]
-																	.reset();
-															$("#cam_parent")
-																	.select2(
-																			"val",
-																			"");
-															$("#cam_assignTo")
-																	.select2(
-																			"val",
-																			"");
-															$("#cam_status")
-																	.select2(
-																			"val",
-																			"");
-															$("#cam_type")
-																	.select2(
-																			"val",
-																			"");
-															swal({
-																title : "Success",
-																text : "User have been created new campaign!",
-																type : "success",
-																timer : 2000,
-																showConfirmButton : false
-															});
-														},
-														error : function() {
-															errorMessage();
-														}
-													});
-										});
-					});
-</script>
+
 <jsp:include page="${request.contextPath}/footer"></jsp:include>

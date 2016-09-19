@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -11,131 +12,88 @@
 
 <script type="text/javascript">
 
-var app = angular.module('viewLead', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
 var self = this;
-var leadId = "${leadId}";
+
 var username = "${SESSION}";
-var lLead = "";
 var server = "${pageContext.request.contextPath}";
+
+var leadId = "";
+
+var lLead = "";
+
+var oppId = "${campId}";
+var lOpportunity = "";
+
+
+
 var noteIdEdit = "";
-var collabIdEdit = "";
 var response=[];
 var LEAD = [];
+var OPPORTUNITY = [];
+
 var callIdForEdit = null;
 var meetIdForEdit = null;
 var taskIdForEdit = null;
 var eventIdForEdit = null;
-var leadStatusData = ["New", "Assigned", "In Process", "Converted", "Dead"];
-var startupCallForm = [];
 
+var leadStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
+var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
 
-var postlist =  {
-	   				posts: [
-		            	{
-		                "text":"text",
-		                "date":null,
-		                "like":0,
-		                "comments":[
-		                    {"comment":"Yorum 1", "like":100},
-		                    {"comment":"Yorum 2", "like":200},
-		                    {"comment":"Yorum 3", "like":300}
-		                ]
-			            },
-			            {
-			                "text":"text2",
-			                "date":null,
-			                "like":0,
-			                "comments":[
-			                    {"comment":"Yorum 4", "like":500},
-			                    {"comment":"Yorum 5", "like":600}
-			                ]
-			            }
-		            ]
-		        };
-
-
-
-
-app.controller('viewLeadController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('viewOpportunityController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
-	angular.element(document).ready(function () {		
-		$("#lea_salutation option[value='"+response.LEAD.salutation+"']").attr('selected','selected');
-		$("#lea_status").select2('val',response.LEAD.statusID);
-		$("#lea_source").select2('val',response.LEAD.sourceID);
-		$("#lea_industry").select2('val',response.LEAD.industID);
-		$("#lea_campaign").select2('val',response.LEAD.campID);
-		$("#lea_assignto").select2('val',response.LEAD.assignToUserID);
+	angular.element(document).ready(function () {				
+		$("#oppStage").select2('val',response.OPPORTUNITY.osId);
+		$("#oppType").select2('val',response.OPPORTUNITY.otId);
+		$("#oppLeadSource").select2('val',response.OPPORTUNITY.sourceID);
+		$("#oppCustomer").select2('val',response.OPPORTUNITY.custID);
+		$("#oppCampaign").select2('val',response.OPPORTUNITY.campID);
+		$("#oppAssignTo").select2('val',response.OPPORTUNITY.userId);
     });
 	
+	$scope.collaborates = [];
+	$scope.tags = [];
+	$scope.username = username; 
+	
 	$scope.listLeads = function(){
-			response = getLeadData();					
-			LEAD = response.LEAD;
-			$scope.leadStatus = response.LEAD_STATUS;
-			$scope.leadSource = response.LEAD_SOURCE;
-			$scope.leadIndustry = response.INDUSTRY;
-			$scope.leadAssignTo = response.ASSIGN_TO;
-			$scope.leadCampaign = response.CAMPAIGN;
-			$scope.lead = response.LEAD;
+			response = getLeadData();	
+			
+			
+			
+			OPPORTUNITY = response.OPPORTUNITY;
+			$scope.oppLeadSource = response.LEAD_SOURCE;
+			$scope.oppType = response.OPP_TYPES;
+			$scope.oppAssignTo = response.ASSIGN_TO;
+			$scope.oppCampaign = response.CAMPAIGNS;
+			$scope.oppStage = response.OPP_STAGES;
+			$scope.oppCustomer = response.CUSTOMERS;
+			
+			$scope.opportunity = response.OPPORTUNITY;
 			$scope.listNote1(response.NOTES);
 					
-			userAllList($scope.leadAssignTo,'#callAssignTo','');
-			userAllList($scope.leadAssignTo,'#meetAssignTo','');
-			userAllList($scope.leadAssignTo,'#taskAssignTo','');
-			userAllList($scope.leadAssignTo,'#eventAssignTo','');
+			userAllList($scope.oppAssignTo,'#callAssignTo','');
+			userAllList($scope.oppAssignTo,'#meetAssignTo','');
+			userAllList($scope.oppAssignTo,'#taskAssignTo','');
+			userAllList($scope.oppAssignTo,'#eventAssignTo','');
 			
+			//dis(response)
 			
-			displayStatusLead(LEAD.statusID);
+			displayStatusLead(OPPORTUNITY.osId);
 			
 			
 			$scope.listAllCallByLeadId(response.CALLS);	
-			$scope.listAllMeetByLeadId(response.METTINGS);	
+			$scope.listAllMeetByLeadId(response.MEETINGS);	
 			$scope.listAllTaskByLeadId(response.TASKS);
 			$scope.listAllEventByLeadId(response.EVENTS);
+			
 			
 			
 			$scope.listAllEmailByLeadId = function(){	
 				$scope.listAllEmailByLead = [];	
 			}
-			
-			
-			
-			
-			//response.COLLABORATION
-			
-			//$scope.displayCollaboration(postlist);
-			//dis(postlist)
-			
-			$scope.collaborates = [
-						      {
-						    	  "postId" :1,
-						          "text":"text",
-						          "like":10,
-						          "deleteStatus" : true,
-						          "status" : true,
-						          "comments":[
-						              {"comId" :1 ,"comment":"Yorum 1", "status":true},
-						              {"comId" :2 ,"comment":"Yorum 2", "status": false},
-						              {"comId" :3 ,"comment":"Yorum 3", "status":false}
-						          ]
-						      },
-						      {
-						    	  "postId" :2,
-						          "text":"text2",
-						          "date":null,
-						          "deleteStatus" : true,
-						          "like":1,
-						          "status" : false,
-						          "comments":[
-				                      {"comId" :4 ,"comment":"Yorum 4", "status":false},
-						              {"comId" :5 ,"comment":"Yorum 5", "status": true},
-						              {"comId" :6 ,"comment":"Yorum 6", "status":false}
-						          ]
-						      }
-						    ];
-			
-			
-			//$scope.collaborates = postlist;
 		
+			//dis(response.EVENTS);
 	}
 	
 	
@@ -145,31 +103,20 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	};
 	
 	
-	// Tab Collaborate***************************
-	
-	$scope.StartupFormCollab = function(){
-		$http.get("${pageContext.request.contextPath}/user/list/tags").success(function(response){
-			$scope.listTags = response.DATA;
-		});
-	}
-	
-	$scope.displayCollaboration = function(data){
-		alert(data.posts.length)
-		$scope.collaborates = data;
-	}
-	
+// Tab Collaborate***************************
 	
 	$scope.listCollabByLeadByUser = function(){
 		$http({
 		    method: 'POST',
-		    url: "${pageContext.request.contextPath}/collaborate/list/lead/user",
+		    url: "${pageContext.request.contextPath}/collaborate/list/opportunity/username",
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"leadId":leadId, "username":username}
+		    data: {"moduleId":oppId, "username":username}
 		}).success(function(response) {
-			$scope.displayCollaboration(response.DATA);
+			$scope.collaborates = response.DATA;
+			$scope.tags = response.TAG_TO;
 		});	
 	}
 	
@@ -183,38 +130,44 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$('#frmCollab').submit();
 	}
 	
-	$scope.addToListPost = function(data){
-		$scope.collaborates.unshift(data);		
-	}
-	
-	$scope.addCollabComment = function(postId){	
-		//alert(postId)		
-	    if(this.collabCommetText) {
-	      $scope.contacts.push($scope.collabCommetText);
-	      $scope.collabCommetText = "";
-	      $("#txtComment").val("");
-		}
-	}
-	
+	$scope.postLike = function(key,collabId){		
+		var status = $scope.collaborates[key].checkLike;
+		status = (status == true) ? false : true ;   		
+		$http({
+		    method: 'POST',
+		    url: "${pageContext.request.contextPath}/collaborate/like",
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {"collapId":collabId, "username":username,"likeStatus":status.toString()}
+		}).success(function(response) {	
+			$scope.collaborates[key].checkLike = status;		
+		});
+	} 
+		
 	
 	$scope.newcomment = {};
-    $scope.postCommand = function(key){
-		$scope.collaborates[key].comments.push($scope.newcomment[key]);
-      	$scope.newcomment = {};
-    };
-	
-    $scope.postLike = function(key) {
-        var status = $scope.collaborates[key].status;
-        status = ($scope.collaborates[key].status == true) ? false : true ;
-        $scope.collaborates[key].status = status;
+    $scope.postCommand = function(key,colId){
+    	var txtComment = $.trim($scope.newcomment[key].comment);
+    	if(txtComment != ""){
+    		$http({
+    		    method: 'POST',
+    		    url: "${pageContext.request.contextPath}/collaborate/add/comment",
+    		    headers: {
+    		    	'Accept': 'application/json',
+    		        'Content-Type': 'application/json'
+    		    },
+    		    data: {"postId":colId, "username":username,"comment":txtComment}
+    		}).success(function(response) {					
+    			$scope.collaborates[key].details.push(response.COMMENTS);
+    	      	$scope.newcomment = {};			
+    		});
+    	}     	
     };
 	
     
-    $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){
-    	
-    	//alert("comment: "+keyChild+"/"+comId)
-    	
-    	    	
+    $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
     	SweetAlert.swal({
             title: "Are you sure?",
             text: "This comment will not be able to recover!", 
@@ -226,18 +179,17 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
             closeOnCancel: false
         }, 
         function(isConfirm){ 
-        	  if(isConfirm){
-        		  $scope.collaborates[keyParent].comments.splice(keyChild, 1);
-        		  $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId).success(function(){
+        	  if(isConfirm){        		
+        		  $http.delete("${pageContext.request.contextPath}/collaborate/comment/remove/"+comId).success(function(){
 	        		  SweetAlert.swal({
 	              		title:"Deleted",
 	              		text:"The comment have been deleted!",
 	              		type:"success",  
 	              		timer: 2000,   
 	              		showConfirmButton: false
-      			  	  }); 
-	        		  $scope.collaborates.splice(key, 1);
-        		  }); 
+      			  	  }); 	        		 
+        		  });
+        		  $scope.collaborates[keyParent].details.splice(keyChild, 1);
         	  }else{
         		  SweetAlert.swal({
   	                title:"Cancelled",
@@ -250,10 +202,6 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
     }
     
 	$scope.btnDeleteCollabPost = function(key,postId){
-    	
-    	//alert("post: "+key+"/"+postId)
-    	//alert($scope.collaborates[key].deleteStatus);
-
     	SweetAlert.swal({
             title: "Are you sure?",
             text: "This post will not be able to recover!", 
@@ -264,11 +212,9 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
             closeOnConfirm: false, 
             closeOnCancel: false
         }, 
-        function(isConfirm){      
-        	$scope.collaborates.splice(key, 1);        	
+        function(isConfirm){              	
         	 if(isConfirm){
-	       		  $scope.collaborates[keyParent].comments.splice(keyChild, 1);
-	       		  $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId).success(function(){
+	       		  $http.delete("${pageContext.request.contextPath}/collaborate/delete/"+postId).success(function(){
 		        		  SweetAlert.swal({
 		              		title:"Deleted",
 		              		text:"The post have been deleted!",
@@ -287,21 +233,16 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	 	                showConfirmButton: false});
 	       	  }         			
         });    	    	    	
-    }
-    
-    
-	$scope.alertComfirm = function(){		
-		
-	};
-	
-	
+    }	
 	
 	// End Collaborate***************************
 	
 	
-	// Tab Note***************************
 	
 	
+	
+	
+	// note
 	$scope.addNote = function(){
 		$('#frmAddNote').submit();
 	}
@@ -390,13 +331,11 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
    		});
     }
     $scope.getListNoteByLead = function(){    	
-		$http.get("${pageContext.request.contextPath}/note/list/lead/"+leadId).success(function(response){
+		$http.get("${pageContext.request.contextPath}/note/list/opp/"+oppId).success(function(response){ 
 			$scope.listNote1(response.NOTES);
 		});
 	};
     
-	//End Tab Note***************************
-	
 	
 	
 	// lead
@@ -411,25 +350,18 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		
 		addDataToDetailLead();
 	}
+	
 	$scope.saveEditDetailLead = function(){		
-		$('#frmLeadDetail').submit();
+		$('#frmOpportDetail').submit();
 	}
+	
 	$scope.cancelEditDetailLead = function(){
-		$('#frmLeadDetail').bootstrapValidator('resetForm', true);
+		$('#frmOpportDetail').bootstrapValidator('resetForm', true);
 		$(".show-edit").hide();
 		$(".show-edit-non-style").hide();
 		$(".show-text-detail").show();
 		$("#showBtnEditLead").hide();
 	}
-	
-		
-	
-	
-	
-	//Tab Activity ***************************
-	
-	
-	
 	
     
 	// Call path
@@ -437,8 +369,8 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$scope.listAllCallByLead = data;	
 	}
 	$scope.listDataCallByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/call/list-by-lead/"+leadId).success(function(response){	
-			$scope.listAllCallByLeadId(response.CALLS);	
+		$http.get("${pageContext.request.contextPath}/call/list/module/"+oppId).success(function(response){	
+			$scope.listAllCallByLeadId(response.CALLS);				
 		});	
 	}
 	
@@ -446,7 +378,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$("#btn_show_call").click();
 	}
 	$scope.actEditCall = function(callId){				
-		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){			
+		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){
 			addDataCallToForm(response.DATA);
 			callIdForEdit = callId;
 			$("#btnCallSave").text("Update");
@@ -510,7 +442,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	}
 	
 	$scope.listDataMeetByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/meeting/list-by-lead/"+leadId).success(function(response){		
+		$http.get("${pageContext.request.contextPath}/meeting/list-by-opportunity/"+oppId).success(function(response){		
 			$scope.listAllMeetByLeadId(response.MEETINGS);	
 		});	
 	}
@@ -588,7 +520,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$scope.listAllTaskByLead = data;	
 	}
 	$scope.listDataTaskByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/task/list-by-lead/"+leadId).success(function(response){		
+		$http.get("${pageContext.request.contextPath}/task/list-by-opportunity/"+oppId).success(function(response){		
 			$scope.listAllTaskByLeadId(response.TASKS);	
 		});	
 	}
@@ -655,6 +587,9 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	// end Task path
 	
 	
+	
+	
+	
 	// event path
 	
 	
@@ -666,7 +601,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$scope.listAllEventByLead = data;	
 	}
 	$scope.listDataEventByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/event/list-by-lead/"+leadId).success(function(response){	
+		$http.get("${pageContext.request.contextPath}/event/list-by-opportunity/"+oppId).success(function(response){
 			$scope.listAllEventByLeadId(response.EVENTS);	
 		});	
 	}
@@ -738,12 +673,6 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	$scope.email_click = function(){
 		$("#btn_show_email").click();
 	}
-	
-	
-	
-	
-	//End Tab Activity ***************************
-	
 	
 	
 }]);
@@ -879,17 +808,13 @@ function addDataEventToForm(data){
 function getLeadData(){	
 	var data = JSON.parse(
 		$.ajax({
-			method: 'POST',
-		    url: '${pageContext.request.contextPath}/lead/view',
+			method: 'GET',
+		    url: '${pageContext.request.contextPath}/campaign/view/'+username+"/"+oppId,
 		    async: false,
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
-		    },
-		    data: JSON.stringify({
-		    	"username":username,
-		    	"leadId":leadId
-		    })
+		    }
 		}).responseText);	
 	return data;	
 }
@@ -898,16 +823,16 @@ function getLeadById(){
 	var data = JSON.parse(
 		$.ajax({
 			method: 'GET',
-		    url: '${pageContext.request.contextPath}/lead/list/'+leadId,
+		    url: '${pageContext.request.contextPath}/opportunity/list/'+oppId,
 		    async: false
 		}).responseText);	
 	return data;
 }
 
 function clickStatus(num){
-	if(num == 4){
+	/* if(num == 4){
 		window.location.href = server+"/convert-lead/"+leadId;
-	}
+	} */
 }
 
 function displayStatusLead(Status){	
@@ -930,34 +855,20 @@ function displayStatusLead(Status){
 
 function addDataToDetailLead(){
 	
-	$("#lea_salutation option[value='"+LEAD.salutation+"']").attr('selected','selected');
-	$("#lea_status").select2('val',LEAD.statusID);
-	$("#lea_source").select2('val',LEAD.sourceID);
-	$("#lea_industry").select2('val',LEAD.industID);
-	$("#lea_campaign").select2('val',LEAD.campID);
-	$("#lea_assignto").select2('val',LEAD.assignToUserID);
 	
+	$("#oppStage").select2('val', OPPORTUNITY.osId);
+	$("#oppType").select2('val', OPPORTUNITY.otId);
+	$("#oppLeadSource").select2('val', OPPORTUNITY.sourceID);
+	$("#oppCustomer").select2('val', OPPORTUNITY.custID);
+	$("#oppCampaign").select2('val', OPPORTUNITY.campID);
+	$("#oppAssignTo").select2('val', OPPORTUNITY.userID);
 	
-	setValueById('lea_firstName', LEAD.firstName);
-	setValueById('lea_lastName', LEAD.lastName);
-	setValueById('lea_title', LEAD.title);
-	setValueById('lea_department', LEAD.department);
-	setValueById('lea_phone', LEAD.phone);
-	setValueById('lea_mobilePhone', LEAD.mobile);
-	setValueById('lea_website', LEAD.website);
-	setValueById('lea_accountName', LEAD.accountName);
-	setValueById('lea_email', LEAD.email);
-	
-	setValueById('lea_no', LEAD.no);
-	setValueById('lea_street', LEAD.street);
-	setValueById('lea_village', LEAD.village);
-	setValueById('lea_commune', LEAD.commune);
-	setValueById('lea_district', LEAD.district);
-	setValueById('lea_city', LEAD.city);
-	setValueById('lea_state', LEAD.state);
-	setValueById('lea_country', LEAD.country);
-	setValueById('lea_description', LEAD.description);
-	
+	setValueById('oppName', OPPORTUNITY.opName);
+	setValueById('oppAmout', OPPORTUNITY.opAmount);
+	setValueById('oppCloseDate', conDateSqlToNormal(OPPORTUNITY.opCloseDate,'/'));
+	setValueById('oppNextStep', OPPORTUNITY.opNextStep);
+	setValueById('appProbability', OPPORTUNITY.opProbability);
+	setValueById('appDescription', OPPORTUNITY.opDes);
 	
 	
 }
@@ -1118,8 +1029,8 @@ function addDataToDetailLead(){
 	border-left-color: rgb(75, 202, 129) !important;
 }
 </style>
-<div class="content-wrapper" id="viewLeadController" ng-app="viewLead"
-	ng-controller="viewLeadController">
+<div class="content-wrapper" id="viewOpportunityController" ng-app="viewOpportunity"
+	ng-controller="viewOpportunityController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>View Campaign</h1>
@@ -1141,11 +1052,11 @@ function addDataToDetailLead(){
 					<div class="widget-user-header bg-aqua-active">
 						<h3 class="widget-user-username">{{lead.salutation}}
 							{{lead.firstName}} {{lead.lastName}}</h3>
-						<h5 class="widget-user-desc">NAME</h5>
+						<h5 class="widget-user-desc">CAMPAIGN</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
-							src="${pageContext.request.contextPath}/resources/images/test/Campaign1.png"
+							src="${pageContext.request.contextPath}/resources/images/module/Campaign.png"
 							alt="User Avatar">
 					</div>
 					<div class="box-footer">
@@ -1153,27 +1064,28 @@ function addDataToDetailLead(){
 							<div class="col-sm-3">
 								<div class="description-block">
 									<h5 class="description-header">{{lead.accountName}}</h5>
-									<span class="description-text">type</span>
+									<span class="description-text">Status</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header">{{lead.sourceName}}</h5>
-									<span class="description-text">status</span>
+									<span class="description-text">Type</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header">{{lead.assignToUsername}}</h5>
-									<span class="description-text">start date</span>
+									<span class="description-text">Start Date/End Date</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header">{{lead.phone}}</h5>
-									<span class="description-text">end date</span>
+									<span class="description-text">Assign To</span>
 								</div>
 							</div>
+							
 
 							<div class="col-sm-12">
 								<ul class="breadcrumb1" id="objStatus">
@@ -1193,6 +1105,8 @@ function addDataToDetailLead(){
 											aria-expanded="false">NOTES</a></li>
 										<li class=""><a href="#detail_tap" data-toggle="tab"
 											aria-expanded="false">DETAILS</a></li>
+										<li class=""><a href="#opport_tap" data-toggle="tab"
+											aria-expanded="false">OPPORTUNITY</a></li>
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane active" id="activity">
@@ -1563,10 +1477,10 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="collaborate" > <!-- data-ng-init="displayCollaboration()" -->
+										<div class="tab-pane" id="collaborate" data-ng-init="listCollabByLeadByUser()">
 
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
-												<form id="frmCollab" data-ng-init="StartupFormCollab()">													
+												<form id="frmCollab">													
 													<div class="col-sm-12"  style="padding-right: 0px; padding-left: 0px;">
 														<div class="form-group">
 															<label>Post <span class="requrie">(Required)</span></label> 
@@ -1577,7 +1491,7 @@ function addDataToDetailLead(){
 														<div class="form-group">
 															<label>Tags </label> 
 															<select  class="form-control" multiple name="collabTags" id="collabTags" style="width: 100%;">
-																<option ng-repeat="tag in listTags" value="{{tag.username}}">{{tag.username}}</option>																
+																<option ng-repeat="tag in tags" value="{{tag.username}}">{{tag.username}}</option>																
 															</select>
 														</div>
 													</div>
@@ -1591,45 +1505,45 @@ function addDataToDetailLead(){
 											<br>
 											<!-- content collab -->
 											
-											<div class="post clearfix" ng-repeat="(key_post,collab) in collaborates">
+											<div class="post clearfix" ng-repeat="(key_post,collab) in collaborates track by $index">
 												<div class="user-block">
 													<img class="img-circle img-bordered-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image"> 
 													<span class="username"> 
-														<a href="#">{{collab.text}}</a> <a style="color: #999;font-size: 13px;">on 10-09-2016 12:06 pm</a>
-														<span ng-if="collab.deleteStatus == true" ng-click="btnDeleteCollabPost(key_post,collab.postId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
+														<a href="#">{{collab.colUser}}</a> <a style="color: #999;font-size: 13px;">on {{collab.createDate}}</a>
+														<span ng-if="collab.colOwn == 'true'" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 													</span> 													
-													<span class="description"><i class="fa fa-tags"></i> sereyvong, vichet, chenda and A Kveak</span>
+													<span class="description"><i class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
 												</div>
-												<p>{{collab.text}} description........................................................................................</p>																													
+												<p>{{collab.colDes}}</p>																													
 												
 												<ul class="list-inline">
-													<li ng-click="postLike(key_post)">
+													<li>
 														<span href="#" class="link-black text-sm ">																													
-															<span ng-if="collab.status == true"><button class="btn btn-default btn-sm"><i  class="fa fa-thumbs-up like-btn"></i></button>&nbsp;&nbsp;&nbsp;You  {{collab.like <= 0 ? "" : collab.like==1 ? "and 1 other" : "and "+collab.like+" others"}}</span>
-															<span ng-if="collab.status == false"><button class="btn btn-default btn-sm"><i  class="fa fa-thumbs-o-up unlike-btn"></i></button>&nbsp;&nbsp;&nbsp;{{collab.like <= 0 ? "" : collab.like}}</span> 														
+															<span ng-if="collab.checkLike == true"><button ng-click="postLike(key_post,collab.colId)" class="btn btn-default btn-sm"><i  class="fa fa-thumbs-up like-btn"></i></button>&nbsp;&nbsp;&nbsp;You  {{collab.like <= 0 ? "" : collab.like==1 ? "and 1 other" : "and "+collab.like+" others"}}</span>
+															<span ng-if="collab.checkLike == false"><button ng-click="postLike(key_post,collab.colId)" class="btn btn-default btn-sm"><i  class="fa fa-thumbs-o-up unlike-btn"></i></button>&nbsp;&nbsp;&nbsp;{{collab.like <= 0 ? "" : collab.like}}</span> 														
 														</span>
 													</li>
 													<li class="pull-right">
-														<a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> <span>Comments</span> {{collab.comments.length <= 0 ? "" : "("+collab.comments.length+")"}}</a>
+														<a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> <span> Comments{{collab.details.length <= 0 ? "" : "("+collab.details.length+")"}}</span></a>
 													</li>
 												</ul>
 												
 												
 												<div style="padding-top: 15px;" class="box-footer box-comments">													
-													<div class="box-comment" ng-repeat="(key_comment, com) in collab.comments">
+													<div class="box-comment" ng-repeat="(key_comment, com) in collab.details">
 														<img class="img-circle img-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image">
 														<div class="comment-text">
 															<span class="username"> 
-																<span> {{com.comment}} <span class="text-muted"> on 10-09-2016 12:06 pm</span></span> 
-																<span ng-if="com.status == true" ng-click="btnDeleteCollabCom(key_post, key_comment,com.comId)"  class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
+																<span> {{com.username}} <span class="text-muted"> on {{com.formatCreateDate}}</span></span> 
+																<span ng-if="com.username == username" ng-click="btnDeleteCollabCom(key_post, key_comment,com.commentId)"  class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 															</span>
-															{{com.comment}} comment........................................................................................
+															{{com.comment}}
 														</div>
 													</div>
 												</div>
 												
 																							
-												<form id="" ng-submit="postCommand(key_post)">
+												<form id="" ng-submit="postCommand(key_post, collab.colId)">
 													<div class="form-group">
 														<input ng-model="newcomment[key_post].comment" id="txtComment"  class="form-control input-sm" type="text" placeholder="Type a comment">
 													</div>
@@ -1659,8 +1573,12 @@ function addDataToDetailLead(){
 															id="note_description" class="form-control"
 															placeholder="Description"></textarea>
 													</div>
-													<button style="margin-top: 10px; margin-left: 10px;" ng-click="resetFrmNote()" type="button" class="btn btn-danger pull-right">Reset</button>
-													<button style="margin-top: 10px;" type="button" id="btnAddNote" ng-click="addNote()" class="btn btn-primary pull-right">Note</button>
+													<button style="margin-top: 10px; margin-left: 10px;"
+														ng-click="resetFrmNote()" type="button"
+														ng-click="resetNote()" class="btn btn-danger pull-right">Reset</button>
+													<button style="margin-top: 10px;" type="button"
+														id="btnAddNote" ng-click="addNote()"
+														class="btn btn-primary pull-right">Note</button>
 												</form>
 											</div>
 											<div class="clearfix"></div>
@@ -1677,7 +1595,7 @@ function addDataToDetailLead(){
 														<span class="time"><i class="fa fa-clock-o"></i>
 															&nbsp;{{notePerDate.noteTime}}</span>
 														<h3 class="timeline-header">
-															{{note.noteSubject}} <a style="font-size: 12px;">by {{note.noteCreateBy}}</a>
+															{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
 														</h3>
 														<div class="timeline-body">{{note.noteDes}}</div>
 														<div class="timeline-footer">
@@ -1703,21 +1621,9 @@ function addDataToDetailLead(){
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a></li>
-															<li class="list-group-item item_border">Salutation <a
-																class="pull-right show-text-detail">{{lead.salutation}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control" name="lea_salutation"
-																		id="lea_salutation">
-																		<option value="Mr.">Mr.</option>
-																		<option value="Ms.">Ms.</option>
-																		<option value="Mrs.">Mrs.</option>
-																		<option value="Dr.">Dr.</option>
-																		<option value="Prof.">Prof.</option>
-																	</select>
-																</div>
-															</li>
+															
 
-															<li class="list-group-item item_border">First Name <a
+															<li class="list-group-item item_border">Name <a
 																class="pull-right show-text-detail">{{lead.firstName}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<input type="text" name="lea_firstName"
@@ -1726,7 +1632,7 @@ function addDataToDetailLead(){
 																	<div class="clearfix"></div>
 																</div>
 															</li>
-															<li class="list-group-item item_border">Last Name <a
+															<li class="list-group-item item_border">Start Date <a
 																class="pull-right show-text-detail">{{lead.lastName}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<input type="text" name="lea_lastName"
@@ -1734,129 +1640,20 @@ function addDataToDetailLead(){
 																		value="{{lead.lastName}}">
 																</div>
 															</li>
-															<li class="list-group-item item_border">Title <a
+															<li class="list-group-item item_border">End Date <a
 																class="pull-right show-text-detail">{{lead.title}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<input type="text" name="lea_title" id="lea_title"
 																		class="form-control" value="{{lead.title}}">
 																</div>
 															</li>
-															<li class="list-group-item item_border">Department <a
-																class="pull-right show-text-detail">{{lead.department}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_department"
-																		id="lea_department" class="form-control"
-																		value="{{lead.department}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">Company <a
-																class="pull-right show-text-detail">{{lead.accountName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_accountName"
-																		id="lea_accountName" class="form-control"
-																		value="{{lead.accountName}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">Phone <a
-																class="pull-right show-text-detail">{{lead.phone}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_phone" id="lea_phone"
-																		class="form-control" value="{{lead.phone}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">Mobile <a
-																class="pull-right show-text-detail">{{lead.mobile}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_mobilePhone"
-																		id="lea_mobilePhone" class="form-control"
-																		value="{{lead.mobile}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">Web Site <a
-																class="pull-right show-text-detail">{{lead.website}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_website" id="lea_website"
-																		class="form-control" value="{{lead.website}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">Email <a
-																class="pull-right show-text-detail">{{lead.email}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_email" id="lea_email"
-																		class="form-control" value="{{lead.email}}">
-																</div>
-															</li>
+															
 														</ul>
 													</div>
 													<div class="col-md-4">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Address</b> <a
+															<li class="list-group-item"><b>&nbsp;</b> <a
 																class="pull-right cusor_pointer"
-																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a></li>
-															<li class="list-group-item item_border">No <a
-																class="pull-right show-text-detail">{{lead.no}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_no" id="lea_no"
-																		class="form-control" value="{{lead.no}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">Street <a
-																class="pull-right show-text-detail">{{lead.street}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_street" id="lea_street"
-																		class="form-control" value="{{lead.street}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">Village <a
-																class="pull-right show-text-detail">{{lead.village}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_village" id="lea_village"
-																		class="form-control" value="{{lead.village}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">Commune <a
-																class="pull-right show-text-detail">{{lead.commune}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_commune" id="lea_commune"
-																		class="form-control" value="{{lead.commune}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">District <a
-																class="pull-right show-text-detail">{{lead.district}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_district"
-																		id="lea_district" class="form-control"
-																		value="{{lead.district}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">City <a
-																class="pull-right show-text-detail">{{lead.city}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_city" id="lea_city"
-																		class="form-control" value="{{lead.city}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">State <a
-																class="pull-right show-text-detail">{{lead.state}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_state" id="lea_state"
-																		class="form-control" value="{{lead.state}}">
-																</div>
-															</li>
-															<li class="list-group-item item_border">Country <a
-																class="pull-right show-text-detail">{{lead.country}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="lea_country" id="lea_country"
-																		class="form-control" value="{{lead.country}}">
-																</div>
-															</li>
-														</ul>
-													</div>
-													<div class="col-md-4">
-														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>More Information
-																	& Others</b> <a class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a></li>
 															<li class="list-group-item item_border">Status <a
@@ -1870,7 +1667,7 @@ function addDataToDetailLead(){
 																	</select>
 																</div>
 															</li>
-															<li class="list-group-item item_border">Industry <a
+															<li class="list-group-item item_border">Type <a
 																class="pull-right show-text-detail">{{lead.industName}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<select class="form-control select2"
@@ -1882,18 +1679,7 @@ function addDataToDetailLead(){
 																	</select>
 																</div>
 															</li>
-															<li class="list-group-item item_border">Source <a
-																class="pull-right show-text-detail">{{lead.industName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2" name="lea_source"
-																		id="lea_source" style="width: 100%;">
-																		<option value="">-- SELECT Source --</option>
-																		<option ng-repeat="source in leadSource"
-																			value="{{source.sourceID}}">{{source.sourceName}}</option>
-																	</select>
-																</div>
-															</li>
-															<li class="list-group-item item_border">Campaign <a
+															<li class="list-group-item item_border">Parent <a
 																class="pull-right show-text-detail">{{lead.campName}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<select class="form-control select2"
@@ -1917,6 +1703,59 @@ function addDataToDetailLead(){
 																	</select>
 																</div>
 
+															</li>
+															
+															
+															
+															
+														</ul>
+													</div>
+													<div class="col-md-4">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item"><b>Budget</b> <a class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a></li>
+																<li class="list-group-item item_border">Budget <a
+																class="pull-right show-text-detail">{{lead.no}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_no" id="lea_no"
+																		class="form-control" value="{{lead.no}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Actual cost <a
+																class="pull-right show-text-detail">{{lead.street}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_street" id="lea_street"
+																		class="form-control" value="{{lead.street}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Expected cost <a
+																class="pull-right show-text-detail">{{lead.village}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_village" id="lea_village"
+																		class="form-control" value="{{lead.village}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Expected response (%) <a
+																class="pull-right show-text-detail">{{lead.commune}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_commune" id="lea_commune"
+																		class="form-control" value="{{lead.commune}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Expected revenue<a
+																class="pull-right show-text-detail">{{lead.commune}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_commune" id="lea_commune"
+																		class="form-control" value="{{lead.commune}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Number send<a
+																class="pull-right show-text-detail">{{lead.commune}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="lea_commune" id="lea_commune"
+																		class="form-control" value="{{lead.commune}}">
+																</div>
 															</li>
 														</ul>
 													</div>
@@ -1942,13 +1781,18 @@ function addDataToDetailLead(){
 														style="display: none;">
 														<button type="button" class="btn btn-primary"
 															ng-click="saveEditDetailLead()">Save</button>
-														<button class="btn btn-danger"
+														<button type="button" class="btn btn-danger"
 															ng-click="cancelEditDetailLead()">Cancel</button>
 													</div>
 												</form>
 
 											</div>
 
+										</div>
+										<div class="tab-pane " id="opport_tap">
+											<div class="row">
+											
+											</div>
 										</div>
 
 
@@ -2022,6 +1866,7 @@ function addDataToDetailLead(){
 										<label>Status <span class="requrie">(Required)</span></label>
 										<select class="form-control select2" name="callStatus"
 											id="callStatus" style="width: 100%;">
+											<option value="">--SELECT A Status</option>
 											<option ng-repeat="st in callStatusStartup"
 												value="{{st.callStatusId}}">{{st.callStatusName}}</option>
 										</select>
@@ -2392,4 +2237,4 @@ function addDataToDetailLead(){
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-<script src="${pageContext.request.contextPath}/resources/js.mine/lead/viewLead.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js.mine/campaign/viewCampaign.js"></script>

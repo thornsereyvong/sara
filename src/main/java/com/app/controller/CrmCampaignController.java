@@ -33,6 +33,17 @@ public class CrmCampaignController {
 	@Autowired
 	private String URL;
 	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/campaign/view/{userId}/{campId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> viewCampaign(@PathVariable("userId") String userId, @PathVariable("campId") String campId){
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/view/"+campId+"/"+userId, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/list",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getAllCampaign(){	

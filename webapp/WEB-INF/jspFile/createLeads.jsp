@@ -290,7 +290,7 @@ $(document).ready(function() {
 				if(data.MESSAGE == "INSERTED"){
 					swal({
 	            		title:"Success",
-	            		text:"You have been create a new lead!",
+	            		text:"You have been created a new lead!",
 	            		type:"success",  
 	            		timer: 2000,   
 	            		showConfirmButton: false

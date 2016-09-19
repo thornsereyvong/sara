@@ -49,6 +49,7 @@ app.controller('contactController',['SweetAlert','$scope','$http',function(Sweet
 	$scope.CONTACT = [];
 	angular.element(document).ready(function () {					
 		setTimeout(function(){ 
+			$("#con_customer").select2("val", $scope.CONTACT.custID)
 			$("#con_assignedTo").select2("val", $scope.CONTACT.assignToUserId)
 			$("#con_report").select2("val", $scope.CONTACT.reportToContactId);
 			$("#con_leadSource").select2("val", $scope.CONTACT.sourceID);
