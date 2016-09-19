@@ -58,10 +58,6 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	
 	$scope.listLeads = function(){
 			response = getLeadData();	
-			
-			dis(response)
-			
-			
 			CUSTOMER = response.CUSTOMER;
 			$scope.oppLeadSource = response.LEAD_SOURCE;
 			$scope.oppType = response.OPP_TYPES;
@@ -73,13 +69,14 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.campaign = response.CAMPAIGN;
 			
 			$scope.opportunity = response.OPPORTUNITIES;
+			$scope.customer = response.CUSTOMER;
 			$scope.listNote1(response.NOTES);
 				
 			
-			userAllList($scope.oppAssignTo,'#callAssignTo','');
+			/* userAllList($scope.oppAssignTo,'#callAssignTo','');
 			userAllList($scope.oppAssignTo,'#meetAssignTo','');
 			userAllList($scope.oppAssignTo,'#taskAssignTo','');
-			userAllList($scope.oppAssignTo,'#eventAssignTo','');
+			userAllList($scope.oppAssignTo,'#eventAssignTo',''); */
 			
 		//dis(response.NOTES)
 			
@@ -827,7 +824,7 @@ function getLeadById(){
 	var data = JSON.parse(
 		$.ajax({
 			method: 'GET',
-		    url: '${pageContext.request.contextPath}/opportunity/list/'+oppId,
+		    url: '${pageContext.request.contextPath}/customer/list/'+oppId,
 		    async: false
 		}).responseText);	
 	return data;
@@ -1061,7 +1058,7 @@ function addDataToDetailLead(){
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{campaign.campName}}</h3>
+						<h3 class="widget-user-username">[{{customer.custID}}] {{customer.custName}}</h3>
 						<h5 class="widget-user-desc">COMPANY</h5>
 					</div>
 					<div class="widget-user-image">
@@ -1073,26 +1070,26 @@ function addDataToDetailLead(){
 						<div class="row">
 							<div class="col-sm-3">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.statusName}}</h5>
-									<span class="description-text">Status</span>
+									<h5 class="description-header">{{customer.custTel1}}</h5>
+									<span class="description-text">Tel</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.typeName}}</h5>
-									<span class="description-text">Type</span>
+									<h5 class="description-header">{{customer.custEmail}}</h5>
+									<span class="description-text">Email</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.startDate | date:'dd/MM/yyyy'}}</h5>
-									<span class="description-text">Start Date</span>
+									<h5 class="description-header">{{customer.custID}}</h5>
+									<span class="description-text">Industry</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.endDate | date:'dd/MM/yyyy'}}</h5>
-									<span class="description-text">End Date</span>
+									<h5 class="description-header">{{customer.custID}}</h5>
+									<span class="description-text">Group</span>
 								</div>
 							</div>
 							
@@ -2315,4 +2312,4 @@ function addDataToDetailLead(){
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-<script src="${pageContext.request.contextPath}/resources/js.mine/customerjs/viewCustomerJS.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js.mine/JScust/JSviewCust.js"></script>
