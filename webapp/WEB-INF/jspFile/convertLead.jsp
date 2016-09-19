@@ -38,15 +38,9 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	angular.element(document).ready(function () {					
 		setTimeout(function(){
 			
-			$("#con_salutation").val($scope.LEAD.salutation)
-			//$("#con_assignedTo").select2("val", $scope.LEAD.assignToUserID);
-			
-			//$("#con_assignedTo").select2("val", $scope.LEAD.assignToUserID);
+			$("#con_salutation").val($scope.LEAD.salutation);
 			$("#con_leadSource").select2("val", $scope.LEAD.sourceID);
-			
 			$("#c_industry").select2("val", $scope.LEAD.industID);
-			
-			
 			$("#op_campaign").select2("val", $scope.LEAD.campID);
 			$("#op_leadSource").select2("val", $scope.LEAD.sourceID);
 			
@@ -238,14 +232,13 @@ $(document).ready(function() {
 		
 		
 		if(statusCust == true && statusCon == true && statusOpp == true){		
-			var dataFrm = "";			
-			
+			var dataFrm = "";	
 			if($("#checkOpportunity").is(':checked') == true){
-				dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": getOpportunity()};
+				dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": getOpportunity(), "leadID": leadId};
 			}else{
-				dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": ""};
+				dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": "", "leadID": leadId};
 			}
-					
+				
 			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/lead/convert",

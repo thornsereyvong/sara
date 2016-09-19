@@ -47,8 +47,6 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	$scope.startupCustomer = function() {
 		$http.get("${pageContext.request.contextPath}/customer/startup/"+custId).success(function(response){
 			
-			
-			
 			$scope.custGroup = response.GROUP;
 			$scope.industry = response.INDUSTRY;
 			$scope.priceCode = response.PRICE_CODE;
@@ -258,8 +256,7 @@ $(document).ready(function() {
 				    xhr.setRequestHeader("Accept", "application/json");
 				    xhr.setRequestHeader("Content-Type", "application/json");
 			    },
-				success:function(data){					
-					
+				success:function(data){										
 					if(data.MESSAGE == "UPDATED"){
 						swal({
 		            		title:"Success",

@@ -28,32 +28,33 @@
 <script type="text/javascript">
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
+var username = "${SESSON}";
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 
-			$scope.addLeadOnStartup = function(username) {
-				$http({
-				    method: 'POST',
-				    url: '${pageContext.request.contextPath}/lead/add/startup',
-				    headers: {
-				    	'Accept': 'application/json',
-				        'Content-Type': 'application/json'
-				    },
-				    data: {
-				    	"username":username
-				    }
-				}).success(function(response) {
-					$scope.users = response.ASSIGN_TO;
-					$scope.lead_status = response.LEAD_STATUS;
-					$scope.lead_source = response.LEAD_SOURCE;
-					$scope.lead_industry = response.INDUSTRY;
-					$scope.campaigns = response.CAMPAIGN;
-					$scope.child = response.CHILD;	
-					if($scope.child === "NOT_EXIST"){
-						$("#lea_assignTo").prop("disabled", true);
-					}
-				});
-			};
-	}]);
+	$scope.addLeadOnStartup = function() {
+		$http({
+		    method: 'POST',
+		    url: '${pageContext.request.contextPath}/lead/add/startup',
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {
+		    	"username":username
+		    }
+		}).success(function(response) {
+			$scope.users = response.ASSIGN_TO;
+			$scope.lead_status = response.LEAD_STATUS;
+			$scope.lead_source = response.LEAD_SOURCE;
+			$scope.lead_industry = response.INDUSTRY;
+			$scope.campaigns = response.CAMPAIGN;
+			$scope.child = response.CHILD;	
+			if($scope.child === "NOT_EXIST"){
+				$("#lea_assignTo").prop("disabled", true);
+			}
+		});
+	};
+}]);
 
 $(document).ready(function() {
 	$(".select2").select2();
@@ -270,10 +271,13 @@ $(document).ready(function() {
 			    "source": getJsonById("sourceID","lea_source","int"),
 			    "campaign": getJsonById("campID","lea_ca","str"),
 			    "assignTo": getJsonById("userID","lea_assignTo","str"),
-			    "createBy": $.session.get("parentID"),
+			    "createBy": username,
 			    "email": getValueStringById("lea_email")
 		};
-
+		
+		dis(frmDataLead)
+		
+		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/lead/add",
 			type : "POST",
@@ -282,29 +286,24 @@ $(document).ready(function() {
 					    xhr.setRequestHeader("Accept", "application/json");
 					    xhr.setRequestHeader("Content-Type", "application/json");
 					    },
-			success:function(data){
-					
-					$("#lea_assignTo").select2("val","");
-					$("#lea_ca").select2("val","");	
-					$("#lea_industry").select2("val","");	
-					$("#lea_source").select2("val","");	
-					$("#lea_status").select2("val","");	
-					
-					$("#form-leads").bootstrapValidator('resetForm', 'true');
-					$('#form-leads')[0].reset();
-					
+			success:function(data){					
+				if(data.MESSAGE == "INSERTED"){
 					swal({
 	            		title:"Success",
-	            		text:"User have been created new Lead!",
+	            		text:"You have been create a new lead!",
 	            		type:"success",  
 	            		timer: 2000,   
 	            		showConfirmButton: false
         			});
-				},
-			error:function(){
-				errorMessage();
+					reloadForm(2000);
+				}else{
+					alertMsgErrorSweet();	
 				}
-			});
+			},
+			error:function(){
+				alertMsgErrorSweet();	
+			}
+		});
 			
 	});	
 	
@@ -330,7 +329,7 @@ padding-right: 10px;
 			
 			<div class="box-body">
 			
-			<form method="post" id="form-leads">
+			<form method="post" id="form-leads" data-ng-init="addLeadOnStartup()">
 				
 				<a class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</a> 
 				<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
@@ -504,7 +503,7 @@ padding-right: 10px;
 			<div class="col-sm-2"><h4>More Information </h4></div>
 			<div class="col-sm-12"> <hr style="margin-top: 3px;" />
 			</div>
-			<div class="row" data-ng-init = "addLeadOnStartup('${SESSION}')">
+			<div class="row" >
 				<div class="col-sm-12">
 					<div class="col-sm-6">
 						<div class="col-sm-6">

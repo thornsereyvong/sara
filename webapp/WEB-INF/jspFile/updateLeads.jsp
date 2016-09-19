@@ -31,37 +31,55 @@ var self = this;
 var leadId = "${leadId}";
 var username = "${SESSION}";
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-
-			$scope.addLeadOnStartup = function(username) {
-				$http({
-				    method: 'POST',
-				    url: '${pageContext.request.contextPath}/lead/add/startup',
-				    headers: {
-				    	'Accept': 'application/json',
-				        'Content-Type': 'application/json'
-				    },
-				    data: {
-				    	"username":username
-				    }
-				}).success(function(response) {
-					$scope.users = response.ASSIGN_TO;
-					$scope.lead_status = response.LEAD_STATUS;
-					$scope.lead_source = response.LEAD_SOURCE;
-					$scope.lead_industry = response.INDUSTRY;
-					$scope.campaigns = response.CAMPAIGN;
-					$scope.child = response.CHILD;	
-					if($scope.child === "NOT_EXIST"){
-						$("#lea_assignTo").prop("disabled", true);
-					}
-				});
-			};
-	}]);
+	
+	$scope.LEAD = [];
+	angular.element(document).ready(function () {					
+		setTimeout(function(){			
+			$("#lea_assignTo").select2("val",$scope.LEAD.assignToUserID);
+			$("#lea_ca").select2("val",$scope.LEAD.campID);	
+			$("#lea_industry").select2("val",$scope.LEAD.industID);	
+			$("#lea_source").select2("val",$scope.LEAD.sourceID);	
+			$("#lea_status").select2("val",$scope.LEAD.statusID);	
+			$("#lea_salutation").val($scope.LEAD.salutation);
+			
+			$('#form-leads').data('bootstrapValidator').resetField($('#lea_ca'));
+			$('#form-leads').data('bootstrapValidator').resetField($('#lea_status'));
+			
+		}, 1000);
+    });
+	
+	
+	$scope.addLeadOnStartup = function() {
+		$http({
+		    method: 'POST',
+		    url: '${pageContext.request.contextPath}/lead/edit/startup',
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {
+		    	"username" : username,
+		    	"leadId" : leadId
+		    }
+		}).success(function(response) {
+			$scope.users = response.ASSIGN_TO;
+			$scope.lead_status = response.LEAD_STATUS;
+			$scope.lead_source = response.LEAD_SOURCE;
+			$scope.lead_industry = response.INDUSTRY;
+			$scope.campaigns = response.CAMPAIGN;
+			$scope.LEAD = response.LEAD;
+			$scope.child = response.CHILD;	
+			if($scope.child === "NOT_EXIST"){
+				$("#lea_assignTo").prop("disabled", true);
+			}
+		});
+	};
+}]);
 
 $(document).ready(function() {
 	$(".select2").select2();
 	$("#btn_clear").click(function(){
-		$("#form-leads").bootstrapValidator('resetForm', 'true');
-		$('#form-leads')[0].reset();
+		location.reload();
 	});
 	$("#btn_save").click(function(){
 		$("#form-leads").submit();
@@ -249,6 +267,7 @@ $(document).ready(function() {
 	}).on('success.form.bv', function(e) {
 				
 		var frmDataLead = {
+				"leadID" : leadId,
 				"salutation": getValueStringById("lea_salutation"),
 			    "firstName": getValueStringById("lea_firstName"),
 			    "lastName": getValueStringById("lea_lastName"),
@@ -272,13 +291,13 @@ $(document).ready(function() {
 			    "source": getJsonById("sourceID","lea_source","int"),
 			    "campaign": getJsonById("campID","lea_ca","str"),
 			    "assignTo": getJsonById("userID","lea_assignTo","str"),
-			    "createBy": $.session.get("parentID"),
+			    "modifyBy": username,
 			    "email": getValueStringById("lea_email")
 		};
 
 		$.ajax({
-			url : "${pageContext.request.contextPath}/lead/add",
-			type : "POST",
+			url : "${pageContext.request.contextPath}/lead/edit",
+			type : "PUT",
 			data : JSON.stringify(frmDataLead),	
 			beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
@@ -286,27 +305,24 @@ $(document).ready(function() {
 					    },
 			success:function(data){
 					
-					$("#lea_assignTo").select2("val","");
-					$("#lea_ca").select2("val","");	
-					$("#lea_industry").select2("val","");	
-					$("#lea_source").select2("val","");	
-					$("#lea_status").select2("val","");	
-					
-					$("#form-leads").bootstrapValidator('resetForm', 'true');
-					$('#form-leads')[0].reset();
-					
+				if(data.MESSAGE == "UPDATED"){
 					swal({
 	            		title:"Success",
-	            		text:"User have been created new Lead!",
+	            		text:"You have been updated lead!",
 	            		type:"success",  
 	            		timer: 2000,   
 	            		showConfirmButton: false
         			});
-				},
-			error:function(){
-				errorMessage();
+					reloadForm(2000);
+				}else{
+					alertMsgErrorSweet();	
 				}
-			});
+
+			},
+			error:function(){
+				alertMsgErrorSweet();
+			}	
+		});
 			
 	});	
 	
@@ -332,10 +348,10 @@ padding-right: 10px;
 			
 			<div class="box-body">
 			
-			<form method="post" id="form-leads">
+			<form method="post" id="form-leads" data-ng-init = "addLeadOnStartup()">
 				
 				<a class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</a> 
-				<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+				<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Refresh</a> 
 				<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-leads"> <i class="fa fa-reply"></i> Back </a>
 
 				<div class="clearfix"></div>
@@ -357,7 +373,7 @@ padding-right: 10px;
 			                                     <option value="Prof.">Prof.</option>
 			                                  </select>
 										</span>
-										<input type="text" name="lea_firstName" class="form-control" id="lea_firstName">
+										<input type="text" value="{{LEAD.firstName}}" name="lea_firstName" class="form-control" id="lea_firstName">
 									</div>
 								</div>	
 							</div>
@@ -365,7 +381,7 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label class="font-label">Last Name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text" class="form-control" id="lea_lastName" name="lea_lastName">
+									<input type="text" value="{{LEAD.lastName}}"  class="form-control" id="lea_lastName" name="lea_lastName">
 								</div>
 							</div>
 							
@@ -373,20 +389,20 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label class="font-label">Company Name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_accountName" name="lea_accountName">
+									<input type="text" value="{{LEAD.accountName}}"  class="form-control" id="lea_accountName" name="lea_accountName">
 								</div>	
 							</div>
 							<div class="col-sm-6">
 								<label class="font-label">Title </label>
 								<div class="form-group">
-									<input type="text" class="form-control" id="lea_title" name="lea_title">
+									<input type="text" value="{{LEAD.title}}"  class="form-control" id="lea_title" name="lea_title">
 								</div>	
 							</div>
 							<div class="clearfix"></div>
 							<div class="col-sm-6">
 								<label class="font-label">Department </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_department" name="lea_department">
+									<input type="text" value="{{LEAD.department}}"  class="form-control" id="lea_department" name="lea_department">
 								</div>
 							</div>						
 						</div>
@@ -394,25 +410,25 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label>Phone :</label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_phone" name="lea_phone">
+									<input type="text" value="{{LEAD.phone}}"  class="form-control" id="lea_phone" name="lea_phone">
 								</div>	
 							</div>
 							<div class="col-sm-6 ">
 								<label class="font-label">Mobile Phone </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_mobilePhone" name="lea_mobilePhone">
+									<input type="text" value="{{LEAD.mobile}}"  class="form-control" id="lea_mobilePhone" name="lea_mobilePhone">
 								</div>	
 							</div>
 							<div class="col-sm-6">
 								<label class="font-label">Website </label>
 								<div class="form-group">
-									<input type="url" placeholder="http://www.example.com" class="form-control" id="lea_website" name="lea_website">
+									<input type="url" value="{{LEAD.website}}"  placeholder="http://www.example.com" class="form-control" id="lea_website" name="lea_website">
 								</div>	
 							</div>
 							<div class="col-sm-6">
 								<label class="font-label">Email </label>
 								<div class="form-group">
-									<input type="email"  class="form-control" id="lea_email" name="lea_email">
+									<input type="email" value="{{LEAD.email}}"   class="form-control" id="lea_email" name="lea_email">
 								</div>	
 							</div>
 						</div>
@@ -421,7 +437,7 @@ padding-right: 10px;
 								<label class="font-label">Description </label>
 								<div class="form-group">
 									<textarea  rows="3" cols="" name="lea_description" id="lea_description"
-										class="form-control"></textarea>
+										class="form-control">{{LEAD.description}}</textarea>
 								</div>
 							</div>
 						</div>		
@@ -440,28 +456,28 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label class="font-label">No </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_no" name="lea_no">
+									<input type="text" value="{{LEAD.no}}"   class="form-control" id="lea_no" name="lea_no">
 								</div>	
 							</div>
 								
 							<div class="col-sm-6">
 								<label class="font-label">Street </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_street" name="lea_street">
+									<input type="text" value="{{LEAD.street}}"  class="form-control" id="lea_street" name="lea_street">
 								</div>	
 							</div>
 								
 							<div class="col-sm-6">
 								<label class="font-label">Village </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_village" name="lea_village">
+									<input type="text" value="{{LEAD.village}}"  class="form-control" id="lea_village" name="lea_village">
 								</div>
 							</div>
 								
 							<div class="col-sm-6">
 								<label class="font-label">Commune </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_commune" name="lea_commune">
+									<input type="text" value="{{LEAD.commune}}"  class="form-control" id="lea_commune" name="lea_commune">
 								</div>
 							</div>
 								
@@ -471,28 +487,28 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label class="font-label">District </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_district" name="lea_district">
+									<input type="text" value="{{LEAD.district}}"  class="form-control" id="lea_district" name="lea_district">
 								</div>	
 							</div>
 							
 							<div class="col-sm-6">
 								<label class="font-label">City </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_city" name="lea_city">
+									<input type="text" value="{{LEAD.city}}"  class="form-control" id="lea_city" name="lea_city">
 								</div>	
 							</div>
 							
 							<div class="col-sm-6">
 								<label class="font-label">State </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_state" name="lea_state">
+									<input type="text" value="{{LEAD.state}}"  class="form-control" id="lea_state" name="lea_state">
 								</div>
 							</div>
 							
 							<div class="col-sm-6">
 								<label class="font-label">Country </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_country" name="lea_country">
+									<input type="text" value="{{LEAD.country}}"  class="form-control" id="lea_country" name="lea_country">
 								</div>	
 							</div>
 						</div>
@@ -506,7 +522,7 @@ padding-right: 10px;
 			<div class="col-sm-2"><h4>More Information </h4></div>
 			<div class="col-sm-12"> <hr style="margin-top: 3px;" />
 			</div>
-			<div class="row" data-ng-init = "addLeadOnStartup('${SESSION}')">
+			<div class="row" >
 				<div class="col-sm-12">
 					<div class="col-sm-6">
 						<div class="col-sm-6">
@@ -581,6 +597,7 @@ padding-right: 10px;
 			
 		</form>
 	</div>
+	<div id="errors"></div>
 	<div class="box-footer"></div>
 </div>
 </section>
