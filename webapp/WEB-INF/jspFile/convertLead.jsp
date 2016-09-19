@@ -150,6 +150,26 @@ function getOpportunity(){
 	return opp;
 }
 
+function updateLeadStatus(){
+	$.ajax({
+		url : "${pageContext.request.contextPath}/lead/edit/status",
+		type : "PUT",
+		data : JSON.stringify({
+			"leadID": "${leadId}",
+			}),	
+		beforeSend: function(xhr) {
+	    	xhr.setRequestHeader("Accept", "application/json");
+	    	xhr.setRequestHeader("Content-Type", "application/json");
+	    },
+		success:function(data){	
+			
+		},
+		error:function(){
+			alertMsgErrorSweet();	
+		}
+	});
+}
+
 $(document).ready(function() {
 	
 	$('#opCloseDate').daterangepicker({
@@ -250,6 +270,7 @@ $(document).ready(function() {
 			    },
 				success:function(data){
 					if(data.CUST_MESSAGE == "SUCCESS" && data.CON_MESSAGE == "SUCCESS"){
+						updateLeadStatus();
 						swal({
 		            		title:"Success",
 		            		text:"You have been converted!",
@@ -261,8 +282,6 @@ $(document).ready(function() {
 					}else{
 						alertMsgErrorSweet();	
 					}
-					
-					
 				},
 				error:function(){
 					alertMsgErrorSweet();	

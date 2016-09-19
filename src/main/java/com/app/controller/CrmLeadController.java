@@ -133,6 +133,18 @@ public class CrmLeadController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead/edit/status",method = RequestMethod.PUT)
+	public ResponseEntity<Map<String, Object>> updateLeadStatusToConverted(@RequestBody String json){
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(json,header);
+		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/edit/status", HttpMethod.PUT, request, Map.class);
+		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/remove/{leadID}",method = RequestMethod.DELETE)
 	public ResponseEntity<Map<String, Object>> deleteLead(@PathVariable("leadID") String leadID){
 		
