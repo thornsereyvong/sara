@@ -59,15 +59,18 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.listLeads = function(){
 			response = getLeadData();	
 			
+			//dis(response)
 			
 			
-			OPPORTUNITY = response.OPPORTUNITY;
+			CAMPAIGN = response.CAMPAIGN;
 			$scope.oppLeadSource = response.LEAD_SOURCE;
 			$scope.oppType = response.OPP_TYPES;
 			$scope.oppAssignTo = response.ASSIGN_TO;
 			$scope.oppCampaign = response.CAMPAIGNS;
 			$scope.oppStage = response.OPP_STAGES;
 			$scope.oppCustomer = response.CUSTOMERS;
+			
+			$scope.campaign = response.CAMPAIGN;
 			
 			$scope.opportunity = response.OPPORTUNITY;
 			$scope.listNote1(response.NOTES);
@@ -1050,8 +1053,7 @@ function addDataToDetailLead(){
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{lead.salutation}}
-							{{lead.firstName}} {{lead.lastName}}</h3>
+						<h3 class="widget-user-username">{{campaign.campName}}</h3>
 						<h5 class="widget-user-desc">CAMPAIGN</h5>
 					</div>
 					<div class="widget-user-image">
@@ -1063,25 +1065,25 @@ function addDataToDetailLead(){
 						<div class="row">
 							<div class="col-sm-3">
 								<div class="description-block">
-									<h5 class="description-header">{{lead.accountName}}</h5>
+									<h5 class="description-header">{{campaign.statusName}}</h5>
 									<span class="description-text">Status</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{lead.sourceName}}</h5>
+									<h5 class="description-header">{{campaign.campName}}</h5>
 									<span class="description-text">Type</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{lead.assignToUsername}}</h5>
+									<h5 class="description-header">{{campaign.campName}}</h5>
 									<span class="description-text">Start Date/End Date</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{lead.phone}}</h5>
+									<h5 class="description-header">{{campaign.campName}}</h5>
 									<span class="description-text">Assign To</span>
 								</div>
 							</div>

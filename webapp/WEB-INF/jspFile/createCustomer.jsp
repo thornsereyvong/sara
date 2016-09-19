@@ -47,11 +47,12 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	$scope.getAddress = function(){ 
 		var shipToAddrAdd = [];
 		angular.forEach($scope.shipToAdd, function(value, key) {
-			var txtAddr = $.trim($scope.newAddr[key].addr);
+			var txtAddr = $.trim($scope.shipToAdd[key].addr);
 			if(txtAddr != ""){
 				shipToAddrAdd.push({"aId":key+1, "address":txtAddr});
-			}			
-		});			
+			}	
+		});	
+		
 		if(shipToAddrAdd.length == 0)
 			return null;		
 		return shipToAddrAdd;
@@ -324,7 +325,7 @@ $(document).ready(function() {
 								<div class="col-sm-12" style="margin-bottom: 15px;">
 									<label class="font-label">Ship To Address</label>														
 									<div class="input-group" ng-repeat="(key, add) in shipToAdd" style="margin-bottom: 5px;">                            	
-										<input type="text" ng-model="newAddr[key].addr" name="c_shipAddr" class="form-control" id="c_shipAddr" >
+										<input type="text" ng-model="shipToAdd[key].addr" name="c_shipAddr" class="form-control" id="c_shipAddr" >
 										<span class="input-group-btn">
 			                                 <button style="height: 34px;"  name="c_shipAddr" type="button" ng-click="btnRemoveMoreShip(key)" class="btn btn-danger"><i class="fa  fa-minus-square-o"></i></button>
 										</span>
