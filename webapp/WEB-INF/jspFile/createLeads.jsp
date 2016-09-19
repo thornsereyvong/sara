@@ -28,9 +28,8 @@
 <script type="text/javascript">
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
-var username = "${SESSON}";
+var username = "${SESSION}";
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-
 	$scope.addLeadOnStartup = function() {
 		$http({
 		    method: 'POST',
@@ -274,9 +273,6 @@ $(document).ready(function() {
 			    "createBy": username,
 			    "email": getValueStringById("lea_email")
 		};
-		
-		dis(frmDataLead)
-		
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/lead/add",
