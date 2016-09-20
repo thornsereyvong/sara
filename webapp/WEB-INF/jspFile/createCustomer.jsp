@@ -218,8 +218,8 @@ $(document).ready(function() {
 				      "industID": getJsonById("industID","c_industry","int"),
 					  "accountTypeID": getJsonById("accountID","c_type","int"),
 					  "custDetails" : ship,
-					  "priceCode" : getValueStringById("c_price"),
-					  "custGroupId" : getValueStringById("c_group"),
+					  "priceCode" : getJsonById("priceCode","c_price","str"),
+					  "custGroup" : getJsonById("custGroupId","c_group","str"),
 					  "imageName" : ""
 				}),
 				beforeSend: function(xhr) {
