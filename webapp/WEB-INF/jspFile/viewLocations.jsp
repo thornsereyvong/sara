@@ -1,280 +1,431 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <jsp:include page="${request.contextPath}/head"></jsp:include>
 <jsp:include page="${request.contextPath}/header"></jsp:include>
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
+<%
+	String roleDelete = (String) request.getAttribute("role_delete");
+%>
 
-<% String roleDelete = (String)request.getAttribute("role_delete"); %>
 
 <script type="text/javascript">
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+
+
+var app = angular.module('callApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
 var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
-	$scope.listCase= function(){
-		$http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
-				$scope.cases = response.DATA;
-			});
-		} ;
-
+var username = "${SESSION}";
+var server = "${pageContext.request.contextPath}";
+var locId = "${locId}";
+app.controller('viewCallController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
-	$scope.sort = function(keyname){
-	    $scope.sortKey = keyname;   //set the sortKey to the param passed
-	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
-	};
+	angular.element(document).ready(function () {				
+		
+    });
 	
-	$scope.deleteCon = function(oppID){
-		SweetAlert.swal({
-            title: "Are you sure?", //Bold text
-            text: "This Location will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-        	 var str = '<%=roleDelete%>';
-	            if(isConfirm){
-
-					if(str == "YES"){
-						$http.delete("${pageContext.request.contextPath}/event_location/remove/"+oppID)
-			            .success(function(){
-			            		SweetAlert.swal({
-					            		title:"Deleted",
-					            		text:"Location have been deleted!",
-					            		type:"success",  
-					            		timer: 2000,   
-					            		showConfirmButton: false
-			            		});
-			            		$scope.listCase();
-					      });
-					}else{
-						SweetAlert.swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					} 
-            } else {
-                SweetAlert.swal({
-	                title:"Cancelled",
-	                text:"This Location is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
-	};
-	
+	$scope.startupView = function(){				
+		$http.get("${pageContext.request.contextPath}/event_location/list/"+locId).success(function(response){
+			$scope.location = response.DATA;
+		});
+		
+	}
 }]);
 
-//alert($.session.get("parentID"));
 
 </script>
 <style>
-.icon_color{
-color:#2196F3;
+.panel-heading1 h4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: normal;
+    width: 75%;
+    padding-top: 8px;
 }
+.trask-btn{
+	color: #dd4b39 !important;
+}
+
+.like-btn{
+	color: #3289c8 !important;
+}
+.unlike-btn{
+}
+
+.icon_color {
+	color: #2196F3;
+}
+.iTable tbody{
+	border-top: 1px solid #d2d6de !important;
+}
+.iTable thead, tr, td{
+	border:0px !important;
+}
+
+
+
+.iTD-width-50 {
+	width: 50px;
+}
+
+.show-edit {
+	width: 70% !important;
+	margin: -25px 30% -5px !important;
+}
+
+.iTD {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.item_border {
+	border: 1px solid #f0f0f0;
+}
+
+.font-size-icon-30 {
+	font-size: 20px;
+}
+
 .pagination {
-    display: inline-block;
-    padding-left: 0;
-    margin: 0px 0px 13px 0px;
-    border-radius: 4px;
-    margin-buttom:10px;
+	display: inline-block;
+	padding-left: 0;
+	margin: 0px 0px 13px 0px;
+	border-radius: 4px;
+	margin-buttom: 10px;
+}
+
+.cusor_pointer {
+	cursor: pointer;
+}
+
+.breadcrumb1 {
+	padding: 0;
+	background: #D4D4D4;
+	list-style: none;
+	overflow: hidden;
+	margin: 10px;
+}
+
+.breadcrumb1>li+li:before {
+	padding: 0;
+}
+
+.breadcrumb1 li {
+	float: left;
+}
+
+.breadcrumb1 li.active a {
+	background: brown; /* fallback color */
+	background: rgb(75, 202, 129);
+}
+
+.breadcrumb1 li.completed a {
+	background: brown; /* fallback color */
+	background: hsl(192, 100%, 41%);
+}
+
+.breadcrumb1 li.active a:after {
+	border-left: 30px solid rgb(75, 202, 129);
+}
+
+.breadcrumb1 li.dead a {
+	background: brown; /* fallback color */
+	background: red;
+}
+
+.breadcrumb1 li.dead a:after {
+	border-left: 30px solid red;
+}
+
+.breadcrumb1 li.completed a:after {
+	border-left: 30px solid hsl(192, 100%, 41%);
+}
+
+.breadcrumb1 li a {
+	color: white;
+	text-decoration: none;
+	padding: 10px 0 10px 45px;
+	position: relative;
+	display: block;
+	float: left;
+}
+
+.breadcrumb1 li a:after {
+	content: " ";
+	display: block;
+	width: 0;
+	height: 0;
+	border-top: 50px solid transparent;
+	/* Go big on the size, and let overflow hide */
+	border-bottom: 50px solid transparent;
+	border-left: 30px solid hsla(0, 0%, 83%, 1);
+	position: absolute;
+	top: 50%;
+	margin-top: -50px;
+	left: 100%;
+	z-index: 2;
+}
+
+.breadcrumb1 li a:before {
+	content: " ";
+	display: block;
+	width: 0;
+	height: 0;
+	border-top: 50px solid transparent;
+	/* Go big on the size, and let overflow hide */
+	border-bottom: 50px solid transparent;
+	border-left: 30px solid white;
+	position: absolute;
+	top: 50%;
+	margin-top: -50px;
+	margin-left: 1px;
+	left: 100%;
+	z-index: 1;
+}
+
+.breadcrumb1 li:first-child a {
+	padding-left: 15px;
+}
+
+.breadcrumb1 li a:hover {
+	background: rgb(75, 202, 129);
+}
+
+.breadcrumb1 li a:hover:after {
+	border-left-color: rgb(75, 202, 129) !important;
 }
 </style>
-<div class="content-wrapper" ng-app="campaign" ng-controller="campController">
+<div class="content-wrapper" id="viewCallController" ng-app="callApp"
+	ng-controller="viewCallController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>Locations</h1>
+		<h1>View Location</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i>Locations </a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i>View Location</a></li>
 		</ol>
 	</section>
 
-	<section class="content">
+	<section class="content" data-ng-init="startupView()">
 
-		<!-- Default box -->
-		
-		<div class="box box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
+
+		<div class="row">
+
+			<div class="col-md-12">
+				<!-- Widget: user widget style 1 -->
+				<div class="box box-widget widget-user">
+					<!-- Add the bg color to the header using any of the bg-* classes -->
+					<div class="widget-user-header bg-aqua-active">
+						<h3 class="widget-user-username">{{location.loName}}</h3>
+						<h5 class="widget-user-desc">NAME</h5>
+					</div>
+					<div class="widget-user-image">
+						<img class="img-circle"
+							src="${pageContext.request.contextPath}/resources/images/module/Location.png"
+							alt="User Avatar">
+					</div>
+					<div class="box-footer">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="nav-tabs-custom">
+									<ul class="nav nav-tabs">										
+										<li class="active"><a href="#detail_tap" data-toggle="tab"
+											aria-expanded="true">Overview</a></li>	
+										<li class=""><a href="#systemInfo_tap" data-toggle="tab"
+											aria-expanded="false">System Information</a></li>										
+									</ul>
+									<div class="tab-content">
+										<div class="tab-pane in active" id="detail_tap">
+											<div class="row">
+												<div class="col-sm-12">
+													<form id="frmLeadDetail">
+														<div class="col-sm-4">
+															<ul class="list-group list-group-unbordered">																																
+																<li class="list-group-item item_border">Name<a
+																	class="pull-right show-text-detail">{{location.loName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">No<a
+																	class="pull-right show-text-detail">{{location.loNo}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Street<a
+																	class="pull-right show-text-detail">{{location.loStreet}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+																
+																
+															</ul>
+														</div>
+														<div class="col-sm-4">
+															<ul class="list-group list-group-unbordered">
+																
+																<li class="list-group-item item_border">Village <a
+																	class="pull-right show-text-detail">{{location.village}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Commune <a
+																	class="pull-right show-text-detail">{{location.loCommune}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">District<a
+																	class="pull-right show-text-detail">{{location.loDistrict}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																
+																
+															</ul>
+														</div>
+																										
+														<div class="col-sm-4">
+															<ul class="list-group list-group-unbordered">
+																<li class="list-group-item item_border">City<a
+																	class="pull-right show-text-detail">{{location.loCity}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">State<a
+																	class="pull-right show-text-detail">{{location.loState}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Country<a
+																	class="pull-right show-text-detail">{{location.loCountry}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
+																
+															</ul>
+														</div>
+														<div class="clearfix"></div>
+														
+														
+														<br>
+														<div class="col-sm-12 text-center" id="showBtnEditLead"
+															style="display: none;">
+															<button type="button" class="btn btn-primary"
+																ng-click="saveEditDetailLead()">Save</button>
+															<button type="button" class="btn btn-danger"
+																ng-click="cancelEditDetailLead()">Cancel</button>
+														</div>
+													</form>
+												</div>
+											</div>
+
+										</div>
+										<div class="tab-pane" id="systemInfo_tap">
+											<div class="row">
+												<div class="col-sm-12">
+													<form id="frmLeadDetail">
+														<div class="col-sm-4">
+															<ul class="list-group list-group-unbordered">																																
+																<li class="list-group-item ">Create By<a
+																	class="pull-right show-text-detail">{{location.loCreateBy}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Create Date <a
+																	class="pull-right show-text-detail">{{location.loCreateDate}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+															</ul>
+														</div>
+														<div class="col-sm-4">
+															<ul class="list-group list-group-unbordered">																																
+																<li class="list-group-item ">Modify By<a
+																	class="pull-right show-text-detail">{{location.locModifiedBy}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Modify Date <a
+																	class="pull-right show-text-detail">{{location.loModifiedDate}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+															</ul>
+														</div>
+														
+														
+														<br>
+														<div class="col-sm-12 text-center" id="showBtnEditLead"
+															style="display: none;">
+															<button type="button" class="btn btn-primary"
+																ng-click="saveEditDetailLead()">Save</button>
+															<button type="button" class="btn btn-danger"
+																ng-click="cancelEditDetailLead()">Cancel</button>
+														</div>
+													</form>
+												</div>
+											</div>
+
+										</div>
+										
+
+
+									</div>
+									<!-- /.tab-content -->
+								</div>
+							</div>
+
+						</div>
+						<!-- /.row -->
+					</div>
 				</div>
-				<div class="col-sm-12">
-					<hr style="margin-bottom: 5px;margin-top: 8px;" />
-				 </div> 
-				<div style="background: #fff;margin-top: 15px;">
-				 <div class="col-sm-12">
-				 	<a href="${pageContext.request.contextPath}/create-location" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
-				 	<a href="${pageContext.request.contextPath}/list-locations" class="btn btn-info btn-app" ><i class="fa fa-clone"	aria-hidden="true"></i> View</a>	
-				 </div>
-				 
-				  
-				  <div class="col-sm-12">
-					<hr style="margin-bottom: 0;margin-top: 0px;" />
-				 </div> 
+				<!-- /.widget-user -->
 			</div>
-			</div>
-			
-			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
-				
-			 
-			<div class="clearfix"></div>
-
-			<div class="panel panel-default">
-  				<div class="panel-body">
-  			
-				 
-			<div class="tablecontainer table-responsive" data-ng-init="listCase()" > 
-				<div dir-paginate="cc in cases |orderBy:sortKey:reverse |filter:search |itemsPerPage:1">
-				<div class="col-sm-8 form-group">
-						<a href="${pageContext.request.contextPath}/update-call/{{cc.loId}}" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-						<button type="button" ng-click="deleteCon(cc.loId)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>
-				</div>
-				<div class="col-sm-4 text-right form-group">
-					<dir-pagination-controls 
-						max-size="2"
-						direction-links="true"
-						boundary-links="true"> 
-					</dir-pagination-controls>
-				</div>
-				<div class="clearfix"></div>
-				 <!-- Nav tabs -->
-				  <ul class="nav nav-tabs" role="tablist">
-				    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Overview</a></li>
-				    <li role="presentation"><a href="#other" aria-controls="profile" role="tab" data-toggle="tab">Other</a></li>
-				  </ul>
-				
-				  <!-- Tab panes -->
-				  <div class="tab-content">
-				    <div role="tabpanel" class="tab-pane active" id="home">
-				    	<div class="col-sm-6">
-								<table class="table table-hover">
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Location ID</td>
-										<td>{{cc.loId}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Location Name </td>
-										<td>{{cc.loName}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> No</td>
-										<td>{{cc.loNo}}</td>
-									</tr>
-									
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Street </td>
-										<td ><span>{{cc.loStreet}}</span></td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Village </td>
-										<td ><span>{{cc.village}}</span></td>
-									</tr>
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Commune</td>
-										<td>{{cc.loCommune}}</td>
-									</tr>
-									
-								</table>
-							</div>
-							
-							<div class="col-sm-6">
-								<table class="table table-hover">
-									
-									
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> District</td>
-										<td>{{cc.loDistrict}}</td>
-									</tr>
-									
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> City</td>
-										<td>{{cc.loCity}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> State</td>
-										<td>{{cc.loState}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Country</td>
-										<td>{{cc.loCountry}}</td>
-									</tr>
-									
-									
-									
-								</table>
-							</div>
-							
-				    </div>
-				  <div role="tabpanel" class="tab-pane" id="other">
-				    		<div class="col-sm-6">
-								<table class="table table-hover">
-									
-									<tr>
-										<td width="200px"><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Create Date</td>
-										<td>{{cc.loCreateDate}} By {{cc.loCreateBy}}</td>
-									</tr>
-									<tr>
-										<td><i class="fa fa-check-square-o icon_color" aria-hidden="true"></i> Modified Date</td>
-										<td>{{cc.loModifiedDate}} By {{cc.loModifiedBy}}</td>
-									</tr>
-									
-									
-									
-								</table>
-							</div>
-							
-						
-				    </div>
-				    
-				    
-				  </div>
-				  
-				  
-				  
-				</div>
-			</div>	
-				
-
-			  </div>
 		</div>
-			</div>
-			<!-- /.box-body -->
-			<div class="box-footer"></div>
-			<!-- /.box-footer-->
-		</div>
-		
-		<!-- /.box -->
-
-
 	</section>
-	<!-- /.content -->
-
-
+	<div id="errors"></div>
 </div>
 
-<!-- /.content-wrapper -->
-
-
-
-<!-- /.content-wrapper -->
-
-
-
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-

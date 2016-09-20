@@ -1054,10 +1054,10 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/view-events")
-	public String viewEvent(ModelMap model) {
-		model.addAttribute("menu", "viewEvents");
-		
+	@RequestMapping("/view-event/{eventId}")
+	public String viewEvent(ModelMap model, @PathVariable("eventId") String eventId) {
+		model.addAttribute("menu","viewEvents");
+		model.addAttribute("eventId", eventId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV");
 
 		model.addAttribute("role_list", camMap.get("roleList"));
@@ -1137,10 +1137,10 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/view-notes")
-	public String viewNote(ModelMap model) {
+	@RequestMapping("/view-note/{noteId}")
+	public String viewNote(ModelMap model, @PathVariable("noteId") String noteId) {
 		model.addAttribute("menu", "viewNotes");
-		
+		model.addAttribute("noteId", noteId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO");
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -1298,10 +1298,10 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/view-locations")
-	public String viewLocation(ModelMap model) {
+	@RequestMapping("/view-location/{locId}")
+	public String viewLocation(ModelMap model, @PathVariable("locId") String locId) {
 		model.addAttribute("menu", "viewLocations");
-		
+		model.addAttribute("locId", locId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("LOC");
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
