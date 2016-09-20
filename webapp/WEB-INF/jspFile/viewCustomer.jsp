@@ -57,7 +57,10 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.username = username; 
 	
 	$scope.listLeads = function(){
-			response = getLeadData();	
+			response = getLeadData();
+			
+			//dis(response)
+			
 			CUSTOMER = response.CUSTOMER;
 			$scope.oppLeadSource = response.LEAD_SOURCE;
 			$scope.oppType = response.OPP_TYPES;
@@ -1082,13 +1085,13 @@ function addDataToDetailLead(){
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{customer.custID}}</h5>
+									<h5 class="description-header">{{customer.industID.industName}}</h5>
 									<span class="description-text">Industry</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{customer.custID}}</h5>
+									<h5 class="description-header">{{customer.custGroupId}}</h5>
 									<span class="description-text">Group</span>
 								</div>
 							</div>
@@ -1618,7 +1621,6 @@ function addDataToDetailLead(){
 											</ul>
 										</div>
 
-
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
 												<form id="frmLeadDetail">
@@ -1629,9 +1631,8 @@ function addDataToDetailLead(){
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a> --></li>
 															
-
-															<li class="list-group-item item_border">Name <a
-																class="pull-right show-text-detail">{{campaign.campName}}</a>
+															<li class="list-group-item item_border">Customer ID <a
+																class="pull-right show-text-detail">{{customer.custID}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<!-- <input type="text" name="lea_firstName"
 																		id="lea_firstName" class="form-control"
@@ -1639,16 +1640,46 @@ function addDataToDetailLead(){
 																	<div class="clearfix"></div>
 																</div>
 															</li>
-															<li class="list-group-item item_border">Start Date <a
-																class="pull-right show-text-detail">{{campaign.startDate | date:'dd/MM/yyyy'}}</a>
+															<li class="list-group-item item_border">Customer Name <a
+																class="pull-right show-text-detail">[{{customer.custID}}] {{customer.custName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<!-- <input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}"> -->
+																	<div class="clearfix"></div>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Tel 1 <a
+																class="pull-right show-text-detail">{{customer.custTel1}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<!-- <input type="text" name="lea_lastName"
 																		id="lea_lastName" class="form-control"
 																		value="{{lead.lastName}}"> -->
 																</div>
 															</li>
-															<li class="list-group-item item_border">End Date <a
-																class="pull-right show-text-detail">{{campaign.endDate | date:'dd/MM/yyyy'}}</a>
+															<li class="list-group-item item_border">Tel 2 <a
+																class="pull-right show-text-detail">{{customer.custTel2}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
+																</div>
+															</li>
+															<li class="list-group-item item_border">Email <a
+																class="pull-right show-text-detail">{{customer.custEmail}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
+																</div>
+															</li>
+															<li class="list-group-item item_border">Web Site <a
+																class="pull-right show-text-detail"><a taget="_blank" href="{{customer.custWebsite}}">{{customer.custWebsite}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
+																</div>
+															</li>
+															<li class="list-group-item item_border">Fax<a
+																class="pull-right show-text-detail">{{customer.custFax}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<!-- <input type="text" name="lea_title" id="lea_title"
 																		class="form-control" value="{{lead.title}}"> -->
@@ -1659,130 +1690,122 @@ function addDataToDetailLead(){
 													</div>
 													<div class="col-md-4">
 														<ul class="list-group list-group-unbordered">
-															<!-- <li class="list-group-item"><b>&nbsp;</b> <a
+															<li class="list-group-item"><b>Other</b> <!-- <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a></li> -->
-															<li class="list-group-item">Status <a
-																class="pull-right show-text-detail">{{campaign.statusName}}</a>
+																	Edit</a> --></li>
+															<li class="list-group-item item_border">Industry <a
+																class="pull-right show-text-detail">{{customer.industID.industName}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<!-- <select class="form-control select2" name="lea_status"
-																		id="lea_status" style="width: 100%;">
-																		<option value="">-- SELECT Status --</option>
-																		<option ng-repeat="status in leadStatus"
-																			value="{{status.statusID}}">{{status.statusName}}</option>
-																	</select> -->
+																	<!-- <input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}"> -->
+																	<div class="clearfix"></div>
 																</div>
 															</li>
 															<li class="list-group-item item_border">Type <a
-																class="pull-right show-text-detail">{{campaign.typeName}}</a>
+																class="pull-right show-text-detail">{{customer.accountTypeID.accountName}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<!-- <select class="form-control select2"
-																		name="lea_industry" id="lea_industry"
-																		style="width: 100%;">
-																		<option value="">-- SELECT Industry --</option>
-																		<option ng-repeat="industry in leadIndustry"
-																			value="{{industry.industID}}">{{industry.industName}}</option>
-																	</select> -->
+																	<!-- <input type="text" name="lea_lastName"
+																		id="lea_lastName" class="form-control"
+																		value="{{lead.lastName}}"> -->
 																</div>
 															</li>
-															<li class="list-group-item item_border">Parent <a
-																class="pull-right show-text-detail">{{campaign.parentName}}</a>
+															<li class="list-group-item item_border">Facebook<a
+																class="pull-right show-text-detail">{{customer.facebook}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<!-- <select class="form-control select2"
-																		name="lea_campaign" id="lea_campaign"
-																		style="width: 100%;">
-																		<option value="">-- SELECT Campaign --</option>
-																		<option ng-repeat="camp in leadCampaign"
-																			value="{{camp.campID}}">{{camp.campName}}</option>
-																	</select> -->
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
 																</div>
 															</li>
-															<li class="list-group-item item_border">Assign To <a
-																class="pull-right show-text-detail">{{campaign.username}}</a>
+															<li class="list-group-item item_border">Line <a
+																class="pull-right show-text-detail">{{customer.line}}</a>
 																<div class="form-group show-edit" style="display: none;">
-																	<!-- <select class="form-control select2"
-																		name="lea_assignto" id="lea_assignto"
-																		style="width: 100%;">
-																		<option value="">-- SELECT Assign To --</option>
-																		<option ng-repeat="user in leadAssignTo"
-																			value="{{user.userID}}">{{user.username}}</option>
-																	</select> -->
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
 																</div>
-
 															</li>
-															
-															
-															
+															<li class="list-group-item item_border">WhatApp<a
+																class="pull-right show-text-detail">{{customer.whatApp}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
+																</div>
+															</li>
+															<li class="list-group-item item_border">Viber<a
+																class="pull-right show-text-detail">{{customer.viber}}
+																<div class="form-group show-edit" style="display: none;">
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
+																</div>
+															</li>
 															
 														</ul>
 													</div>
 													<div class="col-md-4">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Budget</b> <!-- <a class="pull-right cusor_pointer"
+															<li class="list-group-item"><b>Setting</b> <!-- <a class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a> --></li>
-																<li class="list-group-item item_border">Budget <a
+																<li class="list-group-item item_border">Customer Group <a
 																class="pull-right show-text-detail">{{campaign.budget | number:2}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<!-- <input type="text" name="lea_no" id="lea_no"
 																		class="form-control" value="{{lead.no}}"> -->
 																</div>
 															</li>
-															<li class="list-group-item item_border">Actual cost <a
+															<li class="list-group-item item_border">Price Code<a
 																class="pull-right show-text-detail">{{campaign.actualCost | number:2}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<!-- <input type="text" name="lea_street" id="lea_street"
 																		class="form-control" value="{{lead.street}}"> -->
 																</div>
 															</li>
-															<li class="list-group-item item_border">Expected cost <a
-																class="pull-right show-text-detail">{{campaign.expectedCost  | number:2}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_village" id="lea_village"
-																		class="form-control" value="{{lead.village}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Expected response (%) <a
-																class="pull-right show-text-detail">{{campaign.expectedResponse}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_commune" id="lea_commune"
-																		class="form-control" value="{{lead.commune}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Expected revenue<a
-																class="pull-right show-text-detail">{{campaign.expectedRevenue | number:2}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_commune" id="lea_commune"
-																		class="form-control" value="{{lead.commune}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Number send<a
-																class="pull-right show-text-detail">{{campaign.numSend | number:2}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_commune" id="lea_commune"
-																		class="form-control" value="{{lead.commune}}"> -->
-																</div>
-															</li>
+															
 														</ul>
 													</div>
 													<div class="col-md-12">
 														<ul class="list-group list-group-unbordered">
-															<li style="border-top: 0px;" class="list-group-item"><b>Description</b>
-																<!-- <a class="pull-right cusor_pointer"
+															<li class="list-group-item"><b>Address</b> <!-- <a
+																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a> --></li>
+															<li class="list-group-item item_border">Bill To Address
+															</li>
+															<li class="list-group-item item_border"><a
+																class="pull-right show-text-detail">{{customer.custAddress}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<!-- <input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}"> -->
+																	<div class="clearfix"></div>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Ship To Address
+															</li>
+															<li class="list-group-item item_border">
+																<a class="show-text-detail">dhdhdh</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<!-- <input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}"> -->
+																	<div class="clearfix"></div>
+																</div>
+																
+															</li>
+															<li class="list-group-item item_border">
+																<a class="show-text-detail">dhdhdh</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<!-- <input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}"> -->
+																	<div class="clearfix"></div>
+																</div>
+																
+															</li>
 														</ul>
 													</div>
-													<div class="col-md-12">
-														<div class="show-text-detail">{{campaign.description}}</div>
-														<div class="form-group show-edit-non-style"
-															style="display: none;">
-															<!-- <textarea rows="3" cols="" name="lea_description"
-																id="lea_description" class="form-control"
-																placeholder="Description">{{campaign.statusName}}</textarea> -->
-														</div>
-													</div>
+													
 													<br>
 													<div class="col-md-12 text-center" id="showBtnEditLead"
 														style="display: none;">
@@ -1796,6 +1819,7 @@ function addDataToDetailLead(){
 											</div>
 
 										</div>
+										
 										<div class="tab-pane " id="opport_tap">
 											<div class="row">
 												<div class="col-md-12">
@@ -2312,4 +2336,4 @@ function addDataToDetailLead(){
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-<script src="${pageContext.request.contextPath}/resources/js.mine/JScust/JSviewCust.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js.mine/customer/viewCustomer.js"></script>
