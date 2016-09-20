@@ -35,8 +35,8 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	$scope.CUSTOMER = [];
 	angular.element(document).ready(function () {					
 		setTimeout(function(){
-			$("#c_group").select2("val",$scope.CUSTOMER.custGroupId);
-			$("#c_price").select2("val",$scope.CUSTOMER.priceCode);
+			$("#c_group").select2("val",$scope.CUSTOMER.custGroup.custGroupId);
+			$("#c_price").select2("val",$scope.CUSTOMER.priceCode.priceCode);
 			$("#c_type").select2("val",$scope.CUSTOMER.accountTypeID);
 			$("#c_industry").select2("val",$scope.CUSTOMER.industID);
 		}, 1000);
@@ -248,8 +248,8 @@ $(document).ready(function() {
 				      "industID": getJsonById("industID","c_industry","int"),
 					  "accountTypeID": getJsonById("accountID","c_type","int"),
 					  "custDetails" : ship,
-					  "priceCode" : getValueStringById("c_price"),
-					  "custGroupId" : getValueStringById("c_group"),
+					  "priceCode" : getJsonById("priceCode","c_price","str"),
+					  "custGroup" : getJsonById("custGroupId","c_group","str"),
 					  "imageName" : ""
 				}),
 				beforeSend: function(xhr) {

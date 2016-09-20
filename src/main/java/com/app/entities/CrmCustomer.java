@@ -2,7 +2,6 @@ package com.app.entities;
 
 import java.util.List;
 
-
 public class CrmCustomer {
 
 	private String custID;
@@ -17,25 +16,17 @@ public class CrmCustomer {
 	private String line;
 	private String viber;
 	private String whatApp;
-	
 	private CrmIndustry industID;
-
 	private CrmAccountType accountTypeID;
-	
 	private int approval;
-	
 	private String imageName;
-	
+	private PriceCode priceCode;
+	private CustomerGroup custGroup;
+	private List<CrmCase> cases;
+	private List<CrmContact> contacts;
+	private List<CrmOpportunity> opportunities;
 	private List<CrmCustomerDetails> custDetails;
-	
-	private String priceCode;
-	
-	private String custGroupId;
-	
-	
-	
-	
-	
+
 	public int getApproval() {
 		return approval;
 	}
@@ -58,22 +49,6 @@ public class CrmCustomer {
 
 	public void setCustDetails(List<CrmCustomerDetails> custDetails) {
 		this.custDetails = custDetails;
-	}
-
-	public String getPriceCode() {
-		return priceCode;
-	}
-
-	public void setPriceCode(String priceCode) {
-		this.priceCode = priceCode;
-	}
-
-	public String getCustGroupId() {
-		return custGroupId;
-	}
-
-	public void setCustGroupId(String custGroupId) {
-		this.custGroupId = custGroupId;
 	}
 
 	public String getCustID() {
@@ -186,6 +161,46 @@ public class CrmCustomer {
 
 	public void setAccountTypeID(CrmAccountType accountTypeID) {
 		this.accountTypeID = accountTypeID;
+	}
+
+	public PriceCode getPriceCode() {
+		return priceCode;
+	}
+
+	public void setPriceCode(PriceCode priceCode) {
+		this.priceCode = priceCode;
+	}
+
+	public CustomerGroup getCustGroup() {
+		return custGroup;
+	}
+
+	public void setCustGroup(CustomerGroup custGroup) {
+		this.custGroup = custGroup;
+	}
+
+	public List<CrmCase> getCases() {
+		return cases;
+	}
+
+	public void setCases(List<CrmCase> cases) {
+		this.cases = cases;
+	}
+
+	public List<CrmContact> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(List<CrmContact> contacts) {
+		this.contacts = contacts;
+	}
+
+	public List<CrmOpportunity> getOpportunities() {
+		return opportunities;
+	}
+
+	public void setOpportunities(List<CrmOpportunity> opportunities) {
+		this.opportunities = opportunities;
 	}
 
 }
