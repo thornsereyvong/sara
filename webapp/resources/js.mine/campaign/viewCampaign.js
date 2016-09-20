@@ -132,7 +132,7 @@ $(function(){
 			    	if(data.MESSAGE == "INSERTED"){	
 			    		swal({
 		            		title:"Success",
-		            		text:"User have been created new Note!",
+		            		text:"You have been created new Note!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -162,7 +162,7 @@ $(function(){
 			    	if(data.MESSAGE == "UPDATED"){	
 			    		swal({
 		            		title:"Successfully",
-		            		text:"User have been update Note!",
+		            		text:"You have been update Note!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -302,7 +302,7 @@ $(function(){
 				if(data.MESSAGE == "UPDATED"){					
 					swal({
 		        		title:"Successfully",
-		        		text:"User have been update opportunity!",
+		        		text:"You have been update opportunity!",
 		        		type:"success",  
 		        		timer: 2000,   
 		        		showConfirmButton: false
@@ -429,7 +429,7 @@ $(function(){
 						$('#frmAddCall').bootstrapValidator('resetForm', true);
 						swal({
 		            		title:"Successfully",
-		            		text:"User have been created new call!",
+		            		text:"You have been created new call!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -475,7 +475,7 @@ $(function(){
 						$('#frmAddCall').bootstrapValidator('resetForm', true);						
 						swal({
 		            		title:"Successfully",
-		            		text:"User have been updated new call!",
+		            		text:"You have been updated new call!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -613,7 +613,7 @@ $(function(){
 						
 						swal({
 		            		title:"Successfully",
-		            		text:"User have been created new meeting!",
+		            		text:"You have been created new meeting!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -665,7 +665,7 @@ $(function(){
 						
 						swal({
 		            		title:"Successfully",
-		            		text:"User have been updated this meeting!",
+		            		text:"You have been updated this meeting!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -787,7 +787,7 @@ $(function(){
 						
 						swal({
 		            		title:"Successfully",
-		            		text:"User have been created a new task!",
+		            		text:"You have been created a new task!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -841,7 +841,7 @@ $(function(){
 						
 						swal({
 		            		title:"Successfully",
-		            		text:"User have been updated this task!",
+		            		text:"You have been updated this task!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -972,7 +972,7 @@ $(function(){
 						
 						swal({
 		            		title:"Successfully",
-		            		text:"User have been created a new event!",
+		            		text:"You have been created a new event!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -1024,7 +1024,7 @@ $(function(){
 						
 						swal({
 		            		title:"Successfully",
-		            		text:"User have been updated this event!",
+		            		text:"You have been updated this event!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
@@ -1112,7 +1112,7 @@ $(function(){
 					$('#frmCollab').bootstrapValidator('resetForm', true);						
 					swal({
 	            		title:"Successfully",
-	            		text:"User have been created a new post!",
+	            		text:"You have been created a new post!",
 	            		type:"success",  
 	            		timer: 2000,   
 	            		showConfirmButton: false

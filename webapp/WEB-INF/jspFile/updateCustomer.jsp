@@ -35,10 +35,25 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	$scope.CUSTOMER = [];
 	angular.element(document).ready(function () {					
 		setTimeout(function(){
+			dis($scope.CUSTOMER)
 			$("#c_group").select2("val",$scope.CUSTOMER.custGroup.custGroupId);
-			$("#c_price").select2("val",$scope.CUSTOMER.priceCode.priceCode);
-			$("#c_type").select2("val",$scope.CUSTOMER.accountTypeID);
-			$("#c_industry").select2("val",$scope.CUSTOMER.industID);
+			$("#c_price").select2("val",$scope.CUSTOMER.priceCode.priceCode);						
+			
+			if($scope.CUSTOMER.accountTypeID == null){
+				$("#c_type").select2("val","");
+			}else{
+				$("#c_type").select2("val",$scope.CUSTOMER.accountTypeID.accountID);
+			}
+			
+			if($scope.CUSTOMER.industID == null){
+				$("#c_industry").select2("val","");
+			}else{
+				$("#c_industry").select2("val",$scope.CUSTOMER.industID.industID);
+			}
+			
+			$('#form-customer').data('bootstrapValidator').resetField($('#c_group'));
+			$('#form-customer').data('bootstrapValidator').resetField($('#c_price'));
+			
 		}, 1000);
     });
 	
@@ -229,6 +244,26 @@ $(document).ready(function() {
 		}).on('success.form.bv', function(e) {							
 
 			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
+			dis({
+				  "custID" : custId,
+			      "custName": getValueStringById("cs_name"),
+			      "custTel1": getValueStringById("c_tel1"),
+			      "custTel2": getValueStringById("c_tel2"),
+			      "custFax": getValueStringById("c_fax"),
+			      "custEmail": getValueStringById("c_email"),
+			      "custWebsite": getValueStringById("c_website"),
+			      "custAddress": getValueStringById("c_billAddr"),
+			      "facebook": getValueStringById("c_facebook"),
+			      "line": getValueStringById("c_line"),
+			      "viber": getValueStringById("c_viber"),
+			      "whatApp": getValueStringById("c_whatapp"),
+			      "industID": getJsonById("industID","c_industry","int"),
+				  "accountTypeID": getJsonById("accountID","c_type","int"),
+				  "custDetails" : ship,
+				  "priceCode" : getJsonById("priceCode","c_price","str"),
+				  "custGroup" : getJsonById("custGroupId","c_group","str"),
+				  "imageName" : ""
+			})
 			$.ajax({
 				url : "${pageContext.request.contextPath}/customer/edit",
 				type : "PUT",
@@ -240,7 +275,7 @@ $(document).ready(function() {
 				      "custFax": getValueStringById("c_fax"),
 				      "custEmail": getValueStringById("c_email"),
 				      "custWebsite": getValueStringById("c_website"),
-				      "custAddress": getValueStringById("c_address"),
+				      "custAddress": getValueStringById("c_billAddr"),
 				      "facebook": getValueStringById("c_facebook"),
 				      "line": getValueStringById("c_line"),
 				      "viber": getValueStringById("c_viber"),
@@ -265,7 +300,7 @@ $(document).ready(function() {
 		            		timer: 2000,   
 		            		showConfirmButton: false
 	        			});
-						reloadForm(2000);
+						//reloadForm(2000);
 					}else{
 						alertMsgErrorSweet();	
 					}

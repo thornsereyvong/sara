@@ -648,9 +648,10 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/view-contacts")
-	public String viewContacts(ModelMap model) {
+	@RequestMapping("/view-contact/{conID}")
+	public String viewContacts(ModelMap model, @PathVariable String conID) {
 		model.addAttribute("menu", "viewContacts");
+		model.addAttribute("conId", conID);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CO");
 		
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -803,10 +804,10 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/view-calls")
-	public String viewCalls(ModelMap model) {
+	@RequestMapping("/view-call/{callId}")
+	public String viewCalls(ModelMap model, @PathVariable String callId) {
 		model.addAttribute("menu", "viewCalls");
-		
+		model.addAttribute("callId", callId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL");
 		
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -815,7 +816,7 @@ public class MainController {
 			
 			if (camMap.get("roleView").equals("YES")) {
 				
-				return "viewCalls";
+				return "viewCall";
 			}else{
 				return "permission";
 			}
@@ -888,10 +889,10 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/view-meetings")
-	public String viewMeeting(ModelMap model) {
+	@RequestMapping("/view-meeting/{meetId}")
+	public String viewMeeting(ModelMap model, @PathVariable("meetId") String meetId) {
 		model.addAttribute("menu", "viewMeeting");
-		
+		model.addAttribute("meetId", meetId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME");
 		
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -969,10 +970,10 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/view-tasks")
-	public String tasks(ModelMap model) {
+	@RequestMapping("/view-task/{taskId}")
+	public String tasks(ModelMap model, @PathVariable("taskId") String taskId) {
 		model.addAttribute("menu", "viewTasks");
-		
+		model.addAttribute("taskId", taskId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA");
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -1224,17 +1225,17 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/view-cases")
-	public String viewCases(ModelMap model) {
+	@RequestMapping("/view-case/{caseId}")
+	public String viewCases(ModelMap model, @PathVariable("caseId") String caseId) {
 		model.addAttribute("menu", "viewCases");
-		
+		model.addAttribute("caseId", caseId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CS");
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleView").equals("YES")) {
-				return "viewCases";
+				return "viewCase";
 			}else{
 				return "permission";	
 			}

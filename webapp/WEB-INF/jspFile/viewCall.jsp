@@ -13,20 +13,20 @@
 <script type="text/javascript">
 
 
-var app = angular.module('meetApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('callApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
 var self = this;
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
-var meetId = "${meetId}";
-app.controller('viewMeetController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+var callId = "${callId}";
+app.controller('viewCallController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	angular.element(document).ready(function () {				
 		
     });
 	
 	$scope.startupView = function(){				
-		$http.get("${pageContext.request.contextPath}/meeting/list/"+meetId).success(function(response){
-			$scope.meet = response.DATA;	
+		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){
+			$scope.call = response.DATA;			
 		});
 		
 	}
@@ -196,14 +196,14 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 	border-left-color: rgb(75, 202, 129) !important;
 }
 </style>
-<div class="content-wrapper" id="viewMeetController" ng-app="meetApp"
-	ng-controller="viewMeetController">
+<div class="content-wrapper" id="viewCallController" ng-app="callApp"
+	ng-controller="viewCallController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>View Meeting</h1>
+		<h1>View Call</h1>
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
-			<li><a href="#"><i class="fa fa-dashboard"></i>View Meeting</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i>View Call</a></li>
 		</ol>
 	</section>
 
@@ -217,12 +217,12 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{meet.meetingRelatedToModuleType}}</h3>
-						<h5 class="widget-user-desc" ng-if="meet.meetingRelatedToModuleType != ''">[{{meet.meetingRelatedToModuleId}}]</h5>
+						<h3 class="widget-user-username">{{call.callRelatedToModuleType}}</h3>
+						<h5 class="widget-user-desc" ng-if="call.callRelatedToModuleType != ''">[{{call.callRelatedToFieldId}}]</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
-							src="${pageContext.request.contextPath}/resources/images/module/Meeting.png"
+							src="${pageContext.request.contextPath}/resources/images/module/Call.png"
 							alt="User Avatar">
 					</div>
 					<div class="box-footer">
@@ -243,7 +243,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 														<div class="col-sm-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item item_border">Subject<a
-																	class="pull-right show-text-detail">{{meet.meetingSubject}}</a>
+																	class="pull-right show-text-detail">{{call.callSubject}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -252,16 +252,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Start Date <a
-																	class="pull-right show-text-detail">{{meet.meetingStartDate}}</a>
-																	<div class="form-group show-edit" style="display: none;">
-																		<!-- <input type="text" name="lea_firstName"
-																			id="lea_firstName" class="form-control"
-																			value="{{lead.firstName}}"> -->
-																		<div class="clearfix"></div>
-																	</div>
-																</li>
-																<li class="list-group-item item_border">End Date <a
-																	class="pull-right show-text-detail">{{meet.meetingEndDate}}</a>
+																	class="pull-right show-text-detail">{{call.callStartDate}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -270,7 +261,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Duration<a
-																	class="pull-right show-text-detail">{{meet.meetingDuration}}</a>
+																	class="pull-right show-text-detail">{{call.callDuration}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_lastName"
 																			id="lea_lastName" class="form-control"
@@ -285,7 +276,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 															<ul class="list-group list-group-unbordered">
 																
 																<li class="list-group-item item_border">Status <a
-																	class="pull-right show-text-detail">{{meet.statusName}}</a>
+																	class="pull-right show-text-detail">{{call.callStatusName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -294,7 +285,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate Type <a
-																	class="pull-right show-text-detail">{{meet.meetingRelatedToModuleType}}</a>
+																	class="pull-right show-text-detail">{{call.callRelatedToModuleType}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_lastName"
 																			id="lea_lastName" class="form-control"
@@ -302,7 +293,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">{{meet.meetingRelatedToModuleId}}</a>
+																	class="pull-right show-text-detail">{{call.callRelatedToFieldId}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -317,13 +308,19 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 															<ul class="list-group list-group-unbordered">
 																
 																<li class="list-group-item item_border">Assign To <a
-																	class="pull-right show-text-detail">{{meet.username}}</a>
+																	class="pull-right show-text-detail">{{call.username}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_no" id="lea_no"
 																			class="form-control" value="{{lead.no}}"> -->
 																	</div>
 																</li>
-																
+																<li class="list-group-item item_border">&nbsp;<a
+																	class="pull-right show-text-detail"></a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
 																
 															</ul>
 														</div>
@@ -336,9 +333,9 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 																		Edit</a> -->
 																</li>
 																
-																<li class="list-group-item item_border" ng-if="meet.meetingDes !=''">													
+																<li class="list-group-item item_border" ng-if="call.callDes !=''">													
 																	
-																	<a class="show-text-detail">{{meet.meetingDes}}</a>
+																	<a class="show-text-detail">{{call.callDes}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -370,7 +367,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 														<div class="col-sm-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item ">Create By<a
-																	class="pull-right show-text-detail">{{meet.meetingCreateBy}}</a>
+																	class="pull-right show-text-detail">{{call.callCreateBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -379,7 +376,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Create Date <a
-																	class="pull-right show-text-detail">{{meet.meetingCreateDate | date:'dd/MM/yyyy h:mma'}}</a>
+																	class="pull-right show-text-detail">{{call.callCreateDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -392,7 +389,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 														<div class="col-sm-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item ">Modify By<a
-																	class="pull-right show-text-detail">{{meet.meetingModifiedBy}}</a>
+																	class="pull-right show-text-detail">{{call.callModifiedBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -401,7 +398,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Modify Date <a
-																	class="pull-right show-text-detail">{{meet.meetingModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
+																	class="pull-right show-text-detail">{{call.callModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"

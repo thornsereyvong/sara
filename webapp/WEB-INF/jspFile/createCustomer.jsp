@@ -199,7 +199,6 @@ $(document).ready(function() {
 			}
 		}).on('success.form.bv', function(e) {							
 			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
-			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/customer/add",
 				type : "POST",
@@ -210,7 +209,7 @@ $(document).ready(function() {
 				      "custFax": getValueStringById("c_fax"),
 				      "custEmail": getValueStringById("c_email"),
 				      "custWebsite": getValueStringById("c_website"),
-				      "custAddress": getValueStringById("c_address"),
+				      "custAddress": getValueStringById("c_billAddr"),
 				      "facebook": getValueStringById("c_facebook"),
 				      "line": getValueStringById("c_line"),
 				      "viber": getValueStringById("c_viber"),

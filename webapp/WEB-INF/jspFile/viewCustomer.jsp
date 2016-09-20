@@ -26,8 +26,7 @@ var lLead = "";
 var oppId = "${custId}";
 var lOpportunity = "";
 
-
-
+var typeModule = "Customer";
 var noteIdEdit = "";
 var response=[];
 var LEAD = [];
@@ -59,31 +58,27 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.listLeads = function(){
 			response = getLeadData();
 			
-			//dis(response)
-			
-			CUSTOMER = response.CUSTOMER;
-			$scope.oppLeadSource = response.LEAD_SOURCE;
+		  // 	dis(response)
+			 
+			/* $scope.oppLeadSource = response.LEAD_SOURCE;
 			$scope.oppType = response.OPP_TYPES;
 			$scope.oppAssignTo = response.ASSIGN_TO;
 			$scope.oppCampaign = response.CAMPAIGNS;
 			$scope.oppStage = response.OPP_STAGES;
-			$scope.oppCustomer = response.CUSTOMERS;
+			$scope.oppCustomer = response.CUSTOMERS; */
 			
-			$scope.campaign = response.CAMPAIGN;
-			
-			$scope.opportunity = response.OPPORTUNITIES;
+			$scope.opportunity = response.CUSTOMER.opportunities;
 			$scope.customer = response.CUSTOMER;
 			$scope.listNote1(response.NOTES);
-				
 			
-			/* userAllList($scope.oppAssignTo,'#callAssignTo','');
-			userAllList($scope.oppAssignTo,'#meetAssignTo','');
-			userAllList($scope.oppAssignTo,'#taskAssignTo','');
-			userAllList($scope.oppAssignTo,'#eventAssignTo',''); */
+			$scope.contactList = response.CUSTOMER.contacts;
+			$scope.caseList = response.CUSTOMER.cases;
 			
-		//dis(response.NOTES)
 			
-			//displayStatusLead(OPPORTUNITY.osId);
+			userAllList(response.ASSIGN_TO,'#callAssignTo','');
+			userAllList(response.ASSIGN_TO,'#meetAssignTo','');
+			userAllList(response.ASSIGN_TO,'#taskAssignTo','');
+			userAllList(response.ASSIGN_TO,'#eventAssignTo','');
 			
 			
 			$scope.listAllCallByLeadId(response.CALLS);	
@@ -91,13 +86,10 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.listAllTaskByLeadId(response.TASKS);
 			$scope.listAllEventByLeadId(response.EVENTS);
 			
-			/* $scope.listAllOppByCamp(response.OPPORTUNITIES); */
-			
 			$scope.listAllEmailByLeadId = function(){	
 				$scope.listAllEmailByLead = [];	
 			}
 		
-			//dis(response.EVENTS);
 	}
 	
 	
@@ -813,7 +805,7 @@ function getLeadData(){
 	var data = JSON.parse(
 		$.ajax({
 			method: 'GET',
-		    url: '${pageContext.request.contextPath}/customer/view/'+oppId,
+		    url: '${pageContext.request.contextPath}/customer/view/'+username+"/"+oppId,
 		    async: false,
 		    headers: {
 		    	'Accept': 'application/json',
@@ -1062,7 +1054,7 @@ function addDataToDetailLead(){
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
 						<h3 class="widget-user-username">[{{customer.custID}}] {{customer.custName}}</h3>
-						<h5 class="widget-user-desc">COMPANY</h5>
+						<h5 class="widget-user-desc">CUSTOMER NAME</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
@@ -1091,7 +1083,7 @@ function addDataToDetailLead(){
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{customer.custGroupId}}</h5>
+									<h5 class="description-header">[{{customer.custGroup.custGroupId}}] {{customer.custGroup.custGroupName}}</h5>
 									<span class="description-text">Group</span>
 								</div>
 							</div>
@@ -1116,8 +1108,8 @@ function addDataToDetailLead(){
 											aria-expanded="false">NOTES</a></li>
 										<li class=""><a href="#detail_tap" data-toggle="tab"
 											aria-expanded="false">DETAILS</a></li>
-										<li class=""><a href="#opport_tap" data-toggle="tab"
-											aria-expanded="false">OPPORTUNITY</a></li>
+										<li class=""><a href="#related_tap" data-toggle="tab"
+											aria-expanded="false">RELATED</a></li>
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane active" id="activity">
@@ -1623,217 +1615,215 @@ function addDataToDetailLead(){
 
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
-												<form id="frmLeadDetail">
-													<div class="col-md-4">
-														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Overview</b> <!-- <a
-																class="pull-right cusor_pointer"
-																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a> --></li>
-															
-															<li class="list-group-item item_border">Customer ID <a
-																class="pull-right show-text-detail">{{customer.custID}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_firstName"
-																		id="lea_firstName" class="form-control"
-																		value="{{lead.firstName}}"> -->
-																	<div class="clearfix"></div>
-																</div>
-															</li>
-															<li class="list-group-item item_border">Customer Name <a
-																class="pull-right show-text-detail">[{{customer.custID}}] {{customer.custName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_firstName"
-																		id="lea_firstName" class="form-control"
-																		value="{{lead.firstName}}"> -->
-																	<div class="clearfix"></div>
-																</div>
-															</li>
-															<li class="list-group-item item_border">Tel 1 <a
-																class="pull-right show-text-detail">{{customer.custTel1}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_lastName"
-																		id="lea_lastName" class="form-control"
-																		value="{{lead.lastName}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Tel 2 <a
-																class="pull-right show-text-detail">{{customer.custTel2}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_title" id="lea_title"
-																		class="form-control" value="{{lead.title}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Email <a
-																class="pull-right show-text-detail">{{customer.custEmail}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_title" id="lea_title"
-																		class="form-control" value="{{lead.title}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Web Site <a
-																class="pull-right show-text-detail"><a taget="_blank" href="{{customer.custWebsite}}">{{customer.custWebsite}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_title" id="lea_title"
-																		class="form-control" value="{{lead.title}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Fax<a
-																class="pull-right show-text-detail">{{customer.custFax}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_title" id="lea_title"
-																		class="form-control" value="{{lead.title}}"> -->
-																</div>
-															</li>
-															
-														</ul>
-													</div>
-													<div class="col-md-4">
-														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Other</b> <!-- <a
-																class="pull-right cusor_pointer"
-																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a> --></li>
-															<li class="list-group-item item_border">Industry <a
-																class="pull-right show-text-detail">{{customer.industID.industName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_firstName"
-																		id="lea_firstName" class="form-control"
-																		value="{{lead.firstName}}"> -->
-																	<div class="clearfix"></div>
-																</div>
-															</li>
-															<li class="list-group-item item_border">Type <a
-																class="pull-right show-text-detail">{{customer.accountTypeID.accountName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_lastName"
-																		id="lea_lastName" class="form-control"
-																		value="{{lead.lastName}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Facebook<a
-																class="pull-right show-text-detail">{{customer.facebook}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_title" id="lea_title"
-																		class="form-control" value="{{lead.title}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Line <a
-																class="pull-right show-text-detail">{{customer.line}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_title" id="lea_title"
-																		class="form-control" value="{{lead.title}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">WhatApp<a
-																class="pull-right show-text-detail">{{customer.whatApp}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_title" id="lea_title"
-																		class="form-control" value="{{lead.title}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Viber<a
-																class="pull-right show-text-detail">{{customer.viber}}
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_title" id="lea_title"
-																		class="form-control" value="{{lead.title}}"> -->
-																</div>
-															</li>
-															
-														</ul>
-													</div>
-													<div class="col-md-4">
-														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Setting</b> <!-- <a class="pull-right cusor_pointer"
-																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a> --></li>
+												<div class="col-sm-12">
+													<form id="frmLeadDetail">
+														<div class="col-sm-4">
+															<ul class="list-group list-group-unbordered">
+																<li class="list-group-item"><b>Overview</b> <!-- <a
+																	class="pull-right cusor_pointer"
+																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																		Edit</a> --></li>
+																
+																<li class="list-group-item item_border">Customer ID <a
+																	class="pull-right show-text-detail">{{customer.custID}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Customer Name <a
+																	class="pull-right show-text-detail">{{customer.custName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Tel 1 <a
+																	class="pull-right show-text-detail">{{customer.custTel1}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Tel 2 <a
+																	class="pull-right show-text-detail">{{customer.custTel2}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Email <a
+																	class="pull-right show-text-detail">{{customer.custEmail}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Web Site <a taget="_blank" href="{{customer.custWebsite}}"
+																	class="pull-right show-text-detail">{{customer.custWebsite}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Fax<a
+																	class="pull-right show-text-detail">{{customer.custFax}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																
+															</ul>
+														</div>
+														<div class="col-sm-4">
+															<ul class="list-group list-group-unbordered">
+																<li class="list-group-item"><b>Other</b> <!-- <a
+																	class="pull-right cusor_pointer"
+																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																		Edit</a> --></li>
+																<li class="list-group-item item_border">Industry <a
+																	class="pull-right show-text-detail">{{customer.industID.industName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Type <a
+																	class="pull-right show-text-detail">{{customer.accountTypeID.accountName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Facebook<a
+																	class="pull-right show-text-detail">{{customer.facebook}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Line <a
+																	class="pull-right show-text-detail">{{customer.line}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">WhatApp<a
+																	class="pull-right show-text-detail">{{customer.whatApp}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Viber<a
+																	class="pull-right show-text-detail">{{customer.viber}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																
+															</ul>
+														</div>
+																										
+														<div class="col-sm-4">
+															<ul class="list-group list-group-unbordered">
+																<li class="list-group-item"><b>Setting</b> <!-- <a
+																	class="pull-right cusor_pointer"
+																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																		Edit</a> --></li>
 																<li class="list-group-item item_border">Customer Group <a
-																class="pull-right show-text-detail">{{campaign.budget | number:2}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_no" id="lea_no"
-																		class="form-control" value="{{lead.no}}"> -->
-																</div>
-															</li>
-															<li class="list-group-item item_border">Price Code<a
-																class="pull-right show-text-detail">{{campaign.actualCost | number:2}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_street" id="lea_street"
-																		class="form-control" value="{{lead.street}}"> -->
-																</div>
-															</li>
-															
-														</ul>
-													</div>
-													<div class="col-md-12">
-														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Address</b> <!-- <a
-																class="pull-right cusor_pointer"
-																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a> --></li>
-															<li class="list-group-item item_border">Bill To Address
-															</li>
-															<li class="list-group-item item_border"><a
-																class="pull-right show-text-detail">{{customer.custAddress}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_firstName"
-																		id="lea_firstName" class="form-control"
-																		value="{{lead.firstName}}"> -->
-																	<div class="clearfix"></div>
-																</div>
-															</li>
-															<li class="list-group-item item_border">Ship To Address
-															</li>
-															<li class="list-group-item item_border">
-																<a class="show-text-detail">dhdhdh</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_firstName"
-																		id="lea_firstName" class="form-control"
-																		value="{{lead.firstName}}"> -->
-																	<div class="clearfix"></div>
-																</div>
+																	class="pull-right show-text-detail">[{{customer.custGroup.custGroupId}}] {{customer.custGroup.custGroupName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Price Code
+																	<a class="pull-right show-text-detail">[{{customer.priceCode.priceCode}}] {{customer.priceCode.des}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_street" id="lea_street"
+																			class="form-control" value="{{lead.street}}"> -->
+																	</div>
+																</li>
 																
-															</li>
-															<li class="list-group-item item_border">
-																<a class="show-text-detail">dhdhdh</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<!-- <input type="text" name="lea_firstName"
-																		id="lea_firstName" class="form-control"
-																		value="{{lead.firstName}}"> -->
-																	<div class="clearfix"></div>
-																</div>
+															</ul>
+														</div>
+														<div class="clearfix"></div>
+														<div class="col-sm-12">
+															<ul class="list-group list-group-unbordered">
+																<li class="list-group-item"><b>Address</b> <!-- <a
+																	class="pull-right cusor_pointer"
+																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																		Edit</a> -->
+																</li>
+																<li class="list-group-item item_border">Bill To Address</li>
 																
-															</li>
-														</ul>
-													</div>
-													
-													<br>
-													<div class="col-md-12 text-center" id="showBtnEditLead"
-														style="display: none;">
-														<button type="button" class="btn btn-primary"
-															ng-click="saveEditDetailLead()">Save</button>
-														<button type="button" class="btn btn-danger"
-															ng-click="cancelEditDetailLead()">Cancel</button>
-													</div>
-												</form>
-
+																<li class="list-group-item item_border" ng-if="customer.custAddress != ''">													
+																	<i class="fa fa-home"></i>
+																	<a class="show-text-detail">{{customer.custAddress}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Ship To Address</li>
+																<li class="list-group-item item_border" ng-repeat="add in customer.custDetails">
+																	<i class="fa fa-home"></i>
+																	<a class="show-text-detail">{{add.address}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																	
+																</li>
+																
+															</ul>
+														</div>
+														
+														<br>
+														<div class="col-sm-12 text-center" id="showBtnEditLead"
+															style="display: none;">
+															<button type="button" class="btn btn-primary"
+																ng-click="saveEditDetailLead()">Save</button>
+															<button type="button" class="btn btn-danger"
+																ng-click="cancelEditDetailLead()">Cancel</button>
+														</div>
+													</form>
+												</div>
 											</div>
 
 										</div>
 										
-										<div class="tab-pane " id="opport_tap">
+										<div class="tab-pane " id="related_tap">
 											<div class="row">
+												
 												<div class="col-md-12">
-													<div class="panel-group" id="LOpp">
+													<div class="panel-group" id="relatedGroup">
 														<div class="panel panel-default">
 															<div class="panel-heading">
-																<h4 style="margin-top: 10px;" class="panel-title pull-left">
-																	<a data-toggle="collapse" data-parent="LOpp" href="#LOpp1">List Opportunity  <span class="badge bg-blue ">{{opportunity.length <= 0 ? '' : opportunity.length }}</span></a>
-																	
+																<h4 class="panel-title pull-left">
+																	<a data-toggle="collapse" data-parent="relatedGroup" href="#ROpportunity">Opportunities  </a>																	
 																</h4>
-																<a href="${pageContext.request.contextPath}/create-opportunity" class="btn btn-default pull-right">New</a>
+																<span class="badge bg-blue pull-right">{{opportunity.length <= 0 ? '' : opportunity.length }}</span>
+																<%-- <a href="${pageContext.request.contextPath}/create-opportunity" class="btn btn-default pull-right">New</a> --%>
 																<div class="clearfix"></div>
 															</div>
-															<div id="LOpp1" class="panel-collapse collapse in">
+															<div id="ROpportunity" class="panel-collapse collapse">
 																<div class="panel-body">
 																	<div class="mailbox-messages">
 																			<table class="table iTable"> 					
@@ -1841,7 +1831,6 @@ function addDataToDetailLead(){
 																					<tr>
 																						<th class="text-center">#</th>
 																						<th>Name</th>
-																						<th>Customer</th>
 																						<th>Stage</th>
 																						<th>Amount</th>
 																						<th>Close Date</th>
@@ -1856,9 +1845,8 @@ function addDataToDetailLead(){
 																							</a>
 																						</td>
 																						<td>{{opp.opName}}</td>
-																						<td>{{opp.custName}}</td>
 																						<td>{{opp.opStageId.osName}}</td>
-																						<td>{{opp.opAmount | number}}</td>
+																						<td>{{opp.opAmount | number:2}}</td>
 																						<td>{{opp.opCloseDate | date:'dd/MM/yyyy'}}</td>
 																						<td class="mailbox-date">
 																							<div class="col-sm-2">
@@ -1888,6 +1876,138 @@ function addDataToDetailLead(){
 																</div>
 															</div>
 														</div>
+														
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title pull-left">
+																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RContact">Contacts  </a>																	
+																</h4>
+																<span class="badge bg-blue pull-right">{{contactList.length <= 0 ? '' : contactList.length }}</span>
+																<%-- <a href="${pageContext.request.contextPath}/create-contact" class="btn btn-default pull-right">New</a> --%>
+																<div class="clearfix"></div>
+															</div>
+															<div id="RContact" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																			<table class="table iTable"> 					
+																				<thead>
+																					<tr>
+																						<th class="text-center">#</th>
+																						<th>Name</th>
+																						<th>Title</th>
+																						<th>Department</th>
+																						<th>Phone</th>
+																						<th>Email</th>
+																						<th></th>
+																					</tr>
+																				</thead>
+																				<tbody ng-repeat="con in contactList">
+																					<tr>
+																						<td class="iTD-width-50">
+																							<a href="#">
+																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Contact.png" alt="User Avatar">
+																							</a>
+																						</td>
+																						<td>{{con.conSalutation}}{{con.conFirstname}} {{con.conLastname}}</td>
+																						<td>{{con.conTitle}}</td>
+																						<td>{{con.conDepartment}}</td>
+																						<td>{{con.conPhone}}</td>
+																						<td>{{con.conEmial}}</td>
+																						<td class="mailbox-date">
+																							<div class="col-sm-2">
+																								<div class="btn-group">
+																									<button type="button"
+																										class="btn btn-default dropdown-toggle"
+																										data-toggle="dropdown" aria-expanded="false">
+																										<span class="caret"></span> <span class="sr-only">Toggle
+																											Dropdown</span>
+																									</button>
+																									<ul class="dropdown-menu" role="menu">
+																										<li><a href="${pageContext.request.contextPath}/update-contact/{{con.conID}}" >
+																												<i class="fa fa-pencil"></i> Edit
+																										</a></li>																										
+																										<li><a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}"> <i class="fa fa-eye"></i>
+																												View
+																										</a></li>
+					
+																									</ul>
+																								</div>
+																							</div>
+																						</td>
+																					</tr>
+																					
+																			</table>
+																		</div>
+																</div>
+															</div>
+														</div>
+														
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title pull-left">
+																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RCase">Cases  </a>																	
+																</h4>
+																<%-- <a href="${pageContext.request.contextPath}/create-case" class="btn btn-default pull-right">New</a> --%>
+																<span class="badge bg-blue pull-right">{{caseList.length <= 0 ? '' : caseList.length }}</span>
+																<div class="clearfix"></div>
+															</div>
+															<div id="RCase" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																			<table class="table iTable"> 					
+																				<thead>
+																					<tr>
+																						<th class="text-center">#</th>
+																						<th>Case ID</th>
+																						<th>Subject</th>
+																						<th>Status</th>
+																						<th>Priority</th>
+																						<th>Date</th>
+																						<th></th>
+																					</tr>
+																				</thead>
+																				<tbody ng-repeat="case in caseList">
+																					<tr>
+																						<td class="iTD-width-50">
+																							<a href="#">
+																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Case.png" alt="User Avatar">
+																							</a>
+																						</td>
+																						<td>{{case.caseId}}</td>
+																						<td>{{case.subject}}</td>
+																						<td>{{case.status.statusName}}</td>
+																						<td>{{case.priority.priorityName}}</td>
+																						<td>{{case.convertCreateDate}}</td>
+																						<td class="mailbox-date">
+																							<div class="col-sm-2">
+																								<div class="btn-group">
+																									<button type="button"
+																										class="btn btn-default dropdown-toggle"
+																										data-toggle="dropdown" aria-expanded="false">
+																										<span class="caret"></span> <span class="sr-only">Toggle
+																											Dropdown</span>
+																									</button>
+																									<ul class="dropdown-menu" role="menu">
+																										<li><a href="${pageContext.request.contextPath}/update-case/{{case.caseId}}" >
+																												<i class="fa fa-pencil"></i> Edit
+																										</a></li>																										
+																										<li><a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}"> <i class="fa fa-eye"></i>
+																												View
+																										</a></li>
+					
+																									</ul>
+																								</div>
+																							</div>
+																						</td>
+																					</tr>
+																					
+																			</table>
+																		</div>
+																</div>
+															</div>
+														</div>
+														
+														
 													</div>
 												</div>
 											</div>

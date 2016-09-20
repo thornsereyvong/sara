@@ -37,7 +37,13 @@ public class CrmContactController {
 	@Autowired
 	private String URL;
 	
-	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/contact/view/{userId}/{custId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> viewContact( @PathVariable("userId") String userId, @PathVariable("custId") String custId){
+		HttpEntity<String> request = new HttpEntity<String>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/view/"+custId+"/"+userId, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/startup/{username}",method = RequestMethod.GET)

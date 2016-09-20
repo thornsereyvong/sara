@@ -72,6 +72,9 @@ app.controller('contactController',['SweetAlert','$scope','$http',function(Sweet
 			$scope.assignTo = response.ASSIGN_TO;
 			$scope.reportTo = response.REPORT_TO;
 			$scope.CONTACT = response.CONTACT;
+			
+			//dis($scope.CONTACT)
+			
 		});
 	};
 		

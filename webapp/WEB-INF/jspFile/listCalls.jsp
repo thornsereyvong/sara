@@ -187,28 +187,10 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 															class="fa fa-pencil"></i> Edit</a></li>
 													<li><a href="#" ng-click="deleteCon(cc.callId)"><i
 															class="fa fa-trash"></i> Delete</a></li>
-													<li><a href="#"><i class="fa fa-eye"></i> View</a></li>
+													<li><a href="${pageContext.request.contextPath}/view-call/{{cc.callId}}"><i class="fa fa-eye"></i> View</a></li>
 												</ul>
 											</div>
 										</div>
-
-										<div class="col-xs-2 visible-xs-block visible-sm-block visible-md-block">
-											<div class="btn-group">
-												<button type="button" class="btn btn-default btn-flat"
-													data-toggle="dropdown" aria-expanded="false">
-													<span class="caret"></span> <span class="sr-only">Toggle
-														Dropdown</span>
-												</button>
-												<ul class="dropdown-menu pull-right" role="menu">
-													<li><ahref="${pageContext.request.contextPath}/update-call/{{cc.callId}}">
-														<i class="fa fa-pencil"></i> Edit</a></li>
-													<li><a href="#" ng-click="deleteCon(cc.callId)">
-														<i class="fa fa-trash"></i> Delete</a></li>
-													<li><a href="#"><i class="fa fa-eye"></i> View</a></li>
-												</ul>
-											</div>
-										</div>
-
 									</td>
 								</tr>
 
