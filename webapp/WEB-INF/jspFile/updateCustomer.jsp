@@ -35,7 +35,6 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	$scope.CUSTOMER = [];
 	angular.element(document).ready(function () {					
 		setTimeout(function(){
-			dis($scope.CUSTOMER)
 			$("#c_group").select2("val",$scope.CUSTOMER.custGroup.custGroupId);
 			$("#c_price").select2("val",$scope.CUSTOMER.priceCode.priceCode);						
 			

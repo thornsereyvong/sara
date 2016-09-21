@@ -40,7 +40,11 @@ app.controller('opportunityController',['SweetAlert','$scope','$http',function(S
 			$("#op_leadSource").select2("val", $scope.dataOpport.sourceID);
 			$("#op_campaign").select2("val", $scope.dataOpport.campID);
 			$("#op_assignTo").select2("val",$scope.dataOpport.userID)
-	
+			
+			
+			$('#form-opportunity').data('bootstrapValidator').resetField($('#op_stage'));
+			$('#form-opportunity').data('bootstrapValidator').resetField($('#op_customer'));
+			
 		}, 1000);
     });
 	
