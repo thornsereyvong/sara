@@ -299,7 +299,7 @@ $(document).ready(function() {
 		            		timer: 2000,   
 		            		showConfirmButton: false
 	        			});
-						//reloadForm(2000);
+						reloadForm(2000);
 					}else{
 						alertMsgErrorSweet();	
 					}

@@ -19,24 +19,14 @@
 	<section class="content">
 		<div class="box box-info">
 			<div class="box-header with-border">
-				<button type="submit" name="btnSave" id="btnSave"
-					class="btn btn-primary">
-					<i class="fa  fa-save"></i> &nbsp;Save
-				</button>
-				<button type="submit" name="btnGenQuote" id="btnGenQuote"
-					class="btn btn-primary">
-					<i class="fa fa-cog"></i> &nbsp;Generate By Quote
-				</button>
-				<button type="button" onclick="cancel()" name="btnDiscard" id="btnDiscard"
-					class="btn btn-danger">
-					<i class="fa fa-remove"></i> &nbsp;Discard
-				</button>
 				
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-				</div>
+				<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
+				<button type="button" class="btn btn-info btn-app" name="btnGenQuote" id="btnGenQuote" > <i class="fa fa-cog"></i> Quote</button>
+				<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/sale-order/list"> <i class="fa fa-reply"></i> Back </a>
+
+				<div class="clearfix"></div>
+				
 			</div>
 			<div class="box-body">
 				<div class="row">

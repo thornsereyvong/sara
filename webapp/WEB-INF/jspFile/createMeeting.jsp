@@ -27,6 +27,8 @@
 
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
+var username =  "${SESSION}";
+
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 
 	$scope.listMeetignStatus = function(){
@@ -162,66 +164,46 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-
-		    var assign = "";	
-			if($("#me_assignTo").val()  != ""){
-				assign = {"userID": $("#me_assignTo").val()};
-			}else{
-				assign = null;
-			}
-
-			var status = "";	
-			if($("#me_status").val()  != ""){
-				status = {"statusId": $("#me_status").val()};
-			}else{
-				status = null;
-			}
-
 			$.ajax({
 				url : "${pageContext.request.contextPath}/meeting/add",
 				type : "POST",
-				data : JSON.stringify({
-
-					  "meetingSubject": $("#me_subject").val(),
-				      "meetingAssignTo": assign,
-				      "meetingDes":$("#me_description").val(),
-				      "startDate": $("#me_startDate").val(),
-				      "meetingDuration": $("#me_duration").val(),
-				      "endDate":  $("#me_endDate").val(),
-				      "meetingStatus": status,
-				      "meetingLocation":  $("#me_location").val(),
-				      "meetingRelatedToModuleType": $("#me_relateTo").val(),
-				      "meetingRelatedToModuleId": $("#me_reportType").val(),
-				      "meetingCreateBy": $.session.get("parentID")		
-				   
-					}),
+				data : JSON.stringify({					   		
+				      "meetingSubject": getValueStringById("me_subject"),
+				      "meetingAssignTo": getJsonById("userID","me_assignTo","str"),
+				      "meetingDes": getValueStringById("me_description"),
+				      "startDate": getValueStringById("me_startDate"),
+				      "meetingDuration": getValueStringById("me_duration"),
+				      "endDate":  getValueStringById("me_endDate"),
+				      "meetingStatus": getJsonById("statusId","me_status","int"),
+				      "meetingLocation":  getValueStringById("me_location"),
+				      "meetingRelatedToModuleType": getValueStringById("me_relateTo"),
+				      "meetingRelatedToModuleId": getValueStringById("me_reportType"),
+				      "meetingCreateBy": username  				    
+				}),
 				beforeSend: function(xhr) {
-						    xhr.setRequestHeader("Accept", "application/json");
-						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
+			    	xhr.setRequestHeader("Accept", "application/json");
+			    	xhr.setRequestHeader("Content-Type", "application/json");
+			    },
 				success:function(data){
-					
-						$("#form-meeting").bootstrapValidator('resetForm', 'true');
-						$('#form-meeting')[0].reset();
-						$("#me_status").select2("val","");
-						$("#me_relateTo").select2("val","");
-						$("#me_reportType").select2("val","");
-						$("#me_assignTo").select2("val","");
-						$("#me_duration").select2("val","");
-						
-						swal({
-		            		title:"Success",
-		            		text:"User have been created new Meeting!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
+						if(data.MESSAGE == 'INSERTED'){
+							swal({
+			            		title:"Successfully",
+			            		text:"You have been created new meeting!",
+			            		type:"success",  
+			            		timer: 2000,   
+			            		showConfirmButton: false
+		        			});
+							setTimeout(function(){
+								location.reload();
+							}, 2000);
+						}else{
+							alertMsgErrorSweet();
+						}											
 					},
 				error:function(){
-					errorMessage();
-					}
-				});  
-			
+					alertMsgErrorSweet();
+				}
+			});  			
 		});	
 
 

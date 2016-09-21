@@ -1138,6 +1138,6 @@ function saleOrder(){
 }
 
 function cancel(){
-	document.location.href = server+"sale-order";
+	document.location.href = server+"sale-order/edit";
 }
 

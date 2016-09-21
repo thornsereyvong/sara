@@ -26,6 +26,8 @@
 
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
+var username = "${SESSION}";
+
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 
 	$scope.listStatus = function(){
@@ -142,61 +144,50 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-			    var assign = "";	
-				if($("#assignTo").val()  != ""){
-					assign = {"userID": $("#assignTo").val()};
-				}else{
-					assign = null;
-				}
-
-				var status = "";	
-				if($("#status").val()  != ""){
-					status = {"callStatusId": $("#status").val()};
-				}else{
-					status = null;
-				}
-			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/call/add",
 				type : "POST",
-				data : JSON.stringify({ 
-
-				      "startDate":  $("#startDate").val(),
-				      "callDuration": $("#duration").val(),
-				      "callCreateBy": $.session.get("parentID"),
-				      "callStatus": status,
-				      "callDes": $("#description").val(),
-				      "callSubject": $("#subject").val(),
-				      "callAssignTo": assign,
-				      "callRelatedToFieldId": $("#reportTo").val(),
-				      "callRelatedToModuleType": $("#reportType").val()
-				      
+				data : JSON.stringify({ 				      
+				      "startDate": getValueStringById("startDate"),
+				      "callDuration": getValueStringById("duration"),
+				      "callCreateBy": username,
+				      "callStatus": getJsonById("callStatusId","status","int"),
+				      "callDes": getValueStringById("description"),
+				      "callSubject": getValueStringById("subject"),
+				      "callAssignTo": getJsonById("userID","assignTo","str"),
+				      "callRelatedToFieldId": getValueStringById("reportTo"),
+				      "callRelatedToModuleType": getValueStringById("reportType")				      				      				      
 					}),
 				beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
 						    xhr.setRequestHeader("Content-Type", "application/json");
 						    },
-				success:function(data){
-					
-						$("#form-call").bootstrapValidator('resetForm', 'true');
-						$('#form-call')[0].reset();
+				success:function(data){											
+					if(data.MESSAGE == 'INSERTED'){
 						$("#status").select2("val","");
 						$("#reportType").select2("val","");
 						$("#reportTo").select2("val","");
 						$("#assignTo").select2("val","");
+						$("#form-call").bootstrapValidator('resetForm', 'true');
+						$('#form-call')[0].reset();
 						$('#form-call').bootstrapValidator('resetForm', 'status');
 						swal({
-		            		title:"Success",
-		            		text:"User have been created new Call!",
+		            		title:"Successfully",
+		            		text:"You have been created new call!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
 	        			});
-					},
+						
+					}else{
+						alertMsgErrorSweet();
+					}					
+					
+				},
 				error:function(){
-					errorMessage();
-					}
-				}); 
+					alertMsgErrorSweet();
+				}
+			}); 
 			
 		});	
 
@@ -211,19 +202,7 @@ $(document).ready(function() {
 		<!-- Default box -->
 		
 		<div class="box box-danger">
-			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-			</div>
+			
 			<div class="box-body">
 			
 			<form method="post" id="form-call">

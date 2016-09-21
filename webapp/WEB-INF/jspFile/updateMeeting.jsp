@@ -28,6 +28,7 @@
 
 var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
 var self = this;
+var username =  "${SESSION}";
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 
 }]);
@@ -208,69 +209,51 @@ $(document).ready(function() {
 				}
 				
 			}
-		}).on('success.form.bv', function(e) {
-		    var assign = "";	
-			if($("#me_assignTo").val()  != ""){
-				assign = {"userID": $("#me_assignTo").val()};
-			}else{
-				assign = null;
-			}
-
-			var status = "";	
-			if($("#me_status").val()  != ""){
-				status = {"statusId": $("#me_status").val()};
-			}else{
-				status = null;
-			}
+		}).on('success.form.bv', function(e) {		 
 
 			$.ajax({
 				url : "${pageContext.request.contextPath}/meeting/edit",
 				type : "PUT",
 				data : JSON.stringify({
 					  "meetingId":$("#me_id").val(),
-					  "meetingSubject": $("#me_subject").val(),
-				      "meetingAssignTo": assign,
-				      "meetingDes":$("#me_description").val(),
-				      "startDate":  $("#me_startDate").val(),
-				      "meetingDuration": $("#me_duration").val(),
-				      "endDate":  $("#me_endDate").val(),
-				      "meetingStatus": status,
-				      "meetingLocation":  $("#me_location").val(),
-				      "meetingRelatedToModuleType": $("#me_relateTo").val(),
-				      "meetingRelatedToModuleId": $("#me_reportType").val(),
-				      "meetingModifiedBy": $.session.get("parentID")
+					  "meetingSubject": getValueStringById("me_subject"),
+				      "meetingAssignTo": getJsonById("userID","me_assignTo","str"),
+				      "meetingDes": getValueStringById("me_description"),
+				      "startDate": getValueStringById("me_startDate"),
+				      "meetingDuration": getValueStringById("me_duration"),
+				      "endDate":  getValueStringById("me_endDate"),
+				      "meetingStatus": getJsonById("statusId","me_status","int"),
+				      "meetingLocation":  getValueStringById("me_location"),
+				      "meetingRelatedToModuleType": getValueStringById("me_relateTo"),
+				      "meetingRelatedToModuleId": getValueStringById("me_reportType"),
+				      "meetingModifiedBy": username
 					}),
 				beforeSend: function(xhr) {
-						    xhr.setRequestHeader("Accept", "application/json");
-						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
+			    	xhr.setRequestHeader("Accept", "application/json");
+			    	xhr.setRequestHeader("Content-Type", "application/json");
+			    },
 				success:function(data){
 					
-						$("#form-meeting").bootstrapValidator('resetForm', 'true');
-						$('#form-meeting')[0].reset();
-						$("#me_status").select2("val","");
-						$("#me_relateTo").select2("val","");
-						$("#me_reportType").select2("val","");
-						$("#me_assignTo").select2("val","");
-						$("#me_duration").select2("val","");
-						
+					if(data.MESSAGE == 'UPDATED'){
 						swal({
-		            		title:"Success",
-		            		text:"User have been Update Meeting!",
+		            		title:"Successfully",
+		            		text:"You have been updated this meeting!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false
 	        			});
-
 						setTimeout(function(){
 							window.location.href = "${pageContext.request.contextPath}/list-meetings";
 						}, 2000);
-						
-					},
-				error:function(){
-					errorMessage();
+					}else{
+						alertMsgErrorSweet();
 					}
-				});  
+
+				},
+				error:function(){
+					alertMsgErrorSweet();
+				}
+			});  
 			
 		});	
 
