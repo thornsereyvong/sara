@@ -1,33 +1,27 @@
 package com.app.entities;
 
-
 import java.util.Date;
-
 
 public class CrmNote{
 
-
 	private String noteId;
 	
-
 	private String noteSubject;
 
 	private String noteRelatedToModuleType;
 	
-
 	private String noteRelatedToModuleId;
 	
-
 	private String noteDes;
-	
 	
 	private String noteCreateBy;
 	
-	private Date noteCreateDate;
+	private String createDate;
 	
-
-	private String noteModifiedBy;
-
+	private String createTime;
+	
+	private String createDateTime;
+	
 	private Date noteModifiedDate;
 
 	public String getNoteId() {
@@ -78,20 +72,28 @@ public class CrmNote{
 		this.noteCreateBy = noteCreateBy;
 	}
 
-	public Date getNoteCreateDate() {
-		return noteCreateDate;
+	public String getCreateDate() {
+		return createDate;
 	}
 
-	public void setNoteCreateDate(Date noteCreateDate) {
-		this.noteCreateDate = noteCreateDate;
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
 	}
 
-	public String getNoteModifiedBy() {
-		return noteModifiedBy;
+	public String getCreateTime() {
+		return createTime;
 	}
 
-	public void setNoteModifiedBy(String noteModifiedBy) {
-		this.noteModifiedBy = noteModifiedBy;
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getCreateDateTime() {
+		return createDateTime;
+	}
+
+	public void setCreateDateTime(String createDateTime) {
+		this.createDateTime = createDateTime;
 	}
 
 	public Date getNoteModifiedDate() {
@@ -101,5 +103,4 @@ public class CrmNote{
 	public void setNoteModifiedDate(Date noteModifiedDate) {
 		this.noteModifiedDate = noteModifiedDate;
 	}
-	
 }
