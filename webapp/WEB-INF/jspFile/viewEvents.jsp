@@ -201,10 +201,10 @@ app.controller('vieweventController',['SweetAlert','$scope','$http',function(Swe
 	ng-controller="vieweventController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>View event</h1>
+		<h1>View Event</h1>
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
-			<li><a href="#"><i class="fa fa-dashboard"></i>View event</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i>View Event</a></li>
 		</ol>
 	</section>
 
