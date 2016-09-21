@@ -260,7 +260,7 @@ app.controller('viewnoteController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">{{note.noteRelatedToModuleId}}</a>
+																	class="pull-right show-text-detail">[{{note.noteRelatedToModuleId}}] {{note.RelatedName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->

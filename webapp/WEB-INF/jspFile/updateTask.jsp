@@ -98,7 +98,7 @@ function getData(){
 	funcRelateTo("#ts_reportType",result.taskRelatedToModule, result.taskRelatedToId);
 	
 	funcRelateTo("#ts_contact","Contact", result.conID);
-	
+	$('#form-call').data('bootstrapValidator').resetField($('#ts_status'));
 }
 
 $(document).ready(function() {

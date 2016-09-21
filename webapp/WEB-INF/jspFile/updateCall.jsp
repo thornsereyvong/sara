@@ -43,7 +43,7 @@ function listStatusID(statusids){
 				$("#status").append(div);
 			});  
 			$("#status").select2("val",statusids);
-			
+			$('#form-call').data('bootstrapValidator').resetField($('#status'));
 			} 
 	});
 }
@@ -70,10 +70,13 @@ function listDataByCampID(){
 	$("#reportType").select2("val",result.callRelatedToModuleType);
 	
 	funcRelateTo("#reportTo",result.callRelatedToModuleType,result.callRelatedToFieldId);
+	
+	//;
+	
 }
 
 $(document).ready(function() {
-
+	
 	$(".timepicker").timepicker({
 		format: 'h:mm',
         showInputs: false,

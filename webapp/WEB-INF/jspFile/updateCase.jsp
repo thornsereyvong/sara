@@ -39,7 +39,15 @@ app.controller('caseController',['SweetAlert','$scope','$http',function(SweetAle
 			$("#ca_priority").select2("val",$scope.dataCase.priorityId);
 			$("#ca_assignTo").select2("val",$scope.dataCase.userID);
 			$("#ca_customer").select2("val",$scope.dataCase.custID);
-			$("#ca_contact").select2("val",$scope.dataCase.conID);				
+			$("#ca_contact").select2("val",$scope.dataCase.conID);	
+			
+			
+			$('#form-case').data('bootstrapValidator').resetField($('#ca_type'));
+			$('#form-case').data('bootstrapValidator').resetField($('#ca_status'));
+			$('#form-case').data('bootstrapValidator').resetField($('#ca_priority'));
+			
+			
+			
 		}, 1000);
     });
 	
@@ -254,15 +262,15 @@ $(document).ready(function() {
 								<div class="col-sm-12">
 									<label class="font-label">Description </label>
 									<div class="form-group">
-										<textarea  rows="4" value="{{dataCase.des}}" cols="" name="ca_description" id="ca_description"
-											class="form-control"></textarea>
+										<textarea  rows="4" value="" cols="" name="ca_description" id="ca_description"
+											class="form-control">{{dataCase.des}}</textarea>
 									</div>
 								</div>
 								<div class="clearfix"></div>
 								<div class="col-sm-12 ">
 									<label class="font-label">Resolution </label>
 									<div class="form-group">
-										<textarea  rows="5" value="{{dataCase.resolution}}" cols="" name="ca_resolution" id="ca_resolution" class="form-control"></textarea>
+										<textarea  rows="5" value="" cols="" name="ca_resolution" id="ca_resolution" class="form-control">{{dataCase.resolution}}</textarea>
 									</div>
 								</div>
 							</div>

@@ -26,7 +26,8 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 	
 	$scope.startupView = function(){				
 		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){
-			$scope.call = response.DATA;			
+			$scope.call = response.DATA;	
+			//dis(response.DATA)
 		});
 		
 	}
@@ -218,7 +219,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
 						<h3 class="widget-user-username">{{call.callRelatedToModuleType}}</h3>
-						<h5 class="widget-user-desc" ng-if="call.callRelatedToModuleType != ''">[{{call.callRelatedToFieldId}}]</h5>
+						<h5 class="widget-user-desc" ng-if="call.callRelatedToModuleType != ''">[{{call.callRelatedToFieldId}}] {{call.RelatedName}}</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
@@ -293,7 +294,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">{{call.callRelatedToFieldId}}</a>
+																	class="pull-right show-text-detail">[{{call.callRelatedToFieldId}}] {{call.RelatedName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
