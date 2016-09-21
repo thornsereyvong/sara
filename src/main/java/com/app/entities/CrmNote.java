@@ -12,6 +12,8 @@ public class CrmNote{
 	
 	private String noteRelatedToModuleId;
 	
+	private String noteRelatedName;
+	
 	private String noteDes;
 	
 	private String noteCreateBy;
@@ -102,5 +104,13 @@ public class CrmNote{
 
 	public void setNoteModifiedDate(Date noteModifiedDate) {
 		this.noteModifiedDate = noteModifiedDate;
+	}
+
+	public String getNoteRelatedName() {
+		return noteRelatedName;
+	}
+
+	public void setNoteRelatedName(String noteRelatedName) {
+		this.noteRelatedName = noteRelatedName;
 	}
 }
