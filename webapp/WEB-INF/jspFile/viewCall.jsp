@@ -219,7 +219,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
 						<h3 class="widget-user-username">{{call.callRelatedToModuleType}}</h3>
-						<h5 class="widget-user-desc" ng-if="call.callRelatedToModuleType != ''">[{{call.callRelatedToFieldId}}] {{call.RelatedName}}</h5>
+						<h5 class="widget-user-desc" ng-if="call.callRelatedToModuleType != ''">[{{call.callRelatedToFieldId}}] {{call.callRelatedName}}</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
@@ -294,7 +294,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">[{{call.callRelatedToFieldId}}] {{call.RelatedName}}</a>
+																	class="pull-right show-text-detail">[{{call.callRelatedToFieldId}}] {{call.callRelatedName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -398,7 +398,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a
+																<li class="list-group-item item_border">Modify Date <a ng-if="call.callModifiedBy != null"
 																	class="pull-right show-text-detail">{{call.callModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"

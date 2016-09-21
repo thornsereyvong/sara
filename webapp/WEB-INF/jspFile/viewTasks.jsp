@@ -218,7 +218,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
 						<h3 class="widget-user-username">{{task.taskRelatedToModule}}</h3>
-						<h5 class="widget-user-desc" ng-if="task.taskRelatedToModule != ''">[{{task.taskRelatedToId}}] {{task.RelatedName}}</h5>
+						<h5 class="widget-user-desc" ng-if="task.taskRelatedToModule != ''">[{{task.taskRelatedToId}}] {{task.taskRelatedName}}</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
@@ -302,7 +302,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">[{{task.taskRelatedToId}}] {{task.RelatedName}}</a>
+																	class="pull-right show-text-detail">[{{task.taskRelatedToId}}] {{task.taskRelatedName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -400,7 +400,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a
+																<li class="list-group-item item_border">Modify Date <a ng-if="task.taskModifiedBy != null"
 																	class="pull-right show-text-detail">{{task.taskModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"

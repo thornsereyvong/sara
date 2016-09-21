@@ -27,6 +27,7 @@ app.controller('viewnoteController',['SweetAlert','$scope','$http',function(Swee
 	$scope.startupView = function(){				
 		$http.get("${pageContext.request.contextPath}/note/list/"+noteId).success(function(response){
 			$scope.note = response.DATA;
+			//dis(response.DATA)
 		});
 		
 	}
@@ -260,7 +261,7 @@ app.controller('viewnoteController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">[{{note.noteRelatedToModuleId}}] {{note.RelatedName}}</a>
+																	class="pull-right show-text-detail">[{{note.noteRelatedToModuleId}}] {{note.noteRelatedName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -321,7 +322,7 @@ app.controller('viewnoteController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Create Date <a
-																	class="pull-right show-text-detail">{{note.noteCreateDate}}</a>
+																	class="pull-right show-text-detail">{{note.createDateTime}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -342,8 +343,8 @@ app.controller('viewnoteController',['SweetAlert','$scope','$http',function(Swee
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a
-																	class="pull-right show-text-detail">{{note.noteModifiedDate}}</a>
+																<li class="list-group-item item_border">Modify Date <a ng-if="note.noteModifiedBy != null "
+																	class="pull-right show-text-detail">{{note.noteModifiedDate | date:'dd/MM/yyyy h:mm a'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"

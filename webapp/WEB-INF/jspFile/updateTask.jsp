@@ -63,6 +63,7 @@ function listStatusID(statusids){
 				$("#ts_status").append(div);
 			});  
 			$("#ts_status").select2("val",statusids);
+			$('#form-call').data('bootstrapValidator').resetField($('#ts_status'));
 			
 			} 
 		});
@@ -98,7 +99,7 @@ function getData(){
 	funcRelateTo("#ts_reportType",result.taskRelatedToModule, result.taskRelatedToId);
 	
 	funcRelateTo("#ts_contact","Contact", result.conID);
-	$('#form-call').data('bootstrapValidator').resetField($('#ts_status'));
+
 }
 
 $(document).ready(function() {
@@ -133,7 +134,7 @@ $(document).ready(function() {
 		$("#form-call").submit();
 	});
 
-
+		
 		
 	$('#form-call').bootstrapValidator({
 			message: 'This value is not valid',

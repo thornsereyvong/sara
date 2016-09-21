@@ -27,6 +27,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 	$scope.startupView = function(){				
 		$http.get("${pageContext.request.contextPath}/meeting/list/"+meetId).success(function(response){
 			$scope.meet = response.DATA;	
+			//dis(response.DATA)
 		});
 		
 	}
@@ -218,7 +219,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
 						<h3 class="widget-user-username">{{meet.meetingRelatedToModuleType}}</h3>
-						<h5 class="widget-user-desc" ng-if="meet.meetingRelatedToModuleType != ''">[{{meet.meetingRelatedToModuleId}}] {{meet.RelatedName}}</h5>
+						<h5 class="widget-user-desc" ng-if="meet.meetingRelatedToModuleType != ''">[{{meet.meetingRelatedToModuleId}}] {{meet.mettingRelatedName}}</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
@@ -302,7 +303,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">[{{meet.meetingRelatedToModuleId}}] {{meet.RelatedName}}</a>
+																	class="pull-right show-text-detail">[{{meet.meetingRelatedToModuleId}}] {{meet.mettingRelatedName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -400,7 +401,7 @@ app.controller('viewMeetController',['SweetAlert','$scope','$http',function(Swee
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a
+																<li class="list-group-item item_border">Modify Date <a ng-if="meet.meetingModifiedBy != null"
 																	class="pull-right show-text-detail">{{meet.meetingModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"

@@ -27,7 +27,7 @@ app.controller('vieweventController',['SweetAlert','$scope','$http',function(Swe
 	$scope.startupView = function(){				
 		$http.get("${pageContext.request.contextPath}/event/list/"+eventId).success(function(response){
 			$scope.event = response.DATA;	
-			
+			//dis(response.DATA);
 		});
 		
 	}
@@ -303,7 +303,7 @@ app.controller('vieweventController',['SweetAlert','$scope','$http',function(Swe
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">[{{event.evRelatedToModuleId}}] {{event.RelatedName}}</a>
+																	class="pull-right show-text-detail">[{{event.evRelatedToModuleId}}] {{event.evRelatedName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -401,8 +401,8 @@ app.controller('vieweventController',['SweetAlert','$scope','$http',function(Swe
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a
-																	class="pull-right show-text-detail">{{event.evModifiedDate}}</a>
+																<li class="list-group-item item_border">Modify Date <a ng-if="event.evModifiedBy != null "
+																	class="pull-right show-text-detail">{{event.evModifiedDate | date:'dd/MM/yyyy h:mm a'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
