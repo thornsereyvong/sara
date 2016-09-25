@@ -48,7 +48,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 			response = getLeadData();					
 			LEAD = response.LEAD;
 			
-			dis(response);
+			//dis(response);
 			
 			$scope.leadStatus = response.LEAD_STATUS;
 			$scope.leadSource = response.LEAD_SOURCE;
