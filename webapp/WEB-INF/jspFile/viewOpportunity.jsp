@@ -90,13 +90,15 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.initQuote(response.QUOTATIONS);
 			$scope.initSaleOrder(response.SALE_ORDERS);
 			
-			
+			$scope.allContact = response.ALL_CONTACTS;
+			$scope.allQuote = response.ALL_QUOTATIONS;
+			$scope.allSaleOrder = response.ALL_SALE_ORDERS;
 			
 			$scope.listAllEmailByLeadId = function(){	
 				$scope.listAllEmailByLead = [];	
 			}
 		
-			//dis(response.EVENTS);
+			//dis(response);
 	}
 	
 	// contact
@@ -715,6 +717,41 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.contact_click = function(){
 		$("#btn_show_contact").click();
 	}
+	$scope.saveContactClick = function(){
+		$("#frmAddContact").data('bootstrapValidator').validate();		
+		var boolContact = $("#frmAddContact").data('bootstrapValidator').validate().isValid();
+		if(boolContact == true){
+			$http({
+			    method: 'POST',
+			    url: "${pageContext.request.contextPath}/opportunity/contact/add",
+			    headers: {
+			    	'Accept': 'application/json',
+			        'Content-Type': 'application/json'
+			    },
+			    data: {"opId":oppId, "conId":getValueStringById("ConContact"), "opConType": getValueStringById("ConType")}
+			}).success(function(response) {
+				
+				dis(response)
+				
+			});	
+		}else{
+			alert(0)
+		}
+	}
+	
+	$scope.deleteContactClick = function(conID){
+		$http({
+		    method: 'DELETE',
+		    url: "${pageContext.request.contextPath}/opportunity/contact/delete/"+conID,
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    }
+		}).success(function(response){			
+			dis(response)			
+		});
+	}
+	
 	$scope.quote_click = function(){
 		$("#btn_show_quote").click();
 	}
@@ -802,6 +839,28 @@ app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAl
 		$('#frmAddEvent').bootstrapValidator('resetForm', true);
 	}	
 }]);
+
+
+app.controller('contactController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+	
+	$scope.startupEventForm = function(){
+		$http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
+			$scope.eventLocationStartup = response.DATA;
+		});
+	}
+	
+	$scope.cancelEventClick = function(){
+		eventIdForEdit = null;
+		$("#eventDuration").select2('val',"");
+		$("#eventLocation").select2('val',"");
+		$("#eventAssignTo").select2('val',"");	
+		$("#btnEventSave").text("Save");
+		$('#frmAddEvent').bootstrapValidator('resetForm', true);
+	}	
+}]);
+
+
+
 
 
 function addDataCallToForm(data){
@@ -1095,8 +1154,6 @@ function addDataToDetailLead(){
 	</section>
 
 	<section class="content" data-ng-init="listLeads()">
-
-
 		<div class="row">
 
 			<div class="col-md-12">
@@ -1848,11 +1905,8 @@ function addDataToDetailLead(){
 														
 													</div>
 												<div class="col-md-12">
-												
-													
-												
+																																																	
 													<div class="panel-group" id="relatedGroup">														
-														
 														<div class="panel panel-default" ng-data-init="initContact(contact)">
 															<div class="panel-heading">
 																<h4 class="panel-title pull-left">
@@ -1901,10 +1955,7 @@ function addDataToDetailLead(){
 																											Dropdown</span>
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
-																										<li><a href="#" ng-click="editContact(con.conID)" >
-																												<i class="fa fa-pencil"></i> Edit
-																										</a></li>
-																										<li><a href="#" ng-click="deleteContact(con.conID)" >
+																										<li><a href="#" ng-click="deleteContactClick(con.id)" >
 																												<i class="fa fa-trash"></i> Delete
 																										</a></li>																										
 																										<li><a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}"> <i class="fa fa-eye"></i>
@@ -1970,9 +2021,7 @@ function addDataToDetailLead(){
 																											Dropdown</span>
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
-																										<li><a href="#" ng-click="editQuote(q.quoteId)" >
-																												<i class="fa fa-pencil"></i> Edit
-																										</a></li>
+																										
 																										<li><a href="#" ng-click="deleteQuote(q.quoteId)" >
 																												<i class="fa fa-trash"></i> Delete
 																										</a></li>																									
@@ -2037,9 +2086,7 @@ function addDataToDetailLead(){
 																											Dropdown</span>
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
-																										<li><a href="#" ng-click="editSaleOrder(s.saleOrderId)" >
-																												<i class="fa fa-pencil"></i> Edit
-																										</a></li>
+																										
 																										<li><a href="#" ng-click="deleteSaleOrder(s.saleOrderId)" >
 																												<i class="fa fa-trash"></i> Delete
 																										</a></li>																											
@@ -2076,7 +2123,125 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</section>
+	<input type="hidden" id="btn_show_contact" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmContact" />
+	<div class="modal fade modal-default" id="frmContact" role="dialog">
+		<div class="modal-dialog  modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" ng-click="cancelContactClick()" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><b>Add Contact</b></h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form id="frmAddContact">
+						<div class="col-md-12">
+							
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Contact<span class="requrie"> (Required)</span></label>
+									<select class="form-control select2" name="ConContact" id="ConContact" style="width: 100%;">
+											<option value="">-- SELECT Contact --</option>
+											<option ng-repeat="a in allContact" value="{{a.conID}}">{{a.conSalutation}}{{a.conFirstname}} {{a.conLastname}}</option>
+										</select>
+								</div>
+							</div>							
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Type</label>
+									<select class="form-control select2" name="ConType" id="ConType" style="width: 100%;">
+										<option value="Normal">Normal</option>
+										<option value="Primary">Primary</option>
+									</select>
+								</div>
+							</div>
+							
+						</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnContactCancel" ng-click="cancelContactClick()" name="btnContactCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					&nbsp;&nbsp;
+					<button type="button" ng-click="saveContactClick()" id="btnContactSave" name="btnContactSave"  class="btn btn-primary pull-right">Save</button>
 
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<input type="hidden" id="btn_show_quote" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmQuote" />
+	<div class="modal fade modal-default" id="frmQuote" role="dialog">
+		<div class="modal-dialog  modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" ng-click="cancelQuoteClick()" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><b>Add Quote</b></h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form id="frmAddEvent">
+						<div class="col-md-12">
+							
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Quote<span class="requrie"> (Required)</span></label>
+									<select class="form-control select2" name="QuoteQuote" id="QuoteQuote" style="width: 100%;">
+										<option value="">-- SELECT Quote --</option>
+										<option ng-repeat="q in allQuote" value="{{q.saleId}}">{{q.saleId}}</option>										
+									</select>
+								</div>
+							</div>							
+							
+						</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnQuoteCancel" ng-click="cancelQuoteClick()" name="btnQuoteCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					&nbsp;&nbsp;
+					<button type="button" id="btnQuoteSave" name="btnQuoteSave"  class="btn btn-primary pull-right">Save</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="btn_show_sale_order" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmSaleOrder" />
+	<div class="modal fade modal-default" id="frmSaleOrder" role="dialog">
+		<div class="modal-dialog  modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" ng-click="cancelSaleOrderClick()" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><b>Add Sale Order</b></h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form id="frmAddEvent">
+						<div class="col-md-12">
+							
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Sale Order<span class="requrie"> (Required)</span></label>
+									<select class="form-control select2" name="SaleSaleOrder" id="SaleSaleOrder" style="width: 100%;">
+										<option value="">-- SELECT Sale Order --</option>
+										<option ng-repeat="s in allSaleOrder" value="{{s.saleId}}">{{s.saleId}}</option>	
+									</select>
+								</div>
+							</div>							
+							
+						</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnSaleOrderCancel" ng-click="cancelSaleOrderClick()" name="btnSaleOrderCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					&nbsp;&nbsp;
+					<button type="button" id="btnSaleOrderSave" name="btnSaleOrderSave"  class="btn btn-primary pull-right">Save</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<input type="hidden" id="btn_show_call" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
 	<div ng-controller="callController" class="modal fade modal-default" id="frmCall" role="dialog">
@@ -2502,129 +2667,7 @@ function addDataToDetailLead(){
 		</div>
 	</div>
 	
-	<input type="hidden" id="btn_show_contact" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmContact" />
-	<div ng-controller="contactController" class="modal fade modal-default" id="frmContact" role="dialog">
-		<div class="modal-dialog  modal-md" data-ng-init="startupContactForm()">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" ng-click="cancelContactClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Add Contact</b></h4>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<form id="frmAddEvent">
-						<div class="col-md-12">
-							
-							<div class="col-md-12">
-								<div class="form-group">
-									<label>Contact<span class="requrie"> (Required)</span></label>
-									<select class="form-control select2" name="ConContact" id="ConContact" style="width: 100%;">
-											<option value="Normal">Normal</option>
-											<option value="Primary">Primary</option>
-											
-										</select>
-								</div>
-							</div>							
-							<div class="clearfix"></div>
-							<div class="col-md-12">
-								<div class="form-group">
-									<label>Type</label>
-									<select class="form-control select2" name="ConType" id="ConType" style="width: 100%;">
-										<option value="Normal">Normal</option>
-										<option value="Primary">Primary</option>
-										
-									</select>
-								</div>
-							</div>
-							
-						</div>
-						</form>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" id="btnContactCancel" ng-click="cancelContactClick()" name="btnContactCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-					&nbsp;&nbsp;
-					<button type="button" id="btnContactSave" name="btnContactSave"  class="btn btn-primary pull-right">Save</button>
-
-				</div>
-			</div>
-		</div>
-	</div>
 	
-	<input type="hidden" id="btn_show_quote" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmQuote" />
-	<div ng-controller="quoteController" class="modal fade modal-default" id="frmQuote" role="dialog">
-		<div class="modal-dialog  modal-md" data-ng-init="startupQuoteForm()">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" ng-click="cancelQuoteClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Add Quote</b></h4>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<form id="frmAddEvent">
-						<div class="col-md-12">
-							
-							<div class="col-md-12">
-								<div class="form-group">
-									<label>Quote<span class="requrie"> (Required)</span></label>
-									<select class="form-control select2" name="ConContact" id="ConContact" style="width: 100%;">
-										<option value="Normal">Normal</option>
-										<option value="Primary">Primary</option>
-										
-									</select>
-								</div>
-							</div>							
-							
-						</div>
-						</form>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" id="btnQuoteCancel" ng-click="cancelQuoteClick()" name="btnQuoteCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-					&nbsp;&nbsp;
-					<button type="button" id="btnQuoteSave" name="btnQuoteSave"  class="btn btn-primary pull-right">Save</button>
-
-				</div>
-			</div>
-		</div>
-	</div>
-	<input type="hidden" id="btn_show_sale_order" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmSaleOrder" />
-	<div ng-controller="saleOrderController" class="modal fade modal-default" id="frmSaleOrder" role="dialog">
-		<div class="modal-dialog  modal-md" data-ng-init="startupSaleOrderForm()">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" ng-click="cancelSaleOrderClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Add Sale Order</b></h4>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<form id="frmAddEvent">
-						<div class="col-md-12">
-							
-							<div class="col-md-12">
-								<div class="form-group">
-									<label>Sale Order<span class="requrie"> (Required)</span></label>
-									<select class="form-control select2" name="ConContact" id="ConContact" style="width: 100%;">
-										<option value="Normal">Normal</option>
-										<option value="Primary">Primary</option>
-										
-									</select>
-								</div>
-							</div>							
-							
-						</div>
-						</form>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" id="btnSaleOrderCancel" ng-click="cancelSaleOrderClick()" name="btnSaleOrderCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-					&nbsp;&nbsp;
-					<button type="button" id="btnSaleOrderSave" name="btnSaleOrderSave"  class="btn btn-primary pull-right">Save</button>
-
-				</div>
-			</div>
-		</div>
-	</div>
 	<div id="errors"></div>
 </div>
 

@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.app.entities.CrmOpportunity;
+import com.app.entities.CrmOpportunityContact;
+import com.app.entities.CrmOpportunityQuotation;
+import com.app.entities.CrmOpportunitySaleorder;
 
 
 
@@ -40,6 +43,87 @@ public class CrmOpportunityController {
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/add/startup", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
+	
+	
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/contact/add",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> addContact(@RequestBody CrmOpportunityContact obj){	
+		
+		System.err.println(obj.getOpId()+"/"+obj.getConId()+"/"+obj.getOpConType());
+		
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(obj,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity_contact/add", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/contact/delete/{conId}",method = RequestMethod.DELETE)
+	public ResponseEntity<Map<String, Object>> deleteContact(@PathVariable("conId") Integer conId){	
+		HttpEntity<Object> request = new HttpEntity<Object>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity_contact/delete/"+conId, HttpMethod.DELETE, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/contact/list/{oppId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listContactByOpp(@PathVariable("oppId") String oppId){	
+		HttpEntity<Object> request = new HttpEntity<Object>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/startup/contact/"+oppId, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/quote/add",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> addQuote(@RequestBody CrmOpportunityQuotation obj){	
+		HttpEntity<Object> request = new HttpEntity<Object>(obj,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity_quote/add", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/quote/delete/{conId}",method = RequestMethod.DELETE)
+	public ResponseEntity<Map<String, Object>> deleteQuote(@PathVariable("conId") Integer conId){	
+		HttpEntity<Object> request = new HttpEntity<Object>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity_quote/delete/"+conId, HttpMethod.DELETE, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/quote/list/{oppId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listQuoteByOpp(@PathVariable("oppId") String oppId){	
+		HttpEntity<Object> request = new HttpEntity<Object>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/startup/quote/"+oppId, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/sale_order/add",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> addSaleOrder(@RequestBody CrmOpportunitySaleorder obj){	
+		HttpEntity<Object> request = new HttpEntity<Object>(obj,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity_sale_order/add", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/sale_order/delete/{conId}",method = RequestMethod.DELETE)
+	public ResponseEntity<Map<String, Object>> deleteSaleOrder(@PathVariable("conId") Integer conId){	
+		HttpEntity<Object> request = new HttpEntity<Object>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity_sale_order/delete/"+conId, HttpMethod.DELETE, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity/sale_order/list/{oppId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listSaleOrderByOpp(@PathVariable("oppId") String oppId){	
+		HttpEntity<Object> request = new HttpEntity<Object>(header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/startup/saleorder/"+oppId, HttpMethod.GET, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/opportunity/edit/startup",method = RequestMethod.POST)

@@ -1128,6 +1128,26 @@ $(function(){
 	});
 	
 	
+	$('#frmAddContact').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			ConContact: {
+				validators: {
+					notEmpty: {
+						message: 'The post description is required and can not be empty!'
+					}
+				}
+			}
+			
+		}
+	});
+	
+	
 });
 
 

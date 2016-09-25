@@ -113,7 +113,7 @@ $(document).ready(function() {
   <div class="login-box-body" >
   
   
-    <h3 class="login-box-msg">Login Campany</h3 >
+    <h3 class="login-box-msg">Login Company</h3 >
     
     <div class="col-sm-12" id="div_message"></div>
 	<div class="clearfix"></div>

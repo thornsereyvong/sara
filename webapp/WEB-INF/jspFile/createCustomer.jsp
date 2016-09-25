@@ -229,7 +229,7 @@ $(document).ready(function() {
 					if(data.MESSAGE == "INSERTED"){
 						swal({
 		            		title:"Success",
-		            		text:"You have been updated customer!",
+		            		text:"You have been created a new customer!",
 		            		type:"success",  
 		            		timer: 2000,   
 		            		showConfirmButton: false

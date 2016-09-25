@@ -121,8 +121,8 @@ function getCustomer(){
 	      "industID": getJsonById("industID","c_industry","int"),
 		  "accountTypeID": getJsonById("accountID","c_type","int"),
 		  "custDetails" : null,
-		  "priceCode" : getValueStringById("c_price"),
-		  "custGroupId" : getValueStringById("c_group"),
+		  "priceCode" : getJsonById("priceCode","c_price","str"),
+		  "custGroup" : getJsonById("custGroupId","c_group","str"),
 		  "imageName" : ""
 		}
 	}else{
