@@ -24,7 +24,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 		
     });
 	
-	$scope.startupView = function(){				
+	$scope.startupView = function(){ alert(callId)				
 		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){
 			$scope.call = response.DATA;	
 			//dis(response.DATA)

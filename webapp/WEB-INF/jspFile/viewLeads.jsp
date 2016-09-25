@@ -47,6 +47,9 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	$scope.listLeads = function(){
 			response = getLeadData();					
 			LEAD = response.LEAD;
+			
+			dis(response);
+			
 			$scope.leadStatus = response.LEAD_STATUS;
 			$scope.leadSource = response.LEAD_SOURCE;
 			$scope.leadIndustry = response.INDUSTRY;
@@ -73,7 +76,19 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 				$scope.listAllEmailByLead = [];	
 			}
 		
-			//$scope.listCollabByLeadByUser();	
+			$scope.listCollab(response.COLLABORATION);	
+			
+			
+			$scope.callStatusStartup = response.CALL_STATUS;
+			$scope.taskStatusStartup = response.TASK_STATUS;
+			$scope.taskContactStartup = response.CONTACT;	
+			$scope.eventLocationStartup = response.EVENT_LOCATION;
+			$scope.meetStatusStartup = response.MEETING_STATUS;
+			
+			
+			$scope.tags = response.TAG_TO;
+			
+			
 	}
 	
 	
@@ -85,6 +100,13 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 	
 	// Tab Collaborate***************************
 	
+	$scope.listCollab = function(response){
+		$scope.collaborates = response;		
+	}
+		
+			
+	
+	
 	$scope.listCollabByLeadByUser = function(){
 		$http({
 		    method: 'POST',
@@ -94,9 +116,8 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		        'Content-Type': 'application/json'
 		    },
 		    data: {"moduleId":leadId, "username":username}
-		}).success(function(response) {
-			$scope.collaborates = response.DATA;
-			$scope.tags = response.TAG_TO;
+		}).success(function(response) {		
+			$scope.listCollab(response.DATA);		
 		});	
 	}
 	
@@ -670,10 +691,10 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 
 app.controller('callController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.startupCallForm = function(){
-		$http.get("${pageContext.request.contextPath}/call_status/list")
+		/* $http.get("${pageContext.request.contextPath}/call_status/list")
 			.success(function(response){
 				$scope.callStatusStartup = response.DATA;
-	    });
+	    }); */
 	}
 	$scope.cancelCallClick = function(){
 		callIdForEdit = null;
@@ -688,9 +709,9 @@ app.controller('callController',['SweetAlert','$scope','$http',function(SweetAle
 
 app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.startupMeetForm = function(){
-		$http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
 			$scope.meetStatusStartup = response.DATA;
-	    });
+	    }); */
 	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;
@@ -705,13 +726,13 @@ app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAle
 app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	$scope.startupTaskForm = function(){
-		$http.get("${pageContext.request.contextPath}/task_status/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/task_status/list").success(function(response){
 			$scope.taskStatusStartup = response.DATA;
 		});
 
 		$http.get("${pageContext.request.contextPath}/contact/list").success(function(response){
 			$scope.taskContactStartup = response.DATA;
-		});
+		}); */
 		
 	}
 	
@@ -729,9 +750,9 @@ app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAle
 app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	$scope.startupEventForm = function(){
-		$http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
 			$scope.eventLocationStartup = response.DATA;
-		});
+		}); */
 	}
 	
 	$scope.cancelEventClick = function(){
@@ -1472,7 +1493,7 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="collaborate" data-ng-init="listCollabByLeadByUser()">
+										<div class="tab-pane" id="collaborate" data-ng-init="listCollab()">
 
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
 												<form id="frmCollab">													
@@ -2164,7 +2185,7 @@ function addDataToDetailLead(){
 									<label>Contact</label> 
 									<select class="form-control select2" name="taskContact" id="taskContact" style="width: 100%;">
 										<option value="">-- SELECT A Contact --</option>
-										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conFirstname}} {{st.conLastName}}</option>
+										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conSalutation}}{{st.conFirstname}} {{st.conLastName}}</option>
 									</select>
 								</div>
 							</div>

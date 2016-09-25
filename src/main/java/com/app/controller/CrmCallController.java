@@ -57,7 +57,7 @@ public class CrmCallController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/call/list/{id}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> CallID(@PathVariable("id") String id){
-		
+		//System.err.println(id+"----------------------------------------------");
 		HttpEntity<Object> request = new HttpEntity<Object>(header);
 		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call/list/"+id, HttpMethod.GET, request, Map.class);

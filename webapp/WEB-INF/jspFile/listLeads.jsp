@@ -14,10 +14,6 @@ var app = angular.module('campaign', ['angularUtils.directives.dirPagination','o
 var self = this;
 app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.listLeads = function(username){
-		/* $http.get("${pageContext.request.contextPath}/lead/list").success(function(response){
-				$scope.leads = response.DATA;
-			});
-		} ; */
 		$http({
 		    method: 'POST',
 		    url: '${pageContext.request.contextPath}/lead/list',

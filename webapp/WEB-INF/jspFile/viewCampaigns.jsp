@@ -25,7 +25,7 @@ var lLead = "";
 
 var oppId = "${campId}";
 var lOpportunity = "";
-
+var typeModule = "Campaign";
 
 
 var noteIdEdit = "";
@@ -675,8 +675,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 
 app.controller('callController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.startupCallForm = function(){
-		$http.get("${pageContext.request.contextPath}/call_status/list")
-			.success(function(response){
+		$http.get("${pageContext.request.contextPath}/call_status/list").success(function(response){
 				$scope.callStatusStartup = response.DATA;
 	    });
 	}
@@ -1188,8 +1187,7 @@ function addDataToDetailLead(){
 																										</a></li>
 																										<li ng-click="actDeleteCall(call.callId)"><a
 																											href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																										<li><a href="#"> <i class="fa fa-eye"></i>
-																												View
+																										<li><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}"><i class="fa fa-eye"></i> View</a></li>
 																										</a></li>
 					
 																									</ul>
@@ -1255,9 +1253,7 @@ function addDataToDetailLead(){
 																									</li>
 																									<li ng-click="actDeleteMeeting(meet.meetingId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li>
-																										<a href="#"> <i class="fa fa-eye"></i>View</a>
-																									</li>
+																									<li><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}"><i class="fa fa-eye"></i> View</a></li>
 				
 																								</ul>
 																							</div>
@@ -1323,9 +1319,7 @@ function addDataToDetailLead(){
 																									</li>
 																									<li ng-click="actDeleteTask(task.taskId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li>
-																										<a href="#"> <i class="fa fa-eye"></i>View</a>
-																									</li>
+																									<li><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}"><i class="fa fa-eye"></i> View</a></li>
 				
 																								</ul>
 																							</div>
@@ -1391,9 +1385,7 @@ function addDataToDetailLead(){
 																									</li>
 																									<li ng-click="actDeleteEvent(event.evId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li>
-																										<a href="#"> <i class="fa fa-eye"></i>View</a>
-																									</li>
+																									<li><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><i class="fa fa-eye"></i> View</a></li>
 				
 																								</ul>
 																							</div>
@@ -1459,9 +1451,7 @@ function addDataToDetailLead(){
 																									</li>
 																									<li ng-click="actDeleteEvent(event.evId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li>
-																										<a href="#"> <i class="fa fa-eye"></i>View</a>
-																									</li>
+																									<li><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><i class="fa fa-eye"></i> View</a></li>
 				
 																								</ul>
 																							</div>
