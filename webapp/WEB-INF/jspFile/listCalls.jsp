@@ -166,7 +166,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 									<th>Action</th>
 								</tr>
 
-								<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
+								<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 									<td>{{cc.callId}}</td>
 									<td>{{cc.callSubject}}</td>
 									<td>{{cc.callStartDate | date:'dd-MM-yyyy'}}</td>

@@ -208,7 +208,7 @@ $(document).ready(function(){
 				<div style="background: #fff;margin-top: 15px;">
 				<form id="form_status">
 				 <div class="col-sm-12">
-				 	<button type="button" class="btn btn-info btn-app" id="btn_save" value="{{action}}"> <i class="fa fa-save"></i>{{action}}</button> 
+				 	<button type="button" class="btn btn-info btn-app ng-cloak" id="btn_save" value="{{action}}"> <i class="fa fa-save"></i>{{action}}</button> 
 				 	
 					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
 					<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/category-type"> <i class="fa fa-reply"></i> Back </a>
@@ -284,7 +284,7 @@ $(document).ready(function(){
 							<th>Action</th>
 						</tr>
 
-						<tr dir-paginate="cc in status |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
+						<tr dir-paginate="cc in status |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 							<td>{{cc.industID}}</td>
 							<td>{{cc.industName}}</td>
 							<td>{{cc.description}}</td>
