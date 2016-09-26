@@ -16,7 +16,7 @@ var probab = [0,10,20,40,70,90,100,0];
 
 function alertMsgErrorSweet(){
 	swal({
-		title:"Unsuccessfully",
+		title:"Unsuccessful",
 		text:"Please try agian!",
 		type:"error",  
 		timer: 2000,   

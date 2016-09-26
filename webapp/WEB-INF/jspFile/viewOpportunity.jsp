@@ -25,6 +25,7 @@ var lLead = "";
 var oppId = "${oppId}";
 var lOpportunity = "";
 
+var typeModule = "Opportunity";
 
 
 var noteIdEdit = "";
@@ -97,8 +98,10 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.listAllEmailByLeadId = function(){	
 				$scope.listAllEmailByLead = [];	
 			}
-		
-			$scope.listCollab(response.COLLABORATION);							
+			
+			
+			
+			$scope.listCollab(response.COLLABORATIONS);							
 			$scope.callStatusStartup = response.CALL_STATUS;
 			$scope.taskStatusStartup = response.TASK_STATUS;
 			$scope.taskContactStartup = response.CONTACTS;	
@@ -1596,7 +1599,7 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="collaborate" data-ng-init="listCollab()">
+										<div class="tab-pane" id="collaborate">
 
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
 												<form id="frmCollab">													

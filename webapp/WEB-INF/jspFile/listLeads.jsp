@@ -46,12 +46,9 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
             closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
             closeOnCancel: false
         }, 
-        function(isConfirm){ //Function that triggers on user action.
-            
-        	var str = '<%=roleDelete%>';
-        	
+        function(isConfirm){ //Function that triggers on user action.            
+        	var str = '<%=roleDelete%>';        	
             if(isConfirm){
-
             	if(str == "YES"){
             		 $http.delete("${pageContext.request.contextPath}/lead/remove/"+leadID)
      	            .success(function(){
@@ -71,11 +68,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		                type:"error",
 		                timer:2000,
 		                showConfirmButton: false});
-				}
-                
-	           
-	            
-	           
+				} 
             } else {
                 SweetAlert.swal({
 	                title:"Cancelled",
@@ -137,10 +130,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 				  </div>
 				  <div class="clearfix"></div>
 			<div class="tablecontainer" data-ng-init="listLeads('${SESSION}')" > 
-				<%
-					
-				if(roleList.equals("YES")){
-				%>
+				<% if(roleList.equals("YES")){ %>
 					<table class="table table-hover" >
 						<tr>
 							<th style="cursor: pointer;" ng-click="sort('leadID')">Lead ID
@@ -183,7 +173,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 				                        <li><a href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i class="fa fa-pencil"></i> Edit</a></li>
 				                        <li ng-click="deleteLead(cc.leadID)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 				                        <li><a href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i class="fa fa-eye"></i> View</a></li>
-				                        <li><a href="${pageContext.request.contextPath}/convert-lead/{{cc.leadID}}"><i class="fa fa-retweet"></i> Convert</a></li>
+				                        <li ng-if=" cc.statusName != 'Converted' "><a href="${pageContext.request.contextPath}/convert-lead/{{cc.leadID}}"><i class="fa fa-retweet"></i> Convert</a></li>
 				                      </ul>
 				                    </div>
 			                   	</div>	
@@ -197,19 +187,9 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 			       boundary-links="true" >
 			    </dir-pagination-controls>
 				
-				<%	
-					
-				}else{
-				
-				%>
-					
-					<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>
-					
-				<%
-					
-				}
-				
-				%>
+				<%	}else{ %>					
+					<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>					
+				<% } %>
 				
 			</div>	
 				
