@@ -1073,7 +1073,7 @@ function addDataToDetailLead(){
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{campaign.campName}}</h3>
+						<h3 class="widget-user-username ng-cloak">{{campaign.campName}}</h3>
 						<h5 class="widget-user-desc">CAMPAIGN</h5>
 					</div>
 					<div class="widget-user-image">
@@ -1085,25 +1085,25 @@ function addDataToDetailLead(){
 						<div class="row">
 							<div class="col-sm-3">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.statusName}}</h5>
+									<h5 class="description-header ng-cloak">{{campaign.statusName}}</h5>
 									<span class="description-text">Status</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.typeName}}</h5>
+									<h5 class="description-header ng-cloak">{{campaign.typeName}}</h5>
 									<span class="description-text">Type</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.startDate | date:'dd/MM/yyyy'}}</h5>
+									<h5 class="description-header ng-cloak">{{campaign.startDate | date:'dd/MM/yyyy'}}</h5>
 									<span class="description-text">Start Date</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{campaign.endDate | date:'dd/MM/yyyy'}}</h5>
+									<h5 class="description-header ng-cloak">{{campaign.endDate | date:'dd/MM/yyyy'}}</h5>
 									<span class="description-text">End Date</span>
 								</div>
 							</div>
@@ -1158,7 +1158,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Calls</a>
-																	<span class="badge bg-blue pull-right">{{listAllCallByLead.length <= 0 ? '' : listAllCallByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllCallByLead.length <= 0 ? '' : listAllCallByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse1" class="panel-collapse collapse">
@@ -1182,8 +1182,8 @@ function addDataToDetailLead(){
 																								<i class="fa fa-phone text-yellow font-size-icon-30"></i>
 																							</a>
 																						</td>
-																						<td colspan="2">{{call.callSubject}}</td>
-																						<td> 
+																						<td colspan="2" class="ng-cloak">{{call.callSubject}}</td>
+																						<td class="ng-cloak"> 
 																							{{call.callStartDate | date:'dd/MM/yyyy'}}
 																						</td>
 																						<td>{{call.callDuration}}</td>
@@ -1192,7 +1192,7 @@ function addDataToDetailLead(){
 																					</tr>
 																					<tr>
 																						<td colspan="6">
-																							<a href="#">{{call.callDes | limitTo:200}}{{call.callDes.length <= 200 ? '' : '...'}}</a>
+																							<a href="#" class="ng-cloak">{{call.callDes | limitTo:200}}{{call.callDes.length <= 200 ? '' : '...'}}</a>
 																						</td>
 																						<td class="mailbox-date">
 																							<div class="col-sm-2">
@@ -1226,7 +1226,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse2"> Meetings</a>
-																	<span class="badge bg-blue pull-right">{{listAllMeetByLead.length <= 0 ? '' : listAllMeetByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllMeetByLead.length <= 0 ? '' : listAllMeetByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse2" class="panel-collapse collapse">
@@ -1244,7 +1244,7 @@ function addDataToDetailLead(){
 																					<th>Create By</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="meet in listAllMeetByLead">
+																			<tbody ng-repeat="meet in listAllMeetByLead" class="ng-cloak">
 																				<tr>
 																					<td class="iTD-width-50">
 																						<a href="#"><i class="fa fa-users text-aqua font-size-icon-30"></i></a>
@@ -1292,7 +1292,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> Tasks</a>
-																	<span class="badge bg-blue pull-right">{{listAllTaskByLead.length <= 0 ? '' : listAllTaskByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllTaskByLead.length <= 0 ? '' : listAllTaskByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse3" class="panel-collapse collapse">
@@ -1310,7 +1310,7 @@ function addDataToDetailLead(){
 																					<th>Create By</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="task in listAllTaskByLead">
+																			<tbody ng-repeat="task in listAllTaskByLead" class="ng-cloak">
 																				<tr>
 																					<td class="iTD-width-50">
 																						<a href="#"><i class="fa fa-list-alt text-blue font-size-icon-30"></i></a>
@@ -1358,7 +1358,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> Events</a>
-																	<span class="badge bg-blue pull-right">{{listAllEventByLead.length <= 0 ? '' : listAllEventByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllEventByLead.length <= 0 ? '' : listAllEventByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse4" class="panel-collapse collapse">
@@ -1376,7 +1376,7 @@ function addDataToDetailLead(){
 																					<th>Create By</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="event in listAllEventByLead">
+																			<tbody ng-repeat="event in listAllEventByLead" class="ng-cloak">
 																				<tr>
 																					<td class="iTD-width-50">
 																						<a href="#"><i class="fa  fa-calendar-check-o text-red font-size-icon-30"></i></a>
@@ -1424,7 +1424,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> Emails</a>
-																	<span class="badge bg-blue pull-right">{{listAllEmailByLead.length <= 0 ? '' : listAllEmailByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllEmailByLead.length <= 0 ? '' : listAllEmailByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse5" class="panel-collapse collapse">
@@ -1442,7 +1442,7 @@ function addDataToDetailLead(){
 																					<th>Create By</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="email in listAllEmailByLead">
+																			<tbody ng-repeat="email in listAllEmailByLead" class="ng-cloak">
 																				<tr>
 																					<td class="iTD-width-50">
 																						<a href="#"><i class="fa fa-envelope text-green font-size-icon-30"></i></a>
@@ -1504,15 +1504,15 @@ function addDataToDetailLead(){
 													<div class="col-sm-12"  style="padding-right: 0px; padding-left: 0px;">
 														<div class="form-group">
 															<label>Tags </label> 
-															<select  class="form-control" multiple name="collabTags" id="collabTags" style="width: 100%;">
+															<select  class="form-control ng-cloak" multiple name="collabTags" id="collabTags" style="width: 100%;">
 																<option ng-repeat="tag in tags" value="{{tag.username}}">{{tag.username}}</option>																
 															</select>
 														</div>
 													</div>
 												</form>
 												<div class="col-sm-12"  style="padding-right: 0px; padding-left: 0px;">
-													<button style="margin-top: 10px; margin-left: 10px;" ng-click="resetFrmCollab()" type="button" class="btn btn-danger pull-right">Reset</button>
-													<button type="button" style="margin-top: 10px;" ng-click="addCollab()" name="collabBtnPost" id="collabBtnPost" class="btn btn-primary pull-right">POST</button>
+													<button style="margin-top: 10px; margin-left: 10px;" ng-click="resetFrmCollab()" type="button" class="btn btn-danger pull-right ng-cloak">Reset</button>
+													<button type="button" style="margin-top: 10px;" ng-click="addCollab()" name="collabBtnPost" id="collabBtnPost" class="btn btn-primary pull-right ng-cloak">POST</button>
 												</div>
 											</div>
 											<div class="clearfix"></div>
@@ -1528,16 +1528,16 @@ function addDataToDetailLead(){
 													</span> 													
 													<span class="description"><i ng-if="collab.tags.length > 0 " class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
 												</div>
-												<p>{{collab.colDes}}</p>																													
+												<p class="ng-cloak">{{collab.colDes}}</p>																													
 												
 												<ul class="list-inline">
 													<li>
 														<span href="#" class="link-black text-sm ">																													
-															<span ng-if="collab.checkLike == true"><button ng-click="postLike(key_post,collab.colId)" class="btn btn-default btn-sm"><i  class="fa fa-thumbs-up like-btn"></i></button>&nbsp;&nbsp;&nbsp;You  {{collab.like <= 0 ? "" : collab.like==1 ? "and 1 other" : "and "+collab.like+" others"}}</span>
-															<span ng-if="collab.checkLike == false"><button ng-click="postLike(key_post,collab.colId)" class="btn btn-default btn-sm"><i  class="fa fa-thumbs-o-up unlike-btn"></i></button>&nbsp;&nbsp;&nbsp;{{collab.like <= 0 ? "" : collab.like}}</span> 														
+															<span ng-if="collab.checkLike == true"><button ng-click="postLike(key_post,collab.colId)" class="btn btn-default btn-sm ng-cloak"><i  class="fa fa-thumbs-up like-btn"></i></button>&nbsp;&nbsp;&nbsp;You  {{collab.like <= 0 ? "" : collab.like==1 ? "and 1 other" : "and "+collab.like+" others"}}</span>
+															<span ng-if="collab.checkLike == false"><button ng-click="postLike(key_post,collab.colId)" class="btn btn-default btn-sm ng-cloak"><i  class="fa fa-thumbs-o-up unlike-btn"></i></button>&nbsp;&nbsp;&nbsp;{{collab.like <= 0 ? "" : collab.like}}</span> 														
 														</span>
 													</li>
-													<li class="pull-right">
+													<li class="pull-right ng-cloak">
 														<a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> <span> Comments{{collab.details.length <= 0 ? "" : "("+collab.details.length+")"}}</span></a>
 													</li>
 												</ul>
@@ -1547,7 +1547,7 @@ function addDataToDetailLead(){
 													<div class="box-comment" ng-repeat="(key_comment, com) in collab.details">
 														<img class="img-circle img-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image">
 														<div class="comment-text">
-															<span class="username"> 
+															<span class="username ng-cloak"> 
 																<span> {{com.username}} <span class="text-muted"> on {{com.formatCreateDate}}</span></span> 
 																<span ng-if="com.username == username" ng-click="btnDeleteCollabCom(key_post, key_comment,com.commentId)"  class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 															</span>
