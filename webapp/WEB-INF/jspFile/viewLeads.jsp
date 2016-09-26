@@ -76,10 +76,10 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 				$scope.listAllEmailByLead = [];	
 			}
 		
-			$scope.listCollab(response.COLLABORATION);							
+			$scope.listCollab(response.COLLABORATIONS);							
 			$scope.callStatusStartup = response.CALL_STATUS;
 			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.CONTACT;	
+			$scope.taskContactStartup = response.CONTACTS;	
 			$scope.eventLocationStartup = response.EVENT_LOCATION;
 			$scope.meetStatusStartup = response.MEETING_STATUS;				
 			$scope.tags = response.TAG_TO;
@@ -2178,7 +2178,7 @@ function addDataToDetailLead(){
 									<label>Contact</label> 
 									<select class="form-control select2" name="taskContact" id="taskContact" style="width: 100%;">
 										<option value="">-- SELECT A Contact --</option>
-										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conSalutation}}{{st.conFirstname}} {{st.conLastName}}</option>
+										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conSalutation}}{{st.conFirstname}} {{st.conLastname}}</option>
 									</select>
 								</div>
 							</div>
