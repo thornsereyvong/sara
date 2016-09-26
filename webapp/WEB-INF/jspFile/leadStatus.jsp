@@ -208,7 +208,7 @@ $(document).ready(function(){
 				<div style="background: #fff;margin-top: 15px;">
 				<form id="form_status">
 				 <div class="col-sm-12">
-				 	<button type="button" class="btn btn-info btn-app" id="btn_save" value="{{action}}"> <i class="fa fa-save"></i>{{action}}</button> 
+				 	<button type="button" class="btn btn-info btn-app ng-cloak" id="btn_save" value="{{action}}"> <i class="fa fa-save"></i>{{action}}</button> 
 				 	
 					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
 					<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/category-type"> <i class="fa fa-reply"></i> Back </a>
@@ -219,7 +219,7 @@ $(document).ready(function(){
 					<hr style="margin-bottom: 7px;;margin-top: 0px;" />
 				 </div> 
 				 
-				 <div class="col-sm-12">
+				 <div class="col-sm-12 ng-cloak">
 				 		
 							<input type="hidden" id="id" name="id" value="{{statusID.statusID}}" ng-model="statusID.statusID">
 						    <input type="hidden" id="name" name="name" value="{{statusID.statusName}}" ng-model="statusID.statusName">
@@ -227,7 +227,7 @@ $(document).ready(function(){
 							<label class="font-label">Status Name :</label>
 						</div>
 						<div class="col-sm-10">
-							<div class="form-group" id="c_name">
+							<div class="form-group ng-cloak" id="c_name">
 								<label>{{statusID.statusName}}&nbsp;</label>
 							</div>
 						</div>
@@ -284,7 +284,7 @@ $(document).ready(function(){
 							<th>Action</th>
 						</tr>
 
-						<tr dir-paginate="cc in status |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
+						<tr dir-paginate="cc in status |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 							<td>{{cc.statusID}}</td>
 							<td>{{cc.statusName}}</td>
 							<td>{{cc.description}}</td>

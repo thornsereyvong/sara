@@ -148,7 +148,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 							<th>Action</th>
 						</tr>
 
-						<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
+						<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 							<td>{{cc.evId}}</td>
 							<td>{{cc.evName}} </td>
 							<td>{{cc.loName}}</td>
