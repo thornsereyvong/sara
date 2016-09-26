@@ -135,7 +135,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		        'Content-Type': 'application/json'
 		    },
 		    data: {"collapId":collabId, "username":username,"likeStatus":status.toString()}
-		}).success(function(response) {	alert(status)
+		}).success(function(response) {
 			$scope.collaborates[key].checkLike = status;		
 		});
 	} 
@@ -383,6 +383,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 			addDataCallToForm(response.DATA);
 			callIdForEdit = callId;
 			$("#btnCallSave").text("Update");
+			$("#tCall").text("Update Call");
 			$("#btn_show_call").click();
 		});		
 	}
@@ -456,6 +457,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 			addDataMeetToForm(response.DATA);
 			meetIdForEdit = meetingId;
 			$("#btnMeetSave").text("Update");
+			$("#tMeet").text("Update Meeting");
 			$("#btn_show_meet").click();
 		});		
 	}
@@ -530,6 +532,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 			addDataTaskToForm(response.DATA);
 			taskIdForEdit = taskId;
 			$("#btnTaskSave").text("Update");
+			$("#tTask").text("Update Task");
 			$("#btn_show_task").click();
 		});		
 	}
@@ -608,6 +611,7 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 			addDataEventToForm(response.DATA);
 			eventIdForEdit = eventId;
 			$("#btnEventSave").text("Update");
+			$("#tEvent").text("Update Event");
 			$("#btn_show_event").click();
 		});		
 	}
@@ -694,6 +698,7 @@ app.controller('callController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#callStatus").select2('val',"");
 		$("#callAssignTo").select2('val',"");	
 		$("#btnCallSave").text("Save");
+		$("#tCall").text("Create Call");
 		$('#frmAddCall').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -712,6 +717,7 @@ app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#meetStatus").select2('val',"");
 		$("#meetAssignTo").select2('val',"");	
 		$("#btnMeetSave").text("Save");
+		$("#tMeet").text("Create Meeting");
 		$('#frmAddMeet').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -736,6 +742,7 @@ app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#taskStatus").select2('val',"");
 		$("#taskAssignTo").select2('val',"");	
 		$("#btnTaskSave").text("Save");
+		$("#tTask").text("Create Task");
 		$('#frmAddTask').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -754,6 +761,7 @@ app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAl
 		$("#eventLocation").select2('val',"");
 		$("#eventAssignTo").select2('val',"");	
 		$("#btnEventSave").text("Save");
+		$("#tEvent").text("Create Event");
 		$('#frmAddEvent').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -861,9 +869,9 @@ function displayStatusLead(Status){
 	$("#objStatus").append(obj);
 }
 
-function addDataToDetailLead(){
+function addDataToDetailLead(){	
 	
-	$("#lea_salutation option[value='"+LEAD.salutation+"']").attr('selected','selected');
+	$("#lea_salutation").val(LEAD.salutation);
 	$("#lea_status").select2('val',LEAD.statusID);
 	$("#lea_source").select2('val',LEAD.sourceID);
 	$("#lea_industry").select2('val',LEAD.industID);
@@ -891,7 +899,7 @@ function addDataToDetailLead(){
 	setValueById('lea_country', LEAD.country);
 	setValueById('lea_description', LEAD.description);
 	
-	
+	$('#frmLeadDetail').data('bootstrapValidator').resetField($('#lea_campaign'));
 	
 }
 
@@ -1486,7 +1494,7 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="collaborate" data-ng-init="listCollab()">
+										<div class="tab-pane" id="collaborate">
 
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
 												<form id="frmCollab">													
