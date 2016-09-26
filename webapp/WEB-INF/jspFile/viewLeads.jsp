@@ -76,10 +76,10 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 				$scope.listAllEmailByLead = [];	
 			}
 		
-			$scope.listCollab(response.COLLABORATION);							
+			$scope.listCollab(response.COLLABORATIONS);							
 			$scope.callStatusStartup = response.CALL_STATUS;
 			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.CONTACT;	
+			$scope.taskContactStartup = response.CONTACTS;	
 			$scope.eventLocationStartup = response.EVENT_LOCATION;
 			$scope.meetStatusStartup = response.MEETING_STATUS;				
 			$scope.tags = response.TAG_TO;
