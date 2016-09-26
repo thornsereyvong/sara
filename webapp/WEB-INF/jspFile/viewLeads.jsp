@@ -2178,7 +2178,7 @@ function addDataToDetailLead(){
 									<label>Contact</label> 
 									<select class="form-control select2" name="taskContact" id="taskContact" style="width: 100%;">
 										<option value="">-- SELECT A Contact --</option>
-										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conSalutation}}{{st.conFirstname}} {{st.conLastName}}</option>
+										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conSalutation}}{{st.conFirstname}} {{st.conLastname}}</option>
 									</select>
 								</div>
 							</div>
