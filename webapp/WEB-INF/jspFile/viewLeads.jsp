@@ -1074,7 +1074,7 @@ function addDataToDetailLead(){
 					<div class="widget-user-header bg-aqua-active">
 						<h3 class="widget-user-username ng-cloak">{{lead.salutation}}
 							{{lead.firstName}} {{lead.lastName}}</h3>
-						<h5 class="widget-user-desc">{{lead.title}}</h5>
+						<h5 class="widget-user-desc ng-cloak">{{lead.title}}</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
