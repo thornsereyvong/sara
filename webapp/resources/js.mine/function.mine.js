@@ -353,5 +353,6 @@ function addErrorToDate(id){
 
 $(function(){
 	$("#op_stage").change(function(){ $("#op_probability").val(probab[getInt("op_stage")]); });
+	$("#oppStage").change(function(){ $("#oppProbability").val(probab[getInt("oppStage")]); });	
 });
 

@@ -431,11 +431,12 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.call_click = function(){
 		$("#btn_show_call").click();
 	}
-	$scope.actEditCall = function(callId){				
+	$scope.actEditCall = function(callId){
 		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){
 			addDataCallToForm(response.DATA);
 			callIdForEdit = callId;
 			$("#btnCallSave").text("Update");
+			$("#tCall").text("Update Call");
 			$("#btn_show_call").click();
 		});		
 	}
@@ -509,6 +510,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataMeetToForm(response.DATA);
 			meetIdForEdit = meetingId;
 			$("#btnMeetSave").text("Update");
+			$("#tMeet").text("Update Meeting");
 			$("#btn_show_meet").click();
 		});		
 	}
@@ -583,6 +585,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataTaskToForm(response.DATA);
 			taskIdForEdit = taskId;
 			$("#btnTaskSave").text("Update");
+			$("#tTask").text("Update Task");
 			$("#btn_show_task").click();
 		});		
 	}
@@ -664,6 +667,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataEventToForm(response.DATA);
 			eventIdForEdit = eventId;
 			$("#btnEventSave").text("Update");
+			$("#tEvent").text("Update Event");
 			$("#btn_show_event").click();
 		});		
 	}
@@ -792,6 +796,7 @@ app.controller('callController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#callStatus").select2('val',"");
 		$("#callAssignTo").select2('val',"");	
 		$("#btnCallSave").text("Save");
+		$("#tCall").text("Create Call");
 		$('#frmAddCall').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -810,6 +815,7 @@ app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#meetStatus").select2('val',"");
 		$("#meetAssignTo").select2('val',"");	
 		$("#btnMeetSave").text("Save");
+		$("#tMeet").text("Create Meeting");
 		$('#frmAddMeet').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -834,6 +840,7 @@ app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#taskStatus").select2('val',"");
 		$("#taskAssignTo").select2('val',"");	
 		$("#btnTaskSave").text("Save");
+		$("#tTask").text("Create Task");
 		$('#frmAddTask').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -852,6 +859,7 @@ app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAl
 		$("#eventLocation").select2('val',"");
 		$("#eventAssignTo").select2('val',"");	
 		$("#btnEventSave").text("Save");
+		$("#tEvent").text("Create Event");
 		$('#frmAddEvent').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -1004,6 +1012,8 @@ function addDataToDetailLead(){
 	setValueById('appProbability', OPPORTUNITY.opProbability);
 	setValueById('appDescription', OPPORTUNITY.opDes);
 	
+	$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppCustomer'));
+	$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppStage'));
 	
 }
 
@@ -1169,8 +1179,7 @@ function addDataToDetailLead(){
 	<section class="content-header">
 		<h1>View Opportunity</h1>
 		<ol class="breadcrumb">
-			<li><a href="${pageContext.request.contextPath}"><i
-					class="fa fa-home"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i>View Opportunity</a></li>
 		</ol>
 	</section>
@@ -1183,7 +1192,7 @@ function addDataToDetailLead(){
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{opportunity.opName}}</h3>
+						<h3 class="widget-user-username ng-cloak">{{opportunity.opName}}</h3>
 						<h6 class="widget-user-desc">NAME</h6>
 					</div>
 					<div class="widget-user-image">
@@ -1195,25 +1204,25 @@ function addDataToDetailLead(){
 						<div class="row">
 							<div class="col-sm-3">
 								<div class="description-block">
-									<h5 class="description-header">{{opportunity.custName}}</h5>
+									<h5 class="description-header ng-cloak">{{opportunity.custName}}</h5>
 									<span class="description-text">Company</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{opportunity.opCloseDate | date:'dd/MM/yyyy' }}</h5>
+									<h5 class="description-header ng-cloak">{{opportunity.opCloseDate | date:'dd/MM/yyyy' }}</h5>
 									<span class="description-text">Close Date</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{opportunity.opAmount | number:2}}</h5>
+									<h5 class="description-header ng-cloak">{{opportunity.opAmount | number:2}}</h5>
 									<span class="description-text">Amount</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{opportunity.username}}</h5>
+									<h5 class="description-header ng-cloak">{{opportunity.username}}</h5>
 									<span class="description-text">Assign To</span>
 								</div>
 							</div>
@@ -1267,7 +1276,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Calls</a>
-																	<span class="badge bg-blue pull-right">{{listAllCallByLead.length <= 0 ? '' : listAllCallByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllCallByLead.length <= 0 ? '' : listAllCallByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse1" class="panel-collapse collapse">
@@ -1313,11 +1322,8 @@ function addDataToDetailLead(){
 																											Dropdown</span>
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
-																										<li><a href="#" ng-click="actEditCall(call.callId)">
-																												<i class="fa fa-pencil"></i> Edit
-																										</a></li>
-																										<li ng-click="actDeleteCall(call.callId)"><a
-																											href="#"><i class="fa fa-trash"></i> Delete</a></li>
+																										<li><a href="#" ng-click="actEditCall(call.callId)"><i class="fa fa-pencil"></i> Edit</a></li>
+																										<li ng-click="actDeleteCall(call.callId)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																										<li><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}"><i class="fa fa-eye"></i> View</a></li>
 					
 																									</ul>
@@ -1334,7 +1340,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse2"> Meetings</a>
-																	<span class="badge bg-blue pull-right">{{listAllMeetByLead.length <= 0 ? '' : listAllMeetByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllMeetByLead.length <= 0 ? '' : listAllMeetByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse2" class="panel-collapse collapse">
@@ -1400,7 +1406,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> Tasks</a>
-																	<span class="badge bg-blue pull-right">{{listAllTaskByLead.length <= 0 ? '' : listAllTaskByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllTaskByLead.length <= 0 ? '' : listAllTaskByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse3" class="panel-collapse collapse">
@@ -1466,7 +1472,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> Events</a>
-																	<span class="badge bg-blue pull-right">{{listAllEventByLead.length <= 0 ? '' : listAllEventByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllEventByLead.length <= 0 ? '' : listAllEventByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse4" class="panel-collapse collapse">
@@ -1532,7 +1538,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> Emails</a>
-																	<span class="badge bg-blue pull-right">{{listAllEmailByLead.length <= 0 ? '' : listAllEmailByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllEmailByLead.length <= 0 ? '' : listAllEmailByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse5" class="panel-collapse collapse">
@@ -2273,7 +2279,7 @@ function addDataToDetailLead(){
 					<button type="button" ng-click="cancelCallClick()" class="close"
 						data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">
-						<b>Create Call</b>
+						<b  id="tCall">Create Call</b>
 					</h4>
 				</div>
 				<div class="modal-body">
@@ -2367,7 +2373,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelMeetClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Meeting</b></h4>
+					<h4 class="modal-title"><b id="tMeeting">Create Meeting</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -2478,7 +2484,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelTaskClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Task</b></h4>
+					<h4 class="modal-title"><b  id="tTask">Create Task</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -2584,7 +2590,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelEventClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Event</b></h4>
+					<h4 class="modal-title"><b id="tEvent">Create Event</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">

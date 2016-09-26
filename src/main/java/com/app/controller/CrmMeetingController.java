@@ -66,6 +66,7 @@ public class CrmMeetingController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/meeting/list/{campID}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> findmeetingById(@PathVariable("campID") String campID){	
+		System.err.println(campID);
 		HttpEntity<String> request = new HttpEntity<String>(header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/meeting/list/"+campID, HttpMethod.GET, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());

@@ -217,8 +217,8 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{task.taskRelatedToModule}}</h3>
-						<h5 class="widget-user-desc" ng-if="task.taskRelatedToModule != ''">[{{task.taskRelatedToId}}] {{task.taskRelatedName}}</h5>
+						<h3 class="widget-user-username ng-cloak">{{task.taskRelatedToModule}}</h3>
+						<h5 class="widget-user-desc ng-cloak" ng-if="task.taskRelatedToModule != ''">[{{task.taskRelatedToId}}] {{task.taskRelatedName}}</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
@@ -243,7 +243,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 														<div class="col-sm-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item item_border">Subject<a
-																	class="pull-right show-text-detail">{{task.taskSubject}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{task.taskSubject}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -252,7 +252,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Start Date <a
-																	class="pull-right show-text-detail">{{task.taskStartDate}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{task.taskStartDate}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -261,7 +261,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Due Date <a
-																	class="pull-right show-text-detail">{{task.taskDueDate}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{task.taskDueDate}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -270,7 +270,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Priority<a
-																	class="pull-right show-text-detail">{{task.taskPriority}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{task.taskPriority}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_lastName"
 																			id="lea_lastName" class="form-control"
@@ -285,7 +285,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 															<ul class="list-group list-group-unbordered">
 																
 																<li class="list-group-item item_border">Status <a
-																	class="pull-right show-text-detail">{{task.taskStatusName}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{task.taskStatusName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -294,7 +294,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate Type <a
-																	class="pull-right show-text-detail">{{task.taskRelatedToModule}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{task.taskRelatedToModule}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_lastName"
 																			id="lea_lastName" class="form-control"
@@ -302,7 +302,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">[{{task.taskRelatedToId}}] {{task.taskRelatedName}}</a>
+																	class="pull-right show-text-detail ng-cloak">[{{task.taskRelatedToId}}] {{task.taskRelatedName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -317,7 +317,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 															<ul class="list-group list-group-unbordered">
 																
 																<li class="list-group-item item_border">Assign To <a
-																	class="pull-right show-text-detail">{{task.username}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{task.username}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_no" id="lea_no"
 																			class="form-control" value="{{lead.no}}"> -->
@@ -338,7 +338,7 @@ app.controller('viewTaskController',['SweetAlert','$scope','$http',function(Swee
 																
 																<li class="list-group-item item_border" ng-if="task.taskingDes !=''">													
 																	
-																	<a class="show-text-detail">{{task.taskDes}}</a>
+																	<a class="show-text-detail ng-cloak">{{task.taskDes}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"

@@ -1072,7 +1072,7 @@ function addDataToDetailLead(){
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{lead.salutation}}
+						<h3 class="widget-user-username ng-cloak">{{lead.salutation}}
 							{{lead.firstName}} {{lead.lastName}}</h3>
 						<h5 class="widget-user-desc">{{lead.title}}</h5>
 					</div>
@@ -1085,25 +1085,25 @@ function addDataToDetailLead(){
 						<div class="row">
 							<div class="col-sm-3">
 								<div class="description-block">
-									<h5 class="description-header">{{lead.accountName}}</h5>
+									<h5 class="description-header ng-cloak">{{lead.accountName}}</h5>
 									<span class="description-text">Company</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{lead.sourceName}}</h5>
+									<h5 class="description-header ng-cloak">{{lead.sourceName}}</h5>
 									<span class="description-text">Lead Source</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{lead.assignToUsername}}</h5>
+									<h5 class="description-header ng-cloak">{{lead.assignToUsername}}</h5>
 									<span class="description-text">Assign To</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{lead.phone}}</h5>
+									<h5 class="description-header ng-cloak">{{lead.phone}}</h5>
 									<span class="description-text">Tel</span>
 								</div>
 							</div>
@@ -1154,7 +1154,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Calls</a>
-																	<span class="badge bg-blue pull-right">{{listAllCallByLead.length <= 0 ? '' : listAllCallByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllCallByLead.length <= 0 ? '' : listAllCallByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse1" class="panel-collapse collapse">
@@ -1221,7 +1221,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse2"> Meetings</a>
-																	<span class="badge bg-blue pull-right">{{listAllMeetByLead.length <= 0 ? '' : listAllMeetByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllMeetByLead.length <= 0 ? '' : listAllMeetByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse2" class="panel-collapse collapse">
@@ -1287,7 +1287,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> Tasks</a>
-																	<span class="badge bg-blue pull-right">{{listAllTaskByLead.length <= 0 ? '' : listAllTaskByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllTaskByLead.length <= 0 ? '' : listAllTaskByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse3" class="panel-collapse collapse">
@@ -1353,7 +1353,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> Events</a>
-																	<span class="badge bg-blue pull-right">{{listAllEventByLead.length <= 0 ? '' : listAllEventByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllEventByLead.length <= 0 ? '' : listAllEventByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse4" class="panel-collapse collapse">
@@ -1419,7 +1419,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> Emails</a>
-																	<span class="badge bg-blue pull-right">{{listAllEmailByLead.length <= 0 ? '' : listAllEmailByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllEmailByLead.length <= 0 ? '' : listAllEmailByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse5" class="panel-collapse collapse">

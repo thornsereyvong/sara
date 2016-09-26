@@ -1085,38 +1085,38 @@ function addDataToDetailLead(){
 						<div class="row">
 							<div class="col-sm-2">
 								<div class="description-block">
-									<h5 class="description-header">{{cases.statusName}}</h5>
+									<h5 class="description-header ng-cloak">{{cases.statusName}}</h5>
 									<span class="description-text">Status</span>
 								</div>
 							</div>
 							
 							<div class="col-sm-2 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{cases.caseTypeName}}</h5>
+									<h5 class="description-header ng-cloak">{{cases.caseTypeName}}</h5>
 									<span class="description-text">Type</span>
 								</div>
 							</div>
 							<div class="col-sm-2 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{cases.priorityName}}</h5>
+									<h5 class="description-header ng-cloak">{{cases.priorityName}}</h5>
 									<span class="description-text">Priority</span>
 								</div>
 							</div>
 							<div class="col-sm-2 border-right">
 								<div class="description-block">
-									<h5 class="description-header" ng-if="cases.custID != null">[{{cases.custID}}] {{cases.custName}}</h5>
+									<h5 class="description-header ng-cloak" ng-if="cases.custID != null">[{{cases.custID}}] {{cases.custName}}</h5>
 									<span class="description-text">Customer</span>
 								</div>
 							</div>
 							<div class="col-sm-2 border-right">
 								<div class="description-block">
-									<h5 class="description-header" ng-if="cases.conID != null">[{{cases.conID}}] {{cases.conSalutation}}{{cases.conFirstname}} {{cases.conLastname}}</h5>
+									<h5 class="description-header ng-cloak" ng-if="cases.conID != null">[{{cases.conID}}] {{cases.conSalutation}}{{cases.conFirstname}} {{cases.conLastname}}</h5>
 									<span class="description-text">Contact</span>
 								</div>
 							</div>
 							<div class="col-sm-2 border-right">
 								<div class="description-block">
-									<h5 class="description-header">{{cases.createDate}}</h5>
+									<h5 class="description-header ng-cloak">{{cases.createDate}}</h5>
 									<span class="description-text">Date</span>
 								</div>
 							</div>
@@ -1167,7 +1167,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Calls</a>
-																	<span class="badge bg-blue pull-right">{{listAllCallByLead.length <= 0 ? '' : listAllCallByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllCallByLead.length <= 0 ? '' : listAllCallByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse1" class="panel-collapse collapse">
@@ -1236,7 +1236,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse2"> Meetings</a>
-																	<span class="badge bg-blue pull-right">{{listAllMeetByLead.length <= 0 ? '' : listAllMeetByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllMeetByLead.length <= 0 ? '' : listAllMeetByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse2" class="panel-collapse collapse">
@@ -1304,7 +1304,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse3"> Tasks</a>
-																	<span class="badge bg-blue pull-right">{{listAllTaskByLead.length <= 0 ? '' : listAllTaskByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllTaskByLead.length <= 0 ? '' : listAllTaskByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse3" class="panel-collapse collapse">
@@ -1372,7 +1372,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse4"> Events</a>
-																	<span class="badge bg-blue pull-right">{{listAllEventByLead.length <= 0 ? '' : listAllEventByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllEventByLead.length <= 0 ? '' : listAllEventByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse4" class="panel-collapse collapse">
@@ -1440,7 +1440,7 @@ function addDataToDetailLead(){
 															<div class="panel-heading">
 																<h4 class="panel-title">
 																	<a data-toggle="collapse" data-parent="#accordion" href="#collapse5"> Emails</a>
-																	<span class="badge bg-blue pull-right">{{listAllEmailByLead.length <= 0 ? '' : listAllEmailByLead.length }}</span>
+																	<span class="badge bg-blue pull-right ng-cloak">{{listAllEmailByLead.length <= 0 ? '' : listAllEmailByLead.length }}</span>
 																</h4>
 															</div>
 															<div id="collapse5" class="panel-collapse collapse">
