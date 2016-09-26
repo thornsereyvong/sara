@@ -12,6 +12,7 @@ month_num['Oct'] = 10;
 month_num['Nov'] = 11;
 month_num['Dec'] = 12;
 
+var probab = [0,10,20,40,70,90,100,0];
 
 function alertMsgErrorSweet(){
 	swal({
@@ -350,5 +351,7 @@ function addErrorToDate(id){
 	$("#"+id).children().eq(1).children().eq(1).attr('style','border: 0px; border-left: 1px solid #dd4b39;');
 }
 
-
+$(function(){
+	$("#op_stage").change(function(){ $("#op_probability").val(probab[getInt("op_stage")]); });
+});
 

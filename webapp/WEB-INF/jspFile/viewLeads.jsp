@@ -1898,7 +1898,7 @@ function addDataToDetailLead(){
 					<button type="button" ng-click="cancelCallClick()" class="close"
 						data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">
-						<b>Create Call</b>
+						<b id="tCall">Create Call</b>
 					</h4>
 				</div>
 				<div class="modal-body">
@@ -1991,7 +1991,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelMeetClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Meeting</b></h4>
+					<h4 class="modal-title"><b id="tMeet">Create Meeting</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -2102,7 +2102,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelTaskClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Task</b></h4>
+					<h4 class="modal-title"><b id="tTask">Create Task</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -2208,7 +2208,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelEventClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Event</b></h4>
+					<h4 class="modal-title"><b id="tEvent">Create Event</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">

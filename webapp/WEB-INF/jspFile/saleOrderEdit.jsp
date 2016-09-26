@@ -272,7 +272,7 @@
 								</div>
 							</div>
 							
-							<div class="col-md-12">
+							<div class="col-md-12" style="display:none;">
 									<label>Total Payment To Date</label> 
 									
 								<div class="input-group">
@@ -281,7 +281,7 @@
 				                  </div>
 				                  <br>
 							</div>
-							<div class="col-md-12">
+							<div class="col-md-12" style="display:none;">
 								<div class="form-group">
 									<label>Amount Due</label> 
 									<input disabled id="txtAmtDue" class="form-control text-align-right" type="text" placeholder="">
