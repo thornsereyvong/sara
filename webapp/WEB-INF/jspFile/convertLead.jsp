@@ -258,7 +258,8 @@ $(document).ready(function() {
 			}else{
 				dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": "", "leadID": leadId};
 			}
-				
+			
+		// 	dis(dataFrm)
 			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/lead/convert",

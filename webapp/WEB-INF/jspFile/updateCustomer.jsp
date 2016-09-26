@@ -243,7 +243,7 @@ $(document).ready(function() {
 		}).on('success.form.bv', function(e) {							
 
 			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
-			dis({
+			/* dis({
 				  "custID" : custId,
 			      "custName": getValueStringById("cs_name"),
 			      "custTel1": getValueStringById("c_tel1"),
@@ -262,7 +262,7 @@ $(document).ready(function() {
 				  "priceCode" : getJsonById("priceCode","c_price","str"),
 				  "custGroup" : getJsonById("custGroupId","c_group","str"),
 				  "imageName" : ""
-			})
+			}) */
 			$.ajax({
 				url : "${pageContext.request.contextPath}/customer/edit",
 				type : "PUT",

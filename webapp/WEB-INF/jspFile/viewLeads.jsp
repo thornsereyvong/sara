@@ -76,16 +76,12 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 				$scope.listAllEmailByLead = [];	
 			}
 		
-			$scope.listCollab(response.COLLABORATION);	
-			
-			
+			$scope.listCollab(response.COLLABORATION);							
 			$scope.callStatusStartup = response.CALL_STATUS;
 			$scope.taskStatusStartup = response.TASK_STATUS;
 			$scope.taskContactStartup = response.CONTACT;	
 			$scope.eventLocationStartup = response.EVENT_LOCATION;
-			$scope.meetStatusStartup = response.MEETING_STATUS;
-			
-			
+			$scope.meetStatusStartup = response.MEETING_STATUS;				
 			$scope.tags = response.TAG_TO;
 			
 			
@@ -104,9 +100,6 @@ app.controller('viewLeadController',['SweetAlert','$scope','$http',function(Swee
 		$scope.collaborates = response;		
 	}
 		
-			
-	
-	
 	$scope.listCollabByLeadByUser = function(){
 		$http({
 		    method: 'POST',

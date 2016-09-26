@@ -88,6 +88,17 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.listAllEmailByLeadId = function(){	
 				$scope.listAllEmailByLead = [];	
 			}
+			
+			$scope.listCollab(response.COLLABORATION);							
+			$scope.callStatusStartup = response.CALL_STATUS;
+			$scope.taskStatusStartup = response.TASK_STATUS;
+			$scope.taskContactStartup = response.CONTACT;	
+			$scope.eventLocationStartup = response.EVENT_LOCATION;
+			$scope.meetStatusStartup = response.MEETING_STATUS;				
+			$scope.tags = response.TAG_TO;
+			
+			
+			
 		
 	}
 	
@@ -100,18 +111,21 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	
 // Tab Collaborate***************************
 	
+	$scope.listCollab = function(response){
+		$scope.collaborates = response;		
+	}
+
 	$scope.listCollabByLeadByUser = function(){
 		$http({
 		    method: 'POST',
-		    url: "${pageContext.request.contextPath}/collaborate/list/opportunity/username",
+		    url: "${pageContext.request.contextPath}/collaborate/list/lead/user",
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"moduleId":oppId, "username":username}
-		}).success(function(response) {
-			$scope.collaborates = response.DATA;
-			$scope.tags = response.TAG_TO;
+		    data: {"moduleId":leadId, "username":username}
+		}).success(function(response) {		
+			$scope.listCollab(response.DATA);		
 		});	
 	}
 	
@@ -1469,7 +1483,7 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="collaborate" data-ng-init="listCollabByLeadByUser()">
+										<div class="tab-pane" id="collaborate" data-ng-init="listCollab()">
 
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
 												<form id="frmCollab">													
