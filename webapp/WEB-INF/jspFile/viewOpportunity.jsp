@@ -104,7 +104,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.listCollab(response.COLLABORATIONS);							
 			$scope.callStatusStartup = response.CALL_STATUS;
 			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.CONTACTS;	
+			$scope.taskContactStartup = response.ALL_CONTACT;	
 			$scope.eventLocationStartup = response.EVENT_LOCATION;
 			$scope.meetStatusStartup = response.MEETING_STATUS;				
 			$scope.tags = response.TAG_TO;
