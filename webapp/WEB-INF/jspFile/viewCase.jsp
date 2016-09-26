@@ -122,7 +122,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"moduleId":leadId, "username":username}
+		    data: {"moduleId":oppId, "username":username}
 		}).success(function(response) {		
 			$scope.listCollab(response.DATA);		
 		});	

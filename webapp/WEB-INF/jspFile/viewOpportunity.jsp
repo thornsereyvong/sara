@@ -101,10 +101,14 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.listCollab(response.COLLABORATION);							
 			$scope.callStatusStartup = response.CALL_STATUS;
 			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.CONTACT;	
+			$scope.taskContactStartup = response.CONTACTS;	
 			$scope.eventLocationStartup = response.EVENT_LOCATION;
 			$scope.meetStatusStartup = response.MEETING_STATUS;				
 			$scope.tags = response.TAG_TO;
+			
+			addContactToTask(response.CONTACTS);
+			
+			
 	}
 	
 	// contact
@@ -161,7 +165,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"moduleId":leadId, "username":username}
+		    data: {"moduleId":oppId, "username":username}
 		}).success(function(response) {		
 			$scope.listCollab(response.DATA);		
 		});	
@@ -740,7 +744,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			    data: {"opId":oppId, "conId":getValueStringById("ConContact"), "opConType": getValueStringById("ConType")}
 			}).success(function(response) {
 				
-				dis(response)
+			//	dis(response)
 				
 			});	
 		}else{
@@ -757,7 +761,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		        'Content-Type': 'application/json'
 		    }
 		}).success(function(response){			
-			dis(response)			
+			//dis(response)			
 		});
 	}
 	
@@ -775,10 +779,10 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 
 app.controller('callController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.startupCallForm = function(){
-		$http.get("${pageContext.request.contextPath}/call_status/list")
+		/* $http.get("${pageContext.request.contextPath}/call_status/list")
 			.success(function(response){
 				$scope.callStatusStartup = response.DATA;
-	    });
+	    }); */
 	}
 	$scope.cancelCallClick = function(){
 		callIdForEdit = null;
@@ -793,9 +797,9 @@ app.controller('callController',['SweetAlert','$scope','$http',function(SweetAle
 
 app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.startupMeetForm = function(){
-		$http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
 			$scope.meetStatusStartup = response.DATA;
-	    });
+	    }); */
 	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;
@@ -810,13 +814,13 @@ app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAle
 app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	$scope.startupTaskForm = function(){
-		$http.get("${pageContext.request.contextPath}/task_status/list").success(function(response){
+	/* 	$http.get("${pageContext.request.contextPath}/task_status/list").success(function(response){
 			$scope.taskStatusStartup = response.DATA;
 		});
 
 		$http.get("${pageContext.request.contextPath}/contact/list").success(function(response){
 			$scope.taskContactStartup = response.DATA;
-		});
+		}); */
 		
 	}
 	
@@ -834,9 +838,9 @@ app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAle
 app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	$scope.startupEventForm = function(){
-		$http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
 			$scope.eventLocationStartup = response.DATA;
-		});
+		}); */
 	}
 	
 	$scope.cancelEventClick = function(){
@@ -853,9 +857,9 @@ app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAl
 app.controller('contactController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	$scope.startupEventForm = function(){
-		$http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
 			$scope.eventLocationStartup = response.DATA;
-		});
+		}); */
 	}
 	
 	$scope.cancelEventClick = function(){
@@ -870,7 +874,13 @@ app.controller('contactController',['SweetAlert','$scope','$http',function(Sweet
 
 
 
-
+function addContactToTask(data){
+	if(data.length>0){
+		for(var i=0; i< data.length; i++){
+			$("#taskContact").append("<option value='"+data[i].conID+"'>"+data[i].conSalutation+" "+data[i].conFirstname+" "+data[i].conLastname+"</option>");
+		}
+	}
+}
 
 function addDataCallToForm(data){
 	$("#callStatus").select2('val',data.callStatusId);

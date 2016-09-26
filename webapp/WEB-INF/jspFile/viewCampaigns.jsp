@@ -89,7 +89,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 				$scope.listAllEmailByLead = [];	
 			}
 			
-			$scope.listCollab(response.COLLABORATION);							
+			$scope.listCollab(response.COLLABORATIONS);							
 			$scope.callStatusStartup = response.CALL_STATUS;
 			$scope.taskStatusStartup = response.TASK_STATUS;
 			$scope.taskContactStartup = response.CONTACT;	
@@ -123,7 +123,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"moduleId":leadId, "username":username}
+		    data: {"moduleId":oppId, "username":username}
 		}).success(function(response) {		
 			$scope.listCollab(response.DATA);		
 		});	
@@ -391,6 +391,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataCallToForm(response.DATA);
 			callIdForEdit = callId;
 			$("#btnCallSave").text("Update");
+			$("#tCall").text("Update Call");
 			$("#btn_show_call").click();
 		});		
 	}
@@ -464,6 +465,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataMeetToForm(response.DATA);
 			meetIdForEdit = meetingId;
 			$("#btnMeetSave").text("Update");
+			$("#tMeet").text("Update Meeting");
 			$("#btn_show_meet").click();
 		});		
 	}
@@ -538,6 +540,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataTaskToForm(response.DATA);
 			taskIdForEdit = taskId;
 			$("#btnTaskSave").text("Update");
+			$("#tTask").text("Update Task");
 			$("#btn_show_task").click();
 		});		
 	}
@@ -619,6 +622,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataEventToForm(response.DATA);
 			eventIdForEdit = eventId;
 			$("#btnEventSave").text("Update");
+			$("#tEvent").text("Update Event");
 			$("#btn_show_event").click();
 		});		
 	}
@@ -689,15 +693,16 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 
 app.controller('callController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.startupCallForm = function(){
-		$http.get("${pageContext.request.contextPath}/call_status/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/call_status/list").success(function(response){
 				$scope.callStatusStartup = response.DATA;
-	    });
+	    }); */
 	}
 	$scope.cancelCallClick = function(){
 		callIdForEdit = null;
 		$("#callStatus").select2('val',"");
 		$("#callAssignTo").select2('val',"");	
 		$("#btnCallSave").text("Save");
+		$("#tCall").text("Create Call");
 		$('#frmAddCall').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -706,9 +711,9 @@ app.controller('callController',['SweetAlert','$scope','$http',function(SweetAle
 
 app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.startupMeetForm = function(){
-		$http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
 			$scope.meetStatusStartup = response.DATA;
-	    });
+	    }); */
 	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;
@@ -716,6 +721,7 @@ app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#meetStatus").select2('val',"");
 		$("#meetAssignTo").select2('val',"");	
 		$("#btnMeetSave").text("Save");
+		$("#tMeet").text("Create Meeting");
 		$('#frmAddMeet').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -723,13 +729,13 @@ app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAle
 app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	$scope.startupTaskForm = function(){
-		$http.get("${pageContext.request.contextPath}/task_status/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/task_status/list").success(function(response){
 			$scope.taskStatusStartup = response.DATA;
 		});
 
 		$http.get("${pageContext.request.contextPath}/contact/list").success(function(response){
 			$scope.taskContactStartup = response.DATA;
-		});
+		}); */
 		
 	}
 	
@@ -740,6 +746,7 @@ app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#taskStatus").select2('val',"");
 		$("#taskAssignTo").select2('val',"");	
 		$("#btnTaskSave").text("Save");
+		$("#tTask").text("Create Task");
 		$('#frmAddTask').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -747,9 +754,9 @@ app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAle
 app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	$scope.startupEventForm = function(){
-		$http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
 			$scope.eventLocationStartup = response.DATA;
-		});
+		}); */
 	}
 	
 	$scope.cancelEventClick = function(){
@@ -758,6 +765,7 @@ app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAl
 		$("#eventLocation").select2('val',"");
 		$("#eventAssignTo").select2('val',"");	
 		$("#btnEventSave").text("Save");
+		$("#tEvent").text("Create Event");
 		$('#frmAddEvent').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -1483,7 +1491,7 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="collaborate" data-ng-init="listCollab()">
+										<div class="tab-pane" id="collaborate">
 
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
 												<form id="frmCollab">													
@@ -1892,7 +1900,7 @@ function addDataToDetailLead(){
 					<button type="button" ng-click="cancelCallClick()" class="close"
 						data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">
-						<b>Create Call</b>
+						<b id="tCall">Create Call</b>
 					</h4>
 				</div>
 				<div class="modal-body">
@@ -1986,7 +1994,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelMeetClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Meeting</b></h4>
+					<h4 class="modal-title"><b id="tMeet">Create Meeting</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -2097,7 +2105,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelTaskClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Task</b></h4>
+					<h4 class="modal-title"><b id="tTask">Create Task</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -2203,7 +2211,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelEventClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Event</b></h4>
+					<h4 class="modal-title"><b id="tEvent">Create Event</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">

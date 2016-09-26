@@ -99,6 +99,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.meetStatusStartup = response.MEETING_STATUS;				
 			$scope.tags = response.TAG_TO;
 			
+			addContactToTask(response.CONTACTS);
 	}
 	
 	
@@ -122,7 +123,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"moduleId":leadId, "username":username}
+		    data: {"moduleId":oppId, "username":username}
 		}).success(function(response) {		
 			$scope.listCollab(response.DATA);		
 		});	
@@ -842,7 +843,13 @@ function clickStatus(num){
 		window.location.href = server+"/convert-lead/"+leadId;
 	} */
 }
-
+function addContactToTask(data){
+	if(data.length>0){
+		for(var i=0; i< data.length; i++){
+			$("#taskContact").append("<option value='"+data[i].conID+"'>"+data[i].conSalutation+" "+data[i].conFirstname+" "+data[i].conLastname+"</option>");
+		}
+	}
+}
 function displayStatusLead(Status){	
 	var obj = "";	
 	for(var i=1; i<=leadStatusData.length; i++){		
@@ -2320,7 +2327,7 @@ function addDataToDetailLead(){
 									<label>Contact</label> 
 									<select class="form-control select2" name="taskContact" id="taskContact" style="width: 100%;">
 										<option value="">-- SELECT A Contact --</option>
-										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conFirstname}} {{st.conLastName}}</option>
+										
 									</select>
 								</div>
 							</div>

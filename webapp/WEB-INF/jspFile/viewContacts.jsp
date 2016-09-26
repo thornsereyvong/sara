@@ -58,7 +58,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.listLeads = function(){
 			response = getLeadData();
 			
-		   //	dis(response)
+		   	//dis(response)
 			 
 			/* $scope.oppLeadSource = response.LEAD_SOURCE;
 			$scope.oppType = response.OPP_TYPES;
@@ -90,14 +90,17 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 				$scope.listAllEmailByLead = [];	
 			}
 			
-			$scope.listCollab(response.COLLABORATION);							
+			$scope.listCollab(response.COLLABORATIONS);							
 			$scope.callStatusStartup = response.CALL_STATUS;
 			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.CONTACTS;	
-			dis($scope.taskContactStartup)
+			$scope.taskContactStartup = response.CONTACTS;				
 			$scope.eventLocationStartup = response.EVENT_LOCATION;
 			$scope.meetStatusStartup = response.MEETING_STATUS;				
 			$scope.tags = response.TAG_TO;
+			
+			
+			addContactToTask(response.CONTACTS);
+			
 	}
 	
 	
@@ -109,8 +112,8 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	
 // Tab Collaborate***************************
 	
-	$scope.listCollab = function(response){
-		$scope.collaborates = response;		
+	$scope.listCollab = function(response){		
+		$scope.collaborates = response;
 	}
 		
 	$scope.listCollabByLeadByUser = function(){
@@ -121,8 +124,9 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"moduleId":leadId, "username":username}
-		}).success(function(response) {		
+		    data: {"moduleId":oppId, "username":username}
+		}).success(function(response) {
+			//dis(response)
 			$scope.listCollab(response.DATA);		
 		});	
 	}
@@ -389,6 +393,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataCallToForm(response.DATA);
 			callIdForEdit = callId;
 			$("#btnCallSave").text("Update");
+			$("#tCall").text("Update Call");
 			$("#btn_show_call").click();
 		});		
 	}
@@ -462,6 +467,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataMeetToForm(response.DATA);
 			meetIdForEdit = meetingId;
 			$("#btnMeetSave").text("Update");
+			$("#tMeet").text("Update Meeting");
 			$("#btn_show_meet").click();
 		});		
 	}
@@ -536,6 +542,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataTaskToForm(response.DATA);
 			taskIdForEdit = taskId;
 			$("#btnTaskSave").text("Update");
+			$("#tTask").text("Update Task");
 			$("#btn_show_task").click();
 		});		
 	}
@@ -591,6 +598,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	
 	
 	
+	
 	// end Task path
 	
 	
@@ -617,6 +625,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addDataEventToForm(response.DATA);
 			eventIdForEdit = eventId;
 			$("#btnEventSave").text("Update");
+			$("#tEvent").text("Update Event");
 			$("#btn_show_event").click();
 		});		
 	}
@@ -697,6 +706,7 @@ app.controller('callController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#callStatus").select2('val',"");
 		$("#callAssignTo").select2('val',"");	
 		$("#btnCallSave").text("Save");
+		$("#tCall").text("Create Call");
 		$('#frmAddCall').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -715,6 +725,7 @@ app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#meetStatus").select2('val',"");
 		$("#meetAssignTo").select2('val',"");	
 		$("#btnMeetSave").text("Save");
+		$("#tMeet").text("Create Meeting");
 		$('#frmAddMeet').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -739,6 +750,7 @@ app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAle
 		$("#taskStatus").select2('val',"");
 		$("#taskAssignTo").select2('val',"");	
 		$("#btnTaskSave").text("Save");
+		$("#tCTask").text("Create Task");
 		$('#frmAddTask').bootstrapValidator('resetForm', true);
 	}	
 }]);
@@ -757,9 +769,18 @@ app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAl
 		$("#eventLocation").select2('val',"");
 		$("#eventAssignTo").select2('val',"");	
 		$("#btnEventSave").text("Save");
+		$("#tEvent").text("Create Event");
 		$('#frmAddEvent').bootstrapValidator('resetForm', true);
 	}	
 }]);
+
+function addContactToTask(data){
+	if(data.length>0){
+		for(var i=0; i< data.length; i++){
+			$("#taskContact").append("<option value='"+data[i].conID+"'>"+data[i].conSalutation+" "+data[i].conFirstname+" "+data[i].conLastname+"</option>");
+		}
+	}
+}
 
 
 function addDataCallToForm(data){
@@ -1076,7 +1097,7 @@ function addDataToDetailLead(){
 						<div class="row">
 							<div class="col-sm-3">
 								<div class="description-block">
-									<h5 class="description-header">[{{contact.custID}}]{{contact.custName}}</h5>
+									<h5 class="description-header" ng-if="contact.custID != null">[{{contact.custID}}]{{contact.custName}}</h5>
 									<span class="description-text">Customer</span>
 								</div>
 							</div>
@@ -1481,7 +1502,7 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 
-										<div class="tab-pane" id="collaborate" data-ng-init="listCollab()">
+										<div class="tab-pane" id="collaborate">
 
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
 												<form id="frmCollab">													
@@ -1983,7 +2004,7 @@ function addDataToDetailLead(){
 					<button type="button" ng-click="cancelCallClick()" class="close"
 						data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">
-						<b>Create Call</b>
+						<b id="tCall">Create Call</b>
 					</h4>
 				</div>
 				<div class="modal-body">
@@ -2077,7 +2098,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelMeetClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Meeting</b></h4>
+					<h4 class="modal-title"><b id="tMeet">Create Meeting</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -2188,7 +2209,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelTaskClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Task</b></h4>
+					<h4 class="modal-title"><b id="tTask">Create Task</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
@@ -2263,8 +2284,7 @@ function addDataToDetailLead(){
 								<div class="form-group">
 									<label>Contact</label> 
 									<select class="form-control select2" name="taskContact" id="taskContact" style="width: 100%;">
-										<option value="">-- SELECT A Contact --</option>
-										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conSalutation}} {{st.conLastname}}</option>
+										<option value="">-- SELECT A Contact --</option>										
 									</select>
 								</div>
 							</div>
@@ -2294,7 +2314,7 @@ function addDataToDetailLead(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelEventClick()" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"><b>Create Event</b></h4>
+					<h4 class="modal-title"><b id="tEvent">Create Event</b></h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
