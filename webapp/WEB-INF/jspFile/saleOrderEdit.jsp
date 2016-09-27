@@ -17,7 +17,7 @@
 	</section>
 	
 	<section class="content">
-		<div class="box box-info">
+		<div class="box box-danger">
 			<div class="box-header with-border">
 				<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
 				<button type="button" class="btn btn-info btn-app" name="btnGenQuote" id="btnGenQuote" > <i class="fa fa-cog"></i> Quote</button>

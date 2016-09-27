@@ -24,7 +24,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 		
     });
 	
-	$scope.startupView = function(){ alert(callId)				
+	$scope.startupView = function(){			
 		$http.get("${pageContext.request.contextPath}/call/list/"+callId).success(function(response){
 			$scope.call = response.DATA;	
 			//dis(response.DATA)
@@ -218,8 +218,8 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{call.callRelatedToModuleType}}</h3>
-						<h5 class="widget-user-desc" ng-if="call.callRelatedToModuleType != ''">[{{call.callRelatedToFieldId}}] {{call.callRelatedName}}</h5>
+						<h3 class="widget-user-username ng-cloak">{{call.callRelatedToModuleType}}</h3>
+						<h5 class="widget-user-desc ng-cloak" ng-if="call.callRelatedToModuleType != ''">[{{call.callRelatedToFieldId}}] {{call.callRelatedName}}</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
@@ -244,7 +244,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 														<div class="col-sm-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item item_border">Subject<a
-																	class="pull-right show-text-detail">{{call.callSubject}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.callSubject}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -253,7 +253,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Start Date <a
-																	class="pull-right show-text-detail">{{call.callStartDate}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.callStartDate}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -262,7 +262,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Duration<a
-																	class="pull-right show-text-detail">{{call.callDuration}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.callDuration}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_lastName"
 																			id="lea_lastName" class="form-control"
@@ -277,7 +277,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 															<ul class="list-group list-group-unbordered">
 																
 																<li class="list-group-item item_border">Status <a
-																	class="pull-right show-text-detail">{{call.callStatusName}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.callStatusName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -286,7 +286,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate Type <a
-																	class="pull-right show-text-detail">{{call.callRelatedToModuleType}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.callRelatedToModuleType}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_lastName"
 																			id="lea_lastName" class="form-control"
@@ -294,7 +294,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail">[{{call.callRelatedToFieldId}}] {{call.callRelatedName}}</a>
+																	class="pull-right show-text-detail ng-cloak">[{{call.callRelatedToFieldId}}] {{call.callRelatedName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -309,7 +309,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 															<ul class="list-group list-group-unbordered">
 																
 																<li class="list-group-item item_border">Assign To <a
-																	class="pull-right show-text-detail">{{call.username}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.username}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_no" id="lea_no"
 																			class="form-control" value="{{lead.no}}"> -->
@@ -336,7 +336,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																
 																<li class="list-group-item item_border" ng-if="call.callDes !=''">													
 																	
-																	<a class="show-text-detail">{{call.callDes}}</a>
+																	<a class="show-text-detail ng-cloak">{{call.callDes}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -368,7 +368,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 														<div class="col-sm-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item ">Create By<a
-																	class="pull-right show-text-detail">{{call.callCreateBy}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.callCreateBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -377,7 +377,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Create Date <a
-																	class="pull-right show-text-detail">{{call.callCreateDate | date:'dd/MM/yyyy h:mma'}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.callCreateDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -390,7 +390,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 														<div class="col-sm-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item ">Modify By<a
-																	class="pull-right show-text-detail">{{call.callModifiedBy}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.callModifiedBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -399,7 +399,7 @@ app.controller('viewCallController',['SweetAlert','$scope','$http',function(Swee
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Modify Date <a ng-if="call.callModifiedBy != null"
-																	class="pull-right show-text-detail">{{call.callModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
+																	class="pull-right show-text-detail ng-cloak">{{call.callModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"

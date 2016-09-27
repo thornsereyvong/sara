@@ -119,24 +119,24 @@ public class MainController {
 	// Sale Order path	
 	@RequestMapping("/sale-order/add")
 	public String sale_order(ModelMap model) {		
-		model.addAttribute("menu", "Add Sale Order");		
+		model.addAttribute("menu", "saleOrder");		
 		return "saleOrder";		
 	}
 	@RequestMapping("/sale-order/list")
 	public String listSaleOrder(ModelMap model) {		
-		model.addAttribute("menu", "List Sale Order");		
+		model.addAttribute("menu", "saleOrderList");		
 		return "saleOrderList";			
 	}
 	@RequestMapping("/sale-order/edit/{saleId}")
 	public String editSaleOrder(ModelMap model,@PathVariable("saleId") String saleId) {		
-		model.addAttribute("menu", "Edit Sale Order");	
+		model.addAttribute("menu", "saleOrderEdit");	
 		model.addAttribute("saleId", saleId);	
 		return "saleOrderEdit";		
 	}
 	
 	@RequestMapping("/sale-order/print/{saleId}")
 	public String printSaleOrder(ModelMap model,@PathVariable("saleId") String saleId) {		
-		model.addAttribute("menu", "Print Sale Order");	
+		model.addAttribute("menu", "saleOrderPrint");	
 		model.addAttribute("saleId", saleId);	
 		return "saleOrderPrint";		
 	}
@@ -146,17 +146,17 @@ public class MainController {
 	// Quotation Path
 	@RequestMapping("/quote/add")
 	public String quote(ModelMap model) {		
-		model.addAttribute("menu", "Add Quotation");		
+		model.addAttribute("menu", "quote");		
 		return "quote";		
 	}
 	@RequestMapping("/quote/list")
 	public String listQuote(ModelMap model) {		
-		model.addAttribute("menu", "List Quotation");		
+		model.addAttribute("menu", "quoteList");		
 		return "quoteList";			
 	}
 	@RequestMapping("/quote/edit/{saleId}")
 	public String editQuote(ModelMap model,@PathVariable("saleId") String saleId) {		
-		model.addAttribute("menu", "Edit Quotation");	
+		model.addAttribute("menu", "quoteEdit");	
 		model.addAttribute("saleId", saleId);	
 		return "quoteEdit";		
 	}
@@ -415,7 +415,7 @@ public class MainController {
 
 	@RequestMapping("/login")
 	public String login(ModelMap model) {
-
+		model.addAttribute("title", "App Login | CRM");
 		return "login";
 	}
 

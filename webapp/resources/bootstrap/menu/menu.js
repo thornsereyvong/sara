@@ -347,14 +347,44 @@ function selectMenu(menu_slide){
         
     case "quote":
     	removeCla("#quote","#ul_quote","#ul_li_quote","#quote_icon_quote");
-    	document.title = 'Quote | CRM';
+    	document.title = 'Add Quote | CRM';
         break;
         
+    case "quoteEdit":
+    	removeCla("#quote","#ul_quote","#ul_li_quote","#quote_icon_quote");
+    	document.title = 'Edit Quote | CRM';
+        break;
         
+    case "quoteList":
+    	removeCla("#quote","#ul_quote","#ul_li_quote","#quote_icon_quote");
+    	document.title = 'List Quote | CRM';
+        break;   
         
+    case "quotePrint":
+    	removeCla("#quote","#ul_quote","#ul_li_quote","#quote_icon_quote");
+    	document.title = 'Print Quote | CRM';
+        break; 
         
+    case "saleOrder":
+    	removeCla("#sale_order","#ul_sale_order","#ul_li_sale_order","#sale_order_icon_sale_order");
+    	document.title = 'Add Sale Order | CRM';
+        break;
         
+    case "saleOrderList":
+    	removeCla("#sale_order","#ul_sale_order","#ul_li_sale_order","#sale_order_icon_sale_order");
+    	document.title = 'List Sale Order | CRM';
+        break;
         
+    case "saleOrderEdit":
+    	removeCla("#sale_order","#ul_sale_order","#ul_li_sale_order","#sale_order_icon_sale_order");
+    	document.title = 'Edit Sale Order | CRM';
+        break;
+        
+    case "saleOrderPrint":
+    	removeCla("#sale_order","#ul_sale_order","#ul_li_sale_order","#sale_order_icon_sale_order");
+    	document.title = 'Print Sale Order | CRM';
+        break;
+                
     default:
     	$("#dashboard").removeAttr("class").attr('class', 'treeview active');
     	document.title = 'Dashbord';
