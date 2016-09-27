@@ -161,7 +161,7 @@ $(function(){
 			    success: function(data) {
 			    	if(data.MESSAGE == "UPDATED"){	
 			    		swal({
-		            		title:"Successfully",
+		            		title:"Successful",
 		            		text:"You have been update Note!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -301,7 +301,7 @@ $(function(){
 				
 				if(data.MESSAGE == "UPDATED"){					
 					swal({
-		        		title:"Successfully",
+		        		title:"Successful",
 		        		text:"You have been update opportunity!",
 		        		type:"success",  
 		        		timer: 2000,   
@@ -312,7 +312,7 @@ $(function(){
 					}, 2000);
 				}else{
 					swal({
-		        		title:"Unsuccessfully",
+		        		title:"Unsuccessful",
 		        		text:"Please try again!",
 		        		type:"error",  
 		        		timer: 2000,   
@@ -324,7 +324,7 @@ $(function(){
 			},
 			error:function(error){
 				swal({
-	        		title:"Unsuccessfully",
+	        		title:"Unsuccessful",
 	        		text:"Please try again!",
 	        		type:"error",  
 	        		timer: 2000,   
@@ -428,7 +428,7 @@ $(function(){
 						$("#callAssignTo").select2('val',"");
 						$('#frmAddCall').bootstrapValidator('resetForm', true);
 						swal({
-		            		title:"Successfully",
+		            		title:"Successful",
 		            		text:"You have been created new call!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -474,7 +474,7 @@ $(function(){
 						$("#callAssignTo").select2('val',"");
 						$('#frmAddCall').bootstrapValidator('resetForm', true);						
 						swal({
-		            		title:"Successfully",
+		            		title:"Successful",
 		            		text:"You have been updated new call!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -612,7 +612,7 @@ $(function(){
 						$('#frmAddMeet').bootstrapValidator('resetForm', true);
 						
 						swal({
-		            		title:"Successfully",
+		            		title:"Successful",
 		            		text:"You have been created new meeting!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -664,7 +664,7 @@ $(function(){
 						$('#frmAddMeet').bootstrapValidator('resetForm', true);
 						
 						swal({
-		            		title:"Successfully",
+		            		title:"Successful",
 		            		text:"You have been updated this meeting!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -786,7 +786,7 @@ $(function(){
 						$('#frmAddTask').bootstrapValidator('resetForm', true);		
 						
 						swal({
-		            		title:"Successfully",
+		            		title:"Successful",
 		            		text:"You have been created a new task!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -840,7 +840,7 @@ $(function(){
 						$('#frmAddTask').bootstrapValidator('resetForm', true);	
 						
 						swal({
-		            		title:"Successfully",
+		            		title:"Successful",
 		            		text:"You have been updated this task!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -971,7 +971,7 @@ $(function(){
 						$('#frmAddEvent').bootstrapValidator('resetForm', true);
 						
 						swal({
-		            		title:"Successfully",
+		            		title:"Successful",
 		            		text:"You have been created a new event!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -1023,7 +1023,7 @@ $(function(){
 						$('#frmAddEvent').bootstrapValidator('resetForm', true);						
 						
 						swal({
-		            		title:"Successfully",
+		            		title:"Successful",
 		            		text:"You have been updated this event!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -1111,7 +1111,7 @@ $(function(){
 					$("#collabTags").select2("val","");
 					$('#frmCollab').bootstrapValidator('resetForm', true);						
 					swal({
-	            		title:"Successfully",
+	            		title:"Successful",
 	            		text:"You have been created a new post!",
 	            		type:"success",  
 	            		timer: 2000,   
@@ -1139,15 +1139,49 @@ $(function(){
 			ConContact: {
 				validators: {
 					notEmpty: {
-						message: 'The post description is required and can not be empty!'
+						message: 'The contact is required and can not be empty!'
 					}
 				}
 			}
 			
 		}
 	});
-	
-	
+	$('#frmAddQuote').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			QuoteQuote: {
+				validators: {
+					notEmpty: {
+						message: 'The quote is required and can not be empty!'
+					}
+				}
+			}
+			
+		}
+	});
+	$('#frmAddSaleOrder').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			SaleSaleOrder: {
+				validators: {
+					notEmpty: {
+						message: 'The sale order is required and can not be empty!'
+					}
+				}
+			}
+			
+		}
+	});
 });
 
 

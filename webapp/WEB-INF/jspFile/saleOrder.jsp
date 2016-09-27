@@ -449,6 +449,9 @@ var LCustomer = content.DATA[0].customer;
 var LPriceCode = content.DATA[0].priceCode;
 var LEmp = content.DATA[0].employee;
 if(content.MESSAGE == "SUCCESS"){
+	
+	dis(content);
+	
 	if(LItem.length > 0){
 		for(var i=0;i<LItem.length;i++){
 			tagItem += "<option value="+LItem[i].ItemID+">["+LItem[i].ItemID+"] "+LItem[i].ItemName+"</option>";

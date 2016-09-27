@@ -105,7 +105,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 $(document).ready(function() {
 	$(".select2").select2();
 	$("#btn_clear").click(function(){
-		$("#form-customer").bootstrapValidator('resetForm', 'true');
+		location.reload();
 	});
 	
 	 $("#btn_save").click(function(){
@@ -243,26 +243,7 @@ $(document).ready(function() {
 		}).on('success.form.bv', function(e) {							
 
 			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
-			/* dis({
-				  "custID" : custId,
-			      "custName": getValueStringById("cs_name"),
-			      "custTel1": getValueStringById("c_tel1"),
-			      "custTel2": getValueStringById("c_tel2"),
-			      "custFax": getValueStringById("c_fax"),
-			      "custEmail": getValueStringById("c_email"),
-			      "custWebsite": getValueStringById("c_website"),
-			      "custAddress": getValueStringById("c_billAddr"),
-			      "facebook": getValueStringById("c_facebook"),
-			      "line": getValueStringById("c_line"),
-			      "viber": getValueStringById("c_viber"),
-			      "whatApp": getValueStringById("c_whatapp"),
-			      "industID": getJsonById("industID","c_industry","int"),
-				  "accountTypeID": getJsonById("accountID","c_type","int"),
-				  "custDetails" : ship,
-				  "priceCode" : getJsonById("priceCode","c_price","str"),
-				  "custGroup" : getJsonById("custGroupId","c_group","str"),
-				  "imageName" : ""
-			}) */
+	
 			$.ajax({
 				url : "${pageContext.request.contextPath}/customer/edit",
 				type : "PUT",
@@ -293,7 +274,7 @@ $(document).ready(function() {
 				success:function(data){										
 					if(data.MESSAGE == "UPDATED"){
 						swal({
-		            		title:"Success",
+		            		title:"Update Successfully",
 		            		text:"You have been updated customer!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -317,7 +298,7 @@ $(document).ready(function() {
 			<div class="box-body">			
 				<form method="post" id="form-customer" data-ng-init="startupCustomer()">					
 					<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
-					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
 					<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/list-customers"> <i class="fa fa-reply"></i> Back </a>
 	
 					<div class="clearfix"></div>
