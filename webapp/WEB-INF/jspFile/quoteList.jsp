@@ -88,7 +88,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 		<h1>Quotations</h1>
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
-			<li><a href="#"><i class="fa fa-dashboard"></i>List Quotation</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i>Quotations</a></li>
 		</ol>
 	</section>
 
@@ -137,11 +137,11 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 							<th style="cursor: pointer;" ng-click="sort('saleDate')">Sale Date
 								<span class="glyphicon sort-icon" ng-show="sortKey=='saleDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('custId')">Customer ID
-								<span class="glyphicon sort-icon" ng-show="sortKey=='custId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('custName')">Customer Name
+							<th style="cursor: pointer;" ng-click="sort('custName')">Customer
 								<span class="glyphicon sort-icon" ng-show="sortKey=='custName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							</th>
+							<th style="cursor: pointer;" ng-click="sort('empName')">Employee
+								<span class="glyphicon sort-icon" ng-show="sortKey=='empName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 							<th style="cursor: pointer;" ng-click="sort('totalAmt')">Total Amount
 								<span class="glyphicon sort-icon" ng-show="sortKey=='totalAmt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
@@ -158,21 +158,21 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 							<td>{{qq.saleId}}</td>
 							<td>{{qq.saleReference}}</td>
 							<td>{{qq.saleDate | date:'dd-MMM-yyyy'}}</td>
-							<td>{{qq.custId}}</td>
-							<td>{{qq.custName}}</td>
-							<td>{{qq.totalAmt | number}}</td>	
+							<td>[{{qq.custId}}] {{qq.custName}}</td>
+							<td>[{{qq.empId}}] {{qq.empName}}</td>
+							<td class="dis-number">{{qq.totalAmt | number:2}}</td>	
 							<td>{{qq.PostStatus}}</td>	
 							<td>
 								
 								<div class="col-sm-2">
 									<div class="btn-group">
-				                      <button type="button" class="btn btn-default btn-flat" data-toggle="dropdown" aria-expanded="false">
+				                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
 				                        <span class="caret"></span>
 				                        <span class="sr-only">Toggle Dropdown</span>
 				                      </button>
 				                      <ul class="dropdown-menu" role="menu">
-				                        <li><a href="${pageContext.request.contextPath}/quote/edit/{{qq.saleId}}"><i class="fa fa-pencil"></i> Edit</a></li>
-				                        <li><a href="#" ng-click="deleteQuote(qq.saleId)"><i class="fa fa-trash"></i> Delete</a></li>
+				                        <li ng-if="qq.PostStatus != 'Converted'"><a href="${pageContext.request.contextPath}/quote/edit/{{qq.saleId}}"><i class="fa fa-pencil"></i> Edit</a></li>
+				                        <li ng-if="qq.PostStatus != 'Converted'"><a href="#" ng-click="deleteQuote(qq.saleId)"><i class="fa fa-trash"></i> Delete</a></li>
 				                        <li><a href="#" ng-click="printQuote(qq.saleId)"><i class="fa fa-print"></i>Print</a></li>
 				                      </ul>
 				                    </div>

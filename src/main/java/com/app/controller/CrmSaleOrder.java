@@ -27,6 +27,15 @@ public class CrmSaleOrder {
 	@Autowired
 	private String URL;
 	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/sale-order/status/{saleId}/{status}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> updateStatus(@PathVariable("saleId") String saleId,@PathVariable("status") String status){			
+		HttpEntity<String> request = new HttpEntity<String>(header);			
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/sale_order/edit/post_status/"+saleId+"/"+status, HttpMethod.GET, request, Map.class);			
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/sale-order/list-content-by-id/{saleId}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getContentQuoteId(@PathVariable("saleId") String saleId){			

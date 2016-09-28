@@ -13,7 +13,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 		$http.get("${pageContext.request.contextPath}/sale-order/list-all-sale-order").success(function(response){			
 			$scope.saleOrder = response.DATA;			
 			});
-		} ;
+		};
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -77,7 +77,57 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
             }
         });
 	};
+	$scope.authorizeSaleOder = function(saleId){
+		
+		SweetAlert.swal({
+            title: "Authorization",
+            text: "",
+            imageUrl: "${pageContext.request.contextPath}/resources/images/module/key.svg",
+            showCancelButton: true,          
+            confirmButtonText: "Approve",
+            cancelButtonText: "Reject",
+            closeOnConfirm: false, 
+            closeOnCancel: false
+        }, 
+        function(isConfirm){
+        	 if(isConfirm){
+        		 $http.get("${pageContext.request.contextPath}/sale-order/status/"+saleId+"/Authorized").success(function(response){			
+       				if(response.MESSAGE == 'UPDATED'){
+       					SweetAlert.swal({
+       	            		title:"Authorization",
+       	            		text:"The sale order:"+saleId+" was successfully authorized!",
+       	            		type:"success",  
+       	            		timer: 2000,
+       	            		showConfirmButton: false
+       	        		});
+       	    			$scope.listSaleOrder();
+       				}else{
+       					alertMsgErrorSweet();
+       				}	
+    			}).error(function(){
+       				alertMsgErrorSweet();
+       			});
+        	 }else{
+        		 $http.get("${pageContext.request.contextPath}/sale-order/status/"+saleId+"/Reject").success(function(response){			
+        				if(response.MESSAGE == 'UPDATED'){
+        					SweetAlert.swal({
+        	            		title:"Authorization",
+        	            		text:"The sale order:"+saleId+" was successfully rejected!",
+        	            		type:"success",  
+        	            		timer: 2000,   
+        	            		showConfirmButton: false
+        	        		});
+        	    			$scope.listSaleOrder();
+        				}else{
+        					alertMsgErrorSweet();
+        				}	
+     			}).error(function(){
+        				alertMsgErrorSweet();
+        			});
+        	 }
+        });
 	
+	}
 }]);
 
 </script>
@@ -138,11 +188,12 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 							<th style="cursor: pointer;" ng-click="sort('saleDate')">Sale Date
 								<span class="glyphicon sort-icon" ng-show="sortKey=='saleDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('custId')">Customer ID
-								<span class="glyphicon sort-icon" ng-show="sortKey=='custId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('custName')">Customer Name
+							
+							<th style="cursor: pointer;" ng-click="sort('custName')">Customer
 								<span class="glyphicon sort-icon" ng-show="sortKey=='custName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							</th>
+							<th style="cursor: pointer;" ng-click="sort('empName')">Employee
+								<span class="glyphicon sort-icon" ng-show="sortKey=='empName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 							<th style="cursor: pointer;" ng-click="sort('totalAmt')">Total Amount
 								<span class="glyphicon sort-icon" ng-show="sortKey=='totalAmt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
@@ -158,16 +209,16 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 						<tr dir-paginate="qq in saleOrder |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
 							<td>{{qq.saleId}}</td>
 							<td>{{qq.saleReference}}</td>
-							<td>{{qq.saleDate | date:'dd-MMM-yyyy'}}</td>
-							<td>{{qq.custId}}</td>
-							<td>{{qq.custName}}</td>
-							<td>{{qq.totalAmt | number}}</td>	
+							<td>{{qq.saleDate | date:'dd-MM-yyyy'}}</td>							
+							<td>[{{qq.custId}}] {{qq.custName}}</td>
+							<td>[{{qq.empId}}] {{qq.empName}}</td>
+							<td class="dis-number">{{qq.totalAmt | number:2}}</td>	
 							<td>{{qq.PostStatus}}</td>	
 							<td>
 								
 								<div class="col-sm-2">
 									<div class="btn-group">
-				                      <button type="button" class="btn btn-default btn-flat" data-toggle="dropdown" aria-expanded="false">
+				                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
 				                        <span class="caret"></span>
 				                        <span class="sr-only">Toggle Dropdown</span>
 				                      </button>
@@ -207,7 +258,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 		</div>
 		
 		<!-- /.box -->
-
+		<div id="errors"></div>
 
 	</section>
 	<!-- /.content -->

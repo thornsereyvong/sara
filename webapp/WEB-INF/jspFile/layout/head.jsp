@@ -40,6 +40,8 @@
 	.width-90{ width: 80px; }
 	.requrie{color: #b9292d;}
 	.select2{ width: 100%; }
+	.iText-right{ text-align:right !important; }
+	.dis-number{ text-align:right !important; margin-right: 10px !important; width:120px !important;}
 </style>
 
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.min.js"></script>

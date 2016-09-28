@@ -432,7 +432,7 @@ var content = JSON.parse($.ajax({
 	async: false,
 }).responseText);
 
-//dis(content)
+dis(content)
 var tagItem = "";
 var LItem = content.DATA[0].item;
 var tagLocation ="";
