@@ -85,8 +85,9 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 <div class="content-wrapper" ng-app="saleOrderApp" ng-controller="saleOrderController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>List Sale Order</h1>
+		<h1>Sale Orders</h1>
 		<ol class="breadcrumb">
+		<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i>List Sale Order</a></li>
 		</ol>
 	</section>
@@ -146,10 +147,8 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 							<th style="cursor: pointer;" ng-click="sort('totalAmt')">Total Amount
 								<span class="glyphicon sort-icon" ng-show="sortKey=='totalAmt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('pmtStatus')">Payment Status
-								<span class="glyphicon sort-icon" ng-show="sortKey=='pmtStatus'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('PostStatus')">Post Status
+							
+							<th style="cursor: pointer;" ng-click="sort('PostStatus')">Status
 								<span class="glyphicon sort-icon" ng-show="sortKey=='PostStatus'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 											
@@ -163,12 +162,25 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 							<td>{{qq.custId}}</td>
 							<td>{{qq.custName}}</td>
 							<td>{{qq.totalAmt | number}}</td>	
-							<td>{{qq.pmtStatus}}</td>
 							<td>{{qq.PostStatus}}</td>	
 							<td>
-								<a href="${pageContext.request.contextPath}/sale-order/edit/{{qq.saleId}}" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-								<button type="button" ng-click="deleteSaleOder(qq.saleId)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>
-								<a href="${pageContext.request.contextPath}/sale-order/print/{{qq.saleId}}" target="_blank" class="btn btn-info custom-width"><i class="fa  fa-print" aria-hidden="true"></i> Print</a>
+								
+								<div class="col-sm-2">
+									<div class="btn-group">
+				                      <button type="button" class="btn btn-default btn-flat" data-toggle="dropdown" aria-expanded="false">
+				                        <span class="caret"></span>
+				                        <span class="sr-only">Toggle Dropdown</span>
+				                      </button>
+				                      <ul class="dropdown-menu" role="menu">
+				                        <li><a href="${pageContext.request.contextPath}/sale-order/edit/{{qq.saleId}}"><i class="fa fa-pencil"></i> Edit</a></li>
+				                        <li><a href="#" ng-click="deleteSaleOder(qq.saleId)"><i class="fa fa-trash"></i> Delete</a></li>
+				                        <li><a href="#" ng-click="printSaleOder(qq.saleId)"><i class="fa fa-print"></i>Print</a></li>
+				                        <li><a href="#" ng-click="authorizeSaleOder(qq.saleId)"><i class="fa fa-key"></i>Authorize</a></li>
+				                      </ul>
+				                    </div>
+			                   	</div>
+								
+								
 								
 							</td>
 						</tr>

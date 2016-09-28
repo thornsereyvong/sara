@@ -258,7 +258,7 @@
 								</div>
 							</div>
 							<div class="col-md-12">
-								<label>Invoice Discount<span></span></label> 
+								<label>Discount<span></span></label> 
 								<div class="input-group">
 				                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
 				                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
@@ -267,7 +267,7 @@
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
-									<label> Net Invoice <span></span></label> 
+									<label> Net Total Amount <span></span></label> 
 									<input disabled id="txtNetInv" class="form-control text-align-right" type="text" placeholder="">
 								</div>
 							</div>
@@ -359,10 +359,7 @@
 											<th style="cursor: pointer;" ng-click="sort('totalAmt')">Total Amount
 												<span class="glyphicon sort-icon" ng-show="sortKey=='totalAmt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 											</th>
-											<th style="cursor: pointer;" ng-click="sort('pmtStatus')">Payment Status
-												<span class="glyphicon sort-icon" ng-show="sortKey=='pmtStatus'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-											</th>
-											<th style="cursor: pointer;" ng-click="sort('PostStatus')">Post Status
+											<th style="cursor: pointer;" ng-click="sort('PostStatus')">Status
 												<span class="glyphicon sort-icon" ng-show="sortKey=='PostStatus'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 											</th>
 															
@@ -375,8 +372,7 @@
 											<td>{{qq.saleDate | date:'dd-MMM-yyyy'}}</td>
 											<td>{{qq.custId}}</td>
 											<td>{{qq.custName}}</td>
-											<td>{{qq.totalAmt | number}}</td>	
-											<td>{{qq.pmtStatus}}</td>
+											<td>{{qq.totalAmt | number}}</td>
 											<td>{{qq.PostStatus}}</td>	
 											<td>
 												<button ng-if="curentQuoteId == qq.saleId" type="button" ng-click="selectQuote(qq.saleId)" class="btn btn-primary custom-width"><i class="fa fa-check-square-o" aria-hidden="true"></i></button>
