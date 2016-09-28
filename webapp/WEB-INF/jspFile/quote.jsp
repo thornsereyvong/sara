@@ -259,12 +259,12 @@
 						<div class="col-md-3">
 							<div class="col-md-12">
 								<div class="form-group">
-									<label>Total Sale Order</label> 
+									<label>Total Quote</label> 
 									<input disabled id="txtTSalOrd" class="form-control text-align-right" type="text" placeholder="">
 								</div>
 							</div>
 							<div class="col-md-12">
-								<label>Invoice Discount<span></span></label> 
+								<label>Discount<span></span></label> 
 								<div class="input-group">
 				                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
 				                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
@@ -273,7 +273,7 @@
 							</div>
 							<div class="col-md-12">
 								<div class="form-group">
-									<label> Net Invoice <span></span></label> 
+									<label> Net Total Amount <span></span></label> 
 									<input disabled id="txtNetInv" class="form-control text-align-right" type="text" placeholder="">
 								</div>
 							</div>

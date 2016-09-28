@@ -58,7 +58,6 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	
 	$scope.listLeads = function(){
 			response = getLeadData();	
-			//dis(response)
 			
 			OPPORTUNITY = response.OPPORTUNITY;
 			$scope.oppLeadSource = response.LEAD_SOURCE;
@@ -66,11 +65,8 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.oppAssignTo = response.ASSIGN_TO;
 			$scope.oppCampaign = response.CAMPAIGNS;
 			$scope.oppStage = response.OPP_STAGES;
-			$scope.oppCustomer = response.CUSTOMERS;
-			
-			$scope.opportunity = response.OPPORTUNITY;
-			//$scope.contact = response.CONTACTS;
-			
+			$scope.oppCustomer = response.CUSTOMERS;			
+			$scope.opportunity = response.OPPORTUNITY;			
 			$scope.listNote1(response.NOTES);
 					
 			userAllList($scope.oppAssignTo,'#callAssignTo','');
@@ -87,9 +83,11 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.listAllTaskByLeadId(response.TASKS);
 			$scope.listAllEventByLeadId(response.EVENTS);
 			
-			$scope.initContact(response.CONTACTS);
-			$scope.initQuote(response.QUOTATIONS);
-			$scope.initSaleOrder(response.SALE_ORDERS);
+			$scope.contact = response.CONTACTS;
+			$scope.quote = response.QUOTATIONS;
+			$scope.saleOrder = response.SALE_ORDERS;
+			
+			//dis(response.SALE_ORDERS)
 			
 			$scope.allContact = response.ALL_CONTACTS;
 			$scope.allQuote = response.ALL_QUOTATIONS;
@@ -98,8 +96,6 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.listAllEmailByLeadId = function(){	
 				$scope.listAllEmailByLead = [];	
 			}
-			
-			
 			
 			$scope.listCollab(response.COLLABORATIONS);							
 			$scope.callStatusStartup = response.CALL_STATUS;
@@ -113,39 +109,6 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			
 			
 	}
-	
-	// contact
-	
-	$scope.initContact = function(contact){
-		$scope.contact = contact;
-	}
-	
-	
-	
-	
-	
-	
-	
-	// quote
-	$scope.initQuote = function(quote){
-		$scope.quote = quote;
-	}
-	
-	
-	
-	
-	// sale order
-	$scope.initSaleOrder = function(saleOrder){
-		$scope.saleOrder = saleOrder;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	$scope.sort = function(keyname){
@@ -732,11 +695,18 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$("#btn_show_email").click();
 	}
 	
-	
+	// contact
 	
 	$scope.contact_click = function(){
 		$("#btn_show_contact").click();
 	}
+	
+	
+	$scope.cancelContactClick = function(){		
+		$("#ConContact").select2("val","");
+		$('#frmAddContact').data('bootstrapValidator').resetField($('#ConContact'));
+	}
+	
 	$scope.saveContactClick = function(){
 		$("#frmAddContact").data('bootstrapValidator').validate();		
 		var boolContact = $("#frmAddContact").data('bootstrapValidator').validate().isValid();
@@ -750,16 +720,41 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			    },
 			    data: {"opId":oppId, "conId":getValueStringById("ConContact"), "opConType": getValueStringById("ConType")}
 			}).success(function(response) {
-				
-			//	dis(response)
-				
-			});	
-		}else{
-			alert(0)
+				if(response.MESSAGE == "INSERTED"){
+					swal({
+	            		title:"Successful",
+	            		text:"You have been added a new contact!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+	    			});	
+					
+					$scope.contact.push(response.DATA); 
+					
+					setTimeout(function(){			
+						$scope.cancelContactClick();
+						$('#frmContact').modal('toggle');
+					}, 2000);
+					
+										
+				}else if(response.MESSAGE == "EXIST"){
+					swal({
+	            		title:"Warning!",
+	            		text:"This contact is already exist!",
+	            		type:"error",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+	    			});
+				}else{
+					alertMsgErrorSweet();
+				}				
+			}).error(function(){
+				alertMsgErrorSweet();
+			});
 		}
 	}
 	
-	$scope.deleteContactClick = function(conID){
+	$scope.deleteContactClick = function(conID, key){
 		$http({
 		    method: 'DELETE',
 		    url: "${pageContext.request.contextPath}/opportunity/contact/delete/"+conID,
@@ -768,17 +763,215 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		        'Content-Type': 'application/json'
 		    }
 		}).success(function(response){			
-			//dis(response)			
+			if(response.MESSAGE == "DELETED"){
+				SweetAlert.swal({
+	            		title:"Deleted",
+	            		text:"Contact have been deleted!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+     			});
+				$scope.contact.splice(key,1);					
+			}else{
+				alertMsgErrorSweet();
+			}			
+		}).error(function(){
+			alertMsgErrorSweet();
 		});
 	}
+	
+	
+	// end contact
+	
+	
+	// start quote
 	
 	$scope.quote_click = function(){
 		$("#btn_show_quote").click();
 	}
 	
+	$scope.cancelQuoteClick = function(){		
+		$("#QuoteQuote").select2("val","");
+		$('#frmAddQuote').data('bootstrapValidator').resetField($('#QuoteQuote'));
+	}
+	
+	$scope.saveQuoteClick = function(){
+		$("#frmAddQuote").data('bootstrapValidator').validate();		
+		var boolContact = $("#frmAddQuote").data('bootstrapValidator').validate().isValid();
+		if(boolContact == true){
+			$http({
+			    method: 'POST',
+			    url: "${pageContext.request.contextPath}/opportunity/quote/add",
+			    headers: {
+			    	'Accept': 'application/json',
+			        'Content-Type': 'application/json'
+			    },
+			    data: {"opId":oppId, "quoteId":getValueStringById("QuoteQuote")}
+			}).success(function(response) {
+				if(response.MESSAGE == "INSERTED"){
+					swal({
+	            		title:"Successful",
+	            		text:"You have been added a new quote!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+	    			});	
+					
+					$scope.quote.push(response.DATA); 
+					
+					setTimeout(function(){			
+						$scope.cancelQuoteClick();
+						$('#frmQuote').modal('toggle');
+					}, 2000);
+					
+										
+				}else if(response.MESSAGE == "EXIST"){
+					swal({
+	            		title:"Warning!",
+	            		text:"This quote is already exist!",
+	            		type:"error",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+	    			});
+				}else{
+					alertMsgErrorSweet();
+				}				
+			}).error(function(){
+				alertMsgErrorSweet();
+			});
+		}
+	}
+	
+	$scope.deleteQuoteClick = function(opQuoteId, key,quoteId){
+		$http({
+		    method: 'DELETE',
+		    url: "${pageContext.request.contextPath}/opportunity/quote/delete/"+opQuoteId,
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    }
+		}).success(function(response){			
+			if(response.MESSAGE == "DELETED"){
+				SweetAlert.swal({
+	            		title:"Deleted",
+	            		text:"Quote have been deleted!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+     			});
+				$scope.quote.splice(key,1);	
+			}else{
+				alertMsgErrorSweet();
+			}			
+		}).error(function(){
+			alertMsgErrorSweet();
+		});
+	}
+	
+	
+	
+	// end quote
+	
+	// sale order
 	$scope.sale_order_click = function(){
 		$("#btn_show_sale_order").click();
 	}
+	$scope.cancelSaleOrderClick = function(){		
+		$("#SaleSaleOrder").select2("val","");
+		$('#frmAddSaleOrder').data('bootstrapValidator').resetField($('#SaleSaleOrder'));
+	}
+	
+	$scope.saveSaleOrderClick = function(){
+		$("#frmAddSaleOrder").data('bootstrapValidator').validate();		
+		var boolContact = $("#frmAddSaleOrder").data('bootstrapValidator').validate().isValid();
+		if(boolContact == true){
+			$http({
+			    method: 'POST',
+			    url: "${pageContext.request.contextPath}/opportunity/sale_order/add",
+			    headers: {
+			    	'Accept': 'application/json',
+			        'Content-Type': 'application/json'
+			    },
+			    data: {"opId":oppId, "saleId":getValueStringById("SaleSaleOrder")}
+			}).success(function(response) {
+				if(response.MESSAGE == "INSERTED"){
+					swal({
+	            		title:"Successful",
+	            		text:"You have been added a new sale order!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+	    			});	
+					
+					$scope.saleOrder.push(response.DATA); 
+					
+					setTimeout(function(){			
+						$scope.cancelSaleOrderClick();
+						$('#frmSaleOrder').modal('toggle');
+					}, 2000);
+					
+										
+				}else if(response.MESSAGE == "EXIST"){
+					swal({
+	            		title:"Warning!",
+	            		text:"This sale order is already exist!",
+	            		type:"error",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+	    			});
+				}else{
+					alertMsgErrorSweet();
+				}				
+			}).error(function(){
+				alertMsgErrorSweet();
+			});
+		}
+	}
+	
+	$scope.deleteSaleOrderClick = function(opSaleId, key){
+		$http({
+		    method: 'DELETE',
+		    url: "${pageContext.request.contextPath}/opportunity/sale_order/delete/"+opSaleId,
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    }
+		}).success(function(response){			
+			if(response.MESSAGE == "DELETED"){
+				SweetAlert.swal({
+	            		title:"Deleted",
+	            		text:"Sale order have been deleted!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+     			});
+				$scope.saleOrder.splice(key,1);	
+			}else{
+				alertMsgErrorSweet();
+			}			
+		}).error(function(){
+			alertMsgErrorSweet();
+		});
+	}
+	
+	// end sale order
+	
+	// Product
+	
+	
+	$scope.product_click = function(){
+		$("#btn_show_product").click();
+	}
+	
+	
+	
+	
+	
+	// end product
+	
+	
+	
+	
 	
 	
 }]);
@@ -1036,11 +1229,19 @@ function addDataToDetailLead(){
 .iTable tbody{
 	border-top: 1px solid #d2d6de !important;
 }
+.iTable tfoot{
+	border-top: 2px solid #d2d6de !important;
+}
+
+
+
 .iTable thead, tr, td{
 	border:0px !important;
 }
 
-
+.iText-right{
+	text-align:right !important;
+}
 
 .iTD-width-50 {
 	width: 50px;
@@ -1246,6 +1447,8 @@ function addDataToDetailLead(){
 											aria-expanded="false">NOTES</a></li>
 										<li class=""><a href="#detail_tap" data-toggle="tab"
 											aria-expanded="false">DETAILS</a></li>
+										<li class=""><a href="#product_tap" data-toggle="tab"
+										aria-expanded="false">PRODUCTS</a></li>
 										<li class=""><a href="#related_tap" data-toggle="tab"
 											aria-expanded="false">RELATED</a></li>
 									</ul>
@@ -1918,6 +2121,121 @@ function addDataToDetailLead(){
 										</div>
 
 										
+										<div class="tab-pane " id="product_tap">
+											<div class="row">
+												<div class="col-md-12" >
+													<a style="margin-left: 0px;" class="btn btn-app" ng-click="product_click()"> 
+														<i class="fa fa-plus"></i> Product
+													</a> 
+												</div>
+												<div class="col-md-12">
+													<div class="panel-group" id="proGroup">														
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title pull-left">
+																	<a data-toggle="collapse" data-parent="" href="#ProFrm">Products  </a>																	
+																</h4>
+																<span class="badge bg-blue pull-right">{{product.length <= 0 ? '' : product.length }}</span>
+																<%-- <a href="${pageContext.request.contextPath}/create-contact" class="btn btn-default pull-right">New</a> --%>
+																<div class="clearfix"></div>
+															</div>
+															<div id="ProFrm" class="panel-collapse collapse in">
+																<div class="panel-body">
+																	<div class="mailbox-messages table-responsive">
+																			<table class="table iTable"> 					
+																				<tbody>
+																					<tr>
+																						<th>Item</th>
+																						<th>Location ID</th>
+																						<th>Class ID</th>
+																						<th>UOM ID</th>
+																						<th>Quantity</th>
+																						<th>Unit Price</th>
+																						<th>Price Factor</th>
+																						<th>Report Price</th>
+																						<th>Total Amount</th>
+																						<th>Discount %</th>
+																						<th>Discount $</th>
+																						<th>VAT %</th>
+																						<th>VAT $</th>
+																						<th>ST %</th>
+																						<th>ST $</th>
+																						<th>Net Total Amount</th>
+																						<th></th>
+																					</tr>
+																				</tbody>
+																				<tbody ng-repeat="(key, con) in contact">
+																					<tr>
+																						<td>[CA0001] ABC</td>
+																						<td>[CCW] CCW</td>
+																						<td>[ABC] aaaa</td>
+																						<td>[EA] Each</td>
+																						<td class="iText-right">1,000.00</td>
+																						<td class="iText-right">100</td>
+																						<td class="iText-right">0.00000</td>
+																						<td class="iText-right">0.00000</td>
+																						<td class="iText-right">1000000</td>
+																						<td class="iText-right">777777</td>
+																						<td class="iText-right">34444</td>
+																						<td class="iText-right">6666</td>
+																						<td class="iText-right">222</td>
+																						<td class="iText-right">5856868</td>
+																						<td class="iText-right">637676</td>
+																						<td class="iText-right">67676</td>
+																						<td>
+																							<div class="col-sm-2">
+																								<div class="btn-group">
+																									<button type="button"
+																										class="btn btn-default dropdown-toggle"
+																										data-toggle="dropdown" aria-expanded="false">
+																										<span class="caret"></span> <span class="sr-only">Toggle
+																											Dropdown</span>
+																									</button>
+																									<ul class="dropdown-menu" role="menu">
+																										<li>
+																											<a href="#" ng-click="deleteContactClick(con.id, key)" ><i class="fa fa-pencil"></i> Edit </a>
+																										</li>
+																										<li>
+																											<a href="#" ng-click="deleteContactClick(con.id, key)" ><i class="fa fa-trash"></i> Delete </a>
+																										</li>																										
+																															
+																									</ul>
+																								</div>
+																							</div>
+																						</td>
+																					</tr>
+																				</tbody>
+																				<tfoot>
+																					<tr>
+																						<th colspan="12"></th>
+																						<th colspan="3" class="iText-right">Total Sale Order: </th>
+																						<th class="iText-right">11555232355</th>
+																						<th></th>
+																					</tr>
+																					<tr>
+																						<th colspan="12"></th>
+																						<th colspan="3" class="iText-right">Discount: </th>
+																						<th class="iText-right">100</th>
+																						<th></th>
+																					</tr>
+																					<tr>
+																						<th colspan="12"></th>
+																						<th colspan="3" class="iText-right">Total Amount: </th>
+																						<th class="iText-right">100</th>
+																						<th></th>
+																					</tr>
+																				</tfoot>	
+																			</table>
+																		</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										
 										<div class="tab-pane " id="related_tap">
 											<div class="row">
 												<div class="col-md-12" >
@@ -1931,11 +2249,11 @@ function addDataToDetailLead(){
 															<i class="fa fa-file-text-o"></i> Sale Order
 														</a> 
 														
-													</div>
+												</div>
 												<div class="col-md-12">
 																																																	
 													<div class="panel-group" id="relatedGroup">														
-														<div class="panel panel-default" ng-data-init="initContact(contact)">
+														<div class="panel panel-default">
 															<div class="panel-heading">
 																<h4 class="panel-title pull-left">
 																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RContact">Contacts  </a>																	
@@ -1960,7 +2278,7 @@ function addDataToDetailLead(){
 																						<th></th>
 																					</tr>
 																				</thead>
-																				<tbody ng-repeat="con in contact">
+																				<tbody ng-repeat="(key, con) in contact">
 																					<tr>
 																						<td class="iTD-width-50">
 																							<a href="#">
@@ -1983,12 +2301,12 @@ function addDataToDetailLead(){
 																											Dropdown</span>
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
-																										<li><a href="#" ng-click="deleteContactClick(con.id)" >
-																												<i class="fa fa-trash"></i> Delete
-																										</a></li>																										
-																										<li><a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}"> <i class="fa fa-eye"></i>
-																												View
-																										</a></li>					
+																										<li>
+																											<a href="#" ng-click="deleteContactClick(con.id, key)" ><i class="fa fa-trash"></i> Delete </a>
+																										</li>																										
+																										<li>
+																											<a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}"> <i class="fa fa-eye"></i> View</a>
+																										</li>					
 																									</ul>
 																								</div>
 																							</div>
@@ -2001,7 +2319,7 @@ function addDataToDetailLead(){
 															</div>
 														</div>
 														
-														<div class="panel panel-default" ng-data-init="initQuote(quote)">
+														<div class="panel panel-default">
 															<div class="panel-heading">
 																<h4 class="panel-title pull-left">
 																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RQuote">Quotations  </a>																	
@@ -2026,7 +2344,7 @@ function addDataToDetailLead(){
 																						<th></th>
 																					</tr>
 																				</thead>
-																				<tbody ng-repeat="q in quote">
+																				<tbody ng-repeat="(key, q) in quote">
 																					<tr>
 																						<td class="iTD-width-50">
 																							<a href="#">
@@ -2038,7 +2356,7 @@ function addDataToDetailLead(){
 																						<td>{{q.startDate | date:'dd/MM/yyyy'}}</td>
 																						<td>{{q.expireDate | date:'dd/MM/yyyy'}}</td>
 																						<td>[{{q.empId}}] {{q.empName}}</td>
-																						<td>{{q.quoteId | number:2}}</td>
+																						<td>{{q.totalAmmount | number:2}}</td>
 																						<td class="mailbox-date">
 																							<div class="col-sm-2">
 																								<div class="btn-group">
@@ -2050,10 +2368,10 @@ function addDataToDetailLead(){
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
 																										
-																										<li><a href="#" ng-click="deleteQuote(q.quoteId)" >
+																										<li><a href="#" ng-click="deleteQuoteClick(q.opQuoteId, key, q.quoteId)"  >
 																												<i class="fa fa-trash"></i> Delete
 																										</a></li>																									
-																										<li><a href="#"> <i class="fa fa-eye"></i>
+																										<li><a href="${pageContext.request.contextPath}/quote/edit/{{q.quoteId}}"> <i class="fa fa-eye"></i>
 																												View
 																										</a></li>
 					
@@ -2068,10 +2386,10 @@ function addDataToDetailLead(){
 																</div>
 															</div>
 														</div>
-														<div class="panel panel-default" ng-data-init="initSaleOrder(saleOrder)">
+														<div class="panel panel-default">
 															<div class="panel-heading">
 																<h4 class="panel-title pull-left">
-																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RSaleOrder">Sale Order  </a>																	
+																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RSaleOrder">Sale Orders  </a>																	
 																</h4>
 																<%-- <a href="${pageContext.request.contextPath}/create-case" class="btn btn-default pull-right">New</a> --%>
 																<span class="badge bg-blue pull-right">{{saleOrder.length <= 0 ? '' : saleOrder.length }}</span>
@@ -2092,7 +2410,7 @@ function addDataToDetailLead(){
 																						<th></th>
 																					</tr>
 																				</thead>
-																				<tbody ng-repeat="s in saleOrder">
+																				<tbody ng-repeat="(key, s) in saleOrder">
 																					<tr>
 																						<td class="iTD-width-50">
 																							<a href="#">
@@ -2115,10 +2433,10 @@ function addDataToDetailLead(){
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
 																										
-																										<li><a href="#" ng-click="deleteSaleOrder(s.saleOrderId)" >
+																										<li><a href="#" ng-click="deleteSaleOrderClick(s.opSaleOrderId, key)" >
 																												<i class="fa fa-trash"></i> Delete
 																										</a></li>																											
-																										<li><a href="#"> <i class="fa fa-eye"></i>
+																										<li><a href="${pageContext.request.contextPath}/sale-order/edit/{{s.saleOrderId}}"> <i class="fa fa-eye"></i>
 																												View
 																										</a></li>
 					
@@ -2151,6 +2469,191 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</section>
+	
+	
+	<input type="hidden" id="btn_show_product" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmProduct" />
+	<div ng-controller="productController" class="modal fade modal-default" id="frmProduct" role="dialog">
+		<div class="modal-dialog  modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" ng-click="cancelCallClick()" class="close"
+						data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">
+						<b  id="tCall">Add An Item</b>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form id="frmAddCall">
+							<div class="col-md-12">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Item <span class="requrie">(Required)</span></label>
+										<select class="form-control select2" name="callStatus"
+												id="callStatus" style="width: 100%;">
+												<option value=""> </option>
+												<option ng-repeat="st in callStatusStartup"
+													value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+											</select>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="bootstrap-timepicker">
+										<div class="form-group">
+											<label>Location ID <span class="requrie">(Required)</span></label>
+											<select class="form-control select2" name="callStatus"
+												id="callStatus" style="width: 100%;">
+												<option value=""></option>
+												<option ng-repeat="st in callStatusStartup"
+													value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6">
+									<div class="bootstrap-timepicker">
+										<div class="form-group">
+											<label>Class ID </label>
+											<select class="form-control select2" name="callStatus"
+												id="callStatus" style="width: 100%;">
+												<option value=""></option>
+												<option ng-repeat="st in callStatusStartup"
+													value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="bootstrap-timepicker">
+										<div class="form-group">
+											<label>UOM ID <span class="requrie">(Required)</span></label>
+											<select class="form-control select2" name="callStatus"
+												id="callStatus" style="width: 100%;">
+												<option value=""></option>
+												<option ng-repeat="st in callStatusStartup"
+													value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Quatity <span class="requrie">(Required)</span></label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Unit Price </label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								
+								<div class="clearfix"></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Price Factor</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Report Price</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6"></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Total Amount</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								
+								<div class="clearfix"></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Dicount %</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Discount $</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>VAT %</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>VAT $</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>ST %</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>ST $</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-md-6"></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Net Total Amount</label>
+										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										placeholder="">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</form>
+					</div>
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnCallCancel"
+						ng-click="cancelCallClick()" name="btnCallCancel"
+						class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					&nbsp;&nbsp;
+					<button type="button" class="btn btn-primary pull-right"
+						id="btnCallSave" name="btnCallSave">Save</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
 	<input type="hidden" id="btn_show_contact" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmContact" />
 	<div class="modal fade modal-default" id="frmContact" role="dialog">
 		<div class="modal-dialog  modal-md">
@@ -2208,7 +2711,7 @@ function addDataToDetailLead(){
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<form id="frmAddEvent">
+						<form id="frmAddQuote">
 						<div class="col-md-12">
 							
 							<div class="col-md-12">
@@ -2216,7 +2719,7 @@ function addDataToDetailLead(){
 									<label>Quote<span class="requrie"> (Required)</span></label>
 									<select class="form-control select2" name="QuoteQuote" id="QuoteQuote" style="width: 100%;">
 										<option value="">-- SELECT Quote --</option>
-										<option ng-repeat="q in allQuote" value="{{q.saleId}}">{{q.saleId}}</option>										
+										<option ng-repeat="q in allQuote" value="{{q.quoteId}}">{{q.quoteId}}</option>										
 									</select>
 								</div>
 							</div>							
@@ -2228,7 +2731,7 @@ function addDataToDetailLead(){
 				<div class="modal-footer">
 					<button type="button" id="btnQuoteCancel" ng-click="cancelQuoteClick()" name="btnQuoteCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
-					<button type="button" id="btnQuoteSave" name="btnQuoteSave"  class="btn btn-primary pull-right">Save</button>
+					<button type="button" ng-click="saveQuoteClick()" id="btnQuoteSave" name="btnQuoteSave"  class="btn btn-primary pull-right">Save</button>
 
 				</div>
 			</div>
@@ -2244,7 +2747,7 @@ function addDataToDetailLead(){
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<form id="frmAddEvent">
+						<form id="frmAddSaleOrder">
 						<div class="col-md-12">
 							
 							<div class="col-md-12">
@@ -2264,7 +2767,7 @@ function addDataToDetailLead(){
 				<div class="modal-footer">
 					<button type="button" id="btnSaleOrderCancel" ng-click="cancelSaleOrderClick()" name="btnSaleOrderCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
-					<button type="button" id="btnSaleOrderSave" name="btnSaleOrderSave"  class="btn btn-primary pull-right">Save</button>
+					<button type="button" ng-click="saveSaleOrderClick()" id="btnSaleOrderSave" name="btnSaleOrderSave"  class="btn btn-primary pull-right">Save</button>
 
 				</div>
 			</div>
