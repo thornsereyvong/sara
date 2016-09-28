@@ -122,7 +122,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 				    <br/>
 				  </div>
 				  <div class="clearfix"></div>
-			<div class="tablecontainer" data-ng-init="listCampaigns()" > 
+			<div class="tablecontainer table-responsive" data-ng-init="listCampaigns()" > 
 				<%
 				
 				   if(roleList.equals("YES")){

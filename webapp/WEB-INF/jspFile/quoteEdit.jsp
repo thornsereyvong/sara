@@ -463,7 +463,7 @@ if(content.MESSAGE == "SUCCESS"){
 	}
 	if(LCustomer.length > 0){
 		for(var i=0;i<LCustomer.length;i++){
-			 $("#customer").append("<option value="+LCustomer[i].CustID+">["+LCustomer[i].CustID+"] "+LCustomer[i].CustName+"</option>");
+			 $("#customer").append("<option value="+LCustomer[i].custID+">["+LCustomer[i].custID+"] "+LCustomer[i].custName+"</option>");
 		}
 	}
 	if(LPriceCode.length > 0){
