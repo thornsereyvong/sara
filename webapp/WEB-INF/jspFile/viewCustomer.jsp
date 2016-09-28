@@ -1205,7 +1205,7 @@ function addDataToDetailLead(){
 																							<div class="col-sm-2">
 																								<div class="btn-group">
 																									<button type="button"
-																										class="btn btn-default dropdown-toggle"
+																										class="btn btn-default dropdown-toggle btn-sm"
 																										data-toggle="dropdown" aria-expanded="false">
 																										<span class="caret"></span> <span class="sr-only">Toggle
 																											Dropdown</span>
@@ -1270,7 +1270,7 @@ function addDataToDetailLead(){
 																						<div class="col-sm-2">
 																							<div class="btn-group">
 																								<button type="button"
-																									class="btn btn-default dropdown-toggle"
+																									class="btn btn-default dropdown-toggle btn-sm"
 																									data-toggle="dropdown" aria-expanded="false">
 																									<span class="caret"></span> <span class="sr-only">Toggle
 																										Dropdown</span>
@@ -1336,7 +1336,7 @@ function addDataToDetailLead(){
 																						<div class="col-sm-2">
 																							<div class="btn-group">
 																								<button type="button"
-																									class="btn btn-default dropdown-toggle"
+																									class="btn btn-default dropdown-toggle btn-sm"
 																									data-toggle="dropdown" aria-expanded="false">
 																									<span class="caret"></span> <span class="sr-only">Toggle
 																										Dropdown</span>
@@ -1402,7 +1402,7 @@ function addDataToDetailLead(){
 																						<div class="col-sm-2">
 																							<div class="btn-group">
 																								<button type="button"
-																									class="btn btn-default dropdown-toggle"
+																									class="btn btn-default dropdown-toggle btn-sm"
 																									data-toggle="dropdown" aria-expanded="false">
 																									<span class="caret"></span> <span class="sr-only">Toggle
 																										Dropdown</span>
@@ -1468,7 +1468,7 @@ function addDataToDetailLead(){
 																						<div class="col-sm-2">
 																							<div class="btn-group">
 																								<button type="button"
-																									class="btn btn-default dropdown-toggle"
+																									class="btn btn-default dropdown-toggle btn-sm"
 																									data-toggle="dropdown" aria-expanded="false">
 																									<span class="caret"></span> <span class="sr-only">Toggle
 																										Dropdown</span>
@@ -1869,7 +1869,7 @@ function addDataToDetailLead(){
 																							<div class="col-sm-2">
 																								<div class="btn-group">
 																									<button type="button"
-																										class="btn btn-default dropdown-toggle"
+																										class="btn btn-default dropdown-toggle btn-sm"
 																										data-toggle="dropdown" aria-expanded="false">
 																										<span class="caret"></span> <span class="sr-only">Toggle
 																											Dropdown</span>
@@ -1934,7 +1934,7 @@ function addDataToDetailLead(){
 																							<div class="col-sm-2">
 																								<div class="btn-group">
 																									<button type="button"
-																										class="btn btn-default dropdown-toggle"
+																										class="btn btn-default dropdown-toggle btn-sm"
 																										data-toggle="dropdown" aria-expanded="false">
 																										<span class="caret"></span> <span class="sr-only">Toggle
 																											Dropdown</span>
@@ -1999,7 +1999,7 @@ function addDataToDetailLead(){
 																							<div class="col-sm-2">
 																								<div class="btn-group">
 																									<button type="button"
-																										class="btn btn-default dropdown-toggle"
+																										class="btn btn-default dropdown-toggle btn-sm"
 																										data-toggle="dropdown" aria-expanded="false">
 																										<span class="caret"></span> <span class="sr-only">Toggle
 																											Dropdown</span>

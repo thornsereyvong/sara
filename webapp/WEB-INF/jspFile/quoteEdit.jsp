@@ -20,7 +20,7 @@
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
-				<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+				<button class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</button> 
 				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/quote/list"> <i class="fa fa-reply"></i> Back </a>
 
 				<div class="clearfix"></div>
@@ -32,7 +32,7 @@
 						<div class="col-md-6">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Entry No<span class="text-red"> *</span></label> 
+									<label>Entry No<span class="requrie"> (Required)</span></label> 
 									<input class="form-control" disabled value="" name="entryNo" id="entryNo" type="text" value="" placeholder="***New***">
 								</div>
 							</div>
@@ -44,7 +44,7 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Customer<span class="text-red"> *</span></label> 
+									<label>Customer<span class="requrie"> (Required)</span></label> 
 									<select id="customer" name="customer" class="form-control select2 input-lg" style="width: 100%;">
 										<option selected="selected" value="">Select A Customer</option>
 										
@@ -53,22 +53,23 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Sale Rep. ID <span class="text-red"> *</span></label> 
-									<select name="employee" id="employee" class="form-control select2 input-lg" style="width: 100%;">
-										<option value="" selected="selected">Select A Employee</option>
-										 
-									</select>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Price Code <span class="text-red">  *</span></label> 
+									<label>Price Code<span class="requrie"> (Required)</span></label> 
 									<select name="priceCode" id="priceCode" class="form-control select2 input-lg" style="width: 100%;">
 										<option value="">Select A Price Code</option>
 										 
 									</select>
 								</div>
 							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Sale Rep. ID<span class="requrie"> (Required)</span></label> 
+									<select name="employee" id="employee" class="form-control select2 input-lg" style="width: 100%;">
+										<option value="" selected="selected">Select A Employee</option>
+										 
+									</select>
+								</div>
+							</div>
+							
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Class</label> 
@@ -85,7 +86,7 @@
 						<div class="col-md-6">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Quotation Date<span class="text-red">  *</span></label>
+									<label>Quotation Date<span class="requrie"> (Required)</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
@@ -100,7 +101,13 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Start Date<span class="text-red">  *</span></label>
+									<label>Reference</label> 
+									<input class="form-control" id="reference" name="reference" type="text" placeholder="Reference...">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Start Date<span class="requrie"> (Required)</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
@@ -115,7 +122,7 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Expire Date<span class="text-red">  *</span></label>
+									<label>Expire Date<span class="requrie"> (Required)</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
@@ -128,12 +135,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Reference</label> 
-									<input class="form-control" id="reference" name="reference" type="text" placeholder="Reference...">
-								</div>
-							</div>
+							
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Ship to Address <span class="text-red"></span></label> 
@@ -158,11 +160,11 @@
 									<table id="table-content" class="table table-hover">
 										<thead>								
 											<tr>
-												<th>Item<span class="text-red"> *</span></th>
-												<th>Location ID<span class="text-red"> *</span></th>
-												<th>Class ID</th>
-												<th>UOM ID <span class="text-red"> *</span></th>
-												<th>Quantity <span class="text-red"> *</span></th>
+												<th>Item<span class="requrie"> (Required)</span></th>
+												<th>Location<span class="requrie"> (Required)</span></th>
+												<th>Class</th>
+												<th>UOM<span class="requrie"> (Required)</span></th>
+												<th>Qty<span class="requrie"> (Required)</span></th>
 												<th>Unit Price</th>
 												<th>Price Factor</th>
 												<th>Report Price</th>
@@ -463,7 +465,7 @@ if(content.MESSAGE == "SUCCESS"){
 	}
 	if(LCustomer.length > 0){
 		for(var i=0;i<LCustomer.length;i++){
-			 $("#customer").append("<option value="+LCustomer[i].custID+">["+LCustomer[i].custID+"] "+LCustomer[i].custName+"</option>");
+			 $("#customer").append("<option value="+i+">["+LCustomer[i].custID+"] "+LCustomer[i].custName+"</option>");
 		}
 	}
 	if(LPriceCode.length > 0){
@@ -496,7 +498,7 @@ function addAnItem(){
 	addAnItem += "<td>"+
 		         "<select onfocusout='actUomChange(this)' onChange='actUomChange(this)' name='uom' title='UOM is required.' id='uom"+index+"' class='form-control width-100' >"+
 			     "<option value=''></option>"+tagUom+ "</select></td>";
-	addAnItem += "<td> <input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
+	addAnItem += "<td> <input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' style='width: 100px;' type='text' placeholder=''></td>"+
 				 "<td> <input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+								
 				 "<td> <input onfocusout='priceFactorChange(this,4)' onkeypress='return isNumeric(this,event)' title='Price factor can not equal 0.'  name='priceFactor' id='priceFactor"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
 				 "<td> <input disabled onfocusout='reportPriceChange(this,6)' onkeypress='return isNumeric(this,event)'  name='reportPrice' id='reportPrice"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
@@ -521,7 +523,7 @@ function listDataSalOrdByID(data){
 		//alert(data.custId)
 		
 		setValueById('entryNo', data.saleId);
-		$("#customer").select2('val',data.custId);
+		$("#customer").select2('val',findIndexCutomer(data.custId));
 		$("#employee").select2('val',data.empId);
 		$("#priceCode").select2('val',data.priceCode);
 		$("#classCodeMaster").select2('val',data.classId);
@@ -586,6 +588,18 @@ function listDataSalOrdByID(data){
 	}
 	
 } 
+
+function findIndexCutomer(custId){
+	var l = LCustomer.length;
+	if(l > 0){
+		for(var i=0;i<l;i++){
+			if(LCustomer[i].custID == content.DATA.custId){
+				return i;
+			}
+		}
+	}
+	return '';
+}
 
 $(function(){
 	listDataSalOrdByID(content.DATA);

@@ -1519,7 +1519,7 @@ function addDataToDetailLead(){
 																							<div class="col-sm-2">
 																								<div class="btn-group">
 																									<button type="button"
-																										class="btn btn-default dropdown-toggle"
+																										class="btn btn-default dropdown-toggle btn-sm"
 																										data-toggle="dropdown" aria-expanded="false">
 																										<span class="caret"></span> <span class="sr-only">Toggle
 																											Dropdown</span>
@@ -1581,7 +1581,7 @@ function addDataToDetailLead(){
 																						<div class="col-sm-2">
 																							<div class="btn-group">
 																								<button type="button"
-																									class="btn btn-default dropdown-toggle"
+																									class="btn btn-default dropdown-toggle btn-sm"
 																									data-toggle="dropdown" aria-expanded="false">
 																									<span class="caret"></span> <span class="sr-only">Toggle
 																										Dropdown</span>
@@ -1647,7 +1647,7 @@ function addDataToDetailLead(){
 																						<div class="col-sm-2">
 																							<div class="btn-group">
 																								<button type="button"
-																									class="btn btn-default dropdown-toggle"
+																									class="btn btn-default dropdown-toggle btn-sm"
 																									data-toggle="dropdown" aria-expanded="false">
 																									<span class="caret"></span> <span class="sr-only">Toggle
 																										Dropdown</span>
@@ -1713,7 +1713,7 @@ function addDataToDetailLead(){
 																						<div class="col-sm-2">
 																							<div class="btn-group">
 																								<button type="button"
-																									class="btn btn-default dropdown-toggle"
+																									class="btn btn-default dropdown-toggle btn-sm"
 																									data-toggle="dropdown" aria-expanded="false">
 																									<span class="caret"></span> <span class="sr-only">Toggle
 																										Dropdown</span>
@@ -1779,7 +1779,7 @@ function addDataToDetailLead(){
 																						<div class="col-sm-2">
 																							<div class="btn-group">
 																								<button type="button"
-																									class="btn btn-default dropdown-toggle"
+																									class="btn btn-default dropdown-toggle btn-sm"
 																									data-toggle="dropdown" aria-expanded="false">
 																									<span class="caret"></span> <span class="sr-only">Toggle
 																										Dropdown</span>
@@ -2131,7 +2131,7 @@ function addDataToDetailLead(){
 												<div class="col-md-12">
 													<div class="panel-group" id="proGroup">														
 														<div class="panel panel-default">
-															<div class="panel-heading">
+															<div class="panel-heading" style="display: none;">
 																<h4 class="panel-title pull-left">
 																	<a data-toggle="collapse" data-parent="" href="#ProFrm">Products  </a>																	
 																</h4>
@@ -2186,7 +2186,7 @@ function addDataToDetailLead(){
 																							<div class="col-sm-2">
 																								<div class="btn-group">
 																									<button type="button"
-																										class="btn btn-default dropdown-toggle"
+																										class="btn btn-default dropdown-toggle btn-sm"
 																										data-toggle="dropdown" aria-expanded="false">
 																										<span class="caret"></span> <span class="sr-only">Toggle
 																											Dropdown</span>
@@ -2295,7 +2295,7 @@ function addDataToDetailLead(){
 																							<div class="col-sm-2">
 																								<div class="btn-group">
 																									<button type="button"
-																										class="btn btn-default dropdown-toggle"
+																										class="btn btn-default dropdown-toggle btn-sm"
 																										data-toggle="dropdown" aria-expanded="false">
 																										<span class="caret"></span> <span class="sr-only">Toggle
 																											Dropdown</span>
@@ -2361,7 +2361,7 @@ function addDataToDetailLead(){
 																							<div class="col-sm-2">
 																								<div class="btn-group">
 																									<button type="button"
-																										class="btn btn-default dropdown-toggle"
+																										class="btn btn-default dropdown-toggle btn-sm"
 																										data-toggle="dropdown" aria-expanded="false">
 																										<span class="caret"></span> <span class="sr-only">Toggle
 																											Dropdown</span>
@@ -2426,7 +2426,7 @@ function addDataToDetailLead(){
 																							<div class="col-sm-2">
 																								<div class="btn-group">
 																									<button type="button"
-																										class="btn btn-default dropdown-toggle"
+																										class="btn btn-default dropdown-toggle btn-sm"
 																										data-toggle="dropdown" aria-expanded="false">
 																										<span class="caret"></span> <span class="sr-only">Toggle
 																											Dropdown</span>

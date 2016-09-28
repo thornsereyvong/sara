@@ -99,7 +99,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				
-				<div style="background: #fff;margin-top: 15px;">
+				<div style="background: #fff;margin-top: 0px;">
 					 <div class="col-sm-12">
 					 	<a href="${pageContext.request.contextPath}/quote/add" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>					 	
 					 </div>
@@ -111,7 +111,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 			 
 			<div class="clearfix"></div>
 
-			<div class="panel panel-default">
+			<div class="panel panel-default iPanel">
   				<div class="panel-body">
   				
 				 <div class="col-sm-4">

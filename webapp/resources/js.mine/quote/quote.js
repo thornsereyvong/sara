@@ -18,9 +18,29 @@ var stDolOnChangeAct = 0;
 
 // START READY
 $(function(){
-	$('#quoteDate').datepicker(); $('#quoteDate').val(moment().format('D-MMM-YYYY'));  
-	$('#startDate').datepicker(); $('#startDate').val(moment().format('D-MMM-YYYY'));  
-	$('#expireDate').datepicker(); $('#expireDate').val(moment().format('D-MMM-YYYY'));
+	
+	
+	
+	$('#quoteDate').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD-MMM-YYYY'
+    });
+	$('#startDate').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD-MMM-YYYY'
+    });
+	$('#expireDate').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD-MMM-YYYY'
+    });
+	
+	$('#quoteDate').val(moment().format('D-MMM-YYYY'));  
+	$('#startDate').val(moment().format('D-MMM-YYYY'));  
+	$('#expireDate').val(moment().format('D-MMM-YYYY'));
+	
 	$('#shipToAdd').select2();
 	
 	$("#listItem").sortable();
@@ -60,32 +80,24 @@ $(function(){
 	});
 	
 	// Customer change act
-	$("#customer").change(function (){
+	$("#customer").change(function (){		
+		
 		var customer = $.trim($("#customer").val());
-		var data = [];
 		if(customer != ""){
-			$("#customer").next().children().children().attr('style','border: 1px solid #d2d6de;');
-			for(var i=0;i<LCustomer.length;i++){
-				if(customer == $.trim(LCustomer[i].CustID)){
-					data.push(LCustomer[i]);
-				}
-			}
-		}else{
-			data = [];
-			$("#customer").next().children().children().attr('style','border: 1px solid #dd4b39;');
-			$("#priceCode").select2('val','');
-			addShipToAdd(data);	
-		}
-		if(data.length>0){
-			addShipToAdd(data);	
-			
-			$("#priceCode").select2('val',data[0].PriceCode);
-			
-			if(data[0].PriceCode != ''){
+			$("#customer").next().children().children().attr('style','border: 1px solid #d2d6de;');	
+			$("#priceCode").select2('val',LCustomer[customer].priceCode.priceCode);		
+			addShipToAdd(LCustomer[customer].custDetails);
+			if(LCustomer[customer].priceCode.priceCode != ''){
 				$("#priceCode").next().children().children().attr('style','border: 1px solid #d2d6de;');
 			}
+		}else{
+			$("#customer").next().children().children().attr('style','border: 1px solid #dd4b39;');
+			$("#priceCode").select2('val','');
+			addShipToAdd([]);	
+		}				
+		
 			
-		}		
+			
 	});
 	// end Customer change act
 	
@@ -647,7 +659,7 @@ function addShipToAdd(data){
 	$('#shipToAdd').append("<option></option>");
 	for(i=0;i<data.length;i++){
 		if(data[i].AID !='')
-			$('#shipToAdd').append("<option value='"+data[i].AID+"'>"+data[i].Address+"</option>");
+			$('#shipToAdd').append("<option value='"+data[i].aId+"'>"+data[i].address+"</option>");
 	}
 	$('#shipToAdd').select2();
 }
@@ -909,7 +921,7 @@ function saleOrder(){
 	
 	var master ={
 			saleId : entryNo,
-			custId : customer,
+			custId : getCustomerByIndex(customer),
 			empId : employee,
 			classId : classCodeMaster,
 			saleDate : quoDate,
@@ -929,50 +941,66 @@ function saleOrder(){
 			quoteDetails: detail
 		};
 	
-
-	
-	
-	$.ajax({ 
-		url: server+"quote/insert-quote",
-		method: "POST",
-		async: false,
-		data: JSON.stringify(master),
-		beforeSend: function(xhr) {
-		    xhr.setRequestHeader("Accept", "application/json");
-		    xhr.setRequestHeader("Content-Type", "application/json");
-	    }, 
-	    success: function(result){
-			if(result.MESSAGE == "INSERTED"){
-				swal({   
-					title: "Successfully!",   
-					text: "The quotation with id: '"+result.quoteId+"'  was successfully saved!",   
-					type: "success",   
-					showCancelButton: true,   
-					confirmButtonColor: "#8cd4f5",   
-					confirmButtonText: "Ok",   
-					cancelButtonText: "",   
-					closeOnConfirm: false,   
-					closeOnCancel: false ,
-					showCancelButton: false
-				}, function(isConfirm){   
-					if (isConfirm) {     
-						location.reload();  
-					} else {     
-						location.reload();
+	swal({
+        title: "Quotation",
+        text: "Submit to run add quotation.",
+        type: "info",   
+        showCancelButton: true,   
+        closeOnConfirm: false,   
+        showLoaderOnConfirm: true,
+    }, 
+    function(){
+		 $.ajax({ 
+				url: server+"quote/insert-quote",
+				method: "POST",
+				async: false,
+				data: JSON.stringify(master),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+			    }, 
+			    success: function(result){
+					if(result.MESSAGE == "INSERTED"){
+						swal({   
+							title: "Successful!",   
+							text: "The quotation with id: '"+result.quoteId+"'  was successfully saved!",   
+							type: "success",   
+							showCancelButton: true,   
+							confirmButtonColor: "#8cd4f5",   
+							confirmButtonText: "Ok",   
+							cancelButtonText: "",   
+							closeOnConfirm: false,   
+							closeOnCancel: false ,
+							showCancelButton: false
+						}, function(isConfirm){   
+							if (isConfirm) {     
+								location.reload();  
+							} else {     
+								location.reload();
+							}
+						});
+						
+						
+					}else{
+						swal("Unsuccessful!", result.MESSAGE, "error");
 					}
-				});
-				
-				
-			}else{
-				swal("Unsuccessful!", result.MESSAGE, "error");
-			}
-		}
-	    
-	});
+				},
+	    		error:function(){
+	    			swal("Unsuccessful!", "Please try again!", "error");
+	    		}
+			    
+			});
+    	
+    });
+	
+	
+	
 
 }
 
 function cancel(){
 	document.location.href = server+"quote/add";
 }
-
+function getCustomerByIndex(index){
+	return LCustomer[index].custID;
+}

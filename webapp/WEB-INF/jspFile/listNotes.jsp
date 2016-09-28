@@ -151,7 +151,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 							<td>
 								<div class="col-sm-2">
 									<div class="btn-group">
-				                      <button type="button" class="btn btn-default btn-flat" data-toggle="dropdown" aria-expanded="false">
+				                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
 				                        <span class="caret"></span>
 				                        <span class="sr-only">Toggle Dropdown</span>
 				                      </button>
