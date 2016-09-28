@@ -174,7 +174,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 									<td>{{cc.callStatusName}}</td>
 									<td>{{cc.callRelatedToModuleType}}</td>
 									<td>
-										<div class="col-sm-2 visible-lg-block">
+										<div class="col-sm-2">
 											<div class="btn-group">
 												<button type="button" class="btn btn-default btn-flat"
 													data-toggle="dropdown" aria-expanded="false">
