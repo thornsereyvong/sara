@@ -82,7 +82,7 @@ $(document).ready(function(){
                  <li id="ul_li_opportunity">
              		 <a href="${pageContext.request.contextPath}/list-opportunity">
              		 	<i class='fa fa-circle-o color_menu' aria-hidden='true' id="sale_icon_opportunity"></i>
-             		 <span>Opportunity</span> </a>
+             		 <span>Opportunities</span> </a>
           		 </li>
               
               </ul>
@@ -145,29 +145,11 @@ $(document).ready(function(){
             </li>
             
             
-            <li class='treeview ' id="quote" >
-              <a href="#"><img src="${pageContext.request.contextPath}/resources/images/Quote.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-money" aria-hidden="true"></i> --> <span>Quote</span> <i class="fa fa-angle-left pull-right"></i></a>
-              <ul class="treeview-menu" id="ul_quote">
-              
-                 <li id="ul_li_quote">
-             		 <a href="${pageContext.request.contextPath}/quote/list">
-             			<i class='fa fa-circle-o' aria-hidden='true' id="quote_icon_quote"></i>
-             		<span>Quote</span> </a>
-           		 </li>
-           		 
-              </ul>
+            <li class='' id="quote" >
+            	<a href="${pageContext.request.contextPath}/quote/list"><img src="${pageContext.request.contextPath}/resources/images/Quote.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-money" aria-hidden="true"></i> --> <span>Quote</span> <!-- <i class="fa fa-angle-left pull-right"></i> --></a>
             </li>
             <li class='treeview ' id="sale_order" >
-              <a href="#"><img src="${pageContext.request.contextPath}/resources/images/Sale-Order.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-balance-scale" aria-hidden="true"></i> --> <span>Sale Order</span> <i class="fa fa-angle-left pull-right"></i></a>
-              <ul class="treeview-menu" id="ul_sale_order">
-              
-                 <li id="ul_li_sale_order">
-             		 <a href="${pageContext.request.contextPath}/sale-order/list">
-             			<i class='fa fa-circle-o' aria-hidden='true' id="sale_order_icon_sale_order"></i>
-             		<span>Sale Order</span> </a>
-           		 </li>
-           		 
-              </ul>
+              <a href="${pageContext.request.contextPath}/sale-order/list"><img src="${pageContext.request.contextPath}/resources/images/Sale-Order.png" style="width:16px;">&nbsp;&nbsp;<!-- <i class="fa fa-balance-scale" aria-hidden="true"></i> --> <span>Sale Order</span> <!-- <i class="fa fa-angle-left pull-right"></i> --></a>
             </li>
             <%
             	if(role.equals("CRM_ADMIN")){

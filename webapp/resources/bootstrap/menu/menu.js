@@ -357,7 +357,7 @@ function selectMenu(menu_slide){
         
     case "quoteList":
     	removeCla("#quote","#ul_quote","#ul_li_quote","#quote_icon_quote");
-    	document.title = 'List Quote | CRM';
+    	document.title = 'List Quotes | CRM';
         break;   
         
     case "quotePrint":
@@ -372,7 +372,7 @@ function selectMenu(menu_slide){
         
     case "saleOrderList":
     	removeCla("#sale_order","#ul_sale_order","#ul_li_sale_order","#sale_order_icon_sale_order");
-    	document.title = 'List Sale Order | CRM';
+    	document.title = 'List Sale Orders | CRM';
         break;
         
     case "saleOrderEdit":
