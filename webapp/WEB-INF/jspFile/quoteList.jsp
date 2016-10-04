@@ -124,8 +124,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 				    <br/>
 				  </div>
 				  <div class="clearfix"></div>
-			<div class="tablecontainer table-responsive" data-ng-init="listQuote()" > 
-				
+			<div class="tablecontainer table-responsive" data-ng-init="listQuote()" > 				
 					<table class="table table-hover" >
 						<tr>
 							<th style="cursor: pointer;" ng-click="sort('saleId')">Entry No
@@ -162,8 +161,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 							<td>[{{qq.empId}}] {{qq.empName}}</td>
 							<td class="dis-number">{{qq.totalAmt | number:2}}</td>	
 							<td>{{qq.PostStatus}}</td>	
-							<td>
-								
+							<td>								
 								<div class="col-sm-2">
 									<div class="btn-group">
 				                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
@@ -176,8 +174,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 				                        <li><a href="#" ng-click="printQuote(qq.saleId)"><i class="fa fa-print"></i>Print</a></li>
 				                      </ul>
 				                    </div>
-			                   	</div>
-							
+			                   	</div>							
 							</td>
 						</tr>
 				
@@ -201,10 +198,6 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 			<div class="box-footer"></div>
 			<!-- /.box-footer-->
 		</div>
-		
-		<!-- /.box -->
-
-
 	</section>
 	<!-- /.content -->
 	

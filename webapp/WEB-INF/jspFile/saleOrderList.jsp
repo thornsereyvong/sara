@@ -85,7 +85,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
             imageUrl: "${pageContext.request.contextPath}/resources/images/module/key.svg",
             showCancelButton: true,          
             confirmButtonText: "Approve",
-            cancelButtonText: "Reject",
+            cancelButtonText: "Cancel",
             closeOnConfirm: false, 
             closeOnCancel: false
         }, 
@@ -95,7 +95,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
        				if(response.MESSAGE == 'UPDATED'){
        					SweetAlert.swal({
        	            		title:"Authorization",
-       	            		text:"The sale order:"+saleId+" was successfully authorized!",
+       	            		text:"The sale order:"+saleId+" was successfully authorized.",
        	            		type:"success",  
        	            		timer: 2000,
        	            		showConfirmButton: false
@@ -108,22 +108,13 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
        				alertMsgErrorSweet();
        			});
         	 }else{
-        		 $http.get("${pageContext.request.contextPath}/sale-order/status/"+saleId+"/Reject").success(function(response){			
-        				if(response.MESSAGE == 'UPDATED'){
-        					SweetAlert.swal({
-        	            		title:"Authorization",
-        	            		text:"The sale order:"+saleId+" was successfully rejected!",
-        	            		type:"success",  
-        	            		timer: 2000,   
-        	            		showConfirmButton: false
-        	        		});
-        	    			$scope.listSaleOrder();
-        				}else{
-        					alertMsgErrorSweet();
-        				}	
-     			}).error(function(){
-        				alertMsgErrorSweet();
-        			});
+        		 SweetAlert.swal({
+	            		title: "Authorization",
+	            		text: "The sale order:"+saleId+" was cancelled.",
+	            		type: "error",  
+	            		timer: 2000,
+	            		showConfirmButton: false
+	        		});
         	 }
         });
 	
@@ -223,10 +214,10 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 				                        <span class="sr-only">Toggle Dropdown</span>
 				                      </button>
 				                      <ul class="dropdown-menu" role="menu">
-				                        <li><a href="${pageContext.request.contextPath}/sale-order/edit/{{qq.saleId}}"><i class="fa fa-pencil"></i> Edit</a></li>
-				                        <li><a href="#" ng-click="deleteSaleOder(qq.saleId)"><i class="fa fa-trash"></i> Delete</a></li>
+				                        <li ng-if="qq.PostStatus == 'Open'"><a href="${pageContext.request.contextPath}/sale-order/edit/{{qq.saleId}}"><i class="fa fa-pencil"></i> Edit</a></li>
+				                        <li ng-if="qq.PostStatus == 'Open'"><a href="#" ng-click="deleteSaleOder(qq.saleId)"><i class="fa fa-trash"></i> Delete</a></li>
 				                        <li><a href="#" ng-click="printSaleOder(qq.saleId)"><i class="fa fa-print"></i>Print</a></li>
-				                        <li><a href="#" ng-click="authorizeSaleOder(qq.saleId)"><i class="fa fa-key"></i>Authorize</a></li>
+				                        <li ng-if="qq.PostStatus == 'Open'"><a href="#" ng-click="authorizeSaleOder(qq.saleId)"><i class="fa fa-key"></i>Authorize</a></li>
 				                      </ul>
 				                    </div>
 			                   	</div>
