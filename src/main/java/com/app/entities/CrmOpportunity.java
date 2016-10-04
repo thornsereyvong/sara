@@ -23,6 +23,82 @@ public class CrmOpportunity {
 	private Date opCreateDate;
 	private String opModifyBy;
 	private Date opModifyDate;
+	
+
+	private PriceCode priceCode;
+	private AmeClass ameClass;
+	private double totalAmount;
+	private double disInvDol;
+	private double disInvPer;
+	private double totalDis;
+	private double totalSTax;
+	private double totalVTax;
+	
+	
+	
+	public PriceCode getPriceCode() {
+		return priceCode;
+	}
+
+	public void setPriceCode(PriceCode priceCode) {
+		this.priceCode = priceCode;
+	}
+
+	public AmeClass getAmeClass() {
+		return ameClass;
+	}
+
+	public void setAmeClass(AmeClass ameClass) {
+		this.ameClass = ameClass;
+	}
+
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public double getDisInvDol() {
+		return disInvDol;
+	}
+
+	public void setDisInvDol(double disInvDol) {
+		this.disInvDol = disInvDol;
+	}
+
+	public double getDisInvPer() {
+		return disInvPer;
+	}
+
+	public void setDisInvPer(double disInvPer) {
+		this.disInvPer = disInvPer;
+	}
+
+	public double getTotalDis() {
+		return totalDis;
+	}
+
+	public void setTotalDis(double totalDis) {
+		this.totalDis = totalDis;
+	}
+
+	public double getTotalSTax() {
+		return totalSTax;
+	}
+
+	public void setTotalSTax(double totalSTax) {
+		this.totalSTax = totalSTax;
+	}
+
+	public double getTotalVTax() {
+		return totalVTax;
+	}
+
+	public void setTotalVTax(double totalVTax) {
+		this.totalVTax = totalVTax;
+	}
 
 	public String getOpId() {
 		return opId;
@@ -159,5 +235,7 @@ public class CrmOpportunity {
 	public void setOpModifyDate(Date opModifyDate) {
 		this.opModifyDate = opModifyDate;
 	}
+	
+	
 
 }

@@ -36,25 +36,25 @@ app.controller('opportunityController',['SweetAlert','$scope','$http',function(S
 		        'Content-Type': 'application/json'
 		    },
 		    data: {"username":username}
-		}).success(function(response) {
+		}).success(function(response) {			
 			$scope.source = response.LEAD_SOURCE;
 			$scope.type = response.OPP_TYPES;
 			$scope.campaigns = response.CAMPAIGNS;
 			$scope.customer = response.CUSTOMERS;
 			$scope.stage = response.OPP_STAGES;
 			$scope.assignTo = response.ASSIGN_TO;
+			$scope.classCode = response.CLASSES;
+			$scope.priceCode = response.PRICE_CODE;
 		});
 	};
+	
+	
 }]);
 
 
 
 $(document).ready(function() {
-	
-	
-	
-	
-	
+
 	$('#opCloseDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
@@ -62,7 +62,14 @@ $(document).ready(function() {
     }).on('change', function(e) {
      	$('#form-opportunity').bootstrapValidator('revalidateField', 'opCloseDate');
  	});
-
+	
+	$("#op_customer").change(function(){
+		var i = $("#op_customer :selected").attr("data-index");
+		$("#op_price").select2('val',i);
+		$('#form-opportunity').data('bootstrapValidator').resetField($('#op_price'));
+	});
+	
+	
 	$("#btn_save").click(function(){
 		$("#form-opportunity").submit();
 	});
@@ -115,6 +122,13 @@ $(document).ready(function() {
 					}
 				}
 			},
+			op_price: {
+				validators: {
+					notEmpty: {
+						message: 'The price code is required and can not be empty!'
+					}
+				}
+			},
 			opCloseDate: {
 				validators: {
 					notEmpty: {
@@ -161,13 +175,33 @@ $(document).ready(function() {
 			cam_description: {
 				validators: {
 					stringLength: {
-						max: 255,
-						message: 'The description must be less than 255 characters long.'
+						max: 1000,
+						message: 'The description must be less than 1000 characters long.'
 					}
 				}
 			}
 		}
 	}).on('success.form.bv', function(e) {	
+		
+		var a  = {"opName": getValueStringById("op_name"),
+			      "opAmount": getInt("op_amount"),
+			      "customer": getJsonById("custID","op_customer","str"),
+			      "opCloseDate": getDateByFormat("opCloseDate"),
+			      "opTypeID": getJsonById("otId","op_type","int"),
+			      "opStageId": getJsonById("osId","op_stage","int"),
+			      "opProbability": getValueStringById("op_probability"),
+			      "opLeadSourceID": getJsonById("sourceID","op_leadSource","int"),
+			      "opNextStep": getValueStringById("op_nextStep"),
+			      "opCampId": getJsonById("campID","op_campaign","str"),
+			      "opDes": getValueStringById("cam_description"),
+			      "opAssignedTo": getJsonById("userID","op_assignTo","str"),
+			      "opCreateBy": username,
+			      "priceCode" : getJsonById("priceCode","op_price","str"),
+			      "ameClass" : getJsonById("classId","op_classCode","str")};
+		
+		dis(a)
+		
+		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/opportunity/add",
 			type : "POST",
@@ -184,7 +218,9 @@ $(document).ready(function() {
 			      "opCampId": getJsonById("campID","op_campaign","str"),
 			      "opDes": getValueStringById("cam_description"),
 			      "opAssignedTo": getJsonById("userID","op_assignTo","str"),
-			      "opCreateBy": $.session.get("parentID")
+			      "opCreateBy": $.session.get("parentID"),
+			      "priceCode" : getJsonById("priceCode","op_price","str"),
+			      "ameClass" : getJsonById("classId","op_classCode","str")
 			    }),	
 			beforeSend: function(xhr) {
 		    	xhr.setRequestHeader("Accept", "application/json");
@@ -193,6 +229,8 @@ $(document).ready(function() {
 			success:function(data){
 					if(data.MESSAGE == "INSERTED"){						
 						$("#op_customer").select2("val","");
+						$("#op_price").select2("val","");
+						$("#op_classCode").select2("val","");
 						$("#op_stage").select2("val","");
 						$("#op_type").select2("val","");
 						$("#op_leadSource").select2("val","");
@@ -202,7 +240,7 @@ $(document).ready(function() {
 						$('#form-opportunity')[0].reset();	
 						
 						swal({
-		            		title:"Success",
+		            		title:"Successful",
 		            		text:"You have been created new a opportunity!",
 		            		type:"success",  
 		            		timer: 2000,   
@@ -255,12 +293,20 @@ $(document).ready(function() {
 									<div class="form-group">
 										<select class="form-control select2" name="op_customer" id="op_customer" style="width: 100%;">
 											<option value="">-- SELECT Customer --</option>
-											<option ng-repeat="u in customer" value="{{u.custID}}">{{u.custName}}</option>
+											<option data-index="{{u.priceCode.priceCode}}" ng-repeat="(key, u) in customer" value="{{u.custID}}">{{u.custName}}</option>
 										</select>
 									</div>
 								</div>
-								
-								
+								<div class="col-sm-6">
+									<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select style="width:100%" class="form-control select2" name="op_price" id="op_price">
+											<option value="">-- SELECT Price Code --</option>
+											<option ng-repeat="u in priceCode" value="{{u.priceCode}}">[{{u.priceCode}}] {{u.des}}</option> 
+										</select>
+									</div>
+								</div>
+								<div class="clearfix"></div>	
 								<div class="col-sm-6">
 									<label class="font-label">Close date <span class="requrie">(Required)</span></label>
 									<div class="form-group">
@@ -272,23 +318,24 @@ $(document).ready(function() {
 										</div> 
 									</div>
 								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Class</label> 
+										<select id="op_classCode" name="op_classCode" class="form-control select2 input-lg" style="width: 100%;">
+											<option selected="selected" value="">Select A Class</option>
+											<option ng-repeat="u in classCode" value="{{u.classId}}">[{{u.classId}}] {{u.des}}</option>
+										</select>
+									</div>
+								</div>
 								<div class="clearfix"></div>	
-								<div class="col-sm-6">
+								<div class="col-sm-12">
 									<label class="font-label">Next Step </label>
 									<div class="form-group">
 										<input type="text" class="form-control" id="op_nextStep" name="op_nextStep">
 									</div>
 								</div>
 																
-								<div class="col-sm-6">
-									<label class="font-label">Campaign </label>
-									<div class="form-group">
-										<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
-											<option value="">-- SELECT Campaign --</option>
-											<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
-										</select>
-									</div>
-								</div>
+								
 							</div>
 		
 							<div class="col-sm-6">
@@ -301,7 +348,23 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
+								<div class="col-sm-6">
+									<label class="font-label">Probability (%) </label>
+									<div class="form-group">
+										<input type="text" class="form-control" id="op_probability" name="op_probability">
+									</div>
+								</div>
+								<div class="clearfix"></div>
 								
+								<div class="col-sm-6">
+									<label class="font-label">Campaign </label>
+									<div class="form-group">
+										<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
+											<option value="">-- SELECT Campaign --</option>
+											<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
+										</select>
+									</div>
+								</div>
 								<div class="col-sm-6">
 									<label class="font-label">Type </label>
 									<div class="form-group">
@@ -311,16 +374,7 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								
 								<div class="clearfix"></div>
-								
-								<div class="col-sm-6">
-									<label class="font-label">Probability (%) </label>
-									<div class="form-group">
-										<input type="text" class="form-control" id="op_probability" name="op_probability">
-									</div>
-								</div>
-								
 								<div class="col-sm-6">
 									<label class="font-label">Lead Source </label>
 									<div class="form-group">
