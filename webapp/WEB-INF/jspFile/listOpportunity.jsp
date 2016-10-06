@@ -57,7 +57,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	    			            		timer: 2000,   
 	    			            		showConfirmButton: false
 	    	            		});
-	     	            		$scope.listOpportunity();
+	     	            		$scope.listOpportunity('${SESSION}');
 	     		            });
 					}else{
 						SweetAlert.swal({
