@@ -150,12 +150,14 @@ function getOpportunity(){
 	return opp;
 }
 
-function updateLeadStatus(){
+function updateLeadStatus(custId, opId){
 	$.ajax({
 		url : "${pageContext.request.contextPath}/lead/edit/status",
 		type : "PUT",
 		data : JSON.stringify({
 			"leadID": "${leadId}",
+			"custId": custId,
+			"opId"  : opId
 			}),	
 		beforeSend: function(xhr) {
 	    	xhr.setRequestHeader("Accept", "application/json");
@@ -270,8 +272,20 @@ $(document).ready(function() {
 			    	xhr.setRequestHeader("Content-Type", "application/json");
 			    },
 				success:function(data){
+					dis(data);
+					
 					if(data.CUST_MESSAGE == "SUCCESS" && data.CON_MESSAGE == "SUCCESS"){
-						updateLeadStatus();
+						updateLeadStatus(data.CUSTID, data.OPID);
+						swal({
+		            		title:"Success",
+		            		text:"You have been converted!",
+		            		type:"success",  
+		            		timer: 2000,   
+		            		showConfirmButton: false
+	        			});
+						setTimeout(function(){window.location.href = "${pageContext.request.contextPath}/list-leads/";}, 2000);
+					}else if(data.CUST_MESSAGE == "EXIST"){
+						updateLeadStatus(data.CUSTID, data.OPID);
 						swal({
 		            		title:"Success",
 		            		text:"You have been converted!",
