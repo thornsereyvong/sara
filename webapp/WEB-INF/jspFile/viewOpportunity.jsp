@@ -50,6 +50,13 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$("#oppCustomer").select2('val',response.OPPORTUNITY.custID);
 		$("#oppCampaign").select2('val',response.OPPORTUNITY.campID);
 		$("#oppAssignTo").select2('val',response.OPPORTUNITY.userId);
+		$("#oppPriceCode").select2('val',response.OPPORTUNITY.priceCode);
+		$("#oppClass").select2('val',response.OPPORTUNITY.classId);
+		
+		$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppPriceCode'));
+		$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppCustomer'));
+		$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppStage'));
+		
     });
 	
 	$scope.collaborates = [];
@@ -87,7 +94,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.quote = response.QUOTATIONS;
 			$scope.saleOrder = response.SALE_ORDERS;
 			
-			//dis(response.SALE_ORDERS)
+		//	dis(response)
 			
 			$scope.allContact = response.ALL_CONTACTS;
 			$scope.allQuote = response.ALL_QUOTATIONS;
@@ -108,6 +115,16 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			addContactToTask(response.CONTACTS);
 			
 			
+			response.OPPORTUNITY_DETAILS_STARTUP
+			
+			$scope.oppPriceCode = 	response.PRICE_CODE;
+			$scope.oppClass = 	response.OPPORTUNITY_DETAILS_STARTUP.CLASSES;
+			
+			
+			// frm add opportunity
+			$scope.oppLocation = response.OPPORTUNITY_DETAILS_STARTUP.LOCATION;
+			$scope.oppItem = response.OPPORTUNITY_DETAILS_STARTUP.ITEMS;
+			$scope.oppUom = response.OPPORTUNITY_DETAILS_STARTUP.UOM;
 	}
 	
 	
@@ -1198,6 +1215,10 @@ function addDataToDetailLead(){
 	$("#oppCampaign").select2('val', OPPORTUNITY.campID);
 	$("#oppAssignTo").select2('val', OPPORTUNITY.userID);
 	
+	$("#oppPriceCode").select2('val',OPPORTUNITY.priceCode);
+	$("#oppClass").select2('val',OPPORTUNITY.classId);
+	
+	
 	setValueById('oppName', OPPORTUNITY.opName);
 	setValueById('oppAmout', OPPORTUNITY.opAmount);
 	setValueById('oppCloseDate', conDateSqlToNormal(OPPORTUNITY.opCloseDate,'/'));
@@ -1205,6 +1226,7 @@ function addDataToDetailLead(){
 	setValueById('appProbability', OPPORTUNITY.opProbability);
 	setValueById('appDescription', OPPORTUNITY.opDes);
 	
+	$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppPriceCode'));
 	$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppCustomer'));
 	$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppStage'));
 	
@@ -1989,46 +2011,6 @@ function addDataToDetailLead(){
 																		value="{{opportunity.opNextStep}}">
 																</div>
 															</li>
-															<li class="list-group-item item_border">Probability (%) <a
-																class="pull-right show-text-detail">{{opportunity.opProbability}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<input type="text" name="oppProbability" id="oppProbability"
-																		class="form-control" value="{{opportunity.opProbability}}">
-																</div>
-															</li>
-															
-															
-														</ul>
-													</div>
-													<div class="col-md-4">
-														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>&nbsp;</b> <a
-																class="pull-right cusor_pointer"
-																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a></li>
-															<li class="list-group-item item_border">Stage <a
-																class="pull-right show-text-detail">{{opportunity.osName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2"
-																		name="oppStage" id="oppStage" style="width: 100%;">
-																		<option value="">-- SELECT A Stage --</option>
-																		<option ng-repeat="stage in oppStage"
-																			value="{{stage.osId}}">{{stage.osName}}</option>
-																	</select>
-																</div>
-															</li>
-															<li class="list-group-item item_border">Customer <a
-																class="pull-right show-text-detail">{{opportunity.custName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2"
-																		name="oppCustomer" id="oppCustomer" style="width: 100%;">
-																		<option value="">-- SELECT A Customer --</option>
-																		<option ng-repeat="cust in oppCustomer"
-																			value="{{cust.custID}}">{{cust.custName}}</option>
-																	</select>
-																</div>
-															</li>
-															
 															<li class="list-group-item item_border">Lead Source <a
 																class="pull-right show-text-detail">{{opportunity.sourceName}}</a>
 																<div class="form-group show-edit" style="display: none;">
@@ -2061,6 +2043,67 @@ function addDataToDetailLead(){
 																		<option value="">-- SELECT A Campaign --</option>
 																		<option ng-repeat="camp in oppCampaign"
 																			value="{{camp.campID}}">{{camp.campName}}</option>
+																	</select>
+																</div>
+															</li>
+															
+															
+														</ul>
+													</div>
+													<div class="col-md-4">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item"><b>&nbsp;</b> <a
+																class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a></li>
+															<li class="list-group-item item_border">Stage <a
+																class="pull-right show-text-detail">{{opportunity.osName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="oppStage" id="oppStage" style="width: 100%;">
+																		<option value="">-- SELECT A Stage --</option>
+																		<option ng-repeat="stage in oppStage"
+																			value="{{stage.osId}}">{{stage.osName}}</option>
+																	</select>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Probability (%) <a
+																class="pull-right show-text-detail">{{opportunity.opProbability}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<input type="text" name="oppProbability" id="oppProbability"
+																		class="form-control" value="{{opportunity.opProbability}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Customer <a
+																class="pull-right show-text-detail">[{{opportunity.custID}}] {{opportunity.custName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="oppCustomer" id="oppCustomer" style="width: 100%;">
+																		<option value="">-- SELECT A Customer --</option>
+																		<option ng-repeat="cust in oppCustomer"
+																			value="{{cust.custID}}">{{cust.custName}}</option>
+																	</select>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Price Code <a
+																class="pull-right show-text-detail">[{{opportunity.priceCode}}] {{opportunity.priceCodeName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="oppPriceCode" id="oppPriceCode" style="width: 100%;">
+																		<option value="">-- SELECT Price Code --</option>
+																		<option ng-repeat="price in oppPriceCode"
+																			value="{{price.priceCode}}">[{{price.priceCode}}] {{price.des}}</option>
+																	</select>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Class <a
+																class="pull-right show-text-detail" ng-if="opportunity.classId != null">[{{opportunity.classId}}] {{opportunity.className}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="oppClass" id="oppClass" style="width: 100%;">
+																		<option value="">-- SELECT Class --</option>
+																		<option ng-repeat="cl in oppClass"
+																			value="{{cl.classId}}">[{{cl.classId}}] {{cl.des}}</option>
 																	</select>
 																</div>
 															</li>
@@ -2164,8 +2207,8 @@ function addDataToDetailLead(){
 																						<th></th>
 																					</tr>
 																				</tbody>
-																				<tbody ng-repeat="(key, con) in contact">
-																					<tr>
+																				<tbody id="listItem" >
+																					<tr class="cursor_move" ng-repeat="(key, con) in oppCustomer">
 																						<td>[CA0001] ABC</td>
 																						<td>[CCW] CCW</td>
 																						<td>[ABC] aaaa</td>
@@ -2472,11 +2515,11 @@ function addDataToDetailLead(){
 	
 	
 	<input type="hidden" id="btn_show_product" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmProduct" />
-	<div ng-controller="productController" class="modal fade modal-default" id="frmProduct" role="dialog">
+	<div class="modal fade modal-default" id="frmProduct" role="dialog">
 		<div class="modal-dialog  modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" ng-click="cancelCallClick()" class="close"
+					<button type="button" ng-click="cancelProductClick()" class="close"
 						data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">
 						<b  id="tCall">Add An Item</b>
@@ -2484,28 +2527,27 @@ function addDataToDetailLead(){
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<form id="frmAddCall">
+						<form id="frmAddProduct">
 							<div class="col-md-12">
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Item <span class="requrie">(Required)</span></label>
-										<select class="form-control select2" name="callStatus"
-												id="callStatus" style="width: 100%;">
-												<option value=""> </option>
-												<option ng-repeat="st in callStatusStartup"
-													value="{{st.callStatusId}}">{{st.callStatusName}}</option>
-											</select>
+										<select class="form-control select2" name="oppItem"
+												id="oppItem" style="width: 100%;">
+											<option value=""></option>
+											<option data-index="{{key}}" ng-repeat="(key,item) in oppItem" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
+										</select>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="bootstrap-timepicker">
 										<div class="form-group">
 											<label>Location ID <span class="requrie">(Required)</span></label>
-											<select class="form-control select2" name="callStatus"
-												id="callStatus" style="width: 100%;">
+											<select class="form-control select2" name="oppLocation"
+												id="oppLocation" style="width: 100%;">
 												<option value=""></option>
-												<option ng-repeat="st in callStatusStartup"
-													value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+												<option data-index="{{key}}" ng-repeat="(key,loc) in oppLocation"
+													value="{{loc.locationId}}">[{{loc.locationId}}] {{loc.locationName}}</option>
 											</select>
 										</div>
 									</div>
@@ -2515,11 +2557,11 @@ function addDataToDetailLead(){
 									<div class="bootstrap-timepicker">
 										<div class="form-group">
 											<label>Class ID </label>
-											<select class="form-control select2" name="callStatus"
-												id="callStatus" style="width: 100%;">
+											<select class="form-control select2" name="oppClassDetail"
+												id="oppClassDetail" style="width: 100%;">
 												<option value=""></option>
-												<option ng-repeat="st in callStatusStartup"
-													value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+												<option ng-repeat="cl in oppClass"
+													value="{{cl.classId}}">[{{cl.classId}}] {{cl.des}}</option>
 											</select>
 										</div>
 									</div>
@@ -2528,11 +2570,11 @@ function addDataToDetailLead(){
 									<div class="bootstrap-timepicker">
 										<div class="form-group">
 											<label>UOM ID <span class="requrie">(Required)</span></label>
-											<select class="form-control select2" name="callStatus"
-												id="callStatus" style="width: 100%;">
+											<select class="form-control select2" name="oppUom"
+												id="oppUom" style="width: 100%;">
 												<option value=""></option>
-												<option ng-repeat="st in callStatusStartup"
-													value="{{st.callStatusId}}">{{st.callStatusName}}</option>
+												<option ng-repeat="uom in oppUom"
+													value="{{uom.uomId}}">[{{uom.uomId}}] {{uom.des}}</option>
 											</select>
 										</div>
 									</div>
@@ -2541,14 +2583,14 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Quatity <span class="requrie">(Required)</span></label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppQty" onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Unit Price </label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppUnitPrice" name="oppUnitPrice" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2557,14 +2599,14 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Price Factor</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppPriceFactor" name="oppPriceFactor" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Report Price</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2573,7 +2615,7 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Total Amount</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2582,14 +2624,14 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Dicount %</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppDisPer" name="oppDisPer" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Discount $</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppDisDol" name="oppDisDol" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2597,14 +2639,14 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>VAT %</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppVatPer" name="oppVatPer" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>VAT $</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppVatDol" name="oppVatDol" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2612,14 +2654,14 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>ST %</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppSTPer" name="oppSTPer" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>ST $</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppSTDol" name="oppSTDol" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2628,7 +2670,7 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Net Total Amount</label>
-										<input id="meetSubject" name="meetSubject" class="form-control" type="text"
+										<input id="oppNetTAmount" disabled="disabled" name="oppNetTAmount" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2641,12 +2683,12 @@ function addDataToDetailLead(){
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" id="btnCallCancel"
-						ng-click="cancelCallClick()" name="btnCallCancel"
+					<button type="button" id="btnProductCancel"
+						ng-click="cancelProductClick()" name="btnProductCancel"
 						class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
-					<button type="button" class="btn btn-primary pull-right"
-						id="btnCallSave" name="btnCallSave">Save</button>
+					<button type="button" ng-click="btnProductSave()" class="btn btn-primary pull-right"
+						id="btnProductSave" name="btnProductSave">Add</button>
 
 				</div>
 			</div>
@@ -2737,6 +2779,7 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</div>
+	
 	<input type="hidden" id="btn_show_sale_order" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmSaleOrder" />
 	<div class="modal fade modal-default" id="frmSaleOrder" role="dialog">
 		<div class="modal-dialog  modal-md">
@@ -2870,6 +2913,7 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</div>
+	
 	<input type="hidden" id="btn_show_meet" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmMeet" />
 	<div ng-controller="meetController"  class="modal fade modal-default" id="frmMeet" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupMeetForm()">
@@ -2981,6 +3025,7 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</div>
+	
 	<input type="hidden" id="btn_show_task" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmTask" />
 	<div ng-controller="taskController" class="modal fade modal-default" id="frmTask" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupTaskForm()">
@@ -3087,6 +3132,7 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</div>
+	
 	<input type="hidden" id="btn_show_event" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmEvent" />
 	<div ng-controller="eventController" class="modal fade modal-default" id="frmEvent" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupEventForm()">

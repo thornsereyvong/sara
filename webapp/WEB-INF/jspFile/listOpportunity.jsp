@@ -165,9 +165,9 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 						<tr dir-paginate="cc in opportunity |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 							<td>{{cc.opId}}</td>
 							<td>{{cc.opName}}</td>
-							<td>{{cc.custName}}</td>
+							<td>[{{cc.custID}}] {{cc.custName}}</td>
 							<td>{{cc.osName}}</td>
-							<td>{{cc.opAmount}}</td>
+							<td>{{cc.opAmount | number:2}}</td>
 							<td>{{cc.opCloseDate | date:'dd-MM-yyyy'}}</td>	
 							<td>
 								<div class="col-sm-2">

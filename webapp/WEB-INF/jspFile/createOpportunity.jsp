@@ -182,26 +182,6 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {	
-		
-		var a  = {"opName": getValueStringById("op_name"),
-			      "opAmount": getInt("op_amount"),
-			      "customer": getJsonById("custID","op_customer","str"),
-			      "opCloseDate": getDateByFormat("opCloseDate"),
-			      "opTypeID": getJsonById("otId","op_type","int"),
-			      "opStageId": getJsonById("osId","op_stage","int"),
-			      "opProbability": getValueStringById("op_probability"),
-			      "opLeadSourceID": getJsonById("sourceID","op_leadSource","int"),
-			      "opNextStep": getValueStringById("op_nextStep"),
-			      "opCampId": getJsonById("campID","op_campaign","str"),
-			      "opDes": getValueStringById("cam_description"),
-			      "opAssignedTo": getJsonById("userID","op_assignTo","str"),
-			      "opCreateBy": username,
-			      "priceCode" : getJsonById("priceCode","op_price","str"),
-			      "ameClass" : getJsonById("classId","op_classCode","str")};
-		
-		dis(a)
-		
-		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/opportunity/add",
 			type : "POST",

@@ -1,6 +1,350 @@
 
 var callStartDateOld = "";
+
+
+function priceFactorChange(obj,l){
+	var num = toNum(obj.value);
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	
+	
+	if(num==0){
+		num =1;
+	}
+	
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	
+	calculateByItem(n);
+	
+	totalSalOrd();
+	showOneLocation(n);
+}
+function upChange(obj,l){
+	var num = toNum(obj.value);
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	
+	calculateByItem(n);
+	
+	totalSalOrd();
+	
+	showOneLocation(n);
+	
+}
+function qtyChange(obj,l){
+	
+	var num = toNum(obj.value);
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	
+	if(num>0){
+		obj1.attr('style',styQty);
+	}else{
+		obj1.attr('style','border: 1px solid #dd4b39;'+styQty);
+	}		
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	
+	calculateByItem(n);
+	
+	totalSalOrd();
+	showOneLocation(n);
+	
+}
+function disDolChange(obj,l){
+	
+	var num = toNum(obj.value);
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	
+	
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	
+	var up = toNum($.trim($("#up"+n).val()));
+	var qty = toNum($.trim($("#qty"+n).val()));
+	
+	var priceFactor = toNum($("#priceFactor"+n).val());
+	if(priceFactor == 0){
+		priceFactor = 1;
+		$("#priceFactor"+n).val(formatNumByLength(priceFactor,4));
+	}
+	var disP = 0;
+	if(up*qty*priceFactor != 0 || num*100 != 0)
+		disP = (num*100/(up*qty*priceFactor));
+	
+	$("#disP"+n).val(formatNumByLength(disP,5));
+	
+	calculateByItem(n);
+	
+	if(obj.value == disDolOnChangeAct ){
+		$("#disP"+n).val(formatNumByLength(disOnChangeAct,5));
+	}else{
+		disOnChangeAct = formatNumByLength(disP,5);
+	}
+	
+	
+	disDolOnChangeAct = obj.value;
+	
+	totalSalOrd();
+	showOneLocation(n);
+}
+function disPerChange(obj,l){
+	
+	var num = toNum(obj.value);
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	
+	
+			
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	disOnChangeAct = obj.value;
+	calculateByItem(n);
+	
+	disDolOnChangeAct = toNum($.trim($("#disDol"+n).val()));
+	
+	totalSalOrd();
+	showOneLocation(n);
+}
+
+function disFocus(obj,l){
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	disDolOnChangeAct = obj.value;
+	disOnChangeAct = toNum($.trim($("#disP"+n).val()));
+	
+}
+
+function stFocus(obj,l){
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	stDolOnChangeAct = obj.value;
+	stOnChangeAct = toNum($.trim($("#stP"+n).val()));
+	
+}
+function vatFocus(obj,l){
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	vatDolOnChangeAct = obj.value;
+	vatOnChangeAct = toNum($.trim($("#vatP"+n).val()));
+	
+}
+function vatDolChange(obj,l){
+	var num = toNum(obj.value);
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	
+	
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	
+	var up = toNum($.trim($("#up"+n).val()));
+	var qty = toNum($.trim($("#qty"+n).val()));
+	var disDol = toNum($.trim($("#disDol"+n).val()));
+	var stDol = toNum($.trim($("#stDol"+n).val()));
+	
+	var priceFactor = toNum($("#priceFactor"+n).val());
+	if(priceFactor == 0){
+		priceFactor = 1;
+		$("#priceFactor"+n).val(formatNumByLength(priceFactor,4));
+	}
+	
+	var vatP = 0;
+	if(up*qty != 0 || num*100 != 0)
+		vatP = (num*100/((up*qty*priceFactor)-disDol));
+	
+	$("#vatP"+n).val(formatNumByLength(vatP,5));
+	
+	calculateByItem(n);
+	
+	if(obj.value == vatDolOnChangeAct ){
+		$("#vatP"+n).val(formatNumByLength(vatOnChangeAct,5));
+	}else{
+		disOnChangeAct = formatNumByLength(vatP,5);
+	}
+	
+	
+	
+	totalSalOrd();
+	showOneLocation(n);
+}
+function vatPerChange(obj,l){
+	var num = toNum(obj.value);
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	
+			
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	vatOnChangeAct = obj.value;
+	calculateByItem(n);
+	
+	vatDolOnChangeAct = toNum($.trim($("#vatDol"+n).val()));
+	totalSalOrd();
+	showOneLocation(n);
+}
+function stDolChange(obj,l){
+	var num = toNum(obj.value);
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	
+	
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	var disDol = toNum($.trim($("#disDol"+n).val()));
+	var up = toNum($.trim($("#up"+n).val()));
+	var qty = toNum($.trim($("#qty"+n).val()));
+	var priceFactor = toNum($("#priceFactor"+n).val());
+	if(priceFactor == 0){
+		priceFactor = 1;
+		$("#priceFactor"+n).val(formatNumByLength(priceFactor,4));
+	}
+	var stP = 0;
+	if(up*qty != 0 || num*100 != 0)
+		stP = (num*100/((up*qty*priceFactor)-disDol));
+	
+	$("#stP"+n).val(formatNumByLength(stP,5));
+	
+	calculateByItem(n);
+	
+	if(obj.value == stDolOnChangeAct ){
+		$("#stP"+n).val(formatNumByLength(stOnChangeAct,5));
+	}else{
+		stOnChangeAct = formatNumByLength(stP,5);
+	}
+	
+	totalSalOrd();
+	showOneLocation(n);
+}
+function stPerChange(obj,l){
+	var num = toNum(obj.value);
+	var obj1 = $("#"+obj.getAttribute("id"));
+	var n = obj1.parent().parent().attr('val');
+	
+			
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+	
+	stOnChangeAct = obj.value;
+	calculateByItem(n);
+	
+	stDolOnChangeAct = toNum($.trim($("#stDol"+n).val()));
+	
+	totalSalOrd();
+	showOneLocation(n);
+}
+
+function calculateByItem(n){
+	
+	var qty    = toNum($("#qty"+n).val());
+	var up     = toNum($("#up"+n).val());
+	var disP   = toNum($("#disP"+n).val());
+	var disDol = toNum($("#disDol"+n).val());
+	var vatP   = toNum($("#vatP"+n).val());
+	var vatDol = toNum($("#vatDol"+n).val());
+	var stP    = toNum($("#stP"+n).val());
+	var stDol  = toNum($("#stDol"+n).val());
+	var priceFactor = toNum($("#priceFactor"+n).val());
+	
+	if(priceFactor == 0){
+		priceFactor = 1;
+		$("#priceFactor"+n).val(formatNumByLength(priceFactor,4));
+	}
+	var tAmt = up*qty*priceFactor;
+
+	if(tAmt != 0){
+		
+		disDol = (tAmt*disP)/100;
+		vatDol = ((tAmt-disDol)*vatP)/100;
+		stDol = ((tAmt-disDol)*stP)/100;
+		
+		$("#disDol"+n).val(formatNumByLength(disDol,2));
+		$("#vatDol"+n).val(formatNumByLength(vatDol,2));
+		$("#stDol"+n).val(formatNumByLength(stDol,2));
+		
+		
+	}else{
+		$("#disDol"+n).val(formatNumByLength(0,2));
+		$("#vatDol"+n).val(formatNumByLength(0,2));
+		$("#stDol"+n).val(formatNumByLength(0,2));
+		
+		$("#disP"+n).val(formatNumByLength(0,4));
+		$("#vatP"+n).val(formatNumByLength(0,4));
+		$("#stP"+n).val(formatNumByLength(0,4));	
+		
+		disP   = 0;
+		disDol = 0;
+		vatP   = 0;
+		vatDol = 0;
+		stP    = 0;
+		stDol  = 0;
+	}
+	
+	var nTAmt = tAmt-disDol+vatDol+stDol;
+	
+	$("#tAmt"+n).val(formatNumByLength(tAmt,2));
+	$("#nTAmt"+n).val(formatNumByLength(nTAmt,2));
+	
+	totalSTandVAT();
+	
+}
+
+
 $(function(){
+	
+	
+	$("#listItem").sortable();
+    $("#listItem").disableSelection();
+	
+	
+    // add product
+    
+    $("#oppItem").change(function(){
+    	$("#oppUom").select2('val', '');
+    	var item =  getValueStringById("oppItem");
+    	var priceCode = OPPORTUNITY.priceCode;
+    	if(item != ""){
+    		$.ajax({ 
+			    url: server+"/quote/itemChange", 
+			    type: 'POST',
+			    data: JSON.stringify({"itemId" : item, "priceCode" : priceCode}),
+			    beforeSend: function(xhr) {
+	                xhr.setRequestHeader("Accept", "application/json");
+	                xhr.setRequestHeader("Content-Type", "application/json");
+	            },
+			    success: function(data) {
+			    	 if(data.MESSAGE == 'SUCCESS'){
+			    		 $("#oppUom").select2('val', data.DATA.UOM);
+			    		 setValueById('oppReportPrice', formatNumByLength(data.DATA.rp, 6));
+			    		 setValueById('oppPriceFactor', '1.00000');
+			    		 setValueById('oppUnitPrice', formatNumByLength(data.DATA.up,6));
+			    		 //setValueById('taskEndDate', data.taskDueDate);
+			    		
+			    	 }else{
+			    		 $("#oppUom").select2('val', '');
+			    	 }			    	 			    	 
+			    },
+			    error:function() {}
+			});
+    	}
+    	
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	$("#collabTags").select2();
 	
@@ -222,6 +566,13 @@ $(function(){
 					}
 				}
 			},
+			oppPriceCode: {
+				validators: {
+					notEmpty: {
+						message: 'The  price code is required and can not be empty!'
+					}
+				}
+			},
 			oppCloseDate: {
 				validators: {
 					notEmpty: {
@@ -286,6 +637,8 @@ $(function(){
 			  "opCampId": getJsonById("campID","oppCampaign","str"),
 			  "opDes": getValueStringById("oppDescription"),
 			  "opAssignedTo": getJsonById("userID","oppAssignTo","str"),
+			  "priceCode" : getJsonById("priceCode","oppPriceCode","str"),
+		      "ameClass" : getJsonById("classId","oppClass","str"),	
 			  "opModifyBy": username		
 	  	};	
 		
