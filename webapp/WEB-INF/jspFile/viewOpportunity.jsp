@@ -41,6 +41,8 @@ var eventIdForEdit = null;
 var leadStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
 var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
 
+
+
 app.controller('viewOpportunityController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	
 	angular.element(document).ready(function () {				
@@ -62,6 +64,10 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.collaborates = [];
 	$scope.tags = [];
 	$scope.username = username; 
+	
+	
+	
+	
 	
 	$scope.listLeads = function(){
 			response = getLeadData();	
@@ -94,7 +100,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.quote = response.QUOTATIONS;
 			$scope.saleOrder = response.SALE_ORDERS;
 			
-		//	dis(response)
+			// dis(response)
 			
 			$scope.allContact = response.ALL_CONTACTS;
 			$scope.allQuote = response.ALL_QUOTATIONS;
@@ -114,9 +120,6 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			
 			addContactToTask(response.CONTACTS);
 			
-			
-			response.OPPORTUNITY_DETAILS_STARTUP
-			
 			$scope.oppPriceCode = 	response.PRICE_CODE;
 			$scope.oppClass = 	response.OPPORTUNITY_DETAILS_STARTUP.CLASSES;
 			
@@ -125,6 +128,10 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.oppLocation = response.OPPORTUNITY_DETAILS_STARTUP.LOCATION;
 			$scope.oppItem = response.OPPORTUNITY_DETAILS_STARTUP.ITEMS;
 			$scope.oppUom = response.OPPORTUNITY_DETAILS_STARTUP.UOM;
+			
+			$scope.opportunityDetail = response.OPPORTUNITY_DETAILS;
+			
+			
 	}
 	
 	
@@ -136,18 +143,20 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	
 	// tab product 
 	
-	$scope.oppTAmount = "";
+	
 	$scope.oppQty = "";
 	$scope.oppUnitPrice = "";
 	$scope.oppPriceFactor = "";
-	$scope.oppReportPrice = "";
-	
+	$scope.oppReportPrice = "";	
+	$scope.oppTAmount = "";	
 	$scope.oppDisPer = "";
 	$scope.oppDisDol = "";
 	$scope.oppVatPer = "";
 	$scope.oppVatDol = "";
 	$scope.oppSTPer = "";
-	$scope.oppSTDol = "";
+	$scope.oppSTDol = "";	
+	$scope.oppNetTAmount="";
+	
 	
 	$scope.oppItemChange = function(){
 		$("#oppUom").select2('val', '');
@@ -237,8 +246,6 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$scope.oppDisPer = "0.00";
 		if(toNum($scope.oppTAmount) != 0 && toNum($scope.oppDisDol) != 0){
 			$scope.oppDisPer = formatNumByLength(((toNum($scope.oppDisDol) * 100) / toNum($scope.oppTAmount)),5) ;
-		
-			
 		}
 		
 		if(toNum($scope.oppTAmount) != 0){
@@ -246,14 +253,8 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.oppVatDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppVatPer)) / 100), 2) ;
 			$scope.oppSTDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppSTPer)) / 100), 2) ;			
 		}
-		
-		
-		$scope.oppNetTAmount = formatNumByLength((toNum($scope.oppTAmount) - toNum($scope.oppDisDol) + toNum($scope.oppVatDol) + toNum($scope.oppSTDol)), 2);
-		
-		
-		
-		
-		
+				
+		$scope.oppNetTAmount = formatNumByLength((toNum($scope.oppTAmount) - toNum($scope.oppDisDol) + toNum($scope.oppVatDol) + toNum($scope.oppSTDol)), 2);		
 	}
 	
 	
@@ -271,11 +272,8 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			
 			$scope.oppSTDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppSTPer)) / 100), 2) ;			
 		}
-		
-		
 		$scope.oppNetTAmount = formatNumByLength((toNum($scope.oppTAmount) - toNum($scope.oppDisDol) + toNum($scope.oppVatDol) + toNum($scope.oppSTDol)), 2);
-		
-		
+	
 	}
 	
 	
@@ -293,12 +291,101 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.oppVatDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppVatPer)) / 100), 2) ;
 						
 		}
-		
-		
 		$scope.oppNetTAmount = formatNumByLength((toNum($scope.oppTAmount) - toNum($scope.oppDisDol) + toNum($scope.oppVatDol) + toNum($scope.oppSTDol)), 2);
+		
+	}
+	
+	$scope.resetSelect2 = function(ID){
+		$("#"+ID).select2('val','');
+	}
+	
+	$scope.btnProductSave = function(){
+		
+		$('#frmAddProduct').data('bootstrapValidator').validate();
+		var statusAddPro = $("#frmAddProduct").data('bootstrapValidator').validate().isValid();
+		dis($scope.oppItemModel)
+		
+		
+		
+		if(statusAddPro){
+			var dataFrm = {
+					"opDetailsId" : null,
+					"opId":oppId,
+					"lineNo" : 1,
+					"item" : getJsonById("itemId","oppItem","str"),
+					"uom" : getJsonById("uomId","oppUom","str"),
+					"location" : getJsonById("locationId","oppLocation","str"),
+					"ameClass" : getJsonById("classId","oppClassDetail","str"),
+					"saleQty" : toNum($scope.oppQty),
+					"unitPrice" : toNum($scope.oppUnitPrice),
+					"totalAmt" : toNum($scope.oppTAmount),
+					"netTotalAmt" : toNum($scope.oppNetTAmount),
+					"disDol" : toNum($scope.oppDisDol),
+					"disPer" : toNum($scope.oppDisPer),
+					"sTaxDol" : toNum($scope.oppSTDol),
+					"sTaxPer" : toNum($scope.oppSTPer),
+					"vTaxDol" : toNum($scope.oppVatDol),
+					"vTaxPer" : toNum($scope.oppVatPer),
+					"reportPrice" : toNum($scope.oppReportPrice),
+					"factor" : toNum($scope.oppPriceFactor)
+					
+			};
+			
+			$scope.opportunityDetail.push(dataFrm);
+			
+			$scope.oppQty = "";
+			$scope.oppUnitPrice = "";
+			$scope.oppPriceFactor = "";
+			$scope.oppReportPrice = "";	
+			$scope.oppTAmount = "";	
+			$scope.oppDisPer = "";
+			$scope.oppDisDol = "";
+			$scope.oppVatPer = "";
+			$scope.oppVatDol = "";
+			$scope.oppSTPer = "";
+			$scope.oppSTDol = "";	
+			$scope.oppNetTAmount="";
+			
+			//$scope.oppItemModel = "";
+			
+			
+			
+			
+			//$scope.resetSelect2("oppItem");
+			$scope.resetSelect2("oppClassDetail");
+			$scope.resetSelect2("oppUom");
+			$scope.resetSelect2("oppLocation");
+			
+			$("#frmAddProduct").bootstrapValidator('resetForm', 'true');
+			$('#frmAddProduct')[0].reset();
+			
+		}else{
+			alert(0)
+		}
 		
 		
 	}
+	
+	var toggleDisInv = true;
+	
+	$scope.editDisInvClick = function(){		
+		if(toggleDisInv){
+			$(".show-text-disInv").hide();
+			$(".show-disInv").show();
+		}else{
+			$(".show-text-disInv").show();
+			$(".show-disInv").hide();
+		}		
+		toggleDisInv = !toggleDisInv;		
+	}
+	
+	
+	$scope.oppDisInvPerChange = function(){						
+		$scope.opportunity.disInvDol = toNum($scope.opportunity.totalAmt) * toNum($scope.opportunity.disInvPer) / 100;		
+		$scope.opportunity.opAmount = toNum($scope.opportunity.totalAmt) - (toNum($scope.opportunity.totalAmt) * toNum($scope.opportunity.disInvPer) / 100);
+	}
+	
+	
 	
 	// end tab product
 	
@@ -1408,7 +1495,9 @@ function addDataToDetailLead(){
 
 </script>
 <style>
-
+.show-text-disInv{
+	font-weight: bold;
+}
 .trask-btn{
 	color: #dd4b39 !important;
 }
@@ -2342,7 +2431,7 @@ function addDataToDetailLead(){
 											<div class="row">
 												<div class="col-md-12" >
 													<a style="margin-left: 0px;" class="btn btn-app" ng-click="product_click()"> 
-														<i class="fa fa-plus"></i> Product
+														<i class="fa fa-save"></i> Save
 													</a> 
 												</div>
 												<div class="col-md-12">
@@ -2363,9 +2452,9 @@ function addDataToDetailLead(){
 																				<tbody>
 																					<tr>
 																						<th>Item</th>
-																						<th>Location ID</th>
-																						<th>Class ID</th>
-																						<th>UOM ID</th>
+																						<th>Location</th>
+																						<th>Class</th>
+																						<th>UOM</th>
 																						<th>Quantity</th>
 																						<th>Unit Price</th>
 																						<th>Price Factor</th>
@@ -2382,23 +2471,23 @@ function addDataToDetailLead(){
 																					</tr>
 																				</tbody>
 																				<tbody id="listItem" >
-																					<tr class="cursor_move" ng-repeat="(key, con) in oppCustomer">
-																						<td>[CA0001] ABC</td>
-																						<td>[CCW] CCW</td>
-																						<td>[ABC] aaaa</td>
-																						<td>[EA] Each</td>
-																						<td class="iText-right">1,000.00</td>
-																						<td class="iText-right">100</td>
-																						<td class="iText-right">0.00000</td>
-																						<td class="iText-right">0.00000</td>
-																						<td class="iText-right">1000000</td>
-																						<td class="iText-right">777777</td>
-																						<td class="iText-right">34444</td>
-																						<td class="iText-right">6666</td>
-																						<td class="iText-right">222</td>
-																						<td class="iText-right">5856868</td>
-																						<td class="iText-right">637676</td>
-																						<td class="iText-right">67676</td>
+																					<tr class="cursor_move" ng-repeat="(key, oppDetail) in opportunityDetail">
+																						<td>[{{oppDetail.item.itemId}}] {{oppDetail.item.itemName.trunc(15)}}</td>
+																						<td>[{{oppDetail.location.locationId}}] {{oppDetail.location.locationName.trunc(10)}}</td>
+																						<td><span ng-if="oppDetail.ameClass != null">[{{oppDetail.ameClass.classId}}] {{oppDetail.ameClass.className.trunc(10)}}</span></td>
+																						<td>[{{oppDetail.uom.uomId}}] {{oppDetail.uom.des.trunc(10)}}</td>
+																						<td class="iText-right">{{oppDetail.saleQty | number:4}}</td>
+																						<td class="iText-right">{{oppDetail.unitPrice | number:6}}</td>
+																						<td class="iText-right">{{oppDetail.factor | number:4}}</td>
+																						<td class="iText-right">{{oppDetail.reportPrice | number:6}}</td>
+																						<td class="iText-right">{{oppDetail.totalAmt | number:2}}</td>
+																						<td class="iText-right">{{oppDetail.disPer | number:5}}</td>
+																						<td class="iText-right">{{oppDetail.disDol | number:2}}</td>
+																						<td class="iText-right">{{oppDetail.vTaxPer | number:5}}</td>
+																						<td class="iText-right">{{oppDetail.vTaxDol | number:2}}</td>
+																						<td class="iText-right">{{oppDetail.sTaxPer | number:5}}</td>
+																						<td class="iText-right">{{oppDetail.sTaxDol | number:2}}</td>
+																						<td class="iText-right">{{oppDetail.netTotalAmt | number:2}}</td>
 																						<td>
 																							<div class="col-sm-2">
 																								<div class="btn-group">
@@ -2410,7 +2499,7 @@ function addDataToDetailLead(){
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
 																										<li>
-																											<a href="#" ng-click="deleteContactClick(con.id, key)" ><i class="fa fa-pencil"></i> Edit </a>
+																											<a href="#" ng-click="product_click()" ><i class="fa fa-pencil"></i> Edit </a>
 																										</li>
 																										<li>
 																											<a href="#" ng-click="deleteContactClick(con.id, key)" ><i class="fa fa-trash"></i> Delete </a>
@@ -2422,23 +2511,57 @@ function addDataToDetailLead(){
 																						</td>
 																					</tr>
 																				</tbody>
+																				<tbody>
+																					<tr>
+																						<th colspan="17">
+																							<button type="button" ng-click="product_click()" class="btn btn-primary">
+																								Add An Item
+																							</button>
+																						</th>
+																					</tr>																					
+																				</tbody>
 																				<tfoot>
 																					<tr>
 																						<th colspan="12"></th>
-																						<th colspan="3" class="iText-right">Total Sale Order: </th>
-																						<th class="iText-right">11555232355</th>
+																						<th colspan="3" class="iText-right">Total VAT: </th>
+																						<th class="iText-right">{{opportunity.totalVTax | number:2}}</th>
 																						<th></th>
 																					</tr>
 																					<tr>
 																						<th colspan="12"></th>
-																						<th colspan="3" class="iText-right">Discount: </th>
-																						<th class="iText-right">100</th>
+																						<th colspan="3" class="iText-right">Total ST: </th>
+																						<th class="iText-right">{{opportunity.totalSTax | number:2}}</th>
 																						<th></th>
 																					</tr>
 																					<tr>
 																						<th colspan="12"></th>
 																						<th colspan="3" class="iText-right">Total Amount: </th>
-																						<th class="iText-right">100</th>
+																						<th class="iText-right">{{opportunity.totalAmt | number:2}}</th>
+																						<th></th>
+																					</tr>
+																					<tr>
+																						<th colspan="12"></th>
+																						<th colspan="3" class="iText-right">Discount:</th>
+																						<td class="iText-right">
+																							<span class="pull-right show-text-disInv">{{opportunity.disInvDol | number:2}}</span>
+																							<div ng-blur="fToNumber($event, opportunity.disInvDol, 2)" class="pull-right form-group show-disInv" style="display: none; margin-bottom: 0px;">																																																	
+																								<div class="input-group">
+																				                    <input ng-model="opportunity.disInvPer" ng-change="oppDisInvPerChange()" onkeypress='return isPersent(this,event)' style="width: 80px;" type="text" name="oppDisInv"
+																									id="oppDisInv" class="form-control"
+																									value="{{opportunity.disInvPer | number:2}}">
+																									<span class="input-group-addon btn">%</span>
+																			                  	</div>
+																							</div>
+																						</td>
+																						<th>
+																							<a class="cusor_pointer" ng-click="editDisInvClick()"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
+																						</th>
+																					</tr>
+																					<tr>
+																						<th colspan="12"></th>
+																						<th colspan="3" class="iText-right">Net Total Amount: </th>
+																						
+																						<th class="iText-right">{{opportunity.opAmount | number:2}}</th>
 																						<th></th>
 																					</tr>
 																				</tfoot>	
@@ -2699,7 +2822,7 @@ function addDataToDetailLead(){
 						<b  id="tCall">Add An Item</b>
 					</h4>
 				</div>
-				<form id="frmAddProduct">
+				<form id="frmAddProduct" method="post">
 				<div class="modal-body">
 					<div class="row">
 							<div class="col-md-12">
@@ -2708,7 +2831,7 @@ function addDataToDetailLead(){
 										<label>Item <span class="requrie">(Required)</span></label>
 										<select ng-change="oppItemChange()" ng-model="oppItemModel" class="form-control select2" name="oppItem"
 												id="oppItem" style="width: 100%;">
-											<option value=""></option>
+											<option value="" selected></option>
 											<option data-index="{{key}}" ng-repeat="(key,item) in oppItem track by $index" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
 										</select>
 									</div>
@@ -2765,7 +2888,7 @@ function addDataToDetailLead(){
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>Unit Price </label>
+										<label>Unit Price <span class="requrie">(Required)</span></label>
 										<input ng-model="oppUnitPrice" ng-blur="fToNumber($event, oppUnitPrice, 6)" ng-change="oppUnitePriceChange()" onkeypress='return isNumeric(this,event)' id="oppUnitPrice" name="oppUnitPrice" class="form-control" type="text"
 										placeholder="">
 									</div>
@@ -2774,7 +2897,7 @@ function addDataToDetailLead(){
 								<div class="clearfix"></div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>Price Factor</label>
+										<label>Price Factor<span class="requrie">(Required)</span></label>
 										<input id="oppPriceFactor" ng-blur="fToNumber($event, oppPriceFactor, 4)" onkeypress='return isNumeric(this,event)' ng-model="oppPriceFactor" ng-change="oppPriceFactorChange()" name="oppPriceFactor" class="form-control" type="text"
 										placeholder="">
 									</div>

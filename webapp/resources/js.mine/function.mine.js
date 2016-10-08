@@ -14,6 +14,9 @@ month_num['Dec'] = 12;
 
 var probab = [0,10,20,40,70,90,100,0];
 
+
+
+
 function alertMsgErrorSweet(){
 	swal({
 		title:"Unsuccessful",

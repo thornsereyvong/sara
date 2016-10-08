@@ -42,6 +42,8 @@
     <script src="${pageContext.request.contextPath}/resources/dist/js/demo.js"></script>
      <script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
     <script type="text/javascript">
+  
+    
     $(document).ready(function() {
       $('.summernote').summernote({
         height: 400,
@@ -65,6 +67,14 @@
     	$(".date").datepicker();
     	
       }); 
+       
+       
+       
+       String.prototype.trunc = String.prototype.trunc ||  function(n){
+           return this.length>n ? this.substr(0,n-1)+'...' : this.toString();
+       };
+       
+ 
     </script>
    <script>
 	$(document).ready(function() {
