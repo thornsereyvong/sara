@@ -256,14 +256,17 @@ function getValueById(ID){
 function getValueStringById(ID){
 	return ($.trim($("#"+ID).val())).toString();
 }
+
 function toNum(num){	
 	if (num === undefined || num === null || num == 0) {
 		return 0;		
 	}
 	num = num.toString();
-	num = num.replace(',','');
-	return Number($.trim(num));
+	num  = num.split(",");
+	num  = num.join("");
+	return Number(num);
 }
+
 
 
 function readURL(input, dis_img) {	

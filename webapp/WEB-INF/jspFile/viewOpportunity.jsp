@@ -134,6 +134,180 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	};
 	
 	
+	// tab product 
+	
+	$scope.oppTAmount = "";
+	$scope.oppQty = "";
+	$scope.oppUnitPrice = "";
+	$scope.oppPriceFactor = "";
+	$scope.oppReportPrice = "";
+	
+	$scope.oppDisPer = "";
+	$scope.oppDisDol = "";
+	$scope.oppVatPer = "";
+	$scope.oppVatDol = "";
+	$scope.oppSTPer = "";
+	$scope.oppSTDol = "";
+	
+	$scope.oppItemChange = function(){
+		$("#oppUom").select2('val', '');
+    	var item =  $scope.oppItemModel;
+    	var priceCode = OPPORTUNITY.priceCode;
+    	if(item != ""){
+    		$.ajax({ 
+			    url: server+"/quote/itemChange", 
+			    type: 'POST',
+			    data: JSON.stringify({"itemId" : item, "priceCode" : priceCode}),
+			    beforeSend: function(xhr) {
+	                xhr.setRequestHeader("Accept", "application/json");
+	                xhr.setRequestHeader("Content-Type", "application/json");
+	            },
+			    success: function(data) {
+			    	 if(data.MESSAGE == 'SUCCESS'){
+			    		 $("#oppUom").select2('val', data.DATA.UOM);
+			    		 setValueById('oppUnitPrice',formatNumByLength(data.DATA.up, 6));
+			    		 setValueById('oppReportPrice',formatNumByLength(data.DATA.rp, 6));
+			    		 setValueById('oppPriceFactor',"1.0000");
+			    		 
+			    		 $scope.assignValuePro(data);
+			    	 }else{
+			    		 $("#oppUom").select2('val', '');
+			    	 }			    	 			    	 
+			    },
+			    error:function() {}
+			});
+    	}
+    	$scope.oppDisPer = "0.00";
+		$scope.oppVatPer = "0.00";
+		$scope.oppSTPer = "0.00";
+		
+		$scope.oppDisDol = "0.00";
+		$scope.oppVatDol = "0.00";
+		$scope.oppSTDol = "0.00";
+		
+	}
+	
+	$scope.assignValuePro = function(data){
+		$scope.oppReportPrice = formatNumByLength(data.DATA.rp, 6);
+		$scope.oppPriceFactor = "1.0000";
+		$scope.oppUnitPrice = formatNumByLength(data.DATA.up, 6);
+	}
+	
+	$scope.calculateProduct = function(){
+		$scope.oppTAmount = formatNumByLength((toNum($scope.oppQty) * toNum($scope.oppUnitPrice) * toNum($scope.oppPriceFactor)), 2);
+		
+		$scope.oppDisDol = "0.00";
+		$scope.oppVatDol = "0.00";
+		$scope.oppSTDol = "0.00";
+		
+		
+		if(toNum($scope.oppTAmount) != 0){
+			$scope.oppDisDol = formatNumByLength(((toNum($scope.oppTAmount) * toNum($scope.oppDisPer)) / 100), 2) ;					
+			$scope.oppVatDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppVatPer)) / 100), 2) ;
+			$scope.oppSTDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppSTPer)) / 100), 2) ;			
+		}
+		
+		
+		$scope.oppNetTAmount = formatNumByLength((toNum($scope.oppTAmount) - toNum($scope.oppDisDol) + toNum($scope.oppVatDol) + toNum($scope.oppSTDol)), 2);
+		
+		
+	}
+	
+	$scope.oppQtyChange = function(){			
+		$scope.calculateProduct();
+	}
+		
+	$scope.oppUnitePriceChange = function(){
+		$scope.calculateProduct();
+	}
+	
+	$scope.oppPriceFactorChange = function(){
+		$scope.calculateProduct();
+	}
+	
+	$scope.fToNumber = function(event, num, l){ 
+		$(event.target).val(formatNumByLength(toNum(num),l));
+	}
+	
+	
+	$scope.oppDisPerChange = function(){		
+		$scope.calculateProduct();						
+	}
+	$scope.oppDisDolChange = function(){
+		$scope.oppDisPer = "0.00";
+		if(toNum($scope.oppTAmount) != 0 && toNum($scope.oppDisDol) != 0){
+			$scope.oppDisPer = formatNumByLength(((toNum($scope.oppDisDol) * 100) / toNum($scope.oppTAmount)),5) ;
+		
+			
+		}
+		
+		if(toNum($scope.oppTAmount) != 0){
+								
+			$scope.oppVatDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppVatPer)) / 100), 2) ;
+			$scope.oppSTDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppSTPer)) / 100), 2) ;			
+		}
+		
+		
+		$scope.oppNetTAmount = formatNumByLength((toNum($scope.oppTAmount) - toNum($scope.oppDisDol) + toNum($scope.oppVatDol) + toNum($scope.oppSTDol)), 2);
+		
+		
+		
+		
+		
+	}
+	
+	
+	$scope.oppVatPerChange = function(){		
+		$scope.calculateProduct();						
+	}
+	$scope.oppVatDolChange = function(){
+		$scope.oppVatPer = "0.00";
+		if(toNum($scope.oppTAmount) != 0 && toNum($scope.oppVatDol) != 0){
+			$scope.oppVatPer = formatNumByLength(((toNum($scope.oppVatDol) * 100) / (toNum($scope.oppTAmount)-toNum($scope.oppDisDol))),5) ;
+		}
+		
+		if(toNum($scope.oppTAmount) != 0){
+			$scope.oppDisDol = formatNumByLength(((toNum($scope.oppTAmount) * toNum($scope.oppDisPer)) / 100), 2) ;					
+			
+			$scope.oppSTDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppSTPer)) / 100), 2) ;			
+		}
+		
+		
+		$scope.oppNetTAmount = formatNumByLength((toNum($scope.oppTAmount) - toNum($scope.oppDisDol) + toNum($scope.oppVatDol) + toNum($scope.oppSTDol)), 2);
+		
+		
+	}
+	
+	
+	$scope.oppSTPerChange = function(){		
+		$scope.calculateProduct();						
+	}
+	$scope.oppSTDolChange = function(){
+		$scope.oppSTPer = "0.00";
+		if(toNum($scope.oppTAmount) != 0 && toNum($scope.oppSTDol) != 0 && (toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) != 0){
+			$scope.oppSTPer = formatNumByLength(((toNum($scope.oppSTDol) * 100) / (toNum($scope.oppTAmount)-toNum($scope.oppDisDol))),5) ;
+		}
+		
+		if(toNum($scope.oppTAmount) != 0){
+			$scope.oppDisDol = formatNumByLength(((toNum($scope.oppTAmount) * toNum($scope.oppDisPer)) / 100), 2) ;					
+			$scope.oppVatDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppVatPer)) / 100), 2) ;
+						
+		}
+		
+		
+		$scope.oppNetTAmount = formatNumByLength((toNum($scope.oppTAmount) - toNum($scope.oppDisDol) + toNum($scope.oppVatDol) + toNum($scope.oppSTDol)), 2);
+		
+		
+	}
+	
+	// end tab product
+	
+	
+	
+	
+	
+	
+	
 // Tab Collaborate***************************
 	
 	$scope.listCollab = function(response){
@@ -2525,45 +2699,18 @@ function addDataToDetailLead(){
 						<b  id="tCall">Add An Item</b>
 					</h4>
 				</div>
+				<form id="frmAddProduct">
 				<div class="modal-body">
 					<div class="row">
-						<form id="frmAddProduct">
 							<div class="col-md-12">
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Item <span class="requrie">(Required)</span></label>
-										<select class="form-control select2" name="oppItem"
+										<select ng-change="oppItemChange()" ng-model="oppItemModel" class="form-control select2" name="oppItem"
 												id="oppItem" style="width: 100%;">
 											<option value=""></option>
-											<option data-index="{{key}}" ng-repeat="(key,item) in oppItem" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
+											<option data-index="{{key}}" ng-repeat="(key,item) in oppItem track by $index" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
 										</select>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="bootstrap-timepicker">
-										<div class="form-group">
-											<label>Location ID <span class="requrie">(Required)</span></label>
-											<select class="form-control select2" name="oppLocation"
-												id="oppLocation" style="width: 100%;">
-												<option value=""></option>
-												<option data-index="{{key}}" ng-repeat="(key,loc) in oppLocation"
-													value="{{loc.locationId}}">[{{loc.locationId}}] {{loc.locationName}}</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="clearfix"></div>
-								<div class="col-md-6">
-									<div class="bootstrap-timepicker">
-										<div class="form-group">
-											<label>Class ID </label>
-											<select class="form-control select2" name="oppClassDetail"
-												id="oppClassDetail" style="width: 100%;">
-												<option value=""></option>
-												<option ng-repeat="cl in oppClass"
-													value="{{cl.classId}}">[{{cl.classId}}] {{cl.des}}</option>
-											</select>
-										</div>
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -2579,18 +2726,47 @@ function addDataToDetailLead(){
 										</div>
 									</div>
 								</div>
+								
+								<div class="clearfix"></div>
+								<div class="col-md-6">
+									<div class="bootstrap-timepicker">
+										<div class="form-group">
+											<label>Location ID <span class="requrie">(Required)</span></label>
+											<select class="form-control select2" name="oppLocation"
+												id="oppLocation" style="width: 100%;">
+												<option value=""></option>
+												<option data-index="{{key}}" ng-repeat="(key,loc) in oppLocation"
+													value="{{loc.locationId}}">[{{loc.locationId}}] {{loc.locationName}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="bootstrap-timepicker">
+										<div class="form-group">
+											<label>Class ID </label>
+											<select class="form-control select2" name="oppClassDetail"
+												id="oppClassDetail" style="width: 100%;">
+												<option value=""></option>
+												<option ng-repeat="cl in oppClass"
+													value="{{cl.classId}}">[{{cl.classId}}] {{cl.des}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								
 								<div class="clearfix"></div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Quatity <span class="requrie">(Required)</span></label>
-										<input id="oppQty" onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type="text"
+										<input id="oppQty" ng-blur="fToNumber($event, oppQty, 4)" ng-change="oppQtyChange()" ng-model="oppQty" onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Unit Price </label>
-										<input id="oppUnitPrice" name="oppUnitPrice" class="form-control" type="text"
+										<input ng-model="oppUnitPrice" ng-blur="fToNumber($event, oppUnitPrice, 6)" ng-change="oppUnitePriceChange()" onkeypress='return isNumeric(this,event)' id="oppUnitPrice" name="oppUnitPrice" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2599,14 +2775,14 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Price Factor</label>
-										<input id="oppPriceFactor" name="oppPriceFactor" class="form-control" type="text"
+										<input id="oppPriceFactor" ng-blur="fToNumber($event, oppPriceFactor, 4)" onkeypress='return isNumeric(this,event)' ng-model="oppPriceFactor" ng-change="oppPriceFactorChange()" name="oppPriceFactor" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Report Price</label>
-										<input id="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type="text"
+										<input id="oppReportPrice" ng-model="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2615,7 +2791,7 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Total Amount</label>
-										<input id="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type="text"
+										<input id="oppTAmount"   ng-model="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2624,14 +2800,14 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Dicount %</label>
-										<input id="oppDisPer" name="oppDisPer" class="form-control" type="text"
+										<input ng-model="oppDisPer" ng-blur="fToNumber($event, oppDisPer, 5)" ng-change="oppDisPerChange()" onkeypress='return isPersent(this,event)' id="oppDisPer" name="oppDisPer" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Discount $</label>
-										<input id="oppDisDol" name="oppDisDol" class="form-control" type="text"
+										<input ng-model="oppDisDol" ng-blur="fToNumber($event, oppDisDol, 2)" ng-change="oppDisDolChange()" id="oppDisDol" onkeypress='return isNumeric(this,event)' name="oppDisDol" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2639,14 +2815,14 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>VAT %</label>
-										<input id="oppVatPer" name="oppVatPer" class="form-control" type="text"
+										<input ng-model="oppVatPer" ng-blur="fToNumber($event, oppVatPer, 5)" ng-change="oppVatPerChange()" onkeypress='return isPersent(this,event)' id="oppVatPer" name="oppVatPer" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>VAT $</label>
-										<input id="oppVatDol" name="oppVatDol" class="form-control" type="text"
+										<input ng-model="oppVatDol" ng-blur="fToNumber($event, oppVatDol, 2)" ng-change="oppVatDolChange()" id="oppVatDol" onkeypress='return isNumeric(this,event)' name="oppVatDol" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2654,14 +2830,14 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>ST %</label>
-										<input id="oppSTPer" name="oppSTPer" class="form-control" type="text"
+										<input ng-model="oppSTPer" ng-blur="fToNumber($event, oppSTPer, 5)" ng-change="oppSTPerChange()" onkeypress='return isPersent(this,event)' id="oppSTPer" name="oppSTPer" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>ST $</label>
-										<input id="oppSTDol" name="oppSTDol" class="form-control" type="text"
+										<input ng-model="oppSTDol" ng-blur="fToNumber($event, oppSTDol, 2)" ng-change="oppSTDolChange()" id="oppSTDol" onkeypress='return isNumeric(this,event)' name="oppSTDol" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
@@ -2670,18 +2846,15 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Net Total Amount</label>
-										<input id="oppNetTAmount" disabled="disabled" name="oppNetTAmount" class="form-control" type="text"
+										<input ng-model="oppNetTAmount" id="oppNetTAmount" disabled="disabled" name="oppNetTAmount" class="form-control" type="text"
 										placeholder="">
 									</div>
 								</div>
 								<div class="clearfix"></div>
-							</div>
-						</form>
-					</div>
-
-
-
+							</div>						
+					</div>				
 				</div>
+				</form>
 				<div class="modal-footer">
 					<button type="button" id="btnProductCancel"
 						ng-click="cancelProductClick()" name="btnProductCancel"
