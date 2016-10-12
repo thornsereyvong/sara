@@ -77,7 +77,7 @@
 			if (parentCampaign != "") {
 				$.each(parentCampaign, function(key, value) {
 					var div = "<option value='"+value.campID+"' >"
-							+ value.campName + "</option>";
+							+'['+ value.campID+'] '+value.campName + "</option>";
 					$("#cam_parent").append(div);
 				});
 				$("#cam_parent").select2("val", campId);
@@ -161,36 +161,7 @@
 				$("#cam_assignTo").val("");
 			}
 
-			$("#cam_name").change(function() {
-				var name = $("#cam_name").val();
-				$.ajax({
-					url : "${pageContext.request.contextPath}/campaign/list/validate/"+ name,
-					method : "GET",
-					header : "application/json",
-					statusCode : {
-								404 : function(xhr) {
-									var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-ok" data-bv-icon-for="cam_name" style="display: block;"></i>';
-									$("#div_camName").find("i").remove();
-									$("#div_camName").find("small").remove();
-									$("#div_camName").removeClass("form-group has-feedback has-error").addClass("form-group has-feedback has-success");
-									$("#div_camName").append(i);
-									$("#btn_save").removeAttr("disabled");
-								}
-					},
-					success : function(data) {
-						var dataObject = data.MESSAGE;
-						if (dataObject == "EXIST") {
-							var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-remove" data-bv-icon-for="cam_name" style="display: block;"></i>';
-							var small = '<small class="help-block" data-bv-validator="notEmpty" data-bv-for="cam_name" data-bv-result="INVALID" style="">The Campaign Name is already exit ! </small>';
-							$("#div_camName").find("i").remove();
-							$("#div_camName").find("small").remove();
-							$("#div_camName").removeClass("form-group has-feedback has-success").addClass("form-group has-feedback has-error");
-							$("#div_camName").append(i+ small);
-							$("#btn_save").attr("disabled","disabled");
-						}
-					}
-				});
-			});
+			
 			$("#btn_clear").click(function() {
 				location.reload();
 			});
@@ -473,7 +444,7 @@
 									<div class="form-group">
 										<select class="form-control select2" name="cam_parent"
 											id="cam_parent" style="width: 100%;">
-
+												
 										</select>
 									</div>
 								</div>

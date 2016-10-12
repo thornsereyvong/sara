@@ -153,7 +153,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 							<td>{{cc.conSalutation}}{{cc.conFirstName}} {{cc.conLastName}}</td>
 							<td>{{cc.conTitle}}</td>
 							
-							<td>{{cc.custName}}</td>
+							<td><span ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}}</span></td>
 							<td>{{cc.conEmail}}</td>
 							<td>{{cc.sourceName}}</td>	
 							<td>

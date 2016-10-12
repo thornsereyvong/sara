@@ -38,6 +38,19 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	angular.element(document).ready(function () {					
 		setTimeout(function(){
 			
+			if($scope.LEAD.statusID == '4'){
+				swal({
+            		title:"Warning",
+            		text:"The lead with id: "+leadId+" is already converted.",
+            		type:"error",  
+            		timer: 3000,   
+            		showConfirmButton: false
+    			});
+				setTimeout(function(){window.location.href = "${pageContext.request.contextPath}/list-leads/";}, 3000);
+			}else{
+				
+			}
+			
 			$("#con_salutation").val($scope.LEAD.salutation);
 			$("#con_leadSource").select2("val", $scope.LEAD.sourceID);
 			$("#c_industry").select2("val", $scope.LEAD.industID);

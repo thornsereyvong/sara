@@ -70,36 +70,7 @@
 			});
 			
 			
-			$("#cam_name").change(function() {
-				var name = $("#cam_name").val();
-				$.ajax({
-					url : "${pageContext.request.contextPath}/campaign/list/validate/"+ name,
-					method : "GET",
-					header : "application/json",
-					statusCode : {
-								404 : function(xhr) {
-									var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-ok" data-bv-icon-for="cam_name" style="display: block;"></i>';
-									$("#div_camName").find("i").remove();
-									$("#div_camName").find("small").remove();
-									$("#div_camName").removeClass("form-group has-feedback has-error").addClass("form-group has-feedback has-success");
-									$("#div_camName").append(i);
-									$("#btn_save").removeAttr("disabled");
-								}
-															},
-					success : function(data) {
-						var dataObject = data.MESSAGE;
-						if (dataObject == "EXIST") {
-							var i = '<i class="form-control-feedback bv-no-label glyphicon glyphicon-remove" data-bv-icon-for="cam_name" style="display: block;"></i>';
-							var small = '<small class="help-block" data-bv-validator="notEmpty" data-bv-for="cam_name" data-bv-result="INVALID" style="">The Campaign Name is already exit ! </small>';
-							$("#div_camName").find("i").remove();
-							$("#div_camName").find("small").remove();
-							$("#div_camName").removeClass("form-group has-feedback has-success").addClass("form-group has-feedback has-error");
-							$("#div_camName").append(i+ small);
-							$("#btn_save").attr("disabled","disabled");
-					}
-				}
-			});
-		});
+			
 		$("#btn_clear").click(function() {
 			$("#form-campaigns").bootstrapValidator('resetForm', 'true');
 		});
@@ -354,7 +325,7 @@
                 <div class="form-group">
                   <select class="form-control select2" name="cam_parent" style="width: 100%;" id="cam_parent">
                     <option value="">-- SELECT Parent --</option>
-                    <option ng-repeat="cam in camp_parents" value="{{cam.campID}}">{{cam.campName}}</option>
+                    <option ng-repeat="cam in camp_parents" value="{{cam.campID}}">[{{cam.campID}}] {{cam.campName}}</option>
                   </select>
                 </div>
               </div>

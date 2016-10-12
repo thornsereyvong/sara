@@ -276,7 +276,7 @@ $(document).ready(function() {
 									<div class="form-group">
 										<select class="form-control select2" name="op_customer" id="op_customer" style="width: 100%;">
 											<option value="">-- SELECT Customer --</option>
-											<option data-index="{{u.priceCode.priceCode}}" ng-repeat="(key, u) in customer" value="{{u.custID}}">{{u.custName}}</option>
+											<option data-index="{{u.priceCode.priceCode}}" ng-repeat="(key, u) in customer" value="{{u.custID}}">[{{u.custID}}] {{u.custName}}</option>
 										</select>
 									</div>
 								</div>
@@ -346,7 +346,7 @@ $(document).ready(function() {
 									<div class="form-group">
 										<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
 											<option value="">-- SELECT Campaign --</option>
-											<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
+											<option ng-repeat="u in campaigns" value="{{u.campID}}">[{{u.campID}}] {{u.campName}}</option>
 										</select>
 									</div>
 								</div>

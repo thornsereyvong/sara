@@ -27,7 +27,11 @@ var lOpportunity = "";
 
 var typeModule = "Opportunity";
 
+var itemChangeStatus1 = true;
+var itemChangeStatus2 = true;
 
+var btnSaveProductStatus = false;
+var indexItem = 0;
 var noteIdEdit = "";
 var response=[];
 var LEAD = [];
@@ -127,9 +131,9 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			// frm add opportunity
 			$scope.oppLocation = response.OPPORTUNITY_DETAILS_STARTUP.LOCATION;
 			$scope.oppItem = response.OPPORTUNITY_DETAILS_STARTUP.ITEMS;
-			$scope.oppUom = response.OPPORTUNITY_DETAILS_STARTUP.UOM;
-			
+			$scope.oppUom = response.OPPORTUNITY_DETAILS_STARTUP.UOM;			
 			$scope.opportunityDetail = response.OPPORTUNITY_DETAILS;
+			
 			
 			
 	}
@@ -158,41 +162,87 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.oppNetTAmount="";
 	
 	
-	$scope.oppItemChange = function(){
-		$("#oppUom").select2('val', '');
-    	var item =  $scope.oppItemModel;
-    	var priceCode = OPPORTUNITY.priceCode;
-    	if(item != ""){
-    		$.ajax({ 
-			    url: server+"/quote/itemChange", 
-			    type: 'POST',
-			    data: JSON.stringify({"itemId" : item, "priceCode" : priceCode}),
-			    beforeSend: function(xhr) {
-	                xhr.setRequestHeader("Accept", "application/json");
-	                xhr.setRequestHeader("Content-Type", "application/json");
-	            },
-			    success: function(data) {
-			    	 if(data.MESSAGE == 'SUCCESS'){
-			    		 $("#oppUom").select2('val', data.DATA.UOM);
-			    		 setValueById('oppUnitPrice',formatNumByLength(data.DATA.up, 6));
-			    		 setValueById('oppReportPrice',formatNumByLength(data.DATA.rp, 6));
-			    		 setValueById('oppPriceFactor',"1.0000");
-			    		 
-			    		 $scope.assignValuePro(data);
-			    	 }else{
-			    		 $("#oppUom").select2('val', '');
-			    	 }			    	 			    	 
-			    },
-			    error:function() {}
-			});
-    	}
-    	$scope.oppDisPer = "0.00";
-		$scope.oppVatPer = "0.00";
-		$scope.oppSTPer = "0.00";
+	$scope.cancelProductClick = function(){
+		$("#frmAddProduct").bootstrapValidator('resetForm', 'true');		
+	}
+	
+	$scope.product_click = function(){ 
+		btnSaveProductStatus =  true;
 		
-		$scope.oppDisDol = "0.00";
-		$scope.oppVatDol = "0.00";
-		$scope.oppSTDol = "0.00";
+		$scope.oppQty = "";
+		$scope.oppUnitPrice = "";
+		$scope.oppPriceFactor = "";
+		$scope.oppReportPrice = "";	
+		$scope.oppTAmount = "";	
+		$scope.oppDisPer = "";
+		$scope.oppDisDol = "";
+		$scope.oppVatPer = "";
+		$scope.oppVatDol = "";
+		$scope.oppSTPer = "";
+		$scope.oppSTDol = "";	
+		$scope.oppNetTAmount="";
+		
+		$scope.oppItemModel = "";
+		
+		$scope.resetSelect2("oppItem");
+		$scope.resetSelect2("oppClassDetail");
+		$scope.resetSelect2("oppUom");
+		$scope.resetSelect2("oppLocation");
+		
+		
+		setValueById('oppTAmount',"");
+		setValueById('oppNetTAmount',"");
+		
+		
+		$("#frmAddProduct").bootstrapValidator('resetForm', 'true');
+		$('#frmAddProduct')[0].reset();
+		
+		
+		$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppItem'));
+		$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppUom'));
+		$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppLocation'));
+		
+		$("#tProduct").text("Add An Item");
+		$("#btn_show_product").click();
+	}
+	
+	
+	$scope.oppItemChange1 = function(item){ 		
+		if(itemChangeStatus1 == true && itemChangeStatus2 == true){
+			$("#oppUom").select2('val', '');
+	    	var priceCode = OPPORTUNITY.priceCode;
+	    	if(item != ""){
+	    		$.ajax({ 
+				    url: server+"/quote/itemChange", 
+				    type: 'POST',
+				    data: JSON.stringify({"itemId" : item, "priceCode" : priceCode}),
+				    beforeSend: function(xhr) {
+		                xhr.setRequestHeader("Accept", "application/json");
+		                xhr.setRequestHeader("Content-Type", "application/json");
+		            },
+				    success: function(data) {
+				    	 if(data.MESSAGE == 'SUCCESS'){
+				    		 $("#oppUom").select2('val', data.DATA.UOM);
+				    		 setValueById('oppUnitPrice',formatNumByLength(data.DATA.up, 6));
+				    		 setValueById('oppReportPrice',formatNumByLength(data.DATA.rp, 6));
+				    		 setValueById('oppPriceFactor',"1.0000");
+				    		 
+				    		 $scope.assignValuePro(data);
+				    		 
+				    		 $scope.calculateProduct();
+				    		 
+				    	 }else{
+				    		 $("#oppUom").select2('val', '');
+				    	 }			    	 			    	 
+				    },
+				    error:function() {}
+				});
+	    	}
+			
+		}else{
+			
+		}
+    	
 		
 	}
 	
@@ -215,11 +265,11 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.oppVatDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppVatPer)) / 100), 2) ;
 			$scope.oppSTDol = formatNumByLength((((toNum($scope.oppTAmount)-toNum($scope.oppDisDol)) * toNum($scope.oppSTPer)) / 100), 2) ;			
 		}
-		
-		
+				
 		$scope.oppNetTAmount = formatNumByLength((toNum($scope.oppTAmount) - toNum($scope.oppDisDol) + toNum($scope.oppVatDol) + toNum($scope.oppSTDol)), 2);
-		
-		
+				
+		setValueById('oppTAmount',$scope.oppTAmount);
+		setValueById('oppNetTAmount',$scope.oppNetTAmount);						
 	}
 	
 	$scope.oppQtyChange = function(){			
@@ -303,67 +353,151 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		
 		$('#frmAddProduct').data('bootstrapValidator').validate();
 		var statusAddPro = $("#frmAddProduct").data('bootstrapValidator').validate().isValid();
-		dis($scope.oppItemModel)
-		
-		
-		
 		if(statusAddPro){
-			var dataFrm = {
-					"opDetailsId" : null,
-					"opId":oppId,
-					"lineNo" : 1,
-					"item" : getJsonById("itemId","oppItem","str"),
-					"uom" : getJsonById("uomId","oppUom","str"),
-					"location" : getJsonById("locationId","oppLocation","str"),
-					"ameClass" : getJsonById("classId","oppClassDetail","str"),
-					"saleQty" : toNum($scope.oppQty),
-					"unitPrice" : toNum($scope.oppUnitPrice),
-					"totalAmt" : toNum($scope.oppTAmount),
-					"netTotalAmt" : toNum($scope.oppNetTAmount),
-					"disDol" : toNum($scope.oppDisDol),
-					"disPer" : toNum($scope.oppDisPer),
-					"sTaxDol" : toNum($scope.oppSTDol),
-					"sTaxPer" : toNum($scope.oppSTPer),
-					"vTaxDol" : toNum($scope.oppVatDol),
-					"vTaxPer" : toNum($scope.oppVatPer),
-					"reportPrice" : toNum($scope.oppReportPrice),
-					"factor" : toNum($scope.oppPriceFactor)
-					
-			};
 			
-			$scope.opportunityDetail.push(dataFrm);
+			if(btnSaveProductStatus){
 			
-			$scope.oppQty = "";
-			$scope.oppUnitPrice = "";
-			$scope.oppPriceFactor = "";
-			$scope.oppReportPrice = "";	
-			$scope.oppTAmount = "";	
-			$scope.oppDisPer = "";
-			$scope.oppDisDol = "";
-			$scope.oppVatPer = "";
-			$scope.oppVatDol = "";
-			$scope.oppSTPer = "";
-			$scope.oppSTDol = "";	
-			$scope.oppNetTAmount="";
-			
-			//$scope.oppItemModel = "";
-			
-			
-			
-			
-			//$scope.resetSelect2("oppItem");
-			$scope.resetSelect2("oppClassDetail");
-			$scope.resetSelect2("oppUom");
-			$scope.resetSelect2("oppLocation");
-			
-			$("#frmAddProduct").bootstrapValidator('resetForm', 'true');
-			$('#frmAddProduct')[0].reset();
-			
+				var uomIndex = $("#oppUom").find(":selected").attr("data-index");					
+				var dataFrm = {
+						"opDetailsId" : null,
+						"opId":oppId,
+						"lineNo" : 1,
+						"item" : getValFromSelect("oppItem","itemId", "itemName"),
+						"uom" : $scope.getUomByKey(uomIndex),
+						"location" : getValFromSelect("oppLocation","locationId", "locationName"),
+						"ameClass" :  getValFromSelect("oppClassDetail","classId", "className"),
+						"saleQty" : toNum($scope.oppQty),
+						"unitPrice" : toNum($scope.oppUnitPrice),
+						"totalAmt" : toNum($scope.oppTAmount),
+						"netTotalAmt" : toNum($scope.oppNetTAmount),
+						"disDol" : toNum($scope.oppDisDol),
+						"disPer" : toNum($scope.oppDisPer),
+						"sTaxDol" : toNum($scope.oppSTDol),
+						"sTaxPer" : toNum($scope.oppSTPer),
+						"vTaxDol" : toNum($scope.oppVatDol),
+						"vTaxPer" : toNum($scope.oppVatPer),
+						"reportPrice" : toNum($scope.oppReportPrice),
+						"factor" : toNum($scope.oppPriceFactor)					
+				};						
+				
+				
+				$scope.opportunityDetail.push(dataFrm);
+				$scope.opportunity.totalVTax = 0;
+				$scope.opportunity.totalSTax = 0;
+				$scope.opportunity.totalAmt = 0;
+				angular.forEach($scope.opportunityDetail, function(value, key) {				
+					$scope.opportunity.totalVTax += toNum(value.vTaxDol);
+					$scope.opportunity.totalSTax += toNum(value.sTaxDol);	
+					$scope.opportunity.totalAmt += toNum(value.netTotalAmt);
+				});
+				$scope.opportunity.disInvDol = toNum($scope.opportunity.totalAmt) * toNum($scope.opportunity.disInvPer) / 100;	
+				$scope.opportunity.opAmount = toNum($scope.opportunity.totalAmt) - toNum($scope.opportunity.disInvDol);
+				
+				$scope.oppQty = "";
+				$scope.oppUnitPrice = "";
+				$scope.oppPriceFactor = "";
+				$scope.oppReportPrice = "";	
+				$scope.oppTAmount = "";	
+				$scope.oppDisPer = "";
+				$scope.oppDisDol = "";
+				$scope.oppVatPer = "";
+				$scope.oppVatDol = "";
+				$scope.oppSTPer = "";
+				$scope.oppSTDol = "";	
+				$scope.oppNetTAmount="";
+				
+				$scope.oppItemModel = "";
+				
+				$scope.resetSelect2("oppItem");
+				$scope.resetSelect2("oppClassDetail");
+				$scope.resetSelect2("oppUom");
+				$scope.resetSelect2("oppLocation");
+				
+				
+				setValueById('oppTAmount',"");
+				setValueById('oppNetTAmount',"");
+				
+				
+				$("#frmAddProduct").bootstrapValidator('resetForm', 'true');
+				$('#frmAddProduct')[0].reset();
+			}else{
+				
+				var uomIndex = $("#oppUom").find(":selected").attr("data-index");	
+				
+				$scope.opportunityDetail[indexItem].item = getValFromSelect("oppItem","itemId", "itemName");
+				$scope.opportunityDetail[indexItem].location = getValFromSelect("oppLocation","locationId", "locationName");
+				$scope.opportunityDetail[indexItem].uom = $scope.getUomByKey(uomIndex);
+				$scope.opportunityDetail[indexItem].ameClass = getValFromSelect("oppClassDetail","classId", "className"),
+				
+				$scope.opportunityDetail[indexItem].saleQty = toNum($scope.oppQty);
+				$scope.opportunityDetail[indexItem].unitPrice = toNum($scope.oppUnitPrice);
+				$scope.opportunityDetail[indexItem].totalAmt = toNum($scope.oppTAmount);
+				$scope.opportunityDetail[indexItem].netTotalAmt = toNum($scope.oppNetTAmount);
+				$scope.opportunityDetail[indexItem].disDol = toNum($scope.oppDisDol);
+				$scope.opportunityDetail[indexItem].disPer = toNum($scope.oppDisPer);
+				$scope.opportunityDetail[indexItem].sTaxDol = toNum($scope.oppSTDol);
+				$scope.opportunityDetail[indexItem].sTaxPer = toNum($scope.oppSTPer);
+				$scope.opportunityDetail[indexItem].vTaxDol = toNum($scope.oppVatDol);
+				$scope.opportunityDetail[indexItem].vTaxPer = toNum($scope.oppVatPer);
+				$scope.opportunityDetail[indexItem].reportPrice = toNum($scope.oppReportPrice);
+				$scope.opportunityDetail[indexItem].factor = toNum($scope.oppPriceFactor);
+				
+				
+				$scope.opportunity.totalVTax = 0;
+				$scope.opportunity.totalSTax = 0;
+				$scope.opportunity.totalAmt = 0;
+				angular.forEach($scope.opportunityDetail, function(value, key) {				
+					$scope.opportunity.totalVTax += toNum(value.vTaxDol);
+					$scope.opportunity.totalSTax += toNum(value.sTaxDol);	
+					$scope.opportunity.totalAmt += toNum(value.netTotalAmt);
+				});
+				$scope.opportunity.disInvDol = toNum($scope.opportunity.totalAmt) * toNum($scope.opportunity.disInvPer) / 100;	
+				$scope.opportunity.opAmount = toNum($scope.opportunity.totalAmt) - toNum($scope.opportunity.disInvDol);
+				
+				
+				$scope.oppQty = "";
+				$scope.oppUnitPrice = "";
+				$scope.oppPriceFactor = "";
+				$scope.oppReportPrice = "";	
+				$scope.oppTAmount = "";	
+				$scope.oppDisPer = "";
+				$scope.oppDisDol = "";
+				$scope.oppVatPer = "";
+				$scope.oppVatDol = "";
+				$scope.oppSTPer = "";
+				$scope.oppSTDol = "";	
+				$scope.oppNetTAmount="";
+				
+				$scope.oppItemModel = "";
+				
+				$scope.resetSelect2("oppItem");
+				$scope.resetSelect2("oppClassDetail");
+				$scope.resetSelect2("oppUom");
+				$scope.resetSelect2("oppLocation");
+				
+				
+				setValueById('oppTAmount',"");
+				setValueById('oppNetTAmount',"");
+				
+				
+				$("#frmAddProduct").bootstrapValidator('resetForm', 'true');
+				$('#frmAddProduct')[0].reset();
+				
+				$("#frmProduct").modal('toggle');
+				
+			}
 		}else{
-			alert(0)
+			// error
+			
+			
 		}
 		
 		
+	}
+	
+	
+	$scope.getUomByKey = function(key){
+		return $scope.oppUom[key];
 	}
 	
 	var toggleDisInv = true;
@@ -380,9 +514,125 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	}
 	
 	
-	$scope.oppDisInvPerChange = function(){						
+	$scope.oppDisInvPerChange = function(){	
 		$scope.opportunity.disInvDol = toNum($scope.opportunity.totalAmt) * toNum($scope.opportunity.disInvPer) / 100;		
-		$scope.opportunity.opAmount = toNum($scope.opportunity.totalAmt) - (toNum($scope.opportunity.totalAmt) * toNum($scope.opportunity.disInvPer) / 100);
+		$scope.opportunity.opAmount = toNum($scope.opportunity.totalAmt) - toNum($scope.opportunity.disInvDol);
+	}
+	
+	
+	
+	$scope.deleteProductClick = function(key){
+		
+		$scope.opportunityDetail.splice(key, 1);     
+		
+		$scope.opportunity.totalVTax = 0;
+		$scope.opportunity.totalSTax = 0;
+		$scope.opportunity.totalAmt = 0;
+		
+		
+		angular.forEach($scope.opportunityDetail, function(value, key) {
+			$scope.opportunity.totalVTax += toNum(value.vTaxDol);
+			$scope.opportunity.totalSTax += toNum(value.sTaxDol);	
+			$scope.opportunity.totalAmt += toNum(value.netTotalAmt);
+		});
+		$scope.opportunity.disInvDol = toNum($scope.opportunity.totalAmt) * toNum($scope.opportunity.disInvPer) / 100;	
+		$scope.opportunity.opAmount = toNum($scope.opportunity.totalAmt) - toNum($scope.opportunity.disInvDol);				
+		
+	}
+	
+	$scope.editProductClick = function(key){
+		$("#tProduct").text("Edit Item");
+		indexItem = key;
+		btnSaveProductStatus =  false;
+		itemChangeStatus2 = false;
+		$("#btn_show_product").click();
+		
+		var item = "["+$scope.opportunityDetail[key].item.itemId+"] "+$scope.opportunityDetail[key].item.itemName;
+		var loc = "["+$scope.opportunityDetail[key].location.locationId+"] "+$scope.opportunityDetail[key].location.locationName;
+		var cla = "";
+		
+		if($scope.opportunityDetail[key].ameClass != null){
+			cla = "["+$scope.opportunityDetail[key].ameClass.classId+"] "+$scope.opportunityDetail[key].ameClass.className;
+		}
+		
+		$("#oppItem").select2('val', item);
+		
+		$("#oppUom").select2('val', $scope.opportunityDetail[key].uom.uomId);		
+		$("#oppLocation").select2('val', loc);
+		$("#oppClassDetail").select2('val', cla);
+		
+		
+		$scope.oppQty = formatNumByLength($scope.opportunityDetail[key].saleQty,4);
+		$scope.oppUnitPrice = formatNumByLength($scope.opportunityDetail[key].unitPrice,6);
+		$scope.oppPriceFactor = formatNumByLength($scope.opportunityDetail[key].factor,4);
+		$scope.oppReportPrice = formatNumByLength($scope.opportunityDetail[key].reportPrice,4);
+		$scope.oppTAmount = formatNumByLength($scope.opportunityDetail[key].totalAmt,2);	
+		$scope.oppDisPer = formatNumByLength($scope.opportunityDetail[key].disPer,5);
+		$scope.oppDisDol = formatNumByLength($scope.opportunityDetail[key].disDol,2);
+		$scope.oppVatPer = formatNumByLength($scope.opportunityDetail[key].vTaxPer,5);
+		$scope.oppVatDol = formatNumByLength($scope.opportunityDetail[key].vTaxDol,2);
+		$scope.oppSTPer = formatNumByLength($scope.opportunityDetail[key].sTaxPer,5);
+		$scope.oppSTDol = formatNumByLength($scope.opportunityDetail[key].sTaxDol,2);
+		$scope.oppNetTAmount= formatNumByLength($scope.opportunityDetail[key].netTotalAmt,2);	
+		
+		setValueById('oppQty',$scope.oppQty);
+		setValueById('oppUnitPrice',$scope.oppUnitPrice);
+		setValueById('oppPriceFactor',$scope.oppPriceFactor);
+		setValueById('oppReportPrice',$scope.oppReportPrice);
+		setValueById('oppTAmount',$scope.oppTAmount);
+		setValueById('oppDisPer',$scope.oppDisPer);
+		setValueById('oppDisDol',$scope.oppDisDol);
+		setValueById('oppVatPer',$scope.oppVatPer);
+		setValueById('oppVatDol',$scope.oppVatDol);		
+		setValueById('oppSTPer',$scope.oppSTPer);
+		setValueById('oppSTDol',$scope.oppSTDol);
+		setValueById('oppNetTAmount',$scope.oppNetTAmount);
+		
+		
+		itemChangeStatus2 = true;
+	}
+	
+	
+	$scope.btnSaveClick = function(){		
+		var tr = $("#listItem tr");		
+		var dataDetail = [];
+		if(tr.length>0){
+			var n = "";
+			for(var i=0;i<tr.length;i++){
+				n =tr.eq(i).attr('data-row-index');
+				$scope.opportunityDetail[n].lineNo = i+1;
+				dataDetail.push($scope.opportunityDetail[n]);
+			}
+		}		
+		
+		var dataFrm = {
+			"opId" : oppId,
+			"totalAmt" : toNum($scope.opportunity.totalAmt),
+			"totalVTax" : toNum($scope.opportunity.totalVTax),
+			"totalSTax" : toNum($scope.opportunity.totalSTax),
+			"disInvDol" : toNum($scope.opportunity.disInvDol),
+			"disInvPer" : toNum($scope.opportunity.disInvPer),
+			"opAmount" : toNum($scope.opportunity.opAmount),
+			"details" : dataDetail
+		}
+		
+		dis(dataFrm)
+		
+		/* $http({
+		    method: 'POST',
+		    url: "${pageContext.request.contextPath}/opportunity/product/add/detail",
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data: {"moduleId":oppId, "username":username}
+		}).success(function(response) {		
+			dis(response)
+		}); */
+		
+		
+		
+		
 	}
 	
 	
@@ -1232,25 +1482,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		});
 	}
 	
-	// end sale order
-	
-	// Product
-	
-	
-	$scope.product_click = function(){
-		$("#btn_show_product").click();
-	}
-	
-	
-	
-	
-	
-	// end product
-	
-	
-	
-	
-	
+	// end sale order	
 	
 }]);
 
@@ -1491,6 +1723,38 @@ function addDataToDetailLead(){
 	$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppCustomer'));
 	$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppStage'));
 	
+}
+
+function oppItemChange(){
+	itemChangeStatus1 = true;
+	angular.element(document.getElementById('viewOpportunityController')).scope().oppItemChange1(iSplitBySplintById("oppItem"));
+}
+function getValFromSelect(ID,key1,key2){
+	var obj = $("#"+ID).val();
+	if(obj != ""){
+		obj = obj.split("]");
+		return JSON.parse('{"'+key1+'" : "'+obj[0].replace('[','')+'", "'+key2+'" : "'+$.trim(obj[1])+'"}');
+	}else{
+		return null;
+	}
+	
+}
+function iSplitBySplintById(ID){
+	var obj = $("#"+ID).val();
+	if(obj != ""){
+		obj = obj.split("]");
+		return obj[0].replace('[','');
+	}else{
+		return "";
+	}
+}
+function iSplitBySplint(obj){
+	if(obj != ""){
+		obj = obj.split("]");
+		return obj[0].replace('[','');
+	}else{
+		return "";
+	}
 }
 
 </script>
@@ -2430,7 +2694,7 @@ function addDataToDetailLead(){
 										<div class="tab-pane " id="product_tap">
 											<div class="row">
 												<div class="col-md-12" >
-													<a style="margin-left: 0px;" class="btn btn-app" ng-click="product_click()"> 
+													<a style="margin-left: 0px;" class="btn btn-app" ng-click="btnSaveClick()"> 
 														<i class="fa fa-save"></i> Save
 													</a> 
 												</div>
@@ -2471,7 +2735,7 @@ function addDataToDetailLead(){
 																					</tr>
 																				</tbody>
 																				<tbody id="listItem" >
-																					<tr class="cursor_move" ng-repeat="(key, oppDetail) in opportunityDetail">
+																					<tr class="cursor_move" data-row-index="{{key}}" ng-repeat="(key, oppDetail) in opportunityDetail">
 																						<td>[{{oppDetail.item.itemId}}] {{oppDetail.item.itemName.trunc(15)}}</td>
 																						<td>[{{oppDetail.location.locationId}}] {{oppDetail.location.locationName.trunc(10)}}</td>
 																						<td><span ng-if="oppDetail.ameClass != null">[{{oppDetail.ameClass.classId}}] {{oppDetail.ameClass.className.trunc(10)}}</span></td>
@@ -2499,10 +2763,10 @@ function addDataToDetailLead(){
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
 																										<li>
-																											<a href="#" ng-click="product_click()" ><i class="fa fa-pencil"></i> Edit </a>
+																											<a href="#" ng-click="editProductClick(key)" ><i class="fa fa-pencil"></i> Edit </a>
 																										</li>
 																										<li>
-																											<a href="#" ng-click="deleteContactClick(con.id, key)" ><i class="fa fa-trash"></i> Delete </a>
+																											<a href="#" ng-click="deleteProductClick(key)" ><i class="fa fa-trash"></i> Delete </a>
 																										</li>																										
 																															
 																									</ul>
@@ -2819,7 +3083,7 @@ function addDataToDetailLead(){
 					<button type="button" ng-click="cancelProductClick()" class="close"
 						data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">
-						<b  id="tCall">Add An Item</b>
+						<b  id="tProduct">Add An Item</b>
 					</h4>
 				</div>
 				<form id="frmAddProduct" method="post">
@@ -2829,10 +3093,10 @@ function addDataToDetailLead(){
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Item <span class="requrie">(Required)</span></label>
-										<select ng-change="oppItemChange()" ng-model="oppItemModel" class="form-control select2" name="oppItem"
+										<select onChange="oppItemChange()" class="form-control select2" name="oppItem"
 												id="oppItem" style="width: 100%;">
 											<option value="" selected></option>
-											<option data-index="{{key}}" ng-repeat="(key,item) in oppItem track by $index" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
+											<option data-index="{{key}}" ng-repeat="(key,item) in oppItem track by $index" value="[{{item.itemId}}] {{item.itemName}}">[{{item.itemId}}] {{item.itemName}}</option>
 										</select>
 									</div>
 								</div>
@@ -2843,7 +3107,7 @@ function addDataToDetailLead(){
 											<select class="form-control select2" name="oppUom"
 												id="oppUom" style="width: 100%;">
 												<option value=""></option>
-												<option ng-repeat="uom in oppUom"
+												<option data-index="{{key}}" ng-repeat="(key,uom) in oppUom"
 													value="{{uom.uomId}}">[{{uom.uomId}}] {{uom.des}}</option>
 											</select>
 										</div>
@@ -2859,7 +3123,7 @@ function addDataToDetailLead(){
 												id="oppLocation" style="width: 100%;">
 												<option value=""></option>
 												<option data-index="{{key}}" ng-repeat="(key,loc) in oppLocation"
-													value="{{loc.locationId}}">[{{loc.locationId}}] {{loc.locationName}}</option>
+													value="[{{loc.locationId}}] {{loc.locationName}}">[{{loc.locationId}}] {{loc.locationName}}</option>
 											</select>
 										</div>
 									</div>
@@ -2872,7 +3136,7 @@ function addDataToDetailLead(){
 												id="oppClassDetail" style="width: 100%;">
 												<option value=""></option>
 												<option ng-repeat="cl in oppClass"
-													value="{{cl.classId}}">[{{cl.classId}}] {{cl.des}}</option>
+													value="[{{cl.classId}}] {{cl.des}}">[{{cl.classId}}] {{cl.des}}</option>
 											</select>
 										</div>
 									</div>
@@ -2984,7 +3248,7 @@ function addDataToDetailLead(){
 						class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
 					<button type="button" ng-click="btnProductSave()" class="btn btn-primary pull-right"
-						id="btnProductSave" name="btnProductSave">Add</button>
+						id="btnProductSave" name="btnProductSave">Save</button>
 
 				</div>
 			</div>

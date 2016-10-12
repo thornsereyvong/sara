@@ -845,9 +845,19 @@ function getLeadById(){
 	return data;
 }
 
-function clickStatus(num){
-	if(num == 4){
-		window.location.href = server+"/convert-lead/"+leadId;
+function clickStatus(num){				
+	if(num == 4){		
+		if(LEAD.statusID == 4){
+			swal({
+        		title:"Warning",
+        		text:"The lead with id: "+leadId+" is already converted.",
+        		type:"error",  
+        		timer: 3000,   
+        		showConfirmButton: false
+			});			
+		}else{
+			window.location.href = server+"/convert-lead/"+leadId;
+		}		
 	}
 }
 

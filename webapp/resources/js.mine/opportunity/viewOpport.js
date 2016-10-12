@@ -93,12 +93,7 @@ $(function(){
 			
 			oppDisDol: {
 				validators: {
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
+					
 				}
 			},
 			
@@ -114,12 +109,7 @@ $(function(){
 			
 			oppVatDol: {
 				validators: {
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
+					
 				}
 			},
 			
@@ -135,12 +125,7 @@ $(function(){
 			
 			oppSTDol: {
 				validators: {
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
+					
 				}
 			},
 		}

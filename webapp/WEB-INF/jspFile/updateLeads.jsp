@@ -530,7 +530,7 @@ padding-right: 10px;
 							<div class="form-group">
 								<select class="form-control select2" name="lea_ca" id="lea_ca" style="width: 100%;">
 									<option value="">-- SELECT Campaign --</option>
-									<option ng-repeat="u in campaigns" value="{{u.campID}}">{{u.campName}}</option>
+									<option ng-repeat="u in campaigns" value="{{u.campID}}">[{{u.campID}}] {{u.campName}}</option>
 								</select>
 							</div>
 						</div>
