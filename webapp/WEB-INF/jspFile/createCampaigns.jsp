@@ -221,7 +221,7 @@
 						   "createdBy" : username
 			};
 			
-			
+			dis(dataFrm)
 			$.ajax({url : "${pageContext.request.contextPath}/campaign/add",
 				type : "POST",
 				data : JSON.stringify(dataFrm),

@@ -615,18 +615,25 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			"opAmount" : toNum($scope.opportunity.opAmount),
 			"details" : dataDetail
 		}
-		
-		
+
 		$http({
 		    method: 'PUT',
-		    url: "${pageContext.request.contextPath}/opportunity/edit",
+		    url: "${pageContext.request.contextPath}/opportunity/edit/custom",
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
 		    data: JSON.stringify(dataFrm)
 		}).success(function(response) {		
-			dis(response)
+			if( response.MESSAGE == "UPDATED"){
+				swal({
+            		title:"Successful",
+            		text:"",
+            		type:"success",  
+            		timer: 2000,   
+            		showConfirmButton: false
+    			});
+			}
 		});
 		
 		
