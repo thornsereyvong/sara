@@ -1176,8 +1176,22 @@ color:#2196F3;
 												</div>
 																				
 												
-												
-												
+												<div class="col-sm-3">
+													<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
+													<div class="form-group">
+														<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
+															<option value="">-- SELECT Stage --</option>
+															<option ng-repeat="u in OPP_STAGES" value="{{u.osId}}">{{u.osName}}</option> 
+														</select>
+													</div>
+												</div>
+												<div class="col-sm-3">
+													<label class="font-label">Probability (%) </label>
+													<div class="form-group">
+														<input type="text" class="form-control" id="op_probability" name="op_probability">
+													</div>
+												</div>
+												<div class="clearfix"></div>
 												<div class="col-sm-3">
 													<label class="font-label">Close date <span class="requrie">(Required)</span></label>
 													<div class="form-group">
@@ -1196,26 +1210,17 @@ color:#2196F3;
 														<input type="text" class="form-control" id="op_nextStep" name="op_nextStep">
 													</div>
 												</div>
-												<div class="clearfix"></div>									
+																					
 												<div class="col-sm-3">
 													<label class="font-label">Campaign </label>
 													<div class="form-group">
 														<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
 															<option value="">-- SELECT Campaign --</option>
-															<option ng-repeat="u in CAMPAIGN" value="{{u.campID}}">{{u.campName}}</option>
+															<option ng-repeat="u in CAMPAIGN" value="{{u.campID}}">[{{u.campID}}] {{u.campName}}</option>
 														</select>
 													</div>
 												</div>
 											
-												<div class="col-sm-3">
-													<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
-													<div class="form-group">
-														<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
-															<option value="">-- SELECT Stage --</option>
-															<option ng-repeat="u in OPP_STAGES" value="{{u.osId}}">{{u.osName}}</option> 
-														</select>
-													</div>
-												</div>
 												
 												<div class="col-sm-3">
 													<label class="font-label">Type </label>
@@ -1229,13 +1234,8 @@ color:#2196F3;
 												
 												
 												
-												<div class="col-sm-3">
-													<label class="font-label">Probability (%) </label>
-													<div class="form-group">
-														<input type="text" class="form-control" id="op_probability" name="op_probability">
-													</div>
-												</div>
 												
+												<div class="clearfix"></div>
 												<div class="col-sm-3">
 													<label class="font-label">Lead Source </label>
 													<div class="form-group">

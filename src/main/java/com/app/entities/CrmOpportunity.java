@@ -1,6 +1,7 @@
 package com.app.entities;
 
 import java.util.Date;
+import java.util.List;
 
 
 
@@ -34,8 +35,17 @@ public class CrmOpportunity {
 	private double totalSTax;
 	private double totalVTax;
 	
+	private List<CrmOpportunityDetails> details;
 	
 	
+	public List<CrmOpportunityDetails> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<CrmOpportunityDetails> details) {
+		this.details = details;
+	}
+
 	public PriceCode getPriceCode() {
 		return priceCode;
 	}

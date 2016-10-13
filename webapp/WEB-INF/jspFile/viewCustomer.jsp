@@ -712,9 +712,9 @@ app.controller('callController',['SweetAlert','$scope','$http',function(SweetAle
 
 app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
 	$scope.startupMeetForm = function(){
-		$http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
+		/* $http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
 			$scope.meetStatusStartup = response.DATA;
-	    });
+	    }); */
 	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;

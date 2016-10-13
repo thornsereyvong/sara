@@ -83,13 +83,8 @@ app.controller('contactController',['SweetAlert','$scope','$http',function(Sweet
 
 
 $(document).ready(function() {
-	$("#btn_clear").click(function(){ alert()
-		$("#con_customer").select2("val","");	
-		$("#con_assignedTo").select2("val","");
-		$("#con_report").select2("val","");
-		$("#con_leadSource").select2("val","");
-		$("#form-contact").bootstrapValidator('resetForm', 'true');
-		$('#form-contact')[0].reset();
+	$("#btn_clear").click(function(){ 
+		location.reload();
 	});
 	
 	$("#btn_save").click(function(){
@@ -313,7 +308,7 @@ $(document).ready(function() {
 			<form method="post" id="form-contact" data-ng-init="startupPage()">
 				
 				<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
-				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
 				<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-contacts"> <i class="fa fa-reply"></i> Back </a>
 
 				<div class="clearfix"></div>
@@ -365,7 +360,7 @@ $(document).ready(function() {
 								<div class="form-group">
 									<select class="form-control select2" name="con_customer" id="con_customer" style="width:100%">
 										<option value="">-- SELECT Customer --</option>
-										<option ng-repeat="u in customer" value="{{u.custID}}">{{u.custName}}</option> 
+										<option ng-repeat="u in customer" value="{{u.custID}}">[{{u.custID}}] {{u.custName}}</option> 
 									</select>
 								</div>
 							</div>
@@ -488,7 +483,7 @@ $(document).ready(function() {
 								<div class="form-group">
 									<select class="form-control select2" name="con_report" id="con_report" style="width:100%">
 										<option value="">-- SELECT Report To --</option>
-										<option ng-repeat="u in reportTo" value="{{u.conID}}">{{u.conSalutation}}{{u.conFirstname}} {{u.conLastname}}</option> 
+										<option ng-repeat="u in reportTo" value="{{u.conID}}">[{{u.conID}}] {{u.conSalutation}}{{u.conFirstname}} {{u.conLastname}}</option> 
 									</select>
 								</div>
 							</div>

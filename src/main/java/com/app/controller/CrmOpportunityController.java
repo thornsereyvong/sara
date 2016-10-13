@@ -40,7 +40,7 @@ public class CrmOpportunityController {
 	@RequestMapping(value="/opportunity/product/add/detail",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addOpportunityProduct(@RequestBody CrmOpportunity opp){	
 		HttpEntity<Object> request = new HttpEntity<Object>(opp,header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/edit", HttpMethod.POST, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/edit", HttpMethod.PUT, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	

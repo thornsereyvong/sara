@@ -616,19 +616,18 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			"details" : dataDetail
 		}
 		
-		dis(dataFrm)
 		
-		/* $http({
-		    method: 'POST',
-		    url: "${pageContext.request.contextPath}/opportunity/product/add/detail",
+		$http({
+		    method: 'PUT',
+		    url: "${pageContext.request.contextPath}/opportunity/edit",
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"moduleId":oppId, "username":username}
+		    data: JSON.stringify(dataFrm)
 		}).success(function(response) {		
 			dis(response)
-		}); */
+		});
 		
 		
 		
