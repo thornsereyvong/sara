@@ -1681,17 +1681,21 @@ function clickStatus(num){
 
 function displayStatusLead(Status){	
 	var obj = "";	
-	for(var i=1; i<=leadStatusData.length; i++){		
-		if(i<Status){		
+	for(var i=1; i<=leadStatusData.length+1; i++){		
+		if(i<Status && i<6){
 			obj += "<li onClick='clickStatus("+i+")' class='completed'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";	
-		}else if(i==Status){			
-			if(Status == 5){
-				obj += "<li onClick='clickStatus("+i+")' class='dead'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";
-			}else{
-				obj += "<li onClick='clickStatus("+i+")' class='active'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";
+		}else if(i==Status && i<6){
+			obj += "<li onClick='clickStatus("+i+")' class='completed'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";
+		}else if(i==6 || i==7){
+			if(Status == 6 && i==6){
+				obj += "<li onClick='clickStatus("+i+")' class='active'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+" Won</a></li>";i++;i++;
+			}else if(Status == 7 && i==7 ){	
+				obj += "<li onClick='clickStatus("+i+")' class='dead'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-2]+" Lose</a></li>";
+			}else if(Status != 6 && Status != 7){
+				obj += "<li onClick='clickStatus("+i+")' class=''><a href='#'><i class='fa fa-lock'></i> "+leadStatusData[i-1]+"</a></li>";i++;i++;
 			}
 		}else{
-			obj += "<li onClick='clickStatus("+i+")' class=''>         <a href='#'><i class='fa fa-lock'></i> "+leadStatusData[i-1]+"</a></li>";
+			obj += "<li onClick='clickStatus("+i+")' class=''><a href='#'><i class='fa fa-lock'></i> "+leadStatusData[i-1]+"</a></li>";
 		}
 	}
 	$("#objStatus").append(obj);
@@ -2824,7 +2828,7 @@ function iSplitBySplint(obj){
 																						<th colspan="12"></th>
 																						<th colspan="3" class="iText-right">Net Total Amount: </th>
 																						
-																						<th class="iText-right">{{opportunity.opAmount | number:2}}</th>
+																						<th class="iText-right"><span ng-if="opportunityDetail.length != 0">{{opportunity.opAmount | number:2}}</span><span ng-if="opportunityDetail.length == 0">0.00</span></th>
 																						<th></th>
 																					</tr>
 																				</tfoot>	

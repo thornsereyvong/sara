@@ -49,6 +49,10 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 		$("#oppCustomer").select2('val',response.OPPORTUNITY.custID);
 		$("#oppCampaign").select2('val',response.OPPORTUNITY.campID);
 		$("#oppAssignTo").select2('val',response.OPPORTUNITY.userId); */
+		
+		setTimeout(dis($scope.response), 1000)
+		
+		
     });
 	
 	$scope.collaborates = [];
@@ -56,9 +60,49 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.username = username; 
 	
 	$scope.listLeads = function(){
-			response = getLeadData();
+			//response = getLeadData();
 			
-		  // 	dis(response)
+			$http.get('${pageContext.request.contextPath}/customer/view/'+username+"/"+oppId).success(function(data){
+				$scope.response = response = data;
+				
+				$scope.opportunity = response.CUSTOMER.opportunities;
+				$scope.customer = response.CUSTOMER;
+				$scope.listNote1(response.NOTES);
+				
+				$scope.contactList = response.CUSTOMER.contacts;
+				$scope.caseList = response.CUSTOMER.cases;
+				
+				
+				userAllList(response.ASSIGN_TO,'#callAssignTo','');
+				userAllList(response.ASSIGN_TO,'#meetAssignTo','');
+				userAllList(response.ASSIGN_TO,'#taskAssignTo','');
+				userAllList(response.ASSIGN_TO,'#eventAssignTo','');
+				
+				
+				$scope.listAllCallByLeadId(response.CALLS);	
+				$scope.listAllMeetByLeadId(response.MEETINGS);	
+				$scope.listAllTaskByLeadId(response.TASKS);
+				$scope.listAllEventByLeadId(response.EVENTS);
+				
+				$scope.listAllEmailByLeadId = function(){	
+					$scope.listAllEmailByLead = [];	
+				}
+				
+				
+				$scope.listCollab(response.COLLABORATIONS);							
+				$scope.callStatusStartup = response.CALL_STATUS;
+				$scope.taskStatusStartup = response.TASK_STATUS;
+				$scope.taskContactStartup = response.CONTACTS;	
+				$scope.eventLocationStartup = response.EVENT_LOCATION;
+				$scope.meetStatusStartup = response.MEETING_STATUS;				
+				$scope.tags = response.TAG_TO;
+				
+				addContactToTask(response.CONTACTS);
+				
+				
+		    });
+			
+		   //	dis(response)
 			 
 			/* $scope.oppLeadSource = response.LEAD_SOURCE;
 			$scope.oppType = response.OPP_TYPES;
@@ -67,39 +111,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.oppStage = response.OPP_STAGES;
 			$scope.oppCustomer = response.CUSTOMERS; */
 			
-			$scope.opportunity = response.CUSTOMER.opportunities;
-			$scope.customer = response.CUSTOMER;
-			$scope.listNote1(response.NOTES);
 			
-			$scope.contactList = response.CUSTOMER.contacts;
-			$scope.caseList = response.CUSTOMER.cases;
-			
-			
-			userAllList(response.ASSIGN_TO,'#callAssignTo','');
-			userAllList(response.ASSIGN_TO,'#meetAssignTo','');
-			userAllList(response.ASSIGN_TO,'#taskAssignTo','');
-			userAllList(response.ASSIGN_TO,'#eventAssignTo','');
-			
-			
-			$scope.listAllCallByLeadId(response.CALLS);	
-			$scope.listAllMeetByLeadId(response.MEETINGS);	
-			$scope.listAllTaskByLeadId(response.TASKS);
-			$scope.listAllEventByLeadId(response.EVENTS);
-			
-			$scope.listAllEmailByLeadId = function(){	
-				$scope.listAllEmailByLead = [];	
-			}
-			
-			
-			$scope.listCollab(response.COLLABORATIONS);							
-			$scope.callStatusStartup = response.CALL_STATUS;
-			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.CONTACTS;	
-			$scope.eventLocationStartup = response.EVENT_LOCATION;
-			$scope.meetStatusStartup = response.MEETING_STATUS;				
-			$scope.tags = response.TAG_TO;
-			
-			addContactToTask(response.CONTACTS);
 	}
 	
 	

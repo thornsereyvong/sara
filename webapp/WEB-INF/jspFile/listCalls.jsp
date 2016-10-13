@@ -169,7 +169,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 								<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 									<td>{{cc.callId}}</td>
 									<td>{{cc.callSubject}}</td>
-									<td>{{cc.callStartDate | date:'dd-MM-yyyy'}}</td>
+									<td>{{cc.callStartDate | date:'dd-MM-yyyy h:mma'}}</td>
 									<td>{{cc.callDuration}}</td>
 									<td>{{cc.callStatusName}}</td>
 									<td>{{cc.callRelatedToModuleType}}</td>
