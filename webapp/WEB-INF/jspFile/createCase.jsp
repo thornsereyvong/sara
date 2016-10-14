@@ -22,10 +22,10 @@
 	</section>
 <script type="text/javascript">
 
-var app = angular.module('caseApp', ['oitozero.ngSweetAlert',]);
+var app = angular.module('caseApp', []);
 var self = this;
 var username = "${SESSION}";
-app.controller('caseController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('caseController',['$scope','$http',function($scope, $http){
 	$scope.startupPage = function(){
 		$http.get("${pageContext.request.contextPath}/case/startup/"+username).success(function(response){
 			$scope.case_status = response.CASE_STATUS;

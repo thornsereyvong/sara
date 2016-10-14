@@ -8,9 +8,9 @@
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
 <script type="text/javascript">
-var app = angular.module('dashApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('dashApp', ['angularUtils.directives.dirPagination']);
 var self = this;
-app.controller('dashController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('dashController',['$scope','$http',function($scope, $http){
 	$scope.dashStartup = function(){
 		$http.get("${pageContext.request.contextPath}/meeting/list").success(function(response){
 				$scope.meetings = response.DATA;

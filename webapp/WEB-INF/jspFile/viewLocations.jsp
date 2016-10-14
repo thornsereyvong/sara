@@ -13,12 +13,12 @@
 <script type="text/javascript">
 
 
-var app = angular.module('callApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('callApp', ['angularUtils.directives.dirPagination']);
 var self = this;
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
 var locId = "${locId}";
-app.controller('viewCallController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('viewCallController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
 		

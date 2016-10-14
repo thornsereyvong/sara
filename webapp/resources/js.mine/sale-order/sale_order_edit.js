@@ -1,9 +1,9 @@
 //var curentQuoteId = "";
 
 
-var app = angular.module('quoteApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('quoteApp', ['angularUtils.directives.dirPagination']);
 var self = this;
-app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('quoteController',['$scope','$http',function($scope, $http){
 	
 	$scope.curentQuoteId = "";
 	

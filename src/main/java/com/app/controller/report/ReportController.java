@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("report")
+@RequestMapping("report/")
 public class ReportController {
 
-	@RequestMapping({ "/marketing/campaign/top-campaign"})
+	@RequestMapping({ "marketing/campaign/top-campaign"})
 	public String index(ModelMap model) {
-		model.addAttribute("menu", "index");
-		return "report/marketing/topCampaign";
+		model.addAttribute("menu", "topCampaign");
+		return "reportApp/marketing/topCampaign";
 	}
 
 }

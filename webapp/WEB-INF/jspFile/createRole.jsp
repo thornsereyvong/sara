@@ -16,7 +16,7 @@ margin-bottom:0;
 </style>
 <script type="text/javascript">
 
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']).directive('myRepeatDirective', function() {
+var app = angular.module('campaign', ['angularUtils.directives.dirPagination']).directive('myRepeatDirective', function() {
 			  return function(scope, element, attrs) {
 				    if (scope.$last){
 				    	$('.btn-on-off').bootstrapToggle();
@@ -26,7 +26,7 @@ var app = angular.module('campaign', ['angularUtils.directives.dirPagination','o
 				});
 				
 var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('campController',['$scope','$http',function($scope, $http){
 
 	$scope.listModule = function(){
 		$http.get("${pageContext.request.contextPath}/module/list").success(function(response){
@@ -51,7 +51,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	
 	
 	$scope.deleteStat = function(leadID){
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This Status will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -65,7 +65,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
             if(isConfirm){
 	            $http.delete("${pageContext.request.contextPath}/camp_status/remove/"+leadID)
 	            .success(function(){
-	            		SweetAlert.swal({
+	            		swal({
 			            		title:"Deleted",
 			            		text:"Status have been deleted!",
 			            		type:"success",  
@@ -76,7 +76,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		            });
 	           
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This Status is safe!",
 	                type:"error",

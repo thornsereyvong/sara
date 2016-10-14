@@ -10,9 +10,9 @@
 
 <script type="text/javascript">
 
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
 var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('campController',['$scope','$http',function($scope, $http){
 	$scope.listCustomer = function(){
 		$http.get("${pageContext.request.contextPath}/customer/list").success(function(response){
 				$scope.customer = response.DATA;
@@ -26,7 +26,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	
 	
 	$scope.deleteCustomer = function(leadID){
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This Customer will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -44,7 +44,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	            	if(str == "YES"){
 	            		$http.delete("${pageContext.request.contextPath}/customer/remove/"+leadID)
 	    	            .success(function(){
-	    	            		SweetAlert.swal({
+	    	            		swal({
 	    			            		title:"Deleted",
 	    			            		text:"Customer have been deleted!",
 	    			            		type:"success",  
@@ -54,7 +54,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	    	            		$scope.listCustomer();
 	    		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -63,7 +63,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 					}
 	                 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This Customer is safe!",
 	                type:"error",

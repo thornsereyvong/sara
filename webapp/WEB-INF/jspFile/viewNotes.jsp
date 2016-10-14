@@ -13,12 +13,12 @@
 <script type="text/javascript">
 
 
-var app = angular.module('noteApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('noteApp', ['angularUtils.directives.dirPagination']);
 var self = this;
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
 var noteId = "${noteId}";
-app.controller('viewnoteController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
 		

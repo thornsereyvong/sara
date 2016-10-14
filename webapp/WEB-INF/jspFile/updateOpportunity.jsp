@@ -25,11 +25,11 @@
 	</section>
 <script type="text/javascript">
 
-var app = angular.module('opportunityApp', ['oitozero.ngSweetAlert',]);
+var app = angular.module('opportunityApp', []);
 var self = this;
 var oppId = "${oppID}";
 var username = "${SESSION}";
-app.controller('opportunityController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('opportunityController',['$scope','$http',function($scope, $http){
 	
 	$scope.dataOpport = [];
 	angular.element(document).ready(function () {					

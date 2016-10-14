@@ -11,10 +11,10 @@
 
 var $list_username = [];
 
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
 var self = this;
 
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('campController',['$scope','$http',function($scope, $http){
 
 	$scope.listStatus = function(user){
 		$http.get("${pageContext.request.contextPath}/user/list/subordinate/admin/"+user).success(function(response){
@@ -49,7 +49,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	
 	
 	$scope.deleteStat = function(leadID){
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This user will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -63,7 +63,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
             if(isConfirm){
 	            $http.delete("${pageContext.request.contextPath}/user/remove/"+leadID)
 	            .success(function(){
-	            		SweetAlert.swal({
+	            		swal({
 			            		title:"Deleted",
 			            		text:"User have been deleted!",
 			            		type:"success",  
@@ -74,7 +74,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		            });
 	           
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This User is safe!",
 	                type:"error",

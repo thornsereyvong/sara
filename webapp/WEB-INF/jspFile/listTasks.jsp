@@ -13,9 +13,9 @@
 %>
 
 <script type="text/javascript">
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
 var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('campController',['$scope','$http',function($scope, $http){
 	$scope.listContact = function(){
 		$http.get("${pageContext.request.contextPath}/task/list").success(function(response){
 				$scope.contact = response.DATA;
@@ -28,7 +28,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	};
 	
 	$scope.deleteCon = function(oppID){
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This Task will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -47,7 +47,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 					if(str == "YES"){
 						 $http.delete("${pageContext.request.contextPath}/task/remove/"+oppID)
 				            .success(function(){
-				            		SweetAlert.swal({
+				            		swal({
 						            		title:"Deleted",
 						            		text:"Task have been deleted!",
 						            		type:"success",  
@@ -58,7 +58,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 				            		
 					      });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -66,7 +66,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 			                showConfirmButton: false});
 					}   
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This Task is safe!",
 	                type:"error",

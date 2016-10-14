@@ -23,10 +23,10 @@
 <script type="text/javascript">
 
 
-var app = angular.module('opportunityApp', ['oitozero.ngSweetAlert',]);
+var app = angular.module('opportunityApp', []);
 var self = this;
 var username = "${SESSION}";
-app.controller('opportunityController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('opportunityController',['$scope','$http',function($scope, $http){
 	$scope.startupPage = function(){		
 		$http({
 		    method: 'POST',
