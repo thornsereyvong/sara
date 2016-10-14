@@ -25,9 +25,9 @@
 	</section>
 <script type="text/javascript">
 
-var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
+var app = angular.module('campaign', []);
 var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('campController',['$scope','$http',function($scope, $http){
 
 	
 }]);

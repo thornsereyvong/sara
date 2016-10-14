@@ -13,7 +13,7 @@
 <script type="text/javascript">
 
 
-var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination']);
 var self = this;
 
 var username = "${SESSION}";
@@ -40,7 +40,7 @@ var eventIdForEdit = null;
 var leadStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
 var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
 
-app.controller('viewOpportunityController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
 		/* $("#oppStage").select2('val',response.OPPORTUNITY.osId);

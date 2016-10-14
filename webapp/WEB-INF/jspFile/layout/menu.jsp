@@ -21,7 +21,7 @@ function removeCla(id,ul,ul_li,icon){
 }
 
 $(document).ready(function(){
-		selectMenu('${menu}');
+	selectMenu('${menu}');
 });
 
 	//document.getElementById("demo").innerHTML = text;
@@ -165,26 +165,26 @@ $(document).ready(function(){
 					<span>Sale Order</span> <!-- <i class="fa fa-angle-left pull-right"></i> --></a>
 			</li>
 
-			<li class="treeview">
-				<a href="#"> <i class="fa fa-share"></i>
+			<li class="treeview" id="report_menu">
+				<a href="#"> <img style="width: 16px;" src="${pageContext.request.contextPath}/resources/images/module/Report-32.png" style="">&nbsp;&nbsp;
 					<span>Report</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
-				<ul class="treeview-menu">					
-					<li class="">
+				<ul class="treeview-menu" id="repMarketingUl">					
+					<li class="" id="repMarketingLi">
 						<a href="#">
-							<i class="fa fa-circle-o"></i> Marketing<i class="fa fa-angle-left pull-right"></i>
+							<i class="fa fa-circle-o color_menu" id="repMarketingIcon"></i> Marketing<i class="fa fa-angle-left pull-right"></i>
 						</a>
-						<ul class="treeview-menu">
-							<li class="">
+						<ul class="treeview-menu" id="repMarketingAct">
+							<li class="" id="repCampaignLi">
 								<a href="#">
-									<i class="fa fa-circle-o"></i> Campaigns<i class="fa fa-angle-left pull-right"></i>
+									<i class="fa fa-circle-o color_menu" id="repCampaignIcon"></i> Campaigns<i class="fa fa-angle-left pull-right"></i>
 								</a>
-								<ul class="treeview-menu">
-									<li>
-										<a href="#"><i class="fa fa-circle-o"></i> Top Campaign</a>
+								<ul class="treeview-menu" id="repCampaignUl">
+									<li class="" id="repCampaignAct">
+										<a href="${pageContext.request.contextPath}/report/marketing/campaign/top-campaign"><i id="repCampaignIcon1" class="fa fa-circle-o color_menu"></i> Top Campaign</a>
 									</li>
 									<li>
-										<a href="#"><i class="fa fa-circle-o"></i> Lead By Campaign</a>
+										<a href="#"><i class="fa fa-circle-o color_menu"></i> Lead By Campaign</a>
 									</li>
 								</ul>
 							</li>

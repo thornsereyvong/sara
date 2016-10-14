@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
 
-var app = angular.module('viewLead', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('viewLead', ['angularUtils.directives.dirPagination']);
 var self = this;
 var leadId = "${leadId}";
 var username = "${SESSION}";
@@ -30,7 +30,7 @@ var startupCallForm = [];
 
 var finStartupCollab = false;
 
-app.controller('viewLeadController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 	
 	$scope.collaborates = [];
 	$scope.tags = [];

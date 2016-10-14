@@ -9,9 +9,9 @@
 
 <script type="text/javascript">
 
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
 var self = this;
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('campController',['$scope','$http',function($scope, $http){
 
 	$scope.listStatus = function(){
 		$http.get("${pageContext.request.contextPath}/op_stage/list").success(function(response){
@@ -36,7 +36,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 	
 	
 	$scope.deleteStat = function(leadID){
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This Stage will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -50,7 +50,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
             if(isConfirm){
 	            $http.delete("${pageContext.request.contextPath}/op_stage/remove/"+leadID)
 	            .success(function(){
-	            		SweetAlert.swal({
+	            		swal({
 			            		title:"Deleted",
 			            		text:"Stage have been deleted!",
 			            		type:"success",  
@@ -61,7 +61,7 @@ app.controller('campController',['SweetAlert','$scope','$http',function(SweetAle
 		            });
 	           
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This Stage is safe!",
 	                type:"error",

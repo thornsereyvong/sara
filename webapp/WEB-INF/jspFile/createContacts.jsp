@@ -41,10 +41,10 @@ padding-right: 10px;
 
 <script type="text/javascript">
 
-var app = angular.module('contactApp', ['oitozero.ngSweetAlert',]);
+var app = angular.module('contactApp', []);
 var self = this;
 var username = "${SESSION}";
-app.controller('contactController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('contactController',['$scope','$http',function($scope, $http){
 
 	$scope.startupPage = function(){		
 		$http({

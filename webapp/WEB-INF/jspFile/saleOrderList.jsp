@@ -6,9 +6,9 @@
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 	<script type="text/javascript">
 
-var app = angular.module('saleOrderApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('saleOrderApp', ['angularUtils.directives.dirPagination']);
 var self = this;
-app.controller('saleOrderController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 	$scope.listSaleOrder = function(){
 		$http.get("${pageContext.request.contextPath}/sale-order/list-all-sale-order").success(function(response){			
 			$scope.saleOrder = response.DATA;			
@@ -21,7 +21,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 	};
 	
 	$scope.deleteSaleOder = function(saleId){
-		SweetAlert.swal({
+		swal({
             title: "", //Bold text
             text: "Are you sure you want to delete the sale order: "+saleId+" from the system?", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -39,7 +39,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 	            		$http.delete("${pageContext.request.contextPath}/sale-order/delete-sale-order/"+saleId)
 	    	            .success(function(data){
 	    	            		if(data.MESSAGE == "DELETED"){
-	    	            			SweetAlert.swal({
+	    	            			swal({
 	    			            		title:"Deleted",
 	    			            		text:"The sale order:"+saleId+" was successfully deleted!",
 	    			            		type:"success",  
@@ -48,7 +48,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 		    	            		});
 	    	            			$scope.listSaleOrder();
 	    	            		}else{
-	    	            			SweetAlert.swal({
+	    	            			swal({
 	    				                title:"Unsuccessfully",
 	    				                text:"data.MESSAGE",
 	    				                type:"error",
@@ -59,7 +59,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 	    	            		
 	    		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -68,7 +68,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 					}
 	                 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This sale order is safe!",
 	                type:"error",
@@ -79,7 +79,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
 	};
 	$scope.authorizeSaleOder = function(saleId){
 		
-		SweetAlert.swal({
+		swal({
             title: "Authorization",
             text: "",
             imageUrl: "${pageContext.request.contextPath}/resources/images/module/key.svg",
@@ -93,7 +93,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
         	 if(isConfirm){
         		 $http.get("${pageContext.request.contextPath}/sale-order/status/"+saleId+"/Authorized").success(function(response){			
        				if(response.MESSAGE == 'UPDATED'){
-       					SweetAlert.swal({
+       					swal({
        	            		title:"Authorization",
        	            		text:"The sale order:"+saleId+" was successfully authorized.",
        	            		type:"success",  
@@ -108,7 +108,7 @@ app.controller('saleOrderController',['SweetAlert','$scope','$http',function(Swe
        				alertMsgErrorSweet();
        			});
         	 }else{
-        		 SweetAlert.swal({
+        		 swal({
 	            		title: "Authorization",
 	            		text: "The sale order:"+saleId+" was cancelled.",
 	            		type: "error",  

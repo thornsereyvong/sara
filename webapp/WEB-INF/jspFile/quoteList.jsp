@@ -6,9 +6,9 @@
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 	<script type="text/javascript">
 
-var app = angular.module('quoteApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('quoteApp', ['angularUtils.directives.dirPagination']);
 var self = this;
-app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('quoteController',['$scope','$http',function($scope, $http){
 	$scope.listQuote = function(){
 		$http.get("${pageContext.request.contextPath}/quote/list-all-quote").success(function(response){			
 			$scope.quotation = response.DATA;
@@ -21,7 +21,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 	};
 	
 	$scope.deleteQuote = function(quoteId){
-		SweetAlert.swal({
+		swal({
             title: "", //Bold text
             text: "Are you sure you want to delete the quotation: "+quoteId+" from the system?", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -39,7 +39,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 	            		$http.delete("${pageContext.request.contextPath}/quote/delete-quote/"+quoteId)
 	    	            .success(function(data){
 	    	            		if(data.MESSAGE == "DELETED"){
-	    	            			SweetAlert.swal({
+	    	            			swal({
 	    			            		title:"Deleted",
 	    			            		text:"The quotation:"+quoteId+" was successfully deleted!",
 	    			            		type:"success",  
@@ -48,7 +48,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 		    	            		});
 		    	            		$scope.listQuote();
 	    	            		}else{
-	    	            			SweetAlert.swal({
+	    	            			swal({
 	    				                title:"Unsuccessfully",
 	    				                text:"data.MESSAGE",
 	    				                type:"error",
@@ -59,7 +59,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 	    	            		
 	    		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -68,7 +68,7 @@ app.controller('quoteController',['SweetAlert','$scope','$http',function(SweetAl
 					}
 	                 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This quotation is safe!",
 	                type:"error",

@@ -13,12 +13,12 @@
 <script type="text/javascript">
 
 
-var app = angular.module('taskApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('taskApp', ['angularUtils.directives.dirPagination']);
 var self = this;
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
 var taskId = "${taskId}";
-app.controller('viewTaskController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
 		

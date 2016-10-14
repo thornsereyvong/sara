@@ -39,11 +39,11 @@ padding-right: 10px;
 	</section>
 <script type="text/javascript">
 
-var app = angular.module('contactApp', ['oitozero.ngSweetAlert',]);
+var app = angular.module('contactApp', []);
 var self = this;
 var conId = "${conId}";
 var username = "${SESSION}";
-app.controller('contactController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('contactController',['$scope','$http',function($scope, $http){
 	
 	
 	$scope.CONTACT = [];

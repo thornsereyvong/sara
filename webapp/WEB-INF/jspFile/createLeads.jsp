@@ -26,10 +26,10 @@
 		</ol>
 	</section>
 <script type="text/javascript">
-var app = angular.module('campaign', ['oitozero.ngSweetAlert',]);
+var app = angular.module('campaign', []);
 var self = this;
 var username = "${SESSION}";
-app.controller('campController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('campController',['$scope','$http',function($scope, $http){
 	$scope.addLeadOnStartup = function() {
 		$http({
 		    method: 'POST',

@@ -25,12 +25,12 @@
 	</section>
 <script type="text/javascript">
 
-var app = angular.module('caseApp', ['oitozero.ngSweetAlert',]);
+var app = angular.module('caseApp', []);
 var self = this;
 var caseId= "${caseId}";
 var username = "${SESSION}";
 var dataCase = [];
-app.controller('caseController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){	
+app.controller('caseController',['$scope','$http',function($scope, $http){	
 	$scope.dataCase = [];
 	angular.element(document).ready(function () {					
 		setTimeout(function(){

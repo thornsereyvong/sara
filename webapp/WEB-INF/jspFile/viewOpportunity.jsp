@@ -12,7 +12,7 @@
 <script type="text/javascript">
 
 
-var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination']);
 var self = this;
 
 var username = "${SESSION}";
@@ -47,7 +47,7 @@ var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Propos
 
 
 
-app.controller('viewOpportunityController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
 		$("#oppStage").select2('val',response.OPPORTUNITY.osId);
@@ -104,7 +104,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.quote = response.QUOTATIONS;
 			$scope.saleOrder = response.SALE_ORDERS;
 			
-			// dis(response)
+			
 			
 			$scope.allContact = response.ALL_CONTACTS;
 			$scope.allQuote = response.ALL_QUOTATIONS;
@@ -134,7 +134,7 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 			$scope.oppUom = response.OPPORTUNITY_DETAILS_STARTUP.UOM;			
 			$scope.opportunityDetail = response.OPPORTUNITY_DETAILS;
 			
-			
+			//dis($scope.opportunity)
 			
 	}
 	
@@ -596,26 +596,29 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
 	$scope.btnSaveClick = function(){		
 		var tr = $("#listItem tr");		
 		var dataDetail = [];
+		$scope.opportunity.totalDis = 0;
 		if(tr.length>0){
 			var n = "";
 			for(var i=0;i<tr.length;i++){
 				n =tr.eq(i).attr('data-row-index');
 				$scope.opportunityDetail[n].lineNo = i+1;
 				dataDetail.push($scope.opportunityDetail[n]);
+				$scope.opportunity.totalDis += toNum($scope.opportunityDetail[n].disDol);
 			}
 		}		
 		
 		var dataFrm = {
 			"opId" : oppId,
-			"totalAmt" : toNum($scope.opportunity.totalAmt),
+			"totalAmount" : toNum($scope.opportunity.totalAmt),
 			"totalVTax" : toNum($scope.opportunity.totalVTax),
 			"totalSTax" : toNum($scope.opportunity.totalSTax),
 			"disInvDol" : toNum($scope.opportunity.disInvDol),
 			"disInvPer" : toNum($scope.opportunity.disInvPer),
 			"opAmount" : toNum($scope.opportunity.opAmount),
+			"totalDis" : toNum($scope.opportunity.totalDis),
 			"details" : dataDetail
 		}
-
+		
 		$http({
 		    method: 'PUT',
 		    url: "${pageContext.request.contextPath}/opportunity/edit/custom",
@@ -633,11 +636,12 @@ app.controller('viewOpportunityController',['SweetAlert','$scope','$http',functi
             		timer: 2000,   
             		showConfirmButton: false
     			});
+			}else{
+				alertMsgErrorSweet();
 			}
+		}).error(function(){
+			alertMsgErrorSweet();
 		});
-		
-		
-		
 		
 	}
 	
@@ -1739,9 +1743,9 @@ function oppItemChange(){
 	itemChangeStatus1 = true;
 	angular.element(document.getElementById('viewOpportunityController')).scope().oppItemChange1(iSplitBySplintById("oppItem"));
 }
-function getValFromSelect(ID,key1,key2){
+function getValFromSelect(ID,key1,key2){ 
 	var obj = $("#"+ID).val();
-	if(obj != ""){
+	if(obj !== null && obj != ""){
 		obj = obj.split("]");
 		return JSON.parse('{"'+key1+'" : "'+obj[0].replace('[','')+'", "'+key2+'" : "'+$.trim(obj[1])+'"}');
 	}else{
@@ -1751,7 +1755,7 @@ function getValFromSelect(ID,key1,key2){
 }
 function iSplitBySplintById(ID){
 	var obj = $("#"+ID).val();
-	if(obj != ""){
+	if(obj != ""){ 
 		obj = obj.split("]");
 		return obj[0].replace('[','');
 	}else{

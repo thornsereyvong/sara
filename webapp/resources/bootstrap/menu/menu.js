@@ -1,7 +1,25 @@
+var togClick = true;
+
 function errorMessage(){
 	sweetAlert("Warning", "Something went wrong!", "error");
 }
 
+function iAddClass(m1, m2,m3, actIcon){
+	$("#"+m1).addClass("active");
+	
+	$("#"+m2+"Ul").addClass("open");
+	$("#"+m2+"Li").addClass("active");
+	$("#"+m2+"Act").addClass("open");
+	$("#"+m2+"Icon").removeClass().addClass("fa fa-check-circle color_menu");
+	
+	
+	$("#"+m3+"Li").addClass("active");
+	$("#"+m3+"Ul").addClass("open");
+	$("#"+m3+"Act").addClass("active");
+	$("#"+m3+"Icon").removeClass().addClass("fa fa-check-circle color_menu");
+	
+	$("#"+m3+"Icon"+actIcon).removeClass().addClass("fa fa-check-circle color_menu");
+}
 
 
 
@@ -384,7 +402,12 @@ function selectMenu(menu_slide){
     	removeCla("#sale_order","#ul_sale_order","#ul_li_sale_order","#sale_order_icon_sale_order");
     	document.title = 'Print Sale Order | CRM';
         break;
-                
+    
+    case "topCampaign":
+    	iAddClass("report_menu", "repMarketing","repCampaign",1);
+    	document.title = 'Top Campaign | CRM';
+        break;
+        
     default:
     	$("#dashboard").removeAttr("class").attr('class', 'treeview active');
     	document.title = 'Dashbord';

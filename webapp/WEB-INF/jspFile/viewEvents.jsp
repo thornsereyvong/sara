@@ -13,12 +13,12 @@
 <script type="text/javascript">
 
 
-var app = angular.module('eventApp', ['angularUtils.directives.dirPagination','oitozero.ngSweetAlert']);
+var app = angular.module('eventApp', ['angularUtils.directives.dirPagination']);
 var self = this;
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
 var eventId = "${eventId}";
-app.controller('vieweventController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('vieweventController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
 		

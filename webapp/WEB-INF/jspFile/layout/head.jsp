@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/js/style.css">
 <link href="${pageContext.request.contextPath}/resources/editor/font-awesome.min.css" rel="stylesheet">
 <link type="text/css" href="${pageContext.request.contextPath}/resources/editor/summernote.css" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/sweet-alert.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/sweetalert/sweetalert.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/angular/css/angular-material.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/toggle/bootstrap-toggle.min.css">
 
@@ -56,8 +56,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/jPages.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/editor/summernote.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/select2/select2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/SweetAlert.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/bootstrap/js/sweet-alert.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/dist/sweetalert/sweetalert-dev.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.js"></script>
