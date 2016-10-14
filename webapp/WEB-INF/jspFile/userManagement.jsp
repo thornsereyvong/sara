@@ -17,7 +17,8 @@ var self = this;
 app.controller('campController',['$scope','$http',function($scope, $http){
 
 	$scope.listStatus = function(user){
-		$http.get("${pageContext.request.contextPath}/user/list/subordinate/admin/"+user).success(function(response){
+		//subordinate/admin/"+user
+		$http.get("${pageContext.request.contextPath}/user/list").success(function(response){
 				$scope.user = response.DATA;
 				$scope.action = "Save";
 				$list_username = response.DATA
@@ -475,19 +476,8 @@ $(document).ready(function(){
 
 	</section>
 	<!-- /.content -->
-
-
 </div>
-
 <!-- /.content-wrapper -->
-
-
-
-<!-- /.content-wrapper -->
-
-
-
-
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 
