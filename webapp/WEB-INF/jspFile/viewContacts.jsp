@@ -694,7 +694,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 }]);
 
 
-app.controller('callController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('callController',['$scope','$http',function( $scope, $http){
 	$scope.startupCallForm = function(){
 		$http.get("${pageContext.request.contextPath}/call_status/list")
 			.success(function(response){
@@ -713,7 +713,7 @@ app.controller('callController',['SweetAlert','$scope','$http',function(SweetAle
 
 
 
-app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('meetController',['$scope','$http',function( $scope, $http){
 	$scope.startupMeetForm = function(){
 		$http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
 			$scope.meetStatusStartup = response.DATA;
@@ -730,7 +730,7 @@ app.controller('meetController',['SweetAlert','$scope','$http',function(SweetAle
 	}	
 }]);
 
-app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('taskController',['$scope','$http',function( $scope, $http){
 	
 	$scope.startupTaskForm = function(){
 		$http.get("${pageContext.request.contextPath}/task_status/list").success(function(response){
@@ -755,7 +755,7 @@ app.controller('taskController',['SweetAlert','$scope','$http',function(SweetAle
 	}	
 }]);
 
-app.controller('eventController',['SweetAlert','$scope','$http',function(SweetAlert, $scope, $http){
+app.controller('eventController',['$scope','$http',function( $scope, $http){
 	
 	$scope.startupEventForm = function(){
 		$http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
