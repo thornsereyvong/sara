@@ -21,8 +21,7 @@ function removeCla(id,ul,ul_li,icon){
 }
 
 $(document).ready(function(){
-	var menu_slide = "${menu}"; 
-	selectMenu(menu_slide);
+	selectMenu('${menu}');
 });
 
 	//document.getElementById("demo").innerHTML = text;
