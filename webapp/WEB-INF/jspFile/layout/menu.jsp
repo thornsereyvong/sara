@@ -182,7 +182,7 @@ $(document).ready(function(){
 								</a>
 								<ul class="treeview-menu">
 									<li>
-										<a href="#"><i class="fa fa-circle-o"></i> Top Campaign</a>
+										<a href="${pageContext.request.contextPath}/report/marketing/campaign/top-campaign"><i class="fa fa-circle-o"></i> Top Campaign</a>
 									</li>
 									<li>
 										<a href="#"><i class="fa fa-circle-o"></i> Lead By Campaign</a>
