@@ -21,11 +21,9 @@ function removeCla(id,ul,ul_li,icon){
 }
 
 $(document).ready(function(){
-	var menu_slide = '<%String menu3 = (String) request.getAttribute("menu");
-			out.print(menu3);%>
-	';
-						selectMenu(menu_slide);
-					});
+	var menu_slide = '<%String menu3 = (String) request.getAttribute("menu"); out.print(menu3);%>'; 
+	selectMenu(menu_slide);
+});
 
 	//document.getElementById("demo").innerHTML = text;
 </script>
