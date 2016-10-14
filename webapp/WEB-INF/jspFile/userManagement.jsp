@@ -446,8 +446,8 @@ $(document).ready(function(){
 
 						<tr dir-paginate="cc in user |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
 							<td>{{cc.username}}</td>
-							<td>{{cc.role.roleName}}</td>
-							<td>{{cc.role.createDate | date:'dd-MM-yyyy'}}</td>							
+							<td>{{cc.roleName}}</td>
+							<td>{{cc.createDate | date:'dd-MM-yyyy'}}</td>							
 							<td>
 								<a ng-click="listUserID(cc.userID)" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 								<button type="button" ng-click="deleteStat(cc.userID)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i></button>
