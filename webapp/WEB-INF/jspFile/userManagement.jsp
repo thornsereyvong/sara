@@ -17,7 +17,8 @@ var self = this;
 app.controller('campController',['$scope','$http',function($scope, $http){
 
 	$scope.listStatus = function(user){
-		$http.get("${pageContext.request.contextPath}/user/list/subordinate/admin/"+user).success(function(response){
+		//subordinate/admin/"+user
+		$http.get("${pageContext.request.contextPath}/user/list").success(function(response){
 				$scope.user = response.DATA;
 				$scope.action = "Save";
 				$list_username = response.DATA
@@ -445,8 +446,8 @@ $(document).ready(function(){
 
 						<tr dir-paginate="cc in user |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
 							<td>{{cc.username}}</td>
-							<td>{{cc.role.roleName}}</td>
-							<td>{{cc.role.createDate | date:'dd-MM-yyyy'}}</td>							
+							<td>{{cc.roleName}}</td>
+							<td>{{cc.createDate | date:'dd-MM-yyyy'}}</td>							
 							<td>
 								<a ng-click="listUserID(cc.userID)" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 								<button type="button" ng-click="deleteStat(cc.userID)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i></button>
@@ -475,19 +476,8 @@ $(document).ready(function(){
 
 	</section>
 	<!-- /.content -->
-
-
 </div>
-
 <!-- /.content-wrapper -->
-
-
-
-<!-- /.content-wrapper -->
-
-
-
-
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 

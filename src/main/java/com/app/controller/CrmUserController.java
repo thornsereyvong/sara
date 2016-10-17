@@ -160,8 +160,6 @@ public class CrmUserController {
 		
 	}
 	
-	
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/list/tags",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> listTagsUser(){
