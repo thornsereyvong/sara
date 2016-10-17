@@ -45,16 +45,14 @@
 		$(document).ready(function() {
 			$(".select2").select2();
 			
-			$('.date2').daterangepicker({
+			$('#cam_endDate').daterangepicker({
 		        singleDatePicker: true,
 		        showDropdowns: true,
 		        format: 'DD/MM/YYYY' 
 		    }).on('change', function(e) {
-
 				if($("#cam_endDate").val() != ""){
 					$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_endDate');
-				}	
-		  
+				}			  
 			});
 			
 			$('#cam_startDate').daterangepicker({
@@ -62,11 +60,9 @@
 		        showDropdowns: true,
 		        format: 'DD/MM/YYYY' 
 		    }).on('change', function(e) {
-
 				if($("#cam_startDate").val() != ""){
 					$('#form-campaigns').bootstrapValidator('revalidateField', 'cam_startDate');
-				}	
-		  
+				}		  
 			});
 			
 			
