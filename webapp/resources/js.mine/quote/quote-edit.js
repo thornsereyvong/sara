@@ -83,7 +83,8 @@ $(function(){
 		if(customer != ""){
 			$("#customer").next().children().children().attr('style','border: 1px solid #d2d6de;');	
 			$("#priceCode").select2('val',LCustomer[customer].priceCode.priceCode);		
-			addShipToAdd(LCustomer[customer].custDetails);
+			addShipToAdd(LCustomer[customer].shipAddresses);
+			$("#shipToAdd").select2('val',LCustomer[customer].aId);
 			if(LCustomer[customer].priceCode.priceCode != ''){
 				$("#priceCode").next().children().children().attr('style','border: 1px solid #d2d6de;');
 			}
@@ -638,11 +639,13 @@ function removeRowItem(RowID){
 
 function addShipToAdd(data){
 	$('#shipToAdd').empty();
-	$('#shipToAdd').append("<option></option>");
-	for(i=0;i<data.length;i++){
-		if(data[i].AID !='')
-			$('#shipToAdd').append("<option value='"+data[i].aId+"'>"+data[i].address+"</option>");
-	}
+	$('#shipToAdd').append("<option></option>");	
+	if(data != null){
+		for(i=0;i<data.length;i++){
+			if(data[i].shipId !='')
+				$('#shipToAdd').append("<option value='"+data[i].shipId+"'>["+data[i].shipId+"] "+data[i].shipName.trunc(100)+"</option>");
+		}
+	}		
 	$('#shipToAdd').select2();
 }
 
@@ -923,60 +926,54 @@ function saleOrder(){
 			quoteDetails: detail
 		};
 	
-	swal({
-        title: "Quotation",
-        text: "Submit to run edit quotation.",
-        type: "info",   
-        showCancelButton: true,   
-        closeOnConfirm: false,   
-        showLoaderOnConfirm: true,
-    }, 
-    function(){
-    	$.ajax({ 
-    		url: server+"quote/edit-quote",
-    		method: "POST",
-    		async: false,
-    		data: JSON.stringify(master),
-    		beforeSend: function(xhr) {
-    		    xhr.setRequestHeader("Accept", "application/json");
-    		    xhr.setRequestHeader("Content-Type", "application/json");
-    	    }, 
-    	    success: function(result){
-    	    	
-    			if(result.MESSAGE == "UPDATED"){
-    				swal({   
-    					title: "Successful!",   
-    					text: "The quotation with record id: '"+entryNo+"'  was successfully saved!",   
-    					type: "success",   
-    					showCancelButton: true,   
-    					confirmButtonColor: "#8cd4f5",   
-    					confirmButtonText: "Ok",   
-    					cancelButtonText: "",   
-    					closeOnConfirm: false,   
-    					closeOnCancel: false ,
-    					showCancelButton: false
-    				}, function(isConfirm){   
-    					if (isConfirm) {     
-    						location.reload();  
-    					} else {     
-    						location.reload();
-    					}
-    				});
-    				
-    				
-    			}else{
-    				swal("Unsuccessful!", result.MESSAGE, "error");
-    			}
-    		},
-    		error:function(){
-    			swal("Unsuccessful!", "Please try again!", "error");
-    		}
-    	    
-    	});
-    });
+	swal({   
+		title: "<span style='font-size: 25px;'>You are about to save a quotation with id: <span style='color:#F8BB86'>"+entryNo+"</span> .</span>",   
+		text: "Click OK to continue or CANCEL to abort.",   
+		type: "info", 
+		html: true,
+		showCancelButton: true,   
+		closeOnConfirm: false,   
+		showLoaderOnConfirm: true, 
+		
+	}, function(){   
+		
+			    	
+		
+		setTimeout(function(){			
+			$.ajax({ 
+	    		url: server+"quote/edit-quote",
+	    		method: "POST",
+	    		async: false,
+	    		data: JSON.stringify(master),
+	    		beforeSend: function(xhr) {
+	    		    xhr.setRequestHeader("Accept", "application/json");
+	    		    xhr.setRequestHeader("Content-Type", "application/json");
+	    	    }, 
+	    	    success: function(result){	  
+	    			if(result.MESSAGE == "UPDATED"){	    				
+	    				swal({
+	    					title:"Successful!",
+	    					text: "The quotation with record id: '"+entryNo+"'  was successfully saved!", 
+	    					type:"success",  
+	    					timer: 2000,   
+	    					showConfirmButton: false
+	    				});
+	    				  
+	    				setTimeout(function(){		
+	    					//location.reload(); 
+	    				},2000);
+	    			}else{
+	    				swal("Unsuccessful!", result.MESSAGE, "error");
+	    			}
+	    		},
+	    		error:function(){
+	    			swal("Unsuccessful!", "Please try again!", "error");
+	    		}
+	    	    
+	    	});   
+		}, 500);
+	});	
 	
-	
-
 }
 
 function cancel(){

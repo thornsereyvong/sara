@@ -86,7 +86,8 @@ $(function(){
 		if(customer != ""){
 			$("#customer").next().children().children().attr('style','border: 1px solid #d2d6de;');	
 			$("#priceCode").select2('val',LCustomer[customer].priceCode.priceCode);		
-			addShipToAdd(LCustomer[customer].custDetails);
+			addShipToAdd(LCustomer[customer].shipAddresses);
+			$("#shipToAdd").select2('val',LCustomer[customer].aId);
 			if(LCustomer[customer].priceCode.priceCode != ''){
 				$("#priceCode").next().children().children().attr('style','border: 1px solid #d2d6de;');
 			}
@@ -96,7 +97,7 @@ $(function(){
 			addShipToAdd([]);	
 		}				
 		
-			
+		
 			
 	});
 	// end Customer change act
@@ -657,10 +658,14 @@ function removeRowItem(RowID){
 function addShipToAdd(data){
 	$('#shipToAdd').empty();
 	$('#shipToAdd').append("<option></option>");
-	for(i=0;i<data.length;i++){
-		if(data[i].AID !='')
-			$('#shipToAdd').append("<option value='"+data[i].aId+"'>"+data[i].address+"</option>");
-	}
+	
+	if(data != null){
+		for(i=0;i<data.length;i++){
+			if(data[i].shipId !='')
+				$('#shipToAdd').append("<option value='"+data[i].shipId+"'>["+data[i].shipId+"] "+data[i].shipName.trunc(100)+"</option>");
+		}
+	}	
+	
 	$('#shipToAdd').select2();
 }
 

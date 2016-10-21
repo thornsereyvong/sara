@@ -38,7 +38,7 @@ public class SaleOrder{
 	private String locationId;
 	private Date dueDate; 
 	private String classId; 
-	private int shipTo;
+	private String shipTo;
 	private short isRead;
 	private List<SaleOrderDetails> saleOrderDetails;
 
@@ -306,11 +306,11 @@ public class SaleOrder{
 		this.classId = classId;
 	}
 
-	public int getShipTo() {
+	public String getShipTo() {
 		return shipTo;
 	}
 
-	public void setShipTo(int shipTo) {
+	public void setShipTo(String shipTo) {
 		this.shipTo = shipTo;
 	}
 

@@ -31,7 +31,7 @@ var username = "${SESSION}";
 var lastAid= 0;
 app.controller('campController',['$scope','$http',function($scope, $http){		
 	
-	
+	$scope.keyS = -1;
 	$scope.CUSTOMER = [];
 	angular.element(document).ready(function () {					
 		setTimeout(function(){
@@ -65,41 +65,74 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			$scope.industry = response.INDUSTRY;
 			$scope.priceCode = response.PRICE_CODE;
 			$scope.type = response.TYPE;
-			$scope.shipToAdd = response.CUSTOMER.custDetails;
+			$scope.shipToAdd = response.CUSTOMER.shipAddresses;
 			$scope.CUSTOMER = response.CUSTOMER;
-			
-			if(response.CUSTOMER.custDetails.length>0){
-				lastAid = Number($scope.shipToAdd[response.CUSTOMER.custDetails.length-1].aId)+1;
-			}else{
-				lastAid = 1;
-			}
+						
 			
 		});
 		
 	}	
 	
 	
-	$scope.btnAddMoreShip = function(){		
-		$scope.shipToAdd.push({ "custId": custId,"aId": lastAid,"address": ""}); 
-		lastAid++;
+	$scope.btnAddMoreShip = function(){	
+		$scope.shipToAdd.push({"docId": custId ,"shipId":"", "shipName":""}); 
+		setTimeout(function(){
+			if($scope.shipToAdd.length == 1){
+				$scope.keyS = 0;
+				$('input[name=ckShipAdd]:first', '#form-customer').attr('checked', true);
+			}
+		}, 500);
+		
 	}
 	$scope.btnRemoveMoreShip = function(key){
 		$scope.shipToAdd.splice(key,1);
+		setTimeout(function(){
+			var ckShip = $('input[name=ckShipAdd]:checked', '#form-customer').val();
+			if(ckShip == undefined){				
+				$('input[name=ckShipAdd]:first', '#form-customer').attr('checked', true);
+			}
+		}, 500);
 	}
 	
 	$scope.shipToAdd = {};
+	
 	$scope.getAddress = function(){ 
-		var shipToAddrAdd = [];
-		angular.forEach($scope.shipToAdd, function(value, key) {
-			var txtAddr = $.trim($scope.shipToAdd[key].address);
-			if(txtAddr != ""){
-				shipToAddrAdd.push({"custId":value.custId,"aId":value.aId, "address":txtAddr});
-			}			
-		});
+		var shipToAddrAdd = [];	
+		var msg = true;
+		var a =0;
+		angular.forEach($scope.shipToAdd, function(value, key) { a++;
+			var txtAddr = $.trim($scope.shipToAdd[key].shipName);
+			var txtCode = $.trim($scope.shipToAdd[key].shipId);
+			
+			if(a==1){
+				if(txtAddr == "" && txtCode == "" && $scope.shipToAdd.length == 1 ){
+					$("#c_shipCode"+key).attr("style","");
+				}else{
+					if(txtCode != ""){						
+						$("#c_shipCode"+key).attr("style","");
+					}else{						
+						$("#c_shipCode"+key).attr("style","border: 1px solid #dd4b39;");
+						msg = false;
+					}				
+				}				
+			}else{
+				if(txtCode != ""){					
+					$("#c_shipCode"+key).attr("style","");
+				}else{	
+					$("#c_shipCode"+key).attr("style","border: 1px solid #dd4b39;");
+					msg = false;
+				}
+			}
+			shipToAddrAdd.push({"docId": value.docId ,"shipId":$scope.shipToAdd[key].shipId, "shipName":$scope.shipToAdd[key].shipName});				
+		});	
+		
 		if(shipToAddrAdd.length == 0)
-			return null;		
-		return shipToAddrAdd;
+			return null;			
+		var ship = {"msg": msg , "data":shipToAddrAdd};		
+		return  ship;
 	}
+	
+	
 }]);
 
 $(document).ready(function() {
@@ -112,6 +145,8 @@ $(document).ready(function() {
 		$("#form-customer").submit();		
 	});
 	
+	 
+	 
 	 $('#form-customer').bootstrapValidator({
 			message: 'This value is not valid',
 			feedbackIcons: {
@@ -241,54 +276,58 @@ $(document).ready(function() {
 				}
 			}
 		}).on('success.form.bv', function(e) {							
-
 			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
-	
-			$.ajax({
-				url : "${pageContext.request.contextPath}/customer/edit",
-				type : "PUT",
-				data : JSON.stringify({
-					  "custID" : custId,
-				      "custName": getValueStringById("cs_name"),
-				      "custTel1": getValueStringById("c_tel1"),
-				      "custTel2": getValueStringById("c_tel2"),
-				      "custFax": getValueStringById("c_fax"),
-				      "custEmail": getValueStringById("c_email"),
-				      "custWebsite": getValueStringById("c_website"),
-				      "custAddress": getValueStringById("c_billAddr"),
-				      "facebook": getValueStringById("c_facebook"),
-				      "line": getValueStringById("c_line"),
-				      "viber": getValueStringById("c_viber"),
-				      "whatApp": getValueStringById("c_whatapp"),
-				      "industID": getJsonById("industID","c_industry","int"),
-					  "accountTypeID": getJsonById("accountID","c_type","int"),
-					  "custDetails" : ship,
-					  "priceCode" : getJsonById("priceCode","c_price","str"),
-					  "custGroup" : getJsonById("custGroupId","c_group","str"),
-					  "imageName" : ""
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-			    },
-				success:function(data){										
-					if(data.MESSAGE == "UPDATED"){
-						swal({
-		            		title:"Update Successfully",
-		            		text:"You have been updated customer!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						reloadForm(2000);
-					}else{
+			var ckShip = $('input[name=ckShipAdd]:checked', '#form-customer').val();
+			if(ship.msg == true){
+				$.ajax({
+					url : "${pageContext.request.contextPath}/customer/edit",
+					type : "PUT",
+					data : JSON.stringify({
+						  "custID" : custId,
+					      "custName": getValueStringById("cs_name"),
+					      "custTel1": getValueStringById("c_tel1"),
+					      "custTel2": getValueStringById("c_tel2"),
+					      "custFax": getValueStringById("c_fax"),
+					      "custEmail": getValueStringById("c_email"),
+					      "custWebsite": getValueStringById("c_website"),
+					      "custAddress": getValueStringById("c_billAddr"),
+					      "facebook": getValueStringById("c_facebook"),
+					      "line": getValueStringById("c_line"),
+					      "viber": getValueStringById("c_viber"),
+					      "whatApp": getValueStringById("c_whatapp"),
+					      "industID": getJsonById("industID","c_industry","int"),
+						  "accountTypeID": getJsonById("accountID","c_type","int"),
+						  "shipAddresses" : ship.data,
+						  "aId" : ckShip,
+						  "priceCode" : getJsonById("priceCode","c_price","str"),
+						  "custGroup" : getJsonById("custGroupId","c_group","str"),
+						  "imageName" : ""
+					}),
+					beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+				    },
+					success:function(data){										
+						if(data.MESSAGE == "UPDATED"){
+							swal({
+			            		title:"Update Successfully",
+			            		text:"You have been updated customer!",
+			            		type:"success",  
+			            		timer: 2000,   
+			            		showConfirmButton: false
+		        			});
+							reloadForm(2000);
+						}else{
+							alertMsgErrorSweet();	
+						}
+					},
+					error:function(){
 						alertMsgErrorSweet();	
 					}
-				},
-				error:function(){
-					alertMsgErrorSweet();	
-				}
-			});	
+				});	
+			}
+		}).on('error.form.bv', function(e) {
+			angular.element(document.getElementById('campController')).scope().getAddress();
 		});	
 });
 </script>
@@ -365,14 +404,30 @@ $(document).ready(function() {
 										<input type="text" value="{{CUSTOMER.custAddress}}" placeholder="" class="form-control" name="c_billAddr" id="c_billAddr">
 									</div>
 								</div>															
-								<div class="col-sm-12" style="margin-bottom: 15px;">
-									<label class="font-label">Ship To Address</label>														
-									<div class="input-group" ng-repeat="(key, add) in shipToAdd" style="margin-bottom: 5px;">                            	
-										<input type="text" ng-model="shipToAdd[key].address"  name="c_shipAddr" class="form-control" id="c_shipAddr" >
-										<span class="input-group-btn">
-			                                 <button style="height: 34px;" name="c_shipAddr" type="button" ng-click="btnRemoveMoreShip(key)" class="btn btn-danger"><i class="fa  fa-minus-square-o"></i></button>
-										</span>
-									</div>														
+								<div class="col-sm-12">
+									<label class="font-label">Ship To Address</label>	
+								</div>
+								
+								<div class="col-sm-12" style="margin-bottom: 10px;" ng-repeat="(key, add) in shipToAdd">									
+									<div class="col-sm-2" style="padding-left: 0px;padding-right: 0px;">
+										 <div class="input-group"  style="margin-bottom: 5px;">                            	
+											<span class="input-group-addon">
+										       <input ng-if="CUSTOMER.aId == shipToAdd[key].shipId ||  shipToAdd.length <= 1 || key== keyS " type="radio" style="cursor: pointer;" checked="checked" name="ckShipAdd" value="{{shipToAdd[key].shipId}}" aria-label="...">									
+										       <input ng-if="CUSTOMER.aId != shipToAdd[key].shipId && shipToAdd.length > 1 && key != keyS" type="radio" style="cursor: pointer;" class="cursor_pointer" name="ckShipAdd" value="{{shipToAdd[key].shipId}}" aria-label="...">
+										    </span>
+										     <input type="text" placeholder="Address Code"  ng-model="shipToAdd[key].shipId" name="c_shipCode" class="form-control" id="c_shipCode{{key}}" >
+										</div>	
+									</div>
+									<div class="col-sm-10" style="padding-left: 0px;padding-right: 0px;">										 										
+										<div class="input-group"  style="margin-bottom: 5px;">                            												
+										     <input type="text"  placeholder="Description" ng-model="shipToAdd[key].shipName" name="c_shipAddr" class="form-control" id="c_shipAddr{{key}}" >
+											 <span class="input-group-btn">
+										     	<button style="height: 34px;"  name="c_shipAddr" type="button" ng-click="btnRemoveMoreShip(key)" class="btn btn-danger"><i class="fa  fa-minus-square-o"></i></button>
+										     </span>
+										</div>									
+									</div>																
+								</div>
+								<div class="col-sm-12" style="margin-bottom: 15px;">													
 									<button type="button" ng-click="btnAddMoreShip()" id="btnAddMoreShip" class="btn btn-primary"><i class="fa fa-plus-square-o"></i></button>
 								</div>																		
 							</div>					

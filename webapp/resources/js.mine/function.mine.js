@@ -357,6 +357,12 @@ function addErrorToDate(id){
 	$("#"+id).children().eq(1).children().eq(1).attr('style','border: 0px; border-left: 1px solid #dd4b39;');
 }
 
+function fmNull(str){
+	if(str == null)
+		return "";
+	return str;
+}
+
 $(function(){
 	$("#op_stage").change(function(){ $("#op_probability").val(probab[getInt("op_stage")]); });
 	$("#oppStage").change(function(){ $("#oppProbability").val(probab[getInt("oppStage")]); });	

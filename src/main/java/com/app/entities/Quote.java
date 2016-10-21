@@ -37,10 +37,18 @@ public class Quote {
 	private Date startDate;
 	private Date expireDate;
 	private String classId;
-	private int shipTo;
+	private String shipTo;
 	private List<QuoteDetails> quoteDetails;
 	
 	
+	public String getShipTo() {
+		return shipTo;
+	}
+
+	public void setShipTo(String shipTo) {
+		this.shipTo = shipTo;
+	}
+
 	public List<QuoteDetails> getQuoteDetails() {
 		return quoteDetails;
 	}
@@ -289,13 +297,7 @@ public class Quote {
 		this.classId = classId;
 	}
 
-	public int getShipTo() {
-		return shipTo;
-	}
-
-	public void setShipTo(int shipTo) {
-		this.shipTo = shipTo;
-	}
+	
 
 	public Date getStartDate() {
 		return startDate;

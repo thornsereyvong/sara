@@ -172,7 +172,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 				                      <ul class="dropdown-menu" role="menu">
 				                        <li><a href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><i class="fa fa-pencil"></i> Edit</a></li>
 				                        <li ng-click="deleteLead(cc.leadID)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="${pageContext.request.contextPath}/view-leads/{{cc.leadID}}"><i class="fa fa-eye"></i> View</a></li>
+				                        <li><a href="${pageContext.request.contextPath}/view-lead/{{cc.leadID}}"><i class="fa fa-eye"></i> View</a></li>
 				                        <li ng-if=" cc.statusName != 'Converted' "><a href="${pageContext.request.contextPath}/convert-lead/{{cc.leadID}}"><i class="fa fa-retweet"></i> Convert</a></li>
 				                      </ul>
 				                    </div>

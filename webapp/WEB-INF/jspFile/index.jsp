@@ -10,47 +10,23 @@
 <script type="text/javascript">
 var app = angular.module('dashApp', ['angularUtils.directives.dirPagination']);
 var self = this;
+var username = "${SESSION}";
 app.controller('dashController',['$scope','$http',function($scope, $http){
 	$scope.dashStartup = function(){
-		$http.get("${pageContext.request.contextPath}/meeting/list").success(function(response){
-				$scope.meetings = response.DATA;
-				
-		});
-		$http.get("${pageContext.request.contextPath}/call/list").success(function(response){
-			$scope.calls = response.DATA;			
-			
-		});
-		$http.get("${pageContext.request.contextPath}/task/list").success(function(response){
-			$scope.tasks = response.DATA;
-		});
 		
-		$http.get("${pageContext.request.contextPath}/event/list").success(function(response){
-			$scope.events = response.DATA;
-		});
-		$http.get("${pageContext.request.contextPath}/note/list").success(function(response){
-			$scope.notes = response.DATA;
-			
-		});
-		$http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
-			$scope.locations = response.DATA;
-			
-		});
+		$http.get("${pageContext.request.contextPath}/dashboard/startup/"+username).success(function(response){
 		
-		
-		$http({
-		    method: 'POST',
-		    url: '${pageContext.request.contextPath}/lead/list',
-		    headers: {
-		    	'Accept': 'application/json',
-		        'Content-Type': 'application/json'
-		    },
-		    data: {
-		    	"username":"${SESSION}"
-		    }
-		}).success(function(response){
-			$scope.leads = response.DATA;
+			$scope.meetings = response.DASHBOARD.MEETINGS;
+			$scope.calls = response.DASHBOARD.CALLS;
+			$scope.tasks = response.DASHBOARD.TASKS;
+			$scope.events = response.DASHBOARD.EVENTS;
+			$scope.notes = response.DASHBOARD.NOTES;
+			$scope.locations = response.DASHBOARD.LOCATIONS;
+			$scope.meetings = response.DASHBOARD.MEETINGS;
+			$scope.leads = response.DASHBOARD.LEADS;
+			$scope.campaigns = response.DASHBOARD.CAMPAIGNS;
+			$scope.cases = response.DASHBOARD.CASES;
 		});
-		
 		
 	};
 	
@@ -79,9 +55,8 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 
 
 	<section class="content" ng-app="dashApp" ng-controller="dashController">
-		<div class="row" data-ng-init="dashStartup()" style="margin-right: -30px; margin-left: -30px;">
+		<div class="row" data-ng-init="dashStartup()">
 			
-			<div class="col-md-6" style="padding-right: 0px;">
 				<div  class="col-md-12">			
 					<div class="box">
 						<div class="box-header">
@@ -101,12 +76,12 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 										<th>Status</th>
 									</tr>
 									<tr dir-paginate="call in calls |itemsPerPage:5" pagination-id="call_id"  class="ng-cloak">
-										<td>{{call.callId}}</td>
+										<td><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}">{{call.callId}}</a></td>
 										<td>{{call.callSubject}}</td>
-										<td></td>
-										<td>{{call.callStartDate | date:'dd-MM-yyyy h:mma'}}</td>
-										<td>{{call.callDuration}}</td>
-										<td>{{call.callStatusName}}</td>
+										<td><span ng-if=" call.callRelatedToType != '' "><span class="badge bg-red">{{call.callRelatedToType}}</span> <span>[{{call.callRelatedToId}}] {{call.callRelatedTo}}</span></span></td>
+										<td>{{call.callStartDate}}</td>
+										<td>{{call.callDuration}} min</td>
+										<td>{{call.callStatus}}</td>
 										
 									</tr>
 									<tr>
@@ -131,11 +106,7 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 						<div class="box-header">
 							<h3 class="box-title">My Meetings</h3>
 							<div class="box-tools">
-								<dir-pagination-controls
-							       max-size="5"
-							       direction-links="true"
-							       boundary-links="true" >
-							    </dir-pagination-controls>
+								
 							</div>
 						</div>
 						<!-- /.box-header -->
@@ -152,13 +123,13 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 										<th>Status</th>
 									</tr>
 									<tr dir-paginate="meet in meetings |itemsPerPage:5"  pagination-id="meet_id"  class="ng-cloak">
-										<td>{{meet.meetingId}}</td>
+										<td><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a></td>
 										<td>{{meet.meetingSubject}}</td>
-										<td></td>
+										<td><span ng-if=" meet.meetingRelatedToType != '' "><span  class="badge bg-red">{{meet.meetingRelatedToType}}</span> <span>[{{meet.meetingRelatedToId}}] {{meet.relatedRelatedTo}}</span></span></td>
 										<td>{{meet.meetingLocation}}</td>
-										<td>{{meet.meetingStartDate | date:'dd-MM-yyyy'}}</td>
-										<td>{{meet.meetingEndDate | date:'dd-MM-yyyy'}}</td>
-										<td>{{meet.statusName}}</td>
+										<td>{{meet.meetingStartDate}}</td>
+										<td>{{meet.meetingEndDate}}</td>
+										<td>{{meet.meetingStatus}}</td>
 										
 									</tr>
 									<tr>
@@ -192,10 +163,10 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 									<th>Date</th>
 								</tr>
 								<tr dir-paginate="note in notes |itemsPerPage:5"  pagination-id="note_id"  class="ng-cloak">
-									<td>{{note.noteId}}</td>
+									<td><a href="${pageContext.request.contextPath}/view-note/{{note.noteId}}">{{note.noteId}}</a></td>
 									<td>{{note.noteSubject}} </td>
-									<td>{{note.noteRelatedToModuleType | uppercase}}: [{{note.noteRelatedToModuleId}}] {{note.noteRelatedName}}</td>
-									<td>{{note.createDate}}</td>
+									<td><span ng-if=" note.noteRelatedToType != '' "><span  class="badge bg-red">{{note.noteRelatedToType}}</span> <span>[{{note.noteRelatedToId}}] {{note.noteRelatedTo}}</span></span></td>
+									<td>{{note.noteCreatedDate}}</td>
 									
 								</tr>
 								<tr>
@@ -214,48 +185,8 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 					</div>
 					
 				</div>
-				<div  class="col-md-12">			
-					<div class="box">
-						<div class="box-header">
-							<h3 class="box-title">My Leads</h3>
-						</div>
-						<!-- /.box-header -->
-						<div class="box-body no-padding">
-							<table class="table table-striped">
-								<tr>
-									<th>#</th>
-									<th>Name</th>
-									<th>Status</th>
-									<th>Company</th>
-									<th>Email</th>
-									<th>Phone</th>
-								</tr>
-								<tr dir-paginate="lead in leads |itemsPerPage:5"  pagination-id="lead_id"  class="ng-cloak">
-									<td>{{lead.leadID}}</td>
-									<td><a href="${pageContext.request.contextPath}/view-leads/{{lead.leadID}}">{{lead.salutation}} {{lead.firstName}} {{lead.lastName}} </a></td>								
-									<td>{{lead.statusName}}</td>
-									<td>{{lead.accountName}}</td>
-									<td>{{lead.email}} </td>								
-									<td>{{lead.phone}}</td>
-								</tr>
-								<tr>
-									<td colspan="6">
-										<div class="box-tools pull-right">
-											<dir-pagination-controls  pagination-id="lead_id" 
-										       max-size="5"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
 				
-				</div>
-			</div>
-			<div class="col-md-6" style="padding-left: 0px;">
+			
 				<div  class="col-md-12">			
 					<div class="box">
 						<div class="box-header">
@@ -275,13 +206,13 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 									<th>Due Date</th>
 								</tr>
 								<tr dir-paginate="task in tasks |itemsPerPage:5" pagination-id="task_id"  class="ng-cloak">
-									<td>{{task.taskId}}</td>
+									<td><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a></td>
 									<td>{{task.taskSubject}}</td>
-									<td></td>
+									<td><span ng-if=" task.taskRelatedToType != '' "><span  class="badge bg-red">{{task.taskRelatedToType}}</span> <span>[{{task.taskRelatedToId}}] {{task.taskRelatedTo}}</span></span></td>
 									<td>{{task.taskPriority}}</td>
-									<td>{{task.taskStatusName}}</td>
-									<td>{{task.taskStartDate | date:'dd-MM-yyyy h:mma'}}</td>
-									<td>{{task.taskDueDate | date:'dd-MM-yyyy h:mma'}}</td>
+									<td>{{task.taskStatus}}</td>
+									<td>{{task.taskStartDate}}</td>
+									<td>{{task.taskDueDate}}</td>
 								</tr>
 								<tr>
 									<td colspan="7">
@@ -318,13 +249,13 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 									<th>Budget</th>
 								</tr>
 								<tr dir-paginate="event in events |itemsPerPage:5"  pagination-id="event_id"  class="ng-cloak">
-									<td>{{event.evId}}</td>
-									<td>{{event.evName}} </td>
-									<td></td>
+									<td><a href="${pageContext.request.contextPath}/view-event/{{event.eventId}}">{{event.eventId}}</a></td>
+									<td>{{event.eventName}} </td>
+									<td><span ng-if=" event.eventRelatedToType != '' "><span  class="badge bg-red">{{event.eventRelatedToType}}</span> <span>[{{event.eventRelatedToId}}] {{event.eventRelatedTo}}</span></span></td>
 									<td>{{event.loName}}</td>
-									<td>{{event.evStartDate | date:'dd-MM-yyyy h:mma'}}</td>
-									<td>{{event.evEndDate | date:'dd-MM-yyyy h:mma'}}</td>
-									<td>{{event.evBudget | number:2}}</td>	
+									<td>{{event.eventStartDate}}</td>
+									<td>{{event.eventEndDate}}</td>
+									<td>{{event.eventBudget | number:2}}</td>	
 								</tr>
 								<tr>
 									<td colspan="7">
@@ -355,9 +286,9 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 									<th>Date</th>
 								</tr>
 								<tr dir-paginate="location in locations |itemsPerPage:5"  pagination-id="location_id"  class="ng-cloak">
-									<td>{{location.loId}}</td>
-									<td>{{location.loName}} </td>								
-									<td>{{location.loCreateDate}}</td>
+									<td><a href="${pageContext.request.contextPath}/view-location/{{location.locationId}}">{{location.locationId}}</a></td>
+									<td>{{location.locationName}} </td>								
+									<td>{{location.locationCreatedDate}}</td>
 									
 								</tr>
 								<tr>
@@ -384,13 +315,81 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 						<!-- /.box-header -->
 						<div class="box-body no-padding">
 							<table class="table table-striped">
-								
+								<tr>
+									<th>#</th>
+									<th>Name</th>
+									<th>Status</th>
+									<th>Type</th>
+									<th>Budget</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+								</tr>
+								<tr dir-paginate="camp in campaigns |itemsPerPage:5"  pagination-id="camp_id"  class="ng-cloak">
+									<td><a href="${pageContext.request.contextPath}/view-campaign/{{camp.campId}}">{{camp.campId}}</a></td>
+									<td>{{camp.campName}}</td>								
+									<td>{{camp.campType}}</td>
+									<td>{{camp.campStatus}}</td>
+									<td>{{camp.campBudget | number:2}}</td>	
+									<td>{{camp.campStartDate}}</td>							
+									<td>{{camp.campEndDate}}</td>
+									
+								</tr>
+								<tr>
+									<td colspan="6">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="camp_id" 
+										       max-size="5"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>
 							</table>
 						</div>
 					</div>
 				
 				</div>
+				<div  class="col-md-12">			
+					<div class="box">
+						<div class="box-header">
+							<h3 class="box-title">My Leads</h3>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body no-padding">
+							<table class="table table-striped">
+								<tr>
+									<th>#</th>
+									<th>Name</th>
+									<th>Status</th>
+									<th>Company</th>
+									<th>Email</th>
+									<th>Phone</th>
+								</tr>
+								<tr dir-paginate="lead in leads |itemsPerPage:5"  pagination-id="lead_id"  class="ng-cloak">
+									<td><a href="${pageContext.request.contextPath}/view-lead/{{lead.leadId}}">{{lead.leadId}}</a></td>
+									<td>{{lead.leadName}}</td>								
+									<td>{{lead.leadStatus}}</td>
+									<td>{{lead.leadCompany}}</td>
+									<td>{{lead.leadEmail}} </td>								
+									<td>{{lead.leadPhone}}</td>
+								</tr>
+								<tr>
+									<td colspan="6">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="lead_id" 
+										       max-size="5"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
 				
+				</div>
 				<div  class="col-md-12">			
 					<div class="box">
 						<div class="box-header">
@@ -399,7 +398,35 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 						<!-- /.box-header -->
 						<div class="box-body no-padding">
 							<table class="table table-striped">
-								
+								<tr>
+									<th>#</th>
+									<th>Subject</th>
+									<th>Status</th>
+									<th>Priority</th>
+									<th>Type</th>
+									<th>Contact</th>
+									<th>Customer</th>
+								</tr>
+								<tr dir-paginate="case in cases |itemsPerPage:5"  pagination-id="case_id"  class="ng-cloak">
+									<td><a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}">{{case.caseId}}</a></td>
+									<td>{{case.caseSubject}}</td>								
+									<td>{{case.caseStatus}}</td>
+									<td>{{case.casePriority}}</td>
+									<td>{{case.caseType}} </td>	
+									<td><span ng-if=" case.conId !='' ">[{{case.conId}}] {{case.caseContact}}</span></td>							
+									<td><span ng-if=" case.custId !='' ">[{{case.custId}}] {{case.caseCustomer}}</span></td>
+								</tr>
+								<tr>
+									<td colspan="6">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="lead_id" 
+										       max-size="5"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>	
 							</table>
 						</div>
 					</div>

@@ -541,7 +541,7 @@ public class MainController {
 
 	}
 
-	@RequestMapping("/view-leads/{leadId}")
+	@RequestMapping("/view-lead/{leadId}")
 	public String viewLeads(ModelMap model, @PathVariable("leadId") String leadId) {
 
 		model.addAttribute("menu", "viewLeads");

@@ -423,11 +423,15 @@
 var server = "${pageContext.request.contextPath}/";
 var index=0;
 var SalID = "<%=request.getAttribute("saleId") %>";
+
+
 var content = JSON.parse($.ajax({ 
 	url: server+"quote/list-content-by-id/"+SalID,
 	method: "GET",
 	async: false,
 }).responseText);
+
+//dis(content)
 
 var tagItem = "";
 var LItem = content.QUOTE_STARTUP[0].item;
@@ -438,44 +442,47 @@ var LClass = content.QUOTE_STARTUP[0].classCode;
 var tagUom ="";
 var LUom = content.QUOTE_STARTUP[0].uom;
 
+//dis(content) 
+
+
 var LCustomer = content.QUOTE_STARTUP[0].customer;
 var LPriceCode = content.QUOTE_STARTUP[0].priceCode;
 var LEmp = content.QUOTE_STARTUP[0].employee;
 if(content.MESSAGE == "SUCCESS"){
 	if(LItem.length > 0){
 		for(var i=0;i<LItem.length;i++){
-			tagItem += "<option value="+LItem[i].ItemID+">["+LItem[i].ItemID+"] "+LItem[i].ItemName+"</option>";
+			tagItem += "<option value="+LItem[i].ItemID+">["+LItem[i].ItemID+"] "+fmNull(LItem[i].ItemName)+"</option>";
 		}
 	}
 	if(LLocation.length > 0){
 		for(var i=0;i<LLocation.length;i++){
-			tagLocation += "<option value="+LLocation[i].LocationID+">["+LLocation[i].LocationID+"] "+LLocation[i].LocationName+"</option>";
+			tagLocation += "<option value="+LLocation[i].LocationID+">["+LLocation[i].LocationID+"] "+fmNull(LLocation[i].LocationName)+"</option>";
 		}
 	}
 	if(LClass.length > 0){
 		for(var i=0;i<LClass.length;i++){
-			tagClass += "<option value="+LClass[i].ClassID+">["+LClass[i].ClassID+"] "+LClass[i].ClassName+"</option>";
+			tagClass += "<option value="+LClass[i].ClassID+">["+LClass[i].ClassID+"] "+fmNull(LClass[i].ClassName)+"</option>";
 		}
 		$("#classCodeMaster").append(tagClass);
 	}
 	if(LUom.length > 0){
 		for(var i=0;i<LUom.length;i++){
-			tagUom += "<option value="+LUom[i].UomID+">["+LUom[i].UomID+"] "+LUom[i].UomName+"</option>";
+			tagUom += "<option value="+LUom[i].UomID+">["+LUom[i].UomID+"] "+fmNull(LUom[i].UomName)+"</option>";
 		}
 	}
 	if(LCustomer.length > 0){
 		for(var i=0;i<LCustomer.length;i++){
-			 $("#customer").append("<option value="+i+">["+LCustomer[i].custID+"] "+LCustomer[i].custName+"</option>");
+			 $("#customer").append("<option value="+i+">["+LCustomer[i].custID+"] "+fmNull(LCustomer[i].custName)+"</option>");
 		}
 	}
 	if(LPriceCode.length > 0){
 		for(var i=0;i<LPriceCode.length;i++){
-			$("#priceCode").append("<option value='"+LPriceCode[i].PriceCode+"' > ["+LPriceCode[i].PriceCode+"] "+LPriceCode[i].Description+"</option>");
+			$("#priceCode").append("<option value='"+LPriceCode[i].PriceCode+"' > ["+LPriceCode[i].PriceCode+"] "+fmNull(LPriceCode[i].Description)+"</option>");
 		}
 	}
 	if(LEmp.length > 0){
 		for(var i=0;i<LEmp.length;i++){
-			 $("#employee").append("<option value="+LEmp[i].EmpID+">["+LEmp[i].EmpID+"] "+LEmp[i].EmpName+"</option>");
+			 $("#employee").append("<option value="+LEmp[i].EmpID+">["+LEmp[i].EmpID+"] "+fmNull(LEmp[i].EmpName)+"</option>");
 		}
 	}
 	
@@ -520,8 +527,6 @@ function addAnItem(){
 function listDataSalOrdByID(data){
 	if(data != ""){
 		
-		//alert(data.custId)
-		
 		setValueById('entryNo', data.saleId);
 		$("#customer").select2('val',findIndexCutomer(data.custId));
 		$("#employee").select2('val',data.empId);
@@ -534,7 +539,7 @@ function listDataSalOrdByID(data){
 		
 		setValueById('reference', data.saleReference);
 		setValueById('remark', data.remark);
-							
+						
 		$("#shipToAdd").select2('val',data.shipTo);
 		
 		$("#listItem").empty();
@@ -589,15 +594,18 @@ function listDataSalOrdByID(data){
 	
 } 
 
-function findIndexCutomer(custId){
-	var l = LCustomer.length;
-	if(l > 0){
-		for(var i=0;i<l;i++){
-			if(LCustomer[i].custID == content.DATA.custId){
-				return i;
+function findIndexCutomer(custId){		
+	if(LCustomer != null){
+		var l = LCustomer.length;
+		if(l > 0){
+			for(var i=0;i<l;i++){
+				if(LCustomer[i].custID == content.DATA.custId){
+					return i;
+				}
 			}
 		}
 	}
+	
 	return '';
 }
 

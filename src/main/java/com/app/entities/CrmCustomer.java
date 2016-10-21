@@ -2,6 +2,8 @@ package com.app.entities;
 
 import java.util.List;
 
+
+
 public class CrmCustomer {
 
 	private String custID;
@@ -26,6 +28,24 @@ public class CrmCustomer {
 	private List<CrmContact> contacts;
 	private List<CrmOpportunity> opportunities;
 	private List<CrmCustomerDetails> custDetails;
+	private List<CrmShipAddress> shipAddresses;
+	private String aId;
+	
+	public String getaId() {
+		return aId;
+	}
+
+	public void setaId(String aId) {
+		this.aId = aId;
+	}
+
+	public List<CrmShipAddress> getShipAddresses() {
+		return shipAddresses;
+	}
+
+	public void setShipAddresses(List<CrmShipAddress> shipAddresses) {
+		this.shipAddresses = shipAddresses;
+	}
 
 	public int getApproval() {
 		return approval;

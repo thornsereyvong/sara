@@ -30,7 +30,7 @@ $(document).ready(function(){
 	<!-- sidebar: style can be found in sidebar.less -->
 	<section class="sidebar">
 		<!-- Sidebar user panel -->
-		<div class="user-panel">
+		<%-- <div class="user-panel">
 			<div class="pull-left image">
 				<img
 					src="${pageContext.request.contextPath}/resources/images/user-icon-512.png"
@@ -42,7 +42,7 @@ $(document).ready(function(){
 				</p>
 
 			</div>
-		</div>
+		</div> --%>
 
 		<ul class="sidebar-menu">
 			<li id="dashboard"><a href="${pageContext.request.contextPath}/"><img
@@ -228,6 +228,11 @@ $(document).ready(function(){
 						href="${pageContext.request.contextPath}/user-management"> <i
 							class='fa fa-circle-o' aria-hidden='true' id="admin_icon_userMa"></i>
 							<span>User Management</span>
+					</a></li>
+					<li id="ul_li_empMa"><a
+						href="${pageContext.request.contextPath}/employees"> <i
+							class='fa fa-circle-o' aria-hidden='true' id="admin_icon_empMa"></i>
+							<span>Employees</span>
 					</a></li>
 				</ul></li>
 			<%
