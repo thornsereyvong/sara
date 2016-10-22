@@ -11,9 +11,9 @@ var self = this;
 app.controller('quoteController',['$scope','$http',function($scope, $http){
 	$scope.listQuote = function(){
 		$http.get("${pageContext.request.contextPath}/quote/list-all-quote").success(function(response){			
-			$scope.quotation = response.DATA;
-			});
-		} ;
+			$scope.quotation = response.DATA;			
+		});
+	} ;
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -142,8 +142,8 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 							<th style="cursor: pointer;" ng-click="sort('empName')">Employee
 								<span class="glyphicon sort-icon" ng-show="sortKey=='empName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('totalAmt')">Total Amount
-								<span class="glyphicon sort-icon" ng-show="sortKey=='totalAmt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							<th style="cursor: pointer;" ng-click="sort('netTotalAmt')">Total Amount
+								<span class="glyphicon sort-icon" ng-show="sortKey=='netTotalAmt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 							
 							<th style="cursor: pointer;" ng-click="sort('PostStatus')">Status
@@ -159,7 +159,7 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 							<td>{{qq.saleDate | date:'dd-MMM-yyyy'}}</td>
 							<td>[{{qq.custId}}] {{qq.custName}}</td>
 							<td>[{{qq.empId}}] {{qq.empName}}</td>
-							<td class="dis-number">{{qq.totalAmt | number:2}}</td>	
+							<td class="dis-number">{{qq.netTotalAmt | number:2}}</td>	
 							<td>{{qq.PostStatus}}</td>	
 							<td>								
 								<div class="col-sm-2">
@@ -197,6 +197,9 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 			<!-- /.box-body -->
 			<div class="box-footer"></div>
 			<!-- /.box-footer-->
+			
+			<div id="errors"></div>
+			
 		</div>
 	</section>
 	<!-- /.content -->

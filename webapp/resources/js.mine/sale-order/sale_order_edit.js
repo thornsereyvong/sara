@@ -33,8 +33,11 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 
 function listDataSalOrdFromQuote(data){
 	if(data != ""){
+		
+		
+		
 		//setValueById('entryNo', data.saleId);
-		$("#customer").select2('val',data.custId);
+		$("#customer").select2('val',findIndexCutomer(data.custId));
 		$("#employee").select2('val',data.empId);
 		$("#priceCode").select2('val',data.priceCode);
 		$("#classCodeMaster").select2('val',data.classId);
@@ -200,8 +203,20 @@ var stDolOnChangeAct = 0;
 
 // START READY
 $(function(){
-	$('#orderDate').datepicker(); $('#orderDate').val(moment().format('D-MMM-YYYY'));
-	$('#duedate').datepicker(); $('#duedate').val(moment().format('D-MMM-YYYY'));  
+	$('#orderDate').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD-MMM-YYYY'
+    });
+	$('#duedate').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD-MMM-YYYY'
+    });
+	
+	$('#orderDate').val(moment().format('D-MMM-YYYY'));
+	$('#duedate').val(moment().format('D-MMM-YYYY'));  
+	
 	$('#shipToAdd').select2();
 	
 	$("#listItem").sortable();
@@ -249,26 +264,14 @@ $(function(){
 	$("#customer").change(function (){
 		var customer = $.trim($("#customer").val());
 		if(customer != ""){
-			$("#customer").next().children().children().attr('style','border: 1px solid #d2d6de;');
-			addShipToAdd(LCustomer[customer].custDetails);
-			$("#priceCode").select2('val',LCustomer[customer].priceCode.priceCode);
+			$("#customer").next().children().children().attr('style','border: 1px solid #d2d6de;');	
+			$("#priceCode").select2('val',LCustomer[customer].priceCode.priceCode);		
+			addShipToAdd(LCustomer[customer].shipAddresses);
+			$("#shipToAdd").select2('val',LCustomer[customer].aId);
 			if(LCustomer[customer].priceCode.priceCode != ''){
 				$("#priceCode").next().children().children().attr('style','border: 1px solid #d2d6de;');
 			}
-					
-			var orDate = $('#orderDate').val();
-			
-			TermNetDueIn = toNum(LCustomer[customer].termNetDueIn);
-			if(orDate!=""){
-				$('#duedate').val(addDays(TermNetDueIn,orDate));
-			}else{
-				$('#orderDate').val(moment().format('D-MMM-YYYY'));
-				$('#duedate').val(addDays(TermNetDueIn,moment().format('D-MMM-YYYY')));		
-			}	
-			
-			duedateOld = $('#duedate').val();
-			
-		}else{			
+		}else{
 			$("#customer").next().children().children().attr('style','border: 1px solid #dd4b39;');
 			$("#priceCode").select2('val','');
 			addShipToAdd([]);	
@@ -823,10 +826,14 @@ function removeRowItem(RowID){
 function addShipToAdd(data){
 	$('#shipToAdd').empty();
 	$('#shipToAdd').append("<option></option>");
-	for(i=0;i<data.length;i++){
-		if(data[i].AID !='')
-			$('#shipToAdd').append("<option value='"+data[i].aId+"'>"+data[i].address+"</option>");
-	}
+	
+	if(data != null){
+		for(i=0;i<data.length;i++){
+			if(data[i].shipId !='')
+				$('#shipToAdd').append("<option value='"+data[i].shipId+"'>["+data[i].shipId+"] "+data[i].shipName.trunc(100)+"</option>");
+		}
+	}	
+	
 	$('#shipToAdd').select2();
 }
 
@@ -1105,59 +1112,53 @@ function saleOrder(){
 			totalVTax : totalVTax,
 			saleOrderDetails: detail
 		};
-	swal({
-        title: "Sale Order",
-        text: "Submit to run edit sale order.",
-        type: "info",   
-        showCancelButton: true,   
-        closeOnConfirm: false,   
-        showLoaderOnConfirm: true,
-    }, 
-    function(){
-    	$.ajax({ 
-    		url: server+"sale-order/edit-sale-order",
-    		method: "POST",
-    		async: false,
-    		data: JSON.stringify(master),
-    		beforeSend: function(xhr) {
-    		    xhr.setRequestHeader("Accept", "application/json");
-    		    xhr.setRequestHeader("Content-Type", "application/json");
-    	    }, 
-    	    success: function(result){
-    	    	if(result.MESSAGE == "UPDATED"){
-    				swal({   
-    					title: "Successful!",   
-    					text: "The sale order with record id: '"+entryNo+"'  was successfully saved!",   
-    					type: "success",   
-    					showCancelButton: true,   
-    					confirmButtonColor: "#8cd4f5",   
-    					confirmButtonText: "Ok",   
-    					cancelButtonText: "",   
-    					closeOnConfirm: false,   
-    					closeOnCancel: false ,
-    					showCancelButton: false
-    				}, function(isConfirm){   
-    					if (isConfirm) {     
-    						location.reload();  
-    					} else {     
-    						location.reload();
-    					}
-    				});
-    			}else{
-    				swal("Unsuccessful!", result.MESSAGE, "error");
-    			}
-    	    	
-    		},
-    		error: function(){
-    			swal("Unsuccessful!", "Please try again!", "error");
-    		}
-    	    
-    	});
-    	
-    });
 	
 	
-
+	swal({   
+		title: "<span style='font-size: 25px;'>You are about to save a sale order with id: <span style='color:#F8BB86'>"+entryNo+"</span> .</span>",   
+		text: "Click OK to continue or CANCEL to abort.",   
+		type: "info", 
+		html: true,
+		showCancelButton: true,   
+		closeOnConfirm: false,   
+		showLoaderOnConfirm: true, 
+		
+	}, function(){   
+		setTimeout(function(){			
+			$.ajax({ 
+				url: server+"sale-order/edit-sale-order",
+	    		method: "POST",
+	    		async: false,
+	    		data: JSON.stringify(master),
+	    		beforeSend: function(xhr) {
+	    		    xhr.setRequestHeader("Accept", "application/json");
+	    		    xhr.setRequestHeader("Content-Type", "application/json");
+	    	    }, 
+	    	    success: function(result){	  
+	    			if(result.MESSAGE == "UPDATED"){	    				
+	    				swal({
+	    					title:"Successful!",
+	    					text: "The sale order with id: '"+entryNo+"'  was successfully saved!", 
+	    					type:"success",  
+	    					timer: 2000,   
+	    					showConfirmButton: false
+	    				});
+	    				  
+	    				setTimeout(function(){		
+	    					//location.reload(); 
+	    				},2000);
+	    			}else{
+	    				swal("Unsuccessful!", result.MESSAGE, "error");
+	    			}
+	    		},
+	    		error:function(){
+	    			swal("Unsuccessful!", "Please try again!", "error");
+	    		}
+	    	    
+	    	});   
+		}, 500);
+	});	
+	
 }
 
 function cancel(){

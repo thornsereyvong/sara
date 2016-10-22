@@ -946,16 +946,17 @@ function saleOrder(){
 			quoteDetails: detail
 		};
 	
-	swal({
-        title: "Quotation",
-        text: "Submit to run add quotation.",
-        type: "info",   
-        showCancelButton: true,   
-        closeOnConfirm: false,   
-        showLoaderOnConfirm: true,
-    }, 
-    function(){
-		 $.ajax({ 
+	swal({   
+		title: "<span style='font-size: 25px;'>You are about to save a quotation.</span>",
+		text: "Click OK to continue or CANCEL to abort.",
+		type: "info",
+		html: true,
+		showCancelButton: true,
+		closeOnConfirm: false,
+		showLoaderOnConfirm: true,		
+	}, function(){ 
+		setTimeout(function(){
+			 $.ajax({ 
 				url: server+"quote/insert-quote",
 				method: "POST",
 				async: false,
@@ -965,42 +966,31 @@ function saleOrder(){
 				    xhr.setRequestHeader("Content-Type", "application/json");
 			    }, 
 			    success: function(result){
-					if(result.MESSAGE == "INSERTED"){
-						swal({   
-							title: "Successful!",   
-							text: "The quotation with id: '"+result.quoteId+"'  was successfully saved!",   
-							type: "success",   
-							showCancelButton: true,   
-							confirmButtonColor: "#8cd4f5",   
-							confirmButtonText: "Ok",   
-							cancelButtonText: "",   
-							closeOnConfirm: false,   
-							closeOnCancel: false ,
-							showCancelButton: false
-						}, function(isConfirm){   
-							if (isConfirm) {     
-								location.reload();  
-							} else {     
-								location.reload();
-							}
-						});
-						
-						
+					if(result.MESSAGE == "INSERTED"){						
+						swal({
+	    					title:"Successful!",
+	    					text: "The quotation with record id: <span style='color:#F8BB86'>'"+result.quoteId+"'</span>  was successfully saved!", 
+	    					type:"success", 
+	    					html: true,
+	    					timer: 2000,   
+	    					showConfirmButton: false
+	    				});
+	    				  
+	    				setTimeout(function(){		
+	    					location.reload(); 
+	    				},2000);
+																													
 					}else{
 						swal("Unsuccessful!", result.MESSAGE, "error");
 					}
 				},
 	    		error:function(){
 	    			swal("Unsuccessful!", "Please try again!", "error");
-	    		}
-			    
+	    		} 
 			});
-    	
-    });
+		}, 500);
+	});
 	
-	
-	
-
 }
 
 function cancel(){

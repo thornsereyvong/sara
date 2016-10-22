@@ -186,8 +186,8 @@ app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 							<th style="cursor: pointer;" ng-click="sort('empName')">Employee
 								<span class="glyphicon sort-icon" ng-show="sortKey=='empName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('totalAmt')">Total Amount
-								<span class="glyphicon sort-icon" ng-show="sortKey=='totalAmt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							<th style="cursor: pointer;" ng-click="sort('netTotalAmt')">Total Amount
+								<span class="glyphicon sort-icon" ng-show="sortKey=='netTotalAmt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 							
 							<th style="cursor: pointer;" ng-click="sort('PostStatus')">Status
@@ -203,7 +203,7 @@ app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 							<td>{{qq.saleDate | date:'dd-MM-yyyy'}}</td>							
 							<td>[{{qq.custId}}] {{qq.custName}}</td>
 							<td>[{{qq.empId}}] {{qq.empName}}</td>
-							<td class="dis-number">{{qq.totalAmt | number:2}}</td>	
+							<td class="dis-number">{{qq.netTotalAmt | number:2}}</td>	
 							<td>{{qq.PostStatus}}</td>	
 							<td>
 								

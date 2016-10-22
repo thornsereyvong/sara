@@ -599,7 +599,7 @@ function findIndexCutomer(custId){
 		var l = LCustomer.length;
 		if(l > 0){
 			for(var i=0;i<l;i++){
-				if(LCustomer[i].custID == content.DATA.custId){
+				if(LCustomer[i].custID == custId){
 					return i;
 				}
 			}
