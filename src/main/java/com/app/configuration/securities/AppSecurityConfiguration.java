@@ -27,7 +27,7 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/layout/**", "/login").permitAll();
+		http.authorizeRequests().antMatchers("/layout/**", "/login", "/config/**", "/database/**").permitAll();
 		http.authorizeRequests().anyRequest().hasAnyAuthority("")
 		.and()
 		.formLogin().loginPage("/login").loginProcessingUrl("/login")

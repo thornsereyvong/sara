@@ -16,7 +16,7 @@
 <script type="text/javascript">
 var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
 var self = this;
-app.controller('campController',['$scope','$http',function($scope, $http){
+app.controller('campController',['$scope','$http',function($scope, $http){	
 	$scope.listContact = function(){
 		$http.get("${pageContext.request.contextPath}/call/list").success(function(response){
 				$scope.contact = response.DATA;
