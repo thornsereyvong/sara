@@ -1444,12 +1444,12 @@ public class MainController {
 	
 	@RequestMapping("/create-employee")
 	public String createEmpoyee(ModelMap model) {
-		model.addAttribute("menu", "createCustomer");
+		model.addAttribute("menu", "createEmployee");
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
 
 		if (camMap.get("roleAccess").equals("YES")) {
-			return "createCustomer";
+			return "employee";
 		} else {
 			return "permission";
 		}
@@ -1458,14 +1458,14 @@ public class MainController {
 
 	@RequestMapping("/update-employee/{custID}")
 	public String updateEmpoyee(ModelMap model, @PathVariable String custID) {
-		model.addAttribute("menu", "updateCustomer");
+		model.addAttribute("menu", "updateEmployee");
 		model.addAttribute("custId", custID);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
 				
-				return "updateCustomer";
+				return "employeeEdit";
 			}else{
 				return "permission";
 			}
