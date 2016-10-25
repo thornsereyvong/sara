@@ -176,7 +176,7 @@ public class CrmOpportunityController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/opportunity/add",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addOpportunity(@RequestBody CrmOpportunity opp){
-		System.err.println(opp.getPriceCode().getPriceCode());
+		System.err.println(opp.getCustomer().getCustID());
 		HttpEntity<Object> request = new HttpEntity<Object>(opp,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());

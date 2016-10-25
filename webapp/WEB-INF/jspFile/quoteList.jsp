@@ -153,7 +153,7 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 							<th>Action</th>
 						</tr>
 
-						<tr dir-paginate="qq in quotation |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
+						<tr dir-paginate="qq in quotation |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 							<td>{{qq.saleId}}</td>
 							<td>{{qq.saleReference}}</td>
 							<td>{{qq.saleDate | date:'dd-MMM-yyyy'}}</td>

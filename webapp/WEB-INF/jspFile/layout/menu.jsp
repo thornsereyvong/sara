@@ -194,7 +194,7 @@ $(document).ready(function(){
 								</a>
 								<ul class="treeview-menu">
 									<li>
-										<a href="#"><i class="fa fa-circle-o"></i> Lead Converted</a>
+										<a href="#"><i class="fa fa-circle-o"></i>Exec Lead</a>
 									</li>
 									
 								</ul>
