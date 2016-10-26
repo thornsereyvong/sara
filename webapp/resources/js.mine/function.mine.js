@@ -193,12 +193,12 @@ function addDays(day,date){
 
 function getDateByFormat(ID){
 	var date  = $.trim($("#"+ID).val());
-	if(date=="") return null;
+	if(date==""  || date == null || date == 'undefined') return null;
 	date = date.split('/');
 	return date[2]+"-"+date[1]+"-"+date[0];
 }
 function conDateSqlToNormal(date, strCon){
-	if(date == "") return "";
+	if(date == "" || date == null || date == 'undefined') return "";
 	date = date.split('-');
 	return date[2]+""+strCon+""+date[1]+""+strCon+""+date[0];
 }

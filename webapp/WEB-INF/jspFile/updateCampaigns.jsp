@@ -322,7 +322,7 @@
 						success : function(data) {
 							if(data.MESSAGE == "UPDATED"){
 								swal({
-				            		title:"Successfully",
+				            		title:"Successful",
 				            		text:"You have been updated this campaign!",
 				            		type:"success",  
 				            		timer: 2000,   
@@ -353,7 +353,7 @@
 						<i class="fa fa-save"></i> Save
 					</button>
 					<a class="btn btn-info btn-app" id="btn_clear"> <i
-						class="fa fa-refresh" aria-hidden="true"></i>Clear
+						class="fa fa-refresh" aria-hidden="true"></i>Reload
 					</a> <a class="btn btn-info btn-app"
 						href="${pageContext.request.contextPath}/list-campaigns"> <i
 						class="fa fa-reply"></i> Back

@@ -307,7 +307,7 @@ $(document).ready(function() {
 					
 				if(data.MESSAGE == "UPDATED"){
 					swal({
-	            		title:"Success",
+	            		title:"Successful",
 	            		text:"You have been updated lead!",
 	            		type:"success",  
 	            		timer: 2000,   
@@ -351,7 +351,7 @@ padding-right: 10px;
 			<form method="post" id="form-leads" data-ng-init = "addLeadOnStartup()">
 				
 				<a class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</a> 
-				<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Refresh</a> 
+				<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
 				<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-leads"> <i class="fa fa-reply"></i> Back </a>
 
 				<div class="clearfix"></div>

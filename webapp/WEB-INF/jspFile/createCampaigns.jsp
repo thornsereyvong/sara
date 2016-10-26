@@ -68,6 +68,10 @@
 			
 			
 		$("#btn_clear").click(function() {
+			$("#cam_parent").select2('val',"");
+			$("#cam_type").select2('val',"");
+			$("#cam_status").select2('val',"");
+			$("#cam_assignTo").select2('val',"");
 			$("#form-campaigns").bootstrapValidator('resetForm', 'true');
 		});
 		$("#btn_save").click(function() {

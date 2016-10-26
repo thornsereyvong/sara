@@ -20,7 +20,7 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
 	
-	$scope.deleteQuote = function(quoteId){ alert(quoteId)
+	$scope.deleteQuote = function(quoteId){ 
 		swal({
             title: "", //Bold text
             text: "Are you sure you want to delete the quotation: "+quoteId+" from the system?", //light text
