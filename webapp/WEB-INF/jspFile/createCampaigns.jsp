@@ -14,8 +14,8 @@
   <section class="content-header">
     <h1>Create Campaign</h1>
     <ol class="breadcrumb">
-    <li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
-    <li class="active"><a href="#">Create Campaign</a></li>
+    	<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
+    	<li class="active"><a href="#">Create Campaign</a></li>
     </ol>
   </section>
   <script type="text/javascript">
@@ -68,6 +68,10 @@
 			
 			
 		$("#btn_clear").click(function() {
+			$("#cam_parent").select2('val',"");
+			$("#cam_type").select2('val',"");
+			$("#cam_status").select2('val',"");
+			$("#cam_assignTo").select2('val',"");
 			$("#form-campaigns").bootstrapValidator('resetForm', 'true');
 		});
 		$("#btn_save").click(function() {
@@ -217,7 +221,7 @@
 						   "createdBy" : username
 			};
 			
-			dis(dataFrm)
+		
 			$.ajax({url : "${pageContext.request.contextPath}/campaign/add",
 				type : "POST",
 				data : JSON.stringify(dataFrm),
@@ -404,19 +408,8 @@
         </form>
       </div>
       <div id="errors"></div>
-      <!-- /.box-body -->
       <div class="box-footer"></div>
-      <!-- /.box-footer--> 
     </div>
-    
-    <!-- /.box --> 
-    
   </section>
-  <!-- /.content --> 
-  
 </div>
-
-<!-- /.content-wrapper --> 
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>

@@ -182,6 +182,7 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {	
+		//alert(getJsonById("custID","op_customer","str").custID);
 		$.ajax({
 			url : "${pageContext.request.contextPath}/opportunity/add",
 			type : "POST",

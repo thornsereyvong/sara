@@ -1416,7 +1416,7 @@ public class MainController {
 	public String updateCustomer(ModelMap model, @PathVariable String custID) {
 		model.addAttribute("menu", "updateCustomer");
 		model.addAttribute("custId", custID);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CRM_ADMIN");
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
@@ -1433,6 +1433,58 @@ public class MainController {
 
 	/* close customer */
 
+	
+	
+	
+	@RequestMapping("/list-employee")
+	public String listEmpoyee(ModelMap model) {
+		model.addAttribute("menu", "ListEmployee");		
+		return "emloyeeList";
+	}
+	
+	@RequestMapping("/create-employee")
+	public String createEmpoyee(ModelMap model) {
+		model.addAttribute("menu", "createEmployee");
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
+
+		if (camMap.get("roleAccess").equals("YES")) {
+			return "employee";
+		} else {
+			return "permission";
+		}
+
+	}
+
+	@RequestMapping("/update-employee/{custID}")
+	public String updateEmpoyee(ModelMap model, @PathVariable String custID) {
+		model.addAttribute("menu", "updateEmployee");
+		model.addAttribute("custId", custID);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
+
+		if (camMap.get("roleAccess").equals("YES")) {
+			if (camMap.get("roleEdit").equals("YES")) {
+				
+				return "employeeEdit";
+			}else{
+				return "permission";
+			}
+		}else{
+			return "permission";
+		}
+		
+	}
+
+	/* close employee */
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/* Other */
 
 	/* File Layout */

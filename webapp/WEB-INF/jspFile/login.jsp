@@ -33,7 +33,9 @@
 					<select class="form-control" name="company" id="company"
 						data-ng-init="listSystemDatabase()">
 						<option value="">-- Select Company --</option>
-						<option ng-repeat="db in database" value="{{db.DBName}}">{{db.ComName}}</option>
+						<option value="BMG Corporation Co., Ltd. (New)">BMG Corporation Co., Ltd. (New)</option>
+						
+						<!-- <option ng-repeat="db in database" value="{{db.DBName}}">{{db.ComName}}</option> -->
 					</select>
 				</div>
 				<div class="row">
@@ -146,13 +148,13 @@
 							}
 						}
 					},
-				/* company: {
-					validators: {
-						notEmpty: {
-							message: 'The company is required and can not be empty!'
+					company: {
+						validators: {
+							notEmpty: {
+								message: 'The company is required and can not be empty!'
+							}
 						}
 					}
-				} */
 				}
 			});
 

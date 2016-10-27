@@ -58,6 +58,13 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 $(document).ready(function() {
 	$(".select2").select2();
 	$("#btn_clear").click(function(){
+		
+		$("#lea_ca").select2('val',"");
+		$("#lea_status").select2('val',"");
+		$("#lea_source").select2('val',"");
+		$("#lea_industry").select2('val',"");
+		$("#lea_assignTo").select2('val',"");
+		
 		$("#form-leads").bootstrapValidator('resetForm', 'true');
 		$('#form-leads')[0].reset();
 	});
@@ -285,7 +292,7 @@ $(document).ready(function() {
 			success:function(data){					
 				if(data.MESSAGE == "INSERTED"){
 					swal({
-	            		title:"Success",
+	            		title:"Successful",
 	            		text:"You have been created a new lead!",
 	            		type:"success",  
 	            		timer: 2000,   
