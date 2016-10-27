@@ -80,11 +80,10 @@
 		<!-- Close hidden xs -->
 	</div>
 	<script>
-		function configdb(dbName) {
+		function configdb() {
 			$.ajax({
-				url : "${pageContext.request.contextPath}/config/"+dbName,
+				url : "${pageContext.request.contextPath}/config/",
 				type : "POST",
-				data : JSON.stringify({}),
 				beforeSend : function(xhr) {
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
@@ -124,10 +123,6 @@
 		$(document).ready(function() {
 
 			getUrlError();
-
-			$("#company").change(function() {
-				configdb($("#company").val());
-			});
 
 			$('#form-login').bootstrapValidator({
 				message : 'This value is not valid',

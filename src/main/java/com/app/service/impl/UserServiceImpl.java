@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmUser;
+import com.app.entities.MeDataSource;
 import com.app.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -31,13 +32,17 @@ public class UserServiceImpl implements UserService{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public CrmUser findUserByUsername(String username) {
-		
 		try{
-		
 			RestTemplate restTemplate = new RestTemplate();
 			CrmUser user = new CrmUser();
-			
 			user.setUsername(username);
+			MeDataSource dataSource = new MeDataSource();
+			dataSource.setIp("192.168.0.2");
+			dataSource.setDb("balancika_crm");
+			dataSource.setPort("3306");
+			dataSource.setUn("posadmin");
+			dataSource.setPw("Pa$$w0rd");
+			user.setDataSource(dataSource);
 			HttpEntity<Object> request = new HttpEntity<Object>(user,header);
 			/* Call from Web Service with URL+"/api/user/login/web" */
 	        ResponseEntity<Map> response = restTemplate.exchange(URL+"/api/user/login/web", HttpMethod.POST , request , Map.class);
@@ -52,7 +57,7 @@ public class UserServiceImpl implements UserService{
 	             return userResult;
 	        }
 		}catch(Exception e){
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		return null;
 	}

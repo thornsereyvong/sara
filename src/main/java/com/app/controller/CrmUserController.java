@@ -9,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmUser;
+import com.app.entities.MeDataSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
@@ -149,13 +151,18 @@ public class CrmUserController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/user/login/{username}/{password}",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> loginUser(@PathVariable("username") String username, @PathVariable("password") String password){
-		
-		HttpEntity<String> request = new HttpEntity<String>(header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/login/web/"+username+"/"+password, HttpMethod.POST, request, Map.class);
-		
+	@RequestMapping(value="/user/login",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> loginUser(@ModelAttribute CrmUser user){
+		System.out.println(user.getUsername());
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setIp("192.168.0.2");
+		dataSource.setDb("balancika_crm");
+		dataSource.setPort("3306");
+		dataSource.setPw("Pa$$w0rd");
+		dataSource.setUn("posadmin");
+		user.setDataSource(dataSource);
+		HttpEntity<Object> request = new HttpEntity<Object>(user, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/login/web/", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}

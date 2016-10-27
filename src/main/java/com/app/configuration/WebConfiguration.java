@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.app.entities.CrmDatabaseConfiguration;
 import com.app.entities.RestTemplateErrorHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,17 +36,13 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	public HttpHeaders headsers(){
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Basic V0VCQVBJOldFQkFQSQ==");
-		headers.add("dbIP", "192.168.0.2");
-		headers.add("dbPort", "3306");
-		headers.add("dbName", "systemdatabase");
-		headers.add("dbUsername", "posadmin");
-		headers.add("dbPassword", "Pa$$w0rd");
 		return headers; 
 	}
 	
 	
 	@Bean
 	public String URL(){
+		//String  url = "http://192.168.0.111:8080/api/";
 		String  url = "http://localhost:8080/BalancikaCRM/";
 		//String  url = "http://balancikaapi.balancikaapps.com/";
 		//String  url = "http://api.balancikaapps.com/";
@@ -66,8 +61,4 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		return restTemplate;
 	}
 	
-	@Bean
-	public CrmDatabaseConfiguration config(){
-		return new CrmDatabaseConfiguration();
-	}
 }

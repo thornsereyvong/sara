@@ -1,6 +1,5 @@
 package com.app.entities;
 
-
 public class CrmUser{
 
 
@@ -25,7 +24,7 @@ public class CrmUser{
 
 	private CrmRole role;
 	
-	
+	private MeDataSource dataSource;
 
 	public CrmUser(){
 		
@@ -93,10 +92,12 @@ public class CrmUser{
 	public void setParentID(String parentID) {
 		this.parentID = parentID;
 	}
-	/*public List<CrmDatabaseConfiguration> getDatabase() {
-		return database;
+
+	public MeDataSource getDataSource() {
+		return dataSource;
 	}
-	public void setDatabase(List<CrmDatabaseConfiguration> database) {
-		this.database = database;
-	}*/
+
+	public void setDataSource(MeDataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 }

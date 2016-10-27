@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.app.entities.MeDataSource;
+
 
 @RestController
 @RequestMapping("/")
-public class CrmDatabaseConfigurationController {
+public class CompanyController {
 
 	RestTemplate  restTemplate = new RestTemplate();
 	
@@ -28,7 +30,13 @@ public class CrmDatabaseConfigurationController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/config", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> getDatabaseName(){
-		HttpEntity<Object> request = new HttpEntity<Object>(header);
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb("systemdatabase");
+		dataSource.setIp("192.168.0.2");
+		dataSource.setPort("3306");
+		dataSource.setUn("posadmin");
+		dataSource.setPw("Pa$$w0rd");
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/config/database/", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
@@ -36,7 +44,13 @@ public class CrmDatabaseConfigurationController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/database", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> listDatabases(){
-		HttpEntity<Object> request = new HttpEntity<Object>(header);
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb("systemdatabase");
+		dataSource.setIp("192.168.0.2");
+		dataSource.setPort("3306");
+		dataSource.setUn("posadmin");
+		dataSource.setPw("Pa$$w0rd");
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/config/database/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
