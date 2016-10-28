@@ -33,7 +33,7 @@
 					<select class="form-control" name="company" id="company"
 						data-ng-init="listSystemDatabase()">
 						<option value="">-- Select Company --</option>
-						<option value="BMG Corporation Co., Ltd. (New)">BMG Corporation Co., Ltd. (New)</option>
+						<option ng-repeat= "db in database" value="{{db.DBName}}">{{db.ComName}}</option>
 						
 						<!-- <option ng-repeat="db in database" value="{{db.DBName}}">{{db.ComName}}</option> -->
 					</select>
