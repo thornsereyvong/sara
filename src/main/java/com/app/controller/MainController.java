@@ -1497,14 +1497,9 @@ public class MainController {
 
 	@RequestMapping("header")
 	public String header(ModelMap model, HttpSession session, HttpServletRequest request) {
-		
-	
-			session.setAttribute("SESSION", getPrincipal());
-			session.setAttribute("users", userController.getUserById(getPrincipal()));
-			return "layout/header";
-	
-		
-		
+		session.setAttribute("SESSION", getPrincipal());
+		//session.setAttribute("users", userController.getUserById(getPrincipal()));
+		return "layout/header";
 	}
 
 	@RequestMapping("menu")

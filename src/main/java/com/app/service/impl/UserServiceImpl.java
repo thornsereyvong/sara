@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public CrmUser findUserByUsername(String username) {
 		try{
+			System.out.println("CALL");
 			RestTemplate restTemplate = new RestTemplate();
 			CrmUser user = new CrmUser();
 			user.setUsername(username);
@@ -47,13 +48,11 @@ public class UserServiceImpl implements UserService{
 			/* Call from Web Service with URL+"/api/user/login/web" */
 	        ResponseEntity<Map> response = restTemplate.exchange(URL+"/api/user/login/web", HttpMethod.POST , request , Map.class);
 	        Map<String, Object> map = (HashMap<String, Object>)response.getBody();
-        
 	        if(map.get("DATA") != null){
 	        	 ObjectMapper mapper = new ObjectMapper();
 	             String  json =  mapper.writeValueAsString(map.get("DATA")); // Convert from HashMap to JSON String object
 	             Gson converter = new Gson();
 	             CrmUser userResult = converter.fromJson(json, CrmUser.class); // Convert JSON to CrmUser Object
-	            
 	             return userResult;
 	        }
 		}catch(Exception e){

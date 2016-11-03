@@ -1,14 +1,10 @@
 package com.app.entities;
 
-
 import java.util.Date;
 import java.util.List;
 
-
-
 public class CrmRole {
-
-
+	
 	private String roleId;
 	private String roleName;
 	private String description;
@@ -18,7 +14,7 @@ public class CrmRole {
 	private String modifyBy;
 	private Date modifyDate;
 	private int roleStatus;
-	 
+
 	public String getRoleId() {
 		return roleId;
 	}
@@ -90,5 +86,5 @@ public class CrmRole {
 	public void setRoleStatus(int roleStatus) {
 		this.roleStatus = roleStatus;
 	}
-	
+
 }
