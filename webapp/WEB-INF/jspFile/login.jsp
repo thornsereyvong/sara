@@ -33,7 +33,7 @@
 					<select class="form-control" name="company" id="company"
 						data-ng-init="listSystemDatabase()">
 						<option value="">-- Select Company --</option>
-						<option value="BMG Corporation Co., Ltd. (New)">BMG Corporation Co., Ltd. (New)</option>
+						<option ng-repeat= "db in database" value="{{db.DBName}}">{{db.ComName}}</option>
 						
 						<!-- <option ng-repeat="db in database" value="{{db.DBName}}">{{db.ComName}}</option> -->
 					</select>
@@ -82,11 +82,14 @@
 		<!-- Close hidden xs -->
 	</div>
 	<script>
+<<<<<<< HEAD
 		/* function configdb(dbName) {
+=======
+		function configdb() {
+>>>>>>> branch 'master' of https://github.com/thornsereyvong/sara.git
 			$.ajax({
-				url : "${pageContext.request.contextPath}/config/"+dbName,
+				url : "${pageContext.request.contextPath}/config/",
 				type : "POST",
-				data : JSON.stringify({}),
 				beforeSend : function(xhr) {
 					xhr.setRequestHeader("Accept", "application/json");
 					xhr.setRequestHeader("Content-Type", "application/json");
@@ -126,10 +129,13 @@
 		$(document).ready(function() {
 
 			getUrlError();
+<<<<<<< HEAD
 
 			/* $("#company").change(function() {
 				configdb($("#company").val());
 			}); */
+=======
+>>>>>>> branch 'master' of https://github.com/thornsereyvong/sara.git
 
 			$('#form-login').bootstrapValidator({
 				message : 'This value is not valid',

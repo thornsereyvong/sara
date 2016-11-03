@@ -23,7 +23,6 @@ public class CustomUserDetailService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
 		CrmUser user = userService.findUserByUsername(username);
 		
 		if(user == null){
