@@ -42,11 +42,8 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	
 	@Bean
 	public String URL(){
-<<<<<<< HEAD
 		//String  url = "http://116.212.139.10:8888/api/";
-=======
 		//String  url = "http://192.168.0.111:8080/api/";
->>>>>>> branch 'master' of https://github.com/thornsereyvong/sara.git
 		String  url = "http://localhost:8080/BalancikaCRM/";
 		//String  url = "http://bmgcorpapi.balancikaapps.com/";
 		//String  url = "http://balancikaapi.balancikaapps.com/";
