@@ -1842,7 +1842,23 @@ function addDataToDetailLead(){
 										
 										<div class="tab-pane " id="related_tap">
 											<div class="row">
-												
+												<div class="col-md-12" >
+													<a href="${pageContext.request.contextPath}/create-opportunity"  style="margin-left: 0px;" class="btn btn-app"> 
+														<i class="fa  fa-lightbulb-o"></i> Opportunity
+													</a> 
+													<a href="${pageContext.request.contextPath}/create-contact"  class="btn btn-app"> 
+														<i class="fa fa-user"></i> Contact
+													</a> 
+													<a  href="${pageContext.request.contextPath}/create-case" class="btn btn-app"> 
+														<i class="fa fa-briefcase "></i> Case
+													</a> 
+													<a href="${pageContext.request.contextPath}/quote/add" class="btn btn-app"> 
+														<i class="fa fa-file-code-o"></i> Quotation
+													</a> 
+													<a href="${pageContext.request.contextPath}/sale-order/add" class="btn btn-app"> 
+														<i class="fa fa-file-text-o"></i> Sale Order
+													</a>
+												</div>
 												<div class="col-md-12">
 													<div class="panel-group" id="relatedGroup">
 														<div class="panel panel-default">
@@ -2037,8 +2053,134 @@ function addDataToDetailLead(){
 																</div>
 															</div>
 														</div>
-														
-														
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title pull-left">
+																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RQuote">Quotations  </a>																	
+																</h4>
+																<%-- <a href="${pageContext.request.contextPath}/create-case" class="btn btn-default pull-right">New</a> --%>
+																<span class="badge bg-blue pull-right">{{caseList.length <= 0 ? '' : caseList.length }}</span>
+																<div class="clearfix"></div>
+															</div>
+															<div id="RQuote" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																			<table class="table iTable"> 					
+																				<thead>
+																					<tr>
+																						<th class="text-center">#</th>
+																						<th>Case ID</th>
+																						<th>Subject</th>
+																						<th>Status</th>
+																						<th>Priority</th>
+																						<th>Date</th>
+																						<th></th>
+																					</tr>
+																				</thead>
+																				<tbody ng-repeat="case in caseList">
+																					<tr>
+																						<td class="iTD-width-50">
+																							<a href="#">
+																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Case.png" alt="User Avatar">
+																							</a>
+																						</td>
+																						<td>{{case.caseId}}</td>
+																						<td>{{case.subject}}</td>
+																						<td>{{case.status.statusName}}</td>
+																						<td>{{case.priority.priorityName}}</td>
+																						<td>{{case.convertCreateDate}}</td>
+																						<td class="mailbox-date">
+																							<div class="col-sm-2">
+																								<div class="btn-group">
+																									<button type="button"
+																										class="btn btn-default dropdown-toggle btn-sm"
+																										data-toggle="dropdown" aria-expanded="false">
+																										<span class="caret"></span> <span class="sr-only">Toggle
+																											Dropdown</span>
+																									</button>
+																									<ul class="dropdown-menu" role="menu">
+																										<li><a href="${pageContext.request.contextPath}/update-case/{{case.caseId}}" >
+																												<i class="fa fa-pencil"></i> Edit
+																										</a></li>																										
+																										<li><a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}"> <i class="fa fa-eye"></i>
+																												View
+																										</a></li>
+					
+																									</ul>
+																								</div>
+																							</div>
+																						</td>
+																					</tr>
+																					
+																			</table>
+																		</div>
+																</div>
+															</div>
+														</div>
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title pull-left">
+																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RSaleOrder">Sale Orders  </a>																	
+																</h4>
+																<%-- <a href="${pageContext.request.contextPath}/create-case" class="btn btn-default pull-right">New</a> --%>
+																<span class="badge bg-blue pull-right">{{caseList.length <= 0 ? '' : caseList.length }}</span>
+																<div class="clearfix"></div>
+															</div>
+															<div id="RSaleOrder" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																			<table class="table iTable"> 					
+																				<thead>
+																					<tr>
+																						<th class="text-center">#</th>
+																						<th>Case ID</th>
+																						<th>Subject</th>
+																						<th>Status</th>
+																						<th>Priority</th>
+																						<th>Date</th>
+																						<th></th>
+																					</tr>
+																				</thead>
+																				<tbody ng-repeat="case in caseList">
+																					<tr>
+																						<td class="iTD-width-50">
+																							<a href="#">
+																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Case.png" alt="User Avatar">
+																							</a>
+																						</td>
+																						<td>{{case.caseId}}</td>
+																						<td>{{case.subject}}</td>
+																						<td>{{case.status.statusName}}</td>
+																						<td>{{case.priority.priorityName}}</td>
+																						<td>{{case.convertCreateDate}}</td>
+																						<td class="mailbox-date">
+																							<div class="col-sm-2">
+																								<div class="btn-group">
+																									<button type="button"
+																										class="btn btn-default dropdown-toggle btn-sm"
+																										data-toggle="dropdown" aria-expanded="false">
+																										<span class="caret"></span> <span class="sr-only">Toggle
+																											Dropdown</span>
+																									</button>
+																									<ul class="dropdown-menu" role="menu">
+																										<li><a href="${pageContext.request.contextPath}/update-case/{{case.caseId}}" >
+																												<i class="fa fa-pencil"></i> Edit
+																										</a></li>																										
+																										<li><a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}"> <i class="fa fa-eye"></i>
+																												View
+																										</a></li>
+					
+																									</ul>
+																								</div>
+																							</div>
+																						</td>
+																					</tr>
+																					
+																			</table>
+																		</div>
+																</div>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>

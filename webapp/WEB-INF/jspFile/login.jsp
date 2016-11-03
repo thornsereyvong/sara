@@ -82,7 +82,7 @@
 		<!-- Close hidden xs -->
 	</div>
 	<script>
-		function configdb(dbName) {
+		/* function configdb(dbName) {
 			$.ajax({
 				url : "${pageContext.request.contextPath}/config/"+dbName,
 				type : "POST",
@@ -96,7 +96,7 @@
 				error : function() {
 				}
 			});
-		}
+		} */
 
 		var app = angular.module('viewDatabase',[ 'angularUtils.directives.dirPagination' ]);
 		app.controller('viewCompany',['$scope','$http', function($scope, $http) {
@@ -127,9 +127,9 @@
 
 			getUrlError();
 
-			$("#company").change(function() {
+			/* $("#company").change(function() {
 				configdb($("#company").val());
-			});
+			}); */
 
 			$('#form-login').bootstrapValidator({
 				message : 'This value is not valid',
