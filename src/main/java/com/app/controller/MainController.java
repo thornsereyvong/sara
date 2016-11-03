@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
 
+import com.app.entities.MeDataSource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -1497,8 +1498,9 @@ public class MainController {
 
 	@RequestMapping("header")
 	public String header(ModelMap model, HttpSession session, HttpServletRequest request) {
+		System.out.println(request.getSession().getAttribute("databaseName"));
 		session.setAttribute("SESSION", getPrincipal());
-		//session.setAttribute("users", userController.getUserById(getPrincipal()));
+		session.setAttribute("users", userController.getUserById(getPrincipal()));
 		return "layout/header";
 	}
 
@@ -1542,10 +1544,16 @@ public class MainController {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map<String, Object> getRoleDetailsOfModule(String moduleId) {
-
-		HttpEntity<String> request = new HttpEntity<String>(header);
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb("balancika_crm");
+		dataSource.setIp("192.168.0.2");
+		dataSource.setPort("3306");
+		dataSource.setUn("posadmin");
+		dataSource.setPw("Pa$$w0rd");
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL + "api/role_detail/list/user/" + getPrincipal() + "/"
-				+ moduleId, HttpMethod.GET, request, Map.class);
+				+ moduleId, HttpMethod.POST, request, Map.class);
 		Map<String, Object> userMap = (HashMap<String, Object>) response.getBody();
 		if (userMap.get("DATA") != null) {
 			return (Map<String, Object>) userMap.get("DATA");

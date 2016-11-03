@@ -42,10 +42,16 @@ public class CrmUserController {
 
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/user/list/subordinate/{username}",method = RequestMethod.GET)
-	public String getUserById(@PathVariable("username") String username){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/subordinate/"+username, HttpMethod.GET, request, Map.class);
+	@RequestMapping(value="/user/list/subordinate/{username}",method = RequestMethod.POST)
+	public String getUserById(@PathVariable("username") String username){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb("balancika_crm");
+		dataSource.setIp("192.168.0.2");
+		dataSource.setPort("3306");
+		dataSource.setUn("posadmin");
+		dataSource.setPw("Pa$$w0rd");
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/subordinate/"+username, HttpMethod.POST, request, Map.class);
 		Map<String, Object> userMap = (HashMap<String, Object>)response.getBody();
 		if(userMap.get("DATA") != null){
 			Gson convert = new Gson();

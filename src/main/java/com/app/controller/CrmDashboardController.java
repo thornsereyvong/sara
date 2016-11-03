@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.app.entities.MeDataSource;
+
 @RestController
 public class CrmDashboardController {
 	
@@ -25,10 +27,16 @@ public class CrmDashboardController {
 	private String URL;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/dashboard/startup/{username}",method = RequestMethod.GET)
+	@RequestMapping(value="/dashboard/startup/{username}",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> dashboardStartup(@PathVariable("username") String username){
 		
-		HttpEntity<String> request = new HttpEntity<String>(header);
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb("balancika_crm");
+		dataSource.setIp("192.168.0.2");
+		dataSource.setPort("3306");
+		dataSource.setUn("posadmin");
+		dataSource.setPw("Pa$$w0rd");
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/dashboard/view/"+username, HttpMethod.GET, request, Map.class);
 		
