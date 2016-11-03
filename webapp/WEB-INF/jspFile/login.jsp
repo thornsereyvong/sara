@@ -82,25 +82,6 @@
 		<!-- Close hidden xs -->
 	</div>
 	<script>
-<<<<<<< HEAD
-		/* function configdb(dbName) {
-=======
-		function configdb() {
->>>>>>> branch 'master' of https://github.com/thornsereyvong/sara.git
-			$.ajax({
-				url : "${pageContext.request.contextPath}/config/",
-				type : "POST",
-				beforeSend : function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success : function(data) {
-				},
-				error : function() {
-				}
-			});
-		} */
-
 		var app = angular.module('viewDatabase',[ 'angularUtils.directives.dirPagination' ]);
 		app.controller('viewCompany',['$scope','$http', function($scope, $http) {
 			$scope.listSystemDatabase = function() {
@@ -129,13 +110,10 @@
 		$(document).ready(function() {
 
 			getUrlError();
-<<<<<<< HEAD
 
 			/* $("#company").change(function() {
 				configdb($("#company").val());
 			}); */
-=======
->>>>>>> branch 'master' of https://github.com/thornsereyvong/sara.git
 
 			$('#form-login').bootstrapValidator({
 				message : 'This value is not valid',
