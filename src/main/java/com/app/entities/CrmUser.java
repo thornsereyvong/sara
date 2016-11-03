@@ -1,35 +1,17 @@
 package com.app.entities;
 
-public class CrmUser{
-
+public class CrmUser {
 
 	private String userID;
-	
-
 	private String username;
-
 	private String password;
-	
-
 	private String userType;
-	
-
 	private String userKey;
-	
-
 	private int status;
-
-
 	private String parentID;
-
 	private CrmRole role;
-	
 	private MeDataSource dataSource;
 
-	public CrmUser(){
-		
-	}
-	
 	public String getUserID() {
 		return userID;
 	}

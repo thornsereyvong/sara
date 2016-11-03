@@ -29,13 +29,10 @@ public class CustomUserDetailService implements UserDetailsService{
 			System.out.println("User not found");
 			throw new UsernameNotFoundException("User not found");
 		}
-		System.out.println("User ID : " + user.getUserID());
 		
 		boolean status = false;
-		
 		if(user.getStatus() == 1){
 			status = true; 
-			System.out.println(status);
 		}
 	
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), 
