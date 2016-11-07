@@ -18,6 +18,7 @@ public class CrmCall {
 	private LocalDateTime callCreateDate;
 	private String callModifiedBy;
 	private Date callModifiedDate;
+	private MeDataSource meDataSource;
 	
 	public String getCallId() {
 		return callId;
@@ -98,5 +99,10 @@ public class CrmCall {
 	public void setCallModifiedDate(Date callModifiedDate) {
 		this.callModifiedDate = callModifiedDate;
 	}
-	
+	public final MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+	public final void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 }

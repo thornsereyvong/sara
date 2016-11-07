@@ -23,6 +23,7 @@ public class CrmCampaign{
 	private Date createdDate;
 	private Date modifiedDate;
 	private String modifiedBy;
+	private MeDataSource meDataSource;
 	
 	public String getModifiedBy() {
 		return modifiedBy;
@@ -179,5 +180,12 @@ public class CrmCampaign{
 	public void setType(CrmCampaignType type) {
 		this.type = type;
 	}
-	
+
+	public final MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public final void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 }
