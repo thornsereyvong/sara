@@ -10,10 +10,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class CustomUsernamPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-			throws AuthenticationException {
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 		final String databaseName = request.getParameter("company");
-		request.getSession().setAttribute("databaseName", databaseName);
+		request.getSession().setAttribute("databaseName", databaseName);		
+		request.getSession().setAttribute("userActivity", request.getParameter("crm_username"));
 		return super.attemptAuthentication(request, response);
 	}
 }

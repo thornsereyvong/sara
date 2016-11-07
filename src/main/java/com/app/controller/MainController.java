@@ -27,26 +27,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class MainController {
 
-	@Autowired
-	private CrmCampaignController campController;
+	
 
 	@Autowired
 	private CrmUserController userController;
-
-	@Autowired
-	private CrmLeadController leadController;
-
-	@Autowired
-	private CrmOpportunityController oppController;
-
-	@Autowired
-	private CrmCustomerController custController;
-
-	@Autowired
-	private CrmContactController contactController;
-
-	@Autowired
-	private CrmCaseController caseController;
 
 	@Autowired
 	private CrmMeetingController meetingController;
@@ -415,8 +399,16 @@ public class MainController {
 	}
 
 	@RequestMapping("/login")
-	public String login(ModelMap model) {
+	public String login(ModelMap model, HttpServletRequest request) {
 		model.addAttribute("title", "App Login | CRM");
+		
+		request.getSession().setAttribute("usernamedb", "posadmin");
+		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
+		request.getSession().setAttribute("ip", "192.168.0.2");
+		request.getSession().setAttribute("port", "3306");
+		
+		
+		
 		return "login";
 	}
 
@@ -1491,9 +1483,14 @@ public class MainController {
 	/* File Layout */
 
 	@RequestMapping("head")
-	public String head(ModelMap model) {
+	public String head(ModelMap model, HttpServletRequest request) {
+		request.getSession().setAttribute("usernamedb", "posadmin");
+		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
+		request.getSession().setAttribute("ip", "192.168.0.2");
+		request.getSession().setAttribute("port", "3306");
+		
 		return "layout/head";
-
+		
 	}
 
 	@RequestMapping("header")

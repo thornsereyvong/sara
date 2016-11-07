@@ -1,4 +1,7 @@
 <jsp:include page="${request.contextPath}/head"></jsp:include>
+
+
+
 <body class="hold-transition login-page" ng-app="viewDatabase">
 	<div style="">
 		<div style="border: 1px solid #B9292D; margin-bottom: 10px;"></div>
@@ -80,7 +83,9 @@
 			</div>
 		</div>
 		<!-- Close hidden xs -->
+		<div id="errors"></div>
 	</div>
+	<script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>	
 	<script>
 		var app = angular.module('viewDatabase',[ 'angularUtils.directives.dirPagination' ]);
 		app.controller('viewCompany',['$scope','$http', function($scope, $http) {
@@ -93,7 +98,8 @@
 							'Content-Type' : 'application/json'
 						},
 					})
-					.success(function(response) {
+					.success(function(response) {						
+						//dis(response)						
 						$scope.database = response.DATABASE;
 					});
 			};
@@ -154,8 +160,7 @@
 
 		if (footerTop < docHeight) {
 			//$('#footer').css('margin-top', 20+ (docHeight - footerTop) + 'px');
-			$('#footer').css('margin-top',
-					119 + (docHeight - footerTop) + 'px');
+			$('#footer').css('margin-top', 119 + (docHeight - footerTop) + 'px');
 		}
 
 	});
