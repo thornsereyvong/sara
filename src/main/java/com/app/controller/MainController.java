@@ -1558,9 +1558,8 @@ public class MainController {
 		return null;
 	}
 	
-	@RequestMapping("upload")
+	@RequestMapping("/upload")
 	public String uploadFile(ModelMap model) {
-
 		return "uploadFile";
 	}
 
