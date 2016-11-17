@@ -54,5 +54,11 @@ public class MeDataSource {
 		this.userid = userid;
 	}
 	public MeDataSource() {
-}
+	}
+	
+	public String toString(){
+		System.out.println(userid);
+		return ip+"/"+port+"/"+db+"/"+un+"/"+pw+"/"+userid;
+	}
+	
 }

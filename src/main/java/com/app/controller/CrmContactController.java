@@ -1,6 +1,9 @@
 package com.app.controller;
 
+import java.awt.Container;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -16,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 import com.app.entities.CrmContact;
+import com.app.entities.MeDataSource;
 import com.app.utilities.RestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,6 +31,9 @@ public class CrmContactController {
 	//private final String URL = "";
 	@Autowired
 	private ObjectMapper objectMapper;
+	
+	@Autowired
+	private MainController mainController;
 	
 	@Autowired
 	private RestTemplate  restTemplate;
@@ -46,10 +53,23 @@ public class CrmContactController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/contact/startup/{username}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getStartup(@PathVariable("username") String username){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/startup/"+username, HttpMethod.GET, request, Map.class);
+	@RequestMapping(value="/contact/startup/{username}",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> getStartup(@PathVariable("username") String username,HttpServletRequest req){	
+		
+		MeDataSource dataSource = new MeDataSource();
+		
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
+		dataSource.setUserid(mainController.getPrincipal());
+		
+		
+		System.out.println(dataSource.toString());				
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/startup/"+username, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
@@ -65,10 +85,21 @@ public class CrmContactController {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/contact/list",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllContact(){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/list", HttpMethod.GET, request, Map.class);
+	@RequestMapping(value="/contact/list", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> getAllContact(HttpServletRequest req){
+		
+		MeDataSource dataSource = new MeDataSource();
+		
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
+		dataSource.setUserid(mainController.getPrincipal());
+		System.out.println(dataSource.toString());
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
@@ -133,12 +164,25 @@ public class CrmContactController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/contact/remove/{contact}",method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("contact") String contact){
+	@RequestMapping(value="/contact/remove/{contact}",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("contact") String contact,HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
 		
-		HttpEntity<String> request = new HttpEntity<String>(header);
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
+		dataSource.setUserid(mainController.getPrincipal());
+		System.out.println(dataSource.toString());
 		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/remove/"+contact, HttpMethod.DELETE, request, Map.class);
+		CrmContact con = new CrmContact();
+		con.setConID(contact);
+		con.setMeDataSource(dataSource);
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(con,header);
+		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/remove", HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		

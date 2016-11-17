@@ -12,19 +12,72 @@
 var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
 var self = this;
 app.controller('campController',['$scope','$http',function($scope, $http){
-	$scope.listContact = function(){
-		$http.get("${pageContext.request.contextPath}/contact/list").success(function(response){
-				$scope.contact = response.DATA;
-			});
-		} ;
+	$scope.listContact = function(){		
+		$http({
+		    method: 'POST',
+		    url: '${pageContext.request.contextPath}/contact/list',
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    }
+		}).success(function(response) {
+			$scope.contact = response.DATA;
+		});
+		
+	};
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
 	
-	$scope.deleteCon = function(oppID){
-		swal({
+	$scope.deleteCon = function(conId){
+		
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to delete contact with id: <span style='color:#F8BB86'>"+conId+"</span> .</span>",   
+			text: "Click OK to continue or CANCEL to abort.",   
+			type: "info", 
+			html: true,
+			showCancelButton: true,   
+			closeOnConfirm: false,   
+			showLoaderOnConfirm: true, 
+			
+		}, function(){   
+			setTimeout(function(){			
+				$.ajax({ 
+		    		url: "${pageContext.request.contextPath}/contact/remove/"+conId,
+		    		method: "POST",
+		    		async: false,
+		    		beforeSend: function(xhr) {
+		    		    xhr.setRequestHeader("Accept", "application/json");
+		    		    xhr.setRequestHeader("Content-Type", "application/json");
+		    	    }, 
+		    	    success: function(result){	  
+		    			if(result.MESSAGE == "DELETED"){	    				
+		    				swal({
+		    					title:"Successful!",
+		    					text: "The contact with record id: '"+conId+"'  was successfully deleted!", 
+		    					type:"success",  
+		    					timer: 2000,   
+		    					showConfirmButton: false
+		    				});
+		    				  
+		    				setTimeout(function(){		
+		    					$scope.listContact();
+		    				},2000);
+		    			}else{
+		    				swal("Unsuccessful!", result.MESSAGE, "error");
+		    			}
+		    		},
+		    		error:function(){
+		    			swal("Unsuccessful!", "Please try again!", "error");
+		    		}		    	    
+		    	});
+			}, 500);
+		});	
+		
+		
+		<%-- swal({
             title: "Are you sure?", //Bold text
             text: "This Contact will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -69,7 +122,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	                timer:2000,
 	                showConfirmButton: false});
             }
-        });
+        }); --%>
 	};
 	
 }]);

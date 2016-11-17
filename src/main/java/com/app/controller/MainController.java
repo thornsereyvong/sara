@@ -72,11 +72,11 @@ public class MainController {
 	}
 
 	@RequestMapping("/category-type")
-	public String categoryType(ModelMap model) {
+	public String categoryType(ModelMap model, HttpServletRequest req) {
 		
 		model.addAttribute("menu", "categoryType");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "categoryType";
@@ -88,10 +88,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/role-management")
-	public String roleManagement(ModelMap model) {
+	public String roleManagement(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "roleManagement");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "roleManagement";
@@ -156,10 +156,10 @@ public class MainController {
 	
 	
 	@RequestMapping("/create-role")
-	public String createRole(ModelMap model) {
+	public String createRole(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createRole");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "createRole";
@@ -170,9 +170,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-role/{custID}")
-	public String updateRole(ModelMap model, @PathVariable String custID) {
+	public String updateRole(ModelMap model, @PathVariable String custID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateRole");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			String json;
@@ -190,9 +190,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-role-management")
-	public String viewRoleManagement(ModelMap model) {
+	public String viewRoleManagement(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "viewRoleManagement");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "viewRoleManagement";
@@ -208,7 +208,7 @@ public class MainController {
 		session.setAttribute("userId", userController.getUserNameByName(getPrincipal()));
 		
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", request);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "userManagement";
@@ -220,10 +220,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/campaing-status")
-	public String campaignStatus(ModelMap model) {
+	public String campaignStatus(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "campaignStatus");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "campaignStatus";
@@ -235,10 +235,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/campaing-type")
-	public String campaignType(ModelMap model) {
+	public String campaignType(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "campaignType");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "campaignType";
@@ -249,9 +249,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/lead-status")
-	public String leadStatus(ModelMap model) {
+	public String leadStatus(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "leadStatus");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "leadStatus";
@@ -262,10 +262,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/lead-sources")
-	public String leadSources(ModelMap model) {
+	public String leadSources(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "leadSources");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "leadSources";
@@ -276,9 +276,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/industries")
-	public String industries(ModelMap model) {
+	public String industries(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "industries");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "industries";
@@ -289,10 +289,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/account-type")
-	public String accountType(ModelMap model) {
+	public String accountType(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "accountType");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "accountType";
@@ -303,10 +303,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/opportunity-type")
-	public String opportunityType(ModelMap model) {
+	public String opportunityType(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "opportunityType");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "opportunityType";
@@ -317,9 +317,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/opportunity-stage")
-	public String opportunityStage(ModelMap model) {
+	public String opportunityStage(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "opportunityStage");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "opportunityStage";
@@ -330,10 +330,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/case-status")
-	public String caseStatus(ModelMap model) {
+	public String caseStatus(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "caseStatus");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "caseStatus";
@@ -345,10 +345,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/case-type")
-	public String caseType(ModelMap model) {
+	public String caseType(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "caseType");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "caseType";
@@ -359,9 +359,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/call-status")
-	public String callStatus(ModelMap model) {
+	public String callStatus(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "callStatus");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "callStatus";
@@ -372,9 +372,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/meeting-status")
-	public String meetingStatus(ModelMap model) {
+	public String meetingStatus(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "meetingStatus");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "meetingStatus";
@@ -385,10 +385,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/task-status")
-	public String taskStatus(ModelMap model) {
+	public String taskStatus(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "taskStatus");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			return "taskStatus";
@@ -417,9 +417,9 @@ public class MainController {
 	/* campaign */
 	
 	@RequestMapping("/create-campaign")
-	public String campaigns(ModelMap model) {
+	public String campaigns(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createCampaigns");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			return "createCampaigns";
@@ -431,10 +431,10 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/update-campaign/{campID}", method = RequestMethod.GET)
-	public String updateCampaigns(ModelMap model, @PathVariable("campID") String campID) {
+	public String updateCampaigns(ModelMap model, @PathVariable("campID") String campID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateCampaigns");
 
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 
@@ -453,9 +453,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/list-campaigns")
-	public String listCampaigns(ModelMap model) {
+	public String listCampaigns(ModelMap model,HttpServletRequest req) {
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 
 		model.addAttribute("menu", "listCampaigns");
 
@@ -475,11 +475,11 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-campaign/{campId}")
-	public String viewCampaigns(ModelMap model,@PathVariable("campId") String campId) {
+	public String viewCampaigns(ModelMap model,@PathVariable("campId") String campId,HttpServletRequest req) {
 
 		model.addAttribute("menu", "viewCampaigns");
 		model.addAttribute("campId", campId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 
@@ -503,10 +503,10 @@ public class MainController {
 	/* lead */
 	
 	@RequestMapping("/create-lead")
-	public String createLeads(ModelMap model) {
+	public String createLeads(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createLeads");
 
-		Map<String, Object> camMap = getRoleDetailsOfModule("LE");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LE", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			return "createLeads";
@@ -518,10 +518,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/list-leads")
-	public String listLeads(ModelMap model) {
+	public String listLeads(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listLeads");
 
-		Map<String, Object> camMap = getRoleDetailsOfModule("LE");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LE", req);
 
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -535,11 +535,11 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-lead/{leadId}")
-	public String viewLeads(ModelMap model, @PathVariable("leadId") String leadId) {
+	public String viewLeads(ModelMap model, @PathVariable("leadId") String leadId, HttpServletRequest req) {
 
 		model.addAttribute("menu", "viewLeads");
 		model.addAttribute("leadId", leadId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("LE");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LE", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 
@@ -559,10 +559,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-lead/{leadID}")
-	public String updateLeads(ModelMap model, @PathVariable String leadID) {
+	public String updateLeads(ModelMap model, @PathVariable String leadID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateLeads");
 
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 
@@ -581,11 +581,11 @@ public class MainController {
 	}
 
 	@RequestMapping("/convert-lead/{leadID}")
-	public String convertLead(ModelMap model, @PathVariable String leadID) {
+	public String convertLead(ModelMap model, @PathVariable String leadID,HttpServletRequest req) {
 		model.addAttribute("menu", "convertLead");
 		model.addAttribute("leadId", leadID);
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 			
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleView").equals("YES")) {
@@ -611,10 +611,10 @@ public class MainController {
 	/* contact */
 
 	@RequestMapping("/create-contact")
-	public String createContact(ModelMap model) {
+	public String createContact(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createContacts");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CO");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CO", req);
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			return "createContacts";
@@ -625,10 +625,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/list-contacts")
-	public String listContacts(ModelMap model) {
+	public String listContacts(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "listContacts");
 
-		Map<String, Object> camMap = getRoleDetailsOfModule("CO");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CO", req);
 		
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -642,10 +642,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-contact/{conID}")
-	public String viewContacts(ModelMap model, @PathVariable String conID) {
+	public String viewContacts(ModelMap model, @PathVariable String conID,HttpServletRequest req) {
 		model.addAttribute("menu", "viewContacts");
 		model.addAttribute("conId", conID);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CO");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CO", req);
 		
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -663,10 +663,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-contact/{conID}")
-	public String updateContacts(ModelMap model, @PathVariable String conID) {
+	public String updateContacts(ModelMap model, @PathVariable String conID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateContacts");
 		model.addAttribute("conId", conID);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CO");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CO", req);
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {				
 				return "updateContacts";
@@ -682,10 +682,10 @@ public class MainController {
 
 	/* Opportunity */
 	@RequestMapping("/create-opportunity")
-	public String createOpportunity(ModelMap model) {
+	public String createOpportunity(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createOpportunity");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("OP");
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP", req);
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			return "createOpportunity";
@@ -696,11 +696,11 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-opportunity/{oppID}")
-	public String updateOpportunity(ModelMap model, @PathVariable String oppID) {
+	public String updateOpportunity(ModelMap model, @PathVariable String oppID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateOpportunity");
 		model.addAttribute("oppId", oppID);
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("OP");
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP", req);
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
@@ -718,10 +718,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/list-opportunity")
-	public String listOpportunity(ModelMap model) {
+	public String listOpportunity(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "listOpportunity");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("OP");
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP", req);
 		
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -735,10 +735,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-opportunity/{oppId}")
-	public String viewOpportunity(ModelMap model,@PathVariable("oppId") String oppId) {
+	public String viewOpportunity(ModelMap model,@PathVariable("oppId") String oppId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewOpportunity");
 		model.addAttribute("oppId", oppId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("OP");
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -763,10 +763,10 @@ public class MainController {
 
 	/* Call */
 	@RequestMapping("/list-calls")
-	public String listCalls(ModelMap model) {
+	public String listCalls(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listCalls");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL", req);
 		
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -781,10 +781,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/create-call")
-	public String createCall(ModelMap model) {
+	public String createCall(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createCall");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL", req);
 		
 		
 		
@@ -798,10 +798,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-call/{callId}")
-	public String viewCalls(ModelMap model, @PathVariable String callId) {
+	public String viewCalls(ModelMap model, @PathVariable String callId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewCalls");
 		model.addAttribute("callId", callId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL", req);
 		
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -822,9 +822,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-call/{callId}")
-	public String updateCall(ModelMap model, @PathVariable String callId) {
+	public String updateCall(ModelMap model, @PathVariable String callId, HttpServletRequest req) {
 		model.addAttribute("menu", "updateCall");
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL", req);
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
@@ -851,9 +851,9 @@ public class MainController {
 
 	/* Meetings */
 	@RequestMapping("/list-meetings")
-	public String listMeetings(ModelMap model) {
+	public String listMeetings(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "listMeetings");
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME", req);
 		
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -868,10 +868,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/create-meeting")
-	public String createMeeting(ModelMap model) {
+	public String createMeeting(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "create-Meeting");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME", req);
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			return "createMeeting";
@@ -883,10 +883,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-meeting/{meetId}")
-	public String viewMeeting(ModelMap model, @PathVariable("meetId") String meetId) {
+	public String viewMeeting(ModelMap model, @PathVariable("meetId") String meetId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewMeeting");
 		model.addAttribute("meetId", meetId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME", req);
 		
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -905,10 +905,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-meeting/{custID}")
-	public String updateMeeting(ModelMap model, @PathVariable String custID) {
+	public String updateMeeting(ModelMap model, @PathVariable String custID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateMeeting");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME", req);
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
@@ -933,10 +933,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/list-tasks")
-	public String listTasks(ModelMap model) {
+	public String listTasks(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "listTasks");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA", req);
 		
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -950,10 +950,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/create-task")
-	public String createTask(ModelMap model) {
+	public String createTask(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createTask");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA", req);
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			return "createTask";
@@ -964,10 +964,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-task/{taskId}")
-	public String tasks(ModelMap model, @PathVariable("taskId") String taskId) {
+	public String tasks(ModelMap model, @PathVariable("taskId") String taskId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewTasks");
 		model.addAttribute("taskId", taskId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -985,10 +985,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-task/{custID}")
-	public String updateTask(ModelMap model, @PathVariable String custID) {
+	public String updateTask(ModelMap model, @PathVariable String custID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateTask");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
@@ -1013,10 +1013,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/list-events")
-	public String listEvents(ModelMap model) {
+	public String listEvents(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listEvents");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV", req);
 
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -1032,10 +1032,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/create-event")
-	public String createEvent(ModelMap model) {
+	public String createEvent(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createEvent");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV", req);
 
 	
 		if (camMap.get("roleAccess").equals("YES")) {
@@ -1048,10 +1048,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-event/{eventId}")
-	public String viewEvent(ModelMap model, @PathVariable("eventId") String eventId) {
+	public String viewEvent(ModelMap model, @PathVariable("eventId") String eventId,HttpServletRequest req) {
 		model.addAttribute("menu","viewEvents");
 		model.addAttribute("eventId", eventId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV", req);
 
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -1071,10 +1071,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-event/{custID}")
-	public String updateEvent(ModelMap model, @PathVariable String custID) {
+	public String updateEvent(ModelMap model, @PathVariable String custID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateEvent");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
@@ -1100,9 +1100,9 @@ public class MainController {
 
 	/* Meetings */
 	@RequestMapping("/list-notes")
-	public String listNotes(ModelMap model) {
+	public String listNotes(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listNotes");
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO", req);
 
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -1117,9 +1117,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/create-note")
-	public String createNote(ModelMap model) {
+	public String createNote(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createNote");
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			
@@ -1131,10 +1131,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-note/{noteId}")
-	public String viewNote(ModelMap model, @PathVariable("noteId") String noteId) {
+	public String viewNote(ModelMap model, @PathVariable("noteId") String noteId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewNotes");
 		model.addAttribute("noteId", noteId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -1151,10 +1151,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-note/{custID}")
-	public String updateNote(ModelMap model, @PathVariable String custID) {
+	public String updateNote(ModelMap model, @PathVariable String custID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateNote");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO");
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -1185,10 +1185,10 @@ public class MainController {
 
 	/* Support */
 	@RequestMapping("/create-case")
-	public String createCase(ModelMap model) {
+	public String createCase(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createCase");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CS");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			
@@ -1201,10 +1201,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/list-cases")
-	public String listCases(ModelMap model) {
+	public String listCases(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listCases");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CS");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
 
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -1219,10 +1219,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-case/{caseId}")
-	public String viewCases(ModelMap model, @PathVariable("caseId") String caseId) {
+	public String viewCases(ModelMap model, @PathVariable("caseId") String caseId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewCases");
 		model.addAttribute("caseId", caseId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CS");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -1239,10 +1239,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-case/{caseId}")
-	public String updateCase(ModelMap model, @PathVariable("caseId") String caseId) {
+	public String updateCase(ModelMap model, @PathVariable("caseId") String caseId, HttpServletRequest req) {
 		model.addAttribute("menu", "updateCase");
 		model.addAttribute("caseId", caseId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CS");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
 
 		
 		if (camMap.get("roleAccess").equals("YES")) {
@@ -1260,10 +1260,10 @@ public class MainController {
 
 	/* Support */
 	@RequestMapping("/create-location")
-	public String createLocation(ModelMap model) {
+	public String createLocation(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createLocation");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("LOC");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LOC", req);
 
 		
 		if (camMap.get("roleAccess").equals("YES")) {
@@ -1275,10 +1275,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/list-locations")
-	public String listLocation(ModelMap model) {
+	public String listLocation(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listLocations");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("LOC");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LOC", req);
 
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -1292,10 +1292,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-location/{locId}")
-	public String viewLocation(ModelMap model, @PathVariable("locId") String locId) {
+	public String viewLocation(ModelMap model, @PathVariable("locId") String locId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewLocations");
 		model.addAttribute("locId", locId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("LOC");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LOC", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -1313,11 +1313,11 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-location/{custID}")
-	public String updateLocation(ModelMap model, @PathVariable String custID) {
+	public String updateLocation(ModelMap model, @PathVariable String custID, HttpServletRequest req) {
 		
 		model.addAttribute("menu", "updateLocation");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("LOC");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LOC", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
@@ -1351,10 +1351,10 @@ public class MainController {
 	/* customer */
 
 	@RequestMapping("/list-customers")
-	public String listCustomer(ModelMap model) {
+	public String listCustomer(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listCustomer");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
 
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -1368,11 +1368,11 @@ public class MainController {
 	}
 
 	@RequestMapping("/view-customer/{custId}")
-	public String viewCustomer(ModelMap model, @PathVariable("custId") String custId) {
+	public String viewCustomer(ModelMap model, @PathVariable("custId") String custId,HttpServletRequest req) {
 		model.addAttribute("menu", "viewCustomer");
 		model.addAttribute("custId", custId);
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 
@@ -1392,10 +1392,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/create-customer")
-	public String createCustomer(ModelMap model) {
+	public String createCustomer(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createCustomer");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			return "createCustomer";
@@ -1406,10 +1406,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-customer/{custID}")
-	public String updateCustomer(ModelMap model, @PathVariable String custID) {
+	public String updateCustomer(ModelMap model, @PathVariable String custID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateCustomer");
 		model.addAttribute("custId", custID);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CRM_ADMIN");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
@@ -1436,10 +1436,10 @@ public class MainController {
 	}
 	
 	@RequestMapping("/create-employee")
-	public String createEmpoyee(ModelMap model) {
+	public String createEmpoyee(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createEmployee");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			return "employee";
@@ -1450,10 +1450,10 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-employee/{custID}")
-	public String updateEmpoyee(ModelMap model, @PathVariable String custID) {
+	public String updateEmpoyee(ModelMap model, @PathVariable String custID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateEmployee");
 		model.addAttribute("custId", custID);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CUST");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleEdit").equals("YES")) {
@@ -1495,15 +1495,15 @@ public class MainController {
 
 	@RequestMapping("header")
 	public String header(ModelMap model, HttpSession session, HttpServletRequest request) {
-		System.out.println(request.getSession().getAttribute("databaseName"));
+		
 		session.setAttribute("SESSION", getPrincipal());
 		session.setAttribute("users", userController.getUserById(getPrincipal()));
 		return "layout/header";
 	}
 
 	@RequestMapping("menu")
-	public String menu(ModelMap model) {
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA");
+	public String menu(ModelMap model,HttpServletRequest req) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
 		
 		model.addAttribute("role_CRM_ADMIN", camMap.get("role"));
 		
@@ -1524,7 +1524,7 @@ public class MainController {
 
 	/* Close File Layout */
 
-	private String getPrincipal() {
+	public String getPrincipal() {
 		String userName = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -1540,13 +1540,18 @@ public class MainController {
 	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Map<String, Object> getRoleDetailsOfModule(String moduleId) {
+	public Map<String, Object> getRoleDetailsOfModule(String moduleId,HttpServletRequest req) {
+		
 		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb("balancika_crm");
-		dataSource.setIp("192.168.0.2");
-		dataSource.setPort("3306");
-		dataSource.setUn("posadmin");
-		dataSource.setPw("Pa$$w0rd");
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		dataSource.setUserid(req.getSession().getAttribute("userActivity").toString());	
+		
+	
+		
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL + "api/role_detail/list/user/" + getPrincipal() + "/"

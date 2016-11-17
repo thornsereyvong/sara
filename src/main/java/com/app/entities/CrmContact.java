@@ -55,7 +55,18 @@ public class CrmContact {
 	
 	private CrmContact conReportTo;
 	
+	private MeDataSource meDataSource;
 	
+	
+	
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
+
 	public String getConID() {
 		return conID;
 	}
