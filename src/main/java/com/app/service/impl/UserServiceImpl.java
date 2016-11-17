@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public CrmUser findUserByUsername(String username) {
 		try{
-			System.out.println("CALL");
 			RestTemplate restTemplate = new RestTemplate();
 			CrmUser user = new CrmUser();
 			user.setUsername(username);

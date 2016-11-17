@@ -5,16 +5,22 @@ package com.app.entities;
 
 public class CrmAccountType {
 
-
-	
 	private int accountID;
-	
 	
 	private String accountName;
 	
-	
 	private String accountDes;
+	
+	private MeDataSource meDataSource;
+	
+	public final MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
 
+	public final void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
+	
 	public int getAccountID() {
 		return accountID;
 	}

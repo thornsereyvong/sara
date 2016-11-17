@@ -32,15 +32,11 @@
 		app.controller('campController',['$scope','$http',function($scope, $http) {
 			$scope.editCampaignOnStartup = function() {
 				$http({
-						method : 'POST',
-						url : '${pageContext.request.contextPath}/edit/startup',
+						method : 'GET',
+						url : '${pageContext.request.contextPath}/edit/startup/'+campId+'/'+username,
 						headers : {
 							'Accept' : 'application/json',
 							'Content-Type' : 'application/json'
-						},
-						data : {
-							"username" : '${SESSION}',
-							"campID" : '${campId}'
 						}
 				}).success(function(response) {
 					addCampaignDataToForm(response);

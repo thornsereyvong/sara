@@ -32,9 +32,6 @@ public class CrmCollaborateController {
 		private String URL;
 		
 		
-		
-		
-		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/collaborate/list/lead/user",method = RequestMethod.POST)
 		public ResponseEntity<Map<String, Object>> getCollaborateByLeadIdByUsername(@RequestBody String obj){

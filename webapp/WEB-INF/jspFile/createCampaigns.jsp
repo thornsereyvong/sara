@@ -25,14 +25,11 @@
 		app.controller('campController',['$scope','$http',function($scope, $http) {
 				$scope.startupAddPage = function(username) {
 					$http({
-					    method: 'POST',
-					    url: '${pageContext.request.contextPath}/add/startup',
+					    method: 'GET',
+					    url: '${pageContext.request.contextPath}/add/startup/'+username,
 					    headers: {
 					    	'Accept': 'application/json',
 					        'Content-Type': 'application/json'
-					    },
-					    data: {
-					    	"username":username
 					    }
 					}).success(function(response) {
 						$scope.camp_parents = response.CAMP_PARENT;

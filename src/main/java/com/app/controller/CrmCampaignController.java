@@ -2,6 +2,8 @@ package com.app.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmCampaign;
+import com.app.entities.MeDataSource;
 import com.app.utilities.RestUtil;
 
 
@@ -36,9 +39,15 @@ public class CrmCampaignController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/view/{userId}/{campId}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> viewCampaign(@PathVariable("userId") String userId, @PathVariable("campId") String campId){
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/view/"+campId+"/"+userId, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> viewCampaign(@PathVariable("userId") String userId, @PathVariable("campId") String campId, HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource ,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/view/"+campId+"/"+userId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
@@ -46,25 +55,43 @@ public class CrmCampaignController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/list",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllCampaign(){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list", HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> getAllCampaign(HttpServletRequest req){	
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/add/startup",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> startupAddPage(@RequestBody String json){	
-		HttpEntity<String> request = new HttpEntity<String>(json,header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/add/startup", HttpMethod.POST, request, Map.class);
+	@RequestMapping(value="/add/startup/{username}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> startupAddPage(@PathVariable("username") String username, HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/add/startup/"+username, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/list/validate/{campName}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getCampName(@PathVariable("campName") String campName){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/validate/"+campName, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> getCampName(@PathVariable("campName") String campName, HttpServletRequest req){	
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/validate/"+campName, HttpMethod.POST, request, Map.class);
 		try{
 			if(RestUtil.isError(response.getStatusCode())){
 				 return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -79,18 +106,30 @@ public class CrmCampaignController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/list/{campID}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> findCampaignById(@PathVariable("campID") String campID){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/"+campID, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> findCampaignById(@PathVariable("campID") String campID, HttpServletRequest req){	
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/"+campID, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/list/not_equal/{campID}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> campNotQu(@PathVariable("campID") String campID){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/not_equal/"+campID, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> campNotQu(@PathVariable("campID") String campID, HttpServletRequest req){	
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/not_equal/"+campID, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
@@ -98,7 +137,14 @@ public class CrmCampaignController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addCampaign(@RequestBody CrmCampaign campaign){
+	public ResponseEntity<Map<String, Object>> addCampaign(@RequestBody CrmCampaign campaign, HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		campaign.setMeDataSource(dataSource);
 		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -106,34 +152,52 @@ public class CrmCampaignController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/edit/startup",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> editCampaignOnStartup(@RequestBody String json){	
-		HttpEntity<String> request = new HttpEntity<String>(json,header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/edit/startup", HttpMethod.POST, request, Map.class);
+	@RequestMapping(value="/edit/startup/{campId}/{username}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> editCampaignOnStartup(@PathVariable("campId") String campId, @PathVariable("username") String username, HttpServletRequest req){
+		CrmCampaign campaign = new CrmCampaign();
+		campaign.setCampID(campId);
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		campaign.setMeDataSource(dataSource);
+		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/edit/startup/"+username, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateCampaign(@RequestBody CrmCampaign campaign){
-		
+	public ResponseEntity<Map<String, Object>> updateCampaign(@RequestBody CrmCampaign campaign, HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		campaign.setMeDataSource(dataSource);
 		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/edit", HttpMethod.PUT, request, Map.class);
-		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/remove/{campId}",method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("campId") String campId){
-		
-		HttpEntity<String> request = new HttpEntity<String>(header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/remove/"+campId, HttpMethod.DELETE, request, Map.class);
-		
+	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("campId") String campId, HttpServletRequest req){
+		CrmCampaign campaign = new CrmCampaign();
+		campaign.setCampID(campId);
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		campaign.setMeDataSource(dataSource);
+		HttpEntity<Object> request = new HttpEntity<Object>(header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/remove", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 }
