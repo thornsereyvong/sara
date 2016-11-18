@@ -143,7 +143,20 @@ public class CrmContactController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addContact(@RequestBody CrmContact contact){
+	public ResponseEntity<Map<String, Object>> addContact(@RequestBody CrmContact contact, HttpServletRequest req){
+		
+		MeDataSource dataSource = new MeDataSource();
+		
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
+		dataSource.setUserid(mainController.getPrincipal());
+		System.out.println(dataSource.toString());
+		
+		contact.setMeDataSource(dataSource);
+		
 		HttpEntity<Object> request = new HttpEntity<Object>(contact,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -152,9 +165,21 @@ public class CrmContactController {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/contact/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateContact(@RequestBody CrmContact contact){
-		System.out.println(contact.getConSalutation());
+	@RequestMapping(value="/contact/edit",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> updateContact(@RequestBody CrmContact contact, HttpServletRequest req){
+		
+		MeDataSource dataSource = new MeDataSource();
+		
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
+		dataSource.setUserid(mainController.getPrincipal());
+		System.out.println(dataSource.toString());
+		
+		contact.setMeDataSource(dataSource);
+		
 		HttpEntity<Object> request = new HttpEntity<Object>(contact,header);
 		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/edit", HttpMethod.PUT, request, Map.class);

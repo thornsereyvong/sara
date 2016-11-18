@@ -58,6 +58,9 @@ public class CompanyController {
 		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
 		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		
+		
+		System.out.println(dataSource.toString());
+		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/config/database/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());

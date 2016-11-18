@@ -57,7 +57,6 @@ public class MeDataSource {
 	}
 	
 	public String toString(){
-		System.out.println(userid);
 		return ip+"/"+port+"/"+db+"/"+un+"/"+pw+"/"+userid;
 	}
 	
