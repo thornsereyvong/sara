@@ -936,9 +936,6 @@ function saleOrder(){
 		showLoaderOnConfirm: true, 
 		
 	}, function(){   
-		
-			    	
-		
 		setTimeout(function(){			
 			$.ajax({ 
 	    		url: server+"quote/edit-quote",

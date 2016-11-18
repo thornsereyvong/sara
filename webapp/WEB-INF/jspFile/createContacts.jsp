@@ -48,7 +48,7 @@ app.controller('contactController',['$scope','$http',function($scope, $http){
 
 	$scope.startupPage = function(){		
 		$http({
-		    method: 'GET',
+		    method: 'POST',
 		    url: "${pageContext.request.contextPath}/contact/startup/"+username,
 		    headers: {
 		    	'Accept': 'application/json',
