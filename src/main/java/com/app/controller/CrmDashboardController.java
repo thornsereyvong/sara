@@ -2,6 +2,8 @@ package com.app.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,18 +29,17 @@ public class CrmDashboardController {
 	private String URL;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/dashboard/startup/{username}",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> dashboardStartup(@PathVariable("username") String username){
-		
+	@RequestMapping(value="/dashboard/startup/{username}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> dashboardStartup(@PathVariable("username") String username, HttpServletRequest req){
 		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb("balancika_crm");
-		dataSource.setIp("192.168.0.2");
-		dataSource.setPort("3306");
-		dataSource.setUn("posadmin");
-		dataSource.setPw("Pa$$w0rd");
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/dashboard/view/"+username, HttpMethod.GET, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/dashboard/view/"+username, HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		

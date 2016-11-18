@@ -404,7 +404,7 @@ public class MainController {
 		
 		request.getSession().setAttribute("usernamedb", "posadmin");
 		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
-		request.getSession().setAttribute("ip", "192.168.0.2");
+		request.getSession().setAttribute("ip", "z200");
 		request.getSession().setAttribute("port", "3306");
 		
 		
@@ -822,7 +822,7 @@ public class MainController {
 	}
 
 	@RequestMapping("/update-call/{callId}")
-	public String updateCall(ModelMap model, @PathVariable String callId) {
+	public String updateCall(ModelMap model, @PathVariable String callId, HttpServletRequest req) {
 		model.addAttribute("menu", "updateCall");
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL");
 		
@@ -830,7 +830,7 @@ public class MainController {
 			if (camMap.get("roleEdit").equals("YES")) {
 				String json;
 				try {
-					json = new ObjectMapper().writeValueAsString(callController.CallID(callId));
+					json = new ObjectMapper().writeValueAsString(callController.CallID(callId, req));
 					model.addAttribute("calls", json);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
@@ -1543,7 +1543,7 @@ public class MainController {
 	public Map<String, Object> getRoleDetailsOfModule(String moduleId) {
 		MeDataSource dataSource = new MeDataSource();
 		dataSource.setDb("balancika_crm");
-		dataSource.setIp("192.168.0.2");
+		dataSource.setIp("z200");
 		dataSource.setPort("3306");
 		dataSource.setUn("posadmin");
 		dataSource.setPw("Pa$$w0rd");

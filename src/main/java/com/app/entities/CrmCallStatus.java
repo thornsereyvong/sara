@@ -2,17 +2,19 @@ package com.app.entities;
 
 
 public class CrmCallStatus {
-
-	
 	private int callStatusId;
-	
-	
 	private String callStatusName;
-	
-	
 	private String callStatusDes;
-
+	private MeDataSource meDataSource;
 	
+	public final MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public final void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
+
 	public int getCallStatusId() {
 		return callStatusId;
 	}
