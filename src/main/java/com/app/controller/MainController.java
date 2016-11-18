@@ -401,7 +401,7 @@ public class MainController {
 	@RequestMapping("/login")
 	public String login(ModelMap model, HttpServletRequest request) {
 		model.addAttribute("title", "App Login | CRM");
-		
+
 		request.getSession().setAttribute("usernamedb", "root");
 		request.getSession().setAttribute("passworddb", "123456");
 		request.getSession().setAttribute("ip", "localhost");
@@ -830,7 +830,7 @@ public class MainController {
 			if (camMap.get("roleEdit").equals("YES")) {
 				String json;
 				try {
-					json = new ObjectMapper().writeValueAsString(callController.CallID(callId));
+					json = new ObjectMapper().writeValueAsString(callController.CallID(callId, req));
 					model.addAttribute("calls", json);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
@@ -1549,9 +1549,6 @@ public class MainController {
 		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
 		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		dataSource.setUserid(req.getSession().getAttribute("userActivity").toString());	
-		
-	
-		
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL + "api/role_detail/list/user/" + getPrincipal() + "/"
