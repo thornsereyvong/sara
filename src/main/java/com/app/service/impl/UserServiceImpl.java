@@ -27,7 +27,10 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private HttpHeaders header;
-
+	
+	@Autowired
+	private MeDataSource dataSource;
+	
 	@Transactional
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -36,16 +39,10 @@ public class UserServiceImpl implements UserService{
 			RestTemplate restTemplate = new RestTemplate();
 			CrmUser user = new CrmUser();
 			user.setUsername(username);
-			MeDataSource dataSource = new MeDataSource();
-			dataSource.setIp("192.168.0.2");
-			dataSource.setDb("balancika_crm");
-			dataSource.setPort("3306");
-			dataSource.setUn("posadmin");
-			dataSource.setPw("Pa$$w0rd");
 			user.setDataSource(dataSource);
-			HttpEntity<Object> request = new HttpEntity<Object>(user,header);
+			HttpEntity<Object> req = new HttpEntity<Object>(user, header);
 			/* Call from Web Service with URL+"/api/user/login/web" */
-	        ResponseEntity<Map> response = restTemplate.exchange(URL+"/api/user/login/web", HttpMethod.POST , request , Map.class);
+	        ResponseEntity<Map> response = restTemplate.exchange(URL+"/api/user/login/web", HttpMethod.POST , req , Map.class);
 	        Map<String, Object> map = (HashMap<String, Object>)response.getBody();
 	        if(map.get("DATA") != null){
 	        	 ObjectMapper mapper = new ObjectMapper();

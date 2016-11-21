@@ -401,14 +401,10 @@ public class MainController {
 	@RequestMapping("/login")
 	public String login(ModelMap model, HttpServletRequest request) {
 		model.addAttribute("title", "App Login | CRM");
-		
 		request.getSession().setAttribute("usernamedb", "posadmin");
 		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
-		request.getSession().setAttribute("ip", "z200");
+		request.getSession().setAttribute("ip", "192.168.0.128");
 		request.getSession().setAttribute("port", "3306");
-		
-		
-		
 		return "login";
 	}
 

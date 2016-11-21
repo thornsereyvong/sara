@@ -4,6 +4,7 @@ package com.app.configuration.securities;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +27,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String username = authentication.getName().trim();
 		String password = authentication.getCredentials().toString().trim();
-		
 		CrmUser user = userService.findUserByUsername(username);
 		if(user != null){
 			if(username.equalsIgnoreCase(user.getUsername()) && password.equals(new PasswordEncrypt().BalDecrypt(user.getPassword()))){
