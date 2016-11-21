@@ -183,14 +183,13 @@ public class CrmUserController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/login",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> loginUser(@ModelAttribute CrmUser user){
-		System.out.println(user.getUsername());
+	public ResponseEntity<Map<String, Object>> loginUser(@ModelAttribute CrmUser user, HttpServletRequest req){
 		MeDataSource dataSource = new MeDataSource();
-		dataSource.setIp("192.168.0.2");
-		dataSource.setDb("balancika_crm");
-		dataSource.setPort("3306");
-		dataSource.setPw("Pa$$w0rd");
-		dataSource.setUn("posadmin");
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		user.setDataSource(dataSource);
 		HttpEntity<Object> request = new HttpEntity<Object>(user, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/login/web/", HttpMethod.POST, request, Map.class);
@@ -200,8 +199,14 @@ public class CrmUserController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/list/tags",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> listTagsUser(){
-		HttpEntity<Object> request = new HttpEntity<Object>(header);
+	public ResponseEntity<Map<String, Object>> listTagsUser(HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/user_tags", HttpMethod.GET, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
 	}
