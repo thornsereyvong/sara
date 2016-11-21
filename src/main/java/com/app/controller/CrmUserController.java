@@ -151,12 +151,16 @@ public class CrmUserController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateCampaign(@RequestBody CrmUser user){
-		
+	public ResponseEntity<Map<String, Object>> updateCampaign(@RequestBody CrmUser user, HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		user.setDataSource(dataSource);
 		HttpEntity<Object> request = new HttpEntity<Object>(user,header);
-		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/edit", HttpMethod.PUT, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
