@@ -49,18 +49,12 @@ public class CompanyController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/database", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> listDatabases(HttpServletRequest req){
-		
 		MeDataSource dataSource = new MeDataSource();
-		
 		dataSource.setDb("systemdatabase");
 		dataSource.setIp(req.getSession().getAttribute("ip").toString());
 		dataSource.setPort(req.getSession().getAttribute("port").toString());
 		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
 		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		
-		
-		System.out.println(dataSource.toString());
-		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/config/database/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -43,13 +45,13 @@ public class CrmUserController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/list/subordinate/{username}",method = RequestMethod.POST)
-	public String getUserById(@PathVariable("username") String username){
+	public String getUserById(@PathVariable("username") String username, HttpServletRequest req){
 		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb("balancika_crm");
-		dataSource.setIp("192.168.0.2");
-		dataSource.setPort("3306");
-		dataSource.setUn("posadmin");
-		dataSource.setPw("Pa$$w0rd");
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/subordinate/"+username, HttpMethod.POST, request, Map.class);
 		Map<String, Object> userMap = (HashMap<String, Object>)response.getBody();
@@ -64,17 +66,19 @@ public class CrmUserController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/list/username/{username}",method = RequestMethod.GET)
-	public String getUserNameByName(@PathVariable("username") String username){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/"+username, HttpMethod.GET, request, Map.class);
+	public String getUserNameByName(@PathVariable("username") String username, HttpServletRequest req){	
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/"+username, HttpMethod.POST, request, Map.class);
 		Map<String, Object> userMap = (HashMap<String, Object>)response.getBody();
 		String userId = "";
 		if(userMap.get("DATA") != null){
-			/*Gson convert = new Gson();
-			CrmUser user =  (CrmUser) userMap.get("DATA");
-			return convert.toJson(user);*/
 			Map<String, Object> map = (Map<String, Object>) userMap.get("DATA");
-			
 			userId = (String) map.get("userID");
        }
 		return userId;	
@@ -83,17 +87,29 @@ public class CrmUserController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/list/subordinate/admin/{username}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> TaskStatusID(@PathVariable("username") String username){
-		HttpEntity<Object> request = new HttpEntity<Object>(header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/subordinate/"+username, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> TaskStatusID(@PathVariable("username") String username, HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/subordinate/"+username, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/list/id/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getUserReport(@PathVariable("id") String id){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/id/"+id, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> getUserReport(@PathVariable("id") String id, HttpServletRequest req){	
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/id/"+id, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
@@ -101,11 +117,16 @@ public class CrmUserController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/list",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllUser(){
-		
-		HttpEntity<String> request = new HttpEntity<String>(header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list", HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> getAllUser(HttpServletRequest req){
+
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list", HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
@@ -113,12 +134,16 @@ public class CrmUserController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addCampaign(@RequestBody CrmUser user){
-		
+	public ResponseEntity<Map<String, Object>> addCampaign(@RequestBody CrmUser user, HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		user.setDataSource(dataSource);
 		HttpEntity<Object> request = new HttpEntity<Object>(user,header);
-		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/add", HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}

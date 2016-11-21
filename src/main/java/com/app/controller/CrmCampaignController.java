@@ -25,8 +25,6 @@ import com.app.utilities.RestUtil;
 @RequestMapping(value="/")
 public class CrmCampaignController {
 	
-	//private final String URL = "";
-	
 	@Autowired
 	private RestTemplate  restTemplate;
 	

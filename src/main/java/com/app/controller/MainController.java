@@ -205,7 +205,7 @@ public class MainController {
 	@RequestMapping("/user-management")
 	public String userManagement(ModelMap model, HttpSession session, HttpServletRequest request) {
 		model.addAttribute("menu", "userManagement");
-		session.setAttribute("userId", userController.getUserNameByName(getPrincipal()));
+		session.setAttribute("userId", userController.getUserNameByName(getPrincipal(), request));
 		
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CA", request);
@@ -1493,7 +1493,7 @@ public class MainController {
 	public String header(ModelMap model, HttpSession session, HttpServletRequest request) {
 		
 		session.setAttribute("SESSION", getPrincipal());
-		session.setAttribute("users", userController.getUserById(getPrincipal()));
+		session.setAttribute("users", userController.getUserById(getPrincipal(), request));
 		return "layout/header";
 	}
 
