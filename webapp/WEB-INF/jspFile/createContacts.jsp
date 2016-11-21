@@ -45,7 +45,6 @@ var app = angular.module('contactApp', []);
 var self = this;
 var username = "${SESSION}";
 app.controller('contactController',['$scope','$http',function($scope, $http){
-
 	$scope.startupPage = function(){		
 		$http({
 		    method: 'POST',
@@ -60,8 +59,7 @@ app.controller('contactController',['$scope','$http',function($scope, $http){
 			$scope.assignTo = response.ASSIGN_TO;
 			$scope.reportTo = response.REPORT_TO;
 		});
-	};
-		
+	};		
 }]);
 
 

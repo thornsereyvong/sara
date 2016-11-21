@@ -1480,9 +1480,9 @@ public class MainController {
 
 	@RequestMapping("head")
 	public String head(ModelMap model, HttpServletRequest request) {
-		request.getSession().setAttribute("usernamedb", "posadmin");
-		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
-		request.getSession().setAttribute("ip", "192.168.0.2");
+		request.getSession().setAttribute("usernamedb", "root");
+		request.getSession().setAttribute("passworddb", "123456");
+		request.getSession().setAttribute("ip", "localhost");
 		request.getSession().setAttribute("port", "3306");
 		
 		return "layout/head";
