@@ -61,6 +61,9 @@ public class MainController {
 
 	@Autowired
 	private String URL;
+	
+	@Autowired
+	private MeDataSource dataSource;
 
 	/* -- Front Page -- */
 
@@ -403,8 +406,12 @@ public class MainController {
 		model.addAttribute("title", "App Login | CRM");
 		request.getSession().setAttribute("usernamedb", "posadmin");
 		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
-		request.getSession().setAttribute("ip", "192.168.0.128");
+		request.getSession().setAttribute("ip", "192.168.0.2");
 		request.getSession().setAttribute("port", "3306");
+		dataSource.setIp("192.168.0.2");
+		dataSource.setPort("3306");
+		dataSource.setUn("posadmin");
+		dataSource.setPw("Pa$$w0rd");
 		return "login";
 	}
 
@@ -1480,9 +1487,9 @@ public class MainController {
 
 	@RequestMapping("head")
 	public String head(ModelMap model, HttpServletRequest request) {
-		request.getSession().setAttribute("usernamedb", "root");
-		request.getSession().setAttribute("passworddb", "123456");
-		request.getSession().setAttribute("ip", "localhost");
+		request.getSession().setAttribute("usernamedb", "posadmin");
+		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
+		request.getSession().setAttribute("ip", "192.168.0.2");
 		request.getSession().setAttribute("port", "3306");
 		
 		return "layout/head";
