@@ -406,10 +406,10 @@ public class MainController {
 		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
 		request.getSession().setAttribute("ip", "192.168.0.2");
 		request.getSession().setAttribute("port", "3306");
-		dataSource.setIp("192.168.0.2");
-		dataSource.setPort("3306");
-		dataSource.setUn("posadmin");
-		dataSource.setPw("Pa$$w0rd");
+		dataSource.setIp(request.getSession().getAttribute("ip").toString());
+		dataSource.setPort(request.getSession().getAttribute("port").toString());
+		dataSource.setUn(request.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(request.getSession().getAttribute("passworddb").toString());
 		return "login";
 	}
 
@@ -915,7 +915,7 @@ public class MainController {
 			if (camMap.get("roleEdit").equals("YES")) {
 				String json;
 				try {
-					json = new ObjectMapper().writeValueAsString(meetingController.findmeetingById(custID));
+					json = new ObjectMapper().writeValueAsString(meetingController.findmeetingById(custID,req));
 					model.addAttribute("meeting", json);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
@@ -1081,7 +1081,7 @@ public class MainController {
 			if (camMap.get("roleEdit").equals("YES")) {
 				String json;
 				try {
-					json = new ObjectMapper().writeValueAsString(eventController.findEventById(custID));
+					json = new ObjectMapper().writeValueAsString(eventController.findEventById(custID, req));
 					model.addAttribute("event", json);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
@@ -1326,7 +1326,7 @@ public class MainController {
 			if (camMap.get("roleEdit").equals("YES")) {
 				String json;
 				try {
-					json = new ObjectMapper().writeValueAsString(locationController.EventLocationID(custID));
+					json = new ObjectMapper().writeValueAsString(locationController.EventLocationID(custID, req));
 					model.addAttribute("locations", json);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
@@ -1472,13 +1472,6 @@ public class MainController {
 	/* close employee */
 	
 	
-	
-	
-	
-	
-	
-	
-	
 	/* Other */
 
 	/* File Layout */
@@ -1489,9 +1482,7 @@ public class MainController {
 		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
 		request.getSession().setAttribute("ip", "192.168.0.2");
 		request.getSession().setAttribute("port", "3306");
-		
 		return "layout/head";
-		
 	}
 
 	@RequestMapping("header")

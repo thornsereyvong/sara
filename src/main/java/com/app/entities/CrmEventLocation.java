@@ -4,48 +4,29 @@ import java.util.Date;
 
 public class CrmEventLocation {
 
-
-
-
 	private String loId;
-
 	private String loName;
-	
-
 	private String loNo;
-	
-
 	private String loStreet;
-	
-
 	private String village;
-	
-
 	private String loCommune;
-	
-
 	private String loDistrict;
-	
-
 	private String loCity;
-	
-
 	private String loState;
-	
-
 	private String loCountry;
-	
-
 	private String loCreateBy;
-	
-
 	private Date loCreateDate;
-	
-
 	private String loModifiedBy;
-	
-
 	private Date loModifiedDate;
+	private MeDataSource dataSource;
+
+	public final MeDataSource getDataSource() {
+		return dataSource;
+	}
+
+	public final void setDataSource(MeDataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 
 	public String getLoId() {
 		return loId;

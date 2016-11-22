@@ -3,12 +3,17 @@ package com.app.entities;
 public class CrmMeetingStatus {
 
 	private int statusId;
-	
-
 	private String statusName;
-
-
 	private String statusDes;
+	private MeDataSource meDataSource;
+	
+	public  MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public CrmMeetingStatus() {
 		

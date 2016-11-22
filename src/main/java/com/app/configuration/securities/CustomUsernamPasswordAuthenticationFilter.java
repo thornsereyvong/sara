@@ -18,9 +18,9 @@ public class CustomUsernamPasswordAuthenticationFilter extends UsernamePasswordA
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 		final String databaseName = request.getParameter("company");
-		dataSource.setDb(databaseName);
 		request.getSession().setAttribute("databaseName", databaseName);		
 		request.getSession().setAttribute("userActivity", request.getParameter("crm_username"));
+		dataSource.setDb(request.getSession().getAttribute("databaseName").toString());
 		return super.attemptAuthentication(request, response);
 	}
 }
