@@ -2,6 +2,8 @@ package com.app.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +18,10 @@ import org.springframework.web.client.RestTemplate;
 
 
 
+
+
 import com.app.entities.CrmLead;
+import com.app.entities.MeDataSource;
 
 
 @RestController
@@ -34,7 +39,13 @@ public class CrmLeadController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/list",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> getAllLead(@RequestBody String json){	
+	public ResponseEntity<Map<String, Object>> getAllLead(@RequestBody String json, HttpServletRequest req){	
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		HttpEntity<String> request = new HttpEntity<String>(json,header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
@@ -52,9 +63,15 @@ public class CrmLeadController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/lead/list_all",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllleads(){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/list_all", HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> getAllleads(HttpServletRequest req){	
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/list_all", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
 	}
 	
@@ -161,11 +178,8 @@ public class CrmLeadController {
 	public ResponseEntity<Map<String, Object>> startupViewLead(@RequestBody String json){
 		
 		HttpEntity<String> request = new HttpEntity<String>(json,header);
-		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/edit/startup", HttpMethod.POST, request, Map.class);
-		 
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	

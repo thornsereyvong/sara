@@ -37,6 +37,10 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	public HttpHeaders headsers(){
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Basic V0VCQVBJOldFQkFQSQ==");
+		headers.add("dbUsername", "posadmin");
+		headers.add("ip", "192.168.0.2");
+		headers.add("port", "3306");
+		headers.add("dbPassword","password");
 		return headers; 
 	}
 	
