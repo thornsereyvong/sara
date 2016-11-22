@@ -27,8 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class MainController {
 
-	
-
 	@Autowired
 	private CrmUserController userController;
 
