@@ -43,6 +43,8 @@ public class CrmContactController {
 	@Autowired
 	private String URL;
 	
+
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/view/{userId}/{custId}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> viewContact( @PathVariable("userId") String userId, @PathVariable("custId") String custId){
@@ -53,19 +55,10 @@ public class CrmContactController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/startup/{username}",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> getStartup(@PathVariable("username") String username,HttpServletRequest req){	
+	public ResponseEntity<Map<String, Object>> getStartup(@PathVariable("username") String username,HttpServletRequest req){		
 		
-		MeDataSource dataSource = new MeDataSource();
-		
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
-		dataSource.setUserid(mainController.getPrincipal());
-		
-		
-		System.out.println(dataSource.toString());				
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/startup/"+username, HttpMethod.POST, request, Map.class);
@@ -87,14 +80,9 @@ public class CrmContactController {
 	@RequestMapping(value="/contact/list", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> getAllContact(HttpServletRequest req){
 		
-		MeDataSource dataSource = new MeDataSource();
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
 		
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
-		dataSource.setUserid(mainController.getPrincipal());
 		System.out.println(dataSource.toString());
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
@@ -146,12 +134,7 @@ public class CrmContactController {
 		
 		MeDataSource dataSource = new MeDataSource();
 		
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
-		dataSource.setUserid(mainController.getPrincipal());
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
 		System.out.println(dataSource.toString());
 		
 		contact.setMeDataSource(dataSource);

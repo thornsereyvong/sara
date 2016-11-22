@@ -1,5 +1,7 @@
 package com.app.entities;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -62,5 +64,14 @@ public class MeDataSource {
 	public String toString(){
 		return ip+"/"+port+"/"+db+"/"+un+"/"+pw+"/"+userid;
 	}
-	
+	public MeDataSource getMeDataSourceByHttpServlet(HttpServletRequest req,String user){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
+		dataSource.setUserid(user);				
+		return dataSource;
+	}
 }
