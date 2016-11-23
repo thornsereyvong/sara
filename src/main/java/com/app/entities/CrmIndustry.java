@@ -18,7 +18,16 @@ public class CrmIndustry {
 	private String description;
 	
 	private List<CrmLead> lead;
+	private MeDataSource meDataSource;
 	
+	public final MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public final void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
+
 	public List<CrmLead> getLead() {
 		return lead;
 	}

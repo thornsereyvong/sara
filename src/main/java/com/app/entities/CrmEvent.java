@@ -19,6 +19,15 @@ public class CrmEvent{
 	private Date evModifiedDate;
 	private String evRelatedToModuleType;
 	private String evRelatedToModuleId;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public String getEvId() {
 		return evId;

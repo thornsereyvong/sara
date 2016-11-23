@@ -21,8 +21,17 @@ public class CrmMeeting {
 	private Date meetingCreateDate;
 	private String meetingModifiedBy;
 	private Date meetingModifiedDate;
+	private MeDataSource meDataSource;
 	
 	
+	public  MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
+
 	public String getMeetingId() {
 		return meetingId;
 	}
