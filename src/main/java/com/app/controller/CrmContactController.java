@@ -27,10 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping(value="/")
 public class CrmContactController {
 	
-	//private final String URL = "";
-	@Autowired
-	private ObjectMapper objectMapper;
-	
 	@Autowired
 	private MainController mainController;
 	
@@ -41,15 +37,17 @@ public class CrmContactController {
 	private HttpHeaders header;
 	
 	@Autowired
-	private String URL;
-	
-
+	private String URL;	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/view/{userId}/{custId}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> viewContact( @PathVariable("userId") String userId, @PathVariable("custId") String custId){
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/view/"+custId+"/"+userId, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> viewContact( @PathVariable("userId") String userId, @PathVariable("custId") String custId, HttpServletRequest req){
+		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/view/"+custId+"/"+userId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
 	}
 	
@@ -122,6 +120,9 @@ public class CrmContactController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/add/startup",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addStartup(@RequestBody String obj){
+		
+		
+		
 		HttpEntity<Object> request = new HttpEntity<Object>(obj,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/add/startup", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -132,11 +133,8 @@ public class CrmContactController {
 	@RequestMapping(value="/contact/add",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addContact(@RequestBody CrmContact contact, HttpServletRequest req){
 		
-		MeDataSource dataSource = new MeDataSource();
-		
-		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
-		System.out.println(dataSource.toString());
-		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());		
 		contact.setMeDataSource(dataSource);
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(contact,header);
