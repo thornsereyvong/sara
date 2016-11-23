@@ -82,7 +82,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			
 			
 			$scope.listAllCallByLeadId(response.CALLS);	
-			$scope.listAllMeetByLeadId(response.MEETINGS);	
+			$scope.listAllMeetByLeadId(response.METTINGS);	
 			$scope.listAllTaskByLeadId(response.TASKS);
 			$scope.listAllEventByLeadId(response.EVENTS);
 			
@@ -98,7 +98,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			$scope.meetStatusStartup = response.MEETING_STATUS;				
 			$scope.tags = response.TAG_TO;
 			
-			
+		
 			addContactToTask(response.CONTACTS);
 			
 	}

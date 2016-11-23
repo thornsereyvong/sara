@@ -9,6 +9,16 @@ public class CrmTaskStatus {
 	
 
 	private String taskStatusDes;
+	
+	private MeDataSource meDataSource;
+	
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getTaskStatusId() {
 		return taskStatusId;

@@ -34,7 +34,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	$scope.deleteCon = function(conId){
 		
 		swal({   
-			title: "<span style='font-size: 25px;'>You are about to delete contact with id: <span style='color:#F8BB86'>"+conId+"</span> .</span>",   
+			title: "<span style='font-size: 25px;'>You are about to delete contact with ID: <span class='color_msg'>"+conId+"</span>.</span>",   
 			text: "Click OK to continue or CANCEL to abort.",   
 			type: "info", 
 			html: true,
@@ -55,9 +55,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		    	    success: function(result){	  
 		    			if(result.MESSAGE == "DELETED"){	    				
 		    				swal({
-		    					title:"Successful!",
-		    					text: "The contact with record id: '"+conId+"'  was successfully deleted!", 
-		    					type:"success",  
+		    					title:"SUCCESSFUL",
+		    					text: "The contact with record ID: '"+conId+"'  was successfully deleted!", 
+		    					type:"success", 
+		    					html: true,
 		    					timer: 2000,   
 		    					showConfirmButton: false
 		    				});
@@ -76,58 +77,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			}, 500);
 		});	
 		
-		
-		<%-- swal({
-            title: "Are you sure?", //Bold text
-            text: "This Contact will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-        	 var str = '<%=roleDelete%>';
-	            
-	            if(isConfirm){
-
-					if(str == "YES"){
-						 $http.delete("${pageContext.request.contextPath}/contact/remove/"+oppID)
-				            .success(function(){
-				            		swal({
-						            		title:"Deleted",
-						            		text:"Contact have been deleted!",
-						            		type:"success",  
-						            		timer: 2000,   
-						            		showConfirmButton: false
-				            		});
-				            		
-				            		$scope.listContact();
-				            		
-					      });
-					}else{
-						swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					}
-            } else {
-                swal({
-	                title:"Cancelled",
-	                text:"This Contact is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        }); --%>
 	};
 	
 }]);
 
-//alert($.session.get("parentID"));
 
 </script>
 
@@ -203,7 +156,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 
 						<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 							<td>{{cc.conID}}</td>
-							<td>{{cc.conSalutation}}{{cc.conFirstName}} {{cc.conLastName}}</td>
+							<td>{{cc.conSalutation}} {{cc.conFirstName}} {{cc.conLastName}}</td>
 							<td>{{cc.conTitle}}</td>
 							
 							<td><span ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}}</span></td>

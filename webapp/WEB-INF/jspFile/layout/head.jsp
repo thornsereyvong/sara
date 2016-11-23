@@ -43,6 +43,7 @@
 	.iText-right{ text-align:right !important; }
 	.dis-number{ text-align:right !important; margin-right: 10px !important; width:120px !important;}
 	.iPanel{ margin-top: -25px; }
+	.color_msg{ color:#F8BB86 !important; }
 </style>
 
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.min.js"></script>

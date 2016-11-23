@@ -2,6 +2,8 @@ package com.app.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.app.entities.CrmTaskStatus;
+import com.app.entities.MeDataSource;
 
 
 @RestController
@@ -24,6 +27,9 @@ public class CrmTaskStatusController {
 	RestTemplate  restTemplate = new RestTemplate();
 	
 	@Autowired
+	private MainController mainController;
+	
+	@Autowired
 	private HttpHeaders header;
 	
 	@Autowired
@@ -31,11 +37,13 @@ public class CrmTaskStatusController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task_status/list",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllTaskStatus(){
+	public ResponseEntity<Map<String, Object>> getAllTaskStatus(HttpServletRequest req){
 		
-		HttpEntity<String> request = new HttpEntity<String>(header);
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());				
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);
 		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task_status/list", HttpMethod.GET, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task_status/list", HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
@@ -43,7 +51,12 @@ public class CrmTaskStatusController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task_status/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addTaskStatus(@RequestBody CrmTaskStatus status){
+	public ResponseEntity<Map<String, Object>> addTaskStatus(@RequestBody CrmTaskStatus status,HttpServletRequest req){
+		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());	
+		
+		status.setMeDataSource(dataSource);
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
 		
@@ -56,11 +69,14 @@ public class CrmTaskStatusController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task_status/list/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> TaskStatusID(@PathVariable("id") String id){
+	public ResponseEntity<Map<String, Object>> TaskStatusID(@PathVariable("id") String id,HttpServletRequest req){
 		
-		HttpEntity<Object> request = new HttpEntity<Object>(header);
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());	
 		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task_status/list/"+id, HttpMethod.GET, request, Map.class);
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);
+		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task_status/list/"+id, HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
@@ -69,7 +85,12 @@ public class CrmTaskStatusController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task_status/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateTaskStatus(@RequestBody CrmTaskStatus status){
+	public ResponseEntity<Map<String, Object>> updateTaskStatus(@RequestBody CrmTaskStatus status,HttpServletRequest req){
+		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());	
+		
+		status.setMeDataSource(dataSource);
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
 		
@@ -81,9 +102,12 @@ public class CrmTaskStatusController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task_status/remove/{statusID}",method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteTaskStatus(@PathVariable("statusID") String statusID){
+	public ResponseEntity<Map<String, Object>> deleteTaskStatus(@PathVariable("statusID") String statusID,HttpServletRequest req){
 		
-		HttpEntity<String> request = new HttpEntity<String>(header);
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());	
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);
 		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task_status/remove/"+statusID, HttpMethod.DELETE, request, Map.class);
 		

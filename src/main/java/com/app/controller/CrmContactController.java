@@ -65,9 +65,13 @@ public class CrmContactController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/startup/{username}/{conId}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getStartupWithEdit(@PathVariable("username") String username ,@PathVariable("conId") String conId){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/startup/"+username+"/"+conId, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> getStartupWithEdit(@PathVariable("username") String username ,@PathVariable("conId") String conId,HttpServletRequest req){	
+		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/startup/"+username+"/"+conId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
@@ -75,7 +79,7 @@ public class CrmContactController {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/contact/list", method = RequestMethod.POST)
+	@RequestMapping(value="/contact/list", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getAllContact(HttpServletRequest req){
 		
 		MeDataSource dataSource = new MeDataSource();		
@@ -110,21 +114,26 @@ public class CrmContactController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/list/{contact}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> findContactById(@PathVariable("contact") String contact){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/list/"+contact, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> findContactById(@PathVariable("contact") String contact, HttpServletRequest req){	
+		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());		
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/list/"+contact, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/add/startup",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addStartup(@RequestBody String obj){
+	public ResponseEntity<Map<String, Object>> addStartup(@RequestBody String obj,HttpServletRequest req){
 		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
 		
-		
-		HttpEntity<Object> request = new HttpEntity<Object>(obj,header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/add/startup", HttpMethod.POST, request, Map.class);
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/startup/"+obj, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
@@ -148,21 +157,13 @@ public class CrmContactController {
 	@RequestMapping(value="/contact/edit",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> updateContact(@RequestBody CrmContact contact, HttpServletRequest req){
 		
-		MeDataSource dataSource = new MeDataSource();
-		
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
-		dataSource.setUserid(mainController.getPrincipal());
-		System.out.println(dataSource.toString());
-		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());		
 		contact.setMeDataSource(dataSource);
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(contact,header);
 		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/edit", HttpMethod.PUT, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/edit", HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
@@ -171,16 +172,8 @@ public class CrmContactController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/contact/remove/{contact}",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("contact") String contact,HttpServletRequest req){
-		MeDataSource dataSource = new MeDataSource();
-		
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());				
-		dataSource.setUserid(mainController.getPrincipal());
-		System.out.println(dataSource.toString());
-		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
 		CrmContact con = new CrmContact();
 		con.setConID(contact);
 		con.setMeDataSource(dataSource);

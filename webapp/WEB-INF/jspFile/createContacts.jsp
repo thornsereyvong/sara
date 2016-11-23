@@ -222,8 +222,83 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {
-			
-		$.ajax({
+		
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to create contact.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/contact/add",
+					method: "POST",
+					data : JSON.stringify({
+					      "conSalutation" : getValueStringById("con_salutation"),
+						  "conFirstname": getValueStringById("con_firstName"),
+					      "conLastname": getValueStringById("con_lastName"),
+					      "conPhone": getValueStringById("con_phone"),
+					      "conMobile": getValueStringById("con_mobilePhone"),
+					      "conEmial": getValueStringById("con_email"),
+					      "conTitle": getValueStringById("con_title"),
+					      "conDepartment": getValueStringById("con_department"),
+					      "conNo": getValueStringById("con_no"),
+					      "conStreet": getValueStringById("con_street"),
+					      "conVillage": getValueStringById("con_village"),
+					      "conCommune": getValueStringById("con_commune"),
+					      "conDistrict": getValueStringById("con_district"),
+					      "conCity": getValueStringById("con_city"),
+					      "conState": getValueStringById("con_state"),
+					      "conCountry": getValueStringById("con_country"),
+					      "conAssignTo": getJsonById("userID","con_assignedTo","str"),
+					      "conLeadSource": getJsonById("sourceID","con_leadSource","int"),
+					      "conReportTo": getJsonById("conID","con_report","str"),
+					      "conCreateBy": username,
+					      "customer": getJsonById("custID","con_customer","str")
+				    }),	
+					beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+				    }, 
+				    success: function(result){
+				    	
+						if(result.MESSAGE == "INSERTED"){						
+							
+		    				swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success"
+	    					});
+		    											
+		    				setTimeout(function(){		
+		    					$("#con_customer").select2("val","");	
+		    					$("#con_assignedTo").select2("val","");
+		    					$("#con_report").select2("val","");
+		    					$("#con_leadSource").select2("val","");
+		    					$("#form-contact").bootstrapValidator('resetForm', 'true');
+		    					$('#form-contact')[0].reset(); 		    					
+		    				},2000);
+																														
+						}else{
+							swal("UNSUCCESSFUL!", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			swal("UNSUCCESSFUL!", "Please try again!", "error");
+		    		} 
+				});
+			}, 500);
+		});
+		
+		
+		
+		
+		/* $.ajax({
 			url : "${pageContext.request.contextPath}/contact/add",
 			type : "POST",
 			data : JSON.stringify({
@@ -276,7 +351,7 @@ $(document).ready(function() {
 			error:function(){
 				alertMsgErrorSweet();	
 			}							
-		});		
+		});	 */	
 	});		
 });
 </script>
@@ -463,7 +538,7 @@ $(document).ready(function() {
 								<div class="form-group">
 									<select class="form-control select2" name="con_report" id="con_report" style="width:100%">
 										<option value="">-- SELECT Report To --</option>
-										<option ng-repeat="u in reportTo" value="{{u.conID}}">[{{u.conID}}] {{u.conSalutation}}{{u.conFirstname}} {{u.conLastname}}</option> 
+										<option ng-repeat="u in reportTo" value="{{u.conID}}">[{{u.conID}}] {{u.conSalutation}} {{u.conFirstname}} {{u.conLastname}}</option> 
 									</select>
 								</div>
 							</div>

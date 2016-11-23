@@ -238,7 +238,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/contact/edit",
-			type : "PUT",
+			type : "POST",
 			data : JSON.stringify({
 				  "conID" : conId,
 			      "conSalutation" : getValueStringById("con_salutation"),
@@ -330,27 +330,27 @@ $(document).ready(function() {
 			                                     <option value="Prof.">Prof.</option>
 			                                  </select>
 										</span>
-										<input type="text" class="form-control" value="{{CONTACT.conFirstName}}" name="con_firstName" id="con_firstName">
+										<input type="text" class="form-control ng-cloak" value="{{CONTACT.conFirstName}}" name="con_firstName" id="con_firstName">
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-3">
 								<label class="font-label">Last name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text" class="form-control" value="{{CONTACT.conLastName}}" name="con_lastName" id="con_lastName">
+									<input type="text" class="form-control ng-cloak" value="{{CONTACT.conLastName}}" name="con_lastName" id="con_lastName">
 								</div>
 							</div>
 							<div class="col-sm-3">
 								<label>Phone <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text"  value="{{CONTACT.conPhone}}" class="form-control" id="con_phone" name="con_phone">
+									<input type="text"  value="{{CONTACT.conPhone}}" class="form-control ng-cloak" id="con_phone" name="con_phone">
 								</div>	
 							</div>
 													
 							<div class="col-sm-3">
 								<label class="font-label">Mobile phone :</label>
 								<div class="form-group">
-									<input type="text"  value="{{CONTACT.conMobile}}" class="form-control" id="con_mobilePhone" name="con_mobilePhone">
+									<input type="text"  value="{{CONTACT.conMobile}}" class="form-control ng-cloak" id="con_mobilePhone" name="con_mobilePhone">
 								</div>	
 							</div>
 							
@@ -367,21 +367,21 @@ $(document).ready(function() {
 							<div class="col-sm-3">
 								<label>Title </label>
 								<div class="form-group">
-									<input type="text"  value="{{CONTACT.conTitle}}"  class="form-control" id="con_title" name="con_title">
+									<input type="text"  value="{{CONTACT.conTitle}}"  class="form-control ng-cloak" id="con_title" name="con_title">
 								</div>
 							</div>
 							
 							<div class="col-sm-3">
 								<label class="font-label">Department </label>
 								<div class="form-group">
-									<input type="text"  value="{{CONTACT.conDepartment}}"  class="form-control" id="con_department" name="con_department">
+									<input type="text"  value="{{CONTACT.conDepartment}}"  class="form-control ng-cloak" id="con_department" name="con_department">
 								</div>	
 							</div>
 								
 							<div class="col-sm-3">
 								<label class="font-label">Email :</label>
 								<div class="form-group">
-									<input type="email"  value="{{CONTACT.conEmail}}"  class="form-control" id="con_email" name="con_email">
+									<input type="email"  value="{{CONTACT.conEmail}}"  class="form-control ng-cloak" id="con_email" name="con_email">
 								</div>
 							</div>
 							<div class="clearfix"></div>							
@@ -398,56 +398,56 @@ $(document).ready(function() {
 							<div class="col-sm-3">
 								<label class="font-label">No </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" value="{{LEAD.no}}" id="con_no" name="con_no">
+									<input type="text"  class="form-control ng-cloak" value="{{LEAD.no}}" id="con_no" name="con_no">
 								</div>	
 							</div>
 							
 							<div class="col-sm-3">
 								<label class="font-label">Street </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" value="{{LEAD.street}}" id="con_street" name="con_street">
+									<input type="text"  class="form-control ng-cloak" value="{{LEAD.street}}" id="con_street" name="con_street">
 								</div>
 							</div>
 							
 							<div class="col-sm-3">
 								<label class="font-label">Village </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" value="{{LEAD.village}}"  id="con_village" name="con_village">
+									<input type="text"  class="form-control ng-cloak" value="{{LEAD.village}}"  id="con_village" name="con_village">
 								</div>
 							</div>
 							
 							<div class="col-sm-3">
 								<label class="font-label">Commune </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" value="{{LEAD.commune}}" id="con_commune" name="con_commune">
+									<input type="text"  class="form-control ng-cloak" value="{{LEAD.commune}}" id="con_commune" name="con_commune">
 								</div>	
 							</div>
 							<div class="clearfix"></div>
 							<div class="col-sm-3">
 								<label class="font-label">District </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" value="{{LEAD.district}}" id="con_district" name="con_district">
+									<input type="text"  class="form-control ng-cloak" value="{{LEAD.district}}" id="con_district" name="con_district">
 								</div>
 							</div>
 							
 							<div class="col-sm-3">
 								<label class="font-label">City </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" value="{{LEAD.city}}" id="con_city" name="con_city">
+									<input type="text"  class="form-control ng-cloak" value="{{LEAD.city}}" id="con_city" name="con_city">
 								</div>	
 							</div>
 							
 							<div class="col-sm-3">
 								<label class="font-label">State</label>
 								<div class="form-group">
-									<input type="text"  class="form-control" value="{{LEAD.state}}" id="con_state" name="con_state">
+									<input type="text"  class="form-control ng-cloak" value="{{LEAD.state}}" id="con_state" name="con_state">
 								</div>	
 							</div>
 							
 							<div class="col-sm-3">
 								<label class="font-label">Country </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" value="{{LEAD.country}}" id="con_country" name="con_country">
+									<input type="text"  class="form-control ng-cloak" value="{{LEAD.country}}" id="con_country" name="con_country">
 								</div>
 							</div>
 						</div>
