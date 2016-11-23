@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
-
 import com.app.entities.CrmContact;
 import com.app.entities.MeDataSource;
 import com.app.utilities.RestUtil;
@@ -73,8 +71,6 @@ public class CrmContactController {
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/startup/"+username+"/"+conId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
-	
-	
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

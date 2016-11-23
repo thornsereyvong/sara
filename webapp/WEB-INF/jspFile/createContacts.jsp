@@ -5,16 +5,11 @@
 <jsp:include page="${request.contextPath}/header"></jsp:include>
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
-
-
-
 <style type="text/css">
 .font-label {
 	font-size: 13px;
 	padding-top: 4px;
 }
-
-
 .input-group-btn select {
 	border-color: #ccc;
 	margin-top: 0px;
@@ -265,6 +260,7 @@ $(document).ready(function() {
 				    }, 
 				    success: function(result){
 				    	
+				    
 						if(result.MESSAGE == "INSERTED"){						
 							
 		    				swal({
@@ -285,11 +281,11 @@ $(document).ready(function() {
 		    				},2000);
 																														
 						}else{
-							swal("UNSUCCESSFUL!", result.MSG, "error");
+							swal("UNSUCCESSFUL", result.MSG, "error");
 						}
 					},
 		    		error:function(){
-		    			swal("UNSUCCESSFUL!", "Please try again!", "error");
+		    			swal("UNSUCCESSFUL", "Please try again!", "error");
 		    		} 
 				});
 			}, 500);
