@@ -55,7 +55,7 @@ public class CrmMeetingController {
 	@RequestMapping(value="/meeting/list/{meetingId}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> findmeetingById(@PathVariable("meetingId") String meetingId, HttpServletRequest req){	
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/meeting/list/"+meetingId, HttpMethod.GET, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/meeting/list/"+meetingId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}

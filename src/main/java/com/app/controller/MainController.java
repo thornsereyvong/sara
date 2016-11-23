@@ -1163,7 +1163,7 @@ public class MainController {
 			if (camMap.get("roleEdit").equals("YES")) {
 				String json;
 				try {
-					json = new ObjectMapper().writeValueAsString(noteController.NoteID(custID));
+					json = new ObjectMapper().writeValueAsString(noteController.NoteID(custID, req));
 					model.addAttribute("note", json);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
