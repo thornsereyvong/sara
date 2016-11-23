@@ -74,4 +74,5 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	    multipartResolver.setMaxUploadSize(5242880);
 	    return new CommonsMultipartResolver();
 	}
+	
 }

@@ -23,6 +23,9 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private CustomAuthenticationProvider authenticationProvider;
 	
+	@Autowired
+	private CustomAuthenticationFailureHandler authenticationFailureHandler;
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(this.authenticationProvider);
@@ -59,8 +62,11 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	    authenticationProviderList.add(authenticationProvider);
 	    AuthenticationManager authenticationManager = new ProviderManager(authenticationProviderList);
 	    authFilter.setAuthenticationManager(authenticationManager);
+	    authFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
 	    authFilter.setUsernameParameter("crm_username");
 	    authFilter.setPasswordParameter("crm_password");
 	    return authFilter;
 	}
+	
+	
 }
