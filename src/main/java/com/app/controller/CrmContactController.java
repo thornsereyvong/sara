@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 import com.app.entities.CrmContact;
 import com.app.entities.MeDataSource;
 import com.app.utilities.RestUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
@@ -79,7 +78,7 @@ public class CrmContactController {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/contact/list", method = RequestMethod.GET)
+	@RequestMapping(value="/contact/list", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> getAllContact(HttpServletRequest req){
 		
 		MeDataSource dataSource = new MeDataSource();		
