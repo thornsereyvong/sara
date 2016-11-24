@@ -85,7 +85,7 @@ public class CrmMeetingController {
 		CrmMeeting meeting = new CrmMeeting();
 		meeting.setMeetingId(meetingId);
 		meeting.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
-		HttpEntity<Object> request = new HttpEntity<Object>(header);
+		HttpEntity<Object> request = new HttpEntity<Object>(meeting, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/meeting/remove/", HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());

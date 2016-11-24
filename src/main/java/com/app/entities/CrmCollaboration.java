@@ -18,6 +18,15 @@ public class CrmCollaboration{
 	private String createDate;
 	private int like;
 	private boolean checkLike;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getColId() {
 		return colId;

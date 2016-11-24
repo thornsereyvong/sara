@@ -10,6 +10,15 @@ public class CrmCollaborationDetails{
 	private String username;
 	private LocalDateTime createDate;
 	private String formatCreateDate;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getCommentId() {
 		return commentId;

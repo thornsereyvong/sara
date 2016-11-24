@@ -177,7 +177,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	
     
     $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
-    	SweetAlert.swal({
+    	swal({
             title: "Are you sure?",
             text: "This comment will not be able to recover!", 
             type: "warning",
@@ -190,7 +190,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
         function(isConfirm){ 
         	  if(isConfirm){        		
         		  $http.delete("${pageContext.request.contextPath}/collaborate/comment/remove/"+comId).success(function(){
-	        		  SweetAlert.swal({
+	        		  swal({
 	              		title:"Deleted",
 	              		text:"The comment have been deleted!",
 	              		type:"success",  
@@ -200,7 +200,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
         		  });
         		  $scope.collaborates[keyParent].details.splice(keyChild, 1);
         	  }else{
-        		  SweetAlert.swal({
+        		  swal({
   	                title:"Cancelled",
   	                text:"This comment is safe!",
   	                type:"error",
@@ -211,7 +211,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
     }
     
 	$scope.btnDeleteCollabPost = function(key,postId){
-    	SweetAlert.swal({
+    	swal({
             title: "Are you sure?",
             text: "This post will not be able to recover!", 
             type: "warning",
@@ -224,7 +224,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
         function(isConfirm){              	
         	 if(isConfirm){
 	       		  $http.delete("${pageContext.request.contextPath}/collaborate/delete/"+postId).success(function(){
-		        		  SweetAlert.swal({
+		        		  swal({
 		              		title:"Deleted",
 		              		text:"The post have been deleted!",
 		              		type:"success",  
@@ -234,7 +234,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		        		  $scope.collaborates.splice(key, 1);
 	       		  }); 
 	       	  }else{
-	       		  SweetAlert.swal({
+	       		  swal({
 	 	                title:"Cancelled",
 	 	                text:"This post is safe!",
 	 	                type:"error",
@@ -260,7 +260,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	}
 	$scope.deleteNoteById = function(noteId){
 		$scope.resetFrmNote();
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This note will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -279,7 +279,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 					if(str == "YES"){
 						$http.delete("${pageContext.request.contextPath}/note/remove/"+noteId)
 			            .success(function(){
-			            		SweetAlert.swal({
+			            		swal({
 					            		title:"Deleted",
 					            		text:"Note have been deleted!",
 					            		type:"success",  
@@ -289,7 +289,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			            		$scope.getListNoteByLead();
 					      });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -297,7 +297,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					}    
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This note is safe!",
 	                type:"error",
@@ -396,7 +396,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		});		
 	}
 	$scope.actDeleteCall = function(callId){				
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This call will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -415,7 +415,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	            	if(str == "YES"){
 	            		 $http.delete("${pageContext.request.contextPath}/call/remove/"+callId)
 	     	            .success(function(){
-	     	            		SweetAlert.swal({
+	     	            		swal({
 	     			            		title:"Deleted",
 	     			            		text:"Call have been deleted!",
 	     			            		type:"success",  
@@ -426,7 +426,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	     	            		$scope.listDataCallByRalateType();
 	     		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -434,7 +434,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					} 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This call is safe!",
 	                type:"error",
@@ -470,7 +470,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		});		
 	}
 	$scope.actDeleteMeeting = function(meetingId){				
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This meeting will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -489,7 +489,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	            	if(str == "YES"){
 	            		 $http.delete("${pageContext.request.contextPath}/meeting/remove/"+meetingId)
 	     	            .success(function(){
-	     	            		SweetAlert.swal({
+	     	            		swal({
 	     			            		title:"Deleted",
 	     			            		text:"Meeting have been deleted!",
 	     			            		type:"success",  
@@ -500,7 +500,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	     	            		$scope.listDataMeetByRalateType();
 	     		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -508,7 +508,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					} 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This meeting is safe!",
 	                type:"error",
@@ -546,7 +546,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	}
 	
 	$scope.actDeleteTask = function(taskId){				
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This task will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -565,7 +565,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	            	if(str == "YES"){
 	            		 $http.delete("${pageContext.request.contextPath}/task/remove/"+taskId)
 	     	            .success(function(){
-	     	            		SweetAlert.swal({
+	     	            		swal({
 	     			            		title:"Deleted",
 	     			            		text:"Task have been deleted!",
 	     			            		type:"success",  
@@ -576,7 +576,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	     	            		$scope.listDataTaskByRalateType();
 	     		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -584,7 +584,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					} 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This task is safe!",
 	                type:"error",
@@ -628,7 +628,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	}
 	
 	$scope.actDeleteEvent = function(eventId){				
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This event will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -647,7 +647,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	            	if(str == "YES"){
 	            		 $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId)
 	     	            .success(function(){
-	     	            		SweetAlert.swal({
+	     	            		swal({
 	     			            		title:"Deleted",
 	     			            		text:"Event have been deleted!",
 	     			            		type:"success",  
@@ -658,7 +658,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	     	            		$scope.listDataEventByRalateType();
 	     		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -666,7 +666,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					} 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This event is safe!",
 	                type:"error",
