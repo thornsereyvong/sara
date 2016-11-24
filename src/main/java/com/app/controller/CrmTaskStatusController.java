@@ -86,31 +86,25 @@ public class CrmTaskStatusController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task_status/edit",method = RequestMethod.PUT)
 	public ResponseEntity<Map<String, Object>> updateTaskStatus(@RequestBody CrmTaskStatus status,HttpServletRequest req){
-		
 		MeDataSource dataSource = new MeDataSource();		
 		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());	
-		
 		status.setMeDataSource(dataSource);
-		
 		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task_status/edit", HttpMethod.PUT, request, Map.class);
-		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task_status/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task_status/remove/{statusID}",method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteTaskStatus(@PathVariable("statusID") String statusID,HttpServletRequest req){
-		
+	public ResponseEntity<Map<String, Object>> deleteTaskStatus(@PathVariable("statusID") int statusID,HttpServletRequest req){
 		MeDataSource dataSource = new MeDataSource();		
 		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());	
-		
-		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task_status/remove/"+statusID, HttpMethod.DELETE, request, Map.class);
-		
+		CrmTaskStatus status = new CrmTaskStatus();
+		status.setTaskStatusId(statusID);
+		status.setMeDataSource(dataSource);
+		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task_status/remove/", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}

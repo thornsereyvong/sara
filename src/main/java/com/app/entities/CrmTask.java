@@ -19,6 +19,15 @@ public class CrmTask{
 	private Date taskCreateDate;
 	private String taskModifiedBy;
 	private Date taskModifiedDate;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public String getTaskId() {
 		return taskId;

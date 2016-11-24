@@ -2,11 +2,15 @@ package com.app.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmTask;
-import com.app.utilities.RestUtil;
+import com.app.entities.MeDataSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -35,46 +39,23 @@ public class CrmTaskController {
 	@Autowired
 	private String URL;
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/task/list",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAlltask(){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list", HttpMethod.GET, request, Map.class);
-		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-	}
+	@Autowired
+	private MeDataSource dataSource;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/task/list/validate/{campName}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> gettaskName(@PathVariable("campName") String campName){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/validate/"+campName, HttpMethod.GET, request, Map.class);
-		try{
-			if(RestUtil.isError(response.getStatusCode())){
-				 return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-			}else{
-				return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-			}	
-		}catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		
+	@RequestMapping(value="/task/list",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getAlltask(HttpServletRequest req){	
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()),header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/task/list/{campID}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> findtaskById(@PathVariable("campID") String campID){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list/"+campID, HttpMethod.GET, request, Map.class);
-		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/task/list/not_equal/{campID}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> taskNotQu(@PathVariable("campID") String campID){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list/not_equal/"+campID, HttpMethod.GET, request, Map.class);
+	@RequestMapping(value="/task/list/{taskId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> findtaskById(@PathVariable("taskId") String taskId, HttpServletRequest req){	
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list/"+taskId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
@@ -82,7 +63,8 @@ public class CrmTaskController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addtask(@RequestBody CrmTask task){
+	public ResponseEntity<Map<String, Object>> addtask(@RequestBody CrmTask task, HttpServletRequest req){
+		task.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(task,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -92,50 +74,61 @@ public class CrmTaskController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateTask(@RequestBody CrmTask task){
-		
+	public ResponseEntity<Map<String, Object>> updateTask(@RequestBody CrmTask task, HttpServletRequest req){
+		task.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(task,header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/edit", HttpMethod.PUT, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/task/remove/{campId}",method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteTask(@PathVariable("campId") String campId){
-		
-		HttpEntity<String> request = new HttpEntity<String>(header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/remove/"+campId, HttpMethod.DELETE, request, Map.class);
-		
+	@RequestMapping(value="/task/remove/{taskId}",method = RequestMethod.DELETE)
+	public ResponseEntity<Map<String, Object>> deleteTask(@PathVariable("taskId") String taskId, HttpServletRequest req){
+		CrmTask task = new CrmTask();
+		task.setTaskId(taskId);
+		task.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(task, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/remove/", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task/list-by-lead/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> listTaskByLeadId(@PathVariable("id") String id){		
-		HttpEntity<Object> request = new HttpEntity<Object>(header);		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list/lead/"+id, HttpMethod.GET, request, Map.class);		
+	public ResponseEntity<Map<String, Object>> listTaskByLeadId(@PathVariable("id") String id, HttpServletRequest req){		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list/lead/"+id, HttpMethod.POST, request, Map.class);		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/task/list-by-opportunity/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> listTaskByOpportunityId(@PathVariable("id") String id){		
-		HttpEntity<Object> request = new HttpEntity<Object>(header);		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list/opp/"+id, HttpMethod.GET, request, Map.class);		
+	public ResponseEntity<Map<String, Object>> listTaskByOpportunityId(@PathVariable("id") String id, HttpServletRequest req){		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list/opp/"+id, HttpMethod.POST, request, Map.class);		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="task/list/module/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> listTaskByRelateId(@PathVariable("id") String id){		
-		HttpEntity<Object> request = new HttpEntity<Object>(header);		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list/module/"+id, HttpMethod.GET, request, Map.class);		
+	public ResponseEntity<Map<String, Object>> listTaskByRelateId(@PathVariable("id") String id, HttpServletRequest req){		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/task/list/module/"+id, HttpMethod.POST, request, Map.class);		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
+	private String getPrincipal() {
+		String userName = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			userName = ((UserDetails) principal).getUsername();
+		} else {
+			userName = principal.toString();
+		}
+		return userName;
+	}
 }
