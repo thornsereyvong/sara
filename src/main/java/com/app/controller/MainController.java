@@ -358,6 +358,20 @@ public class MainController {
 		}
 		
 	}
+	
+	@RequestMapping("/case-priority")
+	public String casePriority(ModelMap model,HttpServletRequest req) {
+		model.addAttribute("menu", "casePriority");
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		
+		if(camMap.get("role").equals("CRM_ADMIN")){
+			return "casePriority";
+		}else{
+			return "permission";
+		}
+		
+	}
 
 	@RequestMapping("/call-status")
 	public String callStatus(ModelMap model,HttpServletRequest req) {

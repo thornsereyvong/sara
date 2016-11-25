@@ -3,10 +3,17 @@ package com.app.entities;
 public class CrmOpportunityStage {
 
 	private int osId;
-
 	private String osName;
-
 	private String osDes;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getOsId() {
 		return osId;
