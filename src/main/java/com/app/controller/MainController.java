@@ -995,7 +995,7 @@ public class MainController {
 			if (camMap.get("roleEdit").equals("YES")) {
 				String json;
 				try {
-					json = new ObjectMapper().writeValueAsString(taskController.findtaskById(custID));
+					json = new ObjectMapper().writeValueAsString(taskController.findtaskById(custID, req));
 					model.addAttribute("task", json);
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
@@ -1099,7 +1099,7 @@ public class MainController {
 
 	/* Close Meetings */
 
-	/* Meetings */
+	/* Note */
 	@RequestMapping("/list-notes")
 	public String listNotes(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listNotes");

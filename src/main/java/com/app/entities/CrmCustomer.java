@@ -30,7 +30,16 @@ public class CrmCustomer {
 	private List<CrmCustomerDetails> custDetails;
 	private List<CrmShipAddress> shipAddresses;
 	private String aId;
+	private MeDataSource meDataSource;
 	
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
+
 	public String getaId() {
 		return aId;
 	}
