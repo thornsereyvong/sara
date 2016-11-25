@@ -72,6 +72,8 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			$scope.customer = response.CUSTOMER;
 			$scope.listNote1(response.NOTES);
 			
+			//dis(response.NOTES)
+			
 			$scope.contact = response.CONTACT;
 			$scope.caseList = response.CASES;
 			
@@ -182,15 +184,15 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	
     
     $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
+    	
     	swal({
-            title: "Are you sure?",
-            text: "This comment will not be able to recover!", 
-            type: "warning",
-            showCancelButton: true, 
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, 
-            closeOnCancel: false
+            title: "<span style='font-size: 25px;'>You are about to delete comment.</span>",
+            text: "Click OK to continue or CANCEL to abort.",
+            type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,
         }, 
         function(isConfirm){ 
         	  if(isConfirm){        		
@@ -217,14 +219,13 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
     
 	$scope.btnDeleteCollabPost = function(key,postId){
     	swal({
-            title: "Are you sure?",
-            text: "This post will not be able to recover!", 
-            type: "warning",
-            showCancelButton: true, 
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, 
-            closeOnCancel: false
+    		 title: "<span style='font-size: 25px;'>You are about to delete post.</span>",
+             text: "Click OK to continue or CANCEL to abort.",
+             type: "info",
+ 			html: true,
+ 			showCancelButton: true,
+ 			closeOnConfirm: false,
+ 			showLoaderOnConfirm: true,
         }, 
         function(isConfirm){              	
         	 if(isConfirm){
@@ -265,51 +266,49 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	}
 	$scope.deleteNoteById = function(noteId){
 		$scope.resetFrmNote();
-		swal({
-            title: "Are you sure?", //Bold text
-            text: "This note will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-           
-	            var str = 'YES';
-	            
-	            if(isConfirm){
-
-					if(str == "YES"){
-						$http.delete("${pageContext.request.contextPath}/note/remove/"+noteId)
-			            .success(function(){
-			            		swal({
-					            		title:"Deleted",
-					            		text:"Note have been deleted!",
-					            		type:"success",  
-					            		timer: 2000,   
-					            		showConfirmButton: false
-			            		});
-			            		$scope.getListNoteByLead();
-					      });
-					}else{
-						swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					}    
-            } else {
-                swal({
-	                title:"Cancelled",
-	                text:"This note is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+		
+		if(getPermissionByModule("AC_NO","delete") == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete note with ID: <span class='color_msg'>"+noteId+"</span>.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/note/remove/"+noteId,
+						type : "DELETE",
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "DELETED"){						
+								$scope.getListNoteByLead();
+			    				swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});																								
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+		}else{
+			alertMsgNoPermision();
+		}
+		
 	}
 	$scope.resetFrmNote = function(){
 		noteIdEdit = "";
@@ -1132,7 +1131,7 @@ function addDataToDetailLead(){
 							<div class="clearfix"></div>
 							<br />
 							<div class="col-md-12">
-								<div class="nav-tabs-custom">
+								<div id="note"  class="nav-tabs-custom">
 									<ul class="nav nav-tabs">
 										<li class="active"><a href="#activity" data-toggle="tab"
 											aria-expanded="true">ACTIVITY</a></li>
@@ -1324,7 +1323,7 @@ function addDataToDetailLead(){
 																			<tbody ng-repeat="task in listAllTaskByLead">
 																				<tr>
 																					<td class="iTD-width-50">
-																						<a href="#"><i class="fa fa-list-alt text-blue font-size-icon-30"></i></a>
+																						{{task.taskId}}
 																					</td>
 																					<td colspan="2">{{task.taskSubject}}</td>
 																					<td>{{task.taskStatusName}}</td>
@@ -1390,7 +1389,7 @@ function addDataToDetailLead(){
 																			<tbody ng-repeat="event in listAllEventByLead">
 																				<tr>
 																					<td class="iTD-width-50">
-																						<a href="#"><i class="fa  fa-calendar-check-o text-red font-size-icon-30"></i></a>
+																						{{event.evId}}
 																					</td>
 																					<td colspan="2">{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
@@ -1584,6 +1583,7 @@ function addDataToDetailLead(){
 
 										<div class="tab-pane" id="note_tap">
 											<div class="post clearfix">
+												
 												<form id="frmAddNote">
 													<div class="form-group">
 														<input ng-model="note_subject" data-ng-init="note_subject"
@@ -1613,17 +1613,17 @@ function addDataToDetailLead(){
 												<!-- START DATE -->
 												<li class="time-label"><span class="bg-red">{{notePerDate.createDate}}</span>
 												</li>
-												<li ng-repeat="note in notes | filter:{createDate: notePerDate.createDate}">
+												<li style="margin-right: -10px;" ng-repeat="note in notes | filter:{createDate: notePerDate.createDate}">
 													<i class="fa  fa-edit bg-blue"></i>
 													<div class="timeline-item">
 														<span class="time"><i class="fa fa-clock-o"></i>
-															&nbsp;{{notePerDate.createTime}}</span>
+															&nbsp;{{note.createTime}}</span>
 														<h3 class="timeline-header">
 															{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
 														</h3>
 														<div class="timeline-body">{{note.noteDes}}</div>
 														<div class="timeline-footer">
-															<a class="btn btn-primary btn-xs"
+															<a href="#note" class="btn btn-primary btn-xs"
 																ng-click="editNoteById(note.noteId)">Edit</a> <a
 																class="btn btn-danger btn-xs"
 																ng-click="deleteNoteById(note.noteId)">Delete</a>
@@ -1869,9 +1869,7 @@ function addDataToDetailLead(){
 																				<tbody ng-repeat="opp in opportunity">
 																					<tr>
 																						<td class="iTD-width-50">
-																							<a href="#">
-																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Contact.png" alt="User Avatar">
-																							</a>
+																							{{opp.opId}}
 																						</td>
 																						<td>{{opp.opName}}</td>
 																						<td>{{opp.custName}}</td>
@@ -1925,7 +1923,6 @@ function addDataToDetailLead(){
 																				<thead>
 																					<tr>
 																						<th class="text-center">#</th>
-																						<th>Case ID</th>
 																						<th>Subject</th>
 																						<th>Status</th>
 																						<th>Priority</th>
@@ -1936,11 +1933,8 @@ function addDataToDetailLead(){
 																				<tbody ng-repeat="case in caseList">
 																					<tr>
 																						<td class="iTD-width-50">
-																							<a href="#">
-																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Case.png" alt="User Avatar">
-																							</a>
+																							{{case.caseId}}
 																						</td>
-																						<td>{{case.caseId}}</td>
 																						<td>{{case.subject}}</td>
 																						<td>{{case.status.statusName}}</td>
 																						<td>{{case.priority.priorityName}}</td>

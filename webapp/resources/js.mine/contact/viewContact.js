@@ -15,9 +15,6 @@ $(function(){
      	$('#frmAddCall').bootstrapValidator('revalidateField', 'callDuration');
  	});
 	
-	
-	
-	
 	$('#oppCloseDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
@@ -120,81 +117,109 @@ $(function(){
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		if($("#btnAddNote").text()=='Note'){
-			$.ajax({ 
-			    url: server+"/note/add", 
-			    type: 'POST',
-			    data: JSON.stringify({			    	
-			    	"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), 
-			    	"noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":typeModule,
-			    	"noteRelatedToModuleId":oppId,"noteCreateBy":username			    	
-			    }),
-			    beforeSend: function(xhr) {
-	                xhr.setRequestHeader("Accept", "application/json");
-	                xhr.setRequestHeader("Content-Type", "application/json");
-	            },
-			    success: function(data) {
-			    	
-			    	if(data.MESSAGE == "INSERTED"){	
-			    		swal({
-		            		title:"Success",
-		            		text:"You have been created new Note!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-			    		angular.element(document.getElementById('viewOpportunityController')).scope().resetFrmNote();
-			    		angular.element(document.getElementById('viewOpportunityController')).scope().getListNoteByLead();
-			    	}else{
-			    		sweetAlert("Insert Unsuccessfully!", "", "error");
-			    	}
-			    	 
-			    },
-			    error:function(data,status,er) { 
-			        console.log("error: "+data+" status: "+status+" er:"+er);
-			        sweetAlert("Insert Unsuccessfully!", "", "error");
-			    }
-			});
+		
+		if($("#btnAddNote").text() == 'Note'){		
+			if(getPermissionByModule("AC_NO","create") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to create note.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url: server+"/note/add", 
+						    type: 'POST',
+						    data: JSON.stringify({			    	
+						    	"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), 
+						    	"noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":typeModule,
+						    	"noteRelatedToModuleId":oppId,"noteCreateBy":username			    	
+						    }),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "INSERTED"){						
+									angular.element(document.getElementById('viewOpportunityController')).scope().resetFrmNote();
+						    		angular.element(document.getElementById('viewOpportunityController')).scope().getListNoteByLead();
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});																								
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});
+			}else{
+				alertMsgNoPermision();
+			}
+						
 		}else if($("#btnAddNote").text()=="Update"){
-			$.ajax({ 
-			    url: server+"/note/edit", 
-			    type: 'PUT',
-			    data: JSON.stringify({"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), 
-			    	"noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":typeModule,
-			    	"noteRelatedToModuleId":oppId,"noteModifyBy":username
-			    }),
-			    beforeSend: function(xhr) {
-	                xhr.setRequestHeader("Accept", "application/json");
-	                xhr.setRequestHeader("Content-Type", "application/json");
-	            },
-			    success: function(data) {
-			    	if(data.MESSAGE == "UPDATED"){	
-			    		swal({
-		            		title:"Successfully",
-		            		text:"You have been update Note!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-			    		angular.element(document.getElementById('viewOpportunityController')).scope().resetFrmNote();
-			    		angular.element(document.getElementById('viewOpportunityController')).scope().getListNoteByLead();
-			    	}else{
-			    		alertMsgErrorSweet();
-			    	}
-			    	 
-			    },
-			    error:function(data,status,er) { 
-			        console.log("error: "+data+" status: "+status+" er:"+er);
-			        alertMsgErrorSweet();
-			    }
-			});
-		}
+			
+			if(getPermissionByModule("AC_NO","edit") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update note.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url: server+"/note/edit", 
+						    type: 'PUT',
+						    data: JSON.stringify({"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), 
+						    	"noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":typeModule,
+						    	"noteRelatedToModuleId":oppId,"noteModifyBy":username
+						    }),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "UPDATED"){						
+									angular.element(document.getElementById('viewOpportunityController')).scope().resetFrmNote();
+						    		angular.element(document.getElementById('viewOpportunityController')).scope().getListNoteByLead();		
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});	
+			}else{
+				alertMsgNoPermision();
+			}
+		}	
+		
 	});	
-	
-	
-	
-	
-	
 	
 	$("#btnCallSave").click(function(){
 		$('#frmAddCall').submit();
@@ -707,7 +732,7 @@ $(function(){
 			    					  	timer: 2000,
 			    					  	type: "success"
 			    					});			    											
-				    				setTimeout(function(){	 $('#frmMeet').modal('toggle');	},2000);
+				    				setTimeout(function(){	 $('#frmTask').modal('toggle');	},2000);
 																																
 								}else{
 									swal("UNSUCCESSFUL", result.MSG, "error");
@@ -742,7 +767,7 @@ $(function(){
 								  "taskId" : taskIdForEdit,					 
 							      "taskPriority": getValueStringById("taskPriority"),				      
 							      "taskRelatedToId": oppId,
-							      "taskRelatedToModule": typeMule,
+							      "taskRelatedToModule": typeModule,
 							      "taskDes": getValueStringById("taskDescription"),
 							      "dueDate": getValueStringById("taskEndDate"),
 							      "taskSubject":  getValueStringById("taskSubject"),
@@ -771,7 +796,7 @@ $(function(){
 			    					  	timer: 2000,
 			    					  	type: "success"
 			    					});
-									setTimeout(function(){ $('#frmMeet').modal('toggle');}, 2000);
+									setTimeout(function(){ $('#frmTask').modal('toggle');}, 2000);
 																																
 								}else{
 									swal("UNSUCCESSFUL", result.MSG, "error");
@@ -867,109 +892,135 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {
-		if($("#btnEventSave").text() == 'Save'){
-			
-			$.ajax({
-				url : server+"/event/add",
-				type : "POST",
-				data : JSON.stringify({
-				      "evName": getValueStringById("eventSubject"),				     
-				      "evBudget": getValueStringById("eventBudget"),
-				      "evDes": getValueStringById("eventDescription"),
-				      "evCreateBy":  username,
-				      "evDuration": getValueStringById("eventDuration"),
-				      "startDate": getValueStringById("eventStartDate"),
-				      "endDate": getValueStringById("eventEndDate"),
-				      "assignTo": getJsonById("userID","eventAssignTo","str"),
-				      "evlocation": getJsonById("loId","eventLocation","str"),
-				      "evRelatedToModuleId" : oppId,
-				      "evRelatedToModuleType" : typeModule
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success:function(data){					
-					if(data.MESSAGE == 'INSERTED'){
-						angular.element(document.getElementById('viewOpportunityController')).scope().listDataEventByRalateType();						
+		
+		if($("#btnEventSave").text() == 'Save'){			
+			if(getPermissionByModule("AC_EV","create") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to create event.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/event/add",
+							type : "POST",
+							data : JSON.stringify({
+							      "evName": getValueStringById("eventSubject"),				     
+							      "evBudget": getValueStringById("eventBudget"),
+							      "evDes": getValueStringById("eventDescription"),
+							      "evCreateBy":  username,
+							      "evDuration": getValueStringById("eventDuration"),
+							      "startDate": getValueStringById("eventStartDate"),
+							      "endDate": getValueStringById("eventEndDate"),
+							      "assignTo": getJsonById("userID","eventAssignTo","str"),
+							      "evlocation": getJsonById("loId","eventLocation","str"),
+							      "evRelatedToModuleId" : oppId,
+							      "evRelatedToModuleType" : typeModule
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "INSERTED"){						
+									angular.element(document.getElementById('viewOpportunityController')).scope().listDataEventByRalateType();						
+									
+									$("#eventDuration").select2('val',"");
+									$("#eventAssignTo").select2('val',"");	
+									$("#eventLocation").select2('val',"");
+									
+									$('#frmAddEvent').bootstrapValidator('resetForm', true);
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});			    											
+				    				setTimeout(function(){	 $('#frmEvent').modal('toggle');	},2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});
+			}else{
+				alertMsgNoPermision();
+			}
 						
-						$("#eventDuration").select2('val',"");
-						$("#eventAssignTo").select2('val',"");	
-						$("#eventLocation").select2('val',"");
-						
-						$('#frmAddEvent').bootstrapValidator('resetForm', true);
-						
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been created a new event!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmEvent').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			}); 
-			
 		}else{
-			
-			$.ajax({
-				url : server+"/event/edit",
-				type : "PUT",
-				data : JSON.stringify({
-					  "evId": eventIdForEdit,
-					  "evName": getValueStringById("eventSubject"),
-				      "evBudget": getValueStringById("eventBudget"),
-				      "evDes": getValueStringById("eventDescription"),
-				      "evModifiedBy":  username,
-				      "evDuration": getValueStringById("eventDuration"),
-				      "startDate": getValueStringById("eventStartDate"),
-				      "endDate": getValueStringById("eventEndDate"),
-				      "assignTo": getJsonById("userID","eventAssignTo","str"),
-				      "evlocation": getJsonById("loId","eventLocation","str"),
-			    	  "evRelatedToModuleId" : oppId,
-				      "evRelatedToModuleType" : typeModule
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success:function(data){					
-					if(data.MESSAGE == 'UPDATED'){
-						angular.element(document.getElementById('viewOpportunityController')).scope().listDataEventByRalateType();
-						
-						$("#eventDuration").select2('val',"");
-						$("#eventAssignTo").select2('val',"");	
-						$("#eventLocation").select2('val',"");
-						
-						$('#frmAddEvent').bootstrapValidator('resetForm', true);						
-						
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been updated this event!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmEvent').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			}); 
-					
+			if(getPermissionByModule("AC_EV","edit") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update event.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/event/edit",
+							type : "PUT",
+							data : JSON.stringify({
+								  "evId": eventIdForEdit,
+								  "evName": getValueStringById("eventSubject"),
+							      "evBudget": getValueStringById("eventBudget"),
+							      "evDes": getValueStringById("eventDescription"),
+							      "evModifiedBy":  username,
+							      "evDuration": getValueStringById("eventDuration"),
+							      "startDate": getValueStringById("eventStartDate"),
+							      "endDate": getValueStringById("eventEndDate"),
+							      "assignTo": getJsonById("userID","eventAssignTo","str"),
+							      "evlocation": getJsonById("loId","eventLocation","str"),
+						    	  "evRelatedToModuleId" : oppId,
+							      "evRelatedToModuleType" : typeModule
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "UPDATED"){						
+									angular.element(document.getElementById('viewOpportunityController')).scope().listDataEventByRalateType();						
+									
+									$("#eventDuration").select2('val',"");
+									$("#eventAssignTo").select2('val',"");	
+									$("#eventLocation").select2('val',"");
+									
+									$('#frmAddEvent').bootstrapValidator('resetForm', true);				
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									setTimeout(function(){ $('#frmEvent').modal('toggle');}, 2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});	
+			}else{
+				alertMsgNoPermision();
+			}
 		}
 		
 	});
@@ -1024,36 +1075,53 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {		
-			
-		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":typeModule, "colRelatedToModuleId":oppId};		
-		$.ajax({
-			url : server+"/collaborate/add",
-			method : "POST",			
-			headers: {
-		    	'Accept': 'application/json',
-		        'Content-Type': 'application/json'
-		    },
-			data : JSON.stringify(addPost),
-			success:function(data){
-				if(data.MESSAGE == 'INSERTED'){
-					angular.element(document.getElementById('viewOpportunityController')).scope().listCollabByLeadByUser();
-					$("#collabTags").select2("val","");
-					$('#frmCollab').bootstrapValidator('resetForm', true);						
-					swal({
-	            		title:"Successfully",
-	            		text:"You have been created a new post!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-	    			});					
-				}else{
-					alertMsgErrorSweet();
-				}	
-			},
-			error:function(){
-				alertMsgErrorSweet();
-			}
-		});				
+		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":typeModule, "colRelatedToModuleId":oppId};
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to post collaboration.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				$.ajax({ 
+					url : server+"/collaborate/add",
+					method : "POST",
+					data : JSON.stringify(addPost),
+					beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+				    }, 
+				    success: function(result){					    						    
+						if(result.MESSAGE == "INSERTED"){						
+							angular.element(document.getElementById('viewOpportunityController')).scope().listCollabByLeadByUser();					
+							
+							$("#collabTags").select2("val","");
+							$('#frmCollab').bootstrapValidator('resetForm', true);
+							
+							swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success"
+	    					});			    											
+		    				
+																														
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			alertMsgErrorSweet();
+		    		} 
+				});
+			}, 500);
+		});
+		
+				
 	});
 	
 	

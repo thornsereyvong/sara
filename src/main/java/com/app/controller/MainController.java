@@ -483,7 +483,8 @@ public class MainController {
 		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
-
+		model.addAttribute("permission", getRoleDetailsAllModule(req));
+		
 		if (camMap.get("roleAccess").equals("NO")) {
 			return "permission";
 		} else if (camMap.get("roleAccess").equals("YES")) {
@@ -541,7 +542,7 @@ public class MainController {
 		model.addAttribute("menu", "viewLeads");
 		model.addAttribute("leadId", leadId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("LE", req);
-
+		model.addAttribute("permission", getRoleDetailsAllModule(req));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 
 		if (camMap.get("roleAccess").equals("NO")) {
@@ -740,7 +741,7 @@ public class MainController {
 		model.addAttribute("menu", "viewOpportunity");
 		model.addAttribute("oppId", oppId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("OP", req);
-
+		model.addAttribute("permission", getRoleDetailsAllModule(req));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
 		if (camMap.get("roleAccess").equals("YES")) {
@@ -1224,7 +1225,7 @@ public class MainController {
 		model.addAttribute("menu", "viewCases");
 		model.addAttribute("caseId", caseId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
-
+		model.addAttribute("permission", getRoleDetailsAllModule(req));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
 		if (camMap.get("roleAccess").equals("YES")) {
@@ -1374,7 +1375,7 @@ public class MainController {
 		model.addAttribute("custId", custId);
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
-
+		model.addAttribute("permission", getRoleDetailsAllModule(req));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 
 		if (camMap.get("roleAccess").equals("YES")) {
