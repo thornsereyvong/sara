@@ -1099,7 +1099,7 @@ public class MainController {
 
 	/* Close Meetings */
 
-	/* Meetings */
+	/* Note */
 	@RequestMapping("/list-notes")
 	public String listNotes(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listNotes");

@@ -64,7 +64,7 @@ public class MeDataSource {
 	public String toString(){
 		return ip+"/"+port+"/"+db+"/"+un+"/"+pw+"/"+userid;
 	}
-	public MeDataSource getMeDataSourceByHttpServlet(HttpServletRequest req,String user){
+	public MeDataSource getMeDataSourceByHttpServlet(HttpServletRequest req, String user){
 		MeDataSource dataSource = new MeDataSource();
 		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
 		dataSource.setIp(req.getSession().getAttribute("ip").toString());

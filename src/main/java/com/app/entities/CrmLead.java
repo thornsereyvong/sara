@@ -33,9 +33,16 @@ public class CrmLead {
 	private Date createDate;
 	private Date modifyDate;
 	private String modifyBy;
+	private MeDataSource meDataSource;
+	
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
 
-	
-	
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
+
 	public String getLeadID() {
 		return leadID;
 	}

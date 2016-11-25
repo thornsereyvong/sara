@@ -2,26 +2,21 @@ package com.app.entities;
 
 import java.util.List;
 
-
-
-
 public class CrmLeadSource{
-
-
-	
-	
 	private int sourceID;
-	
 	private String sourceName;
-
-	
 	private String description;
-	
-	
 	private List<CrmLead> lead;
-	
-	
 	private List<CrmOpportunity> opportunities;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public List<CrmLead> getLead() {
 		return lead;

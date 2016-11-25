@@ -3,20 +3,21 @@ package com.app.entities;
 
 import java.util.List;
 
-
-
-
 public class CrmLeadStatus {
-
-
 	private int statusID;
-	
-	
 	private String statusName;
-	
 	private String description;
-	
 	private List<CrmLead> lead;
+	private MeDataSource meDataSource;
+	
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public List<CrmLead> getLead() {
 		return lead;
