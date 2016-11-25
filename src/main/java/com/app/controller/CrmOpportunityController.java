@@ -1,22 +1,31 @@
 package com.app.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
 import com.app.entities.CrmOpportunity;
 import com.app.entities.CrmOpportunityContact;
 import com.app.entities.CrmOpportunityQuotation;
 import com.app.entities.CrmOpportunitySaleorder;
+import com.app.entities.MeDataSource;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -34,23 +43,30 @@ public class CrmOpportunityController {
 	@Autowired
 	private String URL;
 	
-	
+	@Autowired
+	private MeDataSource dataSource;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/opportunity/product/add/detail",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addOpportunityProduct(@RequestBody CrmOpportunity opp){	
+	public ResponseEntity<Map<String, Object>> addOpportunityProduct(@RequestBody CrmOpportunity opp, HttpServletRequest req){
+		opp.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(opp,header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/edit", HttpMethod.PUT, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
 	
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/opportunity/add/startup",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> getStartup(@RequestBody String username){	
-		HttpEntity<String> request = new HttpEntity<String>(username,header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/add/startup", HttpMethod.POST, request, Map.class);
+	public ResponseEntity<Map<String, Object>> getStartup(@RequestBody String json, HttpServletRequest req){	
+		Map<String, String> map = new HashMap<String, String>();
+		try {
+			map = new ObjectMapper().readValue(json, Map.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()),header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/add/startup/"+map.get("username"), HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
@@ -219,5 +235,17 @@ public class CrmOpportunityController {
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/view", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
+	}
+	
+	private String getPrincipal() {
+		String userName = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			userName = ((UserDetails) principal).getUsername();
+		} else {
+			userName = principal.toString();
+		}
+		return userName;
 	}
 }

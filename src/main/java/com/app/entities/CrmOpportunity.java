@@ -3,10 +3,7 @@ package com.app.entities;
 import java.util.Date;
 import java.util.List;
 
-
-
 public class CrmOpportunity {
-
 	private String opId;
 	private String opName;
 	private double opAmount;
@@ -24,8 +21,6 @@ public class CrmOpportunity {
 	private Date opCreateDate;
 	private String opModifyBy;
 	private Date opModifyDate;
-	
-
 	private PriceCode priceCode;
 	private AmeClass ameClass;
 	private double totalAmount;
@@ -34,7 +29,16 @@ public class CrmOpportunity {
 	private double totalDis;
 	private double totalSTax;
 	private double totalVTax;
+	private MeDataSource meDataSource;
 	
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
+
 	private List<CrmOpportunityDetails> details;
 	
 	

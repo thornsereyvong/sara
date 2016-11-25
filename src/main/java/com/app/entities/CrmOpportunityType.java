@@ -5,6 +5,15 @@ public class CrmOpportunityType {
 	private int otId;
 	private String otName;
 	private String otDes;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getOtId() {
 		return otId;
