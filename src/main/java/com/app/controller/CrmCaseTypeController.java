@@ -54,47 +54,39 @@ public class CrmCaseTypeController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/case_type/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addCaseType(@RequestBody CrmCaseType status){
-		
-		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
-		
+	public ResponseEntity<Map<String, Object>> addCaseType(@RequestBody CrmCaseType type, HttpServletRequest req){
+		type.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(type,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case_type/add", HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/case_type/list/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> CaseTypeID(@PathVariable("id") String id){
-		
-		HttpEntity<Object> request = new HttpEntity<Object>(header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case_type/list/"+id, HttpMethod.GET, request, Map.class);
-		
+	public ResponseEntity<Map<String, Object>> CaseTypeID(@PathVariable("id") String id, HttpServletRequest req){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case_type/list/"+id, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/case_type/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateCaseType(@RequestBody CrmCaseType status){
-		
-		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case_type/edit", HttpMethod.PUT, request, Map.class);
-		
+	public ResponseEntity<Map<String, Object>> updateCaseType(@RequestBody CrmCaseType type, HttpServletRequest req){
+		type.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(type,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case_type/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/case_type/remove/{statusID}",method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteCaseType(@PathVariable("statusID") String statusID){
+	@RequestMapping(value="/case_type/remove/{typeId}",method = RequestMethod.DELETE)
+	public ResponseEntity<Map<String, Object>> deleteCaseType(@PathVariable("typeId") int typeId, HttpServletRequest req){
+		CrmCaseType type = new CrmCaseType();
+		type.setCaseTypeId(typeId);
+		type.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(type,header);
 		
-		HttpEntity<String> request = new HttpEntity<String>(statusID,header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case_type/remove/"+statusID, HttpMethod.DELETE, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case_type/remove/", HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		

@@ -80,7 +80,7 @@ public class CrmCallStatusController {
 		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call_status/list/"+id, HttpMethod.POST, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call_status/view/"+id, HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		

@@ -3,13 +3,17 @@ package com.app.entities;
 public class CrmCampaignType {
 
 	private int typeID;
-	
-	
 	private String typeName;
-	
-
 	private String description;
-	
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getTypeID() {
 		return typeID;

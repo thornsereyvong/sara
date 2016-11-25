@@ -9,6 +9,16 @@ public class CrmCasePriority {
 	private String priorityName;
 
 	private String priorityDes;
+	
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getPriorityId() {
 		return priorityId;

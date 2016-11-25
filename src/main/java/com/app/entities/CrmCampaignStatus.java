@@ -5,7 +5,14 @@ public class CrmCampaignStatus {
 	private int statusID;
 	private String statusName;
 	private String description;
+	private MeDataSource meDataSource;
 	
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 	public int getStatusID() {
 		return statusID;
 	}
