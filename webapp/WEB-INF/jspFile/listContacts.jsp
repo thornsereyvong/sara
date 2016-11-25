@@ -14,7 +14,7 @@ var self = this;
 app.controller('campController',['$scope','$http',function($scope, $http){
 	$scope.listContact = function(){		
 		$http({
-		    method: 'POST',
+		    method: 'GET',
 		    url: '${pageContext.request.contextPath}/contact/list',
 		    headers: {
 		    	'Accept': 'application/json',

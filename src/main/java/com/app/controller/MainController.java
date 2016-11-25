@@ -647,8 +647,8 @@ public class MainController {
 		model.addAttribute("menu", "viewContacts");
 		model.addAttribute("conId", conID);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CO", req);
-		
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
+		model.addAttribute("permission", getRoleDetailsAllModule(req));
 		
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleView").equals("YES")) {
@@ -1534,13 +1534,8 @@ public class MainController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map<String, Object> getRoleDetailsOfModule(String moduleId,HttpServletRequest req) {
 		
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		dataSource.setUserid(req.getSession().getAttribute("userActivity").toString());	
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req, getPrincipal());		
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL + "api/role_detail/list/user/" + getPrincipal() + "/"
@@ -1551,6 +1546,28 @@ public class MainController {
 		}
 		return null;
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String getRoleDetailsAllModule(HttpServletRequest req) {
+		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req, getPrincipal());		
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL + "api/role/list/role_by_user", HttpMethod.POST, request, Map.class);
+		Map<String, Object> userMap = (HashMap<String, Object>) response.getBody();
+		if (userMap.get("DATA") != null) {
+			try {
+				String json = new ObjectMapper().writeValueAsString(userMap.get("DATA"));
+				return json;
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return null;
+	}
+	
+	
 	
 	@RequestMapping("/upload")
 	public String uploadFile(ModelMap model) {

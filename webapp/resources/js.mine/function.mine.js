@@ -14,6 +14,37 @@ month_num['Dec'] = 12;
 
 var probab = [0,10,20,40,70,90,100,0];
 
+
+function getPermissionByModule(moduleId,action){
+	for(i=0;i<permission.roleDetails.length;i++){		
+		if(moduleId == permission.roleDetails[i].module.moduleId){
+			switch(action) {
+			    case "create":
+			        return permission.roleDetails[i].roleAccess;
+			    case "delete":
+			    	 return permission.roleDetails[i].roleDelete;
+			    case "edit":
+			    	 return permission.roleDetails[i].roleEdit;	   
+			    default:
+			    	return "NO";
+			}
+		}		
+	}
+}
+
+function checkAssignTo(){
+	if(curAssign == username){
+		return true;
+	}
+	return false;
+}
+function checkOwner(){
+	if(ownerItem == username){
+		return true;
+	}
+	return false;
+}
+
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -51,12 +82,21 @@ function checkCookie() {
 
 function alertMsgErrorSweet(){
 	swal({
-		title:"Unsuccessful",
+		title:"UNSUCCESSFUL",
 		text:"Please try agian!",
 		type:"error",  
 		timer: 2000,   
 		showConfirmButton: false
 	});
+}
+
+function alertMsgNoPermision(){
+	swal({
+        title:"<span color='#dd4b39'>PERMISSION DENY</span>",
+        html: true,
+        text:"You have no permission to do this transaction. Please contact your administrator.",
+        showImage: false
+	});	
 }
 
 function reloadForm(time){

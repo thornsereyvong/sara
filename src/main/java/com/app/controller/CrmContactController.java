@@ -74,7 +74,7 @@ public class CrmContactController {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/contact/list", method = RequestMethod.POST)
+	@RequestMapping(value="/contact/list", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getAllContact(HttpServletRequest req){
 		
 		MeDataSource dataSource = new MeDataSource();		
