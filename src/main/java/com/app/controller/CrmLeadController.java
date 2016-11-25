@@ -80,7 +80,6 @@ public class CrmLeadController {
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/list/"+leadID, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -95,7 +94,6 @@ public class CrmLeadController {
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/view/"+map.get("leadId")+"/"+map.get("username"), HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -162,11 +160,8 @@ public class CrmLeadController {
 	public ResponseEntity<Map<String, Object>> updateLead(@RequestBody CrmLead lead, HttpServletRequest req){
 		lead.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(lead,header);
-		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/edit", HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
