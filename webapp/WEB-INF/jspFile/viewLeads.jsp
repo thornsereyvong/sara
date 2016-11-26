@@ -11,6 +11,11 @@
 
 <script type="text/javascript">
 
+var permission = ${permission};
+var curAssign = "";
+var ownerItem = "";
+
+
 var app = angular.module('viewLead', ['angularUtils.directives.dirPagination']);
 var self = this;
 var leadId = "${leadId}";
@@ -48,8 +53,6 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 			response = getLeadData();					
 			LEAD = response.LEAD;
 			
-			//dis(response);
-			
 			$scope.leadStatus = response.LEAD_STATUS;
 			$scope.leadSource = response.LEAD_SOURCE;
 			$scope.leadIndustry = response.INDUSTRY;
@@ -64,6 +67,10 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 			userAllList($scope.leadAssignTo,'#eventAssignTo','');
 			
 			displayStatusLead(LEAD.statusID);
+			
+			
+			curAssign = fmNull(response.LEAD.assignToUsername);
+			ownerItem = fmNull(response.LEAD.conCreateBy);
 			
 			
 			$scope.listAllCallByLeadId(response.CALLS);	
@@ -96,7 +103,7 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 	
 	// Tab Collaborate***************************
 	
-	$scope.listCollab = function(response){
+	$scope.listCollab = function(response){       
 		$scope.collaborates = response;		
 	}
 		

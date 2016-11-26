@@ -109,67 +109,98 @@ $(function(){
 	}).on('success.form.bv', function(e) {
 		var frmNoteData = {"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), "noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":"Lead","noteRelatedToModuleId":leadId,"noteCreateBy":username};		
 		
-		if($("#btnAddNote").text()=='Note'){
-			$.ajax({ 
-			    url: server+"/note/add", 
-			    type: 'POST',
-			    data: JSON.stringify(frmNoteData),
-			    beforeSend: function(xhr) {
-	                xhr.setRequestHeader("Accept", "application/json");
-	                xhr.setRequestHeader("Content-Type", "application/json");
-	            },
-			    success: function(data) {
-			    	
-			    	if(data.MESSAGE == "INSERTED"){	
-			    		swal({
-		            		title:"Success",
-		            		text:"You have been created new Note!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-			    		angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
-			    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
-			    	}else{
-			    		sweetAlert("Insert Unsuccessfully!", "", "error");
-			    	}
-			    	 
-			    },
-			    error:function(data,status,er) { 
-			        console.log("error: "+data+" status: "+status+" er:"+er);
-			        sweetAlert("Insert Unsuccessfully!", "", "error");
-			    }
-			});
+		if($("#btnAddNote").text() == 'Note'){		
+			if(getPermissionByModule("AC_NO","create") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to create note.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url: server+"/note/add", 
+						    type: 'POST',
+						    data: JSON.stringify(frmNoteData),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "INSERTED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
+						    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});																								
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});
+			}else{
+				alertMsgNoPermision();
+			}
+						
 		}else if($("#btnAddNote").text()=="Update"){
-			$.ajax({ 
-			    url: server+"/note/edit", 
-			    type: 'PUT',
-			    data: JSON.stringify(frmNoteData),
-			    beforeSend: function(xhr) {
-	                xhr.setRequestHeader("Accept", "application/json");
-	                xhr.setRequestHeader("Content-Type", "application/json");
-	            },
-			    success: function(data) {
-			    	if(data.MESSAGE == "UPDATED"){	
-			    		swal({
-		            		title:"Successfully",
-		            		text:"You have been update Note!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-			    		angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
-			    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();
-			    	}else{
-			    		alertMsgErrorSweet();
-			    	}
-			    	 
-			    },
-			    error:function(data,status,er) { 
-			        console.log("error: "+data+" status: "+status+" er:"+er);
-			        alertMsgErrorSweet();
-			    }
-			});
+			
+			if(getPermissionByModule("AC_NO","edit") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update note.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url: server+"/note/edit", 
+						    type: 'PUT',
+						    data: JSON.stringify(frmNoteData),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "UPDATED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().resetFrmNote();
+						    		angular.element(document.getElementById('viewLeadController')).scope().getListNoteByLead();	
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});	
+			}else{
+				alertMsgNoPermision();
+			}
 		}
 	});	
 	
