@@ -415,65 +415,80 @@ $(function(){
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		var frmLeadDetailData = {
-			"leadID": leadId,
-			"salutation": $.trim($("#lea_salutation").val()),
-		    "firstName": $.trim($("#lea_firstName").val()),
-		    "lastName": $.trim($("#lea_lastName").val()),
-		    "title": $.trim($("#lea_title").val()),
-		    "department": $.trim($("#lea_department").val()),
-		    "phone": $.trim($("#lea_phone").val()),
-		    "mobile": $.trim($("#lea_mobilePhone").val()),
-		    "website": $.trim($("#lea_website").val()),
-		    "accountName": $.trim($("#lea_accountName").val()),
-		    "no":  $.trim($("#lea_no").val()),
-		    "street": $.trim($("#lea_street").val()),
-		    "village": $.trim($("#lea_village").val()),
-		    "commune": $.trim($("#lea_commune").val()),
-		    "district": $.trim($("#lea_district").val()),
-		    "city": $.trim($("#lea_city").val()),
-		    "state": $.trim($("#lea_state").val()),
-		    "country": $.trim($("#lea_country").val()),
-		    "description": $.trim($("#lea_description").val()),
-		    "status": getJsonById("statusID","lea_status","int"),
-		    "industry": getJsonById("industID","lea_industry","int"),
-		    "source": getJsonById("sourceID","lea_source","int"),
-		    "campaign": getJsonById("campID","lea_campaign","str"),
-		    "assignTo": getJsonById("userID","lea_assignto","str"),
-		    "modifyBy": username,
-		    "email": $.trim($("#lea_email").val())
-	  	};	
 		
-		$.ajax({
-			url : server+"/lead/edit",
-			type : "PUT",
-			data : JSON.stringify(frmLeadDetailData),
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-			},
-			success:function(data){	
-				if(data.MESSAGE == "UPDATED"){					
-					swal({
-		        		title:"Successfully",
-		        		text:"You have been Update Lead!",
-		        		type:"success",  
-		        		timer: 2000,   
-		        		showConfirmButton: false
+		
+		if(getPermissionByModule("LA","edit") == "YES" || checkAssignTo() || checkOwner()){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to update lead.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : server+"/lead/edit",
+						type : "PUT",
+						data : JSON.stringify({ 
+							"leadID": leadId,
+							"salutation": $.trim($("#lea_salutation").val()),
+						    "firstName": $.trim($("#lea_firstName").val()),
+						    "lastName": $.trim($("#lea_lastName").val()),
+						    "title": $.trim($("#lea_title").val()),
+						    "department": $.trim($("#lea_department").val()),
+						    "phone": $.trim($("#lea_phone").val()),
+						    "mobile": $.trim($("#lea_mobilePhone").val()),
+						    "website": $.trim($("#lea_website").val()),
+						    "accountName": $.trim($("#lea_accountName").val()),
+						    "no":  $.trim($("#lea_no").val()),
+						    "street": $.trim($("#lea_street").val()),
+						    "village": $.trim($("#lea_village").val()),
+						    "commune": $.trim($("#lea_commune").val()),
+						    "district": $.trim($("#lea_district").val()),
+						    "city": $.trim($("#lea_city").val()),
+						    "state": $.trim($("#lea_state").val()),
+						    "country": $.trim($("#lea_country").val()),
+						    "description": $.trim($("#lea_description").val()),
+						    "status": getJsonById("statusID","lea_status","int"),
+						    "industry": getJsonById("industID","lea_industry","int"),
+						    "source": getJsonById("sourceID","lea_source","int"),
+						    "campaign": getJsonById("campID","lea_campaign","str"),
+						    "assignTo": getJsonById("userID","lea_assignto","str"),
+						    "modifyBy": username,
+						    "email": $.trim($("#lea_email").val())
+						}),
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "UPDATED"){				
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});
+								setTimeout(function(){ location.reload();}, 2000);
+																															
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
 					});
-					setTimeout(function(){
-						location.reload();
-					}, 2000);
-				}else{
-					alertMsgErrorSweet();
-				}												
-			},
-			error:function(){
-				alertMsgErrorSweet();
-			}
-		});			
+				}, 500);
+			});	
+		}else{
+			alertMsgNoPermision();
+		}
+					
 	});		
-	
 	
 	
 	$("#btnCallSave").click(function(){
@@ -538,107 +553,129 @@ $(function(){
 			}
 			
 		}
-	}).on('success.form.bv', function(e) {
-		if($("#btnCallSave").text() == 'Save'){
-			$.ajax({
-				url : server+"/call/add",
-				type : "POST",
-				data : JSON.stringify({ 
-				      "startDate": getValueStringById("callStartDate"),
-				      "callDuration": getValueStringById("callDuration"),
-				      "callCreateBy": username,
-				      "callStatus": getJsonById("callStatusId","callStatus","int"),
-				      "callDes": getValueStringById("callDescription"),
-				      "callSubject": getValueStringById("callSubject"),
-				      "callAssignTo": getJsonById("userID","callAssignTo","str"),
-				      "callRelatedToFieldId": leadId,
-				      "callRelatedToModuleType": 'Lead'
-				      
-				}),
-				beforeSend: function(xhr) {
-						    xhr.setRequestHeader("Accept", "application/json");
-						    xhr.setRequestHeader("Content-Type", "application/json");
-			    },
-				success:function(data){						
-					if(data.MESSAGE == 'INSERTED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();							
-						$("#callStatus").select2('val',"");
-						$("#callAssignTo").select2('val',"");
-						$('#frmAddCall').bootstrapValidator('resetForm', true);
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been created new call!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmCall').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}									
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			});
-			
+	}).on('success.form.bv', function(e) {		
+		if($("#btnCallSave").text() == 'Save'){			
+			if(getPermissionByModule("AC_CL","create") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to create call.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/call/add",
+							type : "POST",
+							data : JSON.stringify({ 
+							      "startDate": getValueStringById("callStartDate"),
+							      "callDuration": getValueStringById("callDuration"),
+							      "callCreateBy": username,
+							      "callStatus": getJsonById("callStatusId","callStatus","int"),
+							      "callDes": getValueStringById("callDescription"),
+							      "callSubject": getValueStringById("callSubject"),
+							      "callAssignTo": getJsonById("userID","callAssignTo","str"),
+							      "callRelatedToFieldId": oppId,
+							      "callRelatedToModuleType": typeModule							      
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "INSERTED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
+									$("#callStatus").select2('val',"");
+									$("#callAssignTo").select2('val',"");
+									$('#frmAddCall').bootstrapValidator('resetForm', true);
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});			    											
+				    				setTimeout(function(){		
+				    					$('#frmCall').modal('toggle');		    					
+				    				},2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});
+			}else{
+				alertMsgNoPermision();
+			}
+						
 		}else{
-			
-			$.ajax({
-				url : server+"/call/edit",
-				type : "PUT",
-				data : JSON.stringify({ 
-					  "callId": callIdForEdit,
-					  "startDate": getValueStringById("callStartDate"),
-				      "callDuration": getValueStringById("callDuration"),
-				      "callDes": getValueStringById("callDescription"),
-				      "callSubject": getValueStringById("callSubject"),
-				      "callAssignTo": getJsonById("userID","callAssignTo","str"),
-				      "callStatus": getJsonById("callStatusId","callStatus","int"),
-				      "callRelatedToFieldId": leadId,
-				      "callRelatedToModuleType": 'Lead',
-				      "callModifiedBy" : username
-				}),
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-			    },
-				success:function(data){
-					if(data.MESSAGE == 'UPDATED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
-						$("#callStatus").select2('val',"");
-						$("#callAssignTo").select2('val',"");
-						$('#frmAddCall').bootstrapValidator('resetForm', true);						
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been updated new call!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmCall').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-										
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			});
-			
-		}
-		
+			if(getPermissionByModule("AC_CL","edit") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update call.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/call/edit",
+							type : "PUT",
+							data : JSON.stringify({ 
+								  "callId": callIdForEdit,
+								  "startDate": getValueStringById("callStartDate"),
+							      "callDuration": getValueStringById("callDuration"),
+							      "callDes": getValueStringById("callDescription"),
+							      "callSubject": getValueStringById("callSubject"),
+							      "callAssignTo": getJsonById("userID","callAssignTo","str"),
+							      "callStatus": getJsonById("callStatusId","callStatus","int"),
+							      "callRelatedToFieldId": oppId,
+							      "callRelatedToModuleType": typeModule,
+							      "callModifiedBy" : username
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "UPDATED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().listDataCallByRalateType();
+									$("#callStatus").select2('val',"");
+									$("#callAssignTo").select2('val',"");
+									$('#frmAddCall').bootstrapValidator('resetForm', true);						
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									setTimeout(function(){ $('#frmCall').modal('toggle');}, 2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});	
+			}else{
+				alertMsgNoPermision();
+			}
+		}		
 	});	
-	
-	
-	
-	
-	
 	
 	$("#btnMeetSave").click(function(){
 		$('#frmAddMeet').submit();
@@ -715,111 +752,132 @@ $(function(){
 			}
 			
 		}
-	}).on('success.form.bv', function(e) {
+	}).on('success.form.bv', function(e) {		
 		
-	
-		
-		if($("#btnMeetSave").text() == 'Save'){
-			
-			$.ajax({
-				url : server+"/meeting/add",
-				type : "POST",
-				data : JSON.stringify({
-					  "meetingSubject": getValueStringById("meetSubject"),
-				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
-				      "meetingDes": getValueStringById("meetDescription"),
-				      "startDate": getValueStringById("meetStartDate"),
-				      "meetingDuration": getValueStringById("meetDuration"),
-				      "endDate":  getValueStringById("meetEndDate"),
-				      "meetingStatus": getJsonById("statusId","meetStatus","int"),
-				      "meetingLocation":  getValueStringById("meetLocation"),
-				      "meetingRelatedToModuleType": 'Lead',
-				      "meetingRelatedToModuleId": leadId,
-				      "meetingCreateBy": username
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success:function(data){						
-					if(data.MESSAGE == 'INSERTED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataMeetByRalateType();						
-						$("#meetStatus").select2('val',"");
-						$("#meetAssignTo").select2('val',"");	
-						$("#meetDuration").select2('val',"");
-						$('#frmAddMeet').bootstrapValidator('resetForm', true);
+		if($("#btnMeetSave").text() == 'Save'){			
+			if(getPermissionByModule("AC_ME","create") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to create meeting.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/meeting/add",
+							type : "POST",
+							data : JSON.stringify({
+								  "meetingSubject": getValueStringById("meetSubject"),
+							      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
+							      "meetingDes": getValueStringById("meetDescription"),
+							      "startDate": getValueStringById("meetStartDate"),
+							      "meetingDuration": getValueStringById("meetDuration"),
+							      "endDate":  getValueStringById("meetEndDate"),
+							      "meetingStatus": getJsonById("statusId","meetStatus","int"),
+							      "meetingLocation":  getValueStringById("meetLocation"),
+							      "meetingRelatedToModuleType": typeModule,
+							      "meetingRelatedToModuleId": oppId,
+							      "meetingCreateBy": username
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "INSERTED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().listDataMeetByRalateType();			
+									$("#meetStatus").select2('val',"");
+									$("#meetAssignTo").select2('val',"");	
+									$("#meetDuration").select2('val',"");
+									$('#frmAddMeet').bootstrapValidator('resetForm', true);
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});			    											
+				    				setTimeout(function(){	 $('#frmMeet').modal('toggle');	},2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});
+			}else{
+				alertMsgNoPermision();
+			}
 						
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been created new meeting!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmMeet').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-					
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			}); 
-			
 		}else{
-			
-			$.ajax({
-				url : server+"/meeting/edit",
-				type : "PUT",
-				data : JSON.stringify({
-					  "meetingId": meetIdForEdit,
-					  "meetingSubject": getValueStringById("meetSubject"),				     
-				      "meetingDes": getValueStringById("meetDescription"),
-				      "startDate": getValueStringById("meetStartDate"),
-				      "meetingDuration": getValueStringById("meetDuration"),
-				      "endDate":  getValueStringById("meetEndDate"),
-				      "meetingStatus": getJsonById("statusId","meetStatus","int"),
-				      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
-				      "meetingLocation":  getValueStringById("meetLocation"),
-				      "meetingRelatedToModuleType": 'Lead',
-				      "meetingRelatedToModuleId": leadId,
-				      "meetingModifiedBy" : username
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success:function(data){					
-					if(data.MESSAGE == 'UPDATED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataMeetByRalateType();
-						
-						$("#meetStatus").select2('val',"");
-						$("#meetAssignTo").select2('val',"");	
-						$("#meetDuration").select2('val',"");
-						$('#frmAddMeet').bootstrapValidator('resetForm', true);
-						
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been updated this meeting!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmMeet').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			}); 
-					
+			if(getPermissionByModule("AC_ME","edit") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update meet.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/meeting/edit",
+							type : "PUT",
+							data : JSON.stringify({
+								  "meetingId": meetIdForEdit,
+								  "meetingSubject": getValueStringById("meetSubject"),				     
+							      "meetingDes": getValueStringById("meetDescription"),
+							      "startDate": getValueStringById("meetStartDate"),
+							      "meetingDuration": getValueStringById("meetDuration"),
+							      "endDate":  getValueStringById("meetEndDate"),
+							      "meetingStatus": getJsonById("statusId","meetStatus","int"),
+							      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
+							      "meetingLocation":  getValueStringById("meetLocation"),
+							      "meetingRelatedToModuleType": typeModule,
+							      "meetingRelatedToModuleId": oppId,
+							      "meetingModifiedBy" : username
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "UPDATED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().listDataMeetByRalateType();			
+									$("#meetStatus").select2('val',"");
+									$("#meetAssignTo").select2('val',"");	
+									$("#meetDuration").select2('val',"");
+									$('#frmAddMeet').bootstrapValidator('resetForm', true);					
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									setTimeout(function(){ $('#frmMeet').modal('toggle');}, 2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});	
+			}else{
+				alertMsgNoPermision();
+			}
 		}
 		
 	});	
@@ -889,114 +947,136 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {
-		if($("#btnTaskSave").text() == 'Save'){
-			
-			$.ajax({
-				url : server+"/task/add",
-				type : "POST",
-				data : JSON.stringify({
-				      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
-				      "taskPriority": getValueStringById("taskPriority"),
-				      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
-				      "taskRelatedToId": leadId,
-				      "taskRelatedToModule": 'Lead',
-				      "taskDes": getValueStringById("taskDescription"),
-				      "dueDate": getValueStringById("taskEndDate"),
-				      "taskSubject":  getValueStringById("taskSubject"),
-				      "startDate":  getValueStringById("taskStartDate"),
-				      "taskContact": getJsonById("conID","taskContact","str"),
-				      "taskCreateBy": username					      
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success:function(data){					
-					if(data.MESSAGE == 'INSERTED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataTaskByRalateType();						
+		
+		
+		if($("#btnTaskSave").text() == 'Save'){			
+			if(getPermissionByModule("AC_TA","create") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to create task.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/task/add",
+							type : "POST",
+							data : JSON.stringify({
+							      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
+							      "taskPriority": getValueStringById("taskPriority"),
+							      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
+							      "taskRelatedToId": oppId,
+							      "taskRelatedToModule": typeModule,
+							      "taskDes": getValueStringById("taskDescription"),
+							      "dueDate": getValueStringById("taskEndDate"),
+							      "taskSubject":  getValueStringById("taskSubject"),
+							      "startDate":  getValueStringById("taskStartDate"),
+							      "taskContact": getJsonById("conID","taskContact","str"),
+							      "taskCreateBy": username					      
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "INSERTED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().listDataTaskByRalateType();		
+									$("#taskStatus").select2('val',"");
+									$("#taskAssignTo").select2('val',"");	
+									$("#taskPriority").select2('val',"");
+									$("#taskContact").select2('val',"");
+									$('#frmAddTask').bootstrapValidator('resetForm', true);	
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});			    											
+				    				setTimeout(function(){	 $('#frmTask').modal('toggle');	},2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});
+			}else{
+				alertMsgNoPermision();
+			}
 						
-						$("#taskStatus").select2('val',"");
-						$("#taskAssignTo").select2('val',"");	
-						$("#taskPriority").select2('val',"");
-						$("#taskContact").select2('val',"");
-						
-						
-						$('#frmAddTask').bootstrapValidator('resetForm', true);		
-						
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been created a new task!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmTask').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			});
-			
 		}else{
-			
-			$.ajax({
-				url : server+"/task/edit",
-				type : "PUT",
-				data : JSON.stringify({
-					  "taskId" : taskIdForEdit,					 
-				      "taskPriority": getValueStringById("taskPriority"),				      
-				      "taskRelatedToId": leadId,
-				      "taskRelatedToModule": 'Lead',
-				      "taskDes": getValueStringById("taskDescription"),
-				      "dueDate": getValueStringById("taskEndDate"),
-				      "taskSubject":  getValueStringById("taskSubject"),
-				      "startDate":  getValueStringById("taskStartDate"),
-				      "taskContact": getJsonById("conID","taskContact","str"),
-				      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
-				      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
-				      "taskModifiedBy": username
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success:function(data){					
-					if(data.MESSAGE == 'UPDATED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataTaskByRalateType();
-						
-						
-						$("#taskStatus").select2('val',"");
-						$("#taskAssignTo").select2('val',"");	
-						$("#taskPriority").select2('val',"");
-						$("#taskContact").select2('val',"");
-						
-						$('#frmAddTask').bootstrapValidator('resetForm', true);	
-						
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been updated this task!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmTask').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			}); 
-					
+			if(getPermissionByModule("AC_TA","edit") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update task.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/task/edit",
+							type : "PUT",
+							data : JSON.stringify({
+								  "taskId" : taskIdForEdit,					 
+							      "taskPriority": getValueStringById("taskPriority"),				      
+							      "taskRelatedToId": oppId,
+							      "taskRelatedToModule": typeModule,
+							      "taskDes": getValueStringById("taskDescription"),
+							      "dueDate": getValueStringById("taskEndDate"),
+							      "taskSubject":  getValueStringById("taskSubject"),
+							      "startDate":  getValueStringById("taskStartDate"),
+							      "taskContact": getJsonById("conID","taskContact","str"),
+							      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
+							      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
+							      "taskModifiedBy": username
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "UPDATED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().listDataTaskByRalateType();		
+									$("#taskStatus").select2('val',"");
+									$("#taskAssignTo").select2('val',"");	
+									$("#taskPriority").select2('val',"");
+									$("#taskContact").select2('val',"");
+									$('#frmAddTask').bootstrapValidator('resetForm', true);					
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									setTimeout(function(){ $('#frmTask').modal('toggle');}, 2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});	
+			}else{
+				alertMsgNoPermision();
+			}
 		}
+		
 		
 	});	
 	
@@ -1076,112 +1156,142 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {
-		if($("#btnEventSave").text() == 'Save'){
-			
-			$.ajax({
-				url : server+"/event/add",
-				type : "POST",
-				data : JSON.stringify({
-				      "evName": getValueStringById("eventSubject"),				     
-				      "evBudget": getValueStringById("eventBudget"),
-				      "evDes": getValueStringById("eventDescription"),
-				      "evCreateBy":  username,
-				      "evDuration": getValueStringById("eventDuration"),
-				      "startDate": getValueStringById("eventStartDate"),
-				      "endDate": getValueStringById("eventEndDate"),
-				      "assignTo": getJsonById("userID","eventAssignTo","str"),
-				      "evlocation": getJsonById("loId","eventLocation","str"),
-				      "evRelatedToModuleId" : leadId,
-				      "evRelatedToModuleType" : "Lead"
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success:function(data){					
-					if(data.MESSAGE == 'INSERTED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataEventByRalateType();						
+		
+		if($("#btnEventSave").text() == 'Save'){			
+			if(getPermissionByModule("AC_EV","create") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to create event.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/event/add",
+							type : "POST",
+							data : JSON.stringify({
+							      "evName": getValueStringById("eventSubject"),				     
+							      "evBudget": getValueStringById("eventBudget"),
+							      "evDes": getValueStringById("eventDescription"),
+							      "evCreateBy":  username,
+							      "evDuration": getValueStringById("eventDuration"),
+							      "startDate": getValueStringById("eventStartDate"),
+							      "endDate": getValueStringById("eventEndDate"),
+							      "assignTo": getJsonById("userID","eventAssignTo","str"),
+							      "evlocation": getJsonById("loId","eventLocation","str"),
+							      "evRelatedToModuleId" : oppId,
+							      "evRelatedToModuleType" : typeModule
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "INSERTED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().listDataEventByRalateType();								
+									
+									$("#eventDuration").select2('val',"");
+									$("#eventAssignTo").select2('val',"");	
+									$("#eventLocation").select2('val',"");
+									
+									$('#frmAddEvent').bootstrapValidator('resetForm', true);
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});			    											
+				    				setTimeout(function(){	 $('#frmEvent').modal('toggle');	},2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});
+			}else{
+				alertMsgNoPermision();
+			}
 						
-						$("#eventDuration").select2('val',"");
-						$("#eventAssignTo").select2('val',"");	
-						$("#eventLocation").select2('val',"");
-						
-						$('#frmAddEvent').bootstrapValidator('resetForm', true);
-						
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been created a new event!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmEvent').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			}); 
-			
 		}else{
-			
-			$.ajax({
-				url : server+"/event/edit",
-				type : "PUT",
-				data : JSON.stringify({
-					  "evId": eventIdForEdit,
-					  "evName": getValueStringById("eventSubject"),
-				      "evBudget": getValueStringById("eventBudget"),
-				      "evDes": getValueStringById("eventDescription"),
-				      "evModifiedBy":  username,
-				      "evDuration": getValueStringById("eventDuration"),
-				      "startDate": getValueStringById("eventStartDate"),
-				      "endDate": getValueStringById("eventEndDate"),
-				      "assignTo": getJsonById("userID","eventAssignTo","str"),
-				      "evlocation": getJsonById("loId","eventLocation","str"),
-				      "evRelatedToModuleId" : leadId,
-				      "evRelatedToModuleType" : "Lead"
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success:function(data){					
-					if(data.MESSAGE == 'UPDATED'){
-						angular.element(document.getElementById('viewLeadController')).scope().listDataEventByRalateType();
-						
-						$("#eventDuration").select2('val',"");
-						$("#eventAssignTo").select2('val',"");	
-						$("#eventLocation").select2('val',"");
-						
-						$('#frmAddEvent').bootstrapValidator('resetForm', true);						
-						
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been updated this event!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							$('#frmEvent').modal('toggle');
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			}); 
-					
+			if(getPermissionByModule("AC_EV","edit") == "YES" || checkAssignTo() || checkOwner()){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update event.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : server+"/event/edit",
+							type : "PUT",
+							data : JSON.stringify({
+								  "evId": eventIdForEdit,
+								  "evName": getValueStringById("eventSubject"),
+							      "evBudget": getValueStringById("eventBudget"),
+							      "evDes": getValueStringById("eventDescription"),
+							      "evModifiedBy":  username,
+							      "evDuration": getValueStringById("eventDuration"),
+							      "startDate": getValueStringById("eventStartDate"),
+							      "endDate": getValueStringById("eventEndDate"),
+							      "assignTo": getJsonById("userID","eventAssignTo","str"),
+							      "evlocation": getJsonById("loId","eventLocation","str"),
+						    	  "evRelatedToModuleId" : oppId,
+							      "evRelatedToModuleType" : typeModule
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "UPDATED"){						
+									angular.element(document.getElementById('viewLeadController')).scope().listDataEventByRalateType();								
+									
+									$("#eventDuration").select2('val',"");
+									$("#eventAssignTo").select2('val',"");	
+									$("#eventLocation").select2('val',"");
+									
+									$('#frmAddEvent').bootstrapValidator('resetForm', true);				
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									setTimeout(function(){ $('#frmEvent').modal('toggle');}, 2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});	
+			}else{
+				alertMsgNoPermision();
+			}
 		}
 		
 	});
+	
+	
+	
+	
 	
 	
 	
@@ -1236,36 +1346,52 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {		
-			
-		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":"Lead", "colRelatedToModuleId":leadId};		
-		$.ajax({
-			url : server+"/collaborate/add",
-			method : "POST",			
-			headers: {
-		    	'Accept': 'application/json',
-		        'Content-Type': 'application/json'
-		    },
-			data : JSON.stringify(addPost),
-			success:function(data){
-				if(data.MESSAGE == 'INSERTED'){
-					angular.element(document.getElementById('viewLeadController')).scope().listCollabByLeadByUser();
-					$("#collabTags").select2("val","");
-					$('#frmCollab').bootstrapValidator('resetForm', true);						
-					swal({
-	            		title:"Successfully",
-	            		text:"You have been created a new post!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-	    			});					
-				}else{
-					alertMsgErrorSweet();
-				}	
-			},
-			error:function(){
-				alertMsgErrorSweet();
-			}
-		});				
+		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":typeModule, "colRelatedToModuleId":oppId};
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to post collaboration.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				$.ajax({ 
+					url : server+"/collaborate/add",
+					method : "POST",
+					data : JSON.stringify(addPost),
+					beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+				    }, 
+				    success: function(result){					    						    
+						if(result.MESSAGE == "INSERTED"){						
+							angular.element(document.getElementById('viewLeadController')).scope().listCollabByLeadByUser();			
+							
+							$("#collabTags").select2("val","");
+							$('#frmCollab').bootstrapValidator('resetForm', true);
+							
+							swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success"
+	    					});			    											
+		    				
+																														
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			alertMsgErrorSweet();
+		    		} 
+				});
+			}, 500);
+		});	
+					
 	});
 });
 
