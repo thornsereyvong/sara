@@ -5,6 +5,15 @@ public class CrmOpportunityQuotation{
 	private int opQuoteId;
 	private String opId;
 	private String quoteId;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getOpQuoteId() {
 		return opQuoteId;

@@ -6,6 +6,15 @@ public class CrmOpportunityContact{
 	private String conId;
 	private String opConType;
 	private String opConRole;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getOpConId() {
 		return opConId;

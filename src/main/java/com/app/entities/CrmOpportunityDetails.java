@@ -26,6 +26,15 @@ public class CrmOpportunityDetails{
 	private List<Object> items;
 	private List<Object> locations;
 	private Object opportunity;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getOpDetailsId() {
 		return opDetailsId;

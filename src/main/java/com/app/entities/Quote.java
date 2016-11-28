@@ -39,8 +39,16 @@ public class Quote {
 	private String classId;
 	private String shipTo;
 	private List<QuoteDetails> quoteDetails;
+	private MeDataSource meDataSource;
 	
-	
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
+
 	public String getShipTo() {
 		return shipTo;
 	}
