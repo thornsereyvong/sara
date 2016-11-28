@@ -4,6 +4,15 @@ public class CrmOpportunitySaleorder{
 	private int opSaleId;
 	private String opId;
 	private String saleId;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public int getOpSaleId() {
 		return opSaleId;
