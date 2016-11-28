@@ -306,33 +306,46 @@
 							   "expectedResponse" : getInt("cam_expectedResponse"),
 							   "modifyBy" : username
 				};
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update campaign.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : "${pageContext.request.contextPath}/campaign/edit",
+							type : "PUT",
+							data : JSON.stringify(dataFrm),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "UPDATED"){	
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									reloadForm(2000);
+																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
+				});	
 				
-				
-				$.ajax({url : "${pageContext.request.contextPath}/campaign/edit",
-					type : "PUT",
-					data : JSON.stringify(dataFrm),
-						beforeSend : function(xhr) {
-							xhr.setRequestHeader("Accept","application/json");
-							xhr.setRequestHeader("Content-Type","application/json");
-						},
-						success : function(data) {
-							if(data.MESSAGE == "UPDATED"){
-								swal({
-				            		title:"Successful",
-				            		text:"You have been updated this campaign!",
-				            		type:"success",  
-				            		timer: 2000,   
-				            		showConfirmButton: false
-			        			});
-								reloadForm(2000);
-							}else{
-								alertMsgErrorSweet();	
-							}
-						},
-						error : function() {
-							alertMsgErrorSweet();	
-						}
-				});
 			});
 		});
 	</script>

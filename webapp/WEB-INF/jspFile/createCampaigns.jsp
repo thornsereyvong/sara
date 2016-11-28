@@ -200,50 +200,66 @@
 				}
 			}
 		}).on('success.form.bv', function(e) {
-			
 			var dataFrm = {"campName" : getValueStringById("cam_name"),
-						   "startDate" : getDateByFormat("cam_startDate"),
-			               "endDate" : getDateByFormat("cam_endDate"),
-			               "status" : getJsonById("statusID","cam_status","int"),
-			               "type" : getJsonById("typeID","cam_type","int"),
-			               "description" : getValueStringById("cam_description"),
-			               "parent" : getJsonById("campID","cam_parent","str"),
-			               "budget" : getInt("cam_budget"),
-			               "assignTo" : getJsonById("userID","cam_assignTo","str"),
-			               "actualCost" : getInt("cam_actualCost"),
-						   "expectedCost" : getInt("cam_expectedCost"),
-			               "expectedRevenue" : getInt("cam_expectedRevenue"),
-			               "numSend" : getInt("cam_numSend"),
-						   "expectedResponse" : getInt("cam_expectedResponse"),
-						   "createdBy" : username
+					   "startDate" : getDateByFormat("cam_startDate"),
+		               "endDate" : getDateByFormat("cam_endDate"),
+		               "status" : getJsonById("statusID","cam_status","int"),
+		               "type" : getJsonById("typeID","cam_type","int"),
+		               "description" : getValueStringById("cam_description"),
+		               "parent" : getJsonById("campID","cam_parent","str"),
+		               "budget" : getInt("cam_budget"),
+		               "assignTo" : getJsonById("userID","cam_assignTo","str"),
+		               "actualCost" : getInt("cam_actualCost"),
+					   "expectedCost" : getInt("cam_expectedCost"),
+		               "expectedRevenue" : getInt("cam_expectedRevenue"),
+		               "numSend" : getInt("cam_numSend"),
+					   "expectedResponse" : getInt("cam_expectedResponse"),
+					   "createdBy" : username
 			};
-			
-		
-			$.ajax({url : "${pageContext.request.contextPath}/campaign/add",
-				type : "POST",
-				data : JSON.stringify(dataFrm),
-					beforeSend : function(xhr) {
-						xhr.setRequestHeader("Accept","application/json");
-						xhr.setRequestHeader("Content-Type","application/json");
-					},
-					success : function(data) {
-						if(data.MESSAGE == "INSERTED"){
-							swal({
-			            		title:"Successfully",
-			            		text:"You have been created a new campaign!",
-			            		type:"success",  
-			            		timer: 2000,   
-			            		showConfirmButton: false
-		        			});
-							reloadForm(2000);
-						}else{
-							alertMsgErrorSweet();	
-						}
-					},
-					error : function() {
-						alertMsgErrorSweet();	
-					}
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to create campaign.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/campaign/add",
+						type : "POST",
+					    data: JSON.stringify(dataFrm),
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "INSERTED"){
+								$("#cam_parent").select2('val',"");
+								$("#cam_type").select2('val',"");
+								$("#cam_status").select2('val',"");
+								$("#cam_assignTo").select2('val',"");
+								$("#form-campaigns").bootstrapValidator('resetForm', 'true');
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});	
+								
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
 			});
+			
 		});
 	});
 	</script>

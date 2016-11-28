@@ -246,13 +246,9 @@ $(document).ready(function() {
 						message: 'The status is required and can not be empty!'
 					}
 				}
-			}
-			
-			
-			
+			}		
 		}
 	}).on('success.form.bv', function(e) {
-				
 		var frmDataLead = {
 				"salutation": getValueStringById("lea_salutation"),
 			    "firstName": getValueStringById("lea_firstName"),
@@ -280,33 +276,54 @@ $(document).ready(function() {
 			    "createBy": username,
 			    "email": getValueStringById("lea_email")
 		};
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/lead/add",
-			type : "POST",
-			data : JSON.stringify(frmDataLead),	
-			beforeSend: function(xhr) {
+		 swal({   
+			title: "<span style='font-size: 25px;'>You are about to create campaign.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/lead/add",
+					type : "POST",
+					data : JSON.stringify(frmDataLead),	
+					beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
 					    xhr.setRequestHeader("Content-Type", "application/json");
-					    },
-			success:function(data){					
-				if(data.MESSAGE == "INSERTED"){
-					swal({
-	            		title:"Successful",
-	            		text:"You have been created a new lead!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
-					reloadForm(2000);
-				}else{
-					alertMsgErrorSweet();	
-				}
-			},
-			error:function(){
-				alertMsgErrorSweet();	
-			}
+				    }, 
+				    success: function(result){					    						    
+						if(result.MESSAGE == "INSERTED"){
+							$("#lea_ca").select2('val',"");
+							$("#lea_status").select2('val',"");
+							$("#lea_source").select2('val',"");
+							$("#lea_industry").select2('val',"");
+							$("#lea_assignTo").select2('val',"");
+							
+							$("#form-leads").bootstrapValidator('resetForm', 'true');
+							$('#form-leads')[0].reset();
+							
+							swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success"
+	    					});	
+							
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			alertMsgErrorSweet();
+		    		} 
+				});
+			}, 500);
 		});
+		
 			
 	});	
 	
@@ -386,7 +403,7 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label class="font-label">Department </label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="lea_department" name="lea_department">
+									<input type="text" class="form-control" id="lea_department" name="lea_department">
 								</div>
 							</div>						
 						</div>

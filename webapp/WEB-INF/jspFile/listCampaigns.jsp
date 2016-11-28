@@ -26,54 +26,54 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	
 	
 	$scope.deleteCamp = function(campID){
-		swal({
-            title: "Are you sure?", //Bold text
-            text: "This Campaign will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-        	var str = '<%=roleDelete%>';
-            
-            if(isConfirm){
-
-				if(str == "YES"){
-					 $http.delete("${pageContext.request.contextPath}/campaign/remove/"+campID)
-			            .success(function(){
-			            		swal({
-					            		title:"Deleted",
-					            		text:"Campaign have been deleted!",
-					            		type:"success",  
-					            		timer: 2000,   
-					            		showConfirmButton: false
-			            		});
-			            		
-			            		$scope.listCampaigns();
-			            		
-			            		
-				      });
-				}else{
-					swal({
-		                title:"Cancelled",
-		                text:"You don't have permission delete!",
-		                type:"error",
-		                timer:2000,
-		                showConfirmButton: false});
-				}
+		var str = '<%=roleDelete%>';
+		if(str == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete campaign with ID: <span class='color_msg'>"+campID+"</span>.</span>",   
+				text: "Click OK to continue or CANCEL to abort.",   
+				type: "info", 
+				html: true,
+				showCancelButton: true,   
+				closeOnConfirm: false,   
+				showLoaderOnConfirm: true, 
 				
-            } else {
-                swal({
-	                title:"Cancelled",
-	                text:"This Campaign is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+			}, function(){   
+				setTimeout(function(){			
+					$.ajax({ 
+			    		url: "${pageContext.request.contextPath}/campaign/remove/"+campID,
+			    		method: "POST",
+			    		beforeSend: function(xhr) {
+			    		    xhr.setRequestHeader("Accept", "application/json");
+			    		    xhr.setRequestHeader("Content-Type", "application/json");
+			    	    }, 
+			    	    success: function(result){	  
+			    			if(result.MESSAGE == "DELETED"){	    				
+			    				swal({
+			    					title:"SUCCESSFUL",
+			    					text: result.MSG, 
+			    					type:"success", 
+			    					html: true,
+			    					timer: 2000,
+			    				});
+			    				  
+			    				setTimeout(function(){		
+			    					$scope.listCampaigns();
+			    				},2000);
+			    			}else{
+			    				swal("UNSUCCESSFUL", result.MESSAGE, "error");
+			    			}
+			    		},
+			    		error:function(){
+			    			swal("UNSUCCESSFUL", "Please try again!", "error");
+			    		}		    	    
+			    	});
+				}, 500);
+			});	
+		}else{
+			alertMsgNoPermision();
+		}
+		
+		
 	};
 	
 }]);
@@ -123,8 +123,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 				  </div>
 				  <div class="clearfix"></div>
 			<div class="tablecontainer table-responsive" data-ng-init="listCampaigns()" > 
-				<%
-				
+				<%				
 				   if(roleList.equals("YES")){
 				%>
 				
