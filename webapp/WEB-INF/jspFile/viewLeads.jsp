@@ -11,9 +11,16 @@
 
 <script type="text/javascript">
 
+var permission = ${permission};
+var curAssign = "";
+var ownerItem = "";
+
+
 var app = angular.module('viewLead', ['angularUtils.directives.dirPagination']);
 var self = this;
 var leadId = "${leadId}";
+var oppId = "${leadId}";
+var typeModule = "Lead";
 var username = "${SESSION}";
 var lLead = "";
 var server = "${pageContext.request.contextPath}";
@@ -48,8 +55,6 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 			response = getLeadData();					
 			LEAD = response.LEAD;
 			
-			//dis(response);
-			
 			$scope.leadStatus = response.LEAD_STATUS;
 			$scope.leadSource = response.LEAD_SOURCE;
 			$scope.leadIndustry = response.INDUSTRY;
@@ -64,6 +69,10 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 			userAllList($scope.leadAssignTo,'#eventAssignTo','');
 			
 			displayStatusLead(LEAD.statusID);
+			
+			
+			curAssign = fmNull(response.LEAD.assignToUsername);
+			ownerItem = fmNull(response.LEAD.conCreateBy);
 			
 			
 			$scope.listAllCallByLeadId(response.CALLS);	
@@ -96,7 +105,7 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 	
 	// Tab Collaborate***************************
 	
-	$scope.listCollab = function(response){
+	$scope.listCollab = function(response){       
 		$scope.collaborates = response;		
 	}
 		
@@ -162,21 +171,20 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 	
     
     $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
-    	SweetAlert.swal({
-            title: "Are you sure?",
-            text: "This comment will not be able to recover!", 
-            type: "warning",
-            showCancelButton: true, 
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, 
-            closeOnCancel: false
+    	swal({
+            title: "<span style='font-size: 25px;'>You are about to delete comment.</span>",
+            text: "Click OK to continue or CANCEL to abort.",
+            type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,
         }, 
         function(isConfirm){ 
         	  if(isConfirm){        		
         		  $http.delete("${pageContext.request.contextPath}/collaborate/comment/remove/"+comId).success(function(){
-	        		  SweetAlert.swal({
-	              		title:"Deleted",
+	        		 swal({
+	              		title:"SUCCESSFUL",
 	              		text:"The comment have been deleted!",
 	              		type:"success",  
 	              		timer: 2000,   
@@ -185,7 +193,7 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
         		  });
         		  $scope.collaborates[keyParent].details.splice(keyChild, 1);
         	  }else{
-        		  SweetAlert.swal({
+        		 swal({
   	                title:"Cancelled",
   	                text:"This comment is safe!",
   	                type:"error",
@@ -196,21 +204,20 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
     }
     
 	$scope.btnDeleteCollabPost = function(key,postId){
-    	SweetAlert.swal({
-            title: "Are you sure?",
-            text: "This post will not be able to recover!", 
-            type: "warning",
-            showCancelButton: true, 
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, 
-            closeOnCancel: false
-        }, 
-        function(isConfirm){      
-        	 if(isConfirm){
+		swal({
+   		 title: "<span style='font-size: 25px;'>You are about to delete post.</span>",
+            text: "Click OK to continue or CANCEL to abort.",
+            type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,
+       }, 
+       function(isConfirm){              	
+       	 if(isConfirm){
 	       		  $http.delete("${pageContext.request.contextPath}/collaborate/delete/"+postId).success(function(){
-		        		  SweetAlert.swal({
-		              		title:"Deleted",
+		        		  swal({
+		              		title:"SUCCESSFUL",
 		              		text:"The post have been deleted!",
 		              		type:"success",  
 		              		timer: 2000,   
@@ -219,14 +226,14 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 		        		  $scope.collaborates.splice(key, 1);
 	       		  }); 
 	       	  }else{
-	       		  SweetAlert.swal({
+	       		  swal({
 	 	                title:"Cancelled",
 	 	                text:"This post is safe!",
 	 	                type:"error",
 	 	                timer:2000,
 	 	                showConfirmButton: false});
 	       	  }         			
-        });    	    	    	
+       });     	    	    	
     }	
 	
 	// End Collaborate***************************
@@ -241,53 +248,54 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 	$scope.editNoteById = function(noteId){
 		$scope.getNoteById(noteId); 
 	}
+	
+	
+	
 	$scope.deleteNoteById = function(noteId){
 		$scope.resetFrmNote();
-		SweetAlert.swal({
-            title: "Are you sure?", //Bold text
-            text: "This note will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-           
-	            var str = 'YES';
-	            
-	            if(isConfirm){
-
-					if(str == "YES"){
-						$http.delete("${pageContext.request.contextPath}/note/remove/"+noteId)
-			            .success(function(){
-			            		SweetAlert.swal({
-					            		title:"Deleted",
-					            		text:"Note have been deleted!",
-					            		type:"success",  
-					            		timer: 2000,   
-					            		showConfirmButton: false
-			            		});
-			            		$scope.getListNoteByLead();
-					      });
-					}else{
-						SweetAlert.swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					}    
-            } else {
-                SweetAlert.swal({
-	                title:"Cancelled",
-	                text:"This note is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+		
+		if(getPermissionByModule("AC_NO","delete") == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete note with ID: <span class='color_msg'>"+noteId+"</span>.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/note/remove/"+noteId,
+						type : "DELETE",
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "DELETED"){						
+								$scope.getListNoteByLead();
+			    				swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});																								
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+		}else{
+			alertMsgNoPermision();
+		}
+		
 	}
 	$scope.resetFrmNote = function(){
 		noteIdEdit = "";
@@ -387,54 +395,53 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 			$("#btn_show_call").click();
 		});		
 	}
-	$scope.actDeleteCall = function(callId){				
-		SweetAlert.swal({
-            title: "Are you sure?", //Bold text
-            text: "This call will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-           
-	            var str = '<%=roleDelete%>';
-	        	
-	            if(isConfirm){
-
-	            	if(str == "YES"){
-	            		 $http.delete("${pageContext.request.contextPath}/call/remove/"+callId)
-	     	            .success(function(){
-	     	            		SweetAlert.swal({
-	     			            		title:"Deleted",
-	     			            		text:"Call have been deleted!",
-	     			            		type:"success",  
-	     			            		timer: 2000,   
-	     			            		showConfirmButton: false
-	     	            		});
-	     	            		
-	     	            		$scope.listDataCallByRalateType();
-	     		            });
-					}else{
-						SweetAlert.swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					} 
-            } else {
-                SweetAlert.swal({
-	                title:"Cancelled",
-	                text:"This call is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+	
+	$scope.actDeleteCall = function(callId){
+		if(getPermissionByModule("AC_CL","delete") == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete call with ID: <span class='color_msg'>"+callId+"</span>.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/call/remove/"+callId,
+						type : "DELETE",
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "DELETED"){						
+								$scope.listDataCallByRalateType();
+			    				swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});																								
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+		}else{
+			alertMsgNoPermision();
+		}
+		
+		
 	}
+		
 	// end call path
 	
 	// meeting path
@@ -461,55 +468,53 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 			$("#btn_show_meet").click();
 		});		
 	}
-	$scope.actDeleteMeeting = function(meetingId){				
-		SweetAlert.swal({
-            title: "Are you sure?", //Bold text
-            text: "This meeting will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-           
-	            var str = '<%=roleDelete%>';
-	        	
-	            if(isConfirm){
-
-	            	if(str == "YES"){
-	            		 $http.delete("${pageContext.request.contextPath}/meeting/remove/"+meetingId)
-	     	            .success(function(){
-	     	            		SweetAlert.swal({
-	     			            		title:"Deleted",
-	     			            		text:"Meeting have been deleted!",
-	     			            		type:"success",  
-	     			            		timer: 2000,   
-	     			            		showConfirmButton: false
-	     	            		});
-	     	            		
-	     	            		$scope.listDataMeetByRalateType();
-	     		            });
-					}else{
-						SweetAlert.swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					} 
-            } else {
-                SweetAlert.swal({
-	                title:"Cancelled",
-	                text:"This meeting is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
-	}
 	
+	$scope.actDeleteMeeting = function(meetingId){	
+		
+		if(getPermissionByModule("AC_ME","delete") == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete meeting with ID: <span class='color_msg'>"+meetingId+"</span>.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/meeting/remove/"+meetingId,
+						type : "DELETE",
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "DELETED"){						
+								$scope.listDataMeetByRalateType();
+			    				swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});																								
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+		}else{
+			alertMsgNoPermision();
+		}
+		
+		
+	}
 	
 	
 	// end meeting path
@@ -537,53 +542,51 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 		});		
 	}
 	
-	$scope.actDeleteTask = function(taskId){				
-		SweetAlert.swal({
-            title: "Are you sure?", //Bold text
-            text: "This task will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-           
-	            var str = '<%=roleDelete%>';
-	        	
-	            if(isConfirm){
-
-	            	if(str == "YES"){
-	            		 $http.delete("${pageContext.request.contextPath}/task/remove/"+taskId)
-	     	            .success(function(){
-	     	            		SweetAlert.swal({
-	     			            		title:"Deleted",
-	     			            		text:"Task have been deleted!",
-	     			            		type:"success",  
-	     			            		timer: 2000,   
-	     			            		showConfirmButton: false
-	     	            		});
-	     	            		
-	     	            		$scope.listDataTaskByRalateType();
-	     		            });
-					}else{
-						SweetAlert.swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					} 
-            } else {
-                SweetAlert.swal({
-	                title:"Cancelled",
-	                text:"This task is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+	
+	$scope.actDeleteTask = function(taskId){						
+		
+		if(getPermissionByModule("AC_TA","delete") == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete task with ID: <span class='color_msg'>"+taskId+"</span>.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/task/remove/"+taskId,
+						type : "DELETE",
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "DELETED"){						
+								$scope.listDataTaskByRalateType();
+			    				swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});																								
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+		}else{
+			alertMsgNoPermision();
+		}
+		
 	}
 	
 	
@@ -615,56 +618,52 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 			$("#btn_show_event").click();
 		});		
 	}
-	
 	$scope.actDeleteEvent = function(eventId){				
-		SweetAlert.swal({
-            title: "Are you sure?", //Bold text
-            text: "This event will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-           
-	            var str = '<%=roleDelete%>';
-	        	
-	            if(isConfirm){
-
-	            	if(str == "YES"){
-	            		 $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId)
-	     	            .success(function(){
-	     	            		SweetAlert.swal({
-	     			            		title:"Deleted",
-	     			            		text:"Event have been deleted!",
-	     			            		type:"success",  
-	     			            		timer: 2000,   
-	     			            		showConfirmButton: false
-	     	            		});
-	     	            		
-	     	            		$scope.listDataEventByRalateType();
-	     		            });
-					}else{
-						SweetAlert.swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					} 
-            } else {
-                SweetAlert.swal({
-	                title:"Cancelled",
-	                text:"This event is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+		
+		if(getPermissionByModule("AC_EV","delete") == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete event with ID: <span class='color_msg'>"+eventId+"</span>.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/event/remove/"+eventId,
+						type : "DELETE",
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "DELETED"){						
+								$scope.listDataEventByRalateType();
+			    				swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});																								
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+		}else{
+			alertMsgNoPermision();
+		}
+		
+		
 	}
-	
 	
 	
 	// end event path
@@ -1134,7 +1133,7 @@ function addDataToDetailLead(){
 							<div class="clearfix"></div>
 							<br />
 							<div class="col-md-12">
-								<div class="nav-tabs-custom">
+								<div id="note"  class="nav-tabs-custom">
 									<ul class="nav nav-tabs">
 										<li class="active"><a href="#activity" data-toggle="tab"
 											aria-expanded="true">ACTIVITY</a></li>
@@ -1192,9 +1191,7 @@ function addDataToDetailLead(){
 																				<tbody ng-repeat="call in listAllCallByLead">
 																					<tr>
 																						<td class="iTD-width-50">
-																							<a href="#">
-																								<i class="fa fa-phone text-yellow font-size-icon-30"></i>
-																							</a>
+																							{{call.callId}}
 																						</td>
 																						<td colspan="2">{{call.callSubject}}</td>
 																						<td> 
@@ -1260,7 +1257,7 @@ function addDataToDetailLead(){
 																			<tbody ng-repeat="meet in listAllMeetByLead">
 																				<tr>
 																					<td class="iTD-width-50">
-																						<a href="#"><i class="fa fa-users text-aqua font-size-icon-30"></i></a>
+																						{{meet.meetingId}}
 																					</td>
 																					<td colspan="2">{{meet.meetingSubject}}</td>
 																					<td>{{meet.statusName}}</td>
@@ -1326,7 +1323,7 @@ function addDataToDetailLead(){
 																			<tbody ng-repeat="task in listAllTaskByLead">
 																				<tr>
 																					<td class="iTD-width-50">
-																						<a href="#"><i class="fa fa-list-alt text-blue font-size-icon-30"></i></a>
+																						{{task.taskId}}
 																					</td>
 																					<td colspan="2">{{task.taskSubject}}</td>
 																					<td>{{task.taskStatusName}}</td>
@@ -1392,7 +1389,7 @@ function addDataToDetailLead(){
 																			<tbody ng-repeat="event in listAllEventByLead">
 																				<tr>
 																					<td class="iTD-width-50">
-																						<a href="#"><i class="fa  fa-calendar-check-o text-red font-size-icon-30"></i></a>
+																						{{event.evId}}
 																					</td>
 																					<td colspan="2">{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
@@ -1458,7 +1455,7 @@ function addDataToDetailLead(){
 																			<tbody ng-repeat="email in listAllEmailByLead">
 																				<tr>
 																					<td class="iTD-width-50">
-																						<a href="#"><i class="fa fa-envelope text-green font-size-icon-30"></i></a>
+																						{{event.evId}}
 																					</td>
 																					<td colspan="2">{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
@@ -1622,7 +1619,7 @@ function addDataToDetailLead(){
 														</h3>
 														<div class="timeline-body">{{note.noteDes}}</div>
 														<div class="timeline-footer">
-															<a class="btn btn-primary btn-xs"
+															<a href="#note" class="btn btn-primary btn-xs"
 																ng-click="editNoteById(note.noteId)">Edit</a> <a
 																class="btn btn-danger btn-xs"
 																ng-click="deleteNoteById(note.noteId)">Delete</a>
