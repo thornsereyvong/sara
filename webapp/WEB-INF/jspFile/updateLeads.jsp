@@ -52,7 +52,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	$scope.addLeadOnStartup = function() {
 		$http({
 		    method: 'POST',
-		    url: '${pageContext.request.contextPath}/lead/edit/startup',
+		    url: '${pageContext.request.contextPath}/lead/edit/startup/'+leadId+"/"+username,
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
@@ -294,35 +294,49 @@ $(document).ready(function() {
 			    "modifyBy": username,
 			    "email": getValueStringById("lea_email")
 		};
-
-		$.ajax({
-			url : "${pageContext.request.contextPath}/lead/edit",
-			type : "PUT",
-			data : JSON.stringify(frmDataLead),	
-			beforeSend: function(xhr) {
+		
+		
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to update lead.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){
+			setTimeout(function(){
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/lead/edit",
+					type : "PUT",
+					data : JSON.stringify(frmDataLead),	
+					beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
 					    xhr.setRequestHeader("Content-Type", "application/json");
-					    },
-			success:function(data){
-					
-				if(data.MESSAGE == "UPDATED"){
-					swal({
-	            		title:"Successful",
-	            		text:"You have been updated lead!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
-					reloadForm(2000);
-				}else{
-					alertMsgErrorSweet();	
-				}
-
-			},
-			error:function(){
-				alertMsgErrorSweet();
-			}	
-		});
+				    }, 
+				    success: function(result){					    						    
+						if(result.MESSAGE == "UPDATED"){	
+							swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success"
+	    					});
+							reloadForm(2000);
+																														
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			alertMsgErrorSweet();
+		    		} 
+				});
+			}, 500);
+		});	
+		
+		
 			
 	});	
 	
@@ -373,7 +387,7 @@ padding-right: 10px;
 			                                     <option value="Prof.">Prof.</option>
 			                                  </select>
 										</span>
-										<input type="text" value="{{LEAD.firstName}}" name="lea_firstName" class="form-control" id="lea_firstName">
+										<input type="text" value="{{LEAD.firstName}}" name="lea_firstName" class="form-control ng-cloak" id="lea_firstName">
 									</div>
 								</div>	
 							</div>
@@ -381,7 +395,7 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label class="font-label">Last Name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.lastName}}"  class="form-control" id="lea_lastName" name="lea_lastName">
+									<input type="text" value="{{LEAD.lastName}}"  class="form-control ng-cloak" id="lea_lastName" name="lea_lastName">
 								</div>
 							</div>
 							
@@ -389,20 +403,20 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label class="font-label">Company Name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.accountName}}"  class="form-control" id="lea_accountName" name="lea_accountName">
+									<input type="text" value="{{LEAD.accountName}}"  class="form-control ng-cloak" id="lea_accountName" name="lea_accountName">
 								</div>	
 							</div>
 							<div class="col-sm-6">
 								<label class="font-label">Title </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.title}}"  class="form-control" id="lea_title" name="lea_title">
+									<input type="text" value="{{LEAD.title}}"  class="form-control ng-cloak" id="lea_title" name="lea_title">
 								</div>	
 							</div>
 							<div class="clearfix"></div>
 							<div class="col-sm-6">
 								<label class="font-label">Department </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.department}}"  class="form-control" id="lea_department" name="lea_department">
+									<input type="text" value="{{LEAD.department}}"  class="form-control ng-cloak" id="lea_department" name="lea_department">
 								</div>
 							</div>						
 						</div>
@@ -410,25 +424,25 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label>Phone :</label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.phone}}"  class="form-control" id="lea_phone" name="lea_phone">
+									<input type="text" value="{{LEAD.phone}}"  class="form-control ng-cloak" id="lea_phone" name="lea_phone">
 								</div>	
 							</div>
 							<div class="col-sm-6 ">
 								<label class="font-label">Mobile Phone </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.mobile}}"  class="form-control" id="lea_mobilePhone" name="lea_mobilePhone">
+									<input type="text" value="{{LEAD.mobile}}"  class="form-control ng-cloak" id="lea_mobilePhone" name="lea_mobilePhone">
 								</div>	
 							</div>
 							<div class="col-sm-6">
 								<label class="font-label">Website </label>
 								<div class="form-group">
-									<input type="url" value="{{LEAD.website}}"  placeholder="http://www.example.com" class="form-control" id="lea_website" name="lea_website">
+									<input type="url" value="{{LEAD.website}}"  placeholder="http://www.example.com" class="form-control ng-cloak" id="lea_website" name="lea_website">
 								</div>	
 							</div>
 							<div class="col-sm-6">
 								<label class="font-label">Email </label>
 								<div class="form-group">
-									<input type="email" value="{{LEAD.email}}"   class="form-control" id="lea_email" name="lea_email">
+									<input type="email" value="{{LEAD.email}}"   class="form-control ng-cloak" id="lea_email" name="lea_email">
 								</div>	
 							</div>
 						</div>
@@ -437,7 +451,7 @@ padding-right: 10px;
 								<label class="font-label">Description </label>
 								<div class="form-group">
 									<textarea  rows="3" cols="" name="lea_description" id="lea_description"
-										class="form-control">{{LEAD.description}}</textarea>
+										class="form-control ng-cloak">{{LEAD.description}}</textarea>
 								</div>
 							</div>
 						</div>		
@@ -456,28 +470,28 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label class="font-label">No </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.no}}"   class="form-control" id="lea_no" name="lea_no">
+									<input type="text" value="{{LEAD.no}}"   class="form-control ng-cloak" id="lea_no" name="lea_no">
 								</div>	
 							</div>
 								
 							<div class="col-sm-6">
 								<label class="font-label">Street </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.street}}"  class="form-control" id="lea_street" name="lea_street">
+									<input type="text" value="{{LEAD.street}}"  class="form-control ng-cloak" id="lea_street" name="lea_street">
 								</div>	
 							</div>
 								
 							<div class="col-sm-6">
 								<label class="font-label">Village </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.village}}"  class="form-control" id="lea_village" name="lea_village">
+									<input type="text" value="{{LEAD.village}}"  class="form-control ng-cloak" id="lea_village" name="lea_village">
 								</div>
 							</div>
 								
 							<div class="col-sm-6">
 								<label class="font-label">Commune </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.commune}}"  class="form-control" id="lea_commune" name="lea_commune">
+									<input type="text" value="{{LEAD.commune}}"  class="form-control ng-cloak" id="lea_commune" name="lea_commune">
 								</div>
 							</div>
 								
@@ -487,28 +501,28 @@ padding-right: 10px;
 							<div class="col-sm-6">
 								<label class="font-label">District </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.district}}"  class="form-control" id="lea_district" name="lea_district">
+									<input type="text" value="{{LEAD.district}}"  class="form-control ng-cloak" id="lea_district" name="lea_district">
 								</div>	
 							</div>
 							
 							<div class="col-sm-6">
 								<label class="font-label">City </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.city}}"  class="form-control" id="lea_city" name="lea_city">
+									<input type="text" value="{{LEAD.city}}"  class="form-control ng-cloak" id="lea_city" name="lea_city">
 								</div>	
 							</div>
 							
 							<div class="col-sm-6">
 								<label class="font-label">State </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.state}}"  class="form-control" id="lea_state" name="lea_state">
+									<input type="text" value="{{LEAD.state}}"  class="form-control ng-cloak" id="lea_state" name="lea_state">
 								</div>
 							</div>
 							
 							<div class="col-sm-6">
 								<label class="font-label">Country </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.country}}"  class="form-control" id="lea_country" name="lea_country">
+									<input type="text" value="{{LEAD.country}}"  class="form-control ng-cloak" id="lea_country" name="lea_country">
 								</div>	
 							</div>
 						</div>

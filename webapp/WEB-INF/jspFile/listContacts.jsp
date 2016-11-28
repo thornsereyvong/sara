@@ -32,51 +32,54 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	};
 	
 	$scope.deleteCon = function(conId){
-		
-		swal({   
-			title: "<span style='font-size: 25px;'>You are about to delete contact with ID: <span class='color_msg'>"+conId+"</span>.</span>",   
-			text: "Click OK to continue or CANCEL to abort.",   
-			type: "info", 
-			html: true,
-			showCancelButton: true,   
-			closeOnConfirm: false,   
-			showLoaderOnConfirm: true, 
-			
-		}, function(){   
-			setTimeout(function(){			
-				$.ajax({ 
-		    		url: "${pageContext.request.contextPath}/contact/remove/"+conId,
-		    		method: "POST",
-		    		async: false,
-		    		beforeSend: function(xhr) {
-		    		    xhr.setRequestHeader("Accept", "application/json");
-		    		    xhr.setRequestHeader("Content-Type", "application/json");
-		    	    }, 
-		    	    success: function(result){	  
-		    			if(result.MESSAGE == "DELETED"){	    				
-		    				swal({
-		    					title:"SUCCESSFUL",
-		    					text: "The contact with record ID: '"+conId+"'  was successfully deleted!", 
-		    					type:"success", 
-		    					html: true,
-		    					timer: 2000,   
-		    					showConfirmButton: false
-		    				});
-		    				  
-		    				setTimeout(function(){		
-		    					$scope.listContact();
-		    				},2000);
-		    			}else{
-		    				swal("Unsuccessful!", result.MESSAGE, "error");
-		    			}
-		    		},
-		    		error:function(){
-		    			swal("Unsuccessful!", "Please try again!", "error");
-		    		}		    	    
-		    	});
-			}, 500);
-		});	
-		
+		var str = '<%=roleDelete%>';
+		if(str == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete contact with ID: <span class='color_msg'>"+conId+"</span>.</span>",   
+				text: "Click OK to continue or CANCEL to abort.",   
+				type: "info", 
+				html: true,
+				showCancelButton: true,   
+				closeOnConfirm: false,   
+				showLoaderOnConfirm: true, 
+				
+			}, function(){   
+				setTimeout(function(){			
+					$.ajax({ 
+			    		url: "${pageContext.request.contextPath}/contact/remove/"+conId,
+			    		method: "POST",
+			    		async: false,
+			    		beforeSend: function(xhr) {
+			    		    xhr.setRequestHeader("Accept", "application/json");
+			    		    xhr.setRequestHeader("Content-Type", "application/json");
+			    	    }, 
+			    	    success: function(result){	  
+			    			if(result.MESSAGE == "DELETED"){	    				
+			    				swal({
+			    					title:"SUCCESSFUL",
+			    					text: result.MSG, 
+			    					type:"success", 
+			    					html: true,
+			    					timer: 2000,   
+			    					showConfirmButton: false
+			    				});
+			    				  
+			    				setTimeout(function(){		
+			    					$scope.listContact();
+			    				},2000);
+			    			}else{
+			    				swal("Unsuccessful!", result.MSG, "error");
+			    			}
+			    		},
+			    		error:function(){
+			    			swal("Unsuccessful!", "Please try again!", "error");
+			    		}		    	    
+			    	});
+				}, 500);
+			});	
+		}else{
+			alertMsgNoPermision();
+		}
 	};
 	
 }]);
