@@ -22,7 +22,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.MeDataSource;
 import com.app.entities.Quote;
-import com.app.utilities.RestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -58,24 +57,29 @@ public class CrmQuoteController {
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/quote/itemChange",method = RequestMethod.POST)
-		public ResponseEntity<Map<String, Object>> changeItem(@RequestBody String obj){	
-			System.out.println(obj);
+		public ResponseEntity<Map<String, Object>> changeItem(@RequestBody String obj, HttpServletRequest req){	
 			Map<String, String> map = new HashMap<String, String>();
 			try {
 				map = new ObjectMapper().readValue(obj, Map.class);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			HttpEntity<String> request = new HttpEntity<String>(obj,header);			
+			HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()),header);			
 			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/quote/item_change/"+map.get("priceCode")+"/"+map.get("itemId"), HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());			
 		}
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/quote/qty-available",method = RequestMethod.POST)
-		public ResponseEntity<Map<String, Object>> qtyAvailable(@RequestBody String obj){			
-			HttpEntity<String> request = new HttpEntity<String>(obj,header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/quote/qty_available", HttpMethod.POST, request, Map.class);
+		public ResponseEntity<Map<String, Object>> qtyAvailable(@RequestBody String obj, HttpServletRequest req){
+			Map<String, String> map = new HashMap<String, String>();
+			try {
+				map = new ObjectMapper().readValue(obj, Map.class);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()),header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/quote/qty_available/"+map.get("itemId")+"/"+map.get("locationId"), HttpMethod.POST, request, Map.class);
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		}	
 			
@@ -112,7 +116,7 @@ public class CrmQuoteController {
 			Quote quote = new Quote();
 			quote.setSaleId(saleId);
 			quote.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
-			HttpEntity<Object> request = new HttpEntity<Object>(header);			
+			HttpEntity<Object> request = new HttpEntity<Object>(quote, header);			
 			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/quote/remove/", HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 			
@@ -121,7 +125,6 @@ public class CrmQuoteController {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/quote/edit-quote",method = RequestMethod.POST)
 		public ResponseEntity<Map<String, Object>> editQuote(@RequestBody Quote obj, HttpServletRequest req){	
-			System.out.println(obj.getSaleId());
 			obj.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 			HttpEntity<Object> request = new HttpEntity<Object>(obj,header);			
 			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/quote/edit", HttpMethod.POST, request, Map.class);			
@@ -131,10 +134,15 @@ public class CrmQuoteController {
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/quote/check-entry-no",method = RequestMethod.POST)
-		public ResponseEntity<Map<String, Object>> checkEntryNo(@RequestBody String obj){	
-			System.out.println(obj);
+		public ResponseEntity<Map<String, Object>> checkEntryNo(@RequestBody String obj, HttpServletRequest req){	
+			Map<String, String> map = new HashMap<String, String>();
+			try {
+				map = new ObjectMapper().readValue(obj, Map.class);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			HttpEntity<String> request = new HttpEntity<String>(obj,header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/quote/check_entry_no", HttpMethod.POST, request, Map.class);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/quote/check_entry_no/"+map.get("quoteId"), HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 			
 		}

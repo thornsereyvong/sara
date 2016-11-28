@@ -41,6 +41,15 @@ public class SaleOrder{
 	private String shipTo;
 	private short isRead;
 	private List<SaleOrderDetails> saleOrderDetails;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public String getSaleId() {
 		return saleId;
