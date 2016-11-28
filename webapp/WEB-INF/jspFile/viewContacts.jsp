@@ -198,7 +198,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
         	  if(isConfirm){        		
         		  $http.delete("${pageContext.request.contextPath}/collaborate/comment/remove/"+comId).success(function(){
 	        		 swal({
-	              		title:"Deleted",
+	              		title:"SUCCESSFUL",
 	              		text:"The comment have been deleted!",
 	              		type:"success",  
 	              		timer: 2000,   
@@ -231,7 +231,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
         	 if(isConfirm){
 	       		  $http.delete("${pageContext.request.contextPath}/collaborate/delete/"+postId).success(function(){
 		        		  swal({
-		              		title:"Deleted",
+		              		title:"SUCCESSFUL",
 		              		text:"The post have been deleted!",
 		              		type:"success",  
 		              		timer: 2000,   
@@ -265,8 +265,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		$scope.getNoteById(noteId); 
 	}
 	$scope.deleteNoteById = function(noteId){
-		$scope.resetFrmNote();
-		
+		$scope.resetFrmNote();		
 		if(getPermissionByModule("AC_NO","delete") == "YES"){
 			swal({   
 				title: "<span style='font-size: 25px;'>You are about to delete note with ID: <span class='color_msg'>"+noteId+"</span>.</span>",

@@ -435,14 +435,12 @@ public class MainController {
 	public String campaigns(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createCampaigns");
 		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
-
 		if (camMap.get("roleAccess").equals("YES")) {
 			return "createCampaigns";
 		} else {
 			return "permission";
 
 		}
-
 	}
 
 	@RequestMapping(value = "/update-campaign/{campID}", method = RequestMethod.GET)

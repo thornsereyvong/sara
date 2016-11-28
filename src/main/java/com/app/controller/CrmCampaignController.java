@@ -183,7 +183,7 @@ public class CrmCampaignController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/campaign/remove/{campId}",method = RequestMethod.DELETE)
+	@RequestMapping(value="/campaign/remove/{campId}",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("campId") String campId, HttpServletRequest req){
 		CrmCampaign campaign = new CrmCampaign();
 		campaign.setCampID(campId);
@@ -194,7 +194,7 @@ public class CrmCampaignController {
 		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
 		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		campaign.setMeDataSource(dataSource);
-		HttpEntity<Object> request = new HttpEntity<Object>(header);
+		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/remove", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
