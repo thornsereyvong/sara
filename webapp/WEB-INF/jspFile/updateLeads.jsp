@@ -34,18 +34,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	
 	$scope.LEAD = [];
 	angular.element(document).ready(function () {					
-		setTimeout(function(){			
-			$("#lea_assignTo").select2("val",$scope.LEAD.assignToUserID);
-			$("#lea_ca").select2("val",$scope.LEAD.campID);	
-			$("#lea_industry").select2("val",$scope.LEAD.industID);	
-			$("#lea_source").select2("val",$scope.LEAD.sourceID);	
-			$("#lea_status").select2("val",$scope.LEAD.statusID);	
-			$("#lea_salutation").val($scope.LEAD.salutation);
-			
-			$('#form-leads').data('bootstrapValidator').resetField($('#lea_ca'));
-			$('#form-leads').data('bootstrapValidator').resetField($('#lea_status'));
-			
-		}, 1000);
+		
     });
 	
 	
@@ -72,6 +61,21 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			if($scope.child === "NOT_EXIST"){
 				$("#lea_assignTo").prop("disabled", true);
 			}
+			
+			setTimeout(function(){			
+				$("#lea_assignTo").select2("val",$scope.LEAD.assignToUserID);
+				$("#lea_ca").select2("val",$scope.LEAD.campID);	
+				$("#lea_industry").select2("val",$scope.LEAD.industID);	
+				$("#lea_source").select2("val",$scope.LEAD.sourceID);	
+				$("#lea_status").select2("val",$scope.LEAD.statusID);	
+				$("#lea_salutation").val($scope.LEAD.salutation);
+				
+				$('#form-leads').data('bootstrapValidator').resetField($('#lea_ca'));
+				$('#form-leads').data('bootstrapValidator').resetField($('#lea_status'));
+				
+			}, 1000);
+			
+			
 		});
 	};
 }]);

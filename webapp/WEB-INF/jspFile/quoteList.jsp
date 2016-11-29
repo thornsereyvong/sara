@@ -21,61 +21,49 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 	};
 	
 	$scope.deleteQuote = function(quoteId){ 
-		swal({
-            title: "", //Bold text
-            text: "Are you sure you want to delete the quotation: "+quoteId+" from the system?", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-	            var str = 'YES';
-	        	
-	            if(isConfirm){
-	            	if(str == "YES"){
-	            		$http.delete("${pageContext.request.contextPath}/quote/delete-quote/"+quoteId)
-	    	            .success(function(data){
-	    	            		if(data.MESSAGE == "DELETED"){
-	    	            			swal({
-	    			            		title:"Deleted",
-	    			            		text:"The quotation:"+quoteId+" was successfully deleted!",
-	    			            		type:"success",  
-	    			            		timer: 2000,   
-	    			            		showConfirmButton: false
-		    	            		});
-		    	            		$scope.listQuote();
-	    	            		}else{
-	    	            			swal({
-	    				                title:"Unsuccessfully",
-	    				                text:"data.MESSAGE",
-	    				                type:"error",
-	    				                timer:2000,
-	    				                showConfirmButton: false});
-	    	            		}
-	    	            	
-	    	            		
-	    		            });
-					}else{
-						swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					}
-	                 
-            } else {
-                swal({
-	                title:"Cancelled",
-	                text:"This quotation is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to delete quotation with ID: <span class='color_msg'>"+quoteId+"</span>.</span>",   
+			text: "Click OK to continue or CANCEL to abort.",   
+			type: "info", 
+			html: true,
+			showCancelButton: true,   
+			closeOnConfirm: false,   
+			showLoaderOnConfirm: true, 
+			
+		}, function(){   
+			setTimeout(function(){			
+				$.ajax({ 
+		    		url: "${pageContext.request.contextPath}/quote/delete-quote/"+quoteId,
+		    		method: "DELETE",
+		    		beforeSend: function(xhr) {
+		    		    xhr.setRequestHeader("Accept", "application/json");
+		    		    xhr.setRequestHeader("Content-Type", "application/json");
+		    	    }, 
+		    	    success: function(result){	  
+		    			if(result.MESSAGE == "DELETED"){	    				
+		    				swal({
+		    					title:"SUCCESSFUL",
+		    					text: result.MSG, 
+		    					type:"success", 
+		    					html: true,
+		    					timer: 2000,
+		    				});
+		    				  
+		    				setTimeout(function(){		
+		    					$scope.listQuote();
+		    				},2000);
+		    			}else{
+		    				swal("Unsuccessful!", result.MSG, "error");
+		    			}
+		    		},
+		    		error:function(){
+		    			swal("Unsuccessful!", "Please try again!", "error");
+		    		}		    	    
+		    	});
+			}, 500);
+		});	
+		
+		
 	};
 	
 }]);
@@ -171,7 +159,7 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 				                      <ul class="dropdown-menu" role="menu">
 				                        <li ng-if="qq.PostStatus != 'Converted'"><a href="${pageContext.request.contextPath}/quote/edit/{{qq.saleId}}"><i class="fa fa-pencil"></i> Edit</a></li>
 				                        <li ng-if="qq.PostStatus != 'Converted'"><a href="#" ng-click="deleteQuote(qq.saleId)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="#" ng-click="printQuote(qq.saleId)"><i class="fa fa-print"></i>Print</a></li>
+				                       <!--  <li><a href="#" ng-click="printQuote(qq.saleId)"><i class="fa fa-print"></i>Print</a></li> -->
 				                      </ul>
 				                    </div>
 			                   	</div>							

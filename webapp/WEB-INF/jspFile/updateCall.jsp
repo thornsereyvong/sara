@@ -174,49 +174,60 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-			  
-	
-			$.ajax({
-				url : "${pageContext.request.contextPath}/call/edit",
-				type : "PUT",
-				data : JSON.stringify({ 
-				      "callId": $("#id").val(),
-				      "startDate": getValueStringById("startDate"),
-				      "callDuration": getValueStringById("duration"),
-				      "callModifiedBy": username,
-				      "callStatus": getJsonById("callStatusId","status","int"),
-				      "callDes": getValueStringById("description"),
-				      "callSubject": getValueStringById("subject"),
-				      "callAssignTo": getJsonById("userID","assignTo","str"),
-				      "callRelatedToFieldId": getValueStringById("reportTo"),
-				      "callRelatedToModuleType": getValueStringById("reportType")				      				      
-				}),
-				beforeSend: function(xhr) {
-				    xhr.setRequestHeader("Accept", "application/json");
-				    xhr.setRequestHeader("Content-Type", "application/json");
-			    },
-				success:function(data){
-					if(data.MESSAGE == 'UPDATED'){								
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been updated new call!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							window.location.href = "${pageContext.request.contextPath}/list-calls";
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-					
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			}); 
-			
+			 
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to update call.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/call/edit",
+						type : "PUT",
+						data : JSON.stringify({ 
+						      "callId": $("#id").val(),
+						      "startDate": getValueStringById("startDate"),
+						      "callDuration": getValueStringById("duration"),
+						      "callModifiedBy": username,
+						      "callStatus": getJsonById("callStatusId","status","int"),
+						      "callDes": getValueStringById("description"),
+						      "callSubject": getValueStringById("subject"),
+						      "callAssignTo": getJsonById("userID","assignTo","str"),
+						      "callRelatedToFieldId": getValueStringById("reportTo"),
+						      "callRelatedToModuleType": getValueStringById("reportType")				      				      
+						}),
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "UPDATED"){						
+												
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});
+								setTimeout(function(){
+									window.location.href = "${pageContext.request.contextPath}/list-calls";
+								}, 2000);
+																															
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});		
 		});	
 });
 </script>

@@ -968,24 +968,23 @@ function saleOrder(){
 			    success: function(result){
 					if(result.MESSAGE == "INSERTED"){						
 						swal({
-	    					title:"Successful!",
-	    					text: "The quotation with record id: <span style='color:#F8BB86'>'"+result.quoteId+"'</span>  was successfully saved!", 
-	    					type:"success", 
-	    					html: true,
-	    					timer: 2000,   
-	    					showConfirmButton: false
-	    				});
+    						title: "SUCCESSFUL",
+    					  	text: result.MSG,
+    					  	html: true,
+    					  	timer: 2000,
+    					  	type: "success"
+    					});
 	    				  
 	    				setTimeout(function(){		
 	    					location.reload(); 
 	    				},2000);
 																													
 					}else{
-						swal("Unsuccessful!", result.MESSAGE, "error");
+						swal("UNSUCCESSFUL", result.MSG, "error");
 					}
 				},
 	    		error:function(){
-	    			swal("Unsuccessful!", "Please try again!", "error");
+	    			alertMsgErrorSweet();
 	    		} 
 			});
 		}, 500);

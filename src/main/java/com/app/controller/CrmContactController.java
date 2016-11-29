@@ -80,7 +80,7 @@ public class CrmContactController {
 		MeDataSource dataSource = new MeDataSource();		
 		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
 		
-		System.out.println(dataSource.toString());
+		//System.out.println(dataSource.toString());
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/list", HttpMethod.POST, request, Map.class);

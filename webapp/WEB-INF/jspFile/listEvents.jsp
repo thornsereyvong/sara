@@ -24,50 +24,55 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	};
 	
 	$scope.deleteCon = function(oppID){
-		swal({
-            title: "Are you sure?", //Bold text
-            text: "This Event will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-          
-				var str = '<%=roleDelete%>';
-	            if(isConfirm){
-
-					if(str == "YES"){
-						 $http.delete("${pageContext.request.contextPath}/event/remove/"+oppID)
-				            .success(function(){
-				            		swal({
-						            		title:"Deleted",
-						            		text:"Event have been deleted!",
-						            		type:"success",  
-						            		timer: 2000,   
-						            		showConfirmButton: false
-				            		});
-				            		$scope.listContact();	
-					      });
-					}else{
-						swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					}   
-            } else {
-                swal({
-	                title:"Cancelled",
-	                text:"This Event is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+		
+		var str = '<%=roleDelete%>';
+		if(str == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete event with ID: <span class='color_msg'>"+oppID+"</span>.</span>",   
+				text: "Click OK to continue or CANCEL to abort.",   
+				type: "info", 
+				html: true,
+				showCancelButton: true,   
+				closeOnConfirm: false,   
+				showLoaderOnConfirm: true, 
+				
+			}, function(){   
+				setTimeout(function(){			
+					$.ajax({ 
+			    		url: "${pageContext.request.contextPath}/event/remove/"+oppID,
+			    		method: "DELETE",
+			    		beforeSend: function(xhr) {
+			    		    xhr.setRequestHeader("Accept", "application/json");
+			    		    xhr.setRequestHeader("Content-Type", "application/json");
+			    	    }, 
+			    	    success: function(result){	  
+			    			if(result.MESSAGE == "DELETED"){	    				
+			    				swal({
+			    					title:"SUCCESSFUL",
+			    					text: result.MSG, 
+			    					type:"success", 
+			    					html: true,
+			    					timer: 2000,
+			    				});
+			    				  
+			    				setTimeout(function(){		
+			    					$scope.listContact();
+			    				},2000);
+			    			}else{
+			    				swal("Unsuccessful!", result.MSG, "error");
+			    			}
+			    		},
+			    		error:function(){
+			    			swal("Unsuccessful!", "Please try again!", "error");
+			    		}		    	    
+			    	});
+				}, 500);
+			});	
+		}else{
+			alertMsgNoPermision();
+		}
+		
+		
 	};
 	
 }]);

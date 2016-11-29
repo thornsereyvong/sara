@@ -144,56 +144,67 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-			$.ajax({
-				url : "${pageContext.request.contextPath}/call/add",
-				type : "POST",
-				data : JSON.stringify({ 				      
-				      "startDate": getValueStringById("startDate"),
-				      "callDuration": getValueStringById("duration"),
-				      "callCreateBy": username,
-				      "callStatus": getJsonById("callStatusId","status","int"),
-				      "callDes": getValueStringById("description"),
-				      "callSubject": getValueStringById("subject"),
-				      "callAssignTo": getJsonById("userID","assignTo","str"),
-				      "callRelatedToFieldId": getValueStringById("reportTo"),
-				      "callRelatedToModuleType": getValueStringById("reportType")				      				      				      
-					}),
-				beforeSend: function(xhr) {
+			
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to create call.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/call/add",
+						type : "POST",
+						data : JSON.stringify({ 				      
+						      "startDate": getValueStringById("startDate"),
+						      "callDuration": getValueStringById("duration"),
+						      "callCreateBy": username,
+						      "callStatus": getJsonById("callStatusId","status","int"),
+						      "callDes": getValueStringById("description"),
+						      "callSubject": getValueStringById("subject"),
+						      "callAssignTo": getJsonById("userID","assignTo","str"),
+						      "callRelatedToFieldId": getValueStringById("reportTo"),
+						      "callRelatedToModuleType": getValueStringById("reportType")				      				      				      
+							}),
+						beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
 						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
-				success:function(data){											
-					if(data.MESSAGE == 'INSERTED'){
-						$("#status").select2("val","");
-						$("#reportType").select2("val","");
-						$("#reportTo").select2("val","");
-						$("#assignTo").select2("val","");
-						$("#form-call").bootstrapValidator('resetForm', 'true');
-						$('#form-call')[0].reset();
-						$('#form-call').bootstrapValidator('resetForm', 'status');
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been created new call!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						
-					}else{
-						alertMsgErrorSweet();
-					}					
-					
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			}); 
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "INSERTED"){						
+								
+								$("#status").select2("val","");
+								$("#reportType").select2("val","");
+								$("#reportTo").select2("val","");
+								$("#assignTo").select2("val","");
+								$("#form-call").bootstrapValidator('resetForm', 'true');
+								$('#form-call')[0].reset();
+								$('#form-call').bootstrapValidator('resetForm', 'status');
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});			    											
+			    				
+																															
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+			
 			
 		});	
-
-
-		
-	
 	
 });
 </script>

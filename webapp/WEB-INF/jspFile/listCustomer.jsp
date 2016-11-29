@@ -25,52 +25,55 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	};
 	
 	
-	$scope.deleteCustomer = function(leadID){
-		swal({
-            title: "Are you sure?", //Bold text
-            text: "This Customer will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-	            var str = '<%=roleDelete%>';
-	        	
-	            if(isConfirm){
-
-	            	if(str == "YES"){
-	            		$http.delete("${pageContext.request.contextPath}/customer/remove/"+leadID)
-	    	            .success(function(){
-	    	            		swal({
-	    			            		title:"Deleted",
-	    			            		text:"Customer have been deleted!",
-	    			            		type:"success",  
-	    			            		timer: 2000,   
-	    			            		showConfirmButton: false
-	    	            		});
-	    	            		$scope.listCustomer();
-	    		            });
-					}else{
-						swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					}
-	                 
-            } else {
-                swal({
-	                title:"Cancelled",
-	                text:"This Customer is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+	$scope.deleteCustomer = function(custId){
+		var str = '<%=roleDelete%>';
+		if(str == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete customer with ID: <span class='color_msg'>"+conId+"</span>.</span>",   
+				text: "Click OK to continue or CANCEL to abort.",   
+				type: "info", 
+				html: true,
+				showCancelButton: true,   
+				closeOnConfirm: false,   
+				showLoaderOnConfirm: true, 
+				
+			}, function(){   
+				setTimeout(function(){			
+					$.ajax({ 
+			    		url: "${pageContext.request.contextPath}/customer/remove/"+custId,
+			    		method: "POST",
+			    		async: false,
+			    		beforeSend: function(xhr) {
+			    		    xhr.setRequestHeader("Accept", "application/json");
+			    		    xhr.setRequestHeader("Content-Type", "application/json");
+			    	    }, 
+			    	    success: function(result){	  
+			    			if(result.MESSAGE == "DELETED"){	    				
+			    				swal({
+			    					title:"SUCCESSFUL",
+			    					text: result.MSG, 
+			    					type:"success", 
+			    					html: true,
+			    					timer: 2000,
+			    				});
+			    				  
+			    				setTimeout(function(){		
+			    					$scope.listCustomer();
+			    				},2000);
+			    			}else{
+			    				swal("Unsuccessful!", result.MSG, "error");
+			    			}
+			    		},
+			    		error:function(){
+			    			swal("Unsuccessful!", "Please try again!", "error");
+			    		}		    	    
+			    	});
+				}, 500);
+			});	
+		}else{
+			alertMsgNoPermision();
+		}
+		
 	};
 	
 }]);

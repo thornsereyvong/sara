@@ -182,59 +182,61 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {	
-		//alert(getJsonById("custID","op_customer","str").custID);
-		$.ajax({
-			url : "${pageContext.request.contextPath}/opportunity/add",
-			type : "POST",
-			data : JSON.stringify({
-			      "opName": getValueStringById("op_name"),
-			      "opAmount": getInt("op_amount"),
-			      "customer": getJsonById("custID","op_customer","str"),
-			      "opCloseDate": getDateByFormat("opCloseDate"),
-			      "opTypeID": getJsonById("otId","op_type","int"),
-			      "opStageId": getJsonById("osId","op_stage","int"),
-			      "opProbability": getValueStringById("op_probability"),
-			      "opLeadSourceID": getJsonById("sourceID","op_leadSource","int"),
-			      "opNextStep": getValueStringById("op_nextStep"),
-			      "opCampId": getJsonById("campID","op_campaign","str"),
-			      "opDes": getValueStringById("cam_description"),
-			      "opAssignedTo": getJsonById("userID","op_assignTo","str"),
-			      "opCreateBy": $.session.get("parentID"),
-			      "priceCode" : getJsonById("priceCode","op_price","str"),
-			      "ameClass" : getJsonById("classId","op_classCode","str")
-			    }),	
-			beforeSend: function(xhr) {
-		    	xhr.setRequestHeader("Accept", "application/json");
-		    	xhr.setRequestHeader("Content-Type", "application/json");
-		    },
-			success:function(data){
-					if(data.MESSAGE == "INSERTED"){						
-						$("#op_customer").select2("val","");
-						$("#op_price").select2("val","");
-						$("#op_classCode").select2("val","");
-						$("#op_stage").select2("val","");
-						$("#op_type").select2("val","");
-						$("#op_leadSource").select2("val","");
-						$("#op_campaign").select2("val","");
-						$("#op_assignTo").select2("val","");												
-						$("#form-opportunity").bootstrapValidator('resetForm', 'true');
-						$('#form-opportunity')[0].reset();	
-						
-						swal({
-		            		title:"Successful",
-		            		text:"You have been created new a opportunity!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-					}else{
-						alertMsgErrorSweet();	
-					}
-				},
-			error:function(){
-				alertMsgErrorSweet();	
-			}
-		});			
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to create opportunity.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){
+			setTimeout(function(){
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/opportunity/add",
+					type : "POST",
+					data : JSON.stringify({
+					      "opName": getValueStringById("op_name"),
+					      "opAmount": getInt("op_amount"),
+					      "customer": getJsonById("custID","op_customer","str"),
+					      "opCloseDate": getDateByFormat("opCloseDate"),
+					      "opTypeID": getJsonById("otId","op_type","int"),
+					      "opStageId": getJsonById("osId","op_stage","int"),
+					      "opProbability": getValueStringById("op_probability"),
+					      "opLeadSourceID": getJsonById("sourceID","op_leadSource","int"),
+					      "opNextStep": getValueStringById("op_nextStep"),
+					      "opCampId": getJsonById("campID","op_campaign","str"),
+					      "opDes": getValueStringById("cam_description"),
+					      "opAssignedTo": getJsonById("userID","op_assignTo","str"),
+					      "opCreateBy": $.session.get("parentID"),
+					      "priceCode" : getJsonById("priceCode","op_price","str"),
+					      "ameClass" : getJsonById("classId","op_classCode","str")
+				    }),
+					beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+				    }, 
+				    success: function(result){	
+						if(result.MESSAGE == "INSERTED"){	
+							swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success"
+	    					});
+							reloadForm(2000);																																
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			alertMsgErrorSweet();
+		    		} 
+				});
+			}, 500);
+		});	
+		
 	});		
 });
 </script>

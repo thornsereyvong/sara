@@ -127,7 +127,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		});	
 		
 		if(shipToAddrAdd.length == 0)
-			return null;			
+			return {"msg": msg , "data":null};			
 		var ship = {"msg": msg , "data":shipToAddrAdd};		
 		return  ship;
 	}
@@ -279,52 +279,65 @@ $(document).ready(function() {
 			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
 			var ckShip = $('input[name=ckShipAdd]:checked', '#form-customer').val();
 			if(ship.msg == true){
-				$.ajax({
-					url : "${pageContext.request.contextPath}/customer/edit",
-					type : "PUT",
-					data : JSON.stringify({
-						  "custID" : custId,
-					      "custName": getValueStringById("cs_name"),
-					      "custTel1": getValueStringById("c_tel1"),
-					      "custTel2": getValueStringById("c_tel2"),
-					      "custFax": getValueStringById("c_fax"),
-					      "custEmail": getValueStringById("c_email"),
-					      "custWebsite": getValueStringById("c_website"),
-					      "custAddress": getValueStringById("c_billAddr"),
-					      "facebook": getValueStringById("c_facebook"),
-					      "line": getValueStringById("c_line"),
-					      "viber": getValueStringById("c_viber"),
-					      "whatApp": getValueStringById("c_whatapp"),
-					      "industID": getJsonById("industID","c_industry","int"),
-						  "accountTypeID": getJsonById("accountID","c_type","int"),
-						  "shipAddresses" : ship.data,
-						  "aId" : ckShip,
-						  "priceCode" : getJsonById("priceCode","c_price","str"),
-						  "custGroup" : getJsonById("custGroupId","c_group","str"),
-						  "imageName" : ""
-					}),
-					beforeSend: function(xhr) {
-					    xhr.setRequestHeader("Accept", "application/json");
-					    xhr.setRequestHeader("Content-Type", "application/json");
-				    },
-					success:function(data){										
-						if(data.MESSAGE == "UPDATED"){
-							swal({
-			            		title:"Update Successfully",
-			            		text:"You have been updated customer!",
-			            		type:"success",  
-			            		timer: 2000,   
-			            		showConfirmButton: false
-		        			});
-							reloadForm(2000);
-						}else{
-							alertMsgErrorSweet();	
-						}
-					},
-					error:function(){
-						alertMsgErrorSweet();	
-					}
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update customer.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){
+					setTimeout(function(){
+						$.ajax({ 
+							url : "${pageContext.request.contextPath}/customer/edit",
+							type : "PUT",
+							data : JSON.stringify({
+								  "custID" : custId,
+							      "custName": getValueStringById("cs_name"),
+							      "custTel1": getValueStringById("c_tel1"),
+							      "custTel2": getValueStringById("c_tel2"),
+							      "custFax": getValueStringById("c_fax"),
+							      "custEmail": getValueStringById("c_email"),
+							      "custWebsite": getValueStringById("c_website"),
+							      "custAddress": getValueStringById("c_billAddr"),
+							      "facebook": getValueStringById("c_facebook"),
+							      "line": getValueStringById("c_line"),
+							      "viber": getValueStringById("c_viber"),
+							      "whatApp": getValueStringById("c_whatapp"),
+							      "industID": getJsonById("industID","c_industry","int"),
+								  "accountTypeID": getJsonById("accountID","c_type","int"),
+								  "shipAddresses" : ship.data,
+								  "aId" : ckShip,
+								  "priceCode" : getJsonById("priceCode","c_price","str"),
+								  "custGroup" : getJsonById("custGroupId","c_group","str"),
+								  "imageName" : ""
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){	
+								if(result.MESSAGE == "UPDATED"){	
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									reloadForm(2000);																																
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
 				});	
+				
 			}
 		}).on('error.form.bv', function(e) {
 			angular.element(document.getElementById('campController')).scope().getAddress();
@@ -349,13 +362,13 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Name <span class="requrie">(Required)</span></label>
 									<div class="form-group" id="c_name">
-										<input type="text" value="{{CUSTOMER.custName}}" class="form-control" name="cs_name" id="cs_name">
+										<input type="text" value="{{CUSTOMER.custName}}" class="form-control ng-cloak" name="cs_name" id="cs_name">
 									</div>
 								</div>							
 								<div class="col-sm-6">
 									<label class="font-label">Tel <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<input type="text" value="{{CUSTOMER.custTel1}}" class="form-control" name="c_tel1" id="c_tel1">
+										<input type="text" value="{{CUSTOMER.custTel1}}" class="form-control ng-cloak" name="c_tel1" id="c_tel1">
 									</div>
 								</div>							
 								
@@ -363,13 +376,13 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Tel </label>
 									<div class="form-group">
-										<input type="text" value="{{CUSTOMER.custTel2}}" class="form-control" name="c_tel2" id="c_tel2">
+										<input type="text" value="{{CUSTOMER.custTel2}}" class="form-control ng-cloak" name="c_tel2" id="c_tel2">
 									</div>
 								</div>							
 								<div class="col-sm-6">
 									<label class="font-label">Fax </label>
 									<div class="form-group">
-										<input type="text" value="{{CUSTOMER.custFax}}" class="form-control" name="c_fax" id="c_fax">
+										<input type="text" value="{{CUSTOMER.custFax}}" class="form-control ng-cloak" name="c_fax" id="c_fax">
 									</div>
 								</div>																		
 							</div>
@@ -377,13 +390,13 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Email </label>
 									<div class="form-group">
-										<input type="email" value="{{CUSTOMER.custEmail}}" class="form-control" name="c_email" id="c_email">
+										<input type="email" value="{{CUSTOMER.custEmail}}" class="form-control ng-cloak" name="c_email" id="c_email">
 									</div>
 								</div>							
 								<div class="col-sm-6">
 									<label class="font-label">Website </label>
 									<div class="form-group">
-										<input type="url" value="{{CUSTOMER.custWebsite}}" placeholder="http://www.example.com" class="form-control" name="c_website" id="c_website">
+										<input type="url" value="{{CUSTOMER.custWebsite}}" placeholder="http://www.example.com" class="form-control ng-cloak" name="c_website" id="c_website">
 									</div>
 								</div>
 							</div>							
@@ -401,7 +414,7 @@ $(document).ready(function() {
 								<div class="col-sm-12">
 									<label class="font-label">Bill To Address</label>
 									<div class="form-group">
-										<input type="text" value="{{CUSTOMER.custAddress}}" placeholder="" class="form-control" name="c_billAddr" id="c_billAddr">
+										<input type="text" value="{{CUSTOMER.custAddress}}" placeholder="" class="form-control ng-cloak" name="c_billAddr" id="c_billAddr">
 									</div>
 								</div>															
 								<div class="col-sm-12">
@@ -415,12 +428,12 @@ $(document).ready(function() {
 										       <input ng-if="CUSTOMER.aId == shipToAdd[key].shipId ||  shipToAdd.length <= 1 || key== keyS " type="radio" style="cursor: pointer;" checked="checked" name="ckShipAdd" value="{{shipToAdd[key].shipId}}" aria-label="...">									
 										       <input ng-if="CUSTOMER.aId != shipToAdd[key].shipId && shipToAdd.length > 1 && key != keyS" type="radio" style="cursor: pointer;" class="cursor_pointer" name="ckShipAdd" value="{{shipToAdd[key].shipId}}" aria-label="...">
 										    </span>
-										     <input type="text" placeholder="Address Code"  ng-model="shipToAdd[key].shipId" name="c_shipCode" class="form-control" id="c_shipCode{{key}}" >
+										     <input type="text" placeholder="Address Code"  ng-model="shipToAdd[key].shipId" name="c_shipCode" class="form-control ng-cloak" id="c_shipCode{{key}}" >
 										</div>	
 									</div>
 									<div class="col-sm-10" style="padding-left: 0px;padding-right: 0px;">										 										
 										<div class="input-group"  style="margin-bottom: 5px;">                            												
-										     <input type="text"  placeholder="Description" ng-model="shipToAdd[key].shipName" name="c_shipAddr" class="form-control" id="c_shipAddr{{key}}" >
+										     <input type="text"  placeholder="Description" ng-model="shipToAdd[key].shipName" name="c_shipAddr" class="form-control ng-cloak" id="c_shipAddr{{key}}" >
 											 <span class="input-group-btn">
 										     	<button style="height: 34px;"  name="c_shipAddr" type="button" ng-click="btnRemoveMoreShip(key)" class="btn btn-danger"><i class="fa  fa-minus-square-o"></i></button>
 										     </span>
@@ -444,25 +457,25 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Facebook</label>
 									<div class="form-group">
-										<input type="text" value="{{CUSTOMER.facebook}}" class="form-control" name="c_facebook" id="c_facebook">
+										<input type="text" value="{{CUSTOMER.facebook}}" class="form-control ng-cloak" name="c_facebook" id="c_facebook">
 									</div>
 								</div>												
 								<div class="col-sm-6">
 									<label class="font-label">Line</label>
 									<div class="form-group">
-										<input type="text" value="{{CUSTOMER.line}}"  class="form-control" name="c_line" id="c_line">
+										<input type="text" value="{{CUSTOMER.line}}"  class="form-control ng-cloak" name="c_line" id="c_line">
 									</div>
 								</div>											
 								<div class="col-sm-6">
 									<label class="font-label">Viber</label>
 									<div class="form-group">
-										<input type="text" value="{{CUSTOMER.viber}}" class="form-control" name="c_viber" id="c_viber">
+										<input type="text" value="{{CUSTOMER.viber}}" class="form-control ng-cloak" name="c_viber" id="c_viber">
 									</div>
 								</div>												
 								<div class="col-sm-6">
 									<label class="font-label">WhatApp</label>
 									<div class="form-group">
-										<input type="text" value="{{CUSTOMER.whatApp}}" class="form-control" name="c_whatapp" id="c_whatapp">
+										<input type="text" value="{{CUSTOMER.whatApp}}" class="form-control ng-cloak" name="c_whatapp" id="c_whatapp">
 									</div>
 								</div>
 								
@@ -471,7 +484,7 @@ $(document).ready(function() {
 								<div class="col-sm-6" data-ng-init="listIndustry()">
 									<label class="font-label">Industry</label>
 									<div class="form-group">
-										<select class="form-control select2" name="c_industry" id="c_industry" style="width:100%">
+										<select class="form-control ng-cloak select2" name="c_industry" id="c_industry" style="width:100%">
 											<option value="">-- SELECT Industry</option>
 											<option ng-repeat="u in industry" value="{{u.industID}}">{{u.industName}}</option> 
 										</select>
@@ -480,7 +493,7 @@ $(document).ready(function() {
 								<div class="col-sm-6" data-ng-init="listAccount()">
 									<label class="font-label">Type</label>
 									<div class="form-group">
-										<select style="width:100%" class="form-control select2" name="c_type" id="c_type">
+										<select style="width:100%" class="form-control ng-cloak select2" name="c_type" id="c_type">
 											<option value="">-- SELECT Type</option>
 											<option ng-repeat="u in type" value="{{u.accountID}}">{{u.accountName}}</option> 
 										</select>
@@ -500,7 +513,7 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Customer Group <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<select style="width:100%" class="form-control select2" name="c_group" id="c_group">
+										<select style="width:100%" class="form-control ng-cloak select2" name="c_group" id="c_group">
 											<option value="">-- SELECT Customer Group --</option>
 											<option ng-repeat="u in custGroup" value="{{u.custGroupId}}">[{{u.custGroupId}}] {{u.custGroupName}}</option> 
 										</select>
@@ -509,7 +522,7 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<select style="width:100%" class="form-control select2" name="c_price" id="c_price">
+										<select style="width:100%" class="form-control ng-cloak select2" name="c_price" id="c_price">
 											<option value="">-- SELECT Price Code --</option>
 											<option ng-repeat="u in priceCode" value="{{u.priceCode}}">[{{u.priceCode}}] {{u.des}}</option> 
 										</select>

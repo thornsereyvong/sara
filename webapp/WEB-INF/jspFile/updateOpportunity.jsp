@@ -33,20 +33,7 @@ app.controller('opportunityController',['$scope','$http',function($scope, $http)
 	
 	$scope.dataOpport = [];
 	angular.element(document).ready(function () {					
-		setTimeout(function(){
-			$("#op_customer").select2("val",$scope.dataOpport.custID);
-			$("#op_stage").select2("val", $scope.dataOpport.osId);
-			$("#op_type").select2("val", $scope.dataOpport.otId);
-			$("#op_leadSource").select2("val", $scope.dataOpport.sourceID);
-			$("#op_campaign").select2("val", $scope.dataOpport.campID);
-			$("#op_assignTo").select2("val",$scope.dataOpport.userID)
-			$("#op_price").select2("val",$scope.dataOpport.priceCode)
-			$("#op_classCode").select2("val",$scope.dataOpport.classId)
-			
-			$('#form-opportunity').data('bootstrapValidator').resetField($('#op_stage'));
-			$('#form-opportunity').data('bootstrapValidator').resetField($('#op_customer'));
-			$('#form-opportunity').data('bootstrapValidator').resetField($('#op_price'));
-		}, 1000);
+		
     });
 	
 	
@@ -70,6 +57,26 @@ app.controller('opportunityController',['$scope','$http',function($scope, $http)
 			$scope.dataOpport = response.OPPORTUNITY;
 			$scope.classCode = response.CLASSES;
 			$scope.priceCode = response.PRICE_CODE;
+			
+			
+			
+			setTimeout(function(){
+				$("#op_customer").select2("val",$scope.dataOpport.custID);
+				$("#op_stage").select2("val", $scope.dataOpport.osId);
+				$("#op_type").select2("val", $scope.dataOpport.otId);
+				$("#op_leadSource").select2("val", $scope.dataOpport.sourceID);
+				$("#op_campaign").select2("val", $scope.dataOpport.campID);
+				$("#op_assignTo").select2("val",$scope.dataOpport.userID)
+				$("#op_price").select2("val",$scope.dataOpport.priceCode)
+				$("#op_classCode").select2("val",$scope.dataOpport.classId)
+				
+				$('#form-opportunity').data('bootstrapValidator').resetField($('#op_stage'));
+				$('#form-opportunity').data('bootstrapValidator').resetField($('#op_customer'));
+				$('#form-opportunity').data('bootstrapValidator').resetField($('#op_price'));
+			}, 1000);
+			
+			
+			
 		});
 	};
 }]);
@@ -193,49 +200,61 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {	
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/opportunity/edit",
-			type : "PUT",
-			data : JSON.stringify({
-				  "opId" : oppId,
-			      "opName": getValueStringById("op_name"),
-			      "opAmount": getInt("op_amount"),
-			      "customer": getJsonById("custID","op_customer","str"),
-			      "opCloseDate": getDateByFormat("opCloseDate"),
-			      "opTypeID": getJsonById("otId","op_type","int"),
-			      "opStageId": getJsonById("osId","op_stage","int"),
-			      "opProbability": getValueStringById("op_probability"),
-			      "opLeadSourceID": getJsonById("sourceID","op_leadSource","int"),
-			      "opNextStep": getValueStringById("op_nextStep"),
-			      "opCampId": getJsonById("campID","op_campaign","str"),
-			      "opDes": getValueStringById("cam_description"),
-			      "opAssignedTo": getJsonById("userID","op_assignTo","str"),
-			      "priceCode" : getJsonById("priceCode","op_price","str"),
-			      "ameClass" : getJsonById("classId","op_classCode","str"),			      
-			      "opModifyBy": username
-			    }),	
-			beforeSend: function(xhr) {
-		    	xhr.setRequestHeader("Accept", "application/json");
-		    	xhr.setRequestHeader("Content-Type", "application/json");
-		    },
-			success:function(data){
-					if(data.MESSAGE == "UPDATED"){
-						swal({
-		            		title:"Successful",
-		            		text:"You have been updated opportunity!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});						
-						reloadForm(2000);
-					}else{
-						alertMsgErrorSweet();	
-					}
-				},
-			error:function(){
-				alertMsgErrorSweet();	
-			}
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to update opportunity.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){
+			setTimeout(function(){
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/opportunity/edit",
+					type : "PUT",
+					data : JSON.stringify({
+						  "opId" : oppId,
+					      "opName": getValueStringById("op_name"),
+					      "opAmount": getInt("op_amount"),
+					      "customer": getJsonById("custID","op_customer","str"),
+					      "opCloseDate": getDateByFormat("opCloseDate"),
+					      "opTypeID": getJsonById("otId","op_type","int"),
+					      "opStageId": getJsonById("osId","op_stage","int"),
+					      "opProbability": getValueStringById("op_probability"),
+					      "opLeadSourceID": getJsonById("sourceID","op_leadSource","int"),
+					      "opNextStep": getValueStringById("op_nextStep"),
+					      "opCampId": getJsonById("campID","op_campaign","str"),
+					      "opDes": getValueStringById("cam_description"),
+					      "opAssignedTo": getJsonById("userID","op_assignTo","str"),
+					      "priceCode" : getJsonById("priceCode","op_price","str"),
+					      "ameClass" : getJsonById("classId","op_classCode","str"),			      
+					      "opModifyBy": username
+				    }),
+					beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+				    }, 
+				    success: function(result){					    						    
+						if(result.MESSAGE == "UPDATED"){	
+							swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success"
+	    					});
+							reloadForm(2000);
+																														
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			alertMsgErrorSweet();
+		    		} 
+				});
+			}, 500);
 		});			
 	});		
 });

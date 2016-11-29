@@ -60,8 +60,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    					text: result.MSG, 
 			    					type:"success", 
 			    					html: true,
-			    					timer: 2000,   
-			    					showConfirmButton: false
+			    					timer: 2000,
 			    				});
 			    				  
 			    				setTimeout(function(){		
@@ -204,6 +203,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			</div>
 			<!-- /.box-body -->
 			<div class="box-footer"></div>
+			<div id="errors"></div>
 			<!-- /.box-footer-->
 		</div>
 		

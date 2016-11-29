@@ -21,61 +21,49 @@ app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 	};
 	
 	$scope.deleteSaleOder = function(saleId){
-		swal({
-            title: "", //Bold text
-            text: "Are you sure you want to delete the sale order: "+saleId+" from the system?", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-	            var str = 'YES';
-	        	
-	            if(isConfirm){
-	            	if(str == "YES"){
-	            		$http.delete("${pageContext.request.contextPath}/sale-order/delete-sale-order/"+saleId)
-	    	            .success(function(data){
-	    	            		if(data.MESSAGE == "DELETED"){
-	    	            			swal({
-	    			            		title:"Deleted",
-	    			            		text:"The sale order:"+saleId+" was successfully deleted!",
-	    			            		type:"success",  
-	    			            		timer: 2000,   
-	    			            		showConfirmButton: false
-		    	            		});
-	    	            			$scope.listSaleOrder();
-	    	            		}else{
-	    	            			swal({
-	    				                title:"Unsuccessfully",
-	    				                text:"data.MESSAGE",
-	    				                type:"error",
-	    				                timer:2000,
-	    				                showConfirmButton: false});
-	    	            		}
-	    	            	
-	    	            		
-	    		            });
-					}else{
-						swal({
-			                title:"Cancelled",
-			                text:"You don't have permission delete!",
-			                type:"error",
-			                timer:2000,
-			                showConfirmButton: false});
-					}
-	                 
-            } else {
-                swal({
-	                title:"Cancelled",
-	                text:"This sale order is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete sale order with ID: <span class='color_msg'>"+saleId+"</span>.</span>",   
+				text: "Click OK to continue or CANCEL to abort.",   
+				type: "info", 
+				html: true,
+				showCancelButton: true,   
+				closeOnConfirm: false,   
+				showLoaderOnConfirm: true, 
+				
+			}, function(){   
+				setTimeout(function(){			
+					$.ajax({ 
+			    		url: "${pageContext.request.contextPath}/sale-order/delete-sale-order/"+saleId,
+			    		method: "DELETE",
+			    		beforeSend: function(xhr) {
+			    		    xhr.setRequestHeader("Accept", "application/json");
+			    		    xhr.setRequestHeader("Content-Type", "application/json");
+			    	    }, 
+			    	    success: function(result){	  
+			    			if(result.MESSAGE == "DELETED"){	    				
+			    				swal({
+			    					title:"SUCCESSFUL",
+			    					text: result.MSG, 
+			    					type:"success", 
+			    					html: true,
+			    					timer: 2000,
+			    				});
+			    				  
+			    				setTimeout(function(){		
+			    					$scope.listSaleOrder();
+			    				},2000);
+			    			}else{
+			    				swal("Unsuccessful!", result.MSG, "error");
+			    			}
+			    		},
+			    		error:function(){
+			    			swal("Unsuccessful!", "Please try again!", "error");
+			    		}		    	    
+			    	});
+				}, 500);
+			});	
+		
+		
 	};
 	$scope.authorizeSaleOder = function(saleId){
 		
@@ -216,7 +204,7 @@ app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 				                      <ul class="dropdown-menu" role="menu">
 				                        <li ng-if="qq.PostStatus == 'Open'"><a href="${pageContext.request.contextPath}/sale-order/edit/{{qq.saleId}}"><i class="fa fa-pencil"></i> Edit</a></li>
 				                        <li ng-if="qq.PostStatus == 'Open'"><a href="#" ng-click="deleteSaleOder(qq.saleId)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="#" ng-click="printSaleOder(qq.saleId)"><i class="fa fa-print"></i>Print</a></li>
+				                       <!--  <li><a href="#" ng-click="printSaleOder(qq.saleId)"><i class="fa fa-print"></i>Print</a></li> -->
 				                        <li ng-if="qq.PostStatus == 'Open'"><a href="#" ng-click="authorizeSaleOder(qq.saleId)"><i class="fa fa-key"></i>Authorize</a></li>
 				                      </ul>
 				                    </div>
