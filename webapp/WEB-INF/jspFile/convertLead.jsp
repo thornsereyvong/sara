@@ -32,32 +32,12 @@ var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
 var self = this;
 var leadId = "${leadId}";
 var username = "${SESSION}";
+var lead = [];
 app.controller('campController',['$scope','$http',function($scope, $http){
 	
 	$scope.LEAD = [];
 	angular.element(document).ready(function () {					
-		setTimeout(function(){
-			
-			if($scope.LEAD.statusID == '4'){
-				swal({
-            		title:"Warning",
-            		text:"The lead with id: "+leadId+" is already converted.",
-            		type:"error",  
-            		timer: 3000,   
-            		showConfirmButton: false
-    			});
-				setTimeout(function(){window.location.href = "${pageContext.request.contextPath}/list-leads/";}, 3000);
-			}else{
-				
-			}
-			
-			$("#con_salutation").val($scope.LEAD.salutation);
-			$("#con_leadSource").select2("val", $scope.LEAD.sourceID);
-			$("#c_industry").select2("val", $scope.LEAD.industID);
-			$("#op_campaign").select2("val", $scope.LEAD.campID);
-			$("#op_leadSource").select2("val", $scope.LEAD.sourceID);
-			
-		}, 1000);
+		
     });
 	
 	$scope.startupPage = function(){
@@ -76,6 +56,28 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			$scope.CAMPAIGN = response.CAMPAIGN;
 			$scope.OPP_STAGES = response.OPP_STAGES;
 			$scope.LEAD = response.LEAD;
+			lead = response.LEAD;
+			
+			setTimeout(function(){
+				if($scope.LEAD.statusID == '4'){
+					swal({
+		        		title:"Warning",
+		        		text:"The lead with id: "+leadId+" is already converted.",
+		        		type:"error",  
+		        		timer: 3000,   
+		        		showConfirmButton: false
+					});
+					setTimeout(function(){window.location.href = "${pageContext.request.contextPath}/list-leads/";}, 3000);
+				}else{
+					
+				}			
+				
+				$("#con_salutation").val($scope.LEAD.salutation);
+				$("#con_leadSource").select2("val", $scope.LEAD.sourceID);
+				$("#c_industry").select2("val", $scope.LEAD.industID);  
+				$("#op_campaign").select2("val", $scope.LEAD.campID);
+				$("#op_leadSource").select2("val", $scope.LEAD.sourceID);		
+			}, 1000);
 			
 		});
 	}
@@ -240,82 +242,99 @@ $(document).ready(function() {
 	
 	 $("#btn_save").click(function(){
 		 
-		var statusCust = true;
-		var statusCon = true;
-		var statusOpp = true;
-		
-		if($("#checkCustomer").is(':checked')){
-			$('#frmCustomer').data('bootstrapValidator').validate();
-			statusCust = $("#frmCustomer").data('bootstrapValidator').validate().isValid();
-		}else{
-			$('#ctrCustomer').data('bootstrapValidator').validate();
-			statusCust = $("#ctrCustomer").data('bootstrapValidator').validate().isValid();
-		}
-		
-		if($("#checkContact").is(':checked')){
-			$('#frmContact').data('bootstrapValidator').validate();
-			statusCon = $("#frmContact").data('bootstrapValidator').validate().isValid();
-		}else{
-			$('#ctrContact').data('bootstrapValidator').validate();
-			statusCon = $("#ctrContact").data('bootstrapValidator').validate().isValid();
-		}
-		
-		if($("#checkOpportunity").is(':checked')){
-			$('#frmOpportunity').data('bootstrapValidator').validate();
-			statusOpp = $("#frmOpportunity").data('bootstrapValidator').validate().isValid();
-		}
-		
-		
-		if(statusCust == true && statusCon == true && statusOpp == true){		
-			var dataFrm = "";	
-			if($("#checkOpportunity").is(':checked') == true){
-				dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": getOpportunity(), "leadID": leadId};
-			}else{
-				dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": "", "leadID": leadId};
-			}
-			
-		// 	dis(dataFrm)
-			
-			$.ajax({
-				url : "${pageContext.request.contextPath}/lead/convert",
-				type : "POST",
-				data : JSON.stringify(dataFrm),	
-				beforeSend: function(xhr) {
-			    	xhr.setRequestHeader("Accept", "application/json");
-			    	xhr.setRequestHeader("Content-Type", "application/json");
-			    },
-				success:function(data){
-					dis(data);
+		 swal({   
+				title: "<span style='font-size: 25px;'>You are about to convert lead.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){
+				setTimeout(function(){
+					var statusCust = true;
+					var statusCon = true;
+					var statusOpp = true;
 					
-					if(data.CUST_MESSAGE == "SUCCESS" && data.CON_MESSAGE == "SUCCESS"){
-						updateLeadStatus(data.CUSTID, data.OPID);
-						swal({
-		            		title:"Success",
-		            		text:"You have been converted!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){window.location.href = "${pageContext.request.contextPath}/list-leads/";}, 2000);
-					}else if(data.CUST_MESSAGE == "EXIST"){
-						updateLeadStatus(data.CUSTID, data.OPID);
-						swal({
-		            		title:"Success",
-		            		text:"You have been converted!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){window.location.href = "${pageContext.request.contextPath}/list-leads/";}, 2000);
+					if($("#checkCustomer").is(':checked')){
+						$('#frmCustomer').data('bootstrapValidator').validate();
+						statusCust = $("#frmCustomer").data('bootstrapValidator').validate().isValid();
 					}else{
-						alertMsgErrorSweet();	
+						$('#ctrCustomer').data('bootstrapValidator').validate();
+						statusCust = $("#ctrCustomer").data('bootstrapValidator').validate().isValid();
 					}
-				},
-				error:function(){
-					alertMsgErrorSweet();	
-				}
+					
+					if($("#checkContact").is(':checked')){
+						$('#frmContact').data('bootstrapValidator').validate();
+						statusCon = $("#frmContact").data('bootstrapValidator').validate().isValid();
+					}else{
+						$('#ctrContact').data('bootstrapValidator').validate();
+						statusCon = $("#ctrContact").data('bootstrapValidator').validate().isValid();
+					}
+					
+					if($("#checkOpportunity").is(':checked')){
+						$('#frmOpportunity').data('bootstrapValidator').validate();
+						statusOpp = $("#frmOpportunity").data('bootstrapValidator').validate().isValid();
+					}
+					
+					
+					if(statusCust == true && statusCon == true && statusOpp == true){		
+						var dataFrm = "";	
+						if($("#checkOpportunity").is(':checked') == true){
+							dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": getOpportunity(), "leadID": leadId};
+						}else{
+							dataFrm = {"CONTACT" : getContact(), "CUSTOMER" : getCustomer(),"custID": getValueStringById("CustCustomer"),"conID": getValueStringById("ConContact"),"OPPORTUNITY": "", "leadID": leadId};
+						}
+						
+						$.ajax({
+							url : "${pageContext.request.contextPath}/lead/convert",
+							type : "POST",
+							data : JSON.stringify(dataFrm),	
+							beforeSend: function(xhr) {
+						    	xhr.setRequestHeader("Accept", "application/json");
+						    	xhr.setRequestHeader("Content-Type", "application/json");
+						    },
+							success:function(data){
+																
+								if(data.CUST_MESSAGE == "SUCCESS" && data.CON_MESSAGE == "SUCCESS"){
+									updateLeadStatus(data.CUSTID, data.OPID);
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: data.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									setTimeout(function(){window.location.href = "${pageContext.request.contextPath}/list-leads/";}, 2000);
+								}else if(data.CUST_MESSAGE == "EXIST"){
+									updateLeadStatus(data.CUSTID, data.OPID);
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: data.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									setTimeout(function(){window.location.href = "${pageContext.request.contextPath}/list-leads/";}, 2000);
+								}else{
+									swal({
+			    						title: "UNSUCCESSFUL",
+			    					  	text: data.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "error"
+			    					});	
+								}
+							},
+							error:function(){
+								alertMsgErrorSweet();	
+							}
+						});
+					}else{						
+						alertMsgRequire();
+					}
+				}, 500);
 			});
-		}
 	});
 	
 	 $('#frmContact').bootstrapValidator({
@@ -777,7 +796,7 @@ color:#2196F3;
 								<div class="form-group" style="margin-left: 15px;">
 									<select class="form-control select2" name="ConContact" id="ConContact" style="width: 100%;">
 										<option value="">-- SELECT Contact --</option>
-										<option ng-repeat="u in CONTACT" value="{{u.conID}}">{{u.conFirstname}} {{u.conLastname}}</option>
+										<option ng-repeat="u in CONTACT" value="{{u.conID}}">[{{u.conID}}] {{u.conSalutation}} {{u.conFirstname}} {{u.conLastname}}</option>
 									</select>
 								</div>
 							</form>
@@ -807,27 +826,27 @@ color:#2196F3;
 									                                     <option value="Prof.">Prof.</option>
 									                                  </select>
 																</span>
-																<input type="text" class="form-control" value="{{LEAD.firstName}}" name="con_firstName" id="con_firstName">
+																<input type="text" class="form-control ng-cloak" value="{{LEAD.firstName}}" name="con_firstName" id="con_firstName">
 															</div>
 														</div>
 													</div>
 													<div class="col-sm-3">
 														<label class="font-label">Last name <span class="requrie">(Required)</span></label>
 														<div class="form-group">
-															<input type="text" class="form-control" value="{{LEAD.lastName}}" name="con_lastName" id="con_lastName">
+															<input type="text" class="form-control ng-cloak" value="{{LEAD.lastName}}" name="con_lastName" id="con_lastName">
 														</div>
 													</div>
 													<div class="col-sm-3">
 														<label>Phone <span class="requrie">(Required)</span></label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.phone}}" id="con_phone" name="con_phone">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.phone}}" id="con_phone" name="con_phone">
 														</div>	
 													</div>
 																			
 													<div class="col-sm-3">
 														<label class="font-label">Mobile phone :</label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.mobile}}" id="con_mobilePhone" name="con_mobilePhone">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.mobile}}" id="con_mobilePhone" name="con_mobilePhone">
 														</div>	
 													</div>
 													
@@ -836,21 +855,21 @@ color:#2196F3;
 													<div class="col-sm-3">
 														<label>Title </label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.title}}" id="con_title" name="con_title">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.title}}" id="con_title" name="con_title">
 														</div>
 													</div>
 													
 													<div class="col-sm-3">
 														<label class="font-label">Department </label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.department}}" id="con_department" name="con_department">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.department}}" id="con_department" name="con_department">
 														</div>	
 													</div>
 														
 													<div class="col-sm-3">
 														<label class="font-label">Email :</label>
 														<div class="form-group">
-															<input type="email"  class="form-control" value="{{LEAD.email}}" id="con_email" name="con_email">
+															<input type="email"  class="form-control ng-cloak" value="{{LEAD.email}}" id="con_email" name="con_email">
 														</div>
 													</div>
 													<div class="clearfix"></div>							
@@ -867,56 +886,56 @@ color:#2196F3;
 													<div class="col-sm-3">
 														<label class="font-label">No </label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.no}}" id="con_no" name="con_no">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.no}}" id="con_no" name="con_no">
 														</div>	
 													</div>
 													
 													<div class="col-sm-3">
 														<label class="font-label">Street </label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.street}}" id="con_street" name="con_street">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.street}}" id="con_street" name="con_street">
 														</div>
 													</div>
 													
 													<div class="col-sm-3">
 														<label class="font-label">Village </label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.village}}"  id="con_village" name="con_village">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.village}}"  id="con_village" name="con_village">
 														</div>
 													</div>
 													
 													<div class="col-sm-3">
 														<label class="font-label">Commune </label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.commune}}" id="con_commune" name="con_commune">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.commune}}" id="con_commune" name="con_commune">
 														</div>	
 													</div>
 													<div class="clearfix"></div>
 													<div class="col-sm-3">
 														<label class="font-label">District </label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.district}}" id="con_district" name="con_district">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.district}}" id="con_district" name="con_district">
 														</div>
 													</div>
 													
 													<div class="col-sm-3">
 														<label class="font-label">City </label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.city}}" id="con_city" name="con_city">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.city}}" id="con_city" name="con_city">
 														</div>	
 													</div>
 													
 													<div class="col-sm-3">
 														<label class="font-label">State</label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.state}}" id="con_state" name="con_state">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.state}}" id="con_state" name="con_state">
 														</div>	
 													</div>
 													
 													<div class="col-sm-3">
 														<label class="font-label">Country </label>
 														<div class="form-group">
-															<input type="text"  class="form-control" value="{{LEAD.country}}" id="con_country" name="con_country">
+															<input type="text"  class="form-control ng-cloak" value="{{LEAD.country}}" id="con_country" name="con_country">
 														</div>
 													</div>
 												</div>
@@ -971,7 +990,7 @@ color:#2196F3;
 							<div class="form-group" style="margin-left: 15px;">
 								<select class="form-control select2" name="CustCustomer" id="CustCustomer" style="width: 100%;">
 									<option value="">-- SELECT Customer --</option>
-									<option ng-repeat="u in CUSTOMER" value="{{u.custID}}">{{u.custName}}</option>
+									<option ng-repeat="u in CUSTOMER" value="{{u.custID}}">[{{u.custID}}] {{u.custName}}</option>
 								</select>
 							</div>
 						</form>
@@ -990,13 +1009,13 @@ color:#2196F3;
 												<div class="col-sm-3">
 													<label class="font-label">Name <span class="requrie">(Required)</span></label>
 													<div class="form-group" id="c_name">
-														<input type="text" class="form-control" value="{{LEAD.accountName}}" name="cs_name" id="cs_name">
+														<input type="text" class="form-control ng-cloak" value="{{LEAD.accountName}}" name="cs_name" id="cs_name">
 													</div>
 												</div>							
 												<div class="col-sm-3">
 													<label class="font-label">Tel <span class="requrie">(Required)</span></label>
 													<div class="form-group">
-														<input type="text" value="{{LEAD.phone}}"  class="form-control" name="c_tel1" id="c_tel1">
+														<input type="text" value="{{LEAD.phone}}"  class="form-control ng-cloak" name="c_tel1" id="c_tel1">
 													</div>
 												</div>							
 												
@@ -1004,26 +1023,26 @@ color:#2196F3;
 												<div class="col-sm-3">
 													<label class="font-label">Tel </label>
 													<div class="form-group">
-														<input type="text" class="form-control" name="c_tel2" id="c_tel2">
+														<input type="text" class="form-control ng-cloak" name="c_tel2" id="c_tel2">
 													</div>
 												</div>							
 												<div class="col-sm-3">
 													<label class="font-label">Fax </label>
 													<div class="form-group">
-														<input type="text" class="form-control" name="c_fax" id="c_fax">
+														<input type="text" class="form-control ng-cloak" name="c_fax" id="c_fax">
 													</div>
 												</div>																		
 												<div class="clearfix"></div>
 												<div class="col-sm-3">
 													<label class="font-label">Email </label>
 													<div class="form-group">
-														<input type="email" value="{{LEAD.email}}"  class="form-control" name="c_email" id="c_email">
+														<input type="email" value="{{LEAD.email}}"  class="form-control ng-cloak" name="c_email" id="c_email">
 													</div>
 												</div>							
 												<div class="col-sm-3">
 													<label class="font-label">Website </label>
 													<div class="form-group">
-														<input type="url" value="{{LEAD.website}}"  placeholder="http://www.example.com" class="form-control" name="c_website" id="c_website">
+														<input type="url" value="{{LEAD.website}}"  placeholder="http://www.example.com" class="form-control ng-cloak" name="c_website" id="c_website">
 													</div>
 												</div>
 											</div>							
@@ -1041,7 +1060,7 @@ color:#2196F3;
 												<div class="col-sm-12">
 													<label class="font-label">Bill To Address</label>
 													<div class="form-group">
-														<input type="text" placeholder="" class="form-control" name="c_billAddr" id="c_billAddr">
+														<input type="text" placeholder="" class="form-control ng-cloak" name="c_billAddr" id="c_billAddr">
 													</div>
 												</div>															
 																													
@@ -1059,7 +1078,7 @@ color:#2196F3;
 												<div class="col-sm-3">
 													<label class="font-label">Facebook</label>
 													<div class="form-group">
-														<input type="text" class="form-control" name="c_facebook" id="c_facebook">
+														<input type="text" class="form-control " name="c_facebook" id="c_facebook">
 													</div>
 												</div>												
 												<div class="col-sm-3">

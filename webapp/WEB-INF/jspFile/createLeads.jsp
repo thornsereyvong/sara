@@ -277,7 +277,7 @@ $(document).ready(function() {
 			    "email": getValueStringById("lea_email")
 		};
 		 swal({   
-			title: "<span style='font-size: 25px;'>You are about to create campaign.</span>",
+			title: "<span style='font-size: 25px;'>You are about to create lead.</span>",
 			text: "Click OK to continue or CANCEL to abort.",
 			type: "info",
 			html: true,

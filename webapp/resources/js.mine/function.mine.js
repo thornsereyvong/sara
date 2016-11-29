@@ -90,6 +90,15 @@ function alertMsgErrorSweet(){
 	});
 }
 
+function alertMsgRequire(){
+	swal({
+        title:"<span color='#dd4b39'>REQUIRED FIELD</span>",
+        html: true,
+        text:"Please check field required!",
+        showImage: false
+	});	
+}
+
 function alertMsgNoPermision(){
 	swal({
         title:"<span color='#dd4b39'>PERMISSION DENY</span>",

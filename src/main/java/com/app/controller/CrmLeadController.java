@@ -140,6 +140,10 @@ public class CrmLeadController {
 		newObj.addProperty("pw", req.getSession().getAttribute("passworddb").toString());
 		newObj.addProperty("userid", getPrincipal());
 		json.add("DATASOURCE", newObj);
+		
+		System.out.println("----------------------------------- sssssss------------------------------");
+		
+		
 		HttpEntity<Object> request = new HttpEntity<Object>(gson.toJson(json),header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/convert", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -148,10 +152,13 @@ public class CrmLeadController {
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/lead/edit/startup",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> editLeadOnStartup(@RequestBody String json){
-		HttpEntity<String> request = new HttpEntity<String>(json,header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/edit/startup", HttpMethod.POST, request, Map.class);
+	@RequestMapping(value="/lead/edit/startup/{leadId}/{username}",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> editLeadOnStartup(@PathVariable("leadId") String leadId, @PathVariable("username") String username, HttpServletRequest req){
+		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req, getPrincipal());
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/lead/edit/startup/"+leadId+"/"+username, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	

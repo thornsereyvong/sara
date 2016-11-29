@@ -60,7 +60,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    					$scope.listCampaigns();
 			    				},2000);
 			    			}else{
-			    				swal("UNSUCCESSFUL", result.MESSAGE, "error");
+			    				swal("UNSUCCESSFUL", result.MSG, "error");
 			    			}
 			    		},
 			    		error:function(){
