@@ -10,7 +10,16 @@ public class CrmUser {
 	private int status;
 	private String parentID;
 	private CrmRole role;
+	private UserApp userApp;
 	private MeDataSource dataSource;
+
+	public UserApp getUserApp() {
+		return userApp;
+	}
+
+	public void setUserApp(UserApp userApp) {
+		this.userApp = userApp;
+	}
 
 	public String getUserID() {
 		return userID;

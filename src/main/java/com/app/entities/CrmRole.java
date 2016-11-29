@@ -14,6 +14,15 @@ public class CrmRole {
 	private String modifyBy;
 	private Date modifyDate;
 	private int roleStatus;
+	private MeDataSource meDataSource;
+
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
+	}
+
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
+	}
 
 	public String getRoleId() {
 		return roleId;

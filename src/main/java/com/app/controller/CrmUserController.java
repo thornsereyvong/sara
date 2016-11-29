@@ -11,6 +11,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -118,7 +120,6 @@ public class CrmUserController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/list",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getAllUser(HttpServletRequest req){
-
 		MeDataSource dataSource = new MeDataSource();
 		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
 		dataSource.setIp(req.getSession().getAttribute("ip").toString());
@@ -126,7 +127,7 @@ public class CrmUserController {
 		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
 		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list", HttpMethod.POST, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list_all", HttpMethod.POST, request, Map.class);
 		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
@@ -160,28 +161,39 @@ public class CrmUserController {
 		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		user.setDataSource(dataSource);
 		HttpEntity<Object> request = new HttpEntity<Object>(user,header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/edit", HttpMethod.PUT, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/remove/{userID}",method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("userID") String userID){
-		
+	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("userID") String userID, HttpServletRequest req){
+	MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		CrmUser user = new CrmUser();
+		user.setUserID(userID);
+		user.setDataSource(dataSource);
 		HttpEntity<String> request = new HttpEntity<String>(userID,header);
-		
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/remove/"+userID, HttpMethod.DELETE, request, Map.class);
-		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/remove/", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/list/{username}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> userDetail(@PathVariable("username") String username){		
-		HttpEntity<Object> request = new HttpEntity<Object>(header);			
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/"+username, HttpMethod.GET, request, Map.class);
+	public ResponseEntity<Map<String, Object>> userDetail(@PathVariable("username") String username, HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);			
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/"+username, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
 	}
 	
@@ -211,12 +223,22 @@ public class CrmUserController {
 		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
 		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/user_tags", HttpMethod.GET, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/list/user_tags", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());	
 	}
 	
 	
-	
+	public String getPrincipal() {
+		String userName = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			userName = ((UserDetails) principal).getUsername();
+		} else {
+			userName = principal.toString();
+		}
+		return userName;
+	}
 	
 	
 }

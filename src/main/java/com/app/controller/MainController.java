@@ -178,7 +178,7 @@ public class MainController {
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			String json;
 			try {
-				json = new ObjectMapper().writeValueAsString(roleController.getRoleID(custID));
+				json = new ObjectMapper().writeValueAsString(roleController.getRoleID(custID, req));
 				model.addAttribute("role", json);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
@@ -418,7 +418,7 @@ public class MainController {
 		model.addAttribute("title", "App Login | CRM");
 		request.getSession().setAttribute("usernamedb", "posadmin");
 		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
-		request.getSession().setAttribute("ip", "192.168.0.2");
+		request.getSession().setAttribute("ip", "192.168.123.2");
 		request.getSession().setAttribute("port", "3306");
 		dataSource.setIp(request.getSession().getAttribute("ip").toString());
 		dataSource.setPort(request.getSession().getAttribute("port").toString());
@@ -1493,7 +1493,7 @@ public class MainController {
 	public String head(ModelMap model, HttpServletRequest request) {
 		request.getSession().setAttribute("usernamedb", "posadmin");
 		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
-		request.getSession().setAttribute("ip", "192.168.0.2");
+		request.getSession().setAttribute("ip", "192.168.123.2");
 		request.getSession().setAttribute("port", "3306");
 		return "layout/head";
 	}
