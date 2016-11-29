@@ -37,6 +37,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
          if (!password.equals(new PasswordEncrypt().BalDecrypt(user.getPassword()))) {
              throw new BadCredentialsException("Wrong password.");
          }
+         if(!user.getUserApp().getAppId().equals("CRM")){
+        	 throw new BadCredentialsException("Not CRM User!");
+         }
          return new UsernamePasswordAuthenticationToken(username, password, getGrantedAuthorities(user));
 	}
 

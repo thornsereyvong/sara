@@ -178,7 +178,7 @@ public class MainController {
 		if(camMap.get("role").equals("CRM_ADMIN")){
 			String json;
 			try {
-				json = new ObjectMapper().writeValueAsString(roleController.getRoleID(custID));
+				json = new ObjectMapper().writeValueAsString(roleController.getRoleID(custID, req));
 				model.addAttribute("role", json);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
