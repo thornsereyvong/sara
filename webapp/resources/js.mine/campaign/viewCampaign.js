@@ -555,7 +555,7 @@ $(function(){
 		}else{
 			if(getPermissionByModule("AC_ME","edit") == "YES" || checkAssignTo() || checkOwner()){
 				swal({   
-					title: "<span style='font-size: 25px;'>You are about to update meet.</span>",
+					title: "<span style='font-size: 25px;'>You are about to update meeting.</span>",
 					text: "Click OK to continue or CANCEL to abort.",
 					type: "info",
 					html: true,

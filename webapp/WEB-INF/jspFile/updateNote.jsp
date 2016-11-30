@@ -28,17 +28,21 @@
 
 var app = angular.module('campaign', []);
 var self = this;
+
+var noteId = '';
+
 app.controller('campController',['$scope','$http',function($scope, $http){
 
 
 }]);
 
 
+
 function listDataByCampID(){
 	var data = ${note};
 	var result = data.body.DATA;
 	
-	
+	noteId = result.noteId;
         
 	$("#me_id").val(result.noteId);
 	$("#me_subject").val(result.noteSubject);
@@ -57,14 +61,8 @@ function listDataByCampID(){
 }
 
 $(document).ready(function() {
-	
-	
-	 
-	
 	$(".select2").select2();
-	
 	listDataByCampID();
-	
 	$("#me_relateTo").change(function(){
 		var relate = $("#me_relateTo").val();
 		funcRelateTo("#me_reportType",relate,"");
@@ -124,61 +122,56 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-
-		
-
-			$.ajax({
-				url : "${pageContext.request.contextPath}/note/edit",
-				type : "PUT",
-				data : JSON.stringify({
-					  "noteId": $("#me_id").val(),
-				      "noteSubject": $("#me_subject").val(),
-				      "noteRelatedToModuleType":  $("#me_relateTo").val(),
-				      "noteRelatedToModuleId": $("#me_reportType").val(),
-				      "noteDes": $("#me_description").val(),
-				      "noteModifiedBy": $.session.get("parentID")
-				     
-					}),
-				beforeSend: function(xhr) {
+			
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to update note.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/note/edit",
+						type : "PUT",
+						data : JSON.stringify({
+							  "noteId": noteId,
+							  "noteSubject": getValueStringById("me_subject"),
+						      "noteRelatedToModuleType":  getValueStringById("me_relateTo"),
+						      "noteRelatedToModuleId": getValueStringById("me_reportType"),
+						      "noteDes": getValueStringById("me_description"),
+						      "noteCreateBy": $.session.get("parentID")						     
+							}),
+						beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
 						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
-				success:function(data){
-					
-						$("#form-note").bootstrapValidator('resetForm', 'true');
-						$('#form-note')[0].reset();
-						
-						$("#me_relateTo").select2("val","");
-						$("#me_reportType").select2("val","");
-						
-						swal({
-		            		title:"Success",
-		            		text:"User have been Update Note!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							window.location.href = "${pageContext.request.contextPath}/list-notes/";
-						}, 2000);
-					},
-				error:function(){
-					errorMessage();
-					}
-				});  
-			
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "UPDATED"){												
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});
+								setTimeout(function(){
+									window.location.href = "${pageContext.request.contextPath}/list-notes";
+								}, 2000);
+																															
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});	
 		});	
-
-
-		
-	
-	
 });
 </script>
 	<section class="content">

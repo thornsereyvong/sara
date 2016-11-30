@@ -134,53 +134,64 @@ $(document).ready(function() {
 					}
 			}
 		}).on('success.form.bv', function(e) {			
-				
-			$.ajax({
-				url : "${pageContext.request.contextPath}/event/add",
-				type : "POST",
-				data : JSON.stringify({
-					  "evName": getValueStringById("name"),
-				      "evLocation": getJsonById("loId","location","str"),
-				      "evBudget": getValueStringById("budget"),
-				      "evDes": getValueStringById("description"),
-				      "evCreateBy":  $.session.get("parentID"),
-				      "evDuration": getValueStringById("duration"),
-				      "startDate": getValueStringById("startDate"),
-				      "endDate": getValueStringById("endDate"),
-				      "assignTo": getJsonById("userID","assignTo","str"), 
-				      "evRelatedToModuleId" : getValueStringById("reportType"),
-				      "evRelatedToModuleType" : getValueStringById("relateTo")
-					}),
-				beforeSend: function(xhr) {
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to create event.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/event/add",
+						type : "POST",
+						data : JSON.stringify({
+							  "evName": getValueStringById("name"),
+						      "evLocation": getJsonById("loId","location","str"),
+						      "evBudget": getValueStringById("budget"),
+						      "evDes": getValueStringById("description"),
+						      "evCreateBy":  $.session.get("parentID"),
+						      "evDuration": getValueStringById("duration"),
+						      "startDate": getValueStringById("startDate"),
+						      "endDate": getValueStringById("endDate"),
+						      "assignTo": getJsonById("userID","assignTo","str"), 
+						      "evRelatedToModuleId" : getValueStringById("reportType"),
+						      "evRelatedToModuleType" : getValueStringById("relateTo")
+						}),
+						beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
 						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
-				success:function(data){
-						if(data.MESSAGE == "INSERTED"){	
-							$("#relateTo").select2("val","");
-							$("#reportType").select2("val","");
-							$("#location").select2("val","");
-							$("#assignTo").select2("val","");
-							$("#duration").select2("val","");
-							$("#form-call").bootstrapValidator('resetForm', 'true');
-							$('#form-call')[0].reset();
-							swal({
-			            		title:"Success",
-			            		text:"User have been created new Event!",
-			            		type:"success",  
-			            		timer: 2000,   
-			            		showConfirmButton: false
-		        			});
-				    	}else{
-				    		alertMsgErrorSweet();
-				    	}
-						
-						
-					},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-				});  
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "INSERTED"){						
+								$("#relateTo").select2("val","");
+								$("#reportType").select2("val","");
+								$("#location").select2("val","");
+								$("#assignTo").select2("val","");
+								$("#duration").select2("val","");
+								$("#form-call").bootstrapValidator('resetForm', 'true');
+								$('#form-call')[0].reset();
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});		
+																															
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+				 
 		});	
 });
 </script>

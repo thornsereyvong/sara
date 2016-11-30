@@ -148,52 +148,59 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		
-		
-		
-		var currentDate = new Date();
-		var day = currentDate.getDate();
-		var month = currentDate.getMonth() + 1;
-		var year = currentDate.getFullYear();
-
-		$.ajax({
-			url : "${pageContext.request.contextPath}/event_location/add",
-			type : "POST",
-			data : JSON.stringify({
-			     
-			      "loName": $("#name").val(),
-			      "loNo":  $("#no").val(),
-			      "loStreet":  $("#street").val(),
-			      "village":  $("#village").val(),
-			      "loCommune":  $("#commune").val(),
-			      "loDistrict":  $("#district").val(),
-			      "loCity":  $("#city").val(),
-			      "loState":  $("#state").val(),
-			      "loCountry":  $("#country").val(),
-			      "loCreateBy":  $.session.get("parentID"),
-			      "loCreateDate": year+"-"+month+"-"+day,
-			     
-			    }),	
-			beforeSend: function(xhr) {
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to create location.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/event_location/add",
+					type : "POST",
+					data : JSON.stringify({
+					      "loName": getValueStringById("name"),
+					      "loNo":  getValueStringById("no"),
+					      "loStreet":  getValueStringById("street"),
+					      "village":  getValueStringById("village"),
+					      "loCommune": getValueStringById("commune"),
+					      "loDistrict": getValueStringById("district"),
+					      "loCity": getValueStringById("city"),
+					      "loState": getValueStringById("state"),
+					      "loCountry": getValueStringById("country"),
+					      "loCreateBy":  $.session.get("parentID")
+					      
+					    }),	
+					beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
 					    xhr.setRequestHeader("Content-Type", "application/json");
-					    },
-			success:function(data){
-					$("#form-contact").bootstrapValidator('resetForm', 'true');
-					$('#form-contact')[0].reset();
-					
-					swal({
-	            		title:"Success",
-	            		text:"User have been created new Location!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
-				},
-			error:function(){
-				errorMessage();
-				}
-			});
+				    }, 
+				    success: function(result){					    						    
+						if(result.MESSAGE == "INSERTED"){						
+							$("#form-contact").bootstrapValidator('resetForm', 'true');
+							$('#form-contact')[0].reset();
+							swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success"
+	    					});		
+																														
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			alertMsgErrorSweet();
+		    		} 
+				});
+			}, 500);
+		});
 		
 	});	
 	
@@ -314,7 +321,7 @@ $(document).ready(function() {
 			</div>
 			<!-- /.box-body -->
 			<div class="box-footer">
-				<div id="test_div"></div>
+				<div id="errors"></div>
 			</div>
 			<!-- /.box-footer-->
 		</div>

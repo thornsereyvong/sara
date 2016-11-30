@@ -18,14 +18,14 @@ public class CrmEventLocation {
 	private Date loCreateDate;
 	private String loModifiedBy;
 	private Date loModifiedDate;
-	private MeDataSource dataSource;
+	private MeDataSource meDataSource;
 
-	public final MeDataSource getDataSource() {
-		return dataSource;
+	public MeDataSource getMeDataSource() {
+		return meDataSource;
 	}
 
-	public final void setDataSource(MeDataSource dataSource) {
-		this.dataSource = dataSource;
+	public void setMeDataSource(MeDataSource meDataSource) {
+		this.meDataSource = meDataSource;
 	}
 
 	public String getLoId() {

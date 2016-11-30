@@ -181,7 +181,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
     };
 	
     
-$scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
+	$scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
     	
     	swal({
             title: "<span style='font-size: 25px;'>You are about to delete comment.</span>",

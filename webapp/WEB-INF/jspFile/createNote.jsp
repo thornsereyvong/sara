@@ -101,56 +101,58 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-
-			var currentDate = new Date();
-			var day = currentDate.getDate();
-			var month = currentDate.getMonth() + 1;
-			var year = currentDate.getFullYear();
-
-
-		
-
-			$.ajax({
-				url : "${pageContext.request.contextPath}/note/add",
-				type : "POST",
-				data : JSON.stringify({
-				      "noteSubject": $("#me_subject").val(),
-				      "noteRelatedToModuleType":  $("#me_relateTo").val(),
-				      "noteRelatedToModuleId": $("#me_reportType").val(),
-				      "noteDes": $("#me_description").val(),
-				      "noteCreateBy": $.session.get("parentID")
-					}),
-				beforeSend: function(xhr) {
+			
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to create note.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/note/add",
+						type : "POST",
+						data : JSON.stringify({
+						      "noteSubject": getValueStringById("me_subject"),
+						      "noteRelatedToModuleType":  getValueStringById("me_relateTo"),
+						      "noteRelatedToModuleId": getValueStringById("me_reportType"),
+						      "noteDes": getValueStringById("me_description"),
+						      "noteCreateBy": $.session.get("parentID")
+							}),
+						beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
 						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
-				success:function(data){
-					
-						$("#form-note").bootstrapValidator('resetForm', 'true');
-						$('#form-note')[0].reset();
-						
-						$("#me_relateTo").select2("val","");
-						$("#me_reportType").select2("val","");
-						
-						swal({
-		            		title:"Success",
-		            		text:"User have been created new Note!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-					},
-				error:function(){
-					errorMessage();
-					}
-				});  
-			
-		});	
-
-
-		
-	
-	
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "INSERTED"){						
+								
+								$("#me_relateTo").select2("val","");
+								$("#me_reportType").select2("val","");
+								$("#form-note").bootstrapValidator('resetForm', 'true');
+								$('#form-note')[0].reset();
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});			    											
+			    				
+																															
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+		});
 });
 </script>
 	<section class="content">

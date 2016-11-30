@@ -193,53 +193,63 @@ $(document).ready(function() {
 					}
 			}
 		}).on('success.form.bv', function(e) {		
-			$.ajax({
-				url : "${pageContext.request.contextPath}/event/edit",
-				type : "PUT",
-				data : JSON.stringify({
-					  "evId": $("#id").val(),					 
-				      "evName": getValueStringById("name"),
-				      "evLocation": getJsonById("loId","location","str"),
-				      "evBudget": getValueStringById("budget"),
-				      "evDes": getValueStringById("description"),
-				      "evDuration": getValueStringById("duration"),
-				      "startDate": getValueStringById("startDate"),
-				      "endDate": getValueStringById("endDate"),
-				      "assignTo": getJsonById("userID","assignTo","str"), 
-				      "evRelatedToModuleId" : getValueStringById("reportType"),
-				      "evRelatedToModuleType" : getValueStringById("relateTo"),
-				      "evModifiedBy":  $.session.get("parentID")
- 
-					}),
-				beforeSend: function(xhr) {
+			
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to update event.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/event/edit",
+						type : "PUT",
+						data : JSON.stringify({
+							  "evId": $("#id").val(),					 
+						      "evName": getValueStringById("name"),
+						      "evLocation": getJsonById("loId","location","str"),
+						      "evBudget": getValueStringById("budget"),
+						      "evDes": getValueStringById("description"),
+						      "evDuration": getValueStringById("duration"),
+						      "startDate": getValueStringById("startDate"),
+						      "endDate": getValueStringById("endDate"),
+						      "assignTo": getJsonById("userID","assignTo","str"), 
+						      "evRelatedToModuleId" : getValueStringById("reportType"),
+						      "evRelatedToModuleType" : getValueStringById("relateTo"),
+						      "evModifiedBy":  $.session.get("parentID")
+		 
+							}),
+						beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
 						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
-				success:function(data){
-					
-						$("#form-call").bootstrapValidator('resetForm', 'true');
-						$('#form-call')[0].reset();
-						$("#location").select2("val","");
-						$("#assignTo").select2("val","");
-						$("#duration").select2("val","");
-						
-						swal({
-		            		title:"Success",
-		            		text:"User have been Update Event!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-
-						setTimeout(function(){
-							window.location.href = "${pageContext.request.contextPath}/list-events";
-						}, 2000);
-					},
-				error:function(){
-					errorMessage();
-					}
-				});  
-			
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "UPDATED"){						
+												
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});
+								setTimeout(function(){
+									window.location.href = "${pageContext.request.contextPath}/list-events";
+								}, 2000);
+																															
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});	
 		});	
 
 });

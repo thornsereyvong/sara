@@ -35,7 +35,8 @@ public class CrmEventLocationController {
 	@Autowired
 	private String URL;
 	
-	private MeDataSource dataSource = new MeDataSource();
+	@Autowired
+	private MeDataSource dataSource;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/event_location/list",method = RequestMethod.GET)
@@ -48,7 +49,7 @@ public class CrmEventLocationController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/event_location/add",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addEventLocation(@RequestBody CrmEventLocation status, HttpServletRequest req){
-		status.setDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		status.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/event_location/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -65,7 +66,7 @@ public class CrmEventLocationController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/event_location/edit",method = RequestMethod.PUT)
 	public ResponseEntity<Map<String, Object>> updateEventLocation(@RequestBody CrmEventLocation status, HttpServletRequest req){
-		status.setDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		status.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/event_location/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -76,7 +77,7 @@ public class CrmEventLocationController {
 	public ResponseEntity<Map<String, Object>> deleteEventLocation(@PathVariable("locatId") String locatId, HttpServletRequest req){
 		CrmEventLocation location = new CrmEventLocation();
 		location.setLoId(locatId);
-		location.setDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		location.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(location,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/event_location/remove", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());

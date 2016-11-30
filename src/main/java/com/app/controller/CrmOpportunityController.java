@@ -242,6 +242,9 @@ public class CrmOpportunityController {
 	@RequestMapping(value="/opportunity/edit/custom",method = RequestMethod.PUT)
 	public ResponseEntity<Map<String, Object>> updateCustomOpportunity(@RequestBody CrmOpportunity opp, HttpServletRequest req){
 		opp.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		
+		dataSource.toString();
+		
 		HttpEntity<Object> request = new HttpEntity<Object>(opp,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity/edit/custom", HttpMethod.POST, request, Map.class);	
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());

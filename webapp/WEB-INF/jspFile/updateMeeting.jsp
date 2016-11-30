@@ -210,57 +210,63 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {		 
-
-			$.ajax({
-				url : "${pageContext.request.contextPath}/meeting/edit",
-				type : "PUT",
-				data : JSON.stringify({
-					  "meetingId":$("#me_id").val(),
-					  "meetingSubject": getValueStringById("me_subject"),
-				      "meetingAssignTo": getJsonById("userID","me_assignTo","str"),
-				      "meetingDes": getValueStringById("me_description"),
-				      "startDate": getValueStringById("me_startDate"),
-				      "meetingDuration": getValueStringById("me_duration"),
-				      "endDate":  getValueStringById("me_endDate"),
-				      "meetingStatus": getJsonById("statusId","me_status","int"),
-				      "meetingLocation":  getValueStringById("me_location"),
-				      "meetingRelatedToModuleType": getValueStringById("me_relateTo"),
-				      "meetingRelatedToModuleId": getValueStringById("me_reportType"),
-				      "meetingModifiedBy": username
-					}),
-				beforeSend: function(xhr) {
-			    	xhr.setRequestHeader("Accept", "application/json");
-			    	xhr.setRequestHeader("Content-Type", "application/json");
-			    },
-				success:function(data){
-					
-					if(data.MESSAGE == 'UPDATED'){
-						swal({
-		            		title:"Successfully",
-		            		text:"You have been updated this meeting!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						setTimeout(function(){
-							window.location.href = "${pageContext.request.contextPath}/list-meetings";
-						}, 2000);
-					}else{
-						alertMsgErrorSweet();
-					}
-
-				},
-				error:function(){
-					alertMsgErrorSweet();
-				}
-			});  
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to update meeting.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/meeting/edit",
+						type : "PUT",
+						data : JSON.stringify({
+							  "meetingId":$("#me_id").val(),
+							  "meetingSubject": getValueStringById("me_subject"),
+						      "meetingAssignTo": getJsonById("userID","me_assignTo","str"),
+						      "meetingDes": getValueStringById("me_description"),
+						      "startDate": getValueStringById("me_startDate"),
+						      "meetingDuration": getValueStringById("me_duration"),
+						      "endDate":  getValueStringById("me_endDate"),
+						      "meetingStatus": getJsonById("statusId","me_status","int"),
+						      "meetingLocation":  getValueStringById("me_location"),
+						      "meetingRelatedToModuleType": getValueStringById("me_relateTo"),
+						      "meetingRelatedToModuleId": getValueStringById("me_reportType"),
+						      "meetingModifiedBy": username
+							}),
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "UPDATED"){						
+												
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});
+								setTimeout(function(){
+									window.location.href = "${pageContext.request.contextPath}/list-meetings";
+								}, 2000);
+																															
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});	
 			
 		});	
-
-
-		
-	
-	
 });
 </script>
 	<section class="content">
