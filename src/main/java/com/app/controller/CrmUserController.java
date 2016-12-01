@@ -178,7 +178,7 @@ public class CrmUserController {
 		CrmUser user = new CrmUser();
 		user.setUserID(userID);
 		user.setDataSource(dataSource);
-		HttpEntity<String> request = new HttpEntity<String>(userID,header);
+		HttpEntity<Object> request = new HttpEntity<Object>(user,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/remove/", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}

@@ -226,11 +226,13 @@ $(document).ready(function(){
 					url : "${pageContext.request.contextPath}/user/add",
 					type : "POST",
 					data : JSON.stringify({ 
+						  "userID":$("#userId").val(),
 					      "username": $("#username").val(),
 					      "password": $("#password").val(),
 					      "status": 1,
 					      "parentID": user,
 					      "role": {"roleId": $("#role").val()},
+					      "userApp": {"appId":"CRM", "userId":$("#userId").val()},
 					      "createBy": $.session.get("parentID"),
 					      "createDate": year+"-"+month+"-"+day
 						}),
@@ -241,7 +243,7 @@ $(document).ready(function(){
 					success:function(data){
 							$("#form_status").bootstrapValidator('resetForm', 'true');
 							$('#form_status')[0].reset();
-							$("#role").select2("val","");
+							$("#role").select2('data','');
 							swal({
 			            		title:"Success",
 			            		text:"User have been created new User!",
@@ -267,12 +269,13 @@ $(document).ready(function(){
 				url : "${pageContext.request.contextPath}/user/edit",
 				type : "PUT",
 				data : JSON.stringify({ 
-					  "userID": $("#id").val(),
+					  "userID": $("userId").val(),
 				      "username": $("#username").val(),
 				      "password": $("#hpassword").val(),
 				      "status": 1,
 				      "parentID": user,
 				      "role": {"roleId": $("#role").val()},
+				      "userApp":{"appId":"CRM", "userId":$("#userId").val()},
 				      "modifyBy": $.session.get("parentID")
 					}),
 				beforeSend: function(xhr) {
@@ -283,7 +286,7 @@ $(document).ready(function(){
 					
 						$("#form_status").bootstrapValidator('resetForm', 'true');
 						$('#form_status')[0].reset();
-						$("#role").select2("val","");
+						$("#role").select2('data','');
 						jQuery('#password').attr("disabled", false); 
 						jQuery('#cpassword').attr("disabled", false);
 						swal({
@@ -356,9 +359,18 @@ $(document).ready(function(){
 				
 				 <div class="col-sm-6 ">
 				 		
-						<input type="hidden" id="id" name="id" value="{{userID.userID}}" >
+						<!-- <input type="hidden" id="id" name="id" value="{{userID.userID}}" > -->
 						
-						 <div class="col-sm-3">
+						<div class="col-sm-3">
+							<label class="font-label">UserID :</label>
+						</div>
+						<div class="col-sm-9">
+							<div class="form-group" id="">
+								<input type="text" class="form-control" name="userId" ng-model="userID.userID" id="userId" >
+							</div>
+						</div>
+						
+						<div class="col-sm-3">
 							<label class="font-label">Username :</label>
 						</div>
 						<div class="col-sm-9">
