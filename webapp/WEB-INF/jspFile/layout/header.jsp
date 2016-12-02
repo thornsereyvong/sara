@@ -86,7 +86,7 @@ function funcRelateTo(id, cust, vals){
 						 case "Customer":
 							 	
 								$.each(dataObject, function(key, value){
-									var div = "<option value='"+value.custID+"' >"+value.custName+"</option>";
+									var div = "<option value='"+value.custID+"' >["+value.custID+"] "+value.custName+"</option>";
 									$(id).append(div);
 								});
 								
@@ -97,7 +97,7 @@ function funcRelateTo(id, cust, vals){
 						        break;
 						 case "Lead":
 								$.each(dataObject, function(key, value){
-									var div = "<option value='"+value.leadID+"' >"+value.salutation+" "+value.firstName+"  "+value.lastName+"</option>";
+									var div = "<option value='"+value.leadID+"' >["+value.leadID+"] "+value.salutation+" "+value.firstName+"  "+value.lastName+"</option>";
 									$(id).append(div);
 								});
 								if(vals != ""){
@@ -107,7 +107,7 @@ function funcRelateTo(id, cust, vals){
 						        break;
 						 case "Campaign":
 								$.each(dataObject, function(key, value){
-									var div = "<option value='"+value.campID+"' >"+value.campName+" </option>";
+									var div = "<option value='"+value.campID+"' >["+value.campID+"] "+value.campName+" </option>";
 									$(id).append(div);
 								});
 								
@@ -119,7 +119,7 @@ function funcRelateTo(id, cust, vals){
 						 case "Contact":
 							 
 								$.each(dataObject, function(key, value){
-									var div = "<option value='"+value.conID+"' >"+value.conFirstName+"  "+value.conLastName+"</option>";
+									var div = "<option value='"+value.conID+"' >["+value.conID+"] "+value.conSalutation+" "+value.conFirstName+"  "+value.conLastName+"</option>";
 									
 									$(id).append(div);
 								});
@@ -131,7 +131,7 @@ function funcRelateTo(id, cust, vals){
 								break;
 						 case "Opportunity":
 								$.each(dataObject, function(key, value){
-									var div = "<option value='"+value.opId+"' >"+value.opName+"</option>";
+									var div = "<option value='"+value.opId+"' >["+value.opId+"] "+value.opName+"</option>";
 									$(id).append(div);	
 								});
 								if(vals != ""){
@@ -141,7 +141,7 @@ function funcRelateTo(id, cust, vals){
 						        break;
 						 case "Case":
 								$.each(dataObject, function(key, value){
-									var div = "<option value='"+value.caseId+"' >"+value.subject+"</option>";
+									var div = "<option value='"+value.caseId+"' >["+value.caseId+"] "+value.subject+"</option>";
 									$(id).append(div);
 								});
 								if(vals != ""){
@@ -151,7 +151,7 @@ function funcRelateTo(id, cust, vals){
 						        break;
 						 case "Task":
 								 $.each(dataObject, function(key, value){
-									var div = "<option value='"+value.taskId+"' >"+value.taskSubject+"</option>";
+									var div = "<option value='"+value.taskId+"' >["+value.taskId+"] "+value.taskSubject+"</option>";
 									$(id).append(div);
 								});
 								if(vals != ""){

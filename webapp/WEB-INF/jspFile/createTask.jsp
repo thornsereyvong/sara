@@ -147,79 +147,73 @@ $(document).ready(function() {
 				
 			}
 		}).on('success.form.bv', function(e) {
-
-		    var assign = "";	
-			if($("#ts_assignTo").val()  != ""){
-				assign = {"userID": $("#ts_assignTo").val()};
-			}else{
-				assign = null;
-			}
-
-			var status = "";	
-			if($("#ts_status").val()  != ""){
-				status = {"taskStatusId": $("#ts_status").val()};
-			}else{
-				status = null;
-			}
-
-			var contactssss = "";	
-			if($("#ts_contact").val()  != ""){
-				contactssss = {"conID": $("#ts_contact").val()};
-			}else{
-				contactssss = null;
-			}
-
-			$.ajax({
-				url : "${pageContext.request.contextPath}/task/add",
-				type : "POST",
-				data : JSON.stringify({    
-				      "taskStatus": status,
-				      "taskPriority": $("#ts_priority").val(),
-				      "taskAssignTo": assign,
-				      "taskRelatedToId": $("#ts_reportType").val(),
-				      "taskRelatedToModule": $("#ts_relateTo").val(),
-				      "taskDes": $("#ts_description").val(),
-				      "dueDate": $("#ts_dueDate").val(),
-				      "taskSubject":  $("#ts_subject").val(),
-				      "startDate": $("#ts_startDate").val(),
-				      "taskContact": contactssss,
-				      "taskCreateBy": $.session.get("parentID"),
-					}),
-				beforeSend: function(xhr) {
+			
+			
+			
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to create task.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/task/add",
+						type : "POST",
+						data : JSON.stringify({    
+							"taskStatus": getJsonById("taskStatusId","ts_status","int"),
+						      "taskPriority": getValueStringById("ts_priority"),
+						      "taskAssignTo": getJsonById("userID","ts_assignTo","str"),
+						      "taskRelatedToId": getValueStringById("ts_reportType"),
+						      "taskRelatedToModule":  getValueStringById("ts_relateTo"),
+						      "taskDes": getValueStringById("ts_description"),
+						      "dueDate": getValueStringById("ts_dueDate"),
+						      "taskSubject":  getValueStringById("ts_subject"),
+						      "startDate":  getValueStringById("ts_startDate"),
+						      "taskContact": getJsonById("conID","ts_contact","str"),
+						      "taskModifiedBy": $.session.get("parentID")
+							}),
+						beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
 						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
-				success:function(data){
-					
-						$("#form-call").bootstrapValidator('resetForm', 'true');
-						$('#form-call')[0].reset();
-						$("#ts_status").select2("val","");
-						$("#ts_relateTo").select2("val","");
-						$("#ts_reportType").select2("val","");
-						$("#ts_assignTo").select2("val","");
-						$("#ts_priority").select2("val","");
-						
-						$("#form-call").bootstrapValidator('resetForm', 'ts_status');
-						$("#form-call").bootstrapValidator('resetForm', 'ts_priority');
-						swal({
-		            		title:"Success",
-		            		text:"User have been created new Task!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-					},
-				error:function(){
-					errorMessage();
-					}
-				});  
-			
+					    }, 
+					    success: function(result){					    						    
+							if(result.MESSAGE == "INSERTED"){						
+								
+								$("#form-call").bootstrapValidator('resetForm', 'true');
+								$('#form-call')[0].reset();
+								$("#ts_status").select2("val","");
+								$("#ts_relateTo").select2("val","");
+								$("#ts_reportType").select2("val","");
+								$("#ts_assignTo").select2("val","");
+								$("#ts_priority").select2("val","");
+								
+								$("#form-call").bootstrapValidator('resetForm', 'ts_status');
+								$("#form-call").bootstrapValidator('resetForm', 'ts_priority');
+								
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});			    											
+			    				
+																															
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});		
 		});	
-
-
-		
-	
-	
 });
 </script>
 	<section class="content">
@@ -227,19 +221,7 @@ $(document).ready(function() {
 		<!-- Default box -->
 		
 		<div class="box box-danger">
-			<div class="box-header with-border">
-				<p class="box-title">&nbsp;</p>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-			</div>
+			
 			<div class="box-body">
 			
 			<form method="post" id="form-call">
@@ -342,7 +324,7 @@ $(document).ready(function() {
 							<div class="form-group" id="">
 								<select class="form-control select2" name="ts_contact" id="ts_contact" style="width: 100%;">
 									<option value="">--SELECT Contact</option>
-									<option ng-repeat="st in contact" value="{{st.conID}}">{{st.conFirstName}} {{st.conLastName}}</option>
+									<option ng-repeat="st in contact" value="{{st.conID}}">[{{st.conID}}] {{st.conSalutation}} {{st.conFirstName}} {{st.conLastName}}</option>
 									
 								</select>
 							</div>
@@ -411,7 +393,7 @@ $(document).ready(function() {
 			</form>
 			</div>
 			<!-- /.box-body -->
-			<div class="box-footer"><div id="test_div"></div></div>
+			<div class="box-footer"><div id="errors"></div></div>
 			<!-- /.box-footer-->
 		</div>
 		
