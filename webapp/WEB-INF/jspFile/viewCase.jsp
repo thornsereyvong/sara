@@ -1073,8 +1073,8 @@ function addDataToDetailLead(){
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username">{{cases.caseId}}</h3>
-						<h5 class="widget-user-desc">CASE ID</h5>
+						<h3 class="widget-user-username ng-cloak">{{cases.caseId}}</h3>
+						<h5 class="widget-user-desc">{{cases.subject}}</h5>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
@@ -1117,7 +1117,7 @@ function addDataToDetailLead(){
 							<div class="col-sm-2 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{cases.createDate}}</h5>
-									<span class="description-text">Date</span>
+									<span class="description-text">Follow-up Date</span>
 								</div>
 							</div>
 

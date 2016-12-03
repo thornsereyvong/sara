@@ -102,6 +102,29 @@ public class MainController {
 		
 	}
 	
+	
+	// article path	
+		@RequestMapping("/add-article")
+		public String article(ModelMap model) {		
+			model.addAttribute("menu", "article");		
+			return "createArticle";		
+		}
+		@RequestMapping("/list-article")
+		public String listArticle(ModelMap model) {		
+			model.addAttribute("menu", "listArticle");		
+			return "listArticle";			
+		}
+		@RequestMapping("/update-article/{articleId}")
+		public String editArticle(ModelMap model,@PathVariable("articleId") String articleId) {		
+			model.addAttribute("menu", "saleOrderEdit");	
+			model.addAttribute("articleId", articleId);	
+			return "updateArticle";		
+		}
+	
+		
+		// End article path
+	
+	
 	// Sale Order path	
 	@RequestMapping("/sale-order/add")
 	public String sale_order(ModelMap model) {		

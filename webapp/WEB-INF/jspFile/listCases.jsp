@@ -155,7 +155,7 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 							<td>{{cc.statusName}}</td>
 							<td>{{cc.caseTypeName}}</td>
 							<td>{{cc.priorityName}}</td>
-							<td>{{cc.custName}} </td>	
+							<td>[{{cc.custID}}] {{cc.custName}} </td>	
 							<td>
 								<div class="col-sm-2">
 									<div class="btn-group">
