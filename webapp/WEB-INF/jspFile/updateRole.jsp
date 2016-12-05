@@ -95,8 +95,13 @@ function getRoleID(){
 	
 	$("#data_table_role").empty();
 	
+	
+	
+	
 	$.each(result.roleDetails, function(key, value){
-
+		
+		
+		alert(value.module.moduleId)
 
 		var ac = "";
 		if (value.roleAccess == "YES"){			

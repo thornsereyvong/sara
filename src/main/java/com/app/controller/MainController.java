@@ -104,15 +104,22 @@ public class MainController {
 	
 	
 	// article path	
-		@RequestMapping("/add-article")
+		@RequestMapping("/create-article")
 		public String article(ModelMap model) {		
-			model.addAttribute("menu", "article");		
+			model.addAttribute("menu", "creatArticle");		
 			return "createArticle";		
 		}
-		@RequestMapping("/list-article")
-		public String listArticle(ModelMap model) {		
-			model.addAttribute("menu", "listArticle");		
-			return "listArticle";			
+		@RequestMapping("/list-articles")
+		public String listArticle(ModelMap model, HttpServletRequest req) {		
+			model.addAttribute("menu", "listArticle");
+			Map<String, Object> camMap = getRoleDetailsOfModule("ART", req);
+			model.addAttribute("role_list", camMap.get("roleList"));
+			model.addAttribute("role_delete", camMap.get("roleDelete"));
+			if (camMap.get("roleAccess").equals("YES")) {
+				return "listArticle";
+			} else {
+				return "permission";
+			}				
 		}
 		@RequestMapping("/update-article/{articleId}")
 		public String editArticle(ModelMap model,@PathVariable("articleId") String articleId) {		

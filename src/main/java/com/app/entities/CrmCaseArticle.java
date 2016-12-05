@@ -6,7 +6,7 @@ public class CrmCaseArticle {
 	private String articleId;
 	private String atricleTitle;
 	private String articleKey;
-	private String articleCaseId;
+	private String articleItemId;
 	private String articleDes;
 	private LocalDateTime articleCreateDate;
 	private String convertCreateDate;
@@ -37,14 +37,14 @@ public class CrmCaseArticle {
 
 	public void setArticleKey(String articleKey) {
 		this.articleKey = articleKey;
+	}	
+
+	public String getArticleItemId() {
+		return articleItemId;
 	}
 
-	public String getArticleCaseId() {
-		return articleCaseId;
-	}
-
-	public void setArticleCaseId(String articleCaseId) {
-		this.articleCaseId = articleCaseId;
+	public void setArticleItemId(String articleItemId) {
+		this.articleItemId = articleItemId;
 	}
 
 	public String getArticleDes() {

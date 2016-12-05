@@ -149,7 +149,7 @@ $(document).ready(function(){
 							id="support_icon_case"></i> <span>Cases</span>
 					</a></li>
 					<li id="ul_li_article"><a
-						href="${pageContext.request.contextPath}/list-article"> <i
+						href="${pageContext.request.contextPath}/list-articles"> <i
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="support_icon_article"></i> <span>Knowledge Base Articles</span>
 					</a></li>
