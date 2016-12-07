@@ -38,7 +38,6 @@ var taskIdForEdit = null;
 var eventIdForEdit = null;
 
 var leadStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
-var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
 
 app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
 	
@@ -57,9 +56,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	
 	$scope.listLeads = function(){
 			response = getLeadData();
-			
-		  // 	dis(response)
-			 
+			leadStatusData =  response.CASE_STATUS;
 			/* $scope.oppLeadSource = response.LEAD_SOURCE;
 			$scope.oppType = response.OPP_TYPES;
 			$scope.oppAssignTo = response.ASSIGN_TO;
@@ -74,6 +71,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			$scope.cases = response.CASE;
 			//$scope.caseList = response.CUSTOMER.cases;
 			
+			//dis(response.CASE)
 			
 			userAllList(response.ASSIGN_TO,'#callAssignTo','');
 			userAllList(response.ASSIGN_TO,'#meetAssignTo','');
@@ -98,7 +96,11 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			$scope.eventLocationStartup = response.EVENT_LOCATION;
 			$scope.meetStatusStartup = response.MEETING_STATUS;				
 			$scope.tags = response.TAG_TO;
-		
+			
+			
+			displayStatusLead(response.CASE.statusId);
+			
+			
 	}
 	
 	
@@ -176,7 +178,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	
     
     $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
-    	SweetAlert.swal({
+    	swal({
             title: "Are you sure?",
             text: "This comment will not be able to recover!", 
             type: "warning",
@@ -189,7 +191,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
         function(isConfirm){ 
         	  if(isConfirm){        		
         		  $http.delete("${pageContext.request.contextPath}/collaborate/comment/remove/"+comId).success(function(){
-	        		  SweetAlert.swal({
+	        		  swal({
 	              		title:"Deleted",
 	              		text:"The comment have been deleted!",
 	              		type:"success",  
@@ -199,7 +201,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
         		  });
         		  $scope.collaborates[keyParent].details.splice(keyChild, 1);
         	  }else{
-        		  SweetAlert.swal({
+        		  swal({
   	                title:"Cancelled",
   	                text:"This comment is safe!",
   	                type:"error",
@@ -210,7 +212,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
     }
     
 	$scope.btnDeleteCollabPost = function(key,postId){
-    	SweetAlert.swal({
+    	swal({
             title: "Are you sure?",
             text: "This post will not be able to recover!", 
             type: "warning",
@@ -223,7 +225,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
         function(isConfirm){              	
         	 if(isConfirm){
 	       		  $http.delete("${pageContext.request.contextPath}/collaborate/delete/"+postId).success(function(){
-		        		  SweetAlert.swal({
+		        		  swal({
 		              		title:"Deleted",
 		              		text:"The post have been deleted!",
 		              		type:"success",  
@@ -233,7 +235,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		        		  $scope.collaborates.splice(key, 1);
 	       		  }); 
 	       	  }else{
-	       		  SweetAlert.swal({
+	       		  swal({
 	 	                title:"Cancelled",
 	 	                text:"This post is safe!",
 	 	                type:"error",
@@ -259,7 +261,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	}
 	$scope.deleteNoteById = function(noteId){
 		$scope.resetFrmNote();
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This note will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -278,7 +280,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 					if(str == "YES"){
 						$http.delete("${pageContext.request.contextPath}/note/remove/"+noteId)
 			            .success(function(){
-			            		SweetAlert.swal({
+			            		swal({
 					            		title:"Deleted",
 					            		text:"Note have been deleted!",
 					            		type:"success",  
@@ -288,7 +290,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			            		$scope.getListNoteByLead();
 					      });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -296,7 +298,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					}    
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This note is safe!",
 	                type:"error",
@@ -395,7 +397,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		});		
 	}
 	$scope.actDeleteCall = function(callId){				
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This call will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -414,7 +416,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	            	if(str == "YES"){
 	            		 $http.delete("${pageContext.request.contextPath}/call/remove/"+callId)
 	     	            .success(function(){
-	     	            		SweetAlert.swal({
+	     	            		swal({
 	     			            		title:"Deleted",
 	     			            		text:"Call have been deleted!",
 	     			            		type:"success",  
@@ -425,7 +427,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	     	            		$scope.listDataCallByRalateType();
 	     		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -433,7 +435,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					} 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This call is safe!",
 	                type:"error",
@@ -469,7 +471,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		});		
 	}
 	$scope.actDeleteMeeting = function(meetingId){				
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This meeting will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -488,7 +490,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	            	if(str == "YES"){
 	            		 $http.delete("${pageContext.request.contextPath}/meeting/remove/"+meetingId)
 	     	            .success(function(){
-	     	            		SweetAlert.swal({
+	     	            		swal({
 	     			            		title:"Deleted",
 	     			            		text:"Meeting have been deleted!",
 	     			            		type:"success",  
@@ -499,7 +501,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	     	            		$scope.listDataMeetByRalateType();
 	     		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -507,7 +509,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					} 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This meeting is safe!",
 	                type:"error",
@@ -545,7 +547,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	}
 	
 	$scope.actDeleteTask = function(taskId){				
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This task will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -564,7 +566,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	            	if(str == "YES"){
 	            		 $http.delete("${pageContext.request.contextPath}/task/remove/"+taskId)
 	     	            .success(function(){
-	     	            		SweetAlert.swal({
+	     	            		swal({
 	     			            		title:"Deleted",
 	     			            		text:"Task have been deleted!",
 	     			            		type:"success",  
@@ -575,7 +577,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	     	            		$scope.listDataTaskByRalateType();
 	     		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -583,7 +585,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					} 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This task is safe!",
 	                type:"error",
@@ -627,7 +629,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	}
 	
 	$scope.actDeleteEvent = function(eventId){				
-		SweetAlert.swal({
+		swal({
             title: "Are you sure?", //Bold text
             text: "This event will not be able to recover!", //light text
             type: "warning", //type -- adds appropiriate icon
@@ -646,7 +648,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	            	if(str == "YES"){
 	            		 $http.delete("${pageContext.request.contextPath}/event/remove/"+eventId)
 	     	            .success(function(){
-	     	            		SweetAlert.swal({
+	     	            		swal({
 	     			            		title:"Deleted",
 	     			            		text:"Event have been deleted!",
 	     			            		type:"success",  
@@ -657,7 +659,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	     	            		$scope.listDataEventByRalateType();
 	     		            });
 					}else{
-						SweetAlert.swal({
+						swal({
 			                title:"Cancelled",
 			                text:"You don't have permission delete!",
 			                type:"error",
@@ -665,7 +667,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			                showConfirmButton: false});
 					} 
             } else {
-                SweetAlert.swal({
+                swal({
 	                title:"Cancelled",
 	                text:"This event is safe!",
 	                type:"error",
@@ -855,23 +857,21 @@ function displayStatusLead(Status){
 	var obj = "";	
 	for(var i=1; i<=leadStatusData.length; i++){		
 		if(i<Status){		
-			obj += "<li onClick='clickStatus("+i+")' class='completed'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";	
+			obj += "<li onClick='clickStatus("+i+")' class='completed'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1].statusName+"</a></li>";	
 		}else if(i==Status){			
 			if(Status == 5){
-				obj += "<li onClick='clickStatus("+i+")' class='dead'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";
+				obj += "<li onClick='clickStatus("+i+")' class='dead'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1].statusName+"</a></li>";
 			}else{
-				obj += "<li onClick='clickStatus("+i+")' class='active'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1]+"</a></li>";
+				obj += "<li onClick='clickStatus("+i+")' class='active'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1].statusName+"</a></li>";
 			}
 		}else{
-			obj += "<li onClick='clickStatus("+i+")' class=''>         <a href='#'><i class='fa fa-lock'></i> "+leadStatusData[i-1]+"</a></li>";
+			obj += "<li onClick='clickStatus("+i+")' class=''>         <a href='#'><i class='fa fa-lock'></i> "+leadStatusData[i-1].statusName+"</a></li>";
 		}
 	}
 	$("#objStatus").append(obj);
 }
 
 function addDataToDetailLead(){
-	
-	
 	$("#oppStage").select2('val', OPPORTUNITY.osId);
 	$("#oppType").select2('val', OPPORTUNITY.otId);
 	$("#oppLeadSource").select2('val', OPPORTUNITY.sourceID);
@@ -1073,23 +1073,14 @@ function addDataToDetailLead(){
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username ng-cloak">{{cases.caseId}}</h3>
-						<h5 class="widget-user-desc">{{cases.subject}}</h5>
+						<h3 class="widget-user-username ng-cloak">{{'['+cases.caseId+']'}}</h3>
+						<h5 class="widget-user-desc ng-cloak">{{cases.subject}}</h5>
 					</div>
 					<div class="widget-user-image">
-						<img class="img-circle"
-							src="${pageContext.request.contextPath}/resources/images/module/Case.png"
-							alt="User Avatar">
+						<img class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Case.png" alt="User Avatar">
 					</div>
 					<div class="box-footer">
 						<div class="row">
-							<div class="col-sm-2">
-								<div class="description-block">
-									<h5 class="description-header ng-cloak">{{cases.statusName}}</h5>
-									<span class="description-text">Status</span>
-								</div>
-							</div>
-							
 							<div class="col-sm-2 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{cases.caseTypeName}}</h5>
@@ -1102,7 +1093,7 @@ function addDataToDetailLead(){
 									<span class="description-text">Priority</span>
 								</div>
 							</div>
-							<div class="col-sm-2 border-right">
+							<div class="col-sm-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak" ng-if="cases.custID != null">[{{cases.custID}}] {{cases.custName}}</h5>
 									<span class="description-text">Customer</span>
@@ -1121,10 +1112,10 @@ function addDataToDetailLead(){
 								</div>
 							</div>
 
-							<!-- <div class="col-sm-12">
+							<div class="col-sm-12">
 								<ul class="breadcrumb1" id="objStatus">
 								</ul>
-							</div> -->
+							</div>
 
 							<div class="clearfix"></div>
 							<br />

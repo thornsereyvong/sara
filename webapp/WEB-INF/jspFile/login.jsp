@@ -1,6 +1,82 @@
 <jsp:include page="${request.contextPath}/head"></jsp:include>
 
+<script>
+		var app = angular.module('viewDatabase',[ 'angularUtils.directives.dirPagination' ]);
+		app.controller('viewCompany',['$scope','$http', function($scope, $http) {
+			$scope.listSystemDatabase = function() {
+				$http({
+						method : 'POST',
+						url : "${pageContext.request.contextPath}/database",
+						headers : {
+							'Accept' : 'application/json',
+							'Content-Type' : 'application/json'
+						},
+					}).success(function(response) {					
+						$scope.database = response.DATABASE;
+					});
+			};
+		}]);
 
+		function getUrlError() {
+			var url = window.location.href;
+			var err = url.search("error");
+			if (err > 1) {
+				$("#div_message").empty().append('<div class="alert alert-warning" role="alert">Warning ! Invalid Username Or Password.</div>');
+			}
+		}
+
+		$(document).ready(function() {
+
+			getUrlError();
+
+			/* $("#company").change(function() {
+				configdb($("#company").val());
+			}); */
+
+			$('#form-login').bootstrapValidator({
+				message : 'This value is not valid',
+				feedbackIcons : {
+					valid : 'glyphicon glyphicon-ok',
+					invalid : 'glyphicon glyphicon-remove',
+					validating : 'glyphicon glyphicon-refresh'
+				},
+				fields : {
+					crm_username : {
+						validators : {
+							notEmpty : {
+								message : 'The username is required and can not be empty!'
+							}
+						}
+					},
+					crm_password : {
+						validators : {
+							notEmpty : {
+								message : 'The password is required and can not be empty!'
+							}
+						}
+					},
+					company: {
+						validators: {
+							notEmpty: {
+								message: 'The company is required and can not be empty!'
+							}
+						}
+					}
+				}
+			});
+
+		var docHeight = $(window).height();
+		var footerHeight = $('#footer').height();
+		var footerTop = $('#footer').position().top
+				+ footerHeight;
+
+		if (footerTop < docHeight) {
+			//$('#footer').css('margin-top', 20+ (docHeight - footerTop) + 'px');
+			$('#footer').css('margin-top', 119 + (docHeight - footerTop) + 'px');
+		}
+
+	});
+</script>
 
 <body class="hold-transition login-page" ng-app="viewDatabase">
 	<div style="">
@@ -86,84 +162,6 @@
 		<div id="errors"></div>
 	</div>
 	<script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>	
-	<script>
-		var app = angular.module('viewDatabase',[ 'angularUtils.directives.dirPagination' ]);
-		app.controller('viewCompany',['$scope','$http', function($scope, $http) {
-			$scope.listSystemDatabase = function() {
-				$http({
-						method : 'POST',
-						url : "${pageContext.request.contextPath}/database",
-						headers : {
-							'Accept' : 'application/json',
-							'Content-Type' : 'application/json'
-						},
-					})
-					.success(function(response) {						
-						//dis(response)						
-						$scope.database = response.DATABASE;
-					});
-			};
-		}]);
-
-		function getUrlError() {
-			var url = window.location.href;
-			var err = url.search("error");
-			if (err > 1) {
-				$("#div_message").empty().append('<div class="alert alert-warning" role="alert">Warning ! Invalid Username Or Password.</div>');
-			}
-		}
-
-		$(document).ready(function() {
-
-			getUrlError();
-
-			/* $("#company").change(function() {
-				configdb($("#company").val());
-			}); */
-
-			$('#form-login').bootstrapValidator({
-				message : 'This value is not valid',
-				feedbackIcons : {
-					valid : 'glyphicon glyphicon-ok',
-					invalid : 'glyphicon glyphicon-remove',
-					validating : 'glyphicon glyphicon-refresh'
-				},
-				fields : {
-					crm_username : {
-						validators : {
-							notEmpty : {
-								message : 'The username is required and can not be empty!'
-							}
-						}
-					},
-					crm_password : {
-						validators : {
-							notEmpty : {
-								message : 'The password is required and can not be empty!'
-							}
-						}
-					},
-					company: {
-						validators: {
-							notEmpty: {
-								message: 'The company is required and can not be empty!'
-							}
-						}
-					}
-				}
-			});
-
-		var docHeight = $(window).height();
-		var footerHeight = $('#footer').height();
-		var footerTop = $('#footer').position().top
-				+ footerHeight;
-
-		if (footerTop < docHeight) {
-			//$('#footer').css('margin-top', 20+ (docHeight - footerTop) + 'px');
-			$('#footer').css('margin-top', 119 + (docHeight - footerTop) + 'px');
-		}
-
-	});
-</script>
+	
 </body>
 </html>
