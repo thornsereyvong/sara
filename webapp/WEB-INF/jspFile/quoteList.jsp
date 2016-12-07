@@ -6,7 +6,9 @@
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 	<script type="text/javascript">
 
-var app = angular.module('quoteApp', ['angularUtils.directives.dirPagination']);
+var app = angular.module('quoteApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 app.controller('quoteController',['$scope','$http',function($scope, $http){
 	$scope.listQuote = function(){

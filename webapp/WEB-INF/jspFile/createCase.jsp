@@ -22,7 +22,9 @@
 	</section>
 <script type="text/javascript">
 
-var app = angular.module('caseApp', []);
+var app = angular.module('caseApp', ['angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 var username = "${SESSION}";
 app.controller('caseController',['$scope','$http',function($scope, $http){

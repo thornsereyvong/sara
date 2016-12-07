@@ -11,7 +11,9 @@
 
 var $list_username = [];
 
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
+var app = angular.module('campaign', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 
 app.controller('campController',['$scope','$http',function($scope, $http){
