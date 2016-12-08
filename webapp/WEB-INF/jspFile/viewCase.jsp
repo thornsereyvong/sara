@@ -13,7 +13,9 @@
 <script type="text/javascript">
 
 
-var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination']);
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination', 'angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 
 var username = "${SESSION}";
@@ -55,14 +57,53 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	$scope.username = username; 
 	
 	$scope.listLeads = function(){
-			response = getLeadData();
+			$http({
+			    method: 'GET',
+			    url: '${pageContext.request.contextPath}/case/view/'+username+"/"+oppId,
+			    headers: {
+			    	'Accept': 'application/json',
+			        'Content-Type': 'application/json'
+			    },
+			    data: {"moduleId":oppId, "username":username}
+			}).success(function(response) {	
+				leadStatusData =  response.CASE_STATUS;
+				$scope.listNote1(response.NOTES);
+				$scope.cases = response.CASE;
+				userAllList(response.ASSIGN_TO,'#callAssignTo','');
+				userAllList(response.ASSIGN_TO,'#meetAssignTo','');
+				userAllList(response.ASSIGN_TO,'#taskAssignTo','');
+				userAllList(response.ASSIGN_TO,'#eventAssignTo','');
+				
+				
+				$scope.listAllCallByLeadId(response.CALLS);	
+				$scope.listAllMeetByLeadId(response.MEETINGS);	
+				$scope.listAllTaskByLeadId(response.TASKS);
+				$scope.listAllEventByLeadId(response.EVENTS);
+				
+				$scope.listAllEmailByLeadId = function(){	
+					$scope.listAllEmailByLead = [];	
+				}
+				
+				
+				$scope.listCollab(response.COLLABORATIONS);							
+				$scope.callStatusStartup = response.CALL_STATUS;
+				$scope.taskStatusStartup = response.TASK_STATUS;
+				$scope.taskContactStartup = response.CONTACTS;	
+				$scope.eventLocationStartup = response.EVENT_LOCATION;
+				$scope.meetStatusStartup = response.MEETING_STATUS;				
+				$scope.tags = response.TAG_TO;
+				
+				
+				displayStatusLead(response.CASE.statusId);
+			});
+			/* //response = getLeadData();
 			leadStatusData =  response.CASE_STATUS;
 			/* $scope.oppLeadSource = response.LEAD_SOURCE;
 			$scope.oppType = response.OPP_TYPES;
 			$scope.oppAssignTo = response.ASSIGN_TO;
 			$scope.oppCampaign = response.CAMPAIGNS;
 			$scope.oppStage = response.OPP_STAGES;
-			$scope.oppCustomer = response.CUSTOMERS; */
+			$scope.oppCustomer = response.CUSTOMERS;
 			
 			//$scope.opportunity = response.CUSTOMER.opportunities;
 			//$scope.customer = response.CUSTOMER;
@@ -73,33 +114,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			
 			//dis(response.CASE)
 			
-			userAllList(response.ASSIGN_TO,'#callAssignTo','');
-			userAllList(response.ASSIGN_TO,'#meetAssignTo','');
-			userAllList(response.ASSIGN_TO,'#taskAssignTo','');
-			userAllList(response.ASSIGN_TO,'#eventAssignTo','');
-			
-			
-			$scope.listAllCallByLeadId(response.CALLS);	
-			$scope.listAllMeetByLeadId(response.MEETINGS);	
-			$scope.listAllTaskByLeadId(response.TASKS);
-			$scope.listAllEventByLeadId(response.EVENTS);
-			
-			$scope.listAllEmailByLeadId = function(){	
-				$scope.listAllEmailByLead = [];	
-			}
-			
-			
-			$scope.listCollab(response.COLLABORATIONS);							
-			$scope.callStatusStartup = response.CALL_STATUS;
-			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.CONTACTS;	
-			$scope.eventLocationStartup = response.EVENT_LOCATION;
-			$scope.meetStatusStartup = response.MEETING_STATUS;				
-			$scope.tags = response.TAG_TO;
-			
-			
-			displayStatusLead(response.CASE.statusId);
-			
+		 */
 			
 	}
 	
@@ -1209,9 +1224,7 @@ function addDataToDetailLead(){
 																										</a></li>
 																										<li ng-click="actDeleteCall(call.callId)"><a
 																											href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																										<li><a href="#"> <i class="fa fa-eye"></i>
-																												View
-																										</a></li>
+																										<li><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}"> <i class="fa fa-eye"></i>View</a></li>
 					
 																									</ul>
 																								</div>
@@ -1277,7 +1290,7 @@ function addDataToDetailLead(){
 																									<li ng-click="actDeleteMeeting(meet.meetingId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																									<li>
-																										<a href="#"> <i class="fa fa-eye"></i>View</a>
+																										<a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}"> <i class="fa fa-eye"></i>View</a>
 																									</li>
 				
 																								</ul>
@@ -1345,7 +1358,7 @@ function addDataToDetailLead(){
 																									<li ng-click="actDeleteTask(task.taskId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																									<li>
-																										<a href="#"> <i class="fa fa-eye"></i>View</a>
+																										<a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}"> <i class="fa fa-eye"></i>View</a>
 																									</li>
 				
 																								</ul>
@@ -1413,7 +1426,7 @@ function addDataToDetailLead(){
 																									<li ng-click="actDeleteEvent(event.evId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																									<li>
-																										<a href="#"> <i class="fa fa-eye"></i>View</a>
+																										<a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"> <i class="fa fa-eye"></i>View</a>
 																									</li>
 				
 																								</ul>
@@ -1481,7 +1494,7 @@ function addDataToDetailLead(){
 																									<li ng-click="actDeleteEvent(event.evId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																									<li>
-																										<a href="#"> <i class="fa fa-eye"></i>View</a>
+																										<a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}"> <i class="fa fa-eye"></i>View</a>
 																									</li>
 				
 																								</ul>
