@@ -36,9 +36,8 @@ app.controller('caseController',['$scope','$http',function($scope, $http){
 			$scope.customer = response.CUSTOMERS;
 			$scope.contact = response.CONTACTS;
 			$scope.assignTo = response.ASSIGN_TO;	
-			
-		
-			
+			$scope.items = response.ITEMS;
+			$scope.case_origin = response.CASE_ORIGIN;
 		});
 	};			
 }]);
@@ -92,6 +91,13 @@ $(document).ready(function() {
 					}
 				}
 			},
+			ca_product: {
+				validators: {
+					notEmpty: {
+						message: 'The product is required and can not be empty!'
+					}
+				}
+			},
 			ca_type: {
 				validators: {
 					notEmpty: {
@@ -117,49 +123,73 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		$.ajax({
-			url : "${pageContext.request.contextPath}/case/add",
-			type : "POST",
-			data : JSON.stringify({
-			      "status": getJsonById("statusId","ca_status","int"),
-			      "type": getJsonById("caseTypeId","ca_type","int"),
-			      "priority": getJsonById("priorityId","ca_priority","int"),
-			      "customer": getJsonById("custID","ca_customer","str"),
-			      "contact": getJsonById("conID","ca_contact","str"),
-			      "subject": getValueStringById("ca_subject"),
-			      "des": getValueStringById("ca_description"),
-			      "resolution": getValueStringById("ca_resolution"),
-			      "assignTo": getJsonById("userID","ca_assignTo","str"),
-			      "createBy": $.session.get("parentID")
-		    }),	
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-		    },
-			success:function(data){
-				if(data.MESSAGE == "INSERTED"){
-					$("#ca_type").select2("val","");	
-					$("#ca_status").select2("val","");
-					$("#ca_priority").select2("val","");
-					$("#ca_assignTo").select2("val","");
-					$("#ca_customer").select2("val","");
-					$("#ca_contact").select2("val","");
-			      	$("#form-case").bootstrapValidator('resetForm', 'true');
-					$('#form-case')[0].reset();
-					swal({
-	            		title:"Success",
-	            		text:"You have been created new Case!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
-				}else{
-					alertMsgErrorSweet();	
-				}
-			},
-			error:function(){
-				alertMsgErrorSweet();				
-			}
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to create case.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/case/add",
+					type : "POST",
+					data : JSON.stringify({
+					      "status": getJsonById("statusId","ca_status","int"),
+					      "type": getJsonById("caseTypeId","ca_type","int"),
+					      "origin": getJsonById("originId","ca_origin","int"),
+					      "priority": getJsonById("priorityId","ca_priority","int"),
+					      "customer": getJsonById("custID","ca_customer","str"),
+					      "contact": getJsonById("conID","ca_contact","str"),
+					      "subject": getValueStringById("ca_subject"),
+					      "des": getValueStringById("ca_description"),
+					     /*  "resolution": getValueStringById("ca_resolution"), */
+					      "assignTo": getJsonById("userID","ca_assignTo","str"),
+					      "createBy": $.session.get("parentID"),
+					      "item" : getJsonById("itemId","ca_product","str")
+				    }),
+					beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+				    }, 
+				    success: function(result){
+				    	
+				    
+						if(result.MESSAGE == "INSERTED"){						
+							
+		    				swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success",
+	    					  	showConfirmButton  : false
+	    					});
+		    											
+		    				setTimeout(function(){		
+		    					$("#ca_type").select2("val","");	
+		    					$("#ca_status").select2("val","");
+		    					$("#ca_priority").select2("val","");
+		    					$("#ca_assignTo").select2("val","");
+		    					$("#ca_customer").select2("val","");
+		    					$("#ca_contact").select2("val","");
+		    					$("#ca_product").select2("val","");
+		    					$("#ca_origin").select2("val","");
+		    			      	$("#form-case").bootstrapValidator('resetForm', 'true');
+		    					$('#form-case')[0].reset(); 		    					
+		    				},2000);
+																														
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			swal("UNSUCCESSFUL", "Please try again!", "error");
+		    		} 
+				});
+			}, 500);
 		});
 	});		
 });
@@ -180,6 +210,12 @@ $(document).ready(function() {
 						<div class="col-sm-12">
 							<div class="col-sm-6">
 								<div class="col-sm-6">
+									<label class="font-label">Subject <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<input type="text" class="form-control" id="ca_subject" name="ca_subject">
+									</div>
+								</div>
+								<div class="col-sm-6">
 									<label class="font-label">Status <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select class="form-control select2" name="ca_status" id="ca_status" style="width:100%">
@@ -197,7 +233,7 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="clearfix"></div>							
+															
 								<div class="col-sm-6">
 									<label class="font-label">Priority <span class="requrie">(Required)</span></label>
 									<div class="form-group">
@@ -206,15 +242,29 @@ $(document).ready(function() {
 											<option ng-repeat="u in case_priority" value="{{u.priorityId}}">{{u.priorityName}}</option> 
 										</select>
 									</div>
-								</div>													
-								<div class="col-sm-6">
-									<label class="font-label">Subject <span class="requrie">(Required)</span></label>
-									<div class="form-group">
-										<input type="text" class="form-control" id="ca_subject" name="ca_subject">
-									</div>
 								</div>	
+								<div class="clearfix"></div>
+								<div class="col-sm-6">
+									<label class="font-label">Origin </label>
+									<div class="form-group">
+										<select class="form-control select2" name="ca_origin" id="ca_origin" style="width:100%">
+											<option value="">-- SELECT Origin --</option>
+											<option ng-repeat="or in case_origin" value="{{or.originId}}">{{or.originTitle}}</option> 
+										</select>
+									</div>
+								</div>												
+									
 							</div>
 							<div class="col-sm-6">
+								<div class="col-sm-6">
+									<label class="font-label">Product <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select class="form-control select2" name="ca_product" id="ca_product" style="width:100%">
+											<option value="">-- SELECT product --</option>
+											<option ng-repeat="p in items" value="{{p.itemId}}">[{{p.itemId}}] {{p.itemName}}</option>
+										</select>
+									</div>
+								</div>
 								<div class="col-sm-6">
 									<label class="font-label">Customer </label>
 									<div class="form-group">
@@ -245,12 +295,12 @@ $(document).ready(function() {
 									</div>
 								</div>
 								<div class="clearfix"></div>
-								<div class="col-sm-12 ">
+								<!-- <div class="col-sm-12 ">
 									<label class="font-label">Resolution </label>
 									<div class="form-group">
 										<textarea  rows="5" cols="" name="ca_resolution" id="ca_resolution" class="form-control"></textarea>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>

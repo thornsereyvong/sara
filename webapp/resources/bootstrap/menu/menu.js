@@ -181,6 +181,19 @@ function selectMenu(menu_slide){
     	removeCla("#support","#ul_support","#ul_li_case","#support_icon_case");
     	document.title = 'Cases | CRM';
         break;
+        
+    case "createArticle":
+    	removeCla("#support","#ul_support","#ul_li_article","#support_icon_article");
+    	document.title = 'Create Article | CRM';
+        break;
+    case "updateArticle":
+    	removeCla("#support","#ul_support","#ul_li_article","#support_icon_article");
+    	document.title = 'Update Article | CRM';
+        break;
+    case "listArticles":
+    	removeCla("#support","#ul_support","#ul_li_article","#support_icon_article");
+    	document.title = 'Articles | CRM';
+        break;
 
     case "userManagement":
     	removeCla("#admin","#ul_admin","#ul_li_userMa","#admin_icon_userMa");

@@ -25,7 +25,9 @@
 	</section>
 <script type="text/javascript">
 
-var app = angular.module('caseApp', []);
+var app = angular.module('caseApp', ['angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 var caseId= "${caseId}";
 var username = "${SESSION}";
@@ -39,28 +41,31 @@ app.controller('caseController',['$scope','$http',function($scope, $http){
 			$("#ca_priority").select2("val",$scope.dataCase.priorityId);
 			$("#ca_assignTo").select2("val",$scope.dataCase.userID);
 			$("#ca_customer").select2("val",$scope.dataCase.custID);
-			$("#ca_contact").select2("val",$scope.dataCase.conID);	
+			$("#ca_contact").select2("val",$scope.dataCase.conID);
+			$("#ca_product").select2("val",$scope.dataCase.caseItemId);	
+			$("#ca_origin").select2("val",$scope.dataCase.caseOriginId);
 			
 			
 			$('#form-case').data('bootstrapValidator').resetField($('#ca_type'));
 			$('#form-case').data('bootstrapValidator').resetField($('#ca_status'));
 			$('#form-case').data('bootstrapValidator').resetField($('#ca_priority'));
+			//$('#form-case').data('bootstrapValidator').resetField($('#ca_origin'));
 			
 			
-			
-		}, 1000);
+		}, 2000);
     });
 	
 	$scope.startupPage = function(){
 		$http.get("${pageContext.request.contextPath}/case/startup/"+username+"/"+caseId).success(function(response){
 			$scope.case_status = response.CASE_STATUS;
 			$scope.case_type = response.CASE_TYPE;
+			$scope.case_origin = response.CASE_ORIGIN;
 			$scope.case_priority = response.CASE_PRIORITY;
 			$scope.customer = response.CUSTOMERS;
 			$scope.contact = response.CONTACTS;
 			$scope.assignTo = response.ASSIGN_TO;
 			$scope.dataCase = response.CASE;
-			
+			$scope.items = response.ITEMS;
 		});
 	};			
 }]);
@@ -70,7 +75,7 @@ app.controller('caseController',['$scope','$http',function($scope, $http){
 
 
 $(document).ready(function() {
-	$("#btn_clear").click(function(){
+	$("#btn_reload").click(function(){
 		location.reload();	
 	});
 	
@@ -112,6 +117,13 @@ $(document).ready(function() {
 					}
 				}
 			},
+			ca_product: {
+				validators: {
+					notEmpty: {
+						message: 'The product is required and can not be empty!'
+					}
+				}
+			},
 			ca_type: {
 				validators: {
 					notEmpty: {
@@ -137,51 +149,58 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		$.ajax({
-			url : "${pageContext.request.contextPath}/case/edit",
-			type : "PUT",
-			data : JSON.stringify({
-				  "caseId": caseId,
-			      "status": getJsonById("statusId","ca_status","int"),
-			      "type": getJsonById("caseTypeId","ca_type","int"),
-			      "priority": getJsonById("priorityId","ca_priority","int"),
-			      "customer": getJsonById("custID","ca_customer","str"),
-			      "contact": getJsonById("conID","ca_contact","str"),
-			      "subject": getValueStringById("ca_subject"),
-			      "des": getValueStringById("ca_description"),
-			      "resolution": getValueStringById("ca_resolution"),
-			      "assignTo": getJsonById("userID","ca_assignTo","str"),
-			      "modifyBy": username 
-		    }),	
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-		    },
-			success:function(data){
-				if(data.MESSAGE == "UPDATED"){
-					$("#ca_type").select2("val","");	
-					$("#ca_status").select2("val","");
-					$("#ca_priority").select2("val","");
-					$("#ca_assignTo").select2("val","");
-					$("#ca_customer").select2("val","");
-					$("#ca_contact").select2("val","");
-			      	$("#form-case").bootstrapValidator('resetForm', 'true');
-					$('#form-case')[0].reset();
-					swal({
-	            		title:"Success",
-	            		text:"You have been updated case!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
-					reloadForm(2000);
-				}else{
-					alertMsgErrorSweet();	
-				}
-			},
-			error:function(){
-				alertMsgErrorSweet();				
-			}
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to update case.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){
+			setTimeout(function(){
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/case/edit",
+					type : "PUT",
+					data : JSON.stringify({
+						  "caseId": caseId,
+					      "status": getJsonById("statusId","ca_status","int"),
+					      "type": getJsonById("caseTypeId","ca_type","int"),
+					      "origin": getJsonById("originId","ca_origin","int"),
+					      "priority": getJsonById("priorityId","ca_priority","int"),
+					      "customer": getJsonById("custID","ca_customer","str"),
+					      "contact": getJsonById("conID","ca_contact","str"),
+					      "subject": getValueStringById("ca_subject"),
+					      "des": getValueStringById("ca_description"),
+					     /*  "resolution": getValueStringById("ca_resolution"), */
+					      "assignTo": getJsonById("userID","ca_assignTo","str"),
+					      "item": getJsonById("itemId","ca_product","str"),
+					      "modifyBy": username 
+				    }),
+					beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+				    }, 
+				    success: function(result){	
+						if(result.MESSAGE == "UPDATED"){	
+							swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success",
+	    					  	showConfirmButton  : false
+	    					});
+							reloadForm(2000);																																
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			alertMsgErrorSweet();
+		    		} 
+				});
+			}, 500);
 		});
 	});		
 });
@@ -192,7 +211,7 @@ $(document).ready(function() {
 			<div class="box-body">			
 				<form method="post" id="form-case" data-ng-init="startupPage()">					
 					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
-					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+					<a class="btn btn-info btn-app" id="btn_reload"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
 					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-cases"> <i class="fa fa-reply"></i> Back </a>
 	
 					<div class="clearfix"></div>
@@ -201,6 +220,12 @@ $(document).ready(function() {
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="col-sm-6">
+								<div class="col-sm-6">
+									<label class="font-label">Subject <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<input type="text" value="{{dataCase.subject}}" class="form-control" id="ca_subject" name="ca_subject">
+									</div>
+								</div>
 								<div class="col-sm-6">
 									<label class="font-label">Status <span class="requrie">(Required)</span></label>
 									<div class="form-group">
@@ -219,7 +244,6 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="clearfix"></div>							
 								<div class="col-sm-6">
 									<label class="font-label">Priority <span class="requrie">(Required)</span></label>
 									<div class="form-group">
@@ -228,15 +252,28 @@ $(document).ready(function() {
 											<option ng-repeat="u in case_priority" value="{{u.priorityId}}">{{u.priorityName}}</option> 
 										</select>
 									</div>
-								</div>													
+								</div>	
+								<div class="clearfix"></div>							
 								<div class="col-sm-6">
-									<label class="font-label">Subject <span class="requrie">(Required)</span></label>
+									<label class="font-label">Origin </span></label>
 									<div class="form-group">
-										<input type="text" value="{{dataCase.subject}}" class="form-control" id="ca_subject" name="ca_subject">
+										<select class="form-control select2" name="ca_origin" id="ca_origin" style="width:100%">
+											<option value="">-- SELECT Origin --</option>
+											<option ng-repeat="or in case_origin" value="{{or.originId}}">{{or.originTitle}}</option> 
+										</select>
 									</div>
 								</div>	
 							</div>
 							<div class="col-sm-6">
+								<div class="col-sm-6">
+									<label class="font-label">Product <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select class="form-control select2" name="ca_product" id="ca_product" style="width:100%">
+											<option value="">-- SELECT Product --</option>
+											<option ng-repeat="p in items" value="{{p.itemId}}">[{{p.itemId}}] {{p.itemName}}</option>
+										</select>
+									</div>
+								</div>
 								<div class="col-sm-6">
 									<label class="font-label">Customer </label>
 									<div class="form-group">
@@ -264,13 +301,6 @@ $(document).ready(function() {
 									<div class="form-group">
 										<textarea  rows="4" value="" cols="" name="ca_description" id="ca_description"
 											class="form-control">{{dataCase.des}}</textarea>
-									</div>
-								</div>
-								<div class="clearfix"></div>
-								<div class="col-sm-12 ">
-									<label class="font-label">Resolution </label>
-									<div class="form-group">
-										<textarea  rows="5" value="" cols="" name="ca_resolution" id="ca_resolution" class="form-control">{{dataCase.resolution}}</textarea>
 									</div>
 								</div>
 							</div>

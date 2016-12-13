@@ -1690,6 +1690,13 @@ function addDataToDetailLead(){
 																			class="form-control" value="{{lead.title}}"> -->
 																	</div>
 																</li>
+																<li class="list-group-item item_border">Origin<a
+																	class="pull-right show-text-detail">{{cases.caseOriginTitle}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
 																<li class="list-group-item item_border">Subject <a
 																	class="pull-right show-text-detail">{{cases.subject}}</a>
 																	<div class="form-group show-edit" style="display: none;">
@@ -1706,6 +1713,13 @@ function addDataToDetailLead(){
 																	class="pull-right cusor_pointer"
 																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																		Edit</a> --></li>
+																<li class="list-group-item item_border">Product<a
+																	class="pull-right show-text-detail">[{{cases.caseItemId}}] {{cases.caseItemName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
 																<li class="list-group-item item_border">Customer<a
 																	class="pull-right show-text-detail">[{{cases.custID}}] {{cases.custName}}</a>
 																	<div class="form-group show-edit" style="display: none;">

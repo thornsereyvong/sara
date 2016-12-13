@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.app.entities.CrmCampaign;
+import com.app.entities.CrmCaseArticle;
 import com.app.entities.MeDataSource;
-import com.app.utilities.RestUtil;
 
 
 @RestController
@@ -41,7 +40,7 @@ public class CrmArticleController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/article/list",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getAllCampaign(HttpServletRequest req){	
+	public ResponseEntity<Map<String, Object>> getArticles(HttpServletRequest req){	
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case-article/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -162,24 +161,18 @@ public class CrmArticleController {
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
-	}
+	}*/
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/campaign/remove/{campId}",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("campId") String campId, HttpServletRequest req){
-		CrmCampaign campaign = new CrmCampaign();
-		campaign.setCampID(campId);
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		campaign.setMeDataSource(dataSource);
-		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/remove", HttpMethod.POST, request, Map.class);
+	@RequestMapping(value="/article/remove/{articleId}",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("articleId") String articleId, HttpServletRequest req){
+		CrmCaseArticle article = new CrmCaseArticle();
+		article.setArticleId(articleId);
+		article.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(article,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case-article/remove", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-	}*/
+	}
 	
 	private String getPrincipal() {
 		String userName = null;

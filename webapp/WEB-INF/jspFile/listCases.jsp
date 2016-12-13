@@ -58,6 +58,7 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 			    					type:"success", 
 			    					html: true,
 			    					timer: 2000,
+			    					showConfirmButton  : false
 			    				});
 			    				  
 			    				setTimeout(function(){		
