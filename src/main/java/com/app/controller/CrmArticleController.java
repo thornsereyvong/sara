@@ -54,113 +54,46 @@ public class CrmArticleController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
-	/*
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/campaign/list/validate/{campName}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getCampName(@PathVariable("campName") String campName, HttpServletRequest req){	
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/validate/"+campName, HttpMethod.POST, request, Map.class);
-		try{
-			if(RestUtil.isError(response.getStatusCode())){
-				 return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-			}else{
-				return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-			}	
-		}catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		
-	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/campaign/list/{campID}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> findCampaignById(@PathVariable("campID") String campID, HttpServletRequest req){	
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/"+campID, HttpMethod.POST, request, Map.class);
+	@RequestMapping(value="/article/view/{articleId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> findArticleById(@PathVariable("articleId") String articleId, HttpServletRequest req){	
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()),header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case-article/view/"+articleId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/campaign/list/not_equal/{campID}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> campNotQu(@PathVariable("campID") String campID, HttpServletRequest req){	
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/list/not_equal/"+campID, HttpMethod.POST, request, Map.class);
-		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
-	}
-	
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/campaign/add",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> addCampaign(@RequestBody CrmCampaign campaign, HttpServletRequest req){
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		campaign.setMeDataSource(dataSource);
-		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/add", HttpMethod.POST, request, Map.class);
+	@RequestMapping(value="/article/add",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> addArticle(@RequestBody CrmCaseArticle article, HttpServletRequest req){
+		article.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(article,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case-article/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/edit/startup/{campId}/{username}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> editCampaignOnStartup(@PathVariable("campId") String campId, @PathVariable("username") String username, HttpServletRequest req){
-		CrmCampaign campaign = new CrmCampaign();
-		campaign.setCampID(campId);
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		campaign.setMeDataSource(dataSource);
-		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/edit/startup/"+username, HttpMethod.POST, request, Map.class);
+	@RequestMapping(value="/article/startup/{articleId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> editArticleOnStartup(@PathVariable("articleId") String articleId, HttpServletRequest req){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()),header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case-article/startup/"+articleId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/campaign/edit",method = RequestMethod.PUT)
-	public ResponseEntity<Map<String, Object>> updateCampaign(@RequestBody CrmCampaign campaign, HttpServletRequest req){
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		campaign.setMeDataSource(dataSource);
-		HttpEntity<Object> request = new HttpEntity<Object>(campaign,header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/edit", HttpMethod.POST, request, Map.class);
+	@RequestMapping(value="/article/edit",method = RequestMethod.PUT)
+	public ResponseEntity<Map<String, Object>> updateArticle(@RequestBody CrmCaseArticle article, HttpServletRequest req){
+		article.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(article,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case-article/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
-	}*/
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/article/remove/{articleId}",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> deleteCampaign(@PathVariable("articleId") String articleId, HttpServletRequest req){
+	public ResponseEntity<Map<String, Object>> deleteArticle(@PathVariable("articleId") String articleId, HttpServletRequest req){
 		CrmCaseArticle article = new CrmCaseArticle();
 		article.setArticleId(articleId);
 		article.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));

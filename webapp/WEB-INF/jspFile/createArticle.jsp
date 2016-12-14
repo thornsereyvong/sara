@@ -85,44 +85,55 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		$.ajax({
-			url : "${pageContext.request.contextPath}/case/add",
-			type : "POST",
-			data : JSON.stringify({
-			      "status": getJsonById("statusId","ca_status","int"),
-			      "type": getJsonById("caseTypeId","ca_type","int"),
-			      "priority": getJsonById("priorityId","ca_priority","int"),
-			      "customer": getJsonById("custID","ca_customer","str"),
-			      "contact": getJsonById("conID","ca_contact","str"),
-			      "subject": getValueStringById("ca_subject"),
-			      "des": getValueStringById("ca_description"),
-			      "resolution": getValueStringById("ca_resolution"),
-			      "assignTo": getJsonById("userID","ca_assignTo","str"),
-			      "createBy": $.session.get("parentID")
-		    }),	
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-		    },
-			success:function(data){
-				if(data.MESSAGE == "INSERTED"){
-					$("#art_product").select2("val","");
-			      	$("#form-article").bootstrapValidator('resetForm', 'true');
-					$('#form-article')[0].reset();
-					swal({
-	            		title:"Success",
-	            		text:"You have been created new Case!",
-	            		type:"success",  
-	            		timer: 2000,   
-	            		showConfirmButton: false
-        			});
-				}else{
-					alertMsgErrorSweet();	
-				}
-			},
-			error:function(){
-				alertMsgErrorSweet();				
-			}
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to create article.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/article/add",
+					type : "POST",
+					data : JSON.stringify({
+					      "articleTitle": getValueStringById("art_subject"),
+					      "articleKey": getValueStringById("art_key"),
+					      "item": getJsonById("itemId","art_product","str"),
+					      "articleCreateBy": username,
+					      "articleDes" : getValueStringById("art_des")
+				    }),
+					beforeSend: function(xhr) {
+					    xhr.setRequestHeader("Accept", "application/json");
+					    xhr.setRequestHeader("Content-Type", "application/json");
+				    }, 
+				    success: function(result){
+						if(result.MESSAGE == "INSERTED"){						
+		    				swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success",
+	    					});
+		    											
+		    				setTimeout(function(){		
+		    					$("#art_product").select2("val","");
+		    			      	$("#form-article").bootstrapValidator('resetForm', 'true');
+		    					$('#form-article')[0].reset(); 		    					
+		    				},1000);
+																														
+						}else{
+							swal("UNSUCCESSFUL", result.MSG, "error");
+						}
+					},
+		    		error:function(){
+		    			swal("UNSUCCESSFUL", "Please try again!", "error");
+		    		} 
+				});
+			}, 500);
 		});
 	});		
 });
@@ -134,7 +145,7 @@ $(document).ready(function() {
 					
 					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
 					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-cases"> <i class="fa fa-reply"></i> Back </a>
+					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-articles"> <i class="fa fa-reply"></i> Back </a>
 	
 					<div class="clearfix"></div>
 					<div class="col-sm-2"><h4>Overview</h4></div>

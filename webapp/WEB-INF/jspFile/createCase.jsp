@@ -180,7 +180,6 @@ $(document).ready(function() {
 	    					  	html: true,
 	    					  	timer: 2000,
 	    					  	type: "success",
-	    					  	showConfirmButton  : false
 	    					});
 		    											
 		    				setTimeout(function(){		

@@ -205,7 +205,6 @@ $(document).ready(function() {
 	    					  	html: true,
 	    					  	timer: 2000,
 	    					  	type: "success",
-	    					  	showConfirmButton  : false
 	    					});
 							reloadForm(2000);																																
 						}else{
