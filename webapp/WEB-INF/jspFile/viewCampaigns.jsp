@@ -62,53 +62,55 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	$scope.username = username; 
 	
 	$scope.listLeads = function(){
-			response = getLeadData();	
-			
+			//response = getLeadData();	
 			//dis(response)
-			
-			$scope.oppLeadSource = response.LEAD_SOURCE;
-			$scope.oppType = response.OPP_TYPES;
-			$scope.oppAssignTo = response.ASSIGN_TO;
-			$scope.oppCampaign = response.CAMPAIGNS;
-			$scope.oppStage = response.OPP_STAGES;
-			$scope.oppCustomer = response.CUSTOMERS;
-			
-			$scope.campaign = response.CAMPAIGN;
-			
-			$scope.opportunity = response.OPPORTUNITIES;
-			$scope.listNote1(response.NOTES);
+			$http({
+			    method: 'GET',
+			    url: '${pageContext.request.contextPath}/campaign/view/'+username+"/"+oppId,
+			    headers: {
+			    	'Accept': 'application/json',
+			        'Content-Type': 'application/json'
+			    }
+			}).success(function(response) {	
+				$scope.oppLeadSource = response.LEAD_SOURCE;
+				$scope.oppType = response.OPP_TYPES;
+				$scope.oppAssignTo = response.ASSIGN_TO;
+				$scope.oppCampaign = response.CAMPAIGNS;
+				$scope.oppStage = response.OPP_STAGES;
+				$scope.oppCustomer = response.CUSTOMERS;
 				
-			
-			userAllList($scope.oppAssignTo,'#callAssignTo','');
-			userAllList($scope.oppAssignTo,'#meetAssignTo','');
-			userAllList($scope.oppAssignTo,'#taskAssignTo','');
-			userAllList($scope.oppAssignTo,'#eventAssignTo','');
-			
-			curAssign = fmNull(response.CAMPAIGN.assignToUsername);
-			ownerItem = fmNull(response.CAMPAIGN.campCreateBy);
-			
-			$scope.listAllCallByLeadId(response.CALLS);	
-			$scope.listAllMeetByLeadId(response.MEETINGS);	
-			$scope.listAllTaskByLeadId(response.TASKS);
-			$scope.listAllEventByLeadId(response.EVENTS);
-			
-			$scope.listAllEmailByLeadId = function(){	
-				$scope.listAllEmailByLead = [];	
-			}
-			
-			$scope.listCollab(response.COLLABORATIONS);							
-			$scope.callStatusStartup = response.CALL_STATUS;
-			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.CONTACTS;	
-			$scope.eventLocationStartup = response.EVENT_LOCATION;
-			$scope.meetStatusStartup = response.MEETING_STATUS;				
-			$scope.tags = response.TAG_TO;
-			
-			
-			
-		
+				$scope.campaign = response.CAMPAIGN;
+				
+				$scope.opportunity = response.OPPORTUNITIES;
+				$scope.listNote1(response.NOTES);
+					
+				
+				userAllList($scope.oppAssignTo,'#callAssignTo','');
+				userAllList($scope.oppAssignTo,'#meetAssignTo','');
+				userAllList($scope.oppAssignTo,'#taskAssignTo','');
+				userAllList($scope.oppAssignTo,'#eventAssignTo','');
+				
+				curAssign = fmNull(response.CAMPAIGN.assignToUsername);
+				ownerItem = fmNull(response.CAMPAIGN.campCreateBy);
+				
+				$scope.listAllCallByLeadId(response.CALLS);	
+				$scope.listAllMeetByLeadId(response.MEETINGS);	
+				$scope.listAllTaskByLeadId(response.TASKS);
+				$scope.listAllEventByLeadId(response.EVENTS);
+				
+				$scope.listAllEmailByLeadId = function(){	
+					$scope.listAllEmailByLead = [];	
+				}
+				
+				$scope.listCollab(response.COLLABORATIONS);							
+				$scope.callStatusStartup = response.CALL_STATUS;
+				$scope.taskStatusStartup = response.TASK_STATUS;
+				$scope.taskContactStartup = response.CONTACTS;	
+				$scope.eventLocationStartup = response.EVENT_LOCATION;
+				$scope.meetStatusStartup = response.MEETING_STATUS;				
+				$scope.tags = response.TAG_TO;
+			});
 	}
-	
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -815,7 +817,7 @@ function addDataEventToForm(data){
 }
 
 
-function getLeadData(){	
+/* function getLeadData(){	
 	var data = JSON.parse(
 		$.ajax({
 			method: 'GET',
@@ -827,7 +829,7 @@ function getLeadData(){
 		    }
 		}).responseText);	
 	return data;	
-}
+} */
 
 function getLeadById(){
 	var data = JSON.parse(

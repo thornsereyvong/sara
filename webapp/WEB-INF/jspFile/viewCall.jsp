@@ -13,7 +13,9 @@
 <script type="text/javascript">
 
 
-var app = angular.module('callApp', ['angularUtils.directives.dirPagination']);
+var app = angular.module('callApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";

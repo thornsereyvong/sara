@@ -17,7 +17,9 @@
 var permission = ${permission};
 var curAssign = "";
 var ownerItem = "";
-var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination']);
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
@@ -57,55 +59,59 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	$scope.username = username; 
 	
 	$scope.listLeads = function(){
-			response = getLeadData();
-			
+			//response = getLeadData();
 		   	//dis(response)
-			 
 			/* $scope.oppLeadSource = response.LEAD_SOURCE;
 			$scope.oppType = response.OPP_TYPES;
 			$scope.oppAssignTo = response.ASSIGN_TO;
 			$scope.oppCampaign = response.CAMPAIGNS;
 			$scope.oppStage = response.OPP_STAGES;
 			$scope.oppCustomer = response.CUSTOMERS; */
-			
-			$scope.opportunity = response.OPPORTUNITIES;
-			$scope.customer = response.CUSTOMER;
-			$scope.listNote1(response.NOTES);
-			
 			//dis(response.NOTES)
 			
-			$scope.contact = response.CONTACT;
-			$scope.caseList = response.CASES;
-			
-			curAssign = fmNull(response.CONTACT.assignToUsername);
-			ownerItem = fmNull(response.CONTACT.conCreateBy);
-			
-			userAllList(response.ASSIGN_TO,'#callAssignTo','');
-			userAllList(response.ASSIGN_TO,'#meetAssignTo','');
-			userAllList(response.ASSIGN_TO,'#taskAssignTo','');
-			userAllList(response.ASSIGN_TO,'#eventAssignTo','');
-			
-			
-			$scope.listAllCallByLeadId(response.CALLS);	
-			$scope.listAllMeetByLeadId(response.METTINGS);	
-			$scope.listAllTaskByLeadId(response.TASKS);
-			$scope.listAllEventByLeadId(response.EVENTS);
-			
-			$scope.listAllEmailByLeadId = function(){	
-				$scope.listAllEmailByLead = [];	
-			}
-			
-			$scope.listCollab(response.COLLABORATIONS);							
-			$scope.callStatusStartup = response.CALL_STATUS;
-			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.CONTACTS;				
-			$scope.eventLocationStartup = response.EVENT_LOCATION;
-			$scope.meetStatusStartup = response.MEETING_STATUS;				
-			$scope.tags = response.TAG_TO;
-			
-		
-			addContactToTask(response.CONTACTS);
-			
+			$http({
+			    method: 'GET',
+			    url: '${pageContext.request.contextPath}/contact/view/'+username+"/"+oppId,
+			    headers: {
+			    	'Accept': 'application/json',
+			        'Content-Type': 'application/json'
+			    }
+			}).success(function(response) {	
+				$scope.opportunity = response.OPPORTUNITIES;
+				$scope.customer = response.CUSTOMER;
+				$scope.listNote1(response.NOTES);
+				
+				$scope.contact = response.CONTACT;
+				$scope.caseList = response.CASES;
+				
+				curAssign = fmNull(response.CONTACT.assignToUsername);
+				ownerItem = fmNull(response.CONTACT.conCreateBy);
+				
+				userAllList(response.ASSIGN_TO,'#callAssignTo','');
+				userAllList(response.ASSIGN_TO,'#meetAssignTo','');
+				userAllList(response.ASSIGN_TO,'#taskAssignTo','');
+				userAllList(response.ASSIGN_TO,'#eventAssignTo','');
+				
+				
+				$scope.listAllCallByLeadId(response.CALLS);	
+				$scope.listAllMeetByLeadId(response.METTINGS);	
+				$scope.listAllTaskByLeadId(response.TASKS);
+				$scope.listAllEventByLeadId(response.EVENTS);
+				
+				$scope.listAllEmailByLeadId = function(){	
+					$scope.listAllEmailByLead = [];	
+				}
+				
+				$scope.listCollab(response.COLLABORATIONS);							
+				$scope.callStatusStartup = response.CALL_STATUS;
+				$scope.taskStatusStartup = response.TASK_STATUS;
+				$scope.taskContactStartup = response.CONTACTS;				
+				$scope.eventLocationStartup = response.EVENT_LOCATION;
+				$scope.meetStatusStartup = response.MEETING_STATUS;				
+				$scope.tags = response.TAG_TO;
+				
+				addContactToTask(response.CONTACTS);
+			});
 	}
 	
 	

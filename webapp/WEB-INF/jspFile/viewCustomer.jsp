@@ -15,7 +15,9 @@ var permission = ${permission};
 var curAssign = "";
 var ownerItem = "";
 
-var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination']);
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 
 var username = "${SESSION}";
