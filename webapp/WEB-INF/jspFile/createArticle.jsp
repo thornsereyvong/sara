@@ -29,36 +29,23 @@ var self = this;
 var username = "${SESSION}";
 app.controller('caseController',['$scope','$http',function($scope, $http){
 	$scope.startupPage = function(){
-		$http.get("${pageContext.request.contextPath}/case/startup/"+username).success(function(response){
-			$scope.case_status = response.CASE_STATUS;
-			$scope.case_type = response.CASE_TYPE;
-			$scope.case_priority = response.CASE_PRIORITY;
-			$scope.customer = response.CUSTOMERS;
-			$scope.contact = response.CONTACTS;
-			$scope.assignTo = response.ASSIGN_TO;	
-			
-		
-			
+		$http.get("${pageContext.request.contextPath}/article/startup").success(function(response){
+			$scope.items = response.ITEMS;
 		});
 	};			
 }]);
 $(document).ready(function() {
 	$("#btn_clear").click(function(){
-		$("#ca_type").select2("val","");	
-		$("#ca_status").select2("val","");
-		$("#ca_priority").select2("val","");
-		$("#ca_assignTo").select2("val","");
-		$("#ca_customer").select2("val","");
-		$("#ca_contact").select2("val","");      	
-      	$("#form-case").bootstrapValidator('resetForm', 'true');
-		$('#form-case')[0].reset();		
+		$("#art_product").select2("val","");      	
+      	$("#form-article").bootstrapValidator('resetForm', 'true');
+		$('#form-article')[0].reset();		
 	});
 	
 	$("#btn_save").click(function(){
-		$("#form-case").submit();
+		$("#form-article").submit();
 	});
 	
-	$('#form-case').bootstrapValidator({
+	$('#form-article').bootstrapValidator({
 		message: 'This value is not valid',
 		feedbackIcons: {
 			valid: 'glyphicon glyphicon-ok',
@@ -66,40 +53,21 @@ $(document).ready(function() {
 			validating: 'glyphicon glyphicon-refresh'
 		},
 		fields: {
-			ca_priority: {
-				validators: {
-					notEmpty: {
-						message: 'The priority is required and can not be empty!'
-					},
-					stringLength: {
-						max: 255,
-						message: 'The name must be less than 255 characters long.'
-					}
-				}
-			},
-			
-			ca_status: {
-				validators: {
-					notEmpty: {
-						message: 'The status is required and can not be empty!'
-					}
-				}
-			},
-			ca_subject: {
+			art_subject: {
 				validators: {
 					notEmpty: {
 						message: 'The subject is required and can not be empty!'
 					}
 				}
 			},
-			ca_type: {
+			art_key: {
 				validators: {
 					notEmpty: {
-						message: 'The type is required and can not be empty!'
+						message: 'The key is required and can not be empty!'
 					}
 				}
 			},
-			ca_resolution: {
+			art_product: {
 				validators: {
 					stringLength: {
 						max: 1000,
@@ -138,14 +106,9 @@ $(document).ready(function() {
 		    },
 			success:function(data){
 				if(data.MESSAGE == "INSERTED"){
-					$("#ca_type").select2("val","");	
-					$("#ca_status").select2("val","");
-					$("#ca_priority").select2("val","");
-					$("#ca_assignTo").select2("val","");
-					$("#ca_customer").select2("val","");
-					$("#ca_contact").select2("val","");
-			      	$("#form-case").bootstrapValidator('resetForm', 'true');
-					$('#form-case')[0].reset();
+					$("#art_product").select2("val","");
+			      	$("#form-article").bootstrapValidator('resetForm', 'true');
+					$('#form-article')[0].reset();
 					swal({
 	            		title:"Success",
 	            		text:"You have been created new Case!",
@@ -167,7 +130,7 @@ $(document).ready(function() {
 	<section class="content">
 		<div class="box box-danger">			
 			<div class="box-body">			
-				<form method="post" id="form-case" data-ng-init="startupPage()">
+				<form method="post" id="form-article" data-ng-init="startupPage()">
 					
 					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
 					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
@@ -181,27 +144,31 @@ $(document).ready(function() {
 							<div class="col-sm-3">
 								<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text" class="form-control" id="ca_subject" name="ca_subject">
+									<input type="text" class="form-control" id="art_subject" name="art_subject">
 								</div>
 							</div>
 							<div class="col-sm-3">
-								<label class="font-label">Subject <span class="requrie">(Required)</span></label>
+								<label class="font-label">Key <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text" class="form-control" id="ca_subject" name="ca_subject">
+									<input type="text" class="form-control" id="art_key" name="art_key">
 								</div>
 							</div>
 							<div class="col-sm-3">
-								<label class="font-label">Subject <span class="requrie">(Required)</span></label>
+								<label class="font-label">Product <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text" class="form-control" id="ca_subject" name="ca_subject">
+									<select class="form-control select2" name="art_product" id="art_product" style="width:100%">
+										<option value="">-- SELECT product --</option>
+										<option ng-repeat="p in items" value="{{p.itemId}}">[{{p.itemId}}] {{p.itemName}}</option>
+									</select>
 								</div>
 							</div>
-							<div class="col-sm-3">
-								<label class="font-label">Subject <span class="requrie">(Required)</span></label>
-								<div class="form-group">
-									<input type="text" class="form-control" id="ca_subject" name="ca_subject">
+							<div class="clearfix"></div>
+								<div class="col-sm-12">
+									<label class="font-label">Description </label>
+									<div class="form-group">
+										<textarea style="height: 120px" rows="" cols="" name="art_des" id="art_des"	class="form-control"></textarea>
+									</div>
 								</div>
-							</div>
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -209,7 +176,7 @@ $(document).ready(function() {
 				</form>
 			</div>
 			<div class="box-footer"><div id="test_div"></div></div>
-			<dis id="errors"></dis>
+			<div id="errors"></div>
 		</div>
 	</section>
 </div>

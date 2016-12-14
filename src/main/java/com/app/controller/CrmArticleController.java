@@ -46,20 +46,15 @@ public class CrmArticleController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
-	/*@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/add/startup/{username}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> startupAddPage(@PathVariable("username") String username, HttpServletRequest req){
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/campaign/add/startup/"+username, HttpMethod.POST, request, Map.class);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/article/startup",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> startupAddPage(HttpServletRequest req){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()),header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case-article/startup/", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
+	/*
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/campaign/list/validate/{campName}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getCampName(@PathVariable("campName") String campName, HttpServletRequest req){	
