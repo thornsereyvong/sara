@@ -1131,6 +1131,7 @@ function addDataToDetailLead(){
 								<ul class="breadcrumb1" id="objStatus">
 								</ul>
 							</div>
+							
 
 							<div class="clearfix"></div>
 							<br />
@@ -1145,6 +1146,12 @@ function addDataToDetailLead(){
 											aria-expanded="false">NOTES</a></li>
 										<li class=""><a href="#detail_tap" data-toggle="tab"
 											aria-expanded="false">DETAILS</a></li>
+										<li class=""><a href="#resolution_tap" data-toggle="tab"
+											aria-expanded="false">RESOLUTION</a></li>
+										<li class=""><a href="#escalate_tap" data-toggle="tab"
+										aria-expanded="false">ESCALATE</a></li>
+										<li class=""><a href="#history_tap" data-toggle="tab"
+										aria-expanded="false">HISTORY</a></li>
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane active" id="activity">
@@ -1814,7 +1821,74 @@ function addDataToDetailLead(){
 
 										</div>
 										
-
+										<div  class="tab-pane " id="resolution_tap">
+											
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="col-sm-3">
+														<label class="font-label">Resolved by  <span class="requrie">(Required)</span></label>
+														<div class="form-group">
+															<select class="form-control select2" name="ca_assignTo" id="ca_assignTo" style="width:100%">
+																<option value="">-- SELECT Resolved by --</option>
+																<option ng-repeat="u in assignTo" value="{{u.userID}}">{{u.username}}</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-sm-3">
+														<label class="font-label">Resolved Date  <span class="requrie">(Required)</span></label>
+										                <div class="form-group">
+										                  <div class="input-group">
+										                    <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+										                    <input type="text" class="form-control pull-right date2" name="cam_startDate" id="cam_startDate">
+										                  </div>
+										                </div>
+													</div>
+													<div class="col-sm-3">
+														<label class="font-label">Status  <span class="requrie">(Required)</span></label>
+														<div class="form-group">
+															<select class="form-control select2" name="ca_assignTo" id="ca_assignTo" style="width:100%">
+																<option value="">-- SELECT Status To --</option>
+																<option ng-repeat="u in assignTo" value="{{u.userID}}">{{u.username}}</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-sm-12">
+														<div class="checkbox">
+														    <label>
+														      <input type="checkbox"> Create a draft knowledge base article from solution notes and link it to this case
+														    </label>
+													  	</div>
+													</div>
+													<div class="col-sm-12">
+														<div class="checkbox">
+														    <label>
+														      <input type="checkbox"> Solution involves information from an existing knowledge base article
+														    </label>
+													  	</div>
+													</div>
+													<div class="col-sm-3">
+														<label class="font-label">Article  </label>
+														<div class="form-group">
+															<select class="form-control select2" name="ca_assignTo" id="ca_assignTo" style="width:100%">
+																<option value="">-- SELECT Article --</option>
+																<option ng-repeat="u in assignTo" value="{{u.userID}}">{{u.username}}</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-sm-12 ">
+														<label class="font-label">Solution </label>
+														<div class="form-group">
+															<textarea  rows="5" cols="" name="ca_resolution" id="ca_resolution" class="form-control"></textarea>
+														</div>
+													</div>
+													<div class="col-sm-12 ">
+														<button type="submit" class="btn btn-primary">Save</button>
+													</div>
+													 
+												</div>
+											</div>
+											
+										</div>
 									</div>
 									<!-- /.tab-content -->
 								</div>
