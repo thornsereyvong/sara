@@ -16,7 +16,9 @@ var permission = ${permission};
 var curAssign = "";
 var ownerItem = "";
 
-var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination']);
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination', 'angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 
 var username = "${SESSION}";
@@ -818,7 +820,7 @@ function getLeadData(){
 		$.ajax({
 			method: 'GET',
 		    url: '${pageContext.request.contextPath}/campaign/view/'+username+"/"+oppId,
-		    async: false,
+		   	async: false,
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'

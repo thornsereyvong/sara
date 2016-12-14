@@ -1,17 +1,14 @@
 package com.app.entities;
 
-import java.time.LocalDateTime;
-
 public class CrmCaseArticle {
 	private String articleId;
 	private String atricleTitle;
 	private String articleKey;
 	private String articleItemId;
 	private String articleDes;
-	private LocalDateTime articleCreateDate;
 	private String convertCreateDate;
 	private String articleCreateBy;
-	private LocalDateTime atricleModifiedDate;
+	private String convertModifiedDate;
 	private String articleModifiedBy;
 	private MeDataSource meDataSource;
 
@@ -55,12 +52,12 @@ public class CrmCaseArticle {
 		this.articleDes = articleDes;
 	}
 
-	public LocalDateTime getArticleCreateDate() {
-		return articleCreateDate;
+	public String getConvertModifiedDate() {
+		return convertModifiedDate;
 	}
 
-	public void setArticleCreateDate(LocalDateTime articleCreateDate) {
-		this.articleCreateDate = articleCreateDate;
+	public void setConvertModifiedDate(String convertModifiedDate) {
+		this.convertModifiedDate = convertModifiedDate;
 	}
 
 	public String getConvertCreateDate() {
@@ -79,14 +76,7 @@ public class CrmCaseArticle {
 		this.articleCreateBy = articleCreateBy;
 	}
 
-	public LocalDateTime getAtricleModifiedDate() {
-		return atricleModifiedDate;
-	}
-
-	public void setAtricleModifiedDate(LocalDateTime atricleModifiedDate) {
-		this.atricleModifiedDate = atricleModifiedDate;
-	}
-
+	
 	public String getArticleModifiedBy() {
 		return articleModifiedBy;
 	}

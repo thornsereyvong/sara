@@ -5,18 +5,20 @@
 <jsp:include page="${request.contextPath}/header"></jsp:include>
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
-<% //String roleList = (String)request.getAttribute("role_list"); %>
-<% //String roleDelete = (String)request.getAttribute("role_delete"); %>
+<% String roleList = (String)request.getAttribute("role_list"); %>
+<% String roleDelete = (String)request.getAttribute("role_delete"); %>
 
 <script type="text/javascript">
 
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
+var app = angular.module('article', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
-app.controller('campController',['$scope','$http',function($scope, $http){
+app.controller('articleController',['$scope','$http',function($scope, $http){
 	$scope.listArticle = function(){
-		/* $http.get("${pageContext.request.contextPath}/article/list").success(function(response){
+		$http.get("${pageContext.request.contextPath}/article/list").success(function(response){
 			$scope.article = response.DATA;				
-		}); */
+		});
 	};
 	
 	$scope.sort = function(keyname){
@@ -25,11 +27,11 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	};
 	
 	
-	<%-- $scope.deleteCamp = function(campID){
+	$scope.deleteArticle = function(articleId){
 		var str = '<%=roleDelete%>';
 		if(str == "YES"){
 			swal({   
-				title: "<span style='font-size: 25px;'>You are about to delete campaign with ID: <span class='color_msg'>"+campID+"</span>.</span>",   
+				title: "<span style='font-size: 25px;'>You are about to delete campaign with ID: <span class='color_msg'>"+articleId+"</span>.</span>",   
 				text: "Click OK to continue or CANCEL to abort.",   
 				type: "info", 
 				html: true,
@@ -40,7 +42,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			}, function(){   
 				setTimeout(function(){			
 					$.ajax({ 
-			    		url: "${pageContext.request.contextPath}/campaign/remove/"+campID,
+			    		url: "${pageContext.request.contextPath}/article/remove/"+articleId,
 			    		method: "POST",
 			    		beforeSend: function(xhr) {
 			    		    xhr.setRequestHeader("Accept", "application/json");
@@ -57,7 +59,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    				});
 			    				  
 			    				setTimeout(function(){		
-			    					$scope.listCampaigns();
+			    					$scope.listArticle();
 			    				},2000);
 			    			}else{
 			    				swal("UNSUCCESSFUL", result.MSG, "error");
@@ -74,13 +76,13 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		}
 		
 		
-	}; --%>
+	}; 
 	
 }]);
 
 </script>
 
-<div class="content-wrapper" ng-app="campaign" ng-controller="campController">
+<div class="content-wrapper" ng-app="article" ng-controller="articleController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Knowledge Base Articles</h1>
@@ -129,33 +131,32 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 				
 					<table class="table table-hover" >
 						<tr>
-							<th style="cursor: pointer;" ng-click="sort('campID')">Article ID
-								<span class="glyphicon sort-icon" ng-show="sortKey=='campID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							<th style="cursor: pointer;" ng-click="sort('articleId')">Article ID
+								<span class="glyphicon sort-icon" ng-show="sortKey=='articleId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('campName')">Subject
-								<span class="glyphicon sort-icon" ng-show="sortKey=='campName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							<th style="cursor: pointer;" ng-click="sort('atricleTitle')">Subject
+								<span class="glyphicon sort-icon" ng-show="sortKey=='atricleTitle'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 							
-							<th style="cursor: pointer;" ng-click="sort('typeName')">Product
-								<span class="glyphicon sort-icon" ng-show="sortKey=='typeName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							<th style="cursor: pointer;" ng-click="sort('itemName')">Product
+								<span class="glyphicon sort-icon" ng-show="sortKey=='itemName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('startDate')">Create Date
-								<span class="glyphicon sort-icon" ng-show="sortKey=='startDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							<th style="cursor: pointer;" ng-click="sort('convertCreateDate')">Create Date
+								<span class="glyphicon sort-icon" ng-show="sortKey=='convertCreateDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('endDate')">Create By
-								<span class="glyphicon sort-icon" ng-show="sortKey=='endDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							<th style="cursor: pointer;" ng-click="sort('articleCreateBy')">Create By
+								<span class="glyphicon sort-icon" ng-show="sortKey=='articleCreateBy'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 											
 							<th>Action</th>
 						</tr>
 
-						<tr dir-paginate="cc in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
-							<td>{{cc.campID}}</td>
-							<td>{{cc.campName}}</td>
-							<td>{{cc.statusName}}</td>
-							<td>{{cc.typeName}}</td>
-							<td>{{cc.startDate | date:'dd-MM-yyyy'}}</td>
-							<td>{{cc.endDate | date:'dd-MM-yyyy'}}</td>	
+						<tr dir-paginate="art in article |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
+							<td>{{art.articleId}}</td>
+							<td>{{art.atricleTitle}}</td>
+							<td>[{{art.item.itemId}}][{{art.item.itemName}}]</td>
+							<td>{{art.convertCreateDate}}</td>
+							<td>{{art.articleCreateBy}}</td>	
 							<td>
 								<div class="col-sm-2">
 									<div class="btn-group">
@@ -164,14 +165,12 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 				                        <span class="sr-only">Toggle Dropdown</span>
 				                      </button>
 				                      <ul class="dropdown-menu" role="menu">
-				                        <li><a href="${pageContext.request.contextPath}/update-campaign/{{cc.campID}}"><i class="fa fa-pencil"></i> Edit</a></li>
-				                        <li><a href="#" ng-click="deleteCamp(cc.campID)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="${pageContext.request.contextPath}/view-campaign/{{cc.campID}}"><i class="fa fa-eye"></i> View</a></li>
+				                        <li><a href="${pageContext.request.contextPath}/update-article/{{art.articleId}}"><i class="fa fa-pencil"></i> Edit</a></li>
+				                        <li><a href="#" ng-click="deleteArticle(art.articleId)"><i class="fa fa-trash"></i> Delete</a></li>
+				                        <li><a href="${pageContext.request.contextPath}/view-article/{{art.articleId}}"><i class="fa fa-eye"></i> View</a></li>
 				                      </ul>
 				                    </div>
 			                   	</div>
-								<%-- <a href="${pageContext.request.contextPath}/update-campaign/{{cc.campID}}" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-								<button type="button" ng-click="deleteCamp(cc.campID)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>	 --%>
 							</td>
 						</tr>
 				

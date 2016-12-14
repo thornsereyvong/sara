@@ -36,7 +36,9 @@ padding-right: 10px;
 
 <script type="text/javascript">
 
-var app = angular.module('contactApp', []);
+var app = angular.module('contactApp', ['angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 var username = "${SESSION}";
 app.controller('contactController',['$scope','$http',function($scope, $http){

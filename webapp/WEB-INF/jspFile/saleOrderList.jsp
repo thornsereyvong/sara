@@ -6,7 +6,9 @@
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 	<script type="text/javascript">
 
-var app = angular.module('saleOrderApp', ['angularUtils.directives.dirPagination']);
+var app = angular.module('saleOrderApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 	$scope.listSaleOrder = function(){

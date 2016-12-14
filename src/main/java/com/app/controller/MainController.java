@@ -109,9 +109,10 @@ public class MainController {
 			model.addAttribute("menu", "creatArticle");		
 			return "createArticle";		
 		}
+		
 		@RequestMapping("/list-articles")
 		public String listArticle(ModelMap model, HttpServletRequest req) {		
-			model.addAttribute("menu", "listArticle");
+			model.addAttribute("menu", "listArticles");
 			Map<String, Object> camMap = getRoleDetailsOfModule("ART", req);
 			model.addAttribute("role_list", camMap.get("roleList"));
 			model.addAttribute("role_delete", camMap.get("roleDelete"));
@@ -121,6 +122,7 @@ public class MainController {
 				return "permission";
 			}				
 		}
+		
 		@RequestMapping("/update-article/{articleId}")
 		public String editArticle(ModelMap model,@PathVariable("articleId") String articleId) {		
 			model.addAttribute("menu", "saleOrderEdit");	
