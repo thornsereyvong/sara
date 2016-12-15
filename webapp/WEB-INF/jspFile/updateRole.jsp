@@ -20,7 +20,9 @@ var data = ${role};
 var result = data.body.DATA;
 var self = this;
 
-var app = angular.module('campaign', ['angularUtils.directives.dirPagination']);
+var app = angular.module('campaign', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 
 app.directive('myRepeatDirective', function() {	
 	

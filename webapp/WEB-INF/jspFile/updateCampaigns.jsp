@@ -25,7 +25,9 @@
 		</ol>
 	</section>
 	<script type="text/javascript">
-		var app = angular.module('campaign', []);
+		var app = angular.module('campaign', ['angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+		    cfpLoadingBarProvider.includeSpinner = false;
+		}]);
 		var self = this;
 		var campId = "${campId}";
 		var username = "${SESSION}";
