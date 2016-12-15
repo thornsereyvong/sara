@@ -1882,7 +1882,7 @@ function addDataToDetailLead(){
 														</div>
 													</div>
 													<div class="col-sm-12 ">
-														<button type="submit" class="btn btn-primary">Save</button>
+														<button type="submit" class="btn btn-primary">Resolve</button>
 													</div>
 													 
 												</div>
