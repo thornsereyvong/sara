@@ -25,7 +25,9 @@
 	</section>
 <script type="text/javascript">
 
-var app = angular.module('opportunityApp', []);
+var app = angular.module('opportunityApp', ['angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 var oppId = "${oppID}";
 var username = "${SESSION}";
