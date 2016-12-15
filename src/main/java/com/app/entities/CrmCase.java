@@ -26,7 +26,7 @@ public class CrmCase{
 	private String convertResolvedDate;
 	private String escalateTo;
 	private String escalateStatus;
-	private LocalDateTime followupDate;
+	private String convertFollowupDate;
 	private LocalDateTime elapsedTime;
 	private PriceCode priceCode;
 	private AmeClass ameClass;
@@ -214,12 +214,12 @@ public class CrmCase{
 		this.escalateStatus = escalateStatus;
 	}
 
-	public LocalDateTime getFollowupDate() {
-		return followupDate;
+	public String getConvertFollowupDate() {
+		return convertFollowupDate;
 	}
 
-	public void setFollowupDate(LocalDateTime followupDate) {
-		this.followupDate = followupDate;
+	public void setConvertFollowupDate(String convertFollowupDate) {
+		this.convertFollowupDate = convertFollowupDate;
 	}
 
 	public LocalDateTime getElapsedTime() {

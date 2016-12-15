@@ -15,7 +15,9 @@ var permission = ${permission};
 var curAssign = "";
 var ownerItem = "";
 
-var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination']);
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 
 var username = "${SESSION}";
@@ -53,7 +55,7 @@ var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Propos
 app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
-		$("#oppStage").select2('val',response.OPPORTUNITY.osId);
+		/* $("#oppStage").select2('val',response.OPPORTUNITY.osId);
 		$("#oppType").select2('val',response.OPPORTUNITY.otId);
 		$("#oppLeadSource").select2('val',response.OPPORTUNITY.sourceID);
 		$("#oppCustomer").select2('val',response.OPPORTUNITY.custID);
@@ -64,7 +66,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		
 		$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppPriceCode'));
 		$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppCustomer'));
-		$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppStage'));
+		$('#frmOpportDetail').data('bootstrapValidator').resetField($('#oppStage')); */
 		
     });
 	
@@ -72,80 +74,84 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	$scope.tags = [];
 	$scope.username = username; 
 	
-	
-	
-	
-	
 	$scope.listLeads = function(){
-			response = getLeadData();	
+			//response = getLeadData();	
 			
-			OPPORTUNITY = response.OPPORTUNITY;
-			$scope.oppLeadSource = response.LEAD_SOURCE;
-			$scope.oppType = response.OPP_TYPES;
-			$scope.oppAssignTo = response.ASSIGN_TO;
-			$scope.oppCampaign = response.CAMPAIGNS;
-			$scope.oppStage = response.OPP_STAGES;
-			$scope.oppCustomer = response.CUSTOMERS;			
-			$scope.opportunity = response.OPPORTUNITY;			
-			$scope.listNote1(response.NOTES);
-					
-			userAllList($scope.oppAssignTo,'#callAssignTo','');
-			userAllList($scope.oppAssignTo,'#meetAssignTo','');
-			userAllList($scope.oppAssignTo,'#taskAssignTo','');
-			userAllList($scope.oppAssignTo,'#eventAssignTo','');
-			
-			
-			displayStatusLead(OPPORTUNITY.osId);
-			
-			//dis(OPPORTUNITY)
-			
-			
-			curAssign = fmNull(response.OPPORTUNITY.username);
-			ownerItem = fmNull(response.OPPORTUNITY.opCreateBy);
-			
-			
-			
-			$scope.listAllCallByLeadId(response.CALLS);	
-			$scope.listAllMeetByLeadId(response.MEETINGS);	
-			$scope.listAllTaskByLeadId(response.TASKS);
-			$scope.listAllEventByLeadId(response.EVENTS);
-			
-			$scope.contact = response.CONTACTS;
-			$scope.quote = response.QUOTATIONS;
-			$scope.saleOrder = response.SALE_ORDERS;
-			
-			
-			
-			$scope.allContact = response.ALL_CONTACTS;
-			$scope.allQuote = response.ALL_QUOTATIONS;
-			$scope.allSaleOrder = response.ALL_SALE_ORDERS;
-			
-			$scope.listAllEmailByLeadId = function(){	
-				$scope.listAllEmailByLead = [];	
-			}
-			
-			$scope.listCollab(response.COLLABORATIONS);							
-			$scope.callStatusStartup = response.CALL_STATUS;
-			$scope.taskStatusStartup = response.TASK_STATUS;
-			$scope.taskContactStartup = response.ALL_CONTACT;	
-			$scope.eventLocationStartup = response.EVENT_LOCATION;
-			$scope.meetStatusStartup = response.MEETING_STATUS;				
-			$scope.tags = response.TAG_TO;
-			
-			addContactToTask(response.CONTACTS);
-			
-			$scope.oppPriceCode = 	response.PRICE_CODE;
-			$scope.oppClass = 	response.OPPORTUNITY_DETAILS_STARTUP.CLASSES;
-			
-			
-			// frm add opportunity
-			$scope.oppLocation = response.OPPORTUNITY_DETAILS_STARTUP.LOCATION;
-			$scope.oppItem = response.OPPORTUNITY_DETAILS_STARTUP.ITEMS;
-			$scope.oppUom = response.OPPORTUNITY_DETAILS_STARTUP.UOM;			
-			$scope.opportunityDetail = response.OPPORTUNITY_DETAILS;
-			
-			//dis($scope.opportunity)
-			
+			$http({
+			    method: 'POST',
+			    url: '${pageContext.request.contextPath}/opportunity/view',
+			    headers: {
+			    	'Accept': 'application/json',
+			        'Content-Type': 'application/json'
+			    },
+			    data: {"username":username, "opId":oppId}
+			}).success(function(response) {	
+				OPPORTUNITY = response.OPPORTUNITY;
+				$scope.oppLeadSource = response.LEAD_SOURCE;
+				$scope.oppType = response.OPP_TYPES;
+				$scope.oppAssignTo = response.ASSIGN_TO;
+				$scope.oppCampaign = response.CAMPAIGNS;
+				$scope.oppStage = response.OPP_STAGES;
+				$scope.oppCustomer = response.CUSTOMERS;			
+				$scope.opportunity = response.OPPORTUNITY;			
+				$scope.listNote1(response.NOTES);
+						
+				userAllList($scope.oppAssignTo,'#callAssignTo','');
+				userAllList($scope.oppAssignTo,'#meetAssignTo','');
+				userAllList($scope.oppAssignTo,'#taskAssignTo','');
+				userAllList($scope.oppAssignTo,'#eventAssignTo','');
+				
+				
+				displayStatusLead(OPPORTUNITY.osId);
+				
+				//dis(OPPORTUNITY)
+				
+				
+				curAssign = fmNull(response.OPPORTUNITY.username);
+				ownerItem = fmNull(response.OPPORTUNITY.opCreateBy);
+				
+				
+				$scope.listAllCallByLeadId(response.CALLS);	
+				$scope.listAllMeetByLeadId(response.MEETINGS);	
+				$scope.listAllTaskByLeadId(response.TASKS);
+				$scope.listAllEventByLeadId(response.EVENTS);
+				
+				$scope.contact = response.CONTACTS;
+				$scope.quote = response.QUOTATIONS;
+				$scope.saleOrder = response.SALE_ORDERS;
+				
+				
+				
+				$scope.allContact = response.ALL_CONTACTS;
+				$scope.allQuote = response.ALL_QUOTATIONS;
+				$scope.allSaleOrder = response.ALL_SALE_ORDERS;
+				
+				$scope.listAllEmailByLeadId = function(){	
+					$scope.listAllEmailByLead = [];	
+				}
+				
+				$scope.listCollab(response.COLLABORATIONS);							
+				$scope.callStatusStartup = response.CALL_STATUS;
+				$scope.taskStatusStartup = response.TASK_STATUS;
+				$scope.taskContactStartup = response.ALL_CONTACT;	
+				$scope.eventLocationStartup = response.EVENT_LOCATION;
+				$scope.meetStatusStartup = response.MEETING_STATUS;				
+				$scope.tags = response.TAG_TO;
+				
+				addContactToTask(response.CONTACTS);
+				
+				$scope.oppPriceCode = 	response.PRICE_CODE;
+				$scope.oppClass = 	response.OPPORTUNITY_DETAILS_STARTUP.CLASSES;
+				
+				
+				// frm add opportunity
+				$scope.oppLocation = response.OPPORTUNITY_DETAILS_STARTUP.LOCATION;
+				$scope.oppItem = response.OPPORTUNITY_DETAILS_STARTUP.ITEMS;
+				$scope.oppUom = response.OPPORTUNITY_DETAILS_STARTUP.UOM;			
+				$scope.opportunityDetail = response.OPPORTUNITY_DETAILS;
+				
+				//dis($scope.opportunity)
+			});
 	}
 	
 	

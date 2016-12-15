@@ -52,6 +52,19 @@ $(document).ready(function() {
       	$("#form-case").bootstrapValidator('resetForm', 'true');
 		$('#form-case')[0].reset();		
 	});
+
+	$('.date2').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD/MM/YYYY h:mm A',
+        timePicker: true, 
+        timePickerIncrement: 5
+       
+    }).on('change', function(e) {
+		if($("#ca_followup_date").val() != ""){
+			$('#form-case').bootstrapValidator('revalidateField', 'ca_followup_date');
+		}
+	});
 	
 	$("#btn_save").click(function(){
 		$("#form-case").submit();
@@ -84,17 +97,18 @@ $(document).ready(function() {
 					}
 				}
 			},
+			ca_followup_date: {
+				validators: {
+					date: {
+                        format: 'DD/MM/YYYY h:mm A',
+                        message: 'The value is not a valid date!'
+					}
+				}
+			},
 			ca_subject: {
 				validators: {
 					notEmpty: {
 						message: 'The subject is required and can not be empty!'
-					}
-				}
-			},
-			ca_product: {
-				validators: {
-					notEmpty: {
-						message: 'The product is required and can not be empty!'
 					}
 				}
 			},
@@ -148,7 +162,8 @@ $(document).ready(function() {
 					     /*  "resolution": getValueStringById("ca_resolution"), */
 					      "assignTo": getJsonById("userID","ca_assignTo","str"),
 					      "createBy": $.session.get("parentID"),
-					      "item" : getJsonById("itemId","ca_product","str")
+					      "item" : getJsonById("itemId","ca_product","str"),
+					      "convertFollowupDate": getValueStringById("ca_followup_date")
 				    }),
 					beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
@@ -165,7 +180,6 @@ $(document).ready(function() {
 	    					  	html: true,
 	    					  	timer: 2000,
 	    					  	type: "success",
-	    					  	showConfirmButton  : false
 	    					});
 		    											
 		    				setTimeout(function(){		
@@ -252,12 +266,22 @@ $(document).ready(function() {
 											<option ng-repeat="or in case_origin" value="{{or.originId}}">{{or.originTitle}}</option> 
 										</select>
 									</div>
+								</div>
+								<div class="col-sm-6">
+									<label class="font-label">Followup Date</label>
+									<div class="form-group">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input type="text" class="form-control pull-right date2" name="ca_followup_date" id="ca_followup_date">
+										</div> 
+									</div>
 								</div>												
-									
 							</div>
 							<div class="col-sm-6">
 								<div class="col-sm-6">
-									<label class="font-label">Product <span class="requrie">(Required)</span></label>
+									<label class="font-label">Product</label>
 									<div class="form-group">
 										<select class="form-control select2" name="ca_product" id="ca_product" style="width:100%">
 											<option value="">-- SELECT product --</option>

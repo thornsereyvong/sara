@@ -56,6 +56,7 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 			    					type:"success", 
 			    					html: true,
 			    					timer: 2000,
+			    					showConfirmButton: false
 			    				});
 			    				  
 			    				setTimeout(function(){		
@@ -153,8 +154,8 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 
 						<tr dir-paginate="art in article |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 							<td>{{art.articleId}}</td>
-							<td>{{art.atricleTitle}}</td>
-							<td>[{{art.item.itemId}}][{{art.item.itemName}}]</td>
+							<td>{{art.articleTitle}}</td>
+							<td>[{{art.item.itemId}}] {{art.item.itemName}}</td>
 							<td>{{art.convertCreateDate}}</td>
 							<td>{{art.articleCreateBy}}</td>	
 							<td>

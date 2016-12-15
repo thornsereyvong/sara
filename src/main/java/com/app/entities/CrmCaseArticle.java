@@ -2,9 +2,9 @@ package com.app.entities;
 
 public class CrmCaseArticle {
 	private String articleId;
-	private String atricleTitle;
+	private String articleTitle;
 	private String articleKey;
-	private String articleItemId;
+	private AmeItem item;
 	private String articleDes;
 	private String convertCreateDate;
 	private String articleCreateBy;
@@ -20,12 +20,12 @@ public class CrmCaseArticle {
 		this.articleId = articleId;
 	}
 
-	public String getAtricleTitle() {
-		return atricleTitle;
+	public String getArticleTitle() {
+		return articleTitle;
 	}
 
-	public void setAtricleTitle(String atricleTitle) {
-		this.atricleTitle = atricleTitle;
+	public void setArticleTitle(String articleTitle) {
+		this.articleTitle = articleTitle;
 	}
 
 	public String getArticleKey() {
@@ -36,12 +36,12 @@ public class CrmCaseArticle {
 		this.articleKey = articleKey;
 	}	
 
-	public String getArticleItemId() {
-		return articleItemId;
+	public AmeItem getItem() {
+		return item;
 	}
 
-	public void setArticleItemId(String articleItemId) {
-		this.articleItemId = articleItemId;
+	public void setItem(AmeItem item) {
+		this.item = item;
 	}
 
 	public String getArticleDes() {

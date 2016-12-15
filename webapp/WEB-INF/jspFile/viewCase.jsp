@@ -1122,7 +1122,7 @@ function addDataToDetailLead(){
 							</div>
 							<div class="col-sm-2 border-right">
 								<div class="description-block">
-									<h5 class="description-header ng-cloak">{{cases.createDate}}</h5>
+									<h5 class="description-header ng-cloak">{{cases.followupDate}}</h5>
 									<span class="description-text">Follow-up Date</span>
 								</div>
 							</div>
