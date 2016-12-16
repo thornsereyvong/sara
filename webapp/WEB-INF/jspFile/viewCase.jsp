@@ -1831,6 +1831,12 @@ function addDataToDetailLead(){
 															</div>
 														</div>
 													</div>
+													<div class="col-sm-3">
+														<label class="font-label">Keyword :</label>
+														<div class="form-group">
+															<input type="text"  class="form-control" id="ca_keyword" name="ca_keyword">
+														</div>	
+													</div>
 													
 													<div class="col-sm-12">
 														<div class="checkbox">
@@ -1870,6 +1876,7 @@ function addDataToDetailLead(){
 											</div>
 											
 										</div>
+									
 									</div>
 									<!-- /.tab-content -->
 								</div>
