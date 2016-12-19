@@ -153,7 +153,8 @@ $(document).ready(function(){
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="support_icon_article"></i> <span>Knowledge Base Articles</span>
 					</a></li>
-				</ul></li>
+				</ul>
+			</li>
 
 
 			<li class='' id="quote"><a
@@ -167,6 +168,26 @@ $(document).ready(function(){
 					src="${pageContext.request.contextPath}/resources/images/Sale-Order.png"
 					style="width: 16px;">&nbsp;&nbsp;<!-- <i class="fa fa-balance-scale" aria-hidden="true"></i> -->
 					<span>Sale Order</span> <!-- <i class="fa fa-angle-left pull-right"></i> --></a>
+			</li>
+			
+			<li class='treeview ' id="hbu"><a href="#"><img
+					src="${pageContext.request.contextPath}/resources/images/Support.png"
+					style="width: 16px;">&nbsp;&nbsp;<!-- <i class="fa fa-life-ring" aria-hidden="true"></i> -->
+					<span>HBU</span> <i class="fa fa-angle-left pull-right"></i></a>
+				<ul class="treeview-menu" id="ul_hbu">
+
+					<li id="ul_li_competitor"><a
+						href="${pageContext.request.contextPath}/list-competitors"> <i
+							class='fa fa-circle-o color_menu' aria-hidden='true'
+							id="hbu_icon_competitor"></i> <span>Competitors</span>
+					</a></li>
+					<li id="ul_li_survey"><a
+						href="${pageContext.request.contextPath}/list-market-survey"> <i
+							class='fa fa-circle-o color_menu' aria-hidden='true'
+							id="hbu_icon_survey"></i> <span>Market Survey</span>
+					</a>
+					</li>
+				</ul>
 			</li>
 
 			<%-- <li class="treeview" id="report_menu">

@@ -1517,6 +1517,25 @@ public class MainController {
 	/* close employee */
 	
 	
+	/*HBU Module*/
+	@RequestMapping("/list-competitors")
+	public String listCompetitor(ModelMap model, HttpServletRequest req) {
+		model.addAttribute("menu", "listCompetitors");
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("COM", req);
+		model.addAttribute("role_list", camMap.get("roleList"));
+		model.addAttribute("role_delete", camMap.get("roleDelete"));
+		
+		if (camMap.get("roleAccess").equals("YES")) {
+			return "listCompetitors";
+		} else {
+			return "permission";
+		}
+
+	}
+	/*End of HBU Module*/
+	
+	
 	/* Other */
 
 	/* File Layout */

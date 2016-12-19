@@ -1,7 +1,9 @@
 <jsp:include page="${request.contextPath}/head"></jsp:include>
 
 <script>
-		var app = angular.module('viewDatabase',[ 'angularUtils.directives.dirPagination' ]);
+		var app = angular.module('viewDatabase',[ 'angularUtils.directives.dirPagination', 'angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+		    cfpLoadingBarProvider.includeSpinner = false;
+		}]);
 		app.controller('viewCompany',['$scope','$http', function($scope, $http) {
 			$scope.listSystemDatabase = function() {
 				$http({
