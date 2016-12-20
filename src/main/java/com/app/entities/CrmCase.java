@@ -41,6 +41,28 @@ public class CrmCase{
 	private AmeItem item;
 	private List<CrmCaseDetail> details;
 	private MeDataSource meDataSource;
+	private CrmCaseArticle article;
+	private String key;
+	
+	
+	
+	
+	
+	public CrmCaseArticle getArticle() {
+		return article;
+	}
+
+	public void setArticle(CrmCaseArticle article) {
+		this.article = article;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
 
 	public String getCaseId() {
 		return caseId;

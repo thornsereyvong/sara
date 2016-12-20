@@ -106,6 +106,40 @@ $(function(){
  	});
 	
 	
+	$('#frmResolution').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			ca_resolvedBy: {
+				validators: {
+					notEmpty: {
+						message: 'The resolved by is required and can not be empty!'
+					}
+				}
+			},
+			ca_resolvedDate: {
+				validators: {
+					notEmpty: {
+						message: 'The resolved date is required and can not be empty!'
+					},
+					date: {
+                        format: 'DD/MM/YYYY h:mm A',
+                        message: 'The value is not a valid date'
+                    }
+				}
+			}
+		}
+	});
+	
+	
+	
+	
+	
+	
 	$('#frmAddNote').bootstrapValidator({
 		message: 'This value is not valid',
 		feedbackIcons: {
