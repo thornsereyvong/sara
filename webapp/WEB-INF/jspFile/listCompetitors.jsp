@@ -23,14 +23,26 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 				$scope.competitors = response.COMPETITORS;
 			});
 		} ;
+
+	$scope.listItems = function(){
+		$http.get("${pageContext.request.contextPath}/hbu/competitor/startup").success(function(response){
+				$scope.items = response.ITEMS;
+			});
+		};
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
+
+	$scope.cancelAddCompetitor = function(){
+		$('#comName').val("");
+		$("#product").select2('val',"");
+		$("#comAddress").val("");
+		$('#frmAddCompetitor').bootstrapValidator('resetForm', true);
+	};
 	
 	$scope.deleteCompetitor = function(comId){
-		
 		var str = '<%=roleDelete%>';
 		if(str == "YES"){
 			swal({   
@@ -41,7 +53,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 				showCancelButton: true,   
 				closeOnConfirm: false,   
 				showLoaderOnConfirm: true, 
-				
 			}, function(){   
 				setTimeout(function(){			
 					$.ajax({ 
@@ -77,12 +88,8 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		}else{
 			alertMsgNoPermision();
 		}
-		
 	};
-	
 }]);
-
-
 </script>
 
 <script>
@@ -93,12 +100,103 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 	
 		$('.table-responsive').on('hide.bs.dropdown', function () {
 		     $('.table-responsive').css( "overflow", "auto" );
-		}); 
+		});
+
+		$("#btn-create").click(function(){
+			$("#btn-add-competitor").click();
+		});
+
+		$('#btnCompetitorSave').click(function(){
+			$("#frmCompetitor").submit();
+		});
+
+		$('#frmCompetitor').bootstrapValidator({
+			message: 'This value is not valid',
+			feedbackIcons: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				comName: {
+					validators: {
+						notEmpty: {
+							message: 'The Competitor name is required and can not be empty!'
+						},
+						stringLength: {
+							max: 255,
+							message: 'The Subject must be less than 255 characters long.'
+						}
+					}
+				},
+				product: {
+					validators: {
+						notEmpty: {
+							message: 'The product is required and can not be empty!'
+						}
+					}
+				}
+			}
+		}).on('success.form.bv', function(e) {			
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to create competitor.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					var items = [];
+					$.each($("#product").val(), function(i, item){
+						items.push({"itemId":item});
+					});
+					$.ajax({ 
+						url : "${pageContext.request.contextPath}/hbu/competitor/add",
+						type : "POST",
+						data : JSON.stringify({
+							  "comName": getValueStringById("comName"),
+						      "items": items,
+						      "comAddress": getValueStringById("comAddress"),
+						      "comCreateBy":"${SESSION}"
+						}),
+						beforeSend: function(xhr) {
+						    xhr.setRequestHeader("Accept", "application/json");
+						    xhr.setRequestHeader("Content-Type", "application/json");
+					    }, 
+					    success: function(result){	
+						    
+							if(result.MESSAGE == "INSERTED"){						
+								$('#comName').val("");
+								$("#product").select2('val',"");
+								$("#comAddress").val("");
+								$('#frmCompetitor').bootstrapValidator('resetForm', true);
+								angular.element(document.getElementById('competitorController')).scope().listCompetitors();
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});
+							}else{
+								swal("UNSUCCESSFUL", result.MSG, "error");
+							}
+						},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		} 
+					});
+				}, 500);
+			});
+				 
+		});	
+		
 	}); 
 </script>
 
-<div class="content-wrapper" ng-app="competitor"
-	ng-controller="competitorController">
+<div class="content-wrapper" ng-app="competitor" id="competitorController" ng-controller="competitorController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Competitors</h1>
@@ -113,15 +211,10 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		<!-- Default box -->
 		<div class="box box-danger">
 			<div class="box-header with-border">
-				
 				<div style="background: #fff; margin-top: 15px;">
 					<div class="col-sm-12">
-						<a href="${pageContext.request.contextPath}/create-competitor"
-							class="btn btn-info btn-app"><i class="fa fa-plus"
-							aria-hidden="true"></i> Create</a> 
-							
+						<a class="btn btn-info btn-app" id = "btn-create"><i class="fa fa-plus" aria-hidden="true"></i> Create</a> 
 					</div>
-					
 				</div>
 			</div>
 
@@ -195,8 +288,11 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 									</tr>
 								</table>
 							</div>
-							<dir-pagination-controls max-size="5" direction-links="true"
-									boundary-links="true"> </dir-pagination-controls>
+							<dir-pagination-controls
+						       max-size="5"
+						       direction-links="true"
+						       boundary-links="true" >
+							</dir-pagination-controls>
 								<%
 									} else {
 								%>
@@ -209,7 +305,60 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 								%>
 						</div>
 					</div>
-			</div>
+				</div>
+				<input type="hidden" id="btn-add-competitor" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCompetitor" />
+				<div ng-controller="competitorController" class="modal fade modal-default" id="frmCompetitor" role="dialog">
+					<div class="modal-dialog  modal-lg" data-ng-init="listItems()">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" ng-click="cancelAddCompetitor()" class="close"
+									data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">
+									<b  id="tCall">Create Competitor</b>
+								</h4>
+							</div>
+							<div class="modal-body">
+								<div class="row">
+									<form id="frmAddCompetitor">
+										<div class="col-md-12">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Name <span class="requrie">(Required)</span></label>
+													<input id="comName" name="comName" class="form-control" type="text" placeholder="Competitor Name">
+												</div>
+											</div>
+											<div class="clearfix"></div>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Products <span class="requrie">(Required)</span></label>
+													<select class="form-control select2" multiple name="product" id="product" style="width: 100%;">
+														<!-- <option value="">-- SELECT Products --</option> -->
+														<option ng-repeat="item in items" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
+													</select>
+												</div>
+											</div>
+											<div class="clearfix"></div>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Address </label>
+													<textarea rows="5" cols="" name="comAddress" id="comAddress" class="form-control"></textarea>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" id="btnCancel"
+									ng-click="cancelAddCompetitor()" name="btnCancel"
+									class="btn btn-danger" data-dismiss="modal">Cancel</button>
+								&nbsp;&nbsp;
+								<button type="button" class="btn btn-primary pull-right"
+									id="btnCompetitorSave" name="btnCompetitorSave">Save</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			<!-- /.box-body -->
 			<div class="box-footer"></div>
 			<!-- /.box-footer-->

@@ -1533,6 +1533,17 @@ public class MainController {
 		}
 
 	}
+	
+	@RequestMapping("/create-competitor")
+	public String createCompetitor(ModelMap model, HttpServletRequest req) {
+		model.addAttribute("menu", "createCompetitor");
+		Map<String, Object> camMap = getRoleDetailsOfModule("COM", req);
+		if (camMap.get("roleAccess").equals("YES")) {
+			return "createCompetitor";
+		} else {
+			return "permission";
+		}
+	}
 	/*End of HBU Module*/
 	
 	
