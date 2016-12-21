@@ -1,7 +1,6 @@
 package com.app.entities;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class HBUCompetitor{
 
@@ -12,7 +11,6 @@ public class HBUCompetitor{
 	private LocalDateTime comModifiedDate;
 	private String comModifiedBy;
 	private MeDataSource meDataSource;
-	private List<HBUItem> items;
 	
 	public String getComId() {
 		return comId;
@@ -68,13 +66,5 @@ public class HBUCompetitor{
 
 	public void setMeDataSource(MeDataSource meDataSource) {
 		this.meDataSource = meDataSource;
-	}
-
-	public List<HBUItem> getItems() {
-		return items;
-	}
-
-	public void setItems(List<HBUItem> items) {
-		this.items = items;
 	}
 }

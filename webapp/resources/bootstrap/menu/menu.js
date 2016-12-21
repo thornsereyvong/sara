@@ -415,6 +415,11 @@ function selectMenu(menu_slide){
     	removeCla("#sale_order","#ul_sale_order","#ul_li_sale_order","#sale_order_icon_sale_order");
     	document.title = 'Print Sale Order | CRM';
         break;
+        
+    case "listCompetitors":
+    	removeCla("#hbu","#ul_hbu","#ul_li_competitor","#hbu_icon_competitor");
+    	document.title = 'List Competitors | CRM';
+        break;
     
     case "topCampaign":
     	iAddClass("report_menu", "repMarketing","repCampaign",1);

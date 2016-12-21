@@ -36,10 +36,10 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 	};
 
 	$scope.cancelAddCompetitor = function(){
+		$('#frmCompetitor').bootstrapValidator('resetForm', true);
 		$('#comName').val("");
 		$("#product").select2('val',"");
 		$("#comAddress").val("");
-		$('#frmAddCompetitor').bootstrapValidator('resetForm', true);
 	};
 	
 	$scope.deleteCompetitor = function(comId){
@@ -148,16 +148,16 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 				showLoaderOnConfirm: true,		
 			}, function(){ 
 				setTimeout(function(){
-					var items = [];
+					/* var items = [];
 					$.each($("#product").val(), function(i, item){
 						items.push({"itemId":item});
-					});
+					}); */
 					$.ajax({ 
 						url : "${pageContext.request.contextPath}/hbu/competitor/add",
 						type : "POST",
 						data : JSON.stringify({
 							  "comName": getValueStringById("comName"),
-						      "items": items,
+						      /* "items": items, */
 						      "comAddress": getValueStringById("comAddress"),
 						      "comCreateBy":"${SESSION}"
 						}),
@@ -169,7 +169,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 						    
 							if(result.MESSAGE == "INSERTED"){						
 								$('#comName').val("");
-								$("#product").select2({data:{}});
 								$("#comAddress").val("");
 								$('#frmCompetitor').bootstrapValidator('resetForm', true);
 								angular.element(document.getElementById('competitorController')).scope().listCompetitors();
@@ -240,7 +239,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 											ng-show="sortKey=='comId'"
 											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
-										<th style="cursor: pointer;" ng-click="sort('comName')">Name
+										<th style="cursor: pointer;" ng-click="sort('comName')">Competitor
 											<span class="glyphicon sort-icon"
 											ng-show="sortKey=='comName'"
 											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
@@ -308,7 +307,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 				</div>
 				<input type="hidden" id="btn-add-competitor" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCompetitor" />
 				<div ng-controller="competitorController" class="modal fade modal-default" id="frmCompetitor" role="dialog">
-					<div class="modal-dialog  modal-lg" data-ng-init="listItems()">
+					<div class="modal-dialog  modal-lg" data-ng-init="">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" ng-click="cancelAddCompetitor()" class="close"
@@ -323,20 +322,20 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 										<div class="col-md-12">
 											<div class="col-md-12">
 												<div class="form-group">
-													<label>Name <span class="requrie">(Required)</span></label>
+													<label>Competitor <span class="requrie">(Required)</span></label>
 													<input id="comName" name="comName" class="form-control" type="text" placeholder="Competitor Name">
 												</div>
 											</div>
-											<div class="clearfix"></div>
+											<!-- <div class="clearfix"></div>
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>Products <span class="requrie">(Required)</span></label>
 													<select class="form-control select2" multiple name="product" id="product" style="width: 100%;">
-														<!-- <option value="">-- SELECT Products --</option> -->
+														<option value="">-- SELECT Products --</option>
 														<option ng-repeat="item in items" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
 													</select>
 												</div>
-											</div>
+											</div> -->
 											<div class="clearfix"></div>
 											<div class="col-md-12">
 												<div class="form-group">
