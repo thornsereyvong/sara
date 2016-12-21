@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmCase;
+import com.app.entities.CrmCaseSolution;
 import com.app.entities.MeDataSource;
 
 @RestController
@@ -97,6 +98,15 @@ public class CrmCaseController {
 		cases.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(cases,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case/edit", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/case/resolve",method = RequestMethod.PUT)
+	public ResponseEntity<Map<String, Object>> updateCase(@RequestBody CrmCaseSolution cases, HttpServletRequest req){
+		cases.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(cases,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/case/resolve", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	

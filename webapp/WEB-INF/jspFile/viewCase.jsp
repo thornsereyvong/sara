@@ -46,7 +46,7 @@ var taskIdForEdit = null;
 var eventIdForEdit = null;
 
 var leadStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
-
+var var_ResolvedBy = "";
 app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
@@ -90,6 +90,12 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 					$scope.listAllEmailByLead = [];	
 				}
 				
+				//dis(response.CASE)
+				
+				//alert(response.CASE.resolution)
+				var_ResolvedBy = response.CASE.resolvedBy;
+				
+				$("#display_solution").append(response.CASE.resolution);
 				
 				
 				curAssign = fmNull(response.CASE.username);
@@ -136,6 +142,8 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	$scope.resolveClick = function(){
 		
 		if(getPermissionByModule("CS","edit") == "YES" || checkAssignTo() || checkOwner()){
+			
+			
 			swal({   
 				title: "<span style='font-size: 25px;'>You are about to resolve case with ID: <span class='color_msg'>"+$scope.cases.caseId+"</span>.</span>",
 				text: "Click OK to continue or CANCEL to abort.",
@@ -152,19 +160,22 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 					
 					if(statusResolution){
 						$.ajax({ 
+							url : "${pageContext.request.contextPath}/case/resolve",
 							type : "PUT",
 							data : JSON.stringify({
-								  "caseId": $scope.cases.caseId,
+								"caseId": $scope.cases.caseId,
 								  "resolvedBy" : getValueStringById("ca_resolvedBy"),
-								  "resolvedDate" : getValueStringById("ca_resolvedDate"),
-								  "resolution" : getValueStringById("ca_resolution"),
+								  "convertResolvedDate" : getValueStringById("ca_resolvedDate"),
+								  "resolution" : CKEDITOR.instances['ca_resolution'].getData(),
+								  "article" : getJsonById("articleId","ca_article","str"),
+								  "status" : {"statusId":5}
 						    }),
 							beforeSend: function(xhr) {
 							    xhr.setRequestHeader("Accept", "application/json");
 							    xhr.setRequestHeader("Content-Type", "application/json");
 						    }, 
 						    success: function(result){					    						    
-								if(result.MESSAGE == "DELETED"){						
+								if(result.MESSAGE == "UPDATED"){						
 									$scope.getListNoteByLead();
 				    				swal({
 			    						title: "SUCCESSFUL",
@@ -865,121 +876,7 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 }]);
 
 
-function addDataCallToForm(data){
-	$("#callStatus").select2('val',data.callStatusId);
-	$("#callAssignTo").select2('val',data.userID);	
-	
-	setValueById('callStartDate', data.callStartDate);
-	setValueById('callSubject', data.callSubject);
-	setValueById('callDescription', data.callDes);
-	setValueById('callDuration', data.callDuration);
-}
 
-function addDataMeetToForm(data){
-	
-	$("#meetStatus").select2('val',data.statusId);
-	$("#meetAssignTo").select2('val',data.userID);	
-	$("#meetDuration").select2('val',data.meetingDuration);
-	
-	setValueById('meetEndDate', data.meetingEndDate);
-	setValueById('meetStartDate', data.meetingStartDate);
-	setValueById('meetSubject', data.meetingSubject);
-	setValueById('meetDescription', data.meetingDes);
-	setValueById('meetLocation', data.meetingLocation);
-}
-
-function addDataTaskToForm(data){
-	
-	$("#taskStatus").select2('val',data.taskStatusId);
-	$("#taskAssignTo").select2('val',data.userID);	
-	$("#taskPriority").select2('val',data.taskPriority);
-	$("#taskContact").select2('val',data.conID);
-	
-	setValueById('taskEndDate', data.taskDueDate);
-	setValueById('taskStartDate', data.taskStartDate);
-	setValueById('taskSubject', data.taskSubject);
-	setValueById('taskDescription', data.taskDes);
-}
-
-function addDataEventToForm(data){
-	
-	$("#eventDuration").select2('val',data.evDuration);
-	$("#eventAssignTo").select2('val',data.userID);	
-	$("#eventLocation").select2('val',data.locateId);
-	
-	setValueById('eventEndDate', data.evEndDate);
-	setValueById('eventStartDate', data.evStartDate);
-	setValueById('eventSubject', data.evName);
-	setValueById('eventDescription', data.evDes);
-	setValueById('eventBudget', data.evBudget);
-}
-
-
-function getLeadData(){	
-	var data = JSON.parse(
-		$.ajax({
-			method: 'GET',
-		    url: '${pageContext.request.contextPath}/case/view/'+username+"/"+oppId,
-		    async: false,
-		    headers: {
-		    	'Accept': 'application/json',
-		        'Content-Type': 'application/json'
-		    }
-		}).responseText);	
-	return data;	
-}
-
-function getLeadById(){
-	var data = JSON.parse(
-		$.ajax({
-			method: 'GET',
-		    url: '${pageContext.request.contextPath}/customer/list/'+oppId,
-		    async: false
-		}).responseText);	
-	return data;
-}
-
-function clickStatus(num){
-	/* if(num == 4){
-		window.location.href = server+"/convert-lead/"+leadId;
-	} */
-}
-
-function displayStatusLead(Status){	
-	var obj = "";	
-	for(var i=1; i<=leadStatusData.length; i++){		
-		if(i<Status){		
-			obj += "<li onClick='clickStatus("+i+")' class='completed'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1].statusName+"</a></li>";	
-		}else if(i==Status){			
-			if(Status == 5){
-				obj += "<li onClick='clickStatus("+i+")' class='dead'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1].statusName+"</a></li>";
-			}else{
-				obj += "<li onClick='clickStatus("+i+")' class='active'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1].statusName+"</a></li>";
-			}
-		}else{
-			obj += "<li onClick='clickStatus("+i+")' class=''>         <a href='#'><i class='fa fa-lock'></i> "+leadStatusData[i-1].statusName+"</a></li>";
-		}
-	}
-	$("#objStatus").append(obj);
-}
-
-function addDataToDetailLead(){
-	$("#oppStage").select2('val', OPPORTUNITY.osId);
-	$("#oppType").select2('val', OPPORTUNITY.otId);
-	$("#oppLeadSource").select2('val', OPPORTUNITY.sourceID);
-	$("#oppCustomer").select2('val', OPPORTUNITY.custID);
-	$("#oppCampaign").select2('val', OPPORTUNITY.campID);
-	$("#oppAssignTo").select2('val', OPPORTUNITY.userID);
-	
-	setValueById('oppName', OPPORTUNITY.opName);
-	setValueById('oppAmout', OPPORTUNITY.opAmount);
-	setValueById('oppCloseDate', conDateSqlToNormal(OPPORTUNITY.opCloseDate,'/'));
-	setValueById('oppNextStep', OPPORTUNITY.opNextStep);
-	setValueById('appProbability', OPPORTUNITY.opProbability);
-	setValueById('appDescription', OPPORTUNITY.opDes);
-	
-	
-}
 
 </script>
 <style>
@@ -1242,6 +1139,7 @@ function addDataToDetailLead(){
 											aria-expanded="false">HISTORY</a></li> -->
 									</ul>
 									<div class="tab-content">
+									
 										<div class="tab-pane active" id="activity">
 											<div class="row">
 
@@ -1977,7 +1875,7 @@ function addDataToDetailLead(){
 												<div class="col-sm-4">
 													<ul class="list-group list-group-unbordered">
 														<li class="list-group-item item_border">Resolve by<a
-															class="pull-right show-text-detail">{{cases.statusName}}</a>
+															class="pull-right show-text-detail">{{cases.resolveByName}}</a>
 															<div class="form-group show-edit" style="display: none;">
 																<!-- <input type="text" name="lea_firstName"
 																	id="lea_firstName" class="form-control"
@@ -1990,7 +1888,7 @@ function addDataToDetailLead(){
 												<div class="col-sm-4">
 													<ul class="list-group list-group-unbordered">
 														<li class="list-group-item item_border">Resolve Date<a
-															class="pull-right show-text-detail">{{cases.statusName}}</a>
+															class="pull-right show-text-detail">{{cases.resolveDate}}</a>
 															<div class="form-group show-edit" style="display: none;">
 																<!-- <input type="text" name="lea_firstName"
 																	id="lea_firstName" class="form-control"
@@ -2002,7 +1900,7 @@ function addDataToDetailLead(){
 												<div class="col-sm-4">
 													<ul class="list-group list-group-unbordered">
 														<li class="list-group-item item_border">Article <a
-															class="pull-right show-text-detail">{{cases.caseTypeName}}</a>
+															class="pull-right show-text-detail">[{{cases.articleId}}]{{cases.articleTitle}}</a>
 															<div class="form-group show-edit" style="display: none;">
 																<!-- <input type="text" name="lea_lastName"
 																	id="lea_lastName" class="form-control"
@@ -2017,8 +1915,8 @@ function addDataToDetailLead(){
 														<li class="list-group-item item_border"
 															style="border-top: 0px !important">Solution</li>
 														<li class="list-group-item item_border"
-															ng-if="cases.des != null"><a
-															class="show-text-detail">{{cases.des}}</a>
+															><a
+															class="show-text-detail" ><p id="display_solution"></p></a>
 															<div class="form-group show-edit" style="display: none;">
 																<!-- <input type="text" name="lea_firstName"
 																	id="lea_firstName" class="form-control"
@@ -2031,6 +1929,7 @@ function addDataToDetailLead(){
 											</div>
 
 										</div>
+										
 										<div class="tab-pane " id="escalate_tap">
 
 											<div class="row">
@@ -2078,6 +1977,7 @@ function addDataToDetailLead(){
 											</div>
 
 										</div>
+									
 									</div>
 								</div>
 							</div>
@@ -2089,8 +1989,7 @@ function addDataToDetailLead(){
 		</div>
 	</section>
 
-	<input type="hidden" id="btn_show_escalate" data-backdrop="static"
-		data-keyboard="false" data-toggle="modal" data-target="#frmEscalate" />
+	<input type="hidden" id="btn_show_escalate" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmEscalate" />
 	<div ng-controller="callController" class="modal fade modal-default"
 		id="frmEscalate" role="dialog">
 		<div class="modal-dialog" data-ng-init="startupCallForm()">
@@ -2119,8 +2018,8 @@ function addDataToDetailLead(){
 									<div class="form-group">
 										<label>Escalate To<span class="requrie">(Required)</span></label>
 										<div class="form-group">
-											<select class="form-control select2" name="ca_resolvedBy"
-												id="ca_resolvedBy" style="width: 100%">
+											<select class="form-control select2" name="ca_escalateTo"
+												id="ca_escalateTo" style="width: 100%">
 												<option value="">-- SELECT Resolved by --</option>
 												<option ng-repeat="u in users" value="{{u.userID}}">{{u.username}}</option>
 											</select>
@@ -2131,8 +2030,8 @@ function addDataToDetailLead(){
 									<div class="form-group">
 										<label>Escalate Status<span class="requrie">(Required)</span></label>
 										<div class="form-group">
-											<select class="form-control select2" name="ca_resolvedBy"
-												id="ca_resolvedBy" style="width: 100%">
+											<select class="form-control select2" name="ca_escalateStatus"
+												id="ca_escalateStatus" style="width: 100%">
 												<option value="Escalated">Escalated</option>
 												
 											</select>
@@ -2156,8 +2055,7 @@ function addDataToDetailLead(){
 		</div>
 	</div>
 
-	<input type="hidden" id="btn_show_resolve" data-backdrop="static"
-		data-keyboard="false" data-toggle="modal" data-target="#frmResolve" />
+	<input type="hidden" id="btn_show_resolve" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmResolve" />
 	<div ng-controller="callController" class="modal fade modal-default"
 		id="frmResolve" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupCallForm()">
@@ -2250,9 +2148,7 @@ function addDataToDetailLead(){
 		</div>
 	</div>
 
-
-	<input type="hidden" id="btn_show_call" data-backdrop="static"
-		data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
+	<input type="hidden" id="btn_show_call" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
 	<div ng-controller="callController" class="modal fade modal-default"
 		id="frmCall" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupCallForm()">
@@ -2351,8 +2247,7 @@ function addDataToDetailLead(){
 		</div>
 	</div>
 
-	<input type="hidden" id="btn_show_meet" data-backdrop="static"
-		data-keyboard="false" data-toggle="modal" data-target="#frmMeet" />
+	<input type="hidden" id="btn_show_meet" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmMeet" />
 	<div ng-controller="meetController" class="modal fade modal-default"
 		id="frmMeet" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupMeetForm()">
@@ -2477,8 +2372,7 @@ function addDataToDetailLead(){
 		</div>
 	</div>
 
-	<input type="hidden" id="btn_show_task" data-backdrop="static"
-		data-keyboard="false" data-toggle="modal" data-target="#frmTask" />
+	<input type="hidden" id="btn_show_task" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmTask" />
 	<div ng-controller="taskController" class="modal fade modal-default"
 		id="frmTask" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupTaskForm()">
@@ -2600,8 +2494,7 @@ function addDataToDetailLead(){
 		</div>
 	</div>
 
-	<input type="hidden" id="btn_show_event" data-backdrop="static"
-		data-keyboard="false" data-toggle="modal" data-target="#frmEvent" />
+	<input type="hidden" id="btn_show_event" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmEvent" />
 	<div ng-controller="eventController" class="modal fade modal-default"
 		id="frmEvent" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupEventForm()">

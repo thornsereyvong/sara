@@ -1,11 +1,132 @@
 
+function addDataCallToForm(data){
+	$("#callStatus").select2('val',data.callStatusId);
+	$("#callAssignTo").select2('val',data.userID);	
+	
+	setValueById('callStartDate', data.callStartDate);
+	setValueById('callSubject', data.callSubject);
+	setValueById('callDescription', data.callDes);
+	setValueById('callDuration', data.callDuration);
+}
+
+function addDataMeetToForm(data){
+	
+	$("#meetStatus").select2('val',data.statusId);
+	$("#meetAssignTo").select2('val',data.userID);	
+	$("#meetDuration").select2('val',data.meetingDuration);
+	
+	setValueById('meetEndDate', data.meetingEndDate);
+	setValueById('meetStartDate', data.meetingStartDate);
+	setValueById('meetSubject', data.meetingSubject);
+	setValueById('meetDescription', data.meetingDes);
+	setValueById('meetLocation', data.meetingLocation);
+}
+
+function addDataTaskToForm(data){
+	
+	$("#taskStatus").select2('val',data.taskStatusId);
+	$("#taskAssignTo").select2('val',data.userID);	
+	$("#taskPriority").select2('val',data.taskPriority);
+	$("#taskContact").select2('val',data.conID);
+	
+	setValueById('taskEndDate', data.taskDueDate);
+	setValueById('taskStartDate', data.taskStartDate);
+	setValueById('taskSubject', data.taskSubject);
+	setValueById('taskDescription', data.taskDes);
+}
+
+function addDataEventToForm(data){
+	
+	$("#eventDuration").select2('val',data.evDuration);
+	$("#eventAssignTo").select2('val',data.userID);	
+	$("#eventLocation").select2('val',data.locateId);
+	
+	setValueById('eventEndDate', data.evEndDate);
+	setValueById('eventStartDate', data.evStartDate);
+	setValueById('eventSubject', data.evName);
+	setValueById('eventDescription', data.evDes);
+	setValueById('eventBudget', data.evBudget);
+}
+
+
+function getLeadData(){	
+	var data = JSON.parse(
+		$.ajax({
+			method: 'GET',
+		    url: '${pageContext.request.contextPath}/case/view/'+username+"/"+oppId,
+		    async: false,
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    }
+		}).responseText);	
+	return data;	
+}
+
+function getLeadById(){
+	var data = JSON.parse(
+		$.ajax({
+			method: 'GET',
+		    url: '${pageContext.request.contextPath}/customer/list/'+oppId,
+		    async: false
+		}).responseText);	
+	return data;
+}
+
+function clickStatus(num){
+	/* if(num == 4){
+		window.location.href = server+"/convert-lead/"+leadId;
+	} */
+}
+
+function displayStatusLead(Status){	
+	var obj = "";	
+	for(var i=1; i<=leadStatusData.length; i++){		
+		if(i<Status){		
+			obj += "<li onClick='clickStatus("+i+")' class='completed'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1].statusName+"</a></li>";	
+		}else if(i==Status){			
+			/* if(Status == 5){
+				obj += "<li onClick='clickStatus("+i+")' class='dead'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1].statusName+"</a></li>";
+			}else{ */
+				obj += "<li onClick='clickStatus("+i+")' class='active'><a href='#'><i class='fa fa-check-circle'></i> "+leadStatusData[i-1].statusName+"</a></li>";
+			//}
+		}else{
+			obj += "<li onClick='clickStatus("+i+")' class=''>         <a href='#'><i class='fa fa-lock'></i> "+leadStatusData[i-1].statusName+"</a></li>";
+		}
+	}
+	$("#objStatus").append(obj);
+}
+
+function addDataToDetailLead(){
+	$("#oppStage").select2('val', OPPORTUNITY.osId);
+	$("#oppType").select2('val', OPPORTUNITY.otId);
+	$("#oppLeadSource").select2('val', OPPORTUNITY.sourceID);
+	$("#oppCustomer").select2('val', OPPORTUNITY.custID);
+	$("#oppCampaign").select2('val', OPPORTUNITY.campID);
+	$("#oppAssignTo").select2('val', OPPORTUNITY.userID);
+	
+	setValueById('oppName', OPPORTUNITY.opName);
+	setValueById('oppAmout', OPPORTUNITY.opAmount);
+	setValueById('oppCloseDate', conDateSqlToNormal(OPPORTUNITY.opCloseDate,'/'));
+	setValueById('oppNextStep', OPPORTUNITY.opNextStep);
+	setValueById('appProbability', OPPORTUNITY.opProbability);
+	setValueById('appDescription', OPPORTUNITY.opDes);
+	
+	
+}
+
+
+
+
 var callStartDateOld = "";
+var ckTextarea = "";
 $(function(){
 	
 	// $("#ca_resolution").wysihtml5();
-	 CKEDITOR.replace('ca_resolution');
+	ckTextarea = CKEDITOR.replace('ca_resolution');
 	$("#ca_article").prop("disabled", true);
 	$("#collabTags").select2();
+	
 	
 	
 //	$('#ca_resolvedDate').daterangepicker({
@@ -61,6 +182,8 @@ $(function(){
     }).on('change', function(e) {
      	$('#frmResolution').bootstrapValidator('revalidateField', 'ca_resolvedDate');
  	});
+	
+	$("#ca_resolvedBy").select2("val", var_ResolvedBy);
 	
 	$('.meet-data-time').daterangepicker({
         format: 'DD/MM/YYYY h:mm A',
