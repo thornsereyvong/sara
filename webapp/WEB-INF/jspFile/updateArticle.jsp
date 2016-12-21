@@ -82,14 +82,6 @@ $(document).ready(function() {
 					}
 				}
 			},
-			art_product: {
-				validators: {
-					stringLength: {
-						max: 1000,
-						message: 'The resolution must be less than 1000 characters long.'
-					}
-				}
-			},
 			ca_description: {
 				validators: {
 					stringLength: {
@@ -176,7 +168,7 @@ $(document).ready(function() {
 								</div>
 							</div>
 							<div class="col-sm-3">
-								<label class="font-label">Product <span class="requrie">(Required)</span></label>
+								<label class="font-label">Product </label>
 								<div class="form-group">
 									<select class="form-control select2" name="art_product" id="art_product" style="width:100%">
 										<option value="">-- SELECT product --</option>

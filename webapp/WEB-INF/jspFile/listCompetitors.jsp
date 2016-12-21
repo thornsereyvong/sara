@@ -22,7 +22,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		$http.get("${pageContext.request.contextPath}/hbu/competitor/list").success(function(response){
 				$scope.competitors = response.COMPETITORS;
 			});
-		} ;
+		};
 
 	$scope.listItems = function(){
 		$http.get("${pageContext.request.contextPath}/hbu/competitor/startup").success(function(response){
@@ -169,7 +169,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 						    
 							if(result.MESSAGE == "INSERTED"){						
 								$('#comName').val("");
-								$("#product").select2('val',"");
+								$("#product").select2({data:{}});
 								$("#comAddress").val("");
 								$('#frmCompetitor').bootstrapValidator('resetForm', true);
 								angular.element(document.getElementById('competitorController')).scope().listCompetitors();
@@ -249,10 +249,10 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 											ng-show="sortKey=='comAddress'"
 											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
-										<th style="cursor: pointer;" ng-click="sort('')">Items <span class="glyphicon sort-icon"
+										<!-- <th style="cursor: pointer;" ng-click="sort('')">Items <span class="glyphicon sort-icon"
 											ng-show="sortKey=='taskDueDate'"
 											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
+										</th> -->
 	
 										<th style="cursor: pointer;" ng-click="sort('comCreateBy')">Create By
 											<span class="glyphicon sort-icon"
@@ -266,7 +266,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 										<td>{{com.comId}}</td>
 										<td>{{com.comName}}</td>
 										<td>{{com.comAddress}}</td>
-										<td><span ng-repeat = "item in com.items">[{{item.itemId}}] {{item.itemName}}<br/></span></td>
+										<!-- <td><span ng-repeat = "item in com.items">[{{item.itemId}}] {{item.itemName}}<br/></span></td> -->
 										<td>{{com.comCreateBy}}</td>
 										<td>
 											<div class="col-sm-2">
