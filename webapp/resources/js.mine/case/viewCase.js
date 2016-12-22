@@ -247,7 +247,30 @@ $(function(){
 		}
 	});
 	
-	
+	$('#frmEscalateTo').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			ca_escalateTo: {
+				validators: {
+					notEmpty: {
+						message: 'The escalate to is required and can not be empty!'
+					}
+				}
+			},
+			ca_escalateStatus: {
+				validators: {
+					notEmpty: {
+						message: 'The escalate status is required and can not be empty!'
+					}
+				}
+			}
+		}
+	});
 	
 	
 	

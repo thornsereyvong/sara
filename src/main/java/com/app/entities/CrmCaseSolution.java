@@ -1,5 +1,6 @@
 package com.app.entities;
 
+
 public class CrmCaseSolution{
 	
 	private String caseId;
@@ -18,9 +19,16 @@ public class CrmCaseSolution{
 	
 	private String escalateTo;
 	private String currentAssign;
+	private CrmUser assignTo;
 	
-	
-	
+	public CrmUser getAssignTo() {
+		return assignTo;
+	}
+
+	public void setAssignTo(CrmUser assignTo) {
+		this.assignTo = assignTo;
+	}
+
 	public String getEscalateTo() {
 		return escalateTo;
 	}

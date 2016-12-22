@@ -190,7 +190,7 @@ $(document).ready(function(){
 				</ul>
 			</li>
 
-			<%-- <li class="treeview" id="report_menu">
+			<li class="treeview" id="report_menu">
 				<a href="#"> <img style="width: 16px;" src="${pageContext.request.contextPath}/resources/images/module/Report-32.png" style="">&nbsp;&nbsp;
 					<span>Report</span> <i class="fa fa-angle-left pull-right"></i>
 				</a>
@@ -227,7 +227,7 @@ $(document).ready(function(){
 						</ul>
 					</li>					
 				</ul>
-			</li> --%>
+			</li>
 
 
 			<%

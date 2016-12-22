@@ -125,11 +125,17 @@ public class MainController {
 		
 		@RequestMapping("/update-article/{articleId}")
 		public String editArticle(ModelMap model,@PathVariable("articleId") String articleId) {		
-			model.addAttribute("menu", "saleOrderEdit");	
+			model.addAttribute("menu", "updateArticle");	
 			model.addAttribute("articleId", articleId);	
 			return "updateArticle";		
 		}
 	
+		@RequestMapping("/view-article/{articleId}")
+		public String viewArticle(ModelMap model,@PathVariable("articleId") String articleId) {		
+			model.addAttribute("menu", "viewArticle");	
+			model.addAttribute("articleId", articleId);	
+			return "viewArticle";		
+		}
 		
 		// End article path
 	

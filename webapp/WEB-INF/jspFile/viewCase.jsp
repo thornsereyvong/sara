@@ -177,8 +177,11 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 							type : "PUT",
 							data : JSON.stringify({
 								  "caseId": $scope.cases.caseId,
-								  "escalateTo" : getValueStringById("ca_escalateTo"),
-								  "currentAssign" : $scope.cases.assignTo,
+								  "resolvedBy" : getValueStringById("ca_resolvedBy"),
+								  "convertResolvedDate" : getValueStringById("ca_resolvedDate"),
+								  "resolution" : CKEDITOR.instances['ca_resolution'].getData(),
+								  "article" : getJsonById("articleId","ca_article","str"),
+								  "assignTo" : getJsonById("userID","ca_escalateTo","str"),
 								  "status" : {"statusId":4},
 						    }),
 							beforeSend: function(xhr) {
@@ -254,6 +257,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 								  "createArt": createArtStatus,
 								  "itemId" : $scope.cases.caseItemId,
 								  "createBy" : username,
+								  "assignTo" : getJsonByValue("userID", "$scope.cases.username","str") ,
 								  "key" : $scope.cases.caseKey,
 								  "title" : $scope.cases.subject
 						    }),
@@ -2018,15 +2022,7 @@ function setSelect2ToResolveBy(value){
 												
 												<form method="post" id="frmEscalateTo">
 													<div class="col-sm-4">
-														<div class="col-sm-12">
-															<p><label class="font-label">Case ID :</label> {{'['+cases.caseId+']'}} {{cases.subject}}</p>
-															
-														</div>
-														<div class="col-sm-12">
-															<div class="form-group">
-																<p><label class="font-label">Current Assign :</label> {{cases.username}}</p>
-															</div>
-														</div>
+														
 														<div class="col-sm-12">
 															<div class="form-group">
 																<label>Escalate To<span class="requrie">(Required)</span></label>
@@ -2054,7 +2050,7 @@ function setSelect2ToResolveBy(value){
 														<div class="col-sm-12">
 															<button type="button" id="btnEscalateCancel"
 																ng-click="cancelEscalateClick()" name="btnEscalateCancel"
-																class="btn btn-danger" data-dismiss="modal">Cancel</button>
+																class="btn btn-danger pull-right" style="margin-left:5px;" data-dismiss="modal">Cancel</button>
 															&nbsp;&nbsp;
 															<button ng-click="escalateClick()" type="button" class="btn btn-primary pull-right"
 																id="btnEscalateSave" name="btnEscalateSave">Escalate</button>
