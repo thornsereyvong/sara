@@ -1,5 +1,6 @@
 package com.app.entities;
 
+
 public class CrmCaseSolution{
 	
 	private String caseId;
@@ -10,6 +11,79 @@ public class CrmCaseSolution{
 	private String convertFollowupDate;
 	private CrmCaseArticle article;
 	private MeDataSource meDataSource;
+	private boolean createArt;
+	private String key;
+	private String createBy;
+	private String itemId;
+	private String title;
+	
+	private String escalateTo;
+	private String currentAssign;
+	private CrmUser assignTo;
+	
+	public CrmUser getAssignTo() {
+		return assignTo;
+	}
+
+	public void setAssignTo(CrmUser assignTo) {
+		this.assignTo = assignTo;
+	}
+
+	public String getEscalateTo() {
+		return escalateTo;
+	}
+
+	public void setEscalateTo(String escalateTo) {
+		this.escalateTo = escalateTo;
+	}
+
+	public String getCurrentAssign() {
+		return currentAssign;
+	}
+
+	public void setCurrentAssign(String currentAssign) {
+		this.currentAssign = currentAssign;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
+
+	public boolean isCreateArt() {
+		return createArt;
+	}
+
+	public void setCreateArt(boolean createArt) {
+		this.createArt = createArt;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public String getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
 
 	public String getResolution() {
 		return resolution;

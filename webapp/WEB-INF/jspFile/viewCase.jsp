@@ -47,6 +47,7 @@ var eventIdForEdit = null;
 
 var leadStatusData = ["Prospecting", "Qualification", "Analysis", "Proposal", "Negotiation","Close"];
 var var_ResolvedBy = "";
+var var_ResolveSolution = "";
 app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
@@ -90,12 +91,8 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 					$scope.listAllEmailByLead = [];	
 				}
 				
-				//dis(response.CASE)
 				
-				//alert(response.CASE.resolution)
-				var_ResolvedBy = response.CASE.resolvedBy;
 				
-				$("#display_solution").append(response.CASE.resolution);
 				
 				
 				curAssign = fmNull(response.CASE.username);
@@ -112,8 +109,27 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				$scope.articles = response.ARTICLES;
 				
 				
-				
 				displayStatusLead(response.CASE.statusId);
+				
+				
+				var_ResolvedBy = response.CASE.resolvedBy;
+				var_ResolveSolution = response.CASE.resolution;
+				CKEDITOR.instances['ca_resolution'].setData(response.CASE.resolution);
+				
+				
+				$("#ca_resolvedDate").val(response.CASE.resolveDate);
+				$("#display_solution").append(response.CASE.resolution);
+				
+				setTimeout(function(){ 
+					$("#ca_resolvedBy").select2("val",response.CASE.resolvedBy); 
+					if(response.CASE.articleId != null){
+						$("#ca_article").prop("disabled", false);
+						$("#ca_article").select2("val", response.CASE.articleId);
+						$("#inp_existArticle").prop('checked', true);
+					}
+					
+				}, 1000);
+				
 			});
 			
 			
@@ -138,14 +154,11 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		$("#btn_show_escalate").click();
 	}
 	
-	
-	$scope.resolveClick = function(){
+	$scope.escalateClick = function(){
 		
 		if(getPermissionByModule("CS","edit") == "YES" || checkAssignTo() || checkOwner()){
-			
-			
 			swal({   
-				title: "<span style='font-size: 25px;'>You are about to resolve case with ID: <span class='color_msg'>"+$scope.cases.caseId+"</span>.</span>",
+				title: "<span style='font-size: 25px;'>You are about to escalate case with ID: <span class='color_msg'>"+$scope.cases.caseId+"</span>.</span>",
 				text: "Click OK to continue or CANCEL to abort.",
 				type: "info",
 				html: true,
@@ -155,20 +168,21 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			}, function(){ 
 				setTimeout(function(){
 					
-					$('#frmResolution').data('bootstrapValidator').validate();
-					statusResolution = $("#frmResolution").data('bootstrapValidator').validate().isValid();
+					$('#frmEscalateTo').data('bootstrapValidator').validate();
+					var statusResolution = $("#frmEscalateTo").data('bootstrapValidator').validate().isValid();
 					
 					if(statusResolution){
 						$.ajax({ 
-							url : "${pageContext.request.contextPath}/case/resolve",
+							url : "${pageContext.request.contextPath}/case/escalate",
 							type : "PUT",
 							data : JSON.stringify({
-								"caseId": $scope.cases.caseId,
+								  "caseId": $scope.cases.caseId,
 								  "resolvedBy" : getValueStringById("ca_resolvedBy"),
 								  "convertResolvedDate" : getValueStringById("ca_resolvedDate"),
 								  "resolution" : CKEDITOR.instances['ca_resolution'].getData(),
 								  "article" : getJsonById("articleId","ca_article","str"),
-								  "status" : {"statusId":5}
+								  "assignTo" : getJsonById("userID","ca_escalateTo","str"),
+								  "status" : {"statusId":4},
 						    }),
 							beforeSend: function(xhr) {
 							    xhr.setRequestHeader("Accept", "application/json");
@@ -183,7 +197,10 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			    					  	html: true,
 			    					  	timer: 2000,
 			    					  	type: "success"
-			    					});																								
+			    					});	
+				    				
+				    				reloadForm(2000);
+				    				
 								}else{
 									swal("UNSUCCESSFUL", result.MSG, "error");
 								}
@@ -200,16 +217,85 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			});
 		}else{
 			alertMsgNoPermision();
-		}
-		
-		
-		
-		
-		
-		
+		}	
 	}
 	
-	
+	$scope.resolveClick = function(){
+		
+		if(getPermissionByModule("CS","edit") == "YES" || checkAssignTo() || checkOwner()){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to resolve case with ID: <span class='color_msg'>"+$scope.cases.caseId+"</span>.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+				setTimeout(function(){
+					
+					$('#frmResolution').data('bootstrapValidator').validate();
+					var statusResolution = $("#frmResolution").data('bootstrapValidator').validate().isValid();
+					
+					if(statusResolution){
+						
+						var createArtStatus = false;
+						if ($('#inp_newArticle').is(":checked")){
+							createArtStatus = true;
+						}
+					
+						$.ajax({ 
+							url : "${pageContext.request.contextPath}/case/resolve",
+							type : "PUT",
+							data : JSON.stringify({
+								"caseId": $scope.cases.caseId,
+								  "resolvedBy" : getValueStringById("ca_resolvedBy"),
+								  "convertResolvedDate" : getValueStringById("ca_resolvedDate"),
+								  "resolution" : CKEDITOR.instances['ca_resolution'].getData(),
+								  "article" : getJsonById("articleId","ca_article","str"),
+								  "status" : {"statusId":5},
+								  "createArt": createArtStatus,
+								  "itemId" : $scope.cases.caseItemId,
+								  "createBy" : username,
+								  "assignTo" : getJsonByValue("userID", "$scope.cases.username","str") ,
+								  "key" : $scope.cases.caseKey,
+								  "title" : $scope.cases.subject
+						    }),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){					    						    
+								if(result.MESSAGE == "UPDATED"){						
+									$scope.getListNoteByLead();
+				    				swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});	
+				    				
+				    				reloadForm(2000);
+				    				
+								}else{
+									swal("UNSUCCESSFUL", result.MSG, "error");
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					
+					}else{
+						swal("UNSUCCESSFUL", "Data invalid!", "error");
+					}
+				}, 500);
+			});
+		}else{
+			alertMsgNoPermision();
+		}	
+	}
 	
 	//$('#statusSelect').select2('disable');
 	
@@ -875,174 +961,176 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 	}	
 }]);
 
-
+function setSelect2ToResolveBy(value){	
+	$("#ca_resolvedBy").select2("val",value);	
+}
 
 
 </script>
 <style>
-.panel-heading1 h4 {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	line-height: normal;
-	width: 75%;
-	padding-top: 8px;
-}
-
-.trask-btn {
-	color: #dd4b39 !important;
-}
-
-.like-btn {
-	color: #3289c8 !important;
-}
-
-.unlike-btn {
+	.panel-heading1 h4 {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		line-height: normal;
+		width: 75%;
+		padding-top: 8px;
+	}
 	
-}
-
-.icon_color {
-	color: #2196F3;
-}
-
-.iTable tbody {
-	border-top: 1px solid #d2d6de !important;
-}
-
-.iTable thead, tr, td {
-	border: 0px !important;
-}
-
-.iTD-width-50 {
-	width: 50px;
-}
-
-.show-edit {
-	width: 70% !important;
-	margin: -25px 30% -5px !important;
-}
-
-.iTD {
-	text-align: center;
-	vertical-align: middle;
-}
-
-.item_border {
-	border: 1px solid #f0f0f0;
-}
-
-.font-size-icon-30 {
-	font-size: 20px;
-}
-
-.pagination {
-	display: inline-block;
-	padding-left: 0;
-	margin: 0px 0px 13px 0px;
-	border-radius: 4px;
-	margin-buttom: 10px;
-}
-
-.cusor_pointer {
-	cursor: pointer;
-}
-
-.breadcrumb1 {
-	padding: 0;
-	background: #D4D4D4;
-	list-style: none;
-	overflow: hidden;
-	margin: 10px;
-}
-
-.breadcrumb1>li+li:before {
-	padding: 0;
-}
-
-.breadcrumb1 li {
-	float: left;
-}
-
-.breadcrumb1 li.active a {
-	background: brown; /* fallback color */
-	background: rgb(75, 202, 129);
-}
-
-.breadcrumb1 li.completed a {
-	background: brown; /* fallback color */
-	background: hsl(192, 100%, 41%);
-}
-
-.breadcrumb1 li.active a:after {
-	border-left: 30px solid rgb(75, 202, 129);
-}
-
-.breadcrumb1 li.dead a {
-	background: brown; /* fallback color */
-	background: red;
-}
-
-.breadcrumb1 li.dead a:after {
-	border-left: 30px solid red;
-}
-
-.breadcrumb1 li.completed a:after {
-	border-left: 30px solid hsl(192, 100%, 41%);
-}
-
-.breadcrumb1 li a {
-	color: white;
-	text-decoration: none;
-	padding: 10px 0 10px 45px;
-	position: relative;
-	display: block;
-	float: left;
-}
-
-.breadcrumb1 li a:after {
-	content: " ";
-	display: block;
-	width: 0;
-	height: 0;
-	border-top: 50px solid transparent;
-	/* Go big on the size, and let overflow hide */
-	border-bottom: 50px solid transparent;
-	border-left: 30px solid hsla(0, 0%, 83%, 1);
-	position: absolute;
-	top: 50%;
-	margin-top: -50px;
-	left: 100%;
-	z-index: 2;
-}
-
-.breadcrumb1 li a:before {
-	content: " ";
-	display: block;
-	width: 0;
-	height: 0;
-	border-top: 50px solid transparent;
-	/* Go big on the size, and let overflow hide */
-	border-bottom: 50px solid transparent;
-	border-left: 30px solid white;
-	position: absolute;
-	top: 50%;
-	margin-top: -50px;
-	margin-left: 1px;
-	left: 100%;
-	z-index: 1;
-}
-
-.breadcrumb1 li:first-child a {
-	padding-left: 15px;
-}
-
-.breadcrumb1 li a:hover {
-	background: rgb(75, 202, 129);
-}
-
-.breadcrumb1 li a:hover:after {
-	border-left-color: rgb(75, 202, 129) !important;
-}
+	.trask-btn {
+		color: #dd4b39 !important;
+	}
+	
+	.like-btn {
+		color: #3289c8 !important;
+	}
+	
+	.unlike-btn {
+		
+	}
+	
+	.icon_color {
+		color: #2196F3;
+	}
+	
+	.iTable tbody {
+		border-top: 1px solid #d2d6de !important;
+	}
+	
+	.iTable thead, tr, td {
+		border: 0px !important;
+	}
+	
+	.iTD-width-50 {
+		width: 50px;
+	}
+	
+	.show-edit {
+		width: 70% !important;
+		margin: -25px 30% -5px !important;
+	}
+	
+	.iTD {
+		text-align: center;
+		vertical-align: middle;
+	}
+	
+	.item_border {
+		border: 1px solid #f0f0f0;
+	}
+	
+	.font-size-icon-30 {
+		font-size: 20px;
+	}
+	
+	.pagination {
+		display: inline-block;
+		padding-left: 0;
+		margin: 0px 0px 13px 0px;
+		border-radius: 4px;
+		margin-buttom: 10px;
+	}
+	
+	.cusor_pointer {
+		cursor: pointer;
+	}
+	
+	.breadcrumb1 {
+		padding: 0;
+		background: #D4D4D4;
+		list-style: none;
+		overflow: hidden;
+		margin: 10px;
+	}
+	
+	.breadcrumb1>li+li:before {
+		padding: 0;
+	}
+	
+	.breadcrumb1 li {
+		float: left;
+	}
+	
+	.breadcrumb1 li.active a {
+		background: brown; /* fallback color */
+		background: rgb(75, 202, 129);
+	}
+	
+	.breadcrumb1 li.completed a {
+		background: brown; /* fallback color */
+		background: hsl(192, 100%, 41%);
+	}
+	
+	.breadcrumb1 li.active a:after {
+		border-left: 30px solid rgb(75, 202, 129);
+	}
+	
+	.breadcrumb1 li.dead a {
+		background: brown; /* fallback color */
+		background: red;
+	}
+	
+	.breadcrumb1 li.dead a:after {
+		border-left: 30px solid red;
+	}
+	
+	.breadcrumb1 li.completed a:after {
+		border-left: 30px solid hsl(192, 100%, 41%);
+	}
+	
+	.breadcrumb1 li a {
+		color: white;
+		text-decoration: none;
+		padding: 10px 0 10px 45px;
+		position: relative;
+		display: block;
+		float: left;
+	}
+	
+	.breadcrumb1 li a:after {
+		content: " ";
+		display: block;
+		width: 0;
+		height: 0;
+		border-top: 50px solid transparent;
+		/* Go big on the size, and let overflow hide */
+		border-bottom: 50px solid transparent;
+		border-left: 30px solid hsla(0, 0%, 83%, 1);
+		position: absolute;
+		top: 50%;
+		margin-top: -50px;
+		left: 100%;
+		z-index: 2;
+	}
+	
+	.breadcrumb1 li a:before {
+		content: " ";
+		display: block;
+		width: 0;
+		height: 0;
+		border-top: 50px solid transparent;
+		/* Go big on the size, and let overflow hide */
+		border-bottom: 50px solid transparent;
+		border-left: 30px solid white;
+		position: absolute;
+		top: 50%;
+		margin-top: -50px;
+		margin-left: 1px;
+		left: 100%;
+		z-index: 1;
+	}
+	
+	.breadcrumb1 li:first-child a {
+		padding-left: 15px;
+	}
+	
+	.breadcrumb1 li a:hover {
+		background: rgb(75, 202, 129);
+	}
+	
+	.breadcrumb1 li a:hover:after {
+		border-left-color: rgb(75, 202, 129) !important;
+	}
 </style>
 <div class="content-wrapper" id="viewOpportunityController"
 	ng-app="viewOpportunity" ng-controller="viewOpportunityController">
@@ -1562,8 +1650,7 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 											<br>
 											<!-- content collab -->
 
-											<div class="post clearfix"
-												ng-repeat="(key_post,collab) in collaborates track by $index">
+											<div class="post clearfix" ng-repeat="(key_post,collab) in collaborates track by $index">
 												<div class="user-block">
 													<img class="img-circle img-bordered-sm"
 														src="${pageContext.request.contextPath}/resources/images/av.png"
@@ -1914,9 +2001,8 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 													<ul class="list-group list-group-unbordered">
 														<li class="list-group-item item_border"
 															style="border-top: 0px !important">Solution</li>
-														<li class="list-group-item item_border"
-															><a
-															class="show-text-detail" ><p id="display_solution"></p></a>
+														<li class="list-group-item item_border" style="border: 1px solid #d4d4d4;">
+															<p id="display_solution" style="padding:10px;"></p>
 															<div class="form-group show-edit" style="display: none;">
 																<!-- <input type="text" name="lea_firstName"
 																	id="lea_firstName" class="form-control"
@@ -1933,8 +2019,47 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 										<div class="tab-pane " id="escalate_tap">
 
 											<div class="row">
-
-												<div class="col-md-12">
+												
+												<form method="post" id="frmEscalateTo">
+													<div class="col-sm-4">
+														
+														<div class="col-sm-12">
+															<div class="form-group">
+																<label>Escalate To<span class="requrie">(Required)</span></label>
+																<div class="form-group">
+																	<select class="form-control select2" name="ca_escalateTo"
+																		id="ca_escalateTo" style="width: 100%">
+																		<option value="">-- SELECT Resolved by --</option>
+																		<option ng-repeat="u in users" value="{{u.userID}}">{{u.username}}</option>
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="col-sm-12">
+															<div class="form-group">
+																<label>Escalate Status<span class="requrie">(Required)</span></label>
+																<div class="form-group">
+																	<select class="form-control select2" name="ca_escalateStatus"
+																		id="ca_escalateStatus" style="width: 100%">
+																		<option value="Escalated">Escalated</option>
+																		
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="col-sm-12">
+															<button type="button" id="btnEscalateCancel"
+																ng-click="cancelEscalateClick()" name="btnEscalateCancel"
+																class="btn btn-danger pull-right" style="margin-left:5px;" data-dismiss="modal">Cancel</button>
+															&nbsp;&nbsp;
+															<button ng-click="escalateClick()" type="button" class="btn btn-primary pull-right"
+																id="btnEscalateSave" name="btnEscalateSave">Escalate</button>
+														</div>
+													</div>
+												</form>
+												
+												
+												<!-- <div class="col-md-12">
 													<a style="margin-left: 0px;" class="btn btn-app"
 														ng-click="escalate_click()"> <i class="fa  fa-exchange"></i>
 														Escalate
@@ -1971,7 +2096,7 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 														</tbody>
 													</table>
 												
-												</div>
+												</div> -->
 												
 
 											</div>
@@ -2003,43 +2128,7 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<form method="post" id="frmEscalate">
-							<div class="col-sm-12">
-								<div class="col-sm-12">
-									<p><label class="font-label">Case ID :</label> {{'['+cases.caseId+']'}} {{cases.subject}}</p>
-									
-								</div>
-								<div class="col-sm-12">
-									<div class="form-group">
-										<p><label class="font-label">Current Assign :</label> {{cases.username}}</p>
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="form-group">
-										<label>Escalate To<span class="requrie">(Required)</span></label>
-										<div class="form-group">
-											<select class="form-control select2" name="ca_escalateTo"
-												id="ca_escalateTo" style="width: 100%">
-												<option value="">-- SELECT Resolved by --</option>
-												<option ng-repeat="u in users" value="{{u.userID}}">{{u.username}}</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="form-group">
-										<label>Escalate Status<span class="requrie">(Required)</span></label>
-										<div class="form-group">
-											<select class="form-control select2" name="ca_escalateStatus"
-												id="ca_escalateStatus" style="width: 100%">
-												<option value="Escalated">Escalated</option>
-												
-											</select>
-										</div>
-									</div>
-								</div>
-							</div>
-						</form>
+						
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -2089,8 +2178,7 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input value="" name="ca_resolvedDate" id="ca_resolvedDate"
-												type="text" class="form-control pull-right active">
+											<input value="" name="ca_resolvedDate" id="ca_resolvedDate" type="text" class="form-control pull-right active">
 										</div>
 									</div>
 								</div>
@@ -2127,8 +2215,9 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 								<div class="col-sm-12 ">
 									<label class="font-label">Solution </label>
 									<div class="form-group">
-										<textarea rows="5" cols="" name="ca_resolution"
-											id="ca_resolution" class="form-control"></textarea>
+										<textarea rows="5" cols="" name="ca_resolution"id="ca_resolution" class="form-control">
+										
+										</textarea>
 									</div>
 								</div>
 							</div>

@@ -320,6 +320,13 @@ function getJsonById(key, ID,type){
 	return JSON.parse('{"'+key+'" : '+obj+'}');
 }
 
+function getJsonByValue(key, obj,type){
+	if(obj == "")
+		return null;
+	if(type=="str")
+		return JSON.parse('{"'+key+'" : "'+obj+'"}');
+	return JSON.parse('{"'+key+'" : '+obj+'}');
+}
 
 function getIntToNull(ID){
 	var obj = Number($.trim($("#"+ID).val()));

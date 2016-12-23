@@ -121,21 +121,10 @@ function addDataToDetailLead(){
 var callStartDateOld = "";
 var ckTextarea = "";
 $(function(){
+	ckTextarea = CKEDITOR.replace('ca_resolution');	
 	
-	// $("#ca_resolution").wysihtml5();
-	ckTextarea = CKEDITOR.replace('ca_resolution');
 	$("#ca_article").prop("disabled", true);
 	$("#collabTags").select2();
-	
-	
-	
-//	$('#ca_resolvedDate').daterangepicker({
-//        singleDatePicker: true,
-//        showDropdowns: true,
-//        format: 'DD/MM/YYYY h:mm A'
-//    }).on('change', function(e) {
-//     	$('#frmResolution').bootstrapValidator('revalidateField', 'oppCloseDate');
-// 	});
 	
 	
 	$("#callDuration").timepicker({
@@ -183,7 +172,7 @@ $(function(){
      	$('#frmResolution').bootstrapValidator('revalidateField', 'ca_resolvedDate');
  	});
 	
-	$("#ca_resolvedBy").select2("val", var_ResolvedBy);
+	//$("#ca_resolvedBy").select2("val", var_ResolvedBy);
 	
 	$('.meet-data-time').daterangepicker({
         format: 'DD/MM/YYYY h:mm A',
@@ -258,7 +247,30 @@ $(function(){
 		}
 	});
 	
-	
+	$('#frmEscalateTo').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			ca_escalateTo: {
+				validators: {
+					notEmpty: {
+						message: 'The escalate to is required and can not be empty!'
+					}
+				}
+			},
+			ca_escalateStatus: {
+				validators: {
+					notEmpty: {
+						message: 'The escalate status is required and can not be empty!'
+					}
+				}
+			}
+		}
+	});
 	
 	
 	

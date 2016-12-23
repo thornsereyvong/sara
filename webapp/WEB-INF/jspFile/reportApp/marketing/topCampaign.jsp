@@ -210,6 +210,33 @@ $(function(){
 					</div>
 				</div>
 			</div>
+			
+			<div class="col-md-12">
+				<div class="box box-success">
+					<div class="box-body">
+						<div class="tablecontainer table-responsive">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>Campaign ID</th>
+										<th>Campaign Name</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+								
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			
+			
 			<div id="errors"></div>
 		</div>
 	
