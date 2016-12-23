@@ -21,7 +21,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 	$scope.listCompetitors = function(){
 		$http.get("${pageContext.request.contextPath}/hbu/competitor/list").success(function(response){
 				$scope.competitors = response.COMPETITORS;
-				$scope.length = $scope.competitors.length;
 			});
 		};
 
@@ -42,20 +41,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 				$("#btnCompetitorSave").text("Update");
 			});
 		};
-
-	$scope.findHBUItemById = function(itemId){
-			$http.get("${pageContext.request.contextPath}/item/view/"+itemId).success(function(response){
-				$scope.item = response.ITEM;
-				$.each($scope.item.competitors,function(i, com){
-					$("input[name=competitor]:not(:checked)").each(function(){
-						if($(this).val() == com.comId){
-							$(this).prop('checked',true);
-						}
-					});
-					
-				});
-			});
-		}
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -66,16 +51,13 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		$('#frmCompetitor').bootstrapValidator('resetForm', true);
 		$('#comName').val("");
 		$("#comAddress").val("");
-		$("input[name=competitor]:checked").prop('checked',false);
-    	$("#ato_product").select2('val','');
-    	$('#frmAddCompetitorToProduct').bootstrapValidator('resetForm', true);
 	};
 	
 	$scope.deleteCompetitor = function(comId){
 		var str = '<%=roleDelete%>';
 		if(str == "YES"){
 			swal({   
-				title: "<span style='font-size: 25px;'>You are about to delete Competitor with ID: <span class='color_msg'>"+comId+"</span>.</span>",   
+				title: "<span style='font-size: 25px;'>You are about to delete task with ID: <span class='color_msg'>"+comId+"</span>.</span>",   
 				text: "Click OK to continue or CANCEL to abort.",   
 				type: "info", 
 				html: true,
@@ -131,10 +113,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		     $('.table-responsive').css( "overflow", "auto" );
 		});
 
-		$("#btnAddToProduct").click(function(){
-			$("#frmAddCompetitorToProduct").modal('toggle');
-		});
-
 		$("#btn-create").click(function(){
 			$("#tCompetitor").text("Create Competitor");
 			$("#btnCompetitorSave").text("Save");
@@ -145,81 +123,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		$('#btnCompetitorSave').click(function(){
 			$("#frmCompetitor").submit();
 		});
-
-		$("#ato_product").change(function(){
-			$("input:checked").each(function(){
-				 //$(this).prop("checked", false);
-				this.checked = false;
-			});
-			if($("#ato_product").val() != ""){
-				angular.element(document.getElementById('competitorController')).scope().findHBUItemById($("#ato_product").val());
-			}
-		});
-		
-		/*Add to product block*/
-
-		function addCompetitorsToProduct(){
-			var competitors = [];
-			$("input[name=competitor]:checked").each(function(){
-				competitors.push({"comId":$(this).val()});
-			});
-			swal({   
-				title: "<span style='font-size: 25px;'>You are about to add competitors to product.</span>",
-				text: "Click OK to continue or CANCEL to abort.",
-				type: "info",
-				html: true,
-				showCancelButton: true,
-				closeOnConfirm: false,
-				showLoaderOnConfirm: true,		
-			}, function(){ 
-					setTimeout(function(){
-						$.ajax({ 
-							url : "${pageContext.request.contextPath}/item/add",
-							type : "POST",
-							data : JSON.stringify({
-								  "itemId" : getValueStringById("ato_product"),
-								  "competitors": competitors,
-							}),
-							beforeSend: function(xhr) {
-							    xhr.setRequestHeader("Accept", "application/json");
-							    xhr.setRequestHeader("Content-Type", "application/json");
-						    }, 
-						    success: function(result){	
-						    	$("input[name=competitor]:checked").attr('checked',false);
-						    	$("#ato_product").select2('val','');
-						    	$('#frmAddCompetitorToProduct').bootstrapValidator('resetForm', true);
-								if(result.MESSAGE == "INSERTED"){						
-									swal({
-			    						title: "SUCCESSFUL",
-			    					  	text: result.MSG,
-			    					  	html: true,
-			    					  	timer: 2000,
-			    					  	type: "success"
-			    					});
-									$("#frmAddCompetitorToProduct").modal('toggle');
-								}else{
-									swal({
-			    						title: "UNSUCCESSFUL",
-			    					  	text: result.MSG,
-			    					  	html: true,
-			    					  	timer: 2000,
-			    					  	type: "error"
-			    					});
-								}
-							},
-				    		error:function(){
-				    			alertMsgErrorSweet();
-				    		} 
-						});
-				}, 500);
-			});
-		}
-
-		$("#btnAdd").click(function(){
-			addCompetitorsToProduct();
-		});
-		
-		/*End add to product block*/
 
 		$('#frmCompetitor').bootstrapValidator({
 			message: 'This value is not valid',
@@ -380,11 +283,8 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div style="background: #fff; margin-top: 15px;">
-					<div class="col-sm-1">
+					<div class="col-sm-12">
 						<a class="btn btn-info btn-app" id = "btn-create"><i class="fa fa-plus" aria-hidden="true"></i> Create</a> 
-					</div>
-					<div class="col-sm-1">
-						<a class="btn btn-info btn-app" id = "btnAddToProduct"><i class="fa fa-plus" aria-hidden="true"></i> Add To Product</a> 
 					</div>
 				</div>
 			</div>
@@ -527,70 +427,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 								&nbsp;&nbsp;
 								<button type="button" class="btn btn-primary pull-right"
 									id="btnCompetitorSave" name="btnCompetitorSave">Save</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<input type="hidden" id="btnAddCompetitorToProduct" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="frmAddCompetitorToProduct" />
-				<div ng-controller="competitorController" class="modal fade modal-default" id="frmAddCompetitorToProduct" role="dialog">
-					<div class="modal-dialog  modal-lg" data-ng-init="listItems()">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" ng-click="cancelAddCompetitor()" class="close"
-									data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">
-									<b  id="tCompetitorToProduct">Add Compettitors to Product</b>
-								</h4>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<form id="frmAddCompetitorToProduct">
-										<div class="col-md-12">
-											<div class="col-md-5">
-												<div class="form-group">
-												<table class="table table-bordered">
-													<tr>
-														<th>
-															<label>Product <span class="requrie">(Required)</span></label>
-														</th>
-													</tr>
-													<tr>
-														<td>
-															<select class="form-control select2" name="ato_product" id="ato_product" style="width: 100%;">
-																<option value="">-- SELECT Product --</option>
-																<option ng-repeat="item in items" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
-															</select>
-														</td>
-													</tr>
-												</table>
-												</div>
-											</div>
-											<div class="col-md-7">
-												<div class="form-group table-responsive">
-													<table class="table table-bordered">
-														<tr>
-															<th><label>Competitor List</label></th>
-															<th><label>Add To Product</label></th>
-														</tr>
-														<tr id="initialCompetitor" ng-repeat = "com in competitors">
-															<td class="col-md-9">[{{com.comId}}] {{com.comName}}</td>
-															<td class="col-md-3 text-center"><input type="checkbox" name="competitor" value="{{com.comId}}"></td>
-														</tr>
-													</table>
-												</div>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" id="btnCancel"
-									ng-click="cancelAddCompetitor()" name="btnCancel"
-									class="btn btn-danger" data-dismiss="modal">Cancel</button>
-								&nbsp;&nbsp;
-								<button type="button" class="btn btn-primary pull-right"
-									id="btnAdd" name="btnAdd">Add</button>
 							</div>
 						</div>
 					</div>

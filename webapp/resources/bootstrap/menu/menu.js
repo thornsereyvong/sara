@@ -420,6 +420,10 @@ function selectMenu(menu_slide){
     	removeCla("#hbu","#ul_hbu","#ul_li_competitor","#hbu_icon_competitor");
     	document.title = 'List Competitors | CRM';
         break;
+    case "listCompetitorsByProduct":
+    	removeCla("#hbu","#ul_hbu","#ul_li_competitor_list","#hbu_icon_competitor_list");
+    	document.title = 'List Competitors By Product| CRM';
+        break;
     
     case "topCampaign":
     	iAddClass("report_menu", "repMarketing","repCampaign",1);

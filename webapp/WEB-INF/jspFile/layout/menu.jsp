@@ -181,6 +181,11 @@ $(document).ready(function(){
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="hbu_icon_competitor"></i> <span>Competitors</span>
 					</a></li>
+					<li id="ul_li_competitor_list"><a
+						href="${pageContext.request.contextPath}/list-competitors-by-product"> <i
+							class='fa fa-circle-o color_menu' aria-hidden='true'
+							id="hbu_icon_competitor_list"></i> <span>Competitor List By Product</span>
+					</a></li>
 					<li id="ul_li_survey"><a
 						href="${pageContext.request.contextPath}/list-market-survey"> <i
 							class='fa fa-circle-o color_menu' aria-hidden='true'
