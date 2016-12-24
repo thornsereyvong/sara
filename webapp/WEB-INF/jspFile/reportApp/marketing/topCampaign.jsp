@@ -220,6 +220,11 @@ $(function(){
 									<tr>
 										<th>Campaign ID</th>
 										<th>Campaign Name</th>
+										<th>Type</th>
+										<th>Status</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+										<th>Num Sent</th>
 									</tr>
 								</thead>
 								<tbody>

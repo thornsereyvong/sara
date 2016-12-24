@@ -31,7 +31,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		var str = '<%=roleDelete%>';
 		if(str == "YES"){
 			swal({   
-				title: "<span style='font-size: 25px;'>You are about to delete customer with ID: <span class='color_msg'>"+conId+"</span>.</span>",   
+				title: "<span style='font-size: 25px;'>You are about to delete customer with ID: <span class='color_msg'>"+custId+"</span>.</span>",   
 				text: "Click OK to continue or CANCEL to abort.",   
 				type: "info", 
 				html: true,
@@ -43,7 +43,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 				setTimeout(function(){			
 					$.ajax({ 
 			    		url: "${pageContext.request.contextPath}/customer/remove/"+custId,
-			    		method: "POST",
+			    		method: "DELETE",
 			    		async: false,
 			    		beforeSend: function(xhr) {
 			    		    xhr.setRequestHeader("Accept", "application/json");
@@ -63,11 +63,17 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    					$scope.listCustomer();
 			    				},2000);
 			    			}else{
-			    				swal("Unsuccessful!", result.MSG, "error");
+			    				swal({
+			    					title:"UNSUCCESSFUL",
+			    					text: result.MSG, 
+			    					type:"error", 
+			    					html: true,
+			    					timer: 2000,
+			    				});
 			    			}
 			    		},
 			    		error:function(){
-			    			swal("Unsuccessful!", "Please try again!", "error");
+			    			swal("UNSUCCESSFUL", "Please try again!", "error");
 			    		}		    	    
 			    	});
 				}, 500);
@@ -111,115 +117,94 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			 
 			<div class="clearfix"></div>
 
-			<div class="panel panel-default">
-  				<div class="panel-body">
-  				
-				 <div class="col-sm-4">
-				  <form class="form-inline">
-				        <div class="form-group" style="padding-top: 10px;">
-				            <label >Search :</label>
-				            <input type="text" ng-model="search" class="form-control" placeholder="Search">
-				        </div>
-				    </form>
-				    <br/>
-				  </div>
-				  <div class="clearfix"></div>
-			<div class="tablecontainer table-responsive" data-ng-init="listCustomer()" > 
-				<%
-					if(roleList.equals("YES")){
-				%>
-					<table class="table table-hover" >
-						<tr>
-							<th style="cursor: pointer;" ng-click="sort('custID')">CustomerID
-								<span class="glyphicon sort-icon" ng-show="sortKey=='custID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('custName')">Customer Name
-								<span class="glyphicon sort-icon" ng-show="sortKey=='custName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('custTel1')">Tel
-								<span class="glyphicon sort-icon" ng-show="sortKey=='custTel1'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('custEmail')">Email
-								<span class="glyphicon sort-icon" ng-show="sortKey=='email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('industID.industName')">Industry
-								<span class="glyphicon sort-icon" ng-show="sortKey=='industID.industName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							
+				<div class="panel panel-default">
+	  				<div class="panel-body">
+						<div class="col-sm-4">
+							  <form class="form-inline">
+							        <div class="form-group" style="padding-top: 10px;">
+							            <label >Search :</label>
+							            <input type="text" ng-model="search" class="form-control" placeholder="Search">
+							        </div>
+							    </form>
+							    <br/>
+					  	</div>
+					  	<div class="clearfix"></div>
+							<div class="tablecontainer table-responsive" data-ng-init="listCustomer()" > 
+								<%
+									if(roleList.equals("YES")){
+								%>
+									<table class="table table-hover" >
+										<tr>
+											<th style="cursor: pointer;" ng-click="sort('custID')">CustomerID
+												<span class="glyphicon sort-icon" ng-show="sortKey=='custID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('custName')">Customer Name
+												<span class="glyphicon sort-icon" ng-show="sortKey=='custName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('custTel1')">Tel
+												<span class="glyphicon sort-icon" ng-show="sortKey=='custTel1'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('custEmail')">Email
+												<span class="glyphicon sort-icon" ng-show="sortKey=='email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('industID.industName')">Industry
+												<span class="glyphicon sort-icon" ng-show="sortKey=='industID.industName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
 											
-							<th>Action</th>
-						</tr>
-
-						<tr dir-paginate="cc in customer |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
-							<td>{{cc.custID}}</td>
-							<td>{{cc.custName}}</td>
-							<td>{{cc.custTel1}}</td>
-							<td>{{cc.custEmail}}</td>
-							<td>{{cc.industID.industName}}</td>
-							
-							<td>
-								<div class="col-sm-2">
-									<div class="btn-group">
-				                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
-				                        <span class="caret"></span>
-				                        <span class="sr-only">Toggle Dropdown</span>
-				                      </button>
-				                      <ul class="dropdown-menu" role="menu">
-				                        <li><a href="${pageContext.request.contextPath}/update-customer/{{cc.custID}}"><i class="fa fa-pencil"></i> Edit</a></li>
-				                        <li><a href="#" ng-click="deleteCustomer(cc.custID)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="${pageContext.request.contextPath}/view-customer/{{cc.custID}}"><i class="fa fa-eye"></i> View</a></li>
-				                      </ul>
-				                    </div>
-			                   	</div>
+															
+											<th>Action</th>
+										</tr>
+				
+										<tr dir-paginate="cc in customer |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
+											<td>{{cc.custID}}</td>
+											<td>{{cc.custName}}</td>
+											<td>{{cc.custTel1}}</td>
+											<td>{{cc.custEmail}}</td>
+											<td>{{cc.industID.industName}}</td>
+											
+											<td>
+												<div class="col-sm-2">
+													<div class="btn-group">
+								                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
+								                        <span class="caret"></span>
+								                        <span class="sr-only">Toggle Dropdown</span>
+								                      </button>
+								                      <ul class="dropdown-menu" role="menu">
+								                        <li><a href="${pageContext.request.contextPath}/update-customer/{{cc.custID}}"><i class="fa fa-pencil"></i> Edit</a></li>
+								                        <li><a href="#" ng-click="deleteCustomer(cc.custID)"><i class="fa fa-trash"></i> Delete</a></li>
+								                        <li><a href="${pageContext.request.contextPath}/view-customer/{{cc.custID}}"><i class="fa fa-eye"></i> View</a></li>
+								                      </ul>
+								                    </div>
+							                   	</div>
+												
+											</td>
+										</tr>
 								
-							</td>
-						</tr>
-				
-				</table>
-				
-			    <dir-pagination-controls
-			       max-size="5"
-			       direction-links="true"
-			       boundary-links="true" >
-			    </dir-pagination-controls> 
-				<%		
-					}else{
-				%>
-					<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>	
-				<%			
-					}
-				%>
-				
-			    
-			</div>	
-				
-
-			  </div>
-		</div>
-			</div>
-			<!-- /.box-body -->
+								</table>
+								
+							    <dir-pagination-controls
+							       max-size="5"
+							       direction-links="true"
+							       boundary-links="true" >
+							    </dir-pagination-controls> 
+								<%		
+									}else{
+								%>
+									<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>	
+								<%			
+									}
+								%>
+								
+							    
+							</div>	
+					
+	
+				  		</div>
+					</div>
+				</div>
 			<div class="box-footer"></div>
-			<!-- /.box-footer-->
 		</div>
-		
-		<!-- /.box -->
-
-
 	</section>
-	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-
-
-
-<!-- /.content-wrapper -->
-
-
-
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 
