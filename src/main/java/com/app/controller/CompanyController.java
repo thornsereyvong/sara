@@ -35,7 +35,7 @@ public class CompanyController {
 		
 		MeDataSource dataSource = new MeDataSource();
 		
-		dataSource.setDb("systemdatabase");
+		dataSource.setDb("balan973_systemdatabase");
 		dataSource.setIp(req.getSession().getAttribute("ip").toString());
 		dataSource.setPort(req.getSession().getAttribute("port").toString());
 		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());

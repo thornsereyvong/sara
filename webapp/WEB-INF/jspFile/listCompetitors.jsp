@@ -131,9 +131,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		     $('.table-responsive').css( "overflow", "auto" );
 		});
 
-		$("#btnAddToProduct").click(function(){
-			$("#frmAddCompetitorToProduct").modal('toggle');
-		});
 
 		$("#btn-create").click(function(){
 			$("#tCompetitor").text("Create Competitor");
@@ -146,8 +143,25 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 			$("#frmCompetitor").submit();
 		});
 
+		
+		/*Add to product block*/
+		
+		$("#btnAddToProduct").click(function(){
+			$("#frmAddCompetitorToProduct").modal('toggle');
+			if($("input[name=check-all]").prop('checked')){
+				alert();
+				$("input[name=competitor]:not(:checked)").each(function(){
+					$(this).prop('checked',true);
+				});
+			}
+		});
+		
+		function checkedAll(){
+			
+		};
+
 		$("#ato_product").change(function(){
-			$("input:checked").each(function(){
+			$("input[name=competitor]:checked").each(function(){
 				 //$(this).prop("checked", false);
 				this.checked = false;
 			});
@@ -155,64 +169,81 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 				angular.element(document.getElementById('competitorController')).scope().findHBUItemById($("#ato_product").val());
 			}
 		});
-		
-		/*Add to product block*/
 
 		function addCompetitorsToProduct(){
 			var competitors = [];
 			$("input[name=competitor]:checked").each(function(){
 				competitors.push({"comId":$(this).val()});
 			});
-			swal({   
-				title: "<span style='font-size: 25px;'>You are about to add competitors to product.</span>",
-				text: "Click OK to continue or CANCEL to abort.",
-				type: "info",
-				html: true,
-				showCancelButton: true,
-				closeOnConfirm: false,
-				showLoaderOnConfirm: true,		
-			}, function(){ 
-					setTimeout(function(){
-						$.ajax({ 
-							url : "${pageContext.request.contextPath}/item/add",
-							type : "POST",
-							data : JSON.stringify({
-								  "itemId" : getValueStringById("ato_product"),
-								  "competitors": competitors,
-							}),
-							beforeSend: function(xhr) {
-							    xhr.setRequestHeader("Accept", "application/json");
-							    xhr.setRequestHeader("Content-Type", "application/json");
-						    }, 
-						    success: function(result){	
-						    	$("input[name=competitor]:checked").attr('checked',false);
-						    	$("#ato_product").select2('val','');
-						    	$('#frmAddCompetitorToProduct').bootstrapValidator('resetForm', true);
-								if(result.MESSAGE == "INSERTED"){						
-									swal({
-			    						title: "SUCCESSFUL",
-			    					  	text: result.MSG,
-			    					  	html: true,
-			    					  	timer: 2000,
-			    					  	type: "success"
-			    					});
-									$("#frmAddCompetitorToProduct").modal('toggle');
-								}else{
-									swal({
-			    						title: "UNSUCCESSFUL",
-			    					  	text: result.MSG,
-			    					  	html: true,
-			    					  	timer: 2000,
-			    					  	type: "error"
-			    					});
-								}
-							},
-				    		error:function(){
-				    			alertMsgErrorSweet();
-				    		} 
-						});
-				}, 500);
+			$('#frmAddCompetitorToProduct').bootstrapValidator({
+				message: 'This value is not valid',
+				feedbackIcons: {
+					valid: 'glyphicon glyphicon-ok',
+					invalid: 'glyphicon glyphicon-remove',
+					validating: 'glyphicon glyphicon-refresh'
+				},
+				fields: {
+					ato_product: {
+						validators: {
+							notEmpty: {
+								message: 'The product is required and can not be empty!'
+							}
+						}
+					}
+				}
+			}).on('success.form.bv', function(e) {
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to add competitors to product.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+						setTimeout(function(){
+							$.ajax({ 
+								url : "${pageContext.request.contextPath}/item/add",
+								type : "POST",
+								data : JSON.stringify({
+									  "itemId" : getValueStringById("ato_product"),
+									  "competitors": competitors,
+								}),
+								beforeSend: function(xhr) {
+								    xhr.setRequestHeader("Accept", "application/json");
+								    xhr.setRequestHeader("Content-Type", "application/json");
+							    }, 
+							    success: function(result){	
+							    	$("input[name=competitor]:checked").attr('checked',false);
+							    	$("#ato_product").select2('val','');
+							    	$('#frmAddCompetitorToProduct').bootstrapValidator('resetForm', true);
+									if(result.MESSAGE == "INSERTED"){						
+										swal({
+				    						title: "SUCCESSFUL",
+				    					  	text: result.MSG,
+				    					  	html: true,
+				    					  	timer: 2000,
+				    					  	type: "success"
+				    					});
+										$("#frmAddCompetitorToProduct").modal('toggle');
+									}else{
+										swal({
+				    						title: "UNSUCCESSFUL",
+				    					  	text: result.MSG,
+				    					  	html: true,
+				    					  	timer: 2000,
+				    					  	type: "error"
+				    					});
+									}
+								},
+					    		error:function(){
+					    			alertMsgErrorSweet();
+					    		} 
+							});
+					}, 500);
+				});
 			});
+			$("#frmAddCompetitorToProduct").submit();
 		}
 
 		$("#btnAdd").click(function(){
@@ -384,7 +415,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 						<a class="btn btn-info btn-app" id = "btn-create"><i class="fa fa-plus" aria-hidden="true"></i> Create</a> 
 					</div>
 					<div class="col-sm-1">
-						<a class="btn btn-info btn-app" id = "btnAddToProduct"><i class="fa fa-plus" aria-hidden="true"></i> Add To Product</a> 
+						<a class="btn btn-info btn-app" id = "btnAddToProduct"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add To Product</a> 
 					</div>
 				</div>
 			</div>
@@ -569,13 +600,13 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 											<div class="col-md-7">
 												<div class="form-group table-responsive">
 													<table class="table table-bordered">
-														<tr>
+														<tr class="active info">
 															<th><label>Competitor List</label></th>
-															<th><label>Add To Product</label></th>
+															<th class="text-center"><input type="checkbox" name="check-all" /><!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> --></th>
 														</tr>
 														<tr id="initialCompetitor" ng-repeat = "com in competitors">
-															<td class="col-md-9">[{{com.comId}}] {{com.comName}}</td>
-															<td class="col-md-3 text-center"><input type="checkbox" name="competitor" value="{{com.comId}}"></td>
+															<td class="col-md-11">[{{com.comId}}] {{com.comName}}</td>
+															<td class="col-md-1 text-center"><input type="checkbox" name="competitor" value="{{com.comId}}"></td>
 														</tr>
 													</table>
 												</div>

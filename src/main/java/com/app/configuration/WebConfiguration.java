@@ -51,10 +51,12 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	public String URL(){
 		//String  url = "http://116.212.139.10:8888/api/";
 		//String  url = "http://192.168.0.111:8080/api/";
-		String  url = "http://localhost:8080/BalancikaCRM/";
+		//String  url = "http://localhost:8080/BalancikaCRM/";
 		//String  url = "http://bmgcorpapi.balancikaapps.com/";
 		//String  url = "http://balancikaapi.balancikaapps.com/";
 		//String  url = "http://api.balancikaapps.com/";
+		//String  url = "http://demoapi.balancikaapps.com/";
+		String  url = "http://192.168.123.111:8881/server/";
 		return url;
 	}
 	
