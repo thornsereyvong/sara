@@ -134,7 +134,16 @@ $(document).ready(function() {
 						message: 'The description must be less than 1000 characters long.'
 					}
 				}
+			},
+			ca_key: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The keyword must be less than 255 characters long.'
+					}
+				}
 			}
+			
 		}
 	}).on('success.form.bv', function(e) {
 		swal({   
@@ -163,7 +172,8 @@ $(document).ready(function() {
 					      "assignTo": getJsonById("userID","ca_assignTo","str"),
 					      "createBy": $.session.get("parentID"),
 					      "item" : getJsonById("itemId","ca_product","str"),
-					      "convertFollowupDate": getValueStringById("ca_followup_date")
+					      "convertFollowupDate": getValueStringById("ca_followup_date"),
+					      "key" : getValueStringById("ca_key")
 				    }),
 					beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
@@ -276,6 +286,12 @@ $(document).ready(function() {
 											</div>
 											<input type="text" class="form-control pull-right date2" name="ca_followup_date" id="ca_followup_date">
 										</div> 
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<label class="font-label">Keyword</label>
+									<div class="form-group">
+										<input type="text" class="form-control" id="ca_key" name="ca_key">
 									</div>
 								</div>												
 							</div>

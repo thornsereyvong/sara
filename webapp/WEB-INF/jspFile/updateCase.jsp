@@ -67,6 +67,8 @@ app.controller('caseController',['$scope','$http',function($scope, $http){
 			$scope.assignTo = response.ASSIGN_TO;
 			$scope.dataCase = response.CASE;
 			$scope.items = response.ITEMS;
+			
+			
 		});
 	};			
 }]);
@@ -161,6 +163,14 @@ $(document).ready(function() {
 						message: 'The description must be less than 1000 characters long.'
 					}
 				}
+			},
+			ca_key: {
+				validators: {
+					stringLength: {
+						max: 255,
+						message: 'The keyword must be less than 255 characters long.'
+					}
+				}
 			}
 		}
 	}).on('success.form.bv', function(e) {
@@ -191,6 +201,7 @@ $(document).ready(function() {
 					      "assignTo": getJsonById("userID","ca_assignTo","str"),
 					      "item": getJsonById("itemId","ca_product","str"),
 					      "modifyBy": username,
+					      "key" : getValueStringById("ca_key"),
 					      "convertFollowupDate": getValueStringById("ca_followup_date")
 				    }),
 					beforeSend: function(xhr) {
@@ -238,7 +249,7 @@ $(document).ready(function() {
 								<div class="col-sm-6">
 									<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<input type="text" value="{{dataCase.subject}}" class="form-control" id="ca_subject" name="ca_subject">
+										<input type="text" value="{{dataCase.subject}}" class="form-control ng-cloak" id="ca_subject" name="ca_subject">
 									</div>
 								</div>
 								<div class="col-sm-6">
@@ -318,7 +329,12 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								
+								<div class="col-sm-12">
+									<label class="font-label">Keyword</label>
+									<div class="form-group">
+										<input type="text" class="form-control ng-cloak" value="{{dataCase.caseKey}}" id="ca_key" name="ca_key">
+									</div>
+								</div>	
 							</div>
 							<div class="clearfix"></div>
 							<div class="col-sm-12">
@@ -326,7 +342,7 @@ $(document).ready(function() {
 									<label class="font-label">Description </label>
 									<div class="form-group">
 										<textarea  rows="4" value="" cols="" name="ca_description" id="ca_description"
-											class="form-control">{{dataCase.des}}</textarea>
+											class="form-control ng-cloak">{{dataCase.des}}</textarea>
 									</div>
 								</div>
 							</div>

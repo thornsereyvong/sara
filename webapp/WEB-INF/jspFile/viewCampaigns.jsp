@@ -105,10 +105,11 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				$scope.listCollab(response.COLLABORATIONS);							
 				$scope.callStatusStartup = response.CALL_STATUS;
 				$scope.taskStatusStartup = response.TASK_STATUS;
-				$scope.taskContactStartup = response.CONTACTS;	
+				$scope.taskContactStartup = response.CONTACTS;
 				$scope.eventLocationStartup = response.EVENT_LOCATION;
 				$scope.meetStatusStartup = response.MEETING_STATUS;				
-				$scope.tags = response.TAG_TO;
+				$scope.tags = response.TAG_TO;	
+				
 			});
 	}
 	
@@ -122,6 +123,9 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	
 	$scope.listCollab = function(response){
 		$scope.collaborates = response;		
+		
+		//dis($scope.collaborates)
+		
 	}
 
 	$scope.listCollabByLeadByUser = function(){
@@ -1069,7 +1073,7 @@ function addDataToDetailLead(){
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username ng-cloak">{{campaign.campName}}</h3>
+						<h3 class="widget-user-username ng-cloak">[{{campaign.campID}}] {{campaign.campName}}</h3>
 						<h5 class="widget-user-desc">CAMPAIGN</h5>
 					</div>
 					<div class="widget-user-image">
@@ -1520,7 +1524,7 @@ function addDataToDetailLead(){
 													<img class="img-circle img-bordered-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image"> 
 													<span class="username"> 
 														<a href="#">{{collab.colUser}}</a> <a style="color: #999;font-size: 13px;">on {{collab.createDate}}</a>
-														<span ng-if="collab.colOwn == 'true'" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
+														<span ng-if="collab.colUser == username" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 													</span> 													
 													<span class="description"><i ng-if="collab.tags.length > 0 " class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
 												</div>
@@ -2177,7 +2181,7 @@ function addDataToDetailLead(){
 									<label>Contact</label> 
 									<select class="form-control select2" name="taskContact" id="taskContact" style="width: 100%;">
 										<option value="">-- SELECT A Contact --</option>
-										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conFirstname}} {{st.conLastName}}</option>
+										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">[{{st.conID}}] {{st.conSalutation}} {{st.conFirstname}} {{st.conLastname}}</option>
 									</select>
 								</div>
 							</div>
@@ -2284,7 +2288,7 @@ function addDataToDetailLead(){
 									<label>Location </label> 
 									<select class="form-control select2" name="eventLocation" id="eventLocation" style="width: 100%;">
 										<option value="">-- SELECT A Location --</option>
-										<option ng-repeat="loc in eventLocationStartup" value="{{loc.loId}}">{{loc.loName}}</option>
+										<option ng-repeat="loc in eventLocationStartup" value="{{loc.loId}}">[{{loc.loId}}] {{loc.loName}}</option>
 									</select>
 								</div>
 							</div>

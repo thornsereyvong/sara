@@ -101,17 +101,12 @@ function getRoleID(){
 	
 	
 	$.each(result.roleDetails, function(key, value){
-		
-		
-		alert(value.module.moduleId)
 
 		var ac = "";
 		if (value.roleAccess == "YES"){			
 			ac = "checked='checked'";
 		}else{
-			
 			ac = "";
-			
 		}
 		
 		
