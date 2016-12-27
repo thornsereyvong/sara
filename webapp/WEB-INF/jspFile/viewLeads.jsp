@@ -1545,7 +1545,7 @@ function addDataToDetailLead(){
 													<img class="img-circle img-bordered-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image"> 
 													<span class="username"> 
 														<a href="#">{{collab.colUser}}</a> <a style="color: #999;font-size: 13px;">on {{collab.createDate}}</a>
-														<span ng-if="collab.colOwn == 'true'" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
+														<span ng-if="collab.colUser == username" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 													</span> 													
 													<span class="description"><i ng-if="collab.tags.length > 0 " class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
 												</div>
@@ -1971,6 +1971,7 @@ function addDataToDetailLead(){
 										<label>Status <span class="requrie">(Required)</span></label>
 										<select class="form-control select2" name="callStatus"
 											id="callStatus" style="width: 100%;">
+											<option value="">--SELECT A Status</option>
 											<option ng-repeat="st in callStatusStartup"
 												value="{{st.callStatusId}}">{{st.callStatusName}}</option>
 										</select>
@@ -2204,7 +2205,7 @@ function addDataToDetailLead(){
 									<label>Contact</label> 
 									<select class="form-control select2" name="taskContact" id="taskContact" style="width: 100%;">
 										<option value="">-- SELECT A Contact --</option>
-										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conSalutation}}{{st.conFirstname}} {{st.conLastname}}</option>
+										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">[{{st.conID}}] {{st.conSalutation}}{{st.conFirstname}} {{st.conLastname}}</option>
 									</select>
 								</div>
 							</div>
@@ -2311,7 +2312,7 @@ function addDataToDetailLead(){
 									<label>Location </label> 
 									<select class="form-control select2" name="eventLocation" id="eventLocation" style="width: 100%;">
 										<option value="">-- SELECT A Location --</option>
-										<option ng-repeat="loc in eventLocationStartup" value="{{loc.loId}}">{{loc.loName}}</option>
+										<option ng-repeat="loc in eventLocationStartup" value="{{loc.loId}}">[{{loc.loId}}] {{loc.loName}}</option>
 									</select>
 								</div>
 							</div>

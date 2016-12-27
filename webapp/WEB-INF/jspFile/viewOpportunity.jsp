@@ -2423,7 +2423,7 @@ function iSplitBySplint(obj){
 													<img class="img-circle img-bordered-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image"> 
 													<span class="username"> 
 														<a href="#">{{collab.colUser}}</a> <a style="color: #999;font-size: 13px;">on {{collab.createDate}}</a>
-														<span ng-if="collab.colOwn == 'true'" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
+														<span ng-if="collab.colUser == username" ng-click="btnDeleteCollabPost(key_post,collab.colId)" class="pull-right btn-box-tool cusor_pointer"><button class="btn btn-default btn-sm"><i class="fa fa-trash trask-btn"></i></button></span>
 													</span> 													
 													<span class="description"><i ng-if="collab.tags.length > 0 " class="fa fa-tags"></i> <span ng-repeat="t in collab.tags">{{t.username}} </span></span>
 												</div>
@@ -2596,13 +2596,13 @@ function iSplitBySplint(obj){
 															</li>
 															
 															<li class="list-group-item item_border">Campaign <a
-																class="pull-right show-text-detail">{{opportunity.campName}}</a>
+																class="pull-right show-text-detail">[{{opportunity.campID}}] {{opportunity.campName}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<select class="form-control select2"
 																		name="oppCampaign" id="oppCampaign" style="width: 100%;">
 																		<option value="">-- SELECT A Campaign --</option>
 																		<option ng-repeat="camp in oppCampaign"
-																			value="{{camp.campID}}">{{camp.campName}}</option>
+																			value="{{camp.campID}}">[{{camp.campID}}] {{camp.campName}}</option>
 																	</select>
 																</div>
 															</li>
@@ -3703,7 +3703,7 @@ function iSplitBySplint(obj){
 									<label>Contact</label> 
 									<select class="form-control select2" name="taskContact" id="taskContact" style="width: 100%;">
 										<option value="">-- SELECT A Contact --</option>
-										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">{{st.conFirstname}} {{st.conLastName}}</option>
+										<option ng-repeat="st in taskContactStartup" value="{{st.conID}}">[{{st.conID}}] {{st.conSalutation}} {{st.conFirstname}} {{st.conLastName}}</option>
 									</select>
 								</div>
 							</div>
