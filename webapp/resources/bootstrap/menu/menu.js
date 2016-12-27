@@ -418,11 +418,11 @@ function selectMenu(menu_slide){
         
     case "listCompetitors":
     	removeCla("#hbu","#ul_hbu","#ul_li_competitor","#hbu_icon_competitor");
-    	document.title = 'List Competitors | CRM';
+    	document.title = 'List Competitors | HBU';
         break;
-    case "listCompetitorsByProduct":
-    	removeCla("#hbu","#ul_hbu","#ul_li_competitor_list","#hbu_icon_competitor_list");
-    	document.title = 'List Competitors By Product| CRM';
+    case "marketSurvey":
+    	removeCla("#hbu","#ul_hbu","#ul_li_survey","#hbu_icon_survey");
+    	document.title = 'Market Survey| HBU';
         break;
     
     case "topCampaign":

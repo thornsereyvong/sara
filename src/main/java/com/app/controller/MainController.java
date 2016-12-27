@@ -1540,6 +1540,22 @@ public class MainController {
 
 	}
 	
+	@RequestMapping("/market-survey")
+	public String marketSurvey(ModelMap model, HttpServletRequest req) {
+		model.addAttribute("menu", "marketSurvey");
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("MS", req);
+		model.addAttribute("role_list", camMap.get("roleList"));
+		model.addAttribute("role_delete", camMap.get("roleDelete"));
+		
+		if (camMap.get("roleAccess").equals("YES")) {
+			return "marketSurvey";
+		} else {
+			return "permission";
+		}
+
+	}
+	
 	@RequestMapping("/create-competitor")
 	public String createCompetitor(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createCompetitor");
