@@ -1637,7 +1637,14 @@ public class MainController {
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL + "api/role_detail/list/user/" + getPrincipal() + "/"
 				+ moduleId, HttpMethod.POST, request, Map.class);
+		
+		System.out.println(response.getBody());
+		
+		
 		Map<String, Object> userMap = (HashMap<String, Object>) response.getBody();
+		
+		
+		
 		if (userMap.get("DATA") != null) {
 			return (Map<String, Object>) userMap.get("DATA");
 		}

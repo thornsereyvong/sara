@@ -65,6 +65,17 @@ $(document).ready(function(){
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="marketing_icon_lead"></i> <span>Leads</span>
 					</a></li>
+					<li id="ul_li_competitor"><a
+						href="${pageContext.request.contextPath}/list-competitors"> <i
+							class='fa fa-circle-o color_menu' aria-hidden='true'
+							id="hbu_icon_competitor"></i> <span>Competitors</span>
+					</a></li>
+					<li id="ul_li_survey"><a
+						href="${pageContext.request.contextPath}/market-survey"> <i
+							class='fa fa-circle-o color_menu' aria-hidden='true'
+							id="hbu_icon_survey"></i> <span>Market Survey</span>
+					</a>
+					</li>
 
 				</ul></li>
 
@@ -170,7 +181,7 @@ $(document).ready(function(){
 					<span>Sale Order</span> <!-- <i class="fa fa-angle-left pull-right"></i> --></a>
 			</li>
 			
-			<li class='treeview ' id="hbu"><a href="#"><img
+			<%-- <li class='treeview ' id="hbu"><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/images/Support.png"
 					style="width: 16px;">&nbsp;&nbsp;<!-- <i class="fa fa-life-ring" aria-hidden="true"></i> -->
 					<span>HBU</span> <i class="fa fa-angle-left pull-right"></i></a>
@@ -181,11 +192,11 @@ $(document).ready(function(){
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="hbu_icon_competitor"></i> <span>Competitors</span>
 					</a></li>
-					<%-- <li id="ul_li_competitor_list"><a
+					<li id="ul_li_competitor_list"><a
 						href="${pageContext.request.contextPath}/list-competitors-by-product"> <i
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="hbu_icon_competitor_list"></i> <span>Competitor List By Product</span>
-					</a></li> --%>
+					</a></li>
 					<li id="ul_li_survey"><a
 						href="${pageContext.request.contextPath}/market-survey"> <i
 							class='fa fa-circle-o color_menu' aria-hidden='true'
@@ -193,7 +204,7 @@ $(document).ready(function(){
 					</a>
 					</li>
 				</ul>
-			</li>
+			</li> --%>
 
 			<li class="treeview" id="report_menu">
 				<a href="#"> <img style="width: 16px;" src="${pageContext.request.contextPath}/resources/images/module/Report-32.png" style="">&nbsp;&nbsp;
