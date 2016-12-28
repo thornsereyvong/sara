@@ -14,7 +14,9 @@
 
 
 <script type="text/javascript">
-var app = angular.module('empApp', ['angularUtils.directives.dirPagination']);
+var app = angular.module('empApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 app.controller('empController',['$scope','$http',function($scope, $http){	
 	$scope.listContact = function(){
