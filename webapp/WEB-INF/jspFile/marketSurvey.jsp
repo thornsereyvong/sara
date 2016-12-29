@@ -13,14 +13,14 @@
 <script type="text/javascript">
 
 
-var app = angular.module('noteApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+var app = angular.module('marketSurveyApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
 }]);
 var self = this;
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
 var noteId = "${noteId}";
-app.controller('viewnoteController',['$scope','$http',function($scope, $http){
+app.controller('marketSurveyController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
 		
@@ -31,8 +31,13 @@ app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 			$scope.items = response.ITEMS;
 			$scope.customers = response.CUSTOMERS;
 		});
-		
-	}
+	};
+
+	$scope.findCompetitorByItemId = function(itemId){
+		$http.get("${pageContext.request.contextPath}/item/view/"+itemId).success(function(response){
+			$scope.item = response.ITEM;
+		});
+	};
 }]);
 
 
@@ -47,6 +52,12 @@ $(document).ready(function(){
     }).on('change', function(e) {
 		if($("#surveyDate").val() != ""){
 			$('#form-call').bootstrapValidator('revalidateField', 'surveyDate');
+		}
+	});
+
+	$("#product").change(function(){
+		if($("#product") != null || $("#product") != ""){
+			angular.element(document.getElementById('marketSurveyController')).scope().findCompetitorByItemId($("#product").val());
 		}
 	});
 });
@@ -213,8 +224,7 @@ $(document).ready(function(){
 	border-left-color: rgb(75, 202, 129) !important;
 }
 </style>
-<div class="content-wrapper" id="viewnoteController" ng-app="noteApp"
-	ng-controller="viewnoteController">
+<div class="content-wrapper" id="marketSurveyController" ng-app="marketSurveyApp" ng-controller="marketSurveyController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1><!-- Market Survey -->&nbsp;</h1>
@@ -256,7 +266,7 @@ $(document).ready(function(){
 															<div class="form-group">
 																<select class="form-control select2"  name="product" id="product" style="width: 100%;">
 											                      <option value="">[-- Select Product --]</option>
-											                      <option ng-repeat="item in items" value="{{item.items}}">[{{item.itemId}}] {{item.itemName}}</option>            
+											                      <option ng-repeat="item in items" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>            
 											                    </select>
 															</div>
 														</div>
@@ -270,6 +280,17 @@ $(document).ready(function(){
 																	<input type="text" class="form-control pull-right date2" name="surveyDate" id="surveyDate">
 																</div> 
 															</div>
+														</div>
+														<div class="col-sm-12 table-responsive">
+															<table class="table table-bordered">
+																<tr>
+																	<th class="col-sm-2">[{{item.itemId}}] {{item.itemName}}</th>
+																	<th  ng-repeat = "com in item.competitors" class="text-center">{{com.comName}}</th>
+																</tr>
+																<tr ng-repeat="cust in item.customers">
+																	<td>{{cust.custName}}</td>
+																</tr>
+															</table>
 														</div>
 														<br>
 														<div class="col-sm-12 text-center" id="showBtnEditLead"

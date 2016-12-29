@@ -67,6 +67,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		$('#comName').val("");
 		$("#comAddress").val("");
 		$("input[name=competitor]:checked").prop('checked',false);
+		$("input[name=check-all]:checked").prop('checked',false);
     	$("#ato_product").select2('val','');
     	$('#frmAddCompetitorToProduct').bootstrapValidator('resetForm', true);
 	};
@@ -148,17 +149,20 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		
 		$("#btnAddToProduct").click(function(){
 			$("#frmAddCompetitorToProduct").modal('toggle');
-			if($("input[name=check-all]").prop('checked')){
-				alert();
+		});
+
+		$("input[name=check-all]").val($(this).is(':checked'));
+		$("input[name=check-all]").change(function(){
+			if($(this).is(':checked')){
 				$("input[name=competitor]:not(:checked)").each(function(){
 					$(this).prop('checked',true);
 				});
+			}else{
+				$("input[name=competitor]:checked").each(function(){
+					$(this).prop('checked',false);
+				});
 			}
 		});
-		
-		function checkedAll(){
-			
-		};
 
 		$("#ato_product").change(function(){
 			$("input[name=competitor]:checked").each(function(){
@@ -602,13 +606,18 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 													<table class="table table-bordered">
 														<tr class="active info">
 															<th><label>Competitor List</label></th>
-															<th class="text-center"><input type="checkbox" name="check-all" /><!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> --></th>
+															<th class="text-center"><input type="checkbox" name="check-all" onClick()/><!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> --></th>
 														</tr>
-														<tr id="initialCompetitor" ng-repeat = "com in competitors">
+														<tr dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6">
 															<td class="col-md-11">[{{com.comId}}] {{com.comName}}</td>
 															<td class="col-md-1 text-center"><input type="checkbox" name="competitor" value="{{com.comId}}"></td>
 														</tr>
 													</table>
+													<dir-pagination-controls
+												       max-size="6"
+												       direction-links="true"
+												       boundary-links="true" >
+													</dir-pagination-controls>
 												</div>
 											</div>
 										</div>

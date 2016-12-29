@@ -31,9 +31,9 @@
 
 			getUrlError();
 
-			/* $("#company").change(function() {
-				configdb($("#company").val());
-			}); */
+			$("#company").change(function() {
+				alert($("#company :selected").val());
+			});
 
 			$('#form-login').bootstrapValidator({
 				message : 'This value is not valid',
@@ -114,9 +114,7 @@
 					<select class="form-control" name="company" id="company"
 						data-ng-init="listSystemDatabase()">
 						<option value="">-- Select Company --</option>
-						<option ng-repeat= "db in database" value="{{db.DBName}}">{{db.ComName}}</option>
-						
-						<!-- <option ng-repeat="db in database" value="{{db.DBName}}">{{db.ComName}}</option> -->
+						<option ng-repeat= "db in database" value="{{db.DBName}},{{db.ComName}}">{{db.ComName}}</option>
 					</select>
 				</div>
 				<div class="row">
