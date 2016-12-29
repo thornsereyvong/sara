@@ -1592,9 +1592,8 @@ public class MainController {
 
 	@RequestMapping("menu")
 	public String menu(ModelMap model,HttpServletRequest req) {
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
-		
-		model.addAttribute("role_CRM_ADMIN", camMap.get("role"));
+		//Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
+		model.addAttribute("role_CRM_ADMIN", "f");
 		
 		return "layout/menu";
 	}
