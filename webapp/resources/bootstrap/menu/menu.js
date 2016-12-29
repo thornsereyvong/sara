@@ -417,11 +417,11 @@ function selectMenu(menu_slide){
         break;
         
     case "listCompetitors":
-    	removeCla("#hbu","#ul_hbu","#ul_li_competitor","#hbu_icon_competitor");
+    	removeCla("#marketing","#ul_marketing","#ul_li_competitor","#hbu_icon_competitor");
     	document.title = 'List Competitors | HBU';
         break;
     case "marketSurvey":
-    	removeCla("#hbu","#ul_hbu","#ul_li_survey","#hbu_icon_survey");
+    	removeCla("#marketing","#ul_marketing","#ul_li_survey","#hbu_icon_survey");
     	document.title = 'Market Survey| HBU';
         break;
     
