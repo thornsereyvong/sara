@@ -458,7 +458,7 @@ var LUom = content.SALE_ORDER_STARTUP[0].uom;
 //
 
 
-
+var LShipToAddress = content.SALE_ORDER_STARTUP[0].shipToAddress;
 var LCustomer = content.SALE_ORDER_STARTUP[0].customer;
 var LPriceCode = content.SALE_ORDER_STARTUP[0].priceCode;
 var LEmp = content.SALE_ORDER_STARTUP[0].employee;

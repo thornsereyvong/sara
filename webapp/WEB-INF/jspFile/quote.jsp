@@ -437,7 +437,7 @@ var tagClass ="";
 var LClass = content.DATA[0].classCode;
 var tagUom ="";
 var LUom = content.DATA[0].uom;
-
+var LShipToAddress = content.DATA[0].shipToAddress;
 var LCustomer = content.DATA[0].customer;
 var LPriceCode = content.DATA[0].priceCode;
 var LEmp = content.DATA[0].employee;

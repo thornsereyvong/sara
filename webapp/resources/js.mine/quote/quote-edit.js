@@ -83,7 +83,7 @@ $(function(){
 		if(customer != ""){
 			$("#customer").next().children().children().attr('style','border: 1px solid #d2d6de;');	
 			$("#priceCode").select2('val',LCustomer[customer].priceCode.priceCode);		
-			addShipToAdd(LCustomer[customer].shipAddresses);
+			addShipToAdd(findShipToAddressByCustomer(LCustomer[customer].custID));
 			$("#shipToAdd").select2('val',LCustomer[customer].aId);
 			if(LCustomer[customer].priceCode.priceCode != ''){
 				$("#priceCode").next().children().children().attr('style','border: 1px solid #d2d6de;');
@@ -92,7 +92,7 @@ $(function(){
 			$("#customer").next().children().children().attr('style','border: 1px solid #dd4b39;');
 			$("#priceCode").select2('val','');
 			addShipToAdd([]);	
-		}		
+		}	
 	});
 	// end Customer change act
 	
@@ -981,3 +981,17 @@ function getCustomerByIndex(index){
 	return LCustomer[index].custID;
 }
 
+function findShipToAddressByCustomer(custId){
+	if(LShipToAddress != null){
+		if(LShipToAddress.length>0){
+			var shipAdd = [];
+			$.each( LShipToAddress, function( index, value ){
+				if(value.docId==custId){
+					shipAdd.push(value);
+				}
+			});
+			return shipAdd;
+		}
+	}	
+	return '';
+}

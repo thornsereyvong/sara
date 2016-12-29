@@ -441,10 +441,9 @@ var tagClass ="";
 var LClass = content.QUOTE_STARTUP[0].classCode;
 var tagUom ="";
 var LUom = content.QUOTE_STARTUP[0].uom;
-
 //dis(content) 
 
-
+var LShipToAddress = content.QUOTE_STARTUP[0].shipToAddress;
 var LCustomer = content.QUOTE_STARTUP[0].customer;
 var LPriceCode = content.QUOTE_STARTUP[0].priceCode;
 var LEmp = content.QUOTE_STARTUP[0].employee;

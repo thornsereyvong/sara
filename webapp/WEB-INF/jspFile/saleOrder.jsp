@@ -433,7 +433,7 @@
 
 var server = "${pageContext.request.contextPath}/";
 var index=0;
-
+var content = {};
 var content = JSON.parse($.ajax({ 
 	url: server+"quote/list-content",
 	method: "GET",
@@ -449,7 +449,7 @@ var tagClass ="";
 var LClass = content.DATA[0].classCode;
 var tagUom ="";
 var LUom = content.DATA[0].uom;
-
+var LShipToAddress = content.DATA[0].shipToAddress;
 var LCustomer = content.DATA[0].customer;
 var LPriceCode = content.DATA[0].priceCode;
 var LEmp = content.DATA[0].employee;
@@ -495,6 +495,8 @@ if(content.MESSAGE == "SUCCESS"){
 	
 	
 }
+
+
 function findIndexCutomer(custId){		
 	if(LCustomer != null){
 		var l = LCustomer.length;

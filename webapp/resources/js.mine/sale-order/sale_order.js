@@ -185,7 +185,7 @@ $(function(){
 		if(customer != ""){
 			$("#customer").next().children().children().attr('style','border: 1px solid #d2d6de;');	
 			$("#priceCode").select2('val',LCustomer[customer].priceCode.priceCode);		
-			addShipToAdd(LCustomer[customer].shipAddresses);
+			addShipToAdd(findShipToAddressByCustomer(LCustomer[customer].custID));
 			$("#shipToAdd").select2('val',LCustomer[customer].aId);
 			if(LCustomer[customer].priceCode.priceCode != ''){
 				$("#priceCode").next().children().children().attr('style','border: 1px solid #d2d6de;');
@@ -492,7 +492,7 @@ function vatDolChange(obj,l){
 		$("#vatP"+n).val(formatNumByLength(vatOnChangeAct,5));
 	}else{
 		disOnChangeAct = formatNumByLength(vatP,5);
-	}
+	} 
 	
 	
 	
@@ -638,11 +638,10 @@ function actItemChange(obj){
 			    }
 		}).responseText);
 		
-		
-		
+		var n = 0;
 		if(selectItem.MESSAGE == "SUCCESS"){
 			selectItem = selectItem.DATA;
-			var n = obj.parent().parent().attr('val');
+			n = obj.parent().parent().attr('val');
 			$("#up"+n).val(formatNumByLength(selectItem.up, 6));
 			$("#uom"+n+" option[value='"+selectItem.UOM+"']").attr('selected','selected');				
 			$("#reportPrice"+n).val(formatNumByLength(selectItem.rp, 6));
@@ -652,7 +651,8 @@ function actItemChange(obj){
 			$("#reportPrice"+n).val(formatNumByLength(0, 6));
 		}
 		
-		actUomChange(document.getElementById('uom'+n));		
+		if(n!=0)
+			actUomChange(document.getElementById('uom'+n));		
 		
 		$("#disP"+n).val(formatNumByLength(0, 2));
 		$("#disDol"+n).val(formatNumByLength(0, 2));
@@ -1086,4 +1086,18 @@ function cancel(){
 }
 function getCustomerByIndex(index){
 	return LCustomer[index].custID;
+}
+function findShipToAddressByCustomer(custId){
+	if(LShipToAddress != null){
+		if(LShipToAddress.length>0){
+			var shipAdd = [];
+			$.each( LShipToAddress, function( index, value ){
+				if(value.docId==custId){
+					shipAdd.push(value);
+				}
+			});
+			return shipAdd;
+		}
+	}	
+	return '';
 }
