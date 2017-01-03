@@ -244,9 +244,9 @@
 								$("#cam_assignTo").select2('val',"");
 								$("#form-campaigns").bootstrapValidator('resetForm', 'true');
 								
-								alertMsgSuccessSweetWithTxt(result.MSG)
+								alertMsgSuccessSweetWithTxt(result.MSG);
 							}else{
-								alertMsgErrorSweetWithTxt(result.MSG)
+								alertMsgErrorSweetWithTxt(result.MSG);
 							}
 						},
 			    		error:function(){
