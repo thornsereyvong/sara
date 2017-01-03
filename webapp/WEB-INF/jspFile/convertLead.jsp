@@ -45,6 +45,9 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	$scope.startupPage = function(){
 		$http.get("${pageContext.request.contextPath}/lead/convert/startup/"+username+"/"+leadId).success(function(response){
 			
+			dis(response)
+			
+			
 			$scope.GROUP = response.GROUP;
 			$scope.CONTACT = response.CONTACT;
 			$scope.LEAD_STATUS = response.LEAD_STATUS;

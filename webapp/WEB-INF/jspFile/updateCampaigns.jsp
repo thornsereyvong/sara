@@ -327,18 +327,11 @@
 							    xhr.setRequestHeader("Content-Type", "application/json");
 						    }, 
 						    success: function(result){					    						    
-								if(result.MESSAGE == "UPDATED"){	
-									swal({
-			    						title: "SUCCESSFUL",
-			    					  	text: result.MSG,
-			    					  	html: true,
-			    					  	timer: 2000,
-			    					  	type: "success"
-			    					});
+								if(result.MESSAGE == "UPDATED"){
+									alertMsgSuccessSweetWithTxt(result.MSG);
 									reloadForm(2000);
-																																
 								}else{
-									swal("UNSUCCESSFUL", result.MSG, "error");
+									alertMsgErrorSweetWithTxt(result.MSG);
 								}
 							},
 				    		error:function(){

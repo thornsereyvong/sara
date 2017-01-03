@@ -61,24 +61,19 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    	    }, 
 			    	    success: function(result){	  
 			    			if(result.MESSAGE == "DELETED"){	    				
-			    				swal({
-			    					title:"SUCCESSFUL",
-			    					text: result.MSG, 
-			    					type:"success", 
-			    					html: true,
-			    					timer: 2000,
-			    				});
-			    				  
+			    				
+			    				alertMsgSuccessSweetWithTxt(result.MSG) 
 			    				setTimeout(function(){		
 			    					$scope.listLeads();
 			    				},2000);
-			    			}else{
-			    				swal("UNSUCCESSFUL", result.MSG, "error");
-			    			}
-			    		},
+			    				
+							}else{
+								alertMsgErrorSweetWithTxt(result.MSG)
+							}
+						},
 			    		error:function(){
-			    			swal("UNSUCCESSFUL", "Please try again!", "error");
-			    		}		    	    
+			    			alertMsgErrorSweet();
+			    		} 		    	    
 			    	});
 				}, 500);
 			});	

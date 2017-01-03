@@ -243,16 +243,10 @@
 								$("#cam_status").select2('val',"");
 								$("#cam_assignTo").select2('val',"");
 								$("#form-campaigns").bootstrapValidator('resetForm', 'true');
-								swal({
-		    						title: "SUCCESSFUL",
-		    					  	text: result.MSG,
-		    					  	html: true,
-		    					  	timer: 2000,
-		    					  	type: "success"
-		    					});	
 								
+								alertMsgSuccessSweetWithTxt(result.MSG)
 							}else{
-								swal("UNSUCCESSFUL", result.MSG, "error");
+								alertMsgErrorSweetWithTxt(result.MSG)
 							}
 						},
 			    		error:function(){

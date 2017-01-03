@@ -307,16 +307,9 @@ $(document).ready(function() {
 							$("#form-leads").bootstrapValidator('resetForm', 'true');
 							$('#form-leads')[0].reset();
 							
-							swal({
-	    						title: "SUCCESSFUL",
-	    					  	text: result.MSG,
-	    					  	html: true,
-	    					  	timer: 2000,
-	    					  	type: "success"
-	    					});	
-							
+							alertMsgSuccessSweetWithTxt(result.MSG)
 						}else{
-							swal("UNSUCCESSFUL", result.MSG, "error");
+							alertMsgErrorSweetWithTxt(result.MSG)
 						}
 					},
 		    		error:function(){

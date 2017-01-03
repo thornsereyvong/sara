@@ -196,7 +196,7 @@ function testJson(data){
 
 
 function userReportList(id,vals){
-	var data = ${users};
+	var data = JSON.parse('${users}');
 	
 	$.each(data, function(i, value){
 		$.ajax({

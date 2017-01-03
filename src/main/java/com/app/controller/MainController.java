@@ -509,18 +509,13 @@ public class MainController {
 		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 
 		model.addAttribute("menu", "listCampaigns");
-
 		model.addAttribute("role_list", camMap.get("roleList"));
 		model.addAttribute("role_delete", camMap.get("roleDelete"));
 
 		if (camMap.get("roleAccess").equals("YES")) {
-
 			return "listCampaigns";
-
 		} else {
-
 			return "permission";
-
 		}
 
 	}

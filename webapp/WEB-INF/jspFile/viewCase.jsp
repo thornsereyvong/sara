@@ -108,6 +108,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				$scope.users = response.ALL_USERS;
 				$scope.articles = response.ARTICLES;
 				
+				//dis($scope.users)
 				
 				displayStatusLead(response.CASE.statusId);
 				
@@ -129,6 +130,10 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 					}
 					
 				}, 1000);
+				
+				
+				
+				
 				
 			});
 			
@@ -243,7 +248,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 						if ($('#inp_newArticle').is(":checked")){
 							createArtStatus = true;
 						}
-					
+						
 						$.ajax({ 
 							url : "${pageContext.request.contextPath}/case/resolve",
 							type : "PUT",
@@ -257,7 +262,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 								  "createArt": createArtStatus,
 								  "itemId" : $scope.cases.caseItemId,
 								  "createBy" : username,
-								  "assignTo" : getJsonByValue("userID", "$scope.cases.username","str") ,
+								  "assignTo" : getJsonByValue("userID", $scope.cases.username,"str") ,
 								  "key" : $scope.cases.caseKey,
 								  "title" : $scope.cases.subject
 						    }),

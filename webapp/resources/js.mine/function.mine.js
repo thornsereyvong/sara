@@ -79,14 +79,33 @@ function checkCookie() {
     }
 }
 
-
+function alertMsgErrorSweetWithTxt(msg){
+	swal({
+		title:"UNSUCCESSFUL",
+		text: msg,
+		type:"error",  
+		timer: 2000,
+		html:true,
+		showConfirmButton: true
+	});
+}
+function alertMsgSuccessSweetWithTxt(msg){
+	swal({
+		title:"SUCCESSFUL",
+		text: msg,
+		type:"success",  
+		timer: 2000,
+		html:true,
+		showConfirmButton: true
+	});
+}
 function alertMsgErrorSweet(){
 	swal({
 		title:"UNSUCCESSFUL",
 		text:"Please try agian!",
 		type:"error",  
 		timer: 2000,   
-		showConfirmButton: false
+		showConfirmButton: true
 	});
 }
 

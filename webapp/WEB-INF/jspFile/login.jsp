@@ -32,7 +32,7 @@
 			getUrlError();
 
 			$("#company").change(function() {
-				alert($("#company :selected").val());
+				//alert($("#company :selected").val());
 			});
 
 			$('#form-login').bootstrapValidator({

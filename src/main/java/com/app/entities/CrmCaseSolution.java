@@ -8,7 +8,7 @@ public class CrmCaseSolution{
 	private String resolvedBy;
 	private String resolution;
 	private String convertResolvedDate;
-	private String convertFollowupDate;
+	/*private String convertFollowupDate;*/
 	private CrmCaseArticle article;
 	private MeDataSource meDataSource;
 	private boolean createArt;
@@ -125,13 +125,13 @@ public class CrmCaseSolution{
 		this.convertResolvedDate = convertResolvedDate;
 	}
 
-	public String getConvertFollowupDate() {
+	/*public String getConvertFollowupDate() {
 		return convertFollowupDate;
 	}
 
 	public void setConvertFollowupDate(String convertFollowupDate) {
 		this.convertFollowupDate = convertFollowupDate;
-	}
+	}*/
 
 	public CrmCaseArticle getArticle() {
 		return article;

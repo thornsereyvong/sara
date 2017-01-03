@@ -17,17 +17,33 @@ app.controller('dashController',['$scope','$http',function($scope, $http){
 	$scope.dashStartup = function(){
 		
 		$http.get("${pageContext.request.contextPath}/dashboard/startup/"+username).success(function(response){
-		
-			$scope.meetings = response.DASHBOARD.MEETINGS;
-			$scope.calls = response.DASHBOARD.CALLS;
-			$scope.tasks = response.DASHBOARD.TASKS;
-			$scope.events = response.DASHBOARD.EVENTS;
-			$scope.notes = response.DASHBOARD.NOTES;
-			$scope.locations = response.DASHBOARD.LOCATIONS;
-			$scope.meetings = response.DASHBOARD.MEETINGS;
-			$scope.leads = response.DASHBOARD.LEADS;
-			$scope.campaigns = response.DASHBOARD.CAMPAIGNS;
-			$scope.cases = response.DASHBOARD.CASES;
+			
+			if(response.DASHBOARD != null){
+				$scope.meetings = response.DASHBOARD.MEETINGS;
+				$scope.calls = response.DASHBOARD.CALLS;
+				$scope.tasks = response.DASHBOARD.TASKS;
+				$scope.events = response.DASHBOARD.EVENTS;
+				$scope.notes = response.DASHBOARD.NOTES;
+				$scope.locations = response.DASHBOARD.LOCATIONS;
+				$scope.meetings = response.DASHBOARD.MEETINGS;
+				$scope.leads = response.DASHBOARD.LEADS;
+				$scope.campaigns = response.DASHBOARD.CAMPAIGNS;
+				$scope.cases = response.DASHBOARD.CASES;
+			}else{
+				$scope.meetings = [];
+				$scope.calls = [];
+				$scope.tasks = [];
+				$scope.events = [];
+				$scope.notes = [];
+				$scope.locations = [];
+				$scope.meetings = [];
+				$scope.leads = [];
+				$scope.campaigns = [];
+				$scope.cases = [];
+			}
+			
+			
+			
 		});
 		
 	};
