@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,17 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.MeDataSource;
@@ -452,8 +457,9 @@ public class MainController {
 	}
 
 	@RequestMapping("/login")
-	public String login(ModelMap model, HttpServletRequest request) {
+	public String login(ModelMap model, HttpServletRequest request, @RequestParam(value = "error", required = false) String error) {
 		model.addAttribute("title", "App Login | CRM");
+		model.addAttribute("msg", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		request.getSession().setAttribute("usernamedb", "posadmin");
 		request.getSession().setAttribute("passworddb", "Pa$$w0rd");
 		request.getSession().setAttribute("ip", "192.168.123.2");
@@ -463,6 +469,15 @@ public class MainController {
 		dataSource.setUn(request.getSession().getAttribute("usernamedb").toString());
 		dataSource.setPw(request.getSession().getAttribute("passworddb").toString());
 		return "login";
+	}
+	
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null){    
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	    }
+	    return "redirect:/login?logout";
 	}
 
 	/* marketing */
@@ -1663,6 +1678,15 @@ public class MainController {
 			
 		}
 		return null;
+	}
+	
+	private String getErrorMessage(HttpServletRequest request, String key){
+		Exception exception = (Exception) request.getSession().getAttribute(key);
+		String error = "";
+		if (exception instanceof BadCredentialsException) {
+			error = exception.getMessage();
+		}
+		return error;
 	}
 	
 	
