@@ -1,5 +1,5 @@
 <jsp:include page="${request.contextPath}/head"></jsp:include>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
 		var app = angular.module('viewDatabase',[ 'angularUtils.directives.dirPagination', 'angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 		    cfpLoadingBarProvider.includeSpinner = false;
@@ -99,7 +99,19 @@
 		</div>
 		<div class="login-box-body">
 			<h3 class="login-box-msg">Login Company</h3>
-			<div class="col-sm-12" id="div_message"></div>
+			<div class="" >
+				<c:if test="${param.error != null}">
+	            		<div class="bg-warning text-center alert alert-warning"> 
+	            			<span class="h4">${msg}</span>
+	            		</div>
+                </c:if>
+                <c:if test="${param.logout != null}">
+                    <div class="alert alert-success">
+                        <p>You have been logged out successfully.</p>
+                    </div>
+                </c:if>
+            	
+			</div>
 			<div class="clearfix"></div>
 			<form id="form-login" method="POST" action="${pageContext.request.contextPath}/login" ng-controller="viewCompany">
 				<div class="form-group has-feedback">

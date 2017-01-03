@@ -31,14 +31,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 		String password = authentication.getCredentials().toString().trim();
 		CrmUser user = userService.findUserByUsername(username);
 		 if (user == null || !user.getUsername().equalsIgnoreCase(username)) {
-             throw new BadCredentialsException("Username not found.");
+             throw new BadCredentialsException("Invalid Username and password!");
          }
   
          if (!password.equals(new PasswordEncrypt().BalDecrypt(user.getPassword()))) {
-             throw new BadCredentialsException("Wrong password.");
+             throw new BadCredentialsException("Invalid Username and password!");
          }
          if(!user.getUserApp().getAppId().equals("CRM")){
-        	 throw new BadCredentialsException("Not CRM User!");
+        	 throw new BadCredentialsException("You have no permission! Please contact your administrator!");
          }
          return new UsernamePasswordAuthenticationToken(username, password, getGrantedAuthorities(user));
 	}

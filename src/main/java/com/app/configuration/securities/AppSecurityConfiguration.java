@@ -39,8 +39,11 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.formLogin().loginPage("/login").loginProcessingUrl("/login")
 		.usernameParameter("crm_username")
 		.passwordParameter("crm_password")
+		.failureUrl("/login?error")
 		.and()
-		.exceptionHandling().accessDeniedPage("/login")
+		.exceptionHandling().accessDeniedPage("/login?error")
+		.and()
+		.logout().logoutSuccessUrl("/login?logout")
 		.and()
 		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.authorizeRequests().anyRequest().authenticated();
