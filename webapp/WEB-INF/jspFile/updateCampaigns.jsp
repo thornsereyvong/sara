@@ -529,7 +529,6 @@
 							</div>
 
 							<div class="col-sm-6">
-
 								<div class="col-sm-6">
 									<label class="font-label">Expected cost</label>
 									<div class="form-group">
@@ -545,29 +544,13 @@
 											name="cam_expectedRevenue" id="cam_expectedRevenue">
 									</div>
 								</div>
-
 							</div>
 						</div>
 					</div>
 				</form>
 			</div>
-			<!-- /.box-body -->
 			<div class="box-footer"></div>
-			<!-- /.box-footer-->
 		</div>
-
-		<!-- /.box -->
-
-
 	</section>
-	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-
-
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
