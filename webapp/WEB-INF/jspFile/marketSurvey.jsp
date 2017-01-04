@@ -55,9 +55,17 @@ $(document).ready(function(){
 		}
 	});
 
+	$("#addCustToPro").hide();
+	$("#addCompetiitor").hide();
+
 	$("#product").change(function(){
-		if($("#product") != null || $("#product") != ""){
+		if($("#product").val() != ""){
 			angular.element(document.getElementById('marketSurveyController')).scope().findCompetitorByItemId($("#product").val());
+			$("#addCustToPro").show();
+			$("#addCompetiitor").show();
+		}else{
+			$("#addCustToPro").hide();
+			$("#addCompetiitor").hide();
 		}
 	});
 });
@@ -261,7 +269,19 @@ $(document).ready(function(){
 											<div class="row">
 												<div class="col-sm-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-6" data-ng-init="">
+														<!-- <div class="col-sm-12"> -->
+															<div class="box-header with-border row">
+																<div style="background: #fff;">
+																	<div class="col-sm-1">
+																		<a class="btn btn-info btn-app" id = "addCustToPro"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
+																	</div>
+																	<div class="col-sm-1">
+																		<a class="btn btn-info btn-app" id = "addCompetiitor"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
+																	</div>
+																</div>
+															</div>
+														<!-- </div> -->
+														<div class="col-sm-6" data-ng-init="" style="margin-top: 15px;">
 															<label class="font-label">Product <span class="requrie">(Required)</span></label>
 															<div class="form-group">
 																<select class="form-control select2"  name="product" id="product" style="width: 100%;">
@@ -270,7 +290,7 @@ $(document).ready(function(){
 											                    </select>
 															</div>
 														</div>
-														<div class="col-sm-6">
+														<div class="col-sm-6" style="margin-top: 15px;">
 															<label class="font-label">Survey Date <span class="requrie">(Required)</span></label>
 															<div class="form-group">
 																<div class="input-group">
@@ -289,16 +309,9 @@ $(document).ready(function(){
 																</tr>
 																<tr ng-repeat="cust in item.customers">
 																	<td>{{cust.custName}}</td>
+																	<td ng-repeat = "com in item.competitors" class="text-center"><input type="checkbox" onClick="clkCheck(this)" name="surveyValue" value="1" /></td>
 																</tr>
 															</table>
-														</div>
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
 														</div>
 													</form>
 												</div>

@@ -123,6 +123,12 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 </script>
 
 <script>
+
+	function clkCheck(obj){
+		$("input[name=check-all]").prop('checked',false);
+	}
+
+
 	$(document).ready(function() {
 		$('.table-responsive').on('show.bs.dropdown', function () {
 		     $('.table-responsive').css( "overflow", "inherit" );
@@ -132,7 +138,8 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		     $('.table-responsive').css( "overflow", "auto" );
 		});
 
-
+		
+		
 		$("#btn-create").click(function(){
 			$("#tCompetitor").text("Create Competitor");
 			$("#btnCompetitorSave").text("Save");
@@ -151,7 +158,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 			$("#frmAddCompetitorToProduct").modal('toggle');
 		});
 
-		$("input[name=check-all]").val($(this).is(':checked'));
+		
 		$("input[name=check-all]").change(function(){
 			if($(this).is(':checked')){
 				$("input[name=competitor]:not(:checked)").each(function(){
@@ -608,16 +615,16 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 															<th><label>Competitor List</label></th>
 															<th class="text-center"><input type="checkbox" name="check-all" onClick()/><!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> --></th>
 														</tr>
-														<tr dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6">
+														<tr ng-repeat = "com in competitors"><!-- dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6" -->
 															<td class="col-md-11">[{{com.comId}}] {{com.comName}}</td>
-															<td class="col-md-1 text-center"><input type="checkbox" name="competitor" value="{{com.comId}}"></td>
+															<td class="col-md-1 text-center"><input type="checkbox" onClick="clkCheck(this)" name="competitor" value="{{com.comId}}" /></td>
 														</tr>
 													</table>
-													<dir-pagination-controls
+													<!-- <dir-pagination-controls
 												       max-size="6"
 												       direction-links="true"
 												       boundary-links="true" >
-													</dir-pagination-controls>
+													</dir-pagination-controls> -->
 												</div>
 											</div>
 										</div>
