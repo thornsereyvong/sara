@@ -67,7 +67,7 @@ $(document).ready(function() {
 	
 	
 	var data = ${users};
-	$(".select2").select2();
+	
 	
 	$("#reportType").change(function(){
 		var relate = $("#reportType").val();
@@ -282,7 +282,7 @@ $(document).ready(function() {
 						<div class="col-sm-6" data-ng-init="listStatus()" >
 							<label class="font-label">Status <span class="requrie">(Required)</span></label>
 							<div class="form-group">
-								<select class="form-control select2" name="status" id="status" style="width: 100%;">
+								<select class="form-control select2-small" name="status" id="status" style="width: 100%;">
 									<option value="">--SELECT Status</option>
 									<option ng-repeat="st in status" value="{{st.callStatusId}}">{{st.callStatusName}}</option>
 								</select>
@@ -291,7 +291,7 @@ $(document).ready(function() {
 						<div class="col-sm-6"  data-ng-init="listCampUser()">
 							<label class="font-label">Assigned to  </label>
 							<div class="form-group">
-								<select class="form-control select2"  name="assignTo" id="assignTo" style="width: 100%;">
+								<select class="form-control select2-small"  name="assignTo" id="assignTo" style="width: 100%;">
 			                      <option value=""></option>           
 			                    </select>
 							</div>
@@ -301,7 +301,7 @@ $(document).ready(function() {
 						<div class="col-sm-6">
 							<label class="font-label">Related To </label>
 							<div class="form-group">
-								<select class="form-control select2" name="reportType" id="reportType" style="width: 100%;">
+								<select class="form-control select2-small" name="reportType" id="reportType" style="width: 100%;">
 									<option value="">--SELECT Related--</option>
 									<optgroup label="Marketing">
 										<option value="Campaign">Campaign</option>
@@ -326,7 +326,7 @@ $(document).ready(function() {
 						<div class="col-sm-6">
 							<label class="font-label">&nbsp;</label>
 							<div class="form-group">
-								<select class="form-control select2" name="reportTo" id="reportTo" style="width: 100%;">
+								<select class="form-control select2-small" name="reportTo" id="reportTo" style="width: 100%;">
 									<option value="">--SELECT--</option>
 								</select>
 							</div>
@@ -343,35 +343,13 @@ $(document).ready(function() {
 						</div>
 					</div>
 					<div class="clearfix"></div>
-
-
 				</div>
-				
-				
 				</div>
-				
-				
-			
-				
-
 			</form>
 			</div>
-			<!-- /.box-body -->
-			<div class="box-footer"><div id="test_div"></div></div>
-			<!-- /.box-footer-->
+			<div class="box-footer"><div id="errors"></div></div>
 		</div>
-		
-		<!-- /.box -->
-
-
 	</section>
-	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 

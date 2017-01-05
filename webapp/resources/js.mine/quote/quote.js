@@ -15,11 +15,135 @@ var vatDolOnChangeAct = 0;
 var stOnChangeAct = 0;
 var stDolOnChangeAct = 0;
 
+var statusClickDetail = false;
+
+var rowIndexLine = 0; 
+
 
 // START READY
 $(function(){
 	
+	$('#frmAddProduct').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			oppItem: {
+				validators: {
+					notEmpty: {
+						message: 'The item is required and can not be empty!'
+					}
+				}
+			},
+			oppLocation: {
+				validators: {
+					notEmpty: {
+						message: 'The location is required and can not be empty!'
+					}
+				}
+			},
+			oppUom: {
+				validators: {
+					notEmpty: {
+						message: 'The uom is required and can not be empty!'
+					}
+				}
+			},
+			oppQty: {
+				validators: {
+					notEmpty: {
+						message: 'The quantity is required and can not be empty!'
+					},
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
+				}
+			},
+			oppUnitPrice: {
+				validators: {
+					notEmpty: {
+						message: 'The unit price is required and can not be empty!'
+					},
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
+				}
+			},
+			oppPriceFactor: {
+				validators: {
+					notEmpty: {
+						message: 'The price factor is required and can not be empty!'
+					},
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
+				}
+			},
+			oppDisPer: {
+				validators: {
+					between: {
+                        min: 0,
+                        max: 100,
+                        message: 'The discount % must be between 1 and 100'
+                    }
+				}
+			},
+			
+			oppDisDol: {
+				validators: {
+					
+				}
+			},
+			
+			oppVatPer: {
+				validators: {
+					between: {
+                        min: 0,
+                        max: 100,
+                        message: 'The VAT % must be between 1 and 100'
+                    }
+				}
+			},
+			
+			oppVatDol: {
+				validators: {
+					
+				}
+			},
+			
+			oppSTPer: {
+				validators: {
+					between: {
+                        min: 0,
+                        max: 100,
+                        message: 'The ST % must be between 1 and 100'
+                    }
+				}
+			},
+			
+			oppSTDol: {
+				validators: {
+					
+				}
+			},
+		}
+	});
 	
+	
+	
+	$(".status-content").hide();
 	
 	$('#quoteDate').daterangepicker({
         singleDatePicker: true,
@@ -40,8 +164,6 @@ $(function(){
 	$('#quoteDate').val(moment().format('D-MMM-YYYY'));  
 	$('#startDate').val(moment().format('D-MMM-YYYY'));  
 	$('#expireDate').val(moment().format('D-MMM-YYYY'));
-	
-	$('#shipToAdd').select2();
 	
 	$("#listItem").sortable();
     $("#listItem").disableSelection();	
@@ -106,7 +228,7 @@ $(function(){
 				url: server+"quote/check-entry-no",
 				method: "POST",
 				async: false,
-				data: JSON.stringify({"quoteId":entryNo}),
+				data: JSON.stringify({"saleId":entryNo}),
 				beforeSend: function(xhr) {
 				    xhr.setRequestHeader("Accept", "application/json");
 				    xhr.setRequestHeader("Content-Type", "application/json");
@@ -114,7 +236,7 @@ $(function(){
 			    success: function(result){			    	
 					if(result.MESSAGE == "EXIST"){			
 						entryCheck = false;
-						swal("The value of field 'Entry No' is already exist!", "Please change new!", "error");						
+						swal("The field 'Entry No' with value "+entryNo+" is already exist!", "Please change new value of field 'Entry No'!", "error");						
 						$("#entryNo").attr('style','border: 1px solid #dd4b39;');
 					}else{
 						entryCheck = true;
@@ -181,8 +303,16 @@ $(function(){
 				$("#listItem").append(addAnItem());
 				select2Init("item"+index);
 				select2Init("location"+index);
+				select2Init("uom"+index);
+				select2Init("classCode"+index);
+				
+				$("#classCode"+index).select2('val',getValueStringById('classCodeMaster'));
+				
 				styUom= $("#uom"+index).attr('style');
 				styQty = $("#qty"+index).attr('style');
+				
+				$(".status-content").hide();
+				
 				
 			}else{
 				
@@ -208,8 +338,12 @@ $(function(){
 		 disInvoive();
 		 netInvoice();	 
 	});
+	
+	
+	
+	
+	
 });
-
 
 
 function alertRequireField(){
@@ -554,11 +688,13 @@ function actItemChange(obj){
 			selectItem = selectItem.DATA;
 			var n = obj.parent().parent().attr('val');
 			$("#up"+n).val(formatNumByLength(selectItem.up, 6));
-			$("#uom"+n+" option[value='"+selectItem.UOM+"']").attr('selected','selected');				
+			//$("#uom"+n+" option[value='"+selectItem.UOM+"']").attr('selected','selected');	
+			$("#uom"+n).select2('val', selectItem.UOM)	
 			$("#reportPrice"+n).val(formatNumByLength(selectItem.rp, 6));
 		}else{
 			$("#up"+n).val(formatNumByLength(0, 6));
-			$("#uom"+n+" option[value='']").attr('selected','selected');				
+			//$("#uom"+n+" option[value='']").attr('selected','selected');	
+			$("#uom"+n).select2('val', '')
 			$("#reportPrice"+n).val(formatNumByLength(0, 6));
 		}
 		
@@ -592,6 +728,79 @@ function actItemChange(obj){
 	}
 	showOneLocation(n);
 }
+
+
+function act1ItemChange(obj){
+	if(statusClickDetail != false){
+		
+		/*
+		var obj = $("#"+obj.getAttribute("id"));
+		if(obj.val() !=''){
+			obj.next().children().children().attr('style','border: 1px solid #d2d6de;');
+			var priceCode = getValueById('priceCode');
+			selectItem = JSON.parse($.ajax({
+				url: server+"quote/itemChange",
+				method: "POST",
+				async: false,
+				data: JSON.stringify({
+					"itemId" : obj.val(),
+					"priceCode" : priceCode
+					}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+				    }
+			}).responseText);
+			
+			var n = rowIndexLine;
+			
+			if(selectItem.MESSAGE == "SUCCESS"){
+				selectItem = selectItem.DATA;				
+				$("#up"+n).val(formatNumByLength(selectItem.up, 6));	
+				$("#uom"+n).select2("val", selectItem.UOM);	
+				$("#reportPrice"+n).val(formatNumByLength(selectItem.rp, 6));
+			}else{
+				$("#up"+n).val(formatNumByLength(0, 6));	
+				$("#uom"+n).select2("val", "");
+				$("#reportPrice"+n).val(formatNumByLength(0, 6));
+			}
+			
+			actUomChange(document.getElementById('uom'+n));		
+			
+			$("#disP"+n).val(formatNumByLength(0, 2));
+			$("#disDol"+n).val(formatNumByLength(0, 2));
+			
+			$("#priceFactor"+n).val(formatNumByLength(1, 4));
+			$("#vatP"+n).val(formatNumByLength(0, 2));
+			$("#vatDol"+n).val(formatNumByLength(0, 2));
+			$("#stP"+n).val(formatNumByLength(0, 2));
+			$("#stDol"+n).val(formatNumByLength(0, 2));
+			
+			calculateByItem(n);
+			
+			
+			if($("#listItem tr").length<2){
+				setValueById('txtTSalOrd', formatNumByLength(0, 2));
+				setValueById('txtInvDis', formatNumByLength(0, 2));
+				setValueById('txtNetInv', formatNumByLength(0, 2));
+				setValueById('txtTPTDate', formatNumByLength(0, 2));
+				setValueById('txtAmtDue', formatNumByLength(0, 2));
+			}
+			
+			
+			setQtyAvailableToRow(n);
+			
+		}else{
+			obj.next().children().children().attr('style','border: 1px solid #dd4b39;');
+		}
+		showOneLocation(n);*/
+		
+		
+	}
+}
+
+
+
 function actLocChange(obj){
 	var obj = $("#"+obj.getAttribute("id"));
 	var n = obj.parent().parent().attr('val');
@@ -615,7 +824,6 @@ function actUomChange(obj){
 
 function select2Init(initId){
 	$('#'+initId).select2();
-	
 }
 function removeRowItem(RowID){
 	swal({   
@@ -650,6 +858,34 @@ function removeRowItem(RowID){
 		});	
 }
 
+
+
+function detailRowItem(n){
+	
+	rowIndexLine = n;
+	
+	$("#oppItem").select2('val',getValueStringById('item'+n));
+	$("#oppLocation").select2('val',getValueStringById('location'+n));
+	$("#oppClassDetail").select2('val', getValueStringById('classCode'+n));
+	$("#oppUom").select2('val', getValueStringById('uom'+n));
+	
+	$("#oppQty").val(getValueStringById('qty'+n));
+	$("#oppUnitPrice").val(getValueStringById('up'+n));
+	$("#oppPriceFactor").val(getValueStringById('priceFactor'+n));
+	$("#oppReportPrice").val(getValueStringById('reportPrice'+n));
+	$("#oppTAmount").val(getValueStringById('tAmt'+n));
+	$("#oppDisPer").val(getValueStringById('disP'+n));
+	$("#oppDisDol").val(getValueStringById('disDol'+n));
+	$("#oppVatPer").val(getValueStringById('vatP'+n));
+	$("#oppVatDol").val(getValueStringById('vatDol'+n));
+	$("#oppSTPer").val(getValueStringById('stP'+n));
+	$("#oppSTDol").val(getValueStringById('stDol'+n));
+	$("#oppNetTAmount").val(getValueStringById('nTAmt'+n));
+	
+	$("#btn_show_product").click();
+	
+	statusClickDetail = true;
+}
 
 function addShipToAdd(data){
 	$('#shipToAdd').empty();
@@ -733,8 +969,7 @@ function totalSalOrd(){
 		for(i=0;i<tr.length;i++){	
 			var n =tr.eq(i).attr('val');
 			totalSalOrd += toNum($("#nTAmt"+n).val());
-		}
-		
+		}	
 	}
 	
 	setValueById('txtTSalOrd', formatNumByLength(totalSalOrd, 2));

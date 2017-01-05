@@ -63,9 +63,15 @@
   </script>
   <script>
        $(function () {
+    	 
     	  $(".select2").select2();
-    	$(".date").datepicker();
-    	
+    	  $(".select2-small").select2(); //{ minimumResultsForSearch: Infinity}
+    	  
+    	 /*  var $eventSelect = $(".select2-small");    	  
+    	  $eventSelect.on("select2:open", function (e) {     		
+    		 setTimeout(function(){ $("body").find('.select2-search__field').blur(); }, 1);    		  
+   		  }); */
+    	  $(".date").datepicker();
       }); 
        
        

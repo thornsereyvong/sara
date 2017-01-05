@@ -1536,6 +1536,7 @@ S2.define('select2/selection/multiple',[
       self.trigger('toggle', {
         originalEvent: evt
       });
+     
     });
 
     this.$selection.on('click', '.select2-selection__choice__remove',
@@ -1725,6 +1726,7 @@ S2.define('select2/selection/allowClear',[
 
   AllowClear.prototype._handleKeyboardClear = function (_, evt, container) {
     if (container.isOpen()) {
+    	
       return;
     }
 
@@ -1786,16 +1788,15 @@ S2.define('select2/selection/search',[
     decorated.call(this, container, $container);
 
     container.on('open', function () {
-      self.$search.attr('tabindex', 0);
-
-      self.$search.focus();
+      self.$search.attr('tabindex', 0);     
+      // self.$search.focus();
     });
 
     container.on('close', function () {
       self.$search.attr('tabindex', -1);
 
       self.$search.val('');
-      self.$search.focus();
+      // self.$search.focus();
     });
 
     container.on('enable', function () {
@@ -3504,7 +3505,7 @@ S2.define('select2/data/tokenizer',[
       // Replace the search term if we have the search box
       if (this.$search.length) {
         this.$search.val(tokenData.term);
-        this.$search.focus();
+        //this.$search.focus();
       }
 
       params.term = tokenData.term;
@@ -3741,10 +3742,10 @@ S2.define('select2/dropdown/search',[
     container.on('open', function () {
       self.$search.attr('tabindex', 0);
 
-      self.$search.focus();
+      // self.$search.focus();
 
       window.setTimeout(function () {
-        self.$search.focus();
+        // self.$search.focus();
       }, 0);
     });
 

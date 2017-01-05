@@ -42,11 +42,11 @@
 									<input class="form-control" disabled="" id="postStatus" name="postStatus" type="text" placeholder="Open">
 								</div>
 							</div>
-							
+							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Customer<span class="requrie"> (Required)</span></label> 
-									<select id="customer" name="customer" class="form-control select2 input-lg" style="width: 100%;">
+									<select id="customer" name="customer" class="form-control select2-small input-lg" style="width: 100%;">
 										<option selected="selected" value="">Select A Customer</option>
 										
 									</select>
@@ -61,6 +61,7 @@
 									</select>
 								</div>
 							</div>
+							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Sale Rep. ID<span class="requrie"> (Required)</span></label> 
@@ -80,7 +81,7 @@
 									</select>
 								</div>
 							</div>
-							
+							<div class="clearfix"></div>
 						</div>
 						<div class="col-md-6">
 							<div class="col-md-6">
@@ -104,6 +105,7 @@
 									<input class="form-control" id="reference" name="reference" type="text" placeholder="Reference...">
 								</div>
 							</div>
+							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Start Date<span class="requrie"> (Required)</span></label>
@@ -134,7 +136,7 @@
 									</div>
 								</div>
 							</div>
-							
+							<div class="clearfix"></div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Ship to Address <span class="text-red"></span></label> 
@@ -145,7 +147,6 @@
 							</div>
 						</div>
 						<div class="col-md-12">
-					
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Remark</label> 
@@ -161,20 +162,20 @@
 											<tr>
 												<th>Item<span class="requrie"> (Required)</span></th>
 												<th>Location<span class="requrie"> (Required)</span></th>
-												<th>Class</th>
+												<th class="status-content">Class</th>
 												<th>UOM<span class="requrie"> (Required)</span></th>
 												<th>Qty<span class="requrie"> (Required)</span></th>
 												<th>Unit Price</th>
-												<th>Price Factor</th>
-												<th>Report Price</th>
+												<th class="status-content">Price Factor</th>
+												<th class="status-content">Report Price</th>
 												<th>Total Amount</th>
-												<th>Discount %</th>
-												<th>Discount $</th>
-												<th>VAT %</th>
-												<th>VAT $</th>
-												<th>ST %</th>
-												<th>ST $</th>
-												<th colspan="2">Net Total Amount</th>
+												<th class="status-content">Discount %</th>
+												<th class="status-content">Discount $</th>
+												<th class="status-content">VAT %</th>
+												<th class="status-content">VAT $</th>
+												<th class="status-content">ST %</th>
+												<th class="status-content">ST $</th>
+												<th class="status-content" colspan="2">Net Total Amount</th>
 											</tr>	
 										</thead>
 										<tbody class="cursor_move" id="listItem">
@@ -198,20 +199,13 @@
 						</form>
 				
 					</div>
-						
 					</div>
-					<!-- <div class="clearfix"></div> -->
-					
-					
 				</div>
 				
 			<br><br>
 			<div class="box-footer" style="border-top: 1px solid #d8d8d8;">
-			
-			
 				<div class="row">
 					<div class="col-md-12">
-						
 						<div class="col-md-6">
 							<div class="col-md-6">
 								<div class="form-group">
@@ -262,8 +256,9 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-3">
-						</div>
+						
+						<div class="col-md-3"></div>
+						
 						<div class="col-md-3">
 							<div class="col-md-12">
 								<div class="form-group">
@@ -302,11 +297,9 @@
 								</div>
 							</div>
 						</div>
+						
 					</div>
-					
 				</div>
-				
-				
 			</div>
 			<div id="errors"></div>
 		</div>
@@ -331,6 +324,7 @@
 
 				</div>
 			</div>
+			
 			<input type="hidden" id="alertMesError" data-toggle="modal" data-target="#myError" />
 			<div class="modal fade modal-danger" id="myError" role="dialog">
 				<div class="modal-dialog">
@@ -348,6 +342,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<input type="hidden" id="alertMesSucess" data-toggle="modal" data-target="#mySuccess" />
 			<div class="modal fade modal-success" id="mySuccess" role="dialog">
 				<div class="modal-dialog">
@@ -367,6 +362,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<input type="hidden" id="alertMesConfirm" data-toggle="modal" data-target="#myConfirm" />
 			<div class="modal fade modal-info" id="myConfirm" role="dialog">
 				<div class="modal-dialog">
@@ -386,6 +382,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<input type="hidden" id="invDisDia" data-toggle="modal" data-target="#frmInvDisDia" />
 			<div class="modal fade modal-default" id="frmInvDisDia" role="dialog">
 				<div class="modal-dialog">
@@ -409,6 +406,182 @@
 					</div>
 				</div>
 			</div>
+			
+			
+			<input type="hidden" id="btn_show_product" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmProduct" />
+			<div class="modal fade modal-default" id="frmProduct" role="dialog">
+				<div class="modal-dialog  modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" onclick="cancelProductClick()" class="close"
+								data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">
+								<b  id="tProduct">Add An Item</b>
+							</h4>
+						</div>
+						<form id="frmAddProduct" method="post">
+						<div class="modal-body">
+							<div class="row">
+									<div class="col-md-12">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Item <span class="requrie">(Required)</span></label>
+												<select onChange="act1ItemChange(this)" class="form-control select2" name="oppItem" id="oppItem" style="width: 100%;">
+													<option value="" selected></option>
+													
+												</select>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="bootstrap-timepicker">
+												<div class="form-group">
+													<label>UOM ID <span class="requrie">(Required)</span></label>
+													<select class="form-control select2" name="oppUom" id="oppUom" style="width: 100%;">
+														<option value=""></option>
+														
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="bootstrap-timepicker">
+												<div class="form-group">
+													<label>Location ID <span class="requrie">(Required)</span></label>
+													<select class="form-control select2" name="oppLocation" id="oppLocation" style="width: 100%;">
+														<option value=""></option>
+														
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="bootstrap-timepicker">
+												<div class="form-group">
+													<label>Class ID </label>
+													<select class="form-control select2" name="oppClassDetail" id="oppClassDetail" style="width: 100%;">
+														<option value=""></option>
+														
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Quantity <span class="requrie">(Required)</span></label>
+												<input id="oppQty" ng-blur="fToNumber($event, oppQty, 4)" ng-change="oppQtyChange()"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Unit Price <span class="requrie">(Required)</span></label>
+												<input ng-model="oppUnitPrice" ng-blur="fToNumber($event, oppUnitPrice, 6)" ng-change="oppUnitePriceChange()" onkeypress='return isNumeric(this,event)' id="oppUnitPrice" name="oppUnitPrice" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Price Factor<span class="requrie">(Required)</span></label>
+												<input id="oppPriceFactor" ng-blur="fToNumber($event, oppPriceFactor, 4)" onkeypress='return isNumeric(this,event)' ng-model="oppPriceFactor" ng-change="oppPriceFactorChange()" name="oppPriceFactor" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Report Price</label>
+												<input id="oppReportPrice" ng-model="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-md-6"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Total Amount</label>
+												<input id="oppTAmount"   ng-model="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Discount %</label>
+												<input ng-model="oppDisPer" ng-blur="fToNumber($event, oppDisPer, 5)" ng-change="oppDisPerChange()" onkeypress='return isPersent(this,event)' id="oppDisPer" name="oppDisPer" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Discount $</label>
+												<input ng-model="oppDisDol" ng-blur="fToNumber($event, oppDisDol, 2)" ng-change="oppDisDolChange()" id="oppDisDol" onkeypress='return isNumeric(this,event)' name="oppDisDol" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>VAT %</label>
+												<input ng-model="oppVatPer" ng-blur="fToNumber($event, oppVatPer, 5)" ng-change="oppVatPerChange()" onkeypress='return isPersent(this,event)' id="oppVatPer" name="oppVatPer" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>VAT $</label>
+												<input ng-model="oppVatDol" ng-blur="fToNumber($event, oppVatDol, 2)" ng-change="oppVatDolChange()" id="oppVatDol" onkeypress='return isNumeric(this,event)' name="oppVatDol" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>ST %</label>
+												<input ng-model="oppSTPer" ng-blur="fToNumber($event, oppSTPer, 5)" ng-change="oppSTPerChange()" onkeypress='return isPersent(this,event)' id="oppSTPer" name="oppSTPer" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>ST $</label>
+												<input ng-model="oppSTDol" ng-blur="fToNumber($event, oppSTDol, 2)" ng-change="oppSTDolChange()" id="oppSTDol" onkeypress='return isNumeric(this,event)' name="oppSTDol" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-md-6"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Net Total Amount</label>
+												<input ng-model="oppNetTAmount" id="oppNetTAmount" disabled="disabled" name="oppNetTAmount" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>						
+							</div>				
+						</div>
+						</form>
+						<div class="modal-footer">
+							<button type="button" id="btnProductCancel"
+								onclick="cancelProductClick()" name="btnProductCancel"
+								class="btn btn-danger" data-dismiss="modal">Cancel</button>
+							&nbsp;&nbsp;
+							<button type="button" onclick="btnProductSave()" class="btn btn-primary pull-right"
+								id="btnProductSave" name="btnProductSave">Save</button>
+		
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
 	</section>
 	
 </div>
@@ -419,108 +592,109 @@
 <script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
 <script>
 
-var server = "${pageContext.request.contextPath}/";
-var index=0;
-
-var content = JSON.parse($.ajax({ 
-	url: server+"quote/list-content",
-	method: "GET",
-	async: false,
-}).responseText);
-
- 
-var tagItem = "";
-var LItem = content.DATA[0].item;
-var tagLocation ="";
-var LLocation = content.DATA[0].location;
-var tagClass ="";
-var LClass = content.DATA[0].classCode;
-var tagUom ="";
-var LUom = content.DATA[0].uom;
-var LShipToAddress = content.DATA[0].shipToAddress;
-var LCustomer = content.DATA[0].customer;
-var LPriceCode = content.DATA[0].priceCode;
-var LEmp = content.DATA[0].employee;
-
-
-
-if(content.MESSAGE == "SUCCESS"){
-	if(LItem.length > 0){
-		for(var i=0;i<LItem.length;i++){
-			tagItem += "<option value="+LItem[i].ItemID+">["+LItem[i].ItemID+"] "+fmNull(LItem[i].ItemName)+"</option>";
+	var server = "${pageContext.request.contextPath}/";
+	var index=0;
+	
+	var content = JSON.parse($.ajax({ 
+		url: server+"quote/list-content",
+		method: "GET",
+		async: false,
+	}).responseText);
+	
+	 
+	var tagItem = "";
+	var LItem = content.DATA[0].item;
+	var tagLocation ="";
+	var LLocation = content.DATA[0].location;
+	var tagClass ="";
+	var LClass = content.DATA[0].classCode;
+	var tagUom ="";
+	var LUom = content.DATA[0].uom;
+	var LShipToAddress = content.DATA[0].shipToAddress;
+	var LCustomer = content.DATA[0].customer;
+	var LPriceCode = content.DATA[0].priceCode;
+	var LEmp = content.DATA[0].employee;
+	
+	
+	
+	if(content.MESSAGE == "SUCCESS"){
+		if(LItem.length > 0){
+			for(var i=0;i<LItem.length;i++){
+				tagItem += "<option value="+LItem[i].ItemID+">["+LItem[i].ItemID+"] "+fmNull(LItem[i].ItemName)+"</option>";
+			}
 		}
-	}
-	if(LLocation.length > 0){
-		for(var i=0;i<LLocation.length;i++){
-			tagLocation += "<option value="+LLocation[i].LocationID+">["+LLocation[i].LocationID+"] "+fmNull(LLocation[i].LocationName)+"</option>";
+		if(LLocation.length > 0){
+			for(var i=0;i<LLocation.length;i++){
+				tagLocation += "<option value="+LLocation[i].LocationID+">["+LLocation[i].LocationID+"] "+fmNull(LLocation[i].LocationName)+"</option>";
+			}
 		}
-	}
-	if(LClass.length > 0){
-		for(var i=0;i<LClass.length;i++){
-			tagClass += "<option value="+LClass[i].ClassID+">["+LClass[i].ClassID+"] "+fmNull(LClass[i].ClassName)+"</option>";
+		if(LClass.length > 0){
+			for(var i=0;i<LClass.length;i++){
+				tagClass += "<option value="+LClass[i].ClassID+">["+LClass[i].ClassID+"] "+fmNull(LClass[i].ClassName)+"</option>";
+			}
+			$("#classCodeMaster").append(tagClass);
 		}
-		$("#classCodeMaster").append(tagClass);
-	}
-	if(LUom.length > 0){
-		for(var i=0;i<LUom.length;i++){
-			tagUom += "<option value="+LUom[i].UomID+">["+LUom[i].UomID+"] "+fmNull(LUom[i].UomName)+"</option>";
+		if(LUom.length > 0){
+			for(var i=0;i<LUom.length;i++){
+				tagUom += "<option value="+LUom[i].UomID+">["+LUom[i].UomID+"] "+fmNull(LUom[i].UomName)+"</option>";
+			}
 		}
-	}
-	if(LCustomer.length > 0){
-		for(var i=0;i<LCustomer.length;i++){
-			 $("#customer").append("<option value="+i+">["+LCustomer[i].custID+"] "+fmNull(LCustomer[i].custName)+"</option>");
+		if(LCustomer.length > 0){
+			for(var i=0;i<LCustomer.length;i++){
+				 $("#customer").append("<option value="+i+">["+LCustomer[i].custID+"] "+fmNull(LCustomer[i].custName)+"</option>");
+			}
 		}
-	}
-	if(LPriceCode.length > 0){
-		for(var i=0;i<LPriceCode.length;i++){
-			$("#priceCode").append("<option value='"+LPriceCode[i].PriceCode+"' > ["+LPriceCode[i].PriceCode+"] "+fmNull(LPriceCode[i].Description)+"</option>");
+		if(LPriceCode.length > 0){
+			for(var i=0;i<LPriceCode.length;i++){
+				$("#priceCode").append("<option value='"+LPriceCode[i].PriceCode+"' > ["+LPriceCode[i].PriceCode+"] "+fmNull(LPriceCode[i].Description)+"</option>");
+			}
 		}
-	}
-	if(LEmp.length > 0){
-		for(var i=0;i<LEmp.length;i++){
-			 $("#employee").append("<option value="+LEmp[i].EmpID+">["+LEmp[i].EmpID+"] "+fmNull(LEmp[i].EmpName)+"</option>");
+		if(LEmp.length > 0){
+			for(var i=0;i<LEmp.length;i++){
+				 $("#employee").append("<option value="+LEmp[i].EmpID+">["+LEmp[i].EmpID+"] "+fmNull(LEmp[i].EmpName)+"</option>");
+			}
 		}
 	}
 	
 	
-}
-
-
-
-function addAnItem(){
-	var addAnItem ="";
-	addAnItem += "<tr onclick='showDetailRow(this)' data-qty-available='0' id='RowItem"+index+"' val='"+index+"'>";	
 	
-	addAnItem += "<td><select title='Item is required.' onChange='actItemChange(this)' style='width:300px' id='item"+index+"' name='item' class='form-control select2'> <option selected='selected' value=''></option>"+tagItem+"</select></td>";	
-    addAnItem += "<td>"+
-		         "<select title='Location is required.' onChange='actLocChange(this)' name='location' id='location"+index+"' class='form-control select2 input-lg' style='width: 200px;'>"+
-			     "<option value='' selected='selected'></option>"+tagLocation+"</select></td>";
-	addAnItem += "<td>"+
-		         "<select name='classCode' id='classCode"+index+"' class='form-control' style='width: 100px;'>"+
-			     "<option value='' selected='selected'></option>"+tagClass+"</select></td>";
-	addAnItem += "<td>"+
-		         "<select onfocusout='actUomChange(this)' onChange='actUomChange(this)' name='uom' title='UOM is required.' id='uom"+index+"' class='form-control' style='width: 100px;'>"+
-			     "<option value=''></option>"+tagUom+ "</select></td>";
-	addAnItem += "<td> <input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' style='width: 100px;' type='text' placeholder=''></td>"+
-				 "<td> <input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+								
-				 "<td> <input onfocusout='priceFactorChange(this,4)' onkeypress='return isNumeric(this,event)' title='Price factor can not equal 0.'  name='priceFactor' id='priceFactor"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input disabled onfocusout='reportPriceChange(this,6)' onkeypress='return isNumeric(this,event)'  name='reportPrice' id='reportPrice"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='tAmt' id='tAmt"+index+"' class='form-control' style='width: 90px;' type='text' placeholder=''></td>"+
-				 "<td> <input onfocusout='disPerChange(this,5)' onkeypress='return isPersent(this,event)'  name='disP' id='disP"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input onfocus='disFocus(this,2)' onfocusout='disDolChange(this,2)' onkeypress='return isNumeric(this,event)'  name='disDol' id='disDol"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+				
-				 "<td> <input onfocusout='vatPerChange(this,5)' onkeypress='return isPersent(this,event)'  name='vatP' id='vatP"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input onfocus='vatFocus(this,2)' onfocusout='vatDolChange(this,2)' onkeypress='return isNumeric(this,event)'  name='vatDol' id='vatDol"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+				
-				 "<td> <input onfocusout='stPerChange(this,5)' onkeypress='return isPersent(this,event)'  name='stP' id='stP"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input onfocus='stFocus(this,2)' onfocusout='stDolChange(this,2)' onkeypress='return isNumeric(this,event)'  name='stDol' id='stDol"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' style='width: 100px;' type='text' placeholder=''></td>";
-	addAnItem += "<td><button onClick='removeRowItem("+index+")' class='btn btn-danger' type='button'><i class='fa  fa-trash'></i></button></td>";
-	addAnItem += "</tr>";
-
-	return addAnItem;
-}
+	function addAnItem(){
+		var addAnItem ="";
+		addAnItem += "<tr onclick='showDetailRow(this)' data-qty-available='0' id='RowItem"+index+"' val='"+index+"'>";	
+		
+		addAnItem += "<td><select title='Item is required.' onChange='actItemChange(this)' style='width:300px' id='item"+index+"' name='item' class='form-control select2'> <option selected='selected' value=''></option>"+tagItem+"</select></td>";	
+	    addAnItem += "<td>"+
+			         "<select title='Location is required.' onChange='actLocChange(this)' name='location' id='location"+index+"' class='form-control select2 input-lg' style='width: 200px;'>"+
+				     "<option value='' selected='selected'></option>"+tagLocation+"</select></td>";
+		addAnItem += "<td class='status-content'>"+
+			         "<select name='classCode' id='classCode"+index+"' class='form-control select2' style='width: 100px;'>"+
+				     "<option value='' selected='selected'></option>"+tagClass+"</select></td>";
+		addAnItem += "<td>"+
+			         "<select onfocusout='actUomChange(this)' onChange='actUomChange(this)' name='uom' title='UOM is required.' id='uom"+index+"' class='form-control select2' style='width: 100px;'>"+
+				     "<option value=''></option>"+tagUom+ "</select></td>";
+		addAnItem += "<td> <input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' style='width: 100px;' type='text' placeholder=''></td>"+
+					 "<td> <input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+								
+					 "<td class='status-content'> <input onfocusout='priceFactorChange(this,4)' onkeypress='return isNumeric(this,event)' title='Price factor can not equal 0.'  name='priceFactor' id='priceFactor"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
+					 "<td class='status-content'> <input disabled onfocusout='reportPriceChange(this,6)' onkeypress='return isNumeric(this,event)'  name='reportPrice' id='reportPrice"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
+					 "<td> <input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='tAmt' id='tAmt"+index+"' class='form-control' style='width: 90px;' type='text' placeholder=''></td>"+
+					 "<td class='status-content'> <input onfocusout='disPerChange(this,5)' onkeypress='return isPersent(this,event)'  name='disP' id='disP"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
+					 "<td class='status-content'> <input onfocus='disFocus(this,2)' onfocusout='disDolChange(this,2)' onkeypress='return isNumeric(this,event)'  name='disDol' id='disDol"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+				
+					 "<td class='status-content'> <input onfocusout='vatPerChange(this,5)' onkeypress='return isPersent(this,event)'  name='vatP' id='vatP"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
+					 "<td class='status-content'> <input onfocus='vatFocus(this,2)' onfocusout='vatDolChange(this,2)' onkeypress='return isNumeric(this,event)'  name='vatDol' id='vatDol"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+				
+					 "<td class='status-content'> <input onfocusout='stPerChange(this,5)' onkeypress='return isPersent(this,event)'  name='stP' id='stP"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
+					 "<td class='status-content'> <input onfocus='stFocus(this,2)' onfocusout='stDolChange(this,2)' onkeypress='return isNumeric(this,event)'  name='stDol' id='stDol"+index+"' class='form-control' style='width: 80px;' type='text' placeholder=''></td>"+
+					 "<td class='status-content'> <input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' style='width: 100px;' type='text' placeholder=''></td>";
+		addAnItem += "<td><button onClick='removeRowItem("+index+")' class='btn btn-danger' type='button'><i class='fa  fa-trash'></i></button><button style='margin-left:5px;' onClick='detailRowItem("+index+")' class='btn btn-info' type='button'><i class='fa  fa-info'></i></button></td>";
+		addAnItem += "</tr>";
+	
+		return addAnItem;
+	}
+	
+	$(function(){
+		$("#oppItem").append(tagItem);
+		$("#oppUom").append(tagUom);
+		$("#oppLocation").append(tagLocation);
+		$("#oppClassDetail").append(tagClass);
+	});
 
 </script>
-
-
-<!-- /.content-wrapper -->
-

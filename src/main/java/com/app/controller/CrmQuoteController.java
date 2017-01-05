@@ -134,15 +134,10 @@ public class CrmQuoteController {
 		
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="/quote/check-entry-no",method = RequestMethod.POST)
-		public ResponseEntity<Map<String, Object>> checkEntryNo(@RequestBody String obj, HttpServletRequest req){	
-			Map<String, String> map = new HashMap<String, String>();
-			try {
-				map = new ObjectMapper().readValue(obj, Map.class);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			HttpEntity<String> request = new HttpEntity<String>(obj,header);			
-			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/quote/check_entry_no/"+map.get("quoteId"), HttpMethod.POST, request, Map.class);			
+		public ResponseEntity<Map<String, Object>> checkEntryNo(@RequestBody Quote obj, HttpServletRequest req){	
+			obj.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+			HttpEntity<Object> request = new HttpEntity<Object>(obj,header);			
+			ResponseEntity<Map> response = restTemplate.exchange(URL+"api/quote/check_entry_no", HttpMethod.POST, request, Map.class);			
 			return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 			
 		}

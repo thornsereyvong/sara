@@ -9,16 +9,14 @@
 <title>${title}</title>
 <!-- Tell the browser to be responsive to screen width -->
 <meta	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"	name="viewport">
-<!-- Bootstrap 3.3.5 -->
+
 <link rel="shortcut icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/favicon.png"/>
 <link type="text/css" href="${pageContext.request.contextPath}/resources/plugins/select2/select2.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrapValidator.css">
-<!-- Font Awesome -->
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/font-awesome.min.css">
-<!-- Ionicons -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/ionicons.min.css">
-<!-- Theme style -->
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker-bs3.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.css">
@@ -28,8 +26,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/fileinput.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/editor/summernote.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/js/style.css">
-<link href="${pageContext.request.contextPath}/resources/editor/font-awesome.min.css" rel="stylesheet">
-<link type="text/css" href="${pageContext.request.contextPath}/resources/editor/summernote.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/editor/font-awesome.min.css" >
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/editor/summernote.css" >
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/sweetalert/sweetalert.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/angular/css/angular-material.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/angular/css/loading-bar.css">
@@ -60,7 +58,7 @@
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrapValidator.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jPages.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/editor/summernote.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/select2/select2.full.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/dist/sweetalert/sweetalert-dev.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
