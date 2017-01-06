@@ -25,6 +25,14 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 	angular.element(document).ready(function () {				
 		
     });
+
+	$scope.listCompetitors = function(){
+		$http.get("${pageContext.request.contextPath}/hbu/competitor/list").success(function(response){
+				$scope.competitors = response.COMPETITORS;
+				$scope.length = $scope.competitors.length;
+			});
+		};
+    
 	
 	$scope.startup = function(){				
 		$http.get("${pageContext.request.contextPath}/hbu/market-survey/startup").success(function(response){
@@ -36,6 +44,20 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 	$scope.findCompetitorByItemId = function(itemId){
 		$http.get("${pageContext.request.contextPath}/item/view/"+itemId).success(function(response){
 			$scope.item = response.ITEM;
+		});
+	};
+
+	$scope.findHBUItemById = function(itemId){
+		$http.get("${pageContext.request.contextPath}/item/view/"+itemId).success(function(response){
+			$scope.item = response.ITEM;
+			$.each($scope.item.competitors,function(i, com){
+				$("input[name=competitor]:not(:checked)").each(function(){
+					if($(this).val() == com.comId){
+						$(this).prop('checked',true);
+					}
+				});
+				
+			});
 		});
 	};
 }]);
@@ -56,18 +78,214 @@ $(document).ready(function(){
 	});
 
 	$("#addCustToPro").hide();
-	$("#addCompetiitor").hide();
+	$("#addCompetitor").hide();
 
 	$("#product").change(function(){
 		if($("#product").val() != ""){
 			angular.element(document.getElementById('marketSurveyController')).scope().findCompetitorByItemId($("#product").val());
 			$("#addCustToPro").show();
-			$("#addCompetiitor").show();
+			$("#addCompetitor").show();
 		}else{
 			$("#addCustToPro").hide();
-			$("#addCompetiitor").hide();
+			$("#addCompetitor").hide();
 		}
 	});
+
+	/*Add customer to product block*/
+	
+	$("#addCustToPro").click(function(){
+		$("#frmAddCustomerToProduct").modal('toggle');
+		/* if($("product").val() != ""){
+			//angular.element(document.getElementById('marketSurveyController')).scope().findHBUItemById($("#product").val());
+		} */
+	});
+
+	function addCustomersToProduct(){
+		var customers = [];
+		$("input[name=customer]:checked").each(function(){
+			customers.push({"custId":$(this).val()});
+		});
+		$('#frmAddCompetitorToProduct').bootstrapValidator({
+			message: 'This value is not valid',
+			feedbackIcons: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				product: {
+					validators: {
+						notEmpty: {
+							message: 'The product is required and can not be empty!'
+						}
+					}
+				}
+			}
+		}).on('success.form.bv', function(e) {
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to add competitors to product.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : "${pageContext.request.contextPath}/item/add/customer",
+							type : "POST",
+							data : JSON.stringify({
+								  "itemId" : getValueStringById("product"),
+								  "customers": customers,
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){	
+						    	$("input[name=customer]:checked").attr('checked',false);
+						    	$('#frmAddCustomerToProduct').bootstrapValidator('resetForm', true);
+								if(result.MESSAGE == "INSERTED"){						
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									$("#frmAddCustomerToProduct").modal('toggle');
+									angular.element(document.getElementById('marketSurveyController')).scope().findCompetitorByItemId(getValueStringById("product"));
+								}else{
+									swal({
+			    						title: "UNSUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "error"
+			    					});
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+				}, 500);
+			});
+		});
+		$("#frmAddCompetitorToProduct").submit();
+	}
+
+	$("#btnAddCust").click(function(){
+		addCustomersToProduct();
+	});
+	
+	/*End customer block*/
+
+	/*Add competitor block*/
+	
+	$("#addCompetitor").click(function(){
+		$("#frmAddCompetitorToProduct").modal('toggle');
+		if($("product").val() != ""){
+			angular.element(document.getElementById('marketSurveyController')).scope().findHBUItemById($("#product").val());
+		}
+	});
+
+	
+	$("input[name=check-all]").change(function(){
+		if($(this).is(':checked')){
+			$("input[name=competitor]:not(:checked)").each(function(){
+				$(this).prop('checked',true);
+			});
+		}else{
+			$("input[name=competitor]:checked").each(function(){
+				$(this).prop('checked',false);
+			});
+		}
+	});
+
+
+	function addCompetitorsToProduct(){
+		var competitors = [];
+		$("input[name=competitor]:checked").each(function(){
+			competitors.push({"comId":$(this).val()});
+		});
+		$('#frmAddCompetitorToProduct').bootstrapValidator({
+			message: 'This value is not valid',
+			feedbackIcons: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				ato_product: {
+					validators: {
+						notEmpty: {
+							message: 'The product is required and can not be empty!'
+						}
+					}
+				}
+			}
+		}).on('success.form.bv', function(e) {
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to add competitors to product.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : "${pageContext.request.contextPath}/item/add",
+							type : "POST",
+							data : JSON.stringify({
+								  "itemId" : getValueStringById("product"),
+								  "competitors": competitors,
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){	
+						    	$("input[name=competitor]:checked").attr('checked',false);
+						    	$('#frmAddCompetitorToProduct').bootstrapValidator('resetForm', true);
+								if(result.MESSAGE == "INSERTED"){						
+									swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+									$("#frmAddCompetitorToProduct").modal('toggle');
+									angular.element(document.getElementById('marketSurveyController')).scope().findCompetitorByItemId(getValueStringById("product"));
+								}else{
+									swal({
+			    						title: "UNSUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "error"
+			    					});
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+				}, 500);
+			});
+		});
+		$("#frmAddCompetitorToProduct").submit();
+	}
+
+	$("#btnAdd").click(function(){
+		addCompetitorsToProduct();
+	});
+
+	/*End add competitor block*/
 });
 </script>
 <style>
@@ -231,6 +449,20 @@ $(document).ready(function(){
 .breadcrumb1 li a:hover:after {
 	border-left-color: rgb(75, 202, 129) !important;
 }
+
+.widget-user .widget-user-header {
+    padding: 20px;
+    height: 70px !important;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+}
+
+.widget-user .widget-user-image {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    margin-left: -45px;
+}
 </style>
 <div class="content-wrapper" id="marketSurveyController" ng-app="marketSurveyApp" ng-controller="marketSurveyController">
 	<!-- Content Header (Page header) -->
@@ -276,7 +508,7 @@ $(document).ready(function(){
 																		<a class="btn btn-info btn-app" id = "addCustToPro"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
 																	</div>
 																	<div class="col-sm-1">
-																		<a class="btn btn-info btn-app" id = "addCompetiitor"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
+																		<a class="btn btn-info btn-app" id = "addCompetitor"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
 																	</div>
 																</div>
 															</div>
@@ -394,6 +626,92 @@ $(document).ready(function(){
 					</div>
 				</div>
 				<!-- /.widget-user -->
+			</div>
+		</div>
+		
+		<div ng-controller="marketSurveyController" class="modal fade modal-default" id="frmAddCompetitorToProduct" role="dialog">
+			<div class="modal-dialog  modal-xs" data-ng-init="">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" ng-click="cancelAddCompetitor()" class="close"
+							data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">
+							<b  id="tCompetitorToProduct">Add Competitors to Product</b>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<form id="frmAddCompetitorToProduct">
+								<div class="col-md-12">
+									<div data-ng-init="listCompetitors()">
+										<div class="form-group table-responsive">
+											<table class="table table-bordered">
+												<tr class="active info">
+													<th><label>Competitor List</label></th>
+													<th class="text-center"><input type="checkbox" name="check-all" onClick()/><!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> --></th>
+												</tr>
+												<tr ng-repeat = "com in competitors"><!-- dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6" -->
+													<td class="col-md-11">[{{com.comId}}] {{com.comName}}</td>
+													<td class="col-md-1 text-center"><input type="checkbox"  name="competitor" value="{{com.comId}}" /></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="btnCancel"
+							ng-click="cancelAddCompetitor()" name="btnCancel"
+							class="btn btn-danger" data-dismiss="modal">Cancel</button>
+						&nbsp;&nbsp;
+						<button type="button" class="btn btn-primary pull-right"
+							id="btnAdd" name="btnAdd">Add</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div ng-controller="marketSurveyController" class="modal fade modal-default" id="frmAddCustomerToProduct" role="dialog">
+			<div class="modal-dialog  modal-xs">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" ng-click="cancelAddCompetitor()" class="close"
+							data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">
+							<b  id="tCustomerToProduct">Add Customers to Product</b>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<form id="frmAddCustomerToProduct">
+								<div class="col-md-12">
+									<div class="form-group table-responsive">
+										<table class="table table-bordered">
+											<tr class="active info">
+												<th><label>Customer List</label></th>
+												<th class="text-center"><input type="checkbox" name="checkAll" onClick()/><!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> --></th>
+											</tr>
+											<tr ng-repeat = "cust in customers"><!-- dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6" -->
+												<td class="col-md-11">[{{cust.custId}}] {{cust.custName}}</td>
+												<td class="col-md-1 text-center"><input type="checkbox"  name="customer" value="{{cust.custId}}" /></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="btn-cancel"
+							ng-click="cancelAddCompetitor()" name="btn-cancel"
+							class="btn btn-danger" data-dismiss="modal">Cancel</button>
+						&nbsp;&nbsp;
+						<button type="button" class="btn btn-primary pull-right"
+							id="btnAddCust" name="btnAddCust">Add</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
