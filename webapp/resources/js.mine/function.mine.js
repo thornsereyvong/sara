@@ -368,7 +368,7 @@ function getValueStringById(ID){
 }
 
 function toNum(num){	
-	if (num === undefined || num === null || num == 0) {
+	if (num === undefined || num === null || num == 0 || num=='.') {
 		return 0;		
 	}
 	num = num.toString();
