@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.app.entities.HBUItem;
+import com.app.entities.HBUItemCompetitor;
+import com.app.entities.HBUItemCustomer;
 import com.app.entities.MeDataSource;
 
 @RestController
@@ -46,10 +47,19 @@ public class HRUItemController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/add", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> listCompetitor(HttpServletRequest req, @RequestBody HBUItem item){
-		item.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
-		HttpEntity<Object> request = new HttpEntity<Object>(item, header);
+	public ResponseEntity<Map<String, Object>> listCompetitor(HttpServletRequest req, @RequestBody HBUItemCompetitor itemCompetitor){
+		itemCompetitor.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(itemCompetitor, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/item/add", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/add/customer", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> listCustomer(HttpServletRequest req, @RequestBody HBUItemCustomer itemCustomer){
+		itemCustomer.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(itemCustomer, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/item/add/customer", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	

@@ -582,7 +582,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 								<button type="button" ng-click="cancelAddCompetitor()" class="close"
 									data-dismiss="modal">&times;</button>
 								<h4 class="modal-title">
-									<b  id="tCompetitorToProduct">Add Compettitors to Product</b>
+									<b  id="tCompetitorToProduct">Add Competitors to Product</b>
 								</h4>
 							</div>
 							<div class="modal-body">
