@@ -3,6 +3,7 @@ package com.app.entities;
 import java.util.List;
 public class HBUItemCustomer{
 
+	private int id;
 	private String itemId;
 	private List<HBUCustomer> customers;
 	private MeDataSource meDataSource;
@@ -29,6 +30,14 @@ public class HBUItemCustomer{
 
 	public void setMeDataSource(MeDataSource meDataSource) {
 		this.meDataSource = meDataSource;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

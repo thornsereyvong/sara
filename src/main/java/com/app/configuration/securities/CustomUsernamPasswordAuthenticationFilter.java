@@ -18,7 +18,7 @@ public class CustomUsernamPasswordAuthenticationFilter extends UsernamePasswordA
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 		final String str = request.getParameter("company");
-		String[] data = str.split(",");
+		String[] data = str.split("12345");
 		String databaseName = data[0];
 		request.getSession().setAttribute("databaseName", databaseName);
 		request.getSession().setAttribute("company", data[1]);
