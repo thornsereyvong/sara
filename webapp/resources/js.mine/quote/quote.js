@@ -19,9 +19,65 @@ var statusClickDetail = false;
 
 var rowIndexLine = 0; 
 
+var creditLimitByCustomer = 0;
+
+// detail item by row variable 
+
+var d_item = "";
+var d_location= "";
+var d_uom = "";
+var d_class = "";
+
+var d_rPrice = 0;
+var d_qty =  0;
+var d_up = 0;
+var d_tAmount = 0;
+var d_priceFactor = 0;
+var d_disDol = 0;
+var d_disPer = 0;
+var d_vatDol = 0;
+var d_vatPer = 0;
+var d_stDol = 0;
+var d_stPer = 0;
+var d_nTAmount = 0;
+
+
+var evtChangeStatus = false;
+
+
+function clearDetailRowByItem(){
+	d_item = "";
+	d_location= "";
+	d_uom = "";
+	d_class = "";
+
+	d_rPrice = 0;
+	d_qty =  0;
+	d_up = 0;
+	d_tAmount = 0;
+	d_priceFactor = 0;
+	d_disDol = 0;
+	d_disPer = 0;
+	d_vatDol = 0;
+	d_vatPer = 0;
+	d_stDol = 0;
+	d_stPer = 0;
+	d_nTAmount = 0;
+}
 
 // START READY
 $(function(){
+	
+	$("#startDate").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD-MMM-YYYY'
+    }).change(function(){
+    	if($('#startDate').val() != '')
+    		startDate = $('#startDate').val();
+    	else
+    		$('#startDate').val(startDate);
+    });
 	
 	$('#frmAddProduct').bootstrapValidator({
 		message: 'This value is not valid',
@@ -57,12 +113,11 @@ $(function(){
 					notEmpty: {
 						message: 'The quantity is required and can not be empty!'
 					},
-					numeric: {
-		                message: 'The value is not a number',
-		                // The default separators
-		                thousandsSeparator: '',
-		                decimalSeparator: '.'
-		            }
+		            greaterThan: {
+		            	inclusive : true,
+                        value: 0.00000000000000000000000000000000000000000000000000000000001,                       
+                        message: 'The value must be greater than zero!'
+                    }
 				}
 			},
 			oppUnitPrice: {
@@ -141,8 +196,6 @@ $(function(){
 		}
 	});
 	
-	
-	
 	$(".status-content").hide();
 	
 	$('#quoteDate').daterangepicker({
@@ -150,11 +203,11 @@ $(function(){
         showDropdowns: true,
         format: 'DD-MMM-YYYY'
     });
-	$('#startDate').daterangepicker({
+	/*$('#startDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         format: 'DD-MMM-YYYY'
-    });
+    });*/
 	$('#expireDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
@@ -176,7 +229,12 @@ $(function(){
 		if(entryCheck == false){
 			alertEntryExist();
 		}else if(checkMaster() == true && checkDetail()== true && checkLine()==true && entryCheck == true){
-			saleOrder();
+			
+			if(creditLimitByCustomer < toNum($.trim($("#txtNetInv").val()))){
+				alertCreditLimit($.trim($("#txtNetInv").val()));
+			}else{
+				saleOrder();
+			}
 		}else{
 			if(checkMaster() != true || checkDetail() != true){
 				alertRequireField();
@@ -212,10 +270,13 @@ $(function(){
 			if(LCustomer[customer].priceCode.priceCode != ''){
 				$("#priceCode").next().children().children().attr('style','border: 1px solid #d2d6de;');
 			}
+			creditLimitByCustomer = LCustomer[customer].termCreditLimit;
+			$("#txtCLimit").val("$ "+formatNumByLength(LCustomer[customer].termCreditLimit,2));	
 		}else{
 			$("#customer").next().children().children().attr('style','border: 1px solid #dd4b39;');
 			$("#priceCode").select2('val','');
 			addShipToAdd([]);	
+			creditLimitByCustomer=0;
 		}		
 	});
 	// end Customer change act
@@ -304,18 +365,11 @@ $(function(){
 				select2Init("item"+index);
 				select2Init("location"+index);
 				select2Init("uom"+index);
-				select2Init("classCode"+index);
-				
-				$("#classCode"+index).select2('val',getValueStringById('classCodeMaster'));
-				
-				styUom= $("#uom"+index).attr('style');
-				styQty = $("#qty"+index).attr('style');
-				
-				$(".status-content").hide();
-				
-				
+				$("#classCode"+index).val(getValueStringById('classCodeMaster'));
+				styUom= "";
+				styQty = "";
+				statusClickDetail = false;
 			}else{
-				
 				alertRequireField();
 			}
 		}else{
@@ -340,11 +394,20 @@ $(function(){
 	});
 	
 	
-	
+	$("#customer").select2('val','0');
+	$("#employee").select2('val', 'E00001');
 	
 	
 });
 
+function alertCreditLimit(totalSaleOrder){
+	swal({  
+		   title: "Credit Limit!",   
+		   text: "The total sale invoice: $ "+totalSaleOrder+" is more than credit limit: $"+creditLimitByCustomer+". Operation not allowed!",    
+		   type: "warning",
+		   showConfirmButton: true 
+	});
+}
 
 function alertRequireField(){
 	swal({  
@@ -352,7 +415,7 @@ function alertRequireField(){
 		   text: "",   
 		   timer: 2000,   
 		   type: "warning",
-		   showConfirmButton: false 
+		   showConfirmButton: true 
 	});
 }
 
@@ -362,7 +425,7 @@ function alertZero(){
 		   text: "",   
 		   timer: 2000,   
 		   type: "warning",
-		   showConfirmButton: false 
+		   showConfirmButton: true 
 	});
 }
 function alertEntryExist(){
@@ -371,7 +434,7 @@ function alertEntryExist(){
 		   text: "Please try new!",   
 		   timer: 2000,   
 		   type: "warning",
-		   showConfirmButton: false 
+		   showConfirmButton: true 
 	});
 }
 
@@ -398,7 +461,7 @@ function priceFactorChange(obj,l){
 function upChange(obj,l){
 	var num = toNum(obj.value);
 	var obj1 = $("#"+obj.getAttribute("id"));
-	var n = obj1.parent().parent().attr('val');
+	var n = obj1.parent().parent().parent().attr('val');
 	
 	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 	
@@ -409,11 +472,11 @@ function upChange(obj,l){
 	showOneLocation(n);
 	
 }
-function qtyChange(obj,l){
+function qtyChange(obj,l){ 
 	
 	var num = toNum(obj.value);
 	var obj1 = $("#"+obj.getAttribute("id"));
-	var n = obj1.parent().parent().attr('val');
+	var n = obj1.parent().parent().parent().attr('val');
 	
 	if(num>0){
 		obj1.attr('style',styQty);
@@ -606,6 +669,7 @@ function stPerChange(obj,l){
 	showOneLocation(n);
 }
 
+
 function calculateByItem(n){
 	
 	var qty    = toNum($("#qty"+n).val());
@@ -654,6 +718,8 @@ function calculateByItem(n){
 	
 	var nTAmt = tAmt-disDol+vatDol+stDol;
 	
+	
+	
 	$("#tAmt"+n).val(formatNumByLength(tAmt,2));
 	$("#nTAmt"+n).val(formatNumByLength(nTAmt,2));
 	
@@ -664,80 +730,11 @@ function calculateByItem(n){
 
 
 function actItemChange(obj){
-	var obj = $("#"+obj.getAttribute("id"));
-	if(obj.val() !=''){
-		obj.next().children().children().attr('style','border: 1px solid #d2d6de;');
-		var priceCode = $.trim($("#priceCode").val());
-		selectItem = JSON.parse($.ajax({
-			url: server+"quote/itemChange",
-			method: "POST",
-			async: false,
-			data: JSON.stringify({
-				"itemId" : obj.val(),
-				"priceCode" : priceCode
-				}),
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-			    }
-		}).responseText);
-		
-		
-		
-		if(selectItem.MESSAGE == "SUCCESS"){
-			selectItem = selectItem.DATA;
-			var n = obj.parent().parent().attr('val');
-			$("#up"+n).val(formatNumByLength(selectItem.up, 6));
-			//$("#uom"+n+" option[value='"+selectItem.UOM+"']").attr('selected','selected');	
-			$("#uom"+n).select2('val', selectItem.UOM)	
-			$("#reportPrice"+n).val(formatNumByLength(selectItem.rp, 6));
-		}else{
-			$("#up"+n).val(formatNumByLength(0, 6));
-			//$("#uom"+n+" option[value='']").attr('selected','selected');	
-			$("#uom"+n).select2('val', '')
-			$("#reportPrice"+n).val(formatNumByLength(0, 6));
-		}
-		
-		actUomChange(document.getElementById('uom'+n));		
-		
-		$("#disP"+n).val(formatNumByLength(0, 2));
-		$("#disDol"+n).val(formatNumByLength(0, 2));
-		
-		$("#priceFactor"+n).val(formatNumByLength(1, 4));
-		$("#vatP"+n).val(formatNumByLength(0, 2));
-		$("#vatDol"+n).val(formatNumByLength(0, 2));
-		$("#stP"+n).val(formatNumByLength(0, 2));
-		$("#stDol"+n).val(formatNumByLength(0, 2));
-		
-		calculateByItem(n);
-		
-		
-		if($("#listItem tr").length<2){
-			setValueById('txtTSalOrd', formatNumByLength(0, 2));
-			setValueById('txtInvDis', formatNumByLength(0, 2));
-			setValueById('txtNetInv', formatNumByLength(0, 2));
-			setValueById('txtTPTDate', formatNumByLength(0, 2));
-			setValueById('txtAmtDue', formatNumByLength(0, 2));
-		}
-		
-		
-		setQtyAvailableToRow(n);
-		
-	}else{
-		obj.next().children().children().attr('style','border: 1px solid #dd4b39;');
-	}
-	showOneLocation(n);
-}
-
-
-function act1ItemChange(obj){
-	if(statusClickDetail != false){
-		
-		/*
+	if(statusClickDetail==false){
 		var obj = $("#"+obj.getAttribute("id"));
 		if(obj.val() !=''){
 			obj.next().children().children().attr('style','border: 1px solid #d2d6de;');
-			var priceCode = getValueById('priceCode');
+			var priceCode = $.trim($("#priceCode").val());
 			selectItem = JSON.parse($.ajax({
 				url: server+"quote/itemChange",
 				method: "POST",
@@ -752,16 +749,17 @@ function act1ItemChange(obj){
 				    }
 			}).responseText);
 			
-			var n = rowIndexLine;
+			var n = obj.parent().parent().parent().attr('val');
 			
 			if(selectItem.MESSAGE == "SUCCESS"){
-				selectItem = selectItem.DATA;				
-				$("#up"+n).val(formatNumByLength(selectItem.up, 6));	
-				$("#uom"+n).select2("val", selectItem.UOM);	
+				selectItem = selectItem.DATA;
+				$("#up"+n).val(formatNumByLength(selectItem.up, 6));			
+				$("#uom"+n).select2('val', selectItem.UOM)	
 				$("#reportPrice"+n).val(formatNumByLength(selectItem.rp, 6));
 			}else{
-				$("#up"+n).val(formatNumByLength(0, 6));	
-				$("#uom"+n).select2("val", "");
+				$("#up"+n).val(formatNumByLength(0, 6));
+				//$("#uom"+n+" option[value='']").attr('selected','selected');	
+				$("#uom"+n).select2('val', '')
 				$("#reportPrice"+n).val(formatNumByLength(0, 6));
 			}
 			
@@ -793,17 +791,16 @@ function act1ItemChange(obj){
 		}else{
 			obj.next().children().children().attr('style','border: 1px solid #dd4b39;');
 		}
-		showOneLocation(n);*/
-		
-		
+		showOneLocation(n);
+		statusClickDetail = false;
 	}
 }
 
 
-
 function actLocChange(obj){
 	var obj = $("#"+obj.getAttribute("id"));
-	var n = obj.parent().parent().attr('val');
+	var n = obj.parent().parent().parent().attr('val');
+	
 	if(obj.val() !=''){
 		setQtyAvailableToRow(n);
 		obj.next().children().children().attr('style','border: 1px solid #d2d6de;');
@@ -815,9 +812,9 @@ function actLocChange(obj){
 function actUomChange(obj){
 	var obj = $("#"+obj.getAttribute("id"));
 	if(obj.val() !=''){
-		obj.attr('style',styUom);
+		obj.next().children().children().attr('style','border: 1px solid #d2d6de;');		
 	}else{
-		obj.attr('style','border: 1px solid #dd4b39;'+styUom);
+		obj.next().children().children().attr('style','border: 1px solid #dd4b39;');
 	}
 }
 
@@ -860,32 +857,7 @@ function removeRowItem(RowID){
 
 
 
-function detailRowItem(n){
-	
-	rowIndexLine = n;
-	
-	$("#oppItem").select2('val',getValueStringById('item'+n));
-	$("#oppLocation").select2('val',getValueStringById('location'+n));
-	$("#oppClassDetail").select2('val', getValueStringById('classCode'+n));
-	$("#oppUom").select2('val', getValueStringById('uom'+n));
-	
-	$("#oppQty").val(getValueStringById('qty'+n));
-	$("#oppUnitPrice").val(getValueStringById('up'+n));
-	$("#oppPriceFactor").val(getValueStringById('priceFactor'+n));
-	$("#oppReportPrice").val(getValueStringById('reportPrice'+n));
-	$("#oppTAmount").val(getValueStringById('tAmt'+n));
-	$("#oppDisPer").val(getValueStringById('disP'+n));
-	$("#oppDisDol").val(getValueStringById('disDol'+n));
-	$("#oppVatPer").val(getValueStringById('vatP'+n));
-	$("#oppVatDol").val(getValueStringById('vatDol'+n));
-	$("#oppSTPer").val(getValueStringById('stP'+n));
-	$("#oppSTDol").val(getValueStringById('stDol'+n));
-	$("#oppNetTAmount").val(getValueStringById('nTAmt'+n));
-	
-	$("#btn_show_product").click();
-	
-	statusClickDetail = true;
-}
+
 
 function addShipToAdd(data){
 	$('#shipToAdd').empty();
@@ -944,7 +916,7 @@ function checkDetail(){
 				$("#location"+n).next().children().children().attr('style','border: 1px solid #dd4b39;');
 			}			
 			if(uomR == ''){
-				$("#uom"+n).attr('style','border: 1px solid #dd4b39;'+styUom);
+				$("#uom"+n).next().children().children().attr('style','border: 1px solid #dd4b39;');
 			}			
 			if(qtyR <=0){
 				$("#qty"+n).attr('style','border: 1px solid #dd4b39;'+styQty);
@@ -1243,5 +1215,281 @@ function findShipToAddressByCustomer(custId){
 		}
 	}	
 	return '';
+}
+
+
+
+// on modal
+
+function cancelProductClick(){
+	statusClickDetail = false;
+}
+
+function act1ItemChange(obj){
+	if(statusClickDetail != false){
+		var priceCode = getValueStringById("priceCode");
+		var item = getValueStringById("oppItem");
+		if(item != ""){
+			$.ajax({
+				url: server+"quote/itemChange",
+				method: "POST",
+				data: JSON.stringify({
+					"itemId" : item,
+					"priceCode" : priceCode
+				}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+			    },
+			    success: function(result){			    				    	
+			    	if(result.MESSAGE == "SUCCESS"){
+			    		$("#oppUom").select2('val',result.DATA.UOM);
+			    		$("#oppUnitPrice").val(formatNumByLength(result.DATA.up,6));
+			    		$("#oppReportPrice").val(formatNumByLength(result.DATA.rp,6));
+			    		$("#oppPriceFactor").val(formatNumByLength(1, 4));
+			    		
+			    		calculateProductMaster();
+			    	}
+			    },
+	    		error:function(){	    		
+	    		} 
+			});
+		}else{			
+			//alert(0)			
+		}
+	}
+}
+
+function oppQtyChange(obj){	
+	calculateProductMaster();	
+}
+
+function oppUnitPriceChange(obj){
+	calculateProductMaster();
+}
+
+function oppPriceFactorChange(obj){
+	calculateProductMaster();
+}
+
+function calculateProductMaster(){
+	
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	
+	d_disPer = toNum(getValueStringById('oppDisPer'));
+	d_vatPer = toNum(getValueStringById('oppVatPer'));
+	d_stPer = toNum(getValueStringById('oppSTPer'));
+	
+	
+	d_disDol = d_tAmount * d_disPer / 100;
+	d_vatDol = d_tAmount * d_vatPer / 100;
+	d_stDol = d_tAmount * d_stPer / 100;
+	
+	
+	d_nTAmount = d_tAmount - d_disDol + d_vatDol + d_stDol;
+	
+	$("#oppTAmount").val(formatNumByLength(d_tAmount,2));
+		
+	$("#oppDisDol").val(formatNumByLength(d_disDol,2));	
+	$("#oppVatDol").val(formatNumByLength(d_vatDol,2));	
+	$("#oppSTDol").val(formatNumByLength(d_stDol,2));	
+	$("#oppNetTAmount").val(formatNumByLength(d_nTAmount,2));
+	
+	evtChangeStatus = false;
+	
+}
+
+function calculateProductDetail(){
+	d_disDol = toNum(getValueStringById('oppDisDol'));
+	d_vatDol = toNum(getValueStringById('oppVatDol'));
+	d_stDol = toNum(getValueStringById('oppSTDol'));
+		
+	d_nTAmount = d_tAmount - d_disDol + d_vatDol + d_stDol;	
+	$("#oppNetTAmount").val(formatNumByLength(d_nTAmount,2));
+	
+	evtChangeStatus = false;
+	
+}
+
+
+function fToNumber(obj, l){ 
+	obj.value = formatNumByLength(toNum(obj.value),l);
+}
+
+function oppDisPerChange(){
+	
+	d_disPer = toNum(getValueStringById('oppDisPer'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_disDol = d_tAmount * d_disPer / 100;
+	
+	$("#oppDisDol").val(formatNumByLength(d_disDol,2));	
+	
+	calculateProductDetail();
+	
+	
+}
+function oppDisDolChange(){
+	d_disDol = toNum(getValueStringById('oppDisDol'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_disPer = 0;
+	if(d_tAmount !=0 )
+		d_disPer = d_disDol * 100 / d_tAmount;
+	
+	
+	$("#oppDisPer").val(formatNumByLength(d_disPer,5));	
+	
+	calculateProductDetail();
+}
+
+function oppVatPerChange(){
+	d_vatPer = toNum(getValueStringById('oppVatPer'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_vatDol = d_tAmount * d_vatPer / 100;
+	
+	$("#oppVatDol").val(formatNumByLength(d_vatDol,2));	
+	
+	calculateProductDetail();
+}
+function oppVatDolChange(){
+	d_vatDol = toNum(getValueStringById('oppVatDol'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_vatPer = 0;
+	if(d_tAmount !=0 )
+		d_vatPer = d_vatDol * 100 / d_tAmount;
+	
+	$("#oppVatPer").val(formatNumByLength(d_vatPer,5));	
+	
+	calculateProductDetail();
+}
+
+function oppSTPerChange(){
+	d_stPer = toNum(getValueStringById('oppSTPer'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_stDol = d_tAmount * d_stPer / 100;
+	
+	$("#oppSTDol").val(formatNumByLength(d_stDol,2));	
+	
+	calculateProductDetail();
+}
+function oppSTDolChange(){
+	d_stDol = toNum(getValueStringById('oppSTDol'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_stPer = 0;
+	if(d_tAmount !=0 )
+		d_stPer = d_stDol * 100 / d_tAmount;
+	
+	$("#oppSTPer").val(formatNumByLength(d_stPer,5));	
+	
+	calculateProductDetail();
+}
+
+function btnProductSave(){
+	$('#frmAddProduct').data('bootstrapValidator').validate();
+	var statusAddPro = $("#frmAddProduct").data('bootstrapValidator').validate().isValid();
+	if(statusAddPro){
+		$("#item"+rowIndexLine).select2('val',getValueStringById('oppItem'));
+		$("#location"+rowIndexLine).select2('val',getValueStringById('oppLocation'));
+		$("#uom"+rowIndexLine).select2('val',getValueStringById('oppUom'));
+		$("#qty"+rowIndexLine).val(getValueStringById('oppQty'));
+		$("#up"+rowIndexLine).val(getValueStringById('oppUnitPrice'));
+		$("#classCode"+rowIndexLine).val(getValueStringById('oppClassDetail'));
+		
+		$("#priceFactor"+rowIndexLine).val(getValueStringById('oppPriceFactor'));
+		$("#reportPrice"+rowIndexLine).val(getValueStringById('oppReportPrice'));
+				
+		$("#disP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppDisPer')),6));
+		$("#disDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppDisDol')),2));
+		
+		$("#vatP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatPer')),6));
+		$("#vatDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatPer')),2));
+		
+		$("#stP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppSTPer')),6));
+		$("#stDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppSTDol')),2));
+		
+		
+		$("#tAmt"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppTAmount')),2));
+		$("#nTAmt"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppNetTAmount')),2));
+		
+		clearDetailRowByItem();
+		
+		totalSTandVAT();
+		totalSalOrd();
+		showOneLocation(rowIndexLine);
+		$("#frmProduct").modal('toggle');
+		clearFormProduct();
+		statusClickDetail = true;
+	}
+	
+}
+function detailRowItem(n){
+	clearFormProduct();
+	rowIndexLine = n;
+	
+	$("#oppItem").select2('val',getValueStringById('item'+n));
+	$("#oppLocation").select2('val',getValueStringById('location'+n));
+	$("#oppClassDetail").select2('val', getValueStringById('classCode'+n));
+	$("#oppUom").select2('val', getValueStringById('uom'+n));
+	
+	
+	
+	$("#oppQty").val(getValueStringById('qty'+n));
+	$("#oppUnitPrice").val(getValueStringById('up'+n));
+	$("#oppPriceFactor").val(getValueStringById('priceFactor'+n));
+	$("#oppReportPrice").val(getValueStringById('reportPrice'+n));
+	$("#oppTAmount").val(getValueStringById('tAmt'+n));
+	$("#oppDisPer").val(getValueStringById('disP'+n));
+	$("#oppDisDol").val(getValueStringById('disDol'+n));
+	$("#oppVatPer").val(getValueStringById('vatP'+n));
+	$("#oppVatDol").val(getValueStringById('vatDol'+n));
+	$("#oppSTPer").val(getValueStringById('stP'+n));
+	$("#oppSTDol").val(getValueStringById('stDol'+n));
+	$("#oppNetTAmount").val(getValueStringById('nTAmt'+n));
+	
+	
+	$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppUom'));
+	
+	
+	$("#btn_show_product").click();
+	
+	statusClickDetail = true;
+}
+
+
+function clearFormProduct(){
+	$("#oppItem").select2("val","");
+	$("#oppLocation").select2("val","");
+	$("#oppClassDetail").select2("val","");
+	$("#oppUom").select2("val","");
+	
+	$("#frmAddProduct").bootstrapValidator('resetForm', 'true');
+	$('#frmAddProduct')[0].reset();
 }
 

@@ -31,7 +31,18 @@ public class CrmCustomer {
 	private List<CrmShipAddress> shipAddresses;
 	private String aId;
 	private MeDataSource meDataSource;
+	private double termCreditLimit;
 	
+	
+	
+	public double getTermCreditLimit() {
+		return termCreditLimit;
+	}
+
+	public void setTermCreditLimit(double termCreditLimit) {
+		this.termCreditLimit = termCreditLimit;
+	}
+
 	public MeDataSource getMeDataSource() {
 		return meDataSource;
 	}
