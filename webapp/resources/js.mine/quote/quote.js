@@ -395,7 +395,7 @@ $(function(){
 	
 	
 	$("#customer").select2('val','0');
-	$("#employee").select2('val', 'E00001');
+	$("#employee").select2('val', empLinkUser.EmpID);
 	
 	
 });
@@ -1243,11 +1243,14 @@ function act1ItemChange(obj){
 			    },
 			    success: function(result){			    				    	
 			    	if(result.MESSAGE == "SUCCESS"){
+			    		
 			    		$("#oppUom").select2('val',result.DATA.UOM);
 			    		$("#oppUnitPrice").val(formatNumByLength(result.DATA.up,6));
 			    		$("#oppReportPrice").val(formatNumByLength(result.DATA.rp,6));
 			    		$("#oppPriceFactor").val(formatNumByLength(1, 4));
 			    		
+			    		$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppPriceFactor'));
+			    		$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppUnitPrice'));
 			    		calculateProductMaster();
 			    	}
 			    },
@@ -1419,6 +1422,8 @@ function btnProductSave(){
 		$("#location"+rowIndexLine).select2('val',getValueStringById('oppLocation'));
 		$("#uom"+rowIndexLine).select2('val',getValueStringById('oppUom'));
 		$("#qty"+rowIndexLine).val(getValueStringById('oppQty'));
+		
+		
 		$("#up"+rowIndexLine).val(getValueStringById('oppUnitPrice'));
 		$("#classCode"+rowIndexLine).val(getValueStringById('oppClassDetail'));
 		
@@ -1445,11 +1450,12 @@ function btnProductSave(){
 		showOneLocation(rowIndexLine);
 		$("#frmProduct").modal('toggle');
 		clearFormProduct();
-		statusClickDetail = true;
+		statusClickDetail = false;
 	}
 	
 }
 function detailRowItem(n){
+	statusClickDetail = false;
 	clearFormProduct();
 	rowIndexLine = n;
 	
@@ -1457,8 +1463,6 @@ function detailRowItem(n){
 	$("#oppLocation").select2('val',getValueStringById('location'+n));
 	$("#oppClassDetail").select2('val', getValueStringById('classCode'+n));
 	$("#oppUom").select2('val', getValueStringById('uom'+n));
-	
-	
 	
 	$("#oppQty").val(getValueStringById('qty'+n));
 	$("#oppUnitPrice").val(getValueStringById('up'+n));
@@ -1475,10 +1479,7 @@ function detailRowItem(n){
 	
 	
 	$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppUom'));
-	
-	
-	$("#btn_show_product").click();
-	
+	$("#btn_show_product").click();	
 	statusClickDetail = true;
 }
 

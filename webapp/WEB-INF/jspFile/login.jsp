@@ -69,8 +69,7 @@
 
 		var docHeight = $(window).height();
 		var footerHeight = $('#footer').height();
-		var footerTop = $('#footer').position().top
-				+ footerHeight;
+		var footerTop = $('#footer').position().top + footerHeight;
 
 		if (footerTop < docHeight) {
 			//$('#footer').css('margin-top', 20+ (docHeight - footerTop) + 'px');
@@ -125,7 +124,6 @@
 				<div class="form-group has-feedback">
 					<select class="form-control" name="company" id="company"
 						data-ng-init="listSystemDatabase()">
-						<option value="">-- Select Company --</option>
 						<option ng-repeat= "db in database" value="{{db.DBName}},{{db.ComName}}">{{db.ComName}}</option>
 					</select>
 				</div>

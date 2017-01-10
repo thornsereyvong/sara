@@ -624,7 +624,7 @@ public class MainController {
 	public String updateLeads(ModelMap model, @PathVariable String leadID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateLeads");
 
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("LA", req);
 
 		if (camMap.get("roleAccess").equals("YES")) {
 
@@ -647,7 +647,7 @@ public class MainController {
 		model.addAttribute("menu", "convertLead");
 		model.addAttribute("leadId", leadID);
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("LA", req);
 			
 		if (camMap.get("roleAccess").equals("YES")) {
 			if (camMap.get("roleView").equals("YES")) {
@@ -1602,8 +1602,6 @@ public class MainController {
 
 	@RequestMapping("menu")
 	public String menu(ModelMap model,HttpServletRequest req) {
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
-		model.addAttribute("role_CRM_ADMIN", camMap.get("role"));
 		
 		return "layout/menu";
 	}

@@ -162,7 +162,7 @@
 												<th>UOM<span class="requrie"> (Required)</span></th>
 												<th>Quantity<span class="requrie"> (Required)</span></th>
 												<th>Unit Price</th>
-												<th>Total Amount</th>
+												<th>Net Total Amount</th>
 												<th></th>
 											</tr>	
 										</thead>
@@ -595,7 +595,8 @@
 		async: false,
 	}).responseText);
 	
-	 
+	
+	var empLinkUser = content.DATA[0].empLinkUser;
 	var tagItem = "";
 	var LItem = content.DATA[0].item;
 	var tagLocation ="";
@@ -670,7 +671,7 @@
 		
 		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' type='text' placeholder='' /> </div></td>";
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='tAmt' id='tAmt"+index+"' class='form-control' type='text' placeholder=''> </div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' type='text' placeholder=''> </div></td>";
 		
 		// hidden field
 		
@@ -683,7 +684,7 @@
 	 	addAnItem += "<input type='hidden' name='vatDol' id='vatDol"+index+"' >";
 	 	addAnItem += "<input type='hidden' name='stP' id='stP"+index+"' >";
 	 	addAnItem += "<input type='hidden' name='stDol' id='stDol"+index+"' >";
-	 	addAnItem += "<input type='hidden' name='nTAmt' id='nTAmt"+index+"' >";
+	 	addAnItem += "<input type='hidden' name='tAmt' id='tAmt"+index+"' >";
 	 	
 	 	
 		addAnItem += "<td><div style='width:100px;'><button onClick='removeRowItem("+index+")' class='btn btn-danger' type='button'><i class='fa  fa-trash'></i></button><button style='margin-left:5px;' onClick='detailRowItem("+index+")' class='btn btn-info' type='button'><i class='fa  fa-info'></i></button></div></td>";

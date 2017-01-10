@@ -1,10 +1,5 @@
 
-<%
-	String menu = (String) request.getAttribute("menu");
-%>
-<%
-	String role = (String) request.getAttribute("role_CRM_ADMIN");
-%>
+
 <style>
 .color_menu {
 	color: #b9292d;
@@ -12,7 +7,7 @@
 </style>
 <script>
 
-function removeCla(id,ul,ul_li,icon){
+/* function removeCla(id,ul,ul_li,icon){
 	$(id).removeAttr("class").attr('class', 'treeview active');
    	$(ul).css('display', '');
    	$(ul).css('display', 'block');
@@ -22,7 +17,7 @@ function removeCla(id,ul,ul_li,icon){
 
 $(document).ready(function(){
 	selectMenu('${menu}');
-});
+}); */
 
 	//document.getElementById("demo").innerHTML = text;
 </script>
@@ -247,7 +242,7 @@ $(document).ready(function(){
 
 
 			<%
-				if (role.equals("CRM_ADMIN")) {
+				//if (role.equals("CRM_ADMIN")) {
 			%>
 			<li class='treeview ' id="admin"><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/images/Administrator.png"
@@ -277,7 +272,7 @@ $(document).ready(function(){
 					</a></li> --%>
 				</ul></li>
 			<%
-				}
+				//}
 			%>
 
 
