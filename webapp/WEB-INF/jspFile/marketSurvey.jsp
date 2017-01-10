@@ -60,6 +60,47 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 			});
 		});
 	};
+
+
+	$scope.saveMarketSevey = function(){
+		$('#frmSurveyDetail').data('bootstrapValidator').validate();
+		var statusAddPro = $("#frmSurveyDetail").data('bootstrapValidator').validate().isValid();
+		if(statusAddPro){
+			var dataString = [];
+			var tr = $("#data-content tr");
+			if(tr.length>0){
+				var objSurvey = [];
+				for(i=0;i<tr.length;i++){
+					var custId = $scope.item.customers[i].custId;
+					for(var j=0; j<$scope.item.competitors.length; j++){
+						var surveyVal = document.getElementById($scope.item.competitors[j].comId+""+custId).value;
+						var dataIndex = {"custId":custId, "comId":$scope.item.competitors[j].comId, "surveyValue":surveyVal};
+						objSurvey.push(dataIndex);
+					}
+				}
+				$http({
+				    method: 'POST',
+				    url: '${pageContext.request.contextPath}/hbu/market-survey/add',
+				    data:{
+				    	"convertMsDate":$("#surveyDate").val(),
+				    	"item":{"itemId":$("#product").val()},
+				    	"details":objSurvey,
+				    	"msCreateBy":username
+					    },
+				    headers: {
+				    	'Accept': 'application/json',
+				        'Content-Type': 'application/json'
+				    }
+				}).success(function(response) {	
+					$("#product").select2('val','');
+					$("#surveyDate").val('');
+					$('#frmSurveyDetail').bootstrapValidator('resetForm', true);
+					alert(response.MESSAGE)
+				});
+			}
+			
+		}
+	}
 }]);
 
 
@@ -125,7 +166,7 @@ $(document).ready(function(){
 			}
 		}).on('success.form.bv', function(e) {
 			swal({   
-				title: "<span style='font-size: 25px;'>You are about to add competitors to product.</span>",
+				title: "<span style='font-size: 25px;'>You are about to add customers to product.</span>",
 				text: "Click OK to continue or CANCEL to abort.",
 				type: "info",
 				html: true,
@@ -288,6 +329,53 @@ $(document).ready(function(){
 	});
 
 	/*End add competitor block*/
+
+
+	/*Add Market Survey Block*/
+	
+	$('.date2').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD/MM/YYYY h:mm A',
+        timePicker: true, 
+        timePickerIncrement: 5
+       
+    }).on('change', function(e) {
+		if($("#surveyDate").val() != ""){
+			$('#frmSurveyDetail').bootstrapValidator('revalidateField', 'surveyDate');
+		}
+	});
+	
+	$('#frmSurveyDetail').bootstrapValidator({
+			message: 'This value is not valid',
+			feedbackIcons: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+				product: {
+					validators: {
+						notEmpty: {
+							message: 'The product is required and can not be empty!'
+						}
+					}
+				},
+				surveyDate: {
+					validators: {
+						notEmpty: {
+							message: 'The Survey Date is required and can not be empty!'
+						},
+						date: {
+	                        format: 'DD/MM/YYYY h:mm A',
+	                        message: 'The value is not a valid date!'
+						}
+					}
+				}
+			}
+		});
+
+	/*End Market Survey Block*/
 });
 </script>
 <style>
@@ -502,7 +590,7 @@ $(document).ready(function(){
 										<div class="tab-pane in active" id="detail_tap">
 											<div class="row">
 												<div class="col-sm-12">
-													<form id="frmLeadDetail">
+													<form id="frmSurveyDetail">
 														<!-- <div class="col-sm-12"> -->
 															<div class="box-header with-border row">
 																<div style="background: #fff;">
@@ -541,19 +629,21 @@ $(document).ready(function(){
 																	<th class="col-sm-2">[{{item.itemId}}] {{item.itemName}}</th>
 																	<th  ng-repeat = "com in item.competitors" class="text-center">{{com.comName}}</th>
 																</tr>
+																<tbody id="data-content">
 																<tr ng-repeat="cust in item.customers" data-index="{{$index}}">
 																	<td>{{cust.custName}}</td>
-																	<td ng-repeat = "com in item.competitors" class="text-center">
-																		<select name="surveyValue">
+																	<td ng-repeat = "com in item.competitors" class="text-center" style="text-align:center !important;">
+																		<select name="surveyValue" class="form-control" id="{{com.comId}}{{cust.custId}}"  style="width: 56px;">
 																			<option value="0">0</option>
 																			<option value="1">1</option>
 																		</select>
 																	</td>
 																</tr>
+																</tbody>
 															</table>
 															<div id="showBtnEditLead">
-																<button type="button" class="btn btn-primary" ng-click="saveEditDetailLead()">Save</button>
-																<button type="button" class="btn btn-danger" ng-click="cancelEditDetailLead()">Cancel</button>
+																<button type="button" class="btn btn-primary" ng-click="saveMarketSevey()">Save</button>
+																<button type="reset" class="btn btn-danger" id="btnSurveyCancel">Cancel</button>
 															</div>
 														</div>
 													</form>
@@ -615,7 +705,7 @@ $(document).ready(function(){
 														<div class="col-sm-12 text-center" id="showBtnEditLead"
 															style="display: none;">
 															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
+																>Save</button>
 															<button type="button" class="btn btn-danger"
 																ng-click="cancelEditDetailLead()">Cancel</button>
 														</div>

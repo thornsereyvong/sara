@@ -1,5 +1,7 @@
 package com.app.entities;
 
+import java.util.List;
+
 public class HBUMarketSurvey{
 
 	private String msId;
@@ -8,6 +10,7 @@ public class HBUMarketSurvey{
 	private String msCreateBy;
 	private String msModifiedBy;
 	private String convertModifiedDate;
+	private List<HBUMarketSurveyDetails> details;
 	private MeDataSource meDataSource;
 
 	public String getMsId() {
@@ -57,6 +60,14 @@ public class HBUMarketSurvey{
 
 	public void setConvertModifiedDate(String convertModifiedDate) {
 		this.convertModifiedDate = convertModifiedDate;
+	}
+
+	public List<HBUMarketSurveyDetails> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<HBUMarketSurveyDetails> details) {
+		this.details = details;
 	}
 
 	public MeDataSource getMeDataSource() {
