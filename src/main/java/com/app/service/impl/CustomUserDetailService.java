@@ -1,18 +1,15 @@
 package com.app.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
-import com.app.entities.CrmUser;
+
+import com.app.entities.CrmUserLogin;
 import com.app.service.UserService;
 
 @Service
@@ -23,7 +20,7 @@ public class CustomUserDetailService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		CrmUser user = userService.findUserByUsername(username);
+		CrmUserLogin user = userService.findUserByUsername(username);
 		
 		if(user == null){
 			System.out.println("User not found");
@@ -36,11 +33,7 @@ public class CustomUserDetailService implements UserDetailsService{
 		}
 	
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), 
-				status, true, true, true, getGrantedAuthorities(user));
+				status, true, true, true, null);
 	}
 	
-	private List<GrantedAuthority> getGrantedAuthorities(CrmUser user) {
-		return new ArrayList<GrantedAuthority>();
-	}
-
 }
