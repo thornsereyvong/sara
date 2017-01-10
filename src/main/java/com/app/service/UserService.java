@@ -1,8 +1,8 @@
 package com.app.service;
 
-import com.app.entities.CrmUser;
+import com.app.entities.CrmUserLogin;
 
 public interface UserService {
 
-	CrmUser findUserByUsername(String username);
+	CrmUserLogin findUserByUsername(String username);
 }

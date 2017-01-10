@@ -6,6 +6,7 @@ import java.util.List;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.app.entities.CrmUser;
+import com.app.entities.CrmUserLogin;
 import com.app.service.impl.UserServiceImpl;
 import com.app.utilities.PasswordEncrypt;
 
@@ -29,8 +31,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String username = authentication.getName().trim();
 		String password = authentication.getCredentials().toString().trim();
-		CrmUser user = userService.findUserByUsername(username);
-		 if (user == null || !user.getUsername().equalsIgnoreCase(username)) {
+		CrmUserLogin user = userService.findUserByUsername(username);
+		 if (user == null  || !user.getUserID().equalsIgnoreCase(username)) {
              throw new BadCredentialsException("Invalid Username and password!");
          }
   
@@ -40,7 +42,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
          if(!user.getUserApp().getAppId().equals("CRM")){
         	 throw new BadCredentialsException("You have no permission! Please contact your administrator!");
          }
-         return new UsernamePasswordAuthenticationToken(username, password, getGrantedAuthorities(user));
+        return new UsernamePasswordAuthenticationToken(user.getUsername(), password, null);
 	}
 
 	@Override

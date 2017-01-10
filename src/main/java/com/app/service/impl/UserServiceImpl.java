@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.app.entities.CrmUser;
+import com.app.entities.CrmUserLogin;
 import com.app.entities.MeDataSource;
 import com.app.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,10 +34,10 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public CrmUser findUserByUsername(String username) {
+	public CrmUserLogin findUserByUsername(String username) {
 		try{
 			RestTemplate restTemplate = new RestTemplate();
-			CrmUser user = new CrmUser();
+			CrmUserLogin user = new CrmUserLogin();
 			user.setUsername(username);
 			user.setDataSource(dataSource);
 			HttpEntity<Object> req = new HttpEntity<Object>(user, header);
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{
 	        	 ObjectMapper mapper = new ObjectMapper();
 	             String  json =  mapper.writeValueAsString(map.get("DATA")); // Convert from HashMap to JSON String object
 	             Gson converter = new Gson();
-	             CrmUser userResult = converter.fromJson(json, CrmUser.class); // Convert JSON to CrmUser Object
+	             CrmUserLogin userResult = converter.fromJson(json, CrmUserLogin.class); // Convert JSON to CrmUser Object
 	             return userResult;
 	        }
 		}catch(Exception e){

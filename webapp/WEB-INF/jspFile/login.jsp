@@ -124,7 +124,7 @@
 				<div class="form-group has-feedback">
 					<select class="form-control" name="company" id="company"
 						data-ng-init="listSystemDatabase()">
-						<option ng-repeat= "db in database" value="{{db.DBName}},{{db.ComName}}">{{db.ComName}}</option>
+						<option ng-repeat= "db in database" value="{{db.DBName}}12345{{db.ComName}}">{{db.ComName}}</option>
 					</select>
 				</div>
 				<div class="row">

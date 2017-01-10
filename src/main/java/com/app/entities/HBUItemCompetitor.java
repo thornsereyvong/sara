@@ -4,6 +4,7 @@ import java.util.List;
 
 public class HBUItemCompetitor{
 
+	private int id;
 	private String itemId;
 	private List<HBUCompetitor> competitors;
 	private MeDataSource meDataSource;
@@ -30,6 +31,14 @@ public class HBUItemCompetitor{
 
 	public void setMeDataSource(MeDataSource meDataSource) {
 		this.meDataSource = meDataSource;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

@@ -1,7 +1,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="${request.contextPath}/head"></jsp:include>
 <jsp:include page="${request.contextPath}/header"></jsp:include>
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
@@ -79,15 +79,17 @@ $(document).ready(function(){
 
 	$("#addCustToPro").hide();
 	$("#addCompetitor").hide();
-
+	$("#surveyContent").hide();
 	$("#product").change(function(){
 		if($("#product").val() != ""){
 			angular.element(document.getElementById('marketSurveyController')).scope().findCompetitorByItemId($("#product").val());
 			$("#addCustToPro").show();
 			$("#addCompetitor").show();
+			$("#surveyContent").show();
 		}else{
 			$("#addCustToPro").hide();
 			$("#addCompetitor").hide();
+			$("#surveyContent").hide();
 		}
 	});
 
@@ -474,7 +476,7 @@ $(document).ready(function(){
 		</ol>
 	</section>
 
-	<section class="content" data-ng-init="startup()">
+	<section class="content ng-cloak" data-ng-init="startup()">
 		<div class="row">
 			<div class="col-md-12">
 				<!-- Widget: user widget style 1 -->
@@ -533,17 +535,26 @@ $(document).ready(function(){
 																</div> 
 															</div>
 														</div>
-														<div class="col-sm-12 table-responsive">
+														<div class="col-sm-12 table-responsive" id = "surveyContent">
 															<table class="table table-bordered">
 																<tr>
 																	<th class="col-sm-2">[{{item.itemId}}] {{item.itemName}}</th>
 																	<th  ng-repeat = "com in item.competitors" class="text-center">{{com.comName}}</th>
 																</tr>
-																<tr ng-repeat="cust in item.customers">
+																<tr ng-repeat="cust in item.customers" data-index="{{$index}}">
 																	<td>{{cust.custName}}</td>
-																	<td ng-repeat = "com in item.competitors" class="text-center"><input type="checkbox" onClick="clkCheck(this)" name="surveyValue" value="1" /></td>
+																	<td ng-repeat = "com in item.competitors" class="text-center">
+																		<select name="surveyValue">
+																			<option value="0">0</option>
+																			<option value="1">1</option>
+																		</select>
+																	</td>
 																</tr>
 															</table>
+															<div id="showBtnEditLead">
+																<button type="button" class="btn btn-primary" ng-click="saveEditDetailLead()">Save</button>
+																<button type="button" class="btn btn-danger" ng-click="cancelEditDetailLead()">Cancel</button>
+															</div>
 														</div>
 													</form>
 												</div>
