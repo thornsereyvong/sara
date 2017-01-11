@@ -11,11 +11,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.app.entities.HBUMarketSurvey;
 import com.app.entities.MeDataSource;
 
 @RestController
@@ -35,9 +37,18 @@ public class HBUMarketSurveyController {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/startup", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> listCompetitor(HttpServletRequest req){
+	public ResponseEntity<Map<String, Object>> marketSurveyStartup(HttpServletRequest req){
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/add", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> addMarketSurvey(HttpServletRequest req, @RequestBody HBUMarketSurvey survey){
+		survey.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(survey, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
