@@ -49,6 +49,13 @@ public class CrmRoleManagementController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/module/list/{roleId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getModuleByRoleId(@PathVariable("roleId") String roleId,HttpServletRequest req){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/module/list/by-role/"+roleId, HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/role/list",method = RequestMethod.GET)

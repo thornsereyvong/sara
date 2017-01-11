@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,19 +94,7 @@ public class MainController {
 		
 	}
 
-	@RequestMapping("/role-management")
-	public String roleManagement(ModelMap model, HttpServletRequest req) {
-		model.addAttribute("menu", "roleManagement");
-		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
-		
-		if(camMap.get("role").equals("CRM_ADMIN")){
-			return "roleManagement";
-		}else{
-			return "permission";
-		}
-		
-	}
+	
 	
 	
 	// article path	
@@ -198,41 +187,44 @@ public class MainController {
 	// End Quotation Path
 	
 	
+	@RequestMapping("/role-management")
+	public String roleManagement(ModelMap model, HttpServletRequest req) {
+		model.addAttribute("menu", "roleManagement");		
+		Map<String, Object> camMap = getRoleDetailsOfModule("RM",req);			
+		model.put("roleDelete", camMap.get("delete"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
+			return "roleManagement";
+		}else{
+			return "permission";
+		}
+	}
+	
 	
 	@RequestMapping("/create-role")
 	public String createRole(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createRole");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
-		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		Map<String, Object> camMap = getRoleDetailsOfModule("RM",req);
+		if(camMap.get("access").equals("YES")){
 			return "createRole";
 		}else{
 			return "permission";
 		}
-		
 	}
 
-	@RequestMapping("/update-role/{custID}")
-	public String updateRole(ModelMap model, @PathVariable String custID, HttpServletRequest req) {
+	@RequestMapping("/update-role/{roleId}")
+	public String updateRole(ModelMap model, @PathVariable String roleId, HttpServletRequest req) {
 		model.addAttribute("menu", "updateRole");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
-		
-		if(camMap.get("role").equals("CRM_ADMIN")){
-			String json;
-			try {
-				json = new ObjectMapper().writeValueAsString(roleController.getRoleID(custID, req));
-				model.addAttribute("role", json);
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
+		Map<String, Object> camMap = getRoleDetailsOfModule("RM",req);
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
 			return "updateRole";
 		}else{
 			return "permission";
-		}
-		
+		}	
 	}
 
+	
+	
 	@RequestMapping("/view-role-management")
 	public String viewRoleManagement(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "viewRoleManagement");
@@ -249,18 +241,16 @@ public class MainController {
 	@RequestMapping("/user-management")
 	public String userManagement(ModelMap model, HttpSession session, HttpServletRequest request) {
 		model.addAttribute("menu", "userManagement");
+		
 		session.setAttribute("userId", userController.getUserNameByName(getPrincipal(), request));
 		
-		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", request);
-		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		Map<String, Object> camMap = getRoleDetailsOfModule("UM",request);
+		if(camMap.get("access").equals("YES")){
 			return "userManagement";
 		}else{
 			return "permission";
 		}
-		
-		
+
 	}
 
 	@RequestMapping("/campaing-status")
@@ -1636,7 +1626,7 @@ public class MainController {
 	
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Map<String, Object> getRoleDetailsOfModule(String moduleId,HttpServletRequest req) {
+	public Map<String, Object> getRoleDetailsOfModule_old(String moduleId,HttpServletRequest req) {
 		
 		MeDataSource dataSource = new MeDataSource();		
 		dataSource = dataSource.getMeDataSourceByHttpServlet(req, getPrincipal());		
@@ -1644,10 +1634,7 @@ public class MainController {
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL + "api/role_detail/list/user/" + getPrincipal() + "/"
 				+ moduleId, HttpMethod.POST, request, Map.class);
-		
-		System.out.println(response.getBody());
-		
-		
+
 		Map<String, Object> userMap = (HashMap<String, Object>) response.getBody();
 		
 		
@@ -1655,8 +1642,25 @@ public class MainController {
 		if (userMap.get("DATA") != null) {
 			return (Map<String, Object>) userMap.get("DATA");
 		}
-		return null;
+		return new HashMap<>();
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Map<String, Object> getRoleDetailsOfModule(String moduleId,HttpServletRequest req) {
+		
+		MeDataSource dataSource = new MeDataSource();		
+		dataSource = dataSource.getMeDataSourceByHttpServlet(req, getPrincipal());		
+		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL + "api/module/role-detail/" + getPrincipal() + "/"
+				+ moduleId, HttpMethod.POST, request, Map.class);
+		Map<String, Object> userMap = (HashMap<String, Object>) response.getBody();	
+		ArrayList<Map<String, Object>> mapData = (ArrayList<Map<String, Object>>) response.getBody().get("DATA");
+		userMap = (Map<String, Object>) mapData.get(0);
+		return userMap;
+	}
+	
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String getRoleDetailsAllModule(HttpServletRequest req) {
 		
@@ -1686,6 +1690,7 @@ public class MainController {
 		}
 		return error;
 	}
+	
 	
 	
 	
