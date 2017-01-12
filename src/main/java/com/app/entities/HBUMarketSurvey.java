@@ -1,11 +1,12 @@
 package com.app.entities;
 
+import java.util.Date;
 import java.util.List;
 
 public class HBUMarketSurvey{
 
 	private String msId;
-	private String convertMsDate;
+	private Date msDate;
 	private AmeItem item;
 	private String msCreateBy;
 	private String msModifiedBy;
@@ -20,14 +21,13 @@ public class HBUMarketSurvey{
 	public void setMsId(String msId) {
 		this.msId = msId;
 	}
-
-
-	public String getConvertMsDate() {
-		return convertMsDate;
+	
+	public Date getMsDate() {
+		return msDate;
 	}
 
-	public void setConvertMsDate(String convertMsDate) {
-		this.convertMsDate = convertMsDate;
+	public void setMsDate(Date msDate) {
+		this.msDate = msDate;
 	}
 
 	public AmeItem getItem() {

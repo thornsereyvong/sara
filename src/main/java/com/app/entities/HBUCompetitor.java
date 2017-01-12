@@ -10,6 +10,7 @@ public class HBUCompetitor{
 	private String comCreateBy;
 	private LocalDateTime comModifiedDate;
 	private String comModifiedBy;
+	private String comStatus; 
 	private MeDataSource meDataSource;
 	
 	public String getComId() {
@@ -58,6 +59,14 @@ public class HBUCompetitor{
 
 	public void setComModifiedBy(String comModifiedBy) {
 		this.comModifiedBy = comModifiedBy;
+	}
+
+	public String getComStatus() {
+		return comStatus;
+	}
+
+	public void setComStatus(String comStatus) {
+		this.comStatus = comStatus;
 	}
 
 	public MeDataSource getMeDataSource() {
