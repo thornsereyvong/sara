@@ -15,34 +15,180 @@ var app = angular.module('campaign', ['angularUtils.directives.dirPagination','a
     cfpLoadingBarProvider.includeSpinner = false;
 }]);
 var self = this;
+var user = '${userId}';
+var curUserId = "";
+var curUsername = "";
+var str = "${roleDelete}";
 
 app.controller('campController',['$scope','$http',function($scope, $http){
 
 	$scope.listStatus = function(user){
-		//subordinate/admin/"+user
-		$http.get("${pageContext.request.contextPath}/user/list").success(function(response){
-				$scope.user = response.DATA;
-				$scope.action = "Save";
-				$list_username = response.DATA
-			});
-		};
-
-		$scope.listRole = function(){
-			$http.get("${pageContext.request.contextPath}/role/list/").success(function(response){
-					$scope.role = response.DATA;
-					
-				});
-			};
+		$http.get("${pageContext.request.contextPath}/user/startup/list").success(function(response){
 			
-	$scope.listUserID = function(id){
-			$http.get("${pageContext.request.contextPath}/user/list/id/"+id).success(function(response){
-					$scope.userID = response.DATA;
-					jQuery('#role').select2("val",response.DATA.role.roleId);
-					jQuery('#password').attr("disabled", true); 
-					jQuery('#cpassword').attr("disabled", true);
-					$scope.action = "Update";
+			$scope.user = response.DATA;
+			$scope.role = response.ROLE;
+			$scope.action = "Save";
+			$list_username = response.DATA;
+			$scope.rowNum = 1;
+			$scope.curentUser = "";
+			$scope.curIndex = 0;
+		});
+	};
+	
+	$scope.saveUser =function(){
+		if($scope.action == "Save"){
+			$('#form_status').data('bootstrapValidator').validate();
+			var statusAddPro = $("#form_status").data('bootstrapValidator').validate().isValid();
+			if(statusAddPro){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to create new user.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : "${pageContext.request.contextPath}/user/add",
+							type : "POST",
+							data : JSON.stringify({ 
+								  "userID": getValueStringById("userId"),
+							      "username": getValueStringById("username"),
+							      "password": getValueStringById("password"),
+							      "status": getValueStringById("status"),
+							      "parentID": user,
+							      "role": getJsonById("roleId","role","str"),
+							      "userApp": {"appId":"CRM", "userId":getValueStringById("userId")},
+							      "createBy": user
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){
+								if(result.MESSAGE == "INSERTED"){	
+				    				swal({
+			    						title: "SUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "success"
+			    					});
+				    				$scope.clearFrom();
+				    				$scope.listStatus();
+				    				
+								}else{
+									alertMsgErrorSweetWithTxt(result.MSG);
+								}
+							},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		} 
+						});
+					}, 500);
 				});
-			};
+			}		
+		}else{
+			
+			
+			$('#form_status').data('bootstrapValidator').validate();
+			var statusAddPro = $("#form_status").data('bootstrapValidator').validate().isValid();
+			if(statusAddPro){
+				swal({   
+					title: "<span style='font-size: 25px;'>You are about to update user.</span>",
+					text: "Click OK to continue or CANCEL to abort.",
+					type: "info",
+					html: true,
+					showCancelButton: true,
+					closeOnConfirm: false,
+					showLoaderOnConfirm: true,		
+				}, function(){ 
+					setTimeout(function(){
+						$.ajax({ 
+							url : "${pageContext.request.contextPath}/user/edit",
+							type : "PUT",
+							data : JSON.stringify({ 
+								  "userID": getValueStringById("userId"),
+							      "username": getValueStringById("username"),
+							      "status": getValueStringById("status"),
+							      "role": getJsonById("roleId","role","str"),
+							      "userApp": {"appId":"CRM", "userId":getValueStringById("userId")},
+							      "modifyBy": $.session.get("parentID")
+							}),
+							beforeSend: function(xhr) {
+							    xhr.setRequestHeader("Accept", "application/json");
+							    xhr.setRequestHeader("Content-Type", "application/json");
+						    }, 
+						    success: function(result){
+								if(result.MESSAGE == "UPDATED"){	
+				    				alertMsgSuccessSweetWithTxt(result.MSG);  
+				    				$scope.listStatus();
+				    				$scope.clearFrom();
+								}else{
+									alertMsgErrorSweetWithTxt(result.MSG);
+								}
+				    		},
+				    		error:function(){
+				    			alertMsgErrorSweet();
+				    		}		 
+						});
+					}, 500);
+				});
+			}
+			
+		}
+	}
+	
+	$scope.clearFrom = function (){
+		
+		$("#userId").val("");
+		$("#username").val("");
+		$("#role").select2('val',"");
+		$("#status").select2('val',1);
+		$("#password").val("");
+		$("#cpassword").val("");
+		
+		$('#form_status').data('bootstrapValidator').resetField($('#userId'));
+		$('#form_status').data('bootstrapValidator').resetField($('#username'));
+		$('#form_status').data('bootstrapValidator').resetField($('#password'));
+		$('#form_status').data('bootstrapValidator').resetField($('#userId'));
+		$('#form_status').data('bootstrapValidator').resetField($('#cpassword'));
+		$('#form_status').data('bootstrapValidator').resetField($('#role'));
+		$('#form_status').data('bootstrapValidator').resetField($('#status'));
+		
+	}
+	
+	$scope.listUserID = function(index){
+		
+		$scope.action = "Update";
+		$scope.curIndex = index;
+		
+		$("#userId").val($scope.user[index].userID);
+		$("#username").val($scope.user[index].username);
+		$("#role").select2('val',$scope.user[index].roleId);
+		$("#status").select2('val',$scope.user[index].status);
+		$("#password").val("xxxxxxxxxxxxx");
+		$("#cpassword").val("xxxxxxxxxxxxx");
+		
+		$('#form_status').data('bootstrapValidator').resetField($('#userId'));
+		$('#form_status').data('bootstrapValidator').resetField($('#username'));
+		$('#form_status').data('bootstrapValidator').resetField($('#password'));
+		$('#form_status').data('bootstrapValidator').resetField($('#userId'));
+		$('#form_status').data('bootstrapValidator').resetField($('#cpassword'));
+		$('#form_status').data('bootstrapValidator').resetField($('#role'));
+		$('#form_status').data('bootstrapValidator').resetField($('#status'));
+		
+		$("#userId").prop('disabled',true);
+		$("#password").prop('disabled',true);
+		$("#cpassword").prop('disabled',true);
+		
+		$scope.curentUser = $scope.user[index];
+		curUserId = $scope.user[index].userID;
+		curUsername = $scope.user[index].username;
+		
+	};
 		
 		
 	$scope.sort = function(keyname){
@@ -52,39 +198,52 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	
 	
 	$scope.deleteStat = function(leadID){
-		swal({
-            title: "Are you sure?", //Bold text
-            text: "This user will not be able to recover!", //light text
-            type: "warning", //type -- adds appropiriate icon
-            showCancelButton: true, // displays cancel btton
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete!",
-            closeOnConfirm: false, //do not close popup after click on confirm, usefull when you want to display a subsequent popup
-            closeOnCancel: false
-        }, 
-        function(isConfirm){ //Function that triggers on user action.
-            if(isConfirm){
-	            $http.delete("${pageContext.request.contextPath}/user/remove/"+leadID)
-	            .success(function(){
-	            		swal({
-			            		title:"Deleted",
-			            		text:"User have been deleted!",
-			            		type:"success",  
-			            		timer: 2000,   
-			            		showConfirmButton: false
-	            		});
-	            		$scope.listStatus($.session.get("parentID"));
-		            });
-	           
-            } else {
-                swal({
-	                title:"Cancelled",
-	                text:"This User is safe!",
-	                type:"error",
-	                timer:2000,
-	                showConfirmButton: false});
-            }
-        });
+		if(str == "YES"){
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to delete user with ID: <span class='color_msg'>"+leadID+"</span>.</span>",   
+				text: "Click OK to continue or CANCEL to abort.",   
+				type: "info", 
+				html: true,
+				showCancelButton: true,   
+				closeOnConfirm: false,   
+				showLoaderOnConfirm: true, 
+				
+			}, function(){   
+				setTimeout(function(){			
+					$.ajax({ 
+			    		url: "${pageContext.request.contextPath}/user/remove/"+leadID,
+			    		method: "DELETE",
+			    		beforeSend: function(xhr) {
+			    		    xhr.setRequestHeader("Accept", "application/json");
+			    		    xhr.setRequestHeader("Content-Type", "application/json");
+			    	    }, 
+			    	    success: function(result){	  
+			    			if(result.MESSAGE == "DELETED"){	    				
+			    				swal({
+			    					title:"SUCCESSFUL",
+			    					text: result.MSG, 
+			    					type:"success", 
+			    					html: true,
+			    					timer: 2000,
+			    				});
+			    				$scope.clearFrom();  
+			    				setTimeout(function(){		
+			    					$scope.listStatus();
+			    				},2000);
+			    			}else{
+			    				alertMsgErrorSweetWithTxt(result.MSG);
+			    			}
+			    		},
+			    		error:function(){
+			    			alertMsgErrorSweet();
+			    		}		    	    
+			    	});
+				}, 500);
+			});	
+		}else{
+			alertMsgNoPermision();
+		}
+		
 	};
 	
 }]);
@@ -92,31 +251,24 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 
 function userExist(user){	
 	for(var i=0; i<$list_username.length; i++){
-		if($list_username[i].username === user){
+		if($list_username[i].username === user && curUsername != user){
 			return true;
 		}
 	}	
 	return false;
 }
-$(document).ready(function(){
-	
-	
-	angular.element("#campController").scope().listStatus($.session.get("parentID"));
-	
-	$(".select2").select2();
-	$("#btn_clear").click(function(){
-		$("#form_status").bootstrapValidator('resetForm', 'true');
-		$("#role").select2("val","");
+function userIDExist(user){	
+	for(var i=0; i<$list_username.length; i++){
+		if($list_username[i].userID === user && curUserId != user){
+			return true;
+		}
+	}	
+	return false;
+}
 
-		/* $("#div_role").find('i').remove('i');
-		$("#div_role").find('small').remove('small');
-		$("#div_role").removeClass("form-group has-feedback has-error").addClass("form-group has-feedback"); */
-		$('#btn_save').attr("disabled", false);
-	});
-	 
-	 $("#btn_save").click(function(){
-		$("#form_status").submit();
-	});
+
+
+$(document).ready(function(){
 	
 	$('#form_status').bootstrapValidator({
 		message: 'This value is not valid',
@@ -167,6 +319,40 @@ $(document).ready(function(){
 					}
 				}
 			},
+			
+			userId:{
+				validators: {
+					notEmpty: {
+						message: 'The user ID is required and can not be empty'
+					},
+					stringLength: {
+						min: 2,
+						max: 11,
+						message: 'The user ID must be more than 2 and less than 11 characters long'
+					},
+					regexp: {
+						regexp: /^[a-zA-Z0-9_\.]+$/,
+						message: 'The user ID can only consist of alphabetical, number, dot and underscore'
+					},
+					callback:{
+						message: 'The user ID already exists.',
+						callback: function(value, validator, $field) {							
+								if(value !== ''){									
+									if(userIDExist(value)){
+										return {
+		                                    valid: false
+		                                };
+									}else{
+										return {
+		                                    valid: true
+		                                };
+									} 
+								}                    
+                            return true;
+						}
+					}
+				}
+			},
 			username: {
 				message: 'The username is not valid',
 				validators: {
@@ -174,13 +360,9 @@ $(document).ready(function(){
 						message: 'The username is required and can not be empty'
 					},
 					stringLength: {
-						min: 6,
+						min: 2,
 						max: 30,
-						message: 'The username must be more than 6 and less than 30 characters long'
-					},
-					regexp: {
-						regexp: /^[a-zA-Z0-9_\.]+$/,
-						message: 'The username can only consist of alphabetical, number, dot and underscore'
+						message: 'The username must be more than 2 and less than 30 characters long'
 					},
 					callback:{
 						message: 'The username already exists.',
@@ -205,112 +387,20 @@ $(document).ready(function(){
 				message: 'The Role is not valid',
 				validators: {
 					notEmpty: {
-						message: 'The Role is required and can not be empty'
+						message: 'The role is required and can not be empty'
+					}
+				}
+			},
+			status: {
+				message: 'The status is not valid',
+				validators: {
+					notEmpty: {
+						message: 'The status is required and can not be empty'
 					}
 				}
 			}
 			
 		}
-	}).on('success.form.bv', function(e) {
-		var user = '${userId}';
-		
-		var currentDate = new Date();
-		var day = currentDate.getDate();
-		var month = currentDate.getMonth() + 1;
-		var year = currentDate.getFullYear();
-
-		
-		if($("#btn_save").val() == "Save"){
-			
-			if($("#password").val() == $("#cpassword").val()){
-				
-				$.ajax({
-					url : "${pageContext.request.contextPath}/user/add",
-					type : "POST",
-					data : JSON.stringify({ 
-						  "userID":$("#userId").val(),
-					      "username": $("#username").val(),
-					      "password": $("#password").val(),
-					      "status": 1,
-					      "parentID": user,
-					      "role": {"roleId": $("#role").val()},
-					      "userApp": {"appId":"CRM", "userId":$("#userId").val()},
-					      "createBy": $.session.get("parentID"),
-					      "createDate": year+"-"+month+"-"+day
-						}),
-					beforeSend: function(xhr) {
-							    xhr.setRequestHeader("Accept", "application/json");
-							    xhr.setRequestHeader("Content-Type", "application/json");
-							    },
-					success:function(data){
-							$("#form_status").bootstrapValidator('resetForm', 'true');
-							$('#form_status')[0].reset();
-							$("#role").select2('data','');
-							swal({
-			            		title:"Success",
-			            		text:"User have been created new User!",
-			            		type:"success",  
-			            		timer: 2000,   
-			            		showConfirmButton: false
-		        			});
-
-							angular.element("#campController").scope().listStatus($.session.get("parentID"));
-						},
-					error:function(){
-						errorMessage();
-						}
-					}); 
-			}else{
-				errorMessage();
-			}
-			
-		}else{
-
-			if($("#hpassword").val() == $("#hcpassword").val()){
-			$.ajax({
-				url : "${pageContext.request.contextPath}/user/edit",
-				type : "PUT",
-				data : JSON.stringify({ 
-					  "userID": $("userId").val(),
-				      "username": $("#username").val(),
-				      "password": $("#hpassword").val(),
-				      "status": 1,
-				      "parentID": user,
-				      "role": {"roleId": $("#role").val()},
-				      "userApp":{"appId":"CRM", "userId":$("#userId").val()},
-				      "modifyBy": $.session.get("parentID")
-					}),
-				beforeSend: function(xhr) {
-						    xhr.setRequestHeader("Accept", "application/json");
-						    xhr.setRequestHeader("Content-Type", "application/json");
-						    },
-				success:function(data){
-					
-						$("#form_status").bootstrapValidator('resetForm', 'true');
-						$('#form_status')[0].reset();
-						$("#role").select2('data','');
-						jQuery('#password').attr("disabled", false); 
-						jQuery('#cpassword').attr("disabled", false);
-						swal({
-		            		title:"Success",
-		            		text:"User have been Updated Type!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-
-						angular.element("#campController").scope().listStatus($.session.get("parentID"));
-					},
-				error:function(){
-					errorMessage();
-					}
-				}); 
-
-			}
-		}
-		
-		
-		
 	});	
 });
 </script>
@@ -331,95 +421,68 @@ $(document).ready(function(){
 		<div class="box">
 		
 			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-				<div class="col-sm-12">
-					<hr style="margin-bottom: 5px;margin-top: 8px;" />
-				 </div> 
 				<div style="background: #fff;margin-top: 15px;">
 				<form id="form_status">
 				 <div class="col-sm-12">
-				 	<button type="button" class="btn btn-info btn-app" id="btn_save" value="{{action}}"> <i class="fa fa-save"></i>{{action}}</button> 
+				 	<button type="button" class="btn btn-info btn-app ng-cloak" ng-click="saveUser()" id="btn_save" value="{{action}}"> <i class="fa fa-save"></i>{{action}}</button> 
 				 	
 					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
 					
 				 </div>
-				 
-				  
-				  <div class="col-sm-12">
-					<hr style="margin-bottom: 7px;;margin-top: 0px;" />
-				 </div> 
 				
-				 <div class="col-sm-6 ">
-				 		
-						<!-- <input type="hidden" id="id" name="id" value="{{userID.userID}}" > -->
+				
+				 <div class="col-sm-12 ">
 						
 						<div class="col-sm-3">
-							<label class="font-label">UserID :</label>
+							<label class="font-label">User ID <span class="requrie">(Required)</span></label>
+							<div class="form-group" id="c_name">
+								<input type="text" class="form-control" name="userId"  id="userId" >
+							</div>
 						</div>
-						<div class="col-sm-9">
-							<div class="form-group" id="">
-								<input type="text" class="form-control" name="userId" ng-model="userID.userID" id="userId" >
+						<div class="col-sm-3">
+							<label class="font-label">Username <span class="requrie">(Required)</span></label>
+							<div class="form-group" id="c_name">
+								<input type="text" class="form-control" name="username"  id="username" >
 							</div>
 						</div>
 						
-						<div class="col-sm-3">
-							<label class="font-label">Username :</label>
-						</div>
-						<div class="col-sm-9">
-							<div class="form-group" id="">
-								<input type="text" class="form-control" name="username" ng-model="userID.username" id="username" >
-							</div>
-						</div>
 						
-						 <div class="col-sm-3"  data-ng-init="listRole()">
-							<label class="font-label">Role :</label>
-						</div>
-						<div class="col-sm-9" >
-							<div class="form-group" id="div_role">
-								<select class="form-control select2"  id="role" name="role">
-									<option value="">--SELECT Role--</option>
-									<option ng-repeat="rol in role" value="{{rol.roleId}}">{{rol.roleName}}</option>
+						<div class="col-sm-3">
+							<label class="font-label">Role <span class="requrie">(Required)</span></label>
+							<div class="form-group" id="c_name">
+								<select class="form-control select2" style="width:100%" id="role" name="role">
+									<option value="">--SELECT A Role--</option>
+									<option ng-repeat="rol in role" value="{{rol.roleId}}">[{{rol.roleId}}] {{rol.roleName}}</option>
 								</select>
 							</div>
 						</div>
-				 		
-					
-				 </div>
-				 <div class="col-sm-6">
-				 <div class="col-sm-3">
-							<label class="font-label">Password :</label>
+						<div class="col-sm-3">
+							<label class="font-label">Status <span class="requrie">(Required)</span></label>
+							<div class="form-group" id="c_name">
+								<select class="form-control select2" style="width:100%" id="status" name="status">
+									<option value="1">Active</option>
+									<option value="0">Inactive</option>
+								</select>
+							</div>
 						</div>
-						<div class="col-sm-9">
-							<div class="form-group" id="">
+						<div class="clearfix"></div>
+				 		<div class="col-sm-3">
+							<label class="font-label">Password <span class="requrie">(Required)</span></label>
+							<div class="form-group" id="c_name">
 								<input type="password" class="form-control" name="password" id="password" >
 								<input type="hidden" class="form-control" name="hpassword" value="{{userID.password}}" id="hpassword" >
 							</div>
 						</div>
 						<div class="col-sm-3">
-							<label class="font-label">Confirm Password :</label>
-						</div>
-						<div class="col-sm-9">
-							<div class="form-group" id="">
+							<label class="font-label">Confirm Password <span class="requrie">(Required)</span></label>
+							<div class="form-group" id="c_name">
 								<input type="password" class="form-control" name="cpassword"  id="cpassword" >
 								<input type="hidden" class="form-control" name="hcpassword" value="{{userID.password}}" id="hcpassword" >
 							</div>
 						</div>
-					</div>	
-						
-				 </form>
-				 
-				 
-				
+					
+				 </div>	
+			 </form>
 			</div>
 			</div>
 			
@@ -428,70 +491,75 @@ $(document).ready(function(){
 			 
 			<div class="clearfix"></div>
 
-			<div class="panel panel-default">
+			<div class="panel panel-default" data-ng-init="listStatus()">
   				<div class="panel-body">
-  				
-				 <div class="col-sm-4">
-				  <form class="form-inline">
-				        <div class="form-group" style="padding-top: 10px;">
-				            <label >Search :</label>
+  					
+				 	<div class="col-sm-3">
+				        <div class="form-group">
 				            <input type="text" ng-model="search" class="form-control" placeholder="Search">
 				        </div>
-				    </form>
-				    <br/>
-				  </div>
+				  	</div>
+				 	<div class="col-sm-1">
+				        <div class="form-group">
+				            <select class="form-control" ng-model="rowNum" style="width:100%" id="rowNum" name="rowNum">
+								<option value="5" selected>5</option>
+								<option value="10">10</option>
+								<option value="15">15</option>
+								<option value="20">20</option>
+								<option value="50">50</option>
+								<option value="100">100</option>
+							</select>
+				        </div>
+		  			</div>
 				  <div class="clearfix"></div>
+				  
 			<div class="tablecontainer table-responsive"  > 
 			
 				<table class="table table-hover" >
 						<tr>
+							<th style="cursor: pointer;" ng-click="sort('userID')">User ID
+								<span class="glyphicon sort-icon" ng-show="sortKey=='userID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							</th>
 						   <th style="cursor: pointer;" ng-click="sort('username')">Username
 								<span class="glyphicon sort-icon" ng-show="sortKey=='username'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('role.roleName')">Role Name
+							
+							<th style="cursor: pointer;" ng-click="sort('roleName')">Role Name
 								<span class="glyphicon sort-icon" ng-show="sortKey=='role.roleName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
-							<th style="cursor: pointer;" ng-click="sort('role.createDate')">Create Date
-								<span class="glyphicon sort-icon" ng-show="sortKey=='role.createDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+							<th style="cursor: pointer;" ng-click="sort('status')">Status
+								<span class="glyphicon sort-icon" ng-show="sortKey=='role.roleName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 									
 							<th>Action</th>
 						</tr>
 
 						<tr dir-paginate="cc in user |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
+							<td>{{cc.userID}}</td>
 							<td>{{cc.username}}</td>
 							<td>{{cc.roleName}}</td>
-							<td>{{cc.createDate | date:'dd-MM-yyyy'}}</td>							
+							<td>{{cc.status==1 ? 'Active' : 'Inactive'}}</td>						
 							<td>
-								<a ng-click="listUserID(cc.userID)" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								<a ng-click="listUserID($index)" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 								<button type="button" ng-click="deleteStat(cc.userID)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i></button>
 							</td>
 						</tr>
 				
 				</table>
 				<dir-pagination-controls
-			       max-size="5"
+			       max-size="rowNum"
 			       direction-links="true"
 			       boundary-links="true" >
 			    </dir-pagination-controls>
 			</div>	
-				
-
+			
 			  </div>
 		</div>
 			</div>
-			<!-- /.box-body -->
 			<div class="box-footer"></div>
-			<!-- /.box-footer-->
 		</div>
-		
-		<!-- /.box -->
-
-
+		<div id="errors"></div>
 	</section>
-	<!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 

@@ -46,24 +46,18 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    		    xhr.setRequestHeader("Content-Type", "application/json");
 			    	    }, 
 			    	    success: function(result){	  
-			    			if(result.MESSAGE == "DELETED"){	    				
-			    				swal({
-			    					title:"SUCCESSFUL",
-			    					text: result.MSG, 
-			    					type:"success", 
-			    					html: true,
-			    					timer: 2000,
-			    				});
-			    				  
+			    			if(result.MESSAGE == "DELETED"){
+			    				alertMsgSuccessSweetWithTxt(result.MSG);  
 			    				setTimeout(function(){		
 			    					$scope.listContact();
 			    				},2000);
-			    			}else{
-			    				swal("Unsuccessful!", result.MSG, "error");
-			    			}
+			    				
+							}else{
+								alertMsgErrorSweetWithTxt(result.MSG);
+							}
 			    		},
 			    		error:function(){
-			    			swal("Unsuccessful!", "Please try again!", "error");
+			    			alertMsgErrorSweet();
 			    		}		    	    
 			    	});
 				}, 500);

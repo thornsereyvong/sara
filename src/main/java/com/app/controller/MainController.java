@@ -82,21 +82,19 @@ public class MainController {
 	public String categoryType(ModelMap model, HttpServletRequest req) {
 		
 		model.addAttribute("menu", "categoryType");
-		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
-		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);			
+		model.put("roleDelete", camMap.get("delete"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "categoryType";
 		}else{
 			return "permission";
 		}
 		
-		
 	}
 
 	
 	
-	
+	 
 	// article path	
 		@RequestMapping("/create-article")
 		public String article(ModelMap model) {		
@@ -240,12 +238,16 @@ public class MainController {
 
 	@RequestMapping("/user-management")
 	public String userManagement(ModelMap model, HttpSession session, HttpServletRequest request) {
-		model.addAttribute("menu", "userManagement");
-		
-		session.setAttribute("userId", userController.getUserNameByName(getPrincipal(), request));
-		
+		model.addAttribute("menu", "userManagement");		
+		session.setAttribute("userId", userController.getUserNameByName(getPrincipal(), request));		
 		Map<String, Object> camMap = getRoleDetailsOfModule("UM",request);
-		if(camMap.get("access").equals("YES")){
+		
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
+		
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "userManagement";
 		}else{
 			return "permission";
@@ -257,14 +259,17 @@ public class MainController {
 	public String campaignStatus(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "campaignStatus");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "campaignStatus";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -272,36 +277,47 @@ public class MainController {
 	public String campaignType(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "campaignType");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "campaignType";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/lead-status")
 	public String leadStatus(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "leadStatus");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
+		
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "leadStatus";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/lead-sources")
 	public String leadSources(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "leadSources");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "leadSources";
 		}else{
 			return "permission";
@@ -312,23 +328,31 @@ public class MainController {
 	@RequestMapping("/industries")
 	public String industries(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "industries");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
+		
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "industries";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/account-type")
 	public String accountType(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "accountType");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "accountType";
 		}else{
 			return "permission";
@@ -340,41 +364,51 @@ public class MainController {
 	public String opportunityType(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "opportunityType");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "opportunityType";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/opportunity-stage")
 	public String opportunityStage(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "opportunityStage");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
+		
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "opportunityStage";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/case-status")
 	public String caseStatus(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "caseStatus");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "caseStatus";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -382,68 +416,85 @@ public class MainController {
 	public String caseType(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "caseType");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "caseType";
 		}else{
 			return "permission";
 		}
-		
 	}
 	
 	@RequestMapping("/case-priority")
 	public String casePriority(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "casePriority");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "casePriority";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/call-status")
 	public String callStatus(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "callStatus");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
+		
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "callStatus";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/meeting-status")
 	public String meetingStatus(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "meetingStatus");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
 		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
+		
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "meetingStatus";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/task-status")
 	public String taskStatus(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "taskStatus");
+			
+		Map<String, Object> camMap = getRoleDetailsOfModule("CAT",req);
+		model.put("edit",camMap.get("edit"));
+		model.put("roleDelete",camMap.get("delete"));
+		model.put("list",camMap.get("list"));
+		model.put("view",camMap.get("view"));
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
-		
-		if(camMap.get("role").equals("CRM_ADMIN")){
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES") && camMap.get("list").equals("YES")){
 			return "taskStatus";
 		}else{
 			return "permission";
-		}	
-		
+		}
 	}
 
 	@RequestMapping("/login")
@@ -477,52 +528,43 @@ public class MainController {
 	@RequestMapping("/create-campaign")
 	public String campaigns(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createCampaigns");
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
-		if (camMap.get("roleAccess").equals("YES")) {
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);		
+		if(camMap.get("access").equals("YES")){
 			return "createCampaigns";
-		} else {
+		}else{
 			return "permission";
-
 		}
 	}
 
 	@RequestMapping(value = "/update-campaign/{campID}", method = RequestMethod.GET)
 	public String updateCampaigns(ModelMap model, @PathVariable("campID") String campID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateCampaigns");
-
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
-
-		if (camMap.get("roleAccess").equals("YES")) {
-
-			if (camMap.get("roleEdit").equals("YES")) {
-				model.addAttribute("campId", campID);
-				return "updateCampaigns";
-
-			} else {
-				return "permission";
-			}
-
-		} else {
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
+		
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			return "updateCampaigns";
+		}else{
 			return "permission";
 		}
-
+		
 	}
 
 	@RequestMapping("/list-campaigns")
 	public String listCampaigns(ModelMap model,HttpServletRequest req) {
-		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
-
 		model.addAttribute("menu", "listCampaigns");
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-
-		if (camMap.get("roleAccess").equals("YES")) {
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listCampaigns";
-		} else {
+		}else{
 			return "permission";
 		}
-
 	}
 
 	@RequestMapping("/view-campaign/{campId}")
@@ -530,23 +572,17 @@ public class MainController {
 
 		model.addAttribute("menu", "viewCampaigns");
 		model.addAttribute("campId", campId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CA", req);
-
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		model.addAttribute("permission", getRoleDetailsAllModule(req));
-		
-		if (camMap.get("roleAccess").equals("NO")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewCampaigns";
+		}else{
 			return "permission";
-		} else if (camMap.get("roleAccess").equals("YES")) {
-
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewCampaigns";
-			} else {
-				return "permission";
-			}
 		}
-
-		return "permission";
 
 	}
 
@@ -558,13 +594,12 @@ public class MainController {
 	public String createLeads(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createLeads");
 
-		Map<String, Object> camMap = getRoleDetailsOfModule("LE", req);
-
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("LE",req);
+		
+		if(camMap.get("access").equals("YES")){
 			return "createLeads";
-		} else {
+		}else{
 			return "permission";
-
 		}
 
 	}
@@ -573,16 +608,19 @@ public class MainController {
 	public String listLeads(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listLeads");
 
-		Map<String, Object> camMap = getRoleDetailsOfModule("LE", req);
-
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-
-		if (camMap.get("roleAccess").equals("YES")) {
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("LE",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listLeads";
-		} else {
+		}else{
 			return "permission";
 		}
+		
+		
 
 	}
 
@@ -591,45 +629,32 @@ public class MainController {
 
 		model.addAttribute("menu", "viewLeads");
 		model.addAttribute("leadId", leadId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("LE", req);
 		model.addAttribute("permission", getRoleDetailsAllModule(req));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-
-		if (camMap.get("roleAccess").equals("NO")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("LE",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewLeads";
+		}else{
 			return "permission";
-		} else if (camMap.get("roleAccess").equals("YES")) {
-
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewLeads";
-			} else {
-				return "permission";
-			}
 		}
-
-		return "permission";
-
+		
+		
 	}
 
 	@RequestMapping("/update-lead/{leadID}")
 	public String updateLeads(ModelMap model, @PathVariable String leadID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateLeads");
-
-		Map<String, Object> camMap = getRoleDetailsOfModule("LA", req);
-
-		if (camMap.get("roleAccess").equals("YES")) {
-
-			if (camMap.get("roleEdit").equals("YES")) {
-				model.addAttribute("leadId", leadID);
-				return "updateLeads";
-
-			} else {
-				return "permission";
-			}
-
-		} else {
+		Map<String, Object> camMap = getRoleDetailsOfModule("LE",req);
+		model.addAttribute("leadId", leadID);
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			return "updateLeads";
+		}else{
 			return "permission";
 		}
-
+		
 	}
 
 	@RequestMapping("/convert-lead/{leadID}")
@@ -637,19 +662,13 @@ public class MainController {
 		model.addAttribute("menu", "convertLead");
 		model.addAttribute("leadId", leadID);
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("LA", req);
-			
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleView").equals("YES")) {
-				
-				return "convertLead";
-			}else{
-				return "permission";
-			}
+		Map<String, Object> camMap = getRoleDetailsOfModule("LE",req);
+		
+		if(camMap.get("access").equals("YES")){
+			return "convertLead";
 		}else{
 			return "permission";
 		}
-		
 
 		
 	}
@@ -666,9 +685,9 @@ public class MainController {
 	public String createContact(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createContacts");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CO", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CO",req);
 		
-		if (camMap.get("roleAccess").equals("YES")) {
+		if(camMap.get("access").equals("YES")){
 			return "createContacts";
 		}else{
 			return "permission";
@@ -678,14 +697,16 @@ public class MainController {
 
 	@RequestMapping("/list-contacts")
 	public String listContacts(ModelMap model,HttpServletRequest req) {
+		
 		model.addAttribute("menu", "listContacts");
 
-		Map<String, Object> camMap = getRoleDetailsOfModule("CO", req);
 		
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("CO",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listContacts";
 		}else{
 			return "permission";
@@ -695,19 +716,17 @@ public class MainController {
 
 	@RequestMapping("/view-contact/{conID}")
 	public String viewContacts(ModelMap model, @PathVariable String conID,HttpServletRequest req) {
+		
 		model.addAttribute("menu", "viewContacts");
 		model.addAttribute("conId", conID);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CO", req);
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		model.addAttribute("permission", getRoleDetailsAllModule(req));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewContacts";
-			}else{
-				return "permission";
-			}
-			
+		Map<String, Object> camMap = getRoleDetailsOfModule("CO",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewContacts";
 		}else{
 			return "permission";
 		}
@@ -718,16 +737,15 @@ public class MainController {
 	public String updateContacts(ModelMap model, @PathVariable String conID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateContacts");
 		model.addAttribute("conId", conID);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CO", req);
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {				
-				return "updateContacts";
-			}else{
-				return "permission";
-			}
+		Map<String, Object> camMap = getRoleDetailsOfModule("CO",req);
+		
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			return "updateContacts";
 		}else{
 			return "permission";
 		}
+		
+		
 	}
 
 	/* close contact */
@@ -737,9 +755,10 @@ public class MainController {
 	public String createOpportunity(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createOpportunity");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("OP", req);
 		
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP",req);
+		
+		if(camMap.get("access").equals("YES")){
 			return "createOpportunity";
 		}else{
 			return "permission";
@@ -752,20 +771,13 @@ public class MainController {
 		model.addAttribute("menu", "updateOpportunity");
 		model.addAttribute("oppId", oppID);
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("OP", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP",req);
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				
-				return "updateOpportunity";
-			}else{
-				return "permission";
-			}
-			
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			return "updateOpportunity";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -773,38 +785,34 @@ public class MainController {
 	public String listOpportunity(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "listOpportunity");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("OP", req);
-		
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listOpportunity";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/view-opportunity/{oppId}")
 	public String viewOpportunity(ModelMap model,@PathVariable("oppId") String oppId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewOpportunity");
 		model.addAttribute("oppId", oppId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("OP", req);
 		model.addAttribute("permission", getRoleDetailsAllModule(req));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewOpportunity";
-			}else{
-				return "permission";
-			}
-			
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewOpportunity";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -818,17 +826,17 @@ public class MainController {
 	public String listCalls(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listCalls");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL", req);
 		
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listCalls";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -836,16 +844,13 @@ public class MainController {
 	public String createCall(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createCall");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL", req);
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL",req);
 		
-		
-		
-		if (camMap.get("roleAccess").equals("YES")) {
+		if(camMap.get("access").equals("YES")){
 			return "createCall";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -853,19 +858,15 @@ public class MainController {
 	public String viewCalls(ModelMap model, @PathVariable String callId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewCalls");
 		model.addAttribute("callId", callId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL", req);
 		
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			
-			if (camMap.get("roleView").equals("YES")) {
-				
-				return "viewCall";
-			}else{
-				return "permission";
-			}
-			
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewCall";
 		}else{
 			return "permission";
 		}
@@ -876,22 +877,20 @@ public class MainController {
 	@RequestMapping("/update-call/{callId}")
 	public String updateCall(ModelMap model, @PathVariable String callId, HttpServletRequest req) {
 		model.addAttribute("menu", "updateCall");
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL", req);
-		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(callController.CallID(callId, req));
-					model.addAttribute("calls", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-				return "updateCall";
-			}else{
-				return "permission";
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_CL",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			String json;
+			try {
+				json = new ObjectMapper().writeValueAsString(callController.CallID(callId, req));
+				model.addAttribute("calls", json);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
 			}
-			
+			return "updateCall";
 		}else{
 			return "permission";
 		}
@@ -905,17 +904,17 @@ public class MainController {
 	@RequestMapping("/list-meetings")
 	public String listMeetings(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "listMeetings");
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME", req);
 		
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listMeetings";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -923,36 +922,32 @@ public class MainController {
 	public String createMeeting(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "create-Meeting");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME", req);
 		
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME",req);
+		
+		if(camMap.get("access").equals("YES")){
 			return "createMeeting";
 		}else{
 			return "permission";
 		}
-		
-		
 	}
 
 	@RequestMapping("/view-meeting/{meetId}")
 	public String viewMeeting(ModelMap model, @PathVariable("meetId") String meetId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewMeeting");
 		model.addAttribute("meetId", meetId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME", req);
 		
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewMeeting";
-			}else{
-				return "permission";
-			}
-			
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewCall";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -960,26 +955,23 @@ public class MainController {
 	public String updateMeeting(ModelMap model, @PathVariable String custID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateMeeting");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME", req);
-		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(meetingController.findmeetingById(custID,req));
-					model.addAttribute("meeting", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-				return "updateMeeting";
-			}else{
-				return "permission";
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_ME",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			String json;
+			try {
+				json = new ObjectMapper().writeValueAsString(meetingController.findmeetingById(custID,req));
+				model.addAttribute("meeting", json);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
 			}
-			
+			return "updateMeeting";
 		}else{
 			return "permission";
 		}
-		
 		
 		
 	}
@@ -988,17 +980,17 @@ public class MainController {
 	public String listTasks(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "listTasks");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA", req);
 		
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listTasks";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/create-task")
@@ -1007,90 +999,74 @@ public class MainController {
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA", req);
 		
-		if (camMap.get("roleAccess").equals("YES")) {
+		if(camMap.get("access").equals("YES")){
 			return "createTask";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/view-task/{taskId}")
 	public String tasks(ModelMap model, @PathVariable("taskId") String taskId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewTasks");
 		model.addAttribute("taskId", taskId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA", req);
-
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewTasks";
-			}else{
-				return "permission";
-			}
-			
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewTasks";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	@RequestMapping("/update-task/{custID}")
 	public String updateTask(ModelMap model, @PathVariable String custID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateTask");
-		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA", req);
-
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(taskController.findtaskById(custID, req));
-					model.addAttribute("task", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-				return "updateTask";
-			}else{
-				return "permission";
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_TA",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			String json;
+			try {
+				json = new ObjectMapper().writeValueAsString(taskController.findtaskById(custID, req));
+				model.addAttribute("task", json);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
 			}
-			
+			return "updateTask";
 		}else{
 			return "permission";
 		}
-		
-		
 		
 	}
 
 	@RequestMapping("/list-events")
 	public String listEvents(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listEvents");
-		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV", req);
-
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
-			
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listEvents";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
 	@RequestMapping("/create-event")
 	public String createEvent(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createEvent");
-		
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV", req);
-
-	
-		if (camMap.get("roleAccess").equals("YES")) {
+		if (camMap.get("access").equals("YES")) {
 			
 			return "createEvent";
 		}else{
@@ -1103,22 +1079,17 @@ public class MainController {
 	public String viewEvent(ModelMap model, @PathVariable("eventId") String eventId,HttpServletRequest req) {
 		model.addAttribute("menu","viewEvents");
 		model.addAttribute("eventId", eventId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV", req);
-
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewEvents";
-			}else{
-				return "permission";
-			}
-	
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewEvents";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -1126,26 +1097,23 @@ public class MainController {
 	public String updateEvent(ModelMap model, @PathVariable String custID,HttpServletRequest req) {
 		model.addAttribute("menu", "updateEvent");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV", req);
-
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(eventController.findEventById(custID, req));
-					model.addAttribute("event", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-				return "updateEvent";
-			}else{
-				return "permission";
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_EV",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			String json;
+			try {
+				json = new ObjectMapper().writeValueAsString(eventController.findEventById(custID, req));
+				model.addAttribute("event", json);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
 			}
-	
+			return "updateEvent";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	/* Close Meetings */
@@ -1154,13 +1122,14 @@ public class MainController {
 	@RequestMapping("/list-notes")
 	public String listNotes(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listNotes");
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO", req);
-
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listNotes";
 		}else{
 			return "permission";
@@ -1173,7 +1142,7 @@ public class MainController {
 		model.addAttribute("menu", "createNote");
 		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO", req);
 
-		if (camMap.get("roleAccess").equals("YES")) {
+		if (camMap.get("access").equals("YES")) {
 			
 			return "createNote";
 		}else{
@@ -1186,17 +1155,14 @@ public class MainController {
 	public String viewNote(ModelMap model, @PathVariable("noteId") String noteId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewNotes");
 		model.addAttribute("noteId", noteId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO", req);
-
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewNotes";
-			}else{
-				return "permission";
-			}
-			
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewNotes";
 		}else{
 			return "permission";
 		}
@@ -1206,28 +1172,23 @@ public class MainController {
 	public String updateNote(ModelMap model, @PathVariable String custID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateNote");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO", req);
-
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(noteController.NoteID(custID, req));
-					model.addAttribute("note", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-				return "updateNote";
-			}else{
-				return "permission";
+		Map<String, Object> camMap = getRoleDetailsOfModule("AC_NO",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			String json;
+			try {
+				json = new ObjectMapper().writeValueAsString(noteController.NoteID(custID, req));
+				model.addAttribute("note", json);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
 			}
-			
+			return "updateNote";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -1242,7 +1203,7 @@ public class MainController {
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
 
-		if (camMap.get("roleAccess").equals("YES")) {
+		if (camMap.get("access").equals("YES")) {
 			
 			return "createCase";
 		}else{
@@ -1256,13 +1217,13 @@ public class MainController {
 	public String listCases(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listCases");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
-
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			
+		Map<String, Object> camMap = getRoleDetailsOfModule("CS",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listCases";
 		}else{
 			return "permission";
@@ -1274,16 +1235,14 @@ public class MainController {
 	public String viewCases(ModelMap model, @PathVariable("caseId") String caseId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewCases");
 		model.addAttribute("caseId", caseId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
 		model.addAttribute("permission", getRoleDetailsAllModule(req));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewCase";
-			}else{
-				return "permission";	
-			}
+		Map<String, Object> camMap = getRoleDetailsOfModule("CS",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewCase";
 		}else{
 			return "permission";
 		}
@@ -1294,19 +1253,19 @@ public class MainController {
 	public String updateCase(ModelMap model, @PathVariable("caseId") String caseId, HttpServletRequest req) {
 		model.addAttribute("menu", "updateCase");
 		model.addAttribute("caseId", caseId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
-
+	
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {				
-				return "updateCase";
-			}else{
-				return "permission";	
-			}
+		Map<String, Object> camMap = getRoleDetailsOfModule("CS",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			
+			return "updateCase";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -1318,7 +1277,7 @@ public class MainController {
 		Map<String, Object> camMap = getRoleDetailsOfModule("LOC", req);
 
 		
-		if (camMap.get("roleAccess").equals("YES")) {
+		if (camMap.get("access").equals("YES")) {
 			return "createLocation";
 		}else{
 			return "permission";
@@ -1330,16 +1289,17 @@ public class MainController {
 	public String listLocation(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listLocations");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("LOC", req);
-
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("LOC",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listLocations";
 		}else{
 			return "permission";
 		}
+		
 		
 	}
 
@@ -1347,17 +1307,15 @@ public class MainController {
 	public String viewLocation(ModelMap model, @PathVariable("locId") String locId, HttpServletRequest req) {
 		model.addAttribute("menu", "viewLocations");
 		model.addAttribute("locId", locId);
-		Map<String, Object> camMap = getRoleDetailsOfModule("LOC", req);
-
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
+	
 		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleView").equals("YES")) {
-				return "viewLocations";
-			}else{
-				return "permission";
-			}
-			
+		Map<String, Object> camMap = getRoleDetailsOfModule("LOC",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewLocations";
 		}else{
 			return "permission";
 		}
@@ -1369,28 +1327,23 @@ public class MainController {
 		
 		model.addAttribute("menu", "updateLocation");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("LOC", req);
-
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				String json;
-				try {
-					json = new ObjectMapper().writeValueAsString(locationController.EventLocationID(custID, req));
-					model.addAttribute("locations", json);
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				}
-				return "updateLocation";
-			}else{
-				return "permission";
+		Map<String, Object> camMap = getRoleDetailsOfModule("LOC",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			String json;
+			try {
+				json = new ObjectMapper().writeValueAsString(locationController.EventLocationID(custID, req));
+				model.addAttribute("locations", json);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
 			}
-			
+			return "updateLocation";
 		}else{
 			return "permission";
 		}
-		
 		
 	}
 
@@ -1406,14 +1359,14 @@ public class MainController {
 	public String listCustomer(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listCustomer");
 		
-		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
-
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-
-		if (camMap.get("roleAccess").equals("YES")) {
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST",req);
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listCustomer";
-		} else {
+		}else{
 			return "permission";
 		}
 
@@ -1426,19 +1379,15 @@ public class MainController {
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
 		model.addAttribute("permission", getRoleDetailsAllModule(req));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-
-		if (camMap.get("roleAccess").equals("YES")) {
-			if(camMap.get("roleView").equals("YES")){
-				return "viewCustomer";
-			}else{
-				return "permission";
-			}
-			
-		} else {
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewCustomer";
+		}else{
 			return "permission";
 		}
-		
 		
 		
 	}
@@ -1449,7 +1398,7 @@ public class MainController {
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
 
-		if (camMap.get("roleAccess").equals("YES")) {
+		if (camMap.get("access").equals("YES")) {
 			return "createCustomer";
 		} else {
 			return "permission";
@@ -1463,17 +1412,16 @@ public class MainController {
 		model.addAttribute("custId", custID);
 		Map<String, Object> camMap = getRoleDetailsOfModule("CUST", req);
 
-		if (camMap.get("roleAccess").equals("YES")) {
-			if (camMap.get("roleEdit").equals("YES")) {
-				
-				return "updateCustomer";
-			}else{
-				return "permission";
-			}
+		model.put("role_edit",camMap.get("edit"));
+		model.put("role_delete",camMap.get("delete"));
+		model.put("role_list",camMap.get("list"));
+		model.put("role_view",camMap.get("view"));
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			
+			return "updateCustomer";
 		}else{
 			return "permission";
 		}
-		
 	}
 
 	/* close customer */

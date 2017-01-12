@@ -132,6 +132,23 @@ public class CrmUserController {
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/user/startup/list",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> startupUserManagement(HttpServletRequest req){
+		MeDataSource dataSource = new MeDataSource();
+		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
+		dataSource.setIp(req.getSession().getAttribute("ip").toString());
+		dataSource.setPort(req.getSession().getAttribute("port").toString());
+		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
+		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);		
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/startup/list_all", HttpMethod.POST, request, Map.class);
+		
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
+	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/user/add",method = RequestMethod.POST)
@@ -143,6 +160,7 @@ public class CrmUserController {
 		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
 		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
 		user.setDataSource(dataSource);
+		
 		HttpEntity<Object> request = new HttpEntity<Object>(user,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/user/add", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());

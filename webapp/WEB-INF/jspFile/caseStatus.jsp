@@ -193,20 +193,7 @@ $(document).ready(function(){
 		
 		<div class="box">
 			<div class="box-header with-border">
-				<h3 class="box-title">&nbsp;</h3>
-				<div class="box-tools pull-right">
-					<button class="btn btn-box-tool" data-widget="collapse"
-						data-toggle="tooltip" title="Collapse">
-						<i class="fa fa-minus"></i>
-					</button>
-					<button class="btn btn-box-tool" data-widget="remove"
-						data-toggle="tooltip" title="Remove">
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-				<div class="col-sm-12">
-					<hr style="margin-bottom: 5px;margin-top: 8px;" />
-				 </div> 
+				
 				<div style="background: #fff;margin-top: 15px;">
 				<form id="form_status">
 				 <div class="col-sm-12">
@@ -215,12 +202,6 @@ $(document).ready(function(){
 					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
 					<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/category-type"> <i class="fa fa-reply"></i> Back </a>
 				 </div>
-				 
-				  
-				  <div class="col-sm-12">
-					<hr style="margin-bottom: 7px;;margin-top: 0px;" />
-				 </div> 
-				 
 				 <div class="col-sm-12">
 				 		
 							<input type="hidden" id="id" name="id" value="{{statusID.statusId}}" ng-model="statusID.statusId">
