@@ -6,10 +6,7 @@
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
 <%
-	String roleList = (String) request.getAttribute("role_list");
-%>
-<%
-	String roleDelete = (String) request.getAttribute("role_delete");
+	String roleDelete = (String) request.getAttribute("roleDelete");
 %>
 
 <script type="text/javascript">
@@ -93,7 +90,8 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 			    		    xhr.setRequestHeader("Content-Type", "application/json");
 			    	    }, 
 			    	    success: function(result){	  
-			    			if(result.MESSAGE == "DELETED"){	    				
+			    			if(result.MESSAGE == "DELETED"){
+			    				$scope.listCompetitors();	    				
 			    				swal({
 			    					title:"SUCCESSFUL",
 			    					text: result.MSG, 
@@ -101,10 +99,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 			    					html: true,
 			    					timer: 2000,
 			    				});
-			    				  
-			    				setTimeout(function(){		
-			    					$scope.listCompetitors();
-			    				},2000);
 			    			}else{
 			    				swal("UNSUCCESSFUL", result.MSG, "error");
 			    			}
@@ -312,6 +306,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 							data : JSON.stringify({
 								  "comName": getValueStringById("comName"),
 							      /* "items": items, */
+							      "comStatus": getValueStringById("comStatus"),
 							      "comAddress": getValueStringById("comAddress"),
 							      "comCreateBy":"${SESSION}"
 							}),
@@ -445,7 +440,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 								<br />
 							</div>
 							<div class="clearfix"></div>
-							<% if (roleList.equals("YES")) { %>
 							<div class="table-responsive">
 								<table class="table table-hover" data-ng-init="listCompetitors()">
 									<tr>
@@ -453,9 +447,14 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 											ng-show="sortKey=='comId'"
 											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
-										<th style="cursor: pointer;" ng-click="sort('comName')">Competitor
+										<th style="cursor: pointer;" ng-click="sort('comName')">Name
 											<span class="glyphicon sort-icon"
 											ng-show="sortKey=='comName'"
+											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+										</th>
+										<th style="cursor: pointer;" ng-click="sort('comStatus')">Status
+											<span class="glyphicon sort-icon"
+											ng-show="sortKey=='comStatus'"
 											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
 										<th style="cursor: pointer;" ng-click="sort('comAddress')">Address<span class="glyphicon sort-icon"
@@ -478,6 +477,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 									<tr dir-paginate="com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
 										<td>{{com.comId}}</td>
 										<td>{{com.comName}}</td>
+										<td>{{com.comStatus}}</td>
 										<td>{{com.comAddress}}</td>
 										<!-- <td><span ng-repeat = "item in com.items">[{{item.itemId}}] {{item.itemName}}<br/></span></td> -->
 										<td>{{com.comCreateBy}}</td>
@@ -506,22 +506,12 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 						       direction-links="true"
 						       boundary-links="true" >
 							</dir-pagination-controls>
-								<%
-									} else {
-								%>
-								<div class="alert alert-warning" role="alert">
-									<i class="glyphicon glyphicon-cog"></i> You don't have
-									permission list data
-								</div>
-								<%
-									}
-								%>
 						</div>
 					</div>
 				</div>
 				<input type="hidden" id="btn-add-competitor" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCompetitor" />
 				<div ng-controller="competitorController" class="modal fade modal-default" id="frmCompetitor" role="dialog">
-					<div class="modal-dialog  modal-lg" data-ng-init="">
+					<div class="modal-dialog  modal-xs" data-ng-init="">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" ng-click="cancelAddCompetitor()" class="close"
@@ -535,22 +525,22 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 									<form id="frmAddCompetitor">
 										<div class="col-md-12">
 											<input type="hidden" name="comId" id="comId">
-											<div class="col-md-12">
+											<div class="col-md-6">
 												<div class="form-group">
-													<label>Competitor <span class="requrie">(Required)</span></label>
+													<label>Name <span class="requrie">(Required)</span></label>
 													<input id="comName" name="comName" class="form-control" type="text" placeholder="Competitor Name" ng-model="comName" >
 												</div>
 											</div>
-											<!-- <div class="clearfix"></div>
-											<div class="col-md-12">
+											<!-- <div class="clearfix"></div> -->
+											<div class="col-md-6">
 												<div class="form-group">
-													<label>Products <span class="requrie">(Required)</span></label>
-													<select class="form-control select2" multiple name="product" id="product" style="width: 100%;">
-														<option value="">-- SELECT Products --</option>
-														<option ng-repeat="item in items" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
+													<label>Status<span class="requrie">(Required)</span></label>
+													<select class="form-control select2" name="comStatus" id="comStatus" style="width: 100%;">
+														<option value="Competitor">Competitor</option>
+														<option value="Owner">Owner</option>
 													</select>
 												</div>
-											</div> -->
+											</div>
 											<div class="clearfix"></div>
 											<div class="col-md-12">
 												<div class="form-group">

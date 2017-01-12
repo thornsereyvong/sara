@@ -1527,14 +1527,11 @@ public class MainController {
 	@RequestMapping("/list-competitors")
 	public String listCompetitor(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "listCompetitors");
-		
 		Map<String, Object> camMap = getRoleDetailsOfModule("COM", req);
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
+		model.put("roleDelete", camMap.get("delete"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listCompetitors";
-		} else {
+		}else{
 			return "permission";
 		}
 
@@ -1543,24 +1540,21 @@ public class MainController {
 	@RequestMapping("/market-survey")
 	public String marketSurvey(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "marketSurvey");
-		
 		Map<String, Object> camMap = getRoleDetailsOfModule("MS", req);
-		model.addAttribute("role_list", camMap.get("roleList"));
-		model.addAttribute("role_delete", camMap.get("roleDelete"));
-		
-		if (camMap.get("roleAccess").equals("YES")) {
+		model.addAttribute("roleDelete", camMap.get("roleDelete"));
+		model.addAttribute("roleEdit", camMap.get("roleEdit"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "marketSurvey";
-		} else {
+		}else{
 			return "permission";
 		}
-
 	}
 	
 	@RequestMapping("/create-competitor")
 	public String createCompetitor(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createCompetitor");
 		Map<String, Object> camMap = getRoleDetailsOfModule("COM", req);
-		if (camMap.get("roleAccess").equals("YES")) {
+		if(camMap.get("access").equals("YES")){
 			return "createCompetitor";
 		} else {
 			return "permission";

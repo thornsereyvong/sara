@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,11 +45,38 @@ public class HBUMarketSurveyController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/list", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> listMarketSurveys(HttpServletRequest req){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/list", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/find/{itemId}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> findMarketSurveyByItemId(HttpServletRequest req, @PathVariable("itemId") String itemId){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/find/item/"+itemId, HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/add", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addMarketSurvey(HttpServletRequest req, @RequestBody HBUMarketSurvey survey){
 		survey.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(survey, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/add", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/remove/{msId}", method = RequestMethod.DELETE)
+	public ResponseEntity<Map<String, Object>> deleteMarketSurvey(HttpServletRequest req, @PathVariable("msId") String msId){
+		HBUMarketSurvey survey = new HBUMarketSurvey();
+		survey.setMsId(msId);
+		survey.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(survey, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/remove", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
