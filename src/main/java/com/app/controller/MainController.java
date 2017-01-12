@@ -97,36 +97,53 @@ public class MainController {
 	 
 	// article path	
 		@RequestMapping("/create-article")
-		public String article(ModelMap model) {		
+		public String article(ModelMap model,HttpServletRequest req) {		
 			model.addAttribute("menu", "creatArticle");		
-			return "createArticle";		
+			Map<String, Object> camMap = getRoleDetailsOfModule("ART",req);
+			if(camMap.get("access").equals("YES")){
+				return "createArticle";	
+			}else{
+				return "permission";
+			}
 		}
 		
 		@RequestMapping("/list-articles")
 		public String listArticle(ModelMap model, HttpServletRequest req) {		
 			model.addAttribute("menu", "listArticles");
-			Map<String, Object> camMap = getRoleDetailsOfModule("ART", req);
-			model.addAttribute("role_list", camMap.get("roleList"));
-			model.addAttribute("role_delete", camMap.get("roleDelete"));
-			if (camMap.get("roleAccess").equals("YES")) {
-				return "listArticle";
-			} else {
+			Map<String, Object> camMap = getRoleDetailsOfModule("ART",req);
+			model.addAttribute("role_delete", camMap.get("delete"));
+			if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
+				return "listArticle";	
+			}else{
 				return "permission";
-			}				
+			}
+			
 		}
 		
 		@RequestMapping("/update-article/{articleId}")
-		public String editArticle(ModelMap model,@PathVariable("articleId") String articleId) {		
+		public String editArticle(ModelMap model,@PathVariable("articleId") String articleId, HttpServletRequest req) {		
 			model.addAttribute("menu", "updateArticle");	
 			model.addAttribute("articleId", articleId);	
-			return "updateArticle";		
+			
+			Map<String, Object> camMap = getRoleDetailsOfModule("ART",req);
+			if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+				return "updateArticle";	
+			}else{
+				return "permission";
+			}
+			
 		}
 	
 		@RequestMapping("/view-article/{articleId}")
-		public String viewArticle(ModelMap model,@PathVariable("articleId") String articleId) {		
+		public String viewArticle(ModelMap model,@PathVariable("articleId") String articleId, HttpServletRequest req) {		
 			model.addAttribute("menu", "viewArticle");	
 			model.addAttribute("articleId", articleId);	
-			return "viewArticle";		
+			Map<String, Object> camMap = getRoleDetailsOfModule("ART",req);
+			if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+				return "viewArticle";	
+			}else{
+				return "permission";
+			}	
 		}
 		
 		// End article path
@@ -134,53 +151,106 @@ public class MainController {
 	
 	// Sale Order path	
 	@RequestMapping("/sale-order/add")
-	public String sale_order(ModelMap model) {		
-		model.addAttribute("menu", "saleOrder");		
-		return "saleOrder";		
+	public String sale_order(ModelMap model, HttpServletRequest req) {		
+		model.addAttribute("menu", "saleOrder");			
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("S",req);
+		if(camMap.get("access").equals("YES")){
+			return "saleOrder";	
+		}else{
+			return "permission";
+		}
+		
 	}
 	@RequestMapping("/sale-order/list")
-	public String listSaleOrder(ModelMap model) {		
-		model.addAttribute("menu", "saleOrderList");		
-		return "saleOrderList";			
+	public String listSaleOrder(ModelMap model, HttpServletRequest req) {		
+		model.addAttribute("menu", "saleOrderList");
+		Map<String, Object> camMap = getRoleDetailsOfModule("S",req);
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
+			return "saleOrderList";	
+		}else{
+			return "permission";
+		}			
 	}
 	@RequestMapping("/sale-order/edit/{saleId}")
-	public String editSaleOrder(ModelMap model,@PathVariable("saleId") String saleId) {		
+	public String editSaleOrder(ModelMap model,@PathVariable("saleId") String saleId, HttpServletRequest req) {		
 		model.addAttribute("menu", "saleOrderEdit");	
 		model.addAttribute("saleId", saleId);	
-		return "saleOrderEdit";		
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("S",req);
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			return "saleOrderEdit";	
+		}else{
+			return "permission";
+		}
 	}
 	
 	@RequestMapping("/sale-order/print/{saleId}")
-	public String printSaleOrder(ModelMap model,@PathVariable("saleId") String saleId) {		
+	public String printSaleOrder(ModelMap model,@PathVariable("saleId") String saleId, HttpServletRequest req) {		
 		model.addAttribute("menu", "saleOrderPrint");	
 		model.addAttribute("saleId", saleId);	
-		return "saleOrderPrint";		
+			
+		Map<String, Object> camMap = getRoleDetailsOfModule("S",req);
+		if(camMap.get("access").equals("YES") && camMap.get("export").equals("YES")){
+			return "saleOrderPrint";	
+		}else{
+			return "permission";
+		}
 	}
 	
 	// End Sale Order path
 	
 	// Quotation Path
 	@RequestMapping("/quote/add")
-	public String quote(ModelMap model) {		
+	public String quote(ModelMap model, HttpServletRequest req) {		
 		model.addAttribute("menu", "quote");		
-		return "quote";		
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("Q",req);
+		if(camMap.get("access").equals("YES")){
+			return "quote";	
+		}else{
+			return "permission";
+		}
+		
 	}
 	@RequestMapping("/quote/list")
-	public String listQuote(ModelMap model) {		
+	public String listQuote(ModelMap model, HttpServletRequest req) {		
 		model.addAttribute("menu", "quoteList");		
-		return "quoteList";			
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("Q",req);
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
+			return "quoteList";		
+		}else{
+			return "permission";
+		}
+		
+		
 	}
 	@RequestMapping("/quote/edit/{saleId}")
-	public String editQuote(ModelMap model,@PathVariable("saleId") String saleId) {		
+	public String editQuote(ModelMap model,@PathVariable("saleId") String saleId, HttpServletRequest req) {		
 		model.addAttribute("menu", "quoteEdit");	
 		model.addAttribute("saleId", saleId);	
-		return "quoteEdit";		
+		
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("Q",req);
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			return "quoteEdit";	
+		}else{
+			return "permission";
+		}
+		
 	}
 	@RequestMapping("/quote/print/{saleId}")
-	public String printQuote(ModelMap model,@PathVariable("saleId") String saleId) {		
+	public String printQuote(ModelMap model,@PathVariable("saleId") String saleId, HttpServletRequest req) {		
 		model.addAttribute("menu", "Print Quotation");	
 		model.addAttribute("saleId", saleId);	
-		return "quotePrint";		
+			
+		Map<String, Object> camMap = getRoleDetailsOfModule("Q",req);
+		if(camMap.get("access").equals("YES") && camMap.get("export").equals("YES")){
+			return "quotePrint";
+		}else{
+			return "permission";
+		}
 	}
 	// End Quotation Path
 	

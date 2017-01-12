@@ -7,7 +7,7 @@
 </style>
 <script>
 
-/* function removeCla(id,ul,ul_li,icon){
+function removeCla(id,ul,ul_li,icon){
 	$(id).removeAttr("class").attr('class', 'treeview active');
    	$(ul).css('display', '');
    	$(ul).css('display', 'block');
@@ -17,7 +17,7 @@
 
 $(document).ready(function(){
 	selectMenu('${menu}');
-}); */
+}); 
 
 	//document.getElementById("demo").innerHTML = text;
 </script>

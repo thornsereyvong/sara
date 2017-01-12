@@ -466,7 +466,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Quantity <span class="requrie">(Required)</span></label>
-												<input id="oppQty" onblur='fToNumber(this,4)' onchange="oppQtyChange(this)"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type="text"
+												<input id="oppQty"  onchange="oppQtyChange(this)"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type="text"
 												placeholder="">
 											</div>
 										</div>
