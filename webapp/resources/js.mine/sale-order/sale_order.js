@@ -1,6 +1,3 @@
-//var curentQuoteId = "";
-
-
 var app = angular.module('quoteApp', ['angularUtils.directives.dirPagination']);
 var self = this;
 app.controller('quoteController',['$scope','$http',function($scope, $http){
@@ -18,13 +15,12 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
 	
-	$scope.selectQuote = function(saleId){ 
-		$('#ConQuote').modal('toggle');
+	$scope.selectQuote = function(saleId){
 		$http.get(server+"quote/list/"+saleId).success(function(response){
 			if(response.MESSAGE == "SUCCESS"){
-				if(listDataSalOrdByID(response.DATA)){
+				if(listDataSalOrdFromQuote(response.DATA)){
 					$scope.curentQuoteId = saleId;
-					
+					 $('#ConQuote').modal('toggle');
 				}
 			}
 		});
@@ -32,14 +28,13 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 	
 }]);
 
-function listDataSalOrdByID(data){
+function listDataSalOrdFromQuote(data){
 	if(data != ""){
-		//setValueById('entryNo', data.saleId); 
-		
+		//setValueById('entryNo', data.saleId);
 		$("#customer").select2('val',findIndexCutomer(data.custId));
 		$("#employee").select2('val',data.empId);
 		$("#priceCode").select2('val',data.priceCode);
-		$("#classCodeMaster").select2('val',data.classId);
+		$("#classCodeMaster").val(data.classId);
 		
 		//setValueById('quoteDate', convertFromSQLToDate(data.saleDate));
 		//setValueById('startDate', convertFromSQLToDate(data.startDate));
@@ -57,11 +52,12 @@ function listDataSalOrdByID(data){
 			$("#listItem").append(addAnItem());
 			select2Init("item"+index);
 			select2Init("location"+index);
+			select2Init("uom"+index);
 			$("#item"+index).select2('val',data.quoteDetails[i].itemId);
 			$("#location"+index).select2('val',data.quoteDetails[i].locationId);
 			
 			$("#classCode"+index+" option[value='"+data.quoteDetails[i].classId+"']").attr('selected','selected');	
-			$("#uom"+index+" option[value='"+data.quoteDetails[i].uomId+"']").attr('selected','selected');
+			$("#uom"+index).select2('val',data.quoteDetails[i].uomId);
 			
 			$("#qty"+index).val(formatNumByLength(data.quoteDetails[i].saleQuantity, 5));
 			$("#up"+index).val(formatNumByLength(data.quoteDetails[i].unitPrice, 2));
@@ -93,8 +89,7 @@ function listDataSalOrdByID(data){
 		
 		return true;	
 	}
-} 
-
+}
 
 
 
@@ -102,13 +97,11 @@ function listDataSalOrdByID(data){
 var rowDelete='';
 var styUom= "";
 var styQty = "";
-//var quoteDate = moment().format('D-MMM-YYYY');
-var orDateOld = moment().format('D-MMM-YYYY');
-var duedateOld = moment().format('D-MMM-YYYY');
+var quoteDate = moment().format('D-MMM-YYYY');
+var startDate = moment().format('D-MMM-YYYY');
+var expireDate = moment().format('D-MMM-YYYY');
 var TermNetDueIn = 0;
 var entryCheck = true;
-
-
 var disOnChangeAct = 0;
 var disDolOnChangeAct = 0;
 
@@ -118,25 +111,214 @@ var vatDolOnChangeAct = 0;
 var stOnChangeAct = 0;
 var stDolOnChangeAct = 0;
 
+var statusClickDetail = false;
+
+var rowIndexLine = 0; 
+
+var creditLimitByCustomer = 0;
+
+// detail item by row variable 
+
+var d_item = "";
+var d_location= "";
+var d_uom = "";
+var d_class = "";
+
+var d_rPrice = 0;
+var d_qty =  0;
+var d_up = 0;
+var d_tAmount = 0;
+var d_priceFactor = 0;
+var d_disDol = 0;
+var d_disPer = 0;
+var d_vatDol = 0;
+var d_vatPer = 0;
+var d_stDol = 0;
+var d_stPer = 0;
+var d_nTAmount = 0;
+
+
+var evtChangeStatus = false;
+
+
+function clearDetailRowByItem(){
+	d_item = "";
+	d_location= "";
+	d_uom = "";
+	d_class = "";
+
+	d_rPrice = 0;
+	d_qty =  0;
+	d_up = 0;
+	d_tAmount = 0;
+	d_priceFactor = 0;
+	d_disDol = 0;
+	d_disPer = 0;
+	d_vatDol = 0;
+	d_vatPer = 0;
+	d_stDol = 0;
+	d_stPer = 0;
+	d_nTAmount = 0;
+}
 
 // START READY
 $(function(){
 	
+	$("#btnGenQuote").click(function(){
+		angular.element(document.getElementById('ConQuote')).scope().listQuote();
+		$("#GenQuote").click();
+	});
 	
-	$('#orderDate').daterangepicker({
+	
+	$("#startDate").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD-MMM-YYYY'
+    }).change(function(){
+    	if($('#startDate').val() != '')
+    		startDate = $('#startDate').val();
+    	else
+    		$('#startDate').val(startDate);
+    });
+	
+	$('#frmAddProduct').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			oppItem: {
+				validators: {
+					notEmpty: {
+						message: 'The item is required and can not be empty!'
+					}
+				}
+			},
+			oppLocation: {
+				validators: {
+					notEmpty: {
+						message: 'The location is required and can not be empty!'
+					}
+				}
+			},
+			oppUom: {
+				validators: {
+					notEmpty: {
+						message: 'The uom is required and can not be empty!'
+					}
+				}
+			},
+			oppQty: {
+				validators: {
+					notEmpty: {
+						message: 'The quantity is required and can not be empty!'
+					},
+		            greaterThan: {
+		            	inclusive : true,
+                        value: 0.00000000000000000000000000000000000000000000000000000000001,                       
+                        message: 'The value must be greater than zero!'
+                    }
+				}
+			},
+			oppUnitPrice: {
+				validators: {
+					notEmpty: {
+						message: 'The unit price is required and can not be empty!'
+					},
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
+				}
+			},
+			oppPriceFactor: {
+				validators: {
+					notEmpty: {
+						message: 'The price factor is required and can not be empty!'
+					},
+					numeric: {
+		                message: 'The value is not a number',
+		                // The default separators
+		                thousandsSeparator: '',
+		                decimalSeparator: '.'
+		            }
+				}
+			},
+			oppDisPer: {
+				validators: {
+					between: {
+                        min: 0,
+                        max: 100,
+                        message: 'The discount % must be between 1 and 100'
+                    }
+				}
+			},
+			
+			oppDisDol: {
+				validators: {
+					
+				}
+			},
+			
+			oppVatPer: {
+				validators: {
+					between: {
+                        min: 0,
+                        max: 100,
+                        message: 'The VAT % must be between 1 and 100'
+                    }
+				}
+			},
+			
+			oppVatDol: {
+				validators: {
+					
+				}
+			},
+			
+			oppSTPer: {
+				validators: {
+					between: {
+                        min: 0,
+                        max: 100,
+                        message: 'The ST % must be between 1 and 100'
+                    }
+				}
+			},
+			
+			oppSTDol: {
+				validators: {
+					
+				}
+			},
+		}
+	});
+	
+	$(".status-content").hide();
+	
+	$('#startDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         format: 'DD-MMM-YYYY'
     });
-	$('#duedate').daterangepicker({
+	/*$('#startDate').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        format: 'DD-MMM-YYYY'
+    });*/
+	$('#expireDate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         format: 'DD-MMM-YYYY'
     });
 	
-	$('#orderDate').val(moment().format('D-MMM-YYYY'));
-	$('#duedate').val(moment().format('D-MMM-YYYY'));  
-	$('#shipToAdd').select2();
+	$('#quoteDate').val(moment().format('D-MMM-YYYY'));  
+	$('#startDate').val(moment().format('D-MMM-YYYY'));  
+	$('#expireDate').val(moment().format('D-MMM-YYYY'));
 	
 	$("#listItem").sortable();
     $("#listItem").disableSelection();	
@@ -145,12 +327,8 @@ $(function(){
 		cancel();
 	});
 	
-	$("#btnGenQuote").click(function(){
-		angular.element(document.getElementById('ConQuote')).scope().listQuote();
-		$("#GenQuote").click();
-	});
-	
 	$("#btnSave").click(function(){
+		
 		if(entryCheck == false){
 			alertEntryExist();
 		}else if(checkMaster() == true && checkDetail()== true && checkLine()==true && entryCheck == true){
@@ -158,7 +336,7 @@ $(function(){
 		}else{
 			if(checkMaster() != true || checkDetail() != true){
 				alertRequireField();
-			}else if(checkLine() == false){
+			}else if(checkLine()==false){
 				alertZero();
 			}
 		}
@@ -190,19 +368,36 @@ $(function(){
 			if(LCustomer[customer].priceCode.priceCode != ''){
 				$("#priceCode").next().children().children().attr('style','border: 1px solid #d2d6de;');
 			}
+			creditLimitByCustomer = LCustomer[customer].termCreditLimit;
+			$("#txtCLimit").val("$ "+formatNumByLength(LCustomer[customer].termCreditLimit,2));	
+			
+			var startDate = $('#startDate').val();
+			
+			TermNetDueIn = toNum(LCustomer[customer].termNetDueIn);
+			if(startDate!=""){
+				$('#expireDate').val(addDays(TermNetDueIn,startDate));
+			}else{
+				//$('#startDate').val(moment().format('D-MMM-YYYY'));
+				//$('#expireDate').val(addDays(TermNetDueIn,moment().format('D-MMM-YYYY')));		
+			}	
+			
+			expireDate = $('#expireDate').val();
+			
 		}else{
 			$("#customer").next().children().children().attr('style','border: 1px solid #dd4b39;');
 			$("#priceCode").select2('val','');
 			addShipToAdd([]);	
+			creditLimitByCustomer=0;
 		}		
 	});
+	// end Customer change act
 	
 	
 	$("#entryNo").change(function (){
 		var entryNo = $.trim($("#entryNo").val());
 		if(entryNo != ""){
 			$.ajax({ 
-				url: server+"sale-order/check-entry-no",
+				url: server+"quote/check-entry-no",
 				method: "POST",
 				async: false,
 				data: JSON.stringify({"saleId":entryNo}),
@@ -211,9 +406,9 @@ $(function(){
 				    xhr.setRequestHeader("Content-Type", "application/json");
 			    }, 
 			    success: function(result){			    	
-					if(result.MESSAGE == "EXIST"){
+					if(result.MESSAGE == "EXIST"){			
 						entryCheck = false;
-						swal("The value of field 'Entry No' is already exist!", "Please try new!", "error");						
+						swal("The field 'Entry No' with value "+entryNo+" is already exist!", "Please change new value of field 'Entry No'!", "error");						
 						$("#entryNo").attr('style','border: 1px solid #dd4b39;');
 					}else{
 						entryCheck = true;
@@ -244,43 +439,54 @@ $(function(){
 		}
 	});
 	
-	$("#orderDate").change(function(){
-		var orDate = $.trim($("#orderDate").val());
-		if(orDate == ''){
-			$("#orderDate").val(orDateOld);
+	$("#quoteDate").change(function(){
+		var quDate = $.trim($("#quoteDate").val());
+		if(quDate == ''){
+			$("#quoteDate").val(quoteDate);
 		}else{
-			orDateOld = orDate;
-			$('#duedate').val(addDays(TermNetDueIn,orDate));
+			quoteDate = quDate;
 		}
 	});
 	
-	$("#duedate").change(function(){
-		var duedate = $.trim($("#duedate").val());
-		if(duedate == ''){
-			$("#duedate").val(duedateOld);
+	$("#startDate").change(function(){
+		var stDate = $.trim($("#startDate").val());
+		if(stDate == ''){
+			$("#startDate").val(startDate);
 		}else{
-			duedateOld = duedate;			
+			startDate = stDate;
+		}
+	});
+	$("#expireDate").change(function(){
+		var exDate = $.trim($("#expireDate").val());
+		if(exDate == ''){
+			$("#expireDate").val(expireDate);
+		}else{
+			expireDate = exDate;
 		}
 	});
 	
 	// add an item
-	$("#addAnItem").click(function(){	
+	$("#addAnItem").click(function(){
 		if(entryCheck == false){
-			alertEntryExist();
-		}else if(checkMaster() == true){
+			alertEntryExist();		
+		}else if(checkMaster() == true){			
 			if(checkDetail() == true){	
 				index++;
 				$("#listItem").append(addAnItem());
 				select2Init("item"+index);
 				select2Init("location"+index);
-				styUom= $("#uom"+index).attr('style');
-				styQty = $("#qty"+index).attr('style');
-				
-			}else{				
+				select2Init("uom"+index);
+				$("#classCode"+index).val(getValueStringById('classCodeMaster'));
+				styUom= "";
+				styQty = "";
+				statusClickDetail = false;
+			}else{
 				alertRequireField();
 			}
-		}else{			
-			alertRequireField();			
+		}else{
+			
+			alertRequireField();
+			
 			checkDetail();
 		}	
 		clearOneLocation();
@@ -297,9 +503,21 @@ $(function(){
 		 disInvoive();
 		 netInvoice();	 
 	});
+	
+	$("#customer").select2('val', 0);
+	$("#employee").select2('val', empLinkUser.EmpID);
+	
+		
 });
 
-
+function alertCreditLimit(totalSaleOrder){
+	swal({  
+		   title: "Credit Limit!",   
+		   text: "The total sale invoice: $ "+totalSaleOrder+" is more than credit limit: $"+creditLimitByCustomer+". Operation not allowed!",    
+		   type: "warning",
+		   showConfirmButton: true 
+	});
+}
 
 function alertRequireField(){
 	swal({  
@@ -307,7 +525,7 @@ function alertRequireField(){
 		   text: "",   
 		   timer: 2000,   
 		   type: "warning",
-		   showConfirmButton: false 
+		   showConfirmButton: true 
 	});
 }
 
@@ -317,17 +535,16 @@ function alertZero(){
 		   text: "",   
 		   timer: 2000,   
 		   type: "warning",
-		   showConfirmButton: false 
+		   showConfirmButton: true 
 	});
 }
-
 function alertEntryExist(){
 	swal({  
 		   title: "The value of field 'Entry No' is already exist!",   
 		   text: "Please try new!",   
 		   timer: 2000,   
 		   type: "warning",
-		   showConfirmButton: false 
+		   showConfirmButton: true 
 	});
 }
 
@@ -354,7 +571,7 @@ function priceFactorChange(obj,l){
 function upChange(obj,l){
 	var num = toNum(obj.value);
 	var obj1 = $("#"+obj.getAttribute("id"));
-	var n = obj1.parent().parent().attr('val');
+	var n = obj1.parent().parent().parent().attr('val');
 	
 	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 	
@@ -365,11 +582,11 @@ function upChange(obj,l){
 	showOneLocation(n);
 	
 }
-function qtyChange(obj,l){
+function qtyChange(obj,l){ 
 	
 	var num = toNum(obj.value);
 	var obj1 = $("#"+obj.getAttribute("id"));
-	var n = obj1.parent().parent().attr('val');
+	var n = obj1.parent().parent().parent().attr('val');
 	
 	if(num>0){
 		obj1.attr('style',styQty);
@@ -492,7 +709,7 @@ function vatDolChange(obj,l){
 		$("#vatP"+n).val(formatNumByLength(vatOnChangeAct,5));
 	}else{
 		disOnChangeAct = formatNumByLength(vatP,5);
-	} 
+	}
 	
 	
 	
@@ -562,6 +779,7 @@ function stPerChange(obj,l){
 	showOneLocation(n);
 }
 
+
 function calculateByItem(n){
 	
 	var qty    = toNum($("#qty"+n).val());
@@ -610,6 +828,8 @@ function calculateByItem(n){
 	
 	var nTAmt = tAmt-disDol+vatDol+stDol;
 	
+	
+	
 	$("#tAmt"+n).val(formatNumByLength(tAmt,2));
 	$("#nTAmt"+n).val(formatNumByLength(nTAmt,2));
 	
@@ -620,71 +840,77 @@ function calculateByItem(n){
 
 
 function actItemChange(obj){
-	var obj = $("#"+obj.getAttribute("id"));
-	if(obj.val() !=''){
-		obj.next().children().children().attr('style','border: 1px solid #d2d6de;');
-		var priceCode = $.trim($("#priceCode").val());
-		selectItem = JSON.parse($.ajax({
-			url: server+"quote/itemChange",
-			method: "POST",
-			async: false,
-			data: JSON.stringify({
-				"itemId" : obj.val(),
-				"priceCode" : priceCode
-				}),
-			beforeSend: function(xhr) {
-			    xhr.setRequestHeader("Accept", "application/json");
-			    xhr.setRequestHeader("Content-Type", "application/json");
-			    }
-		}).responseText);
-		
-		var n = 0;
-		if(selectItem.MESSAGE == "SUCCESS"){
-			selectItem = selectItem.DATA;
-			n = obj.parent().parent().attr('val');
-			$("#up"+n).val(formatNumByLength(selectItem.up, 6));
-			$("#uom"+n+" option[value='"+selectItem.UOM+"']").attr('selected','selected');				
-			$("#reportPrice"+n).val(formatNumByLength(selectItem.rp, 6));
-		}else{
-			$("#up"+n).val(formatNumByLength(0, 6));
-			$("#uom"+n+" option[value='']").attr('selected','selected');				
-			$("#reportPrice"+n).val(formatNumByLength(0, 6));
-		}
-		
-		if(n!=0)
+	if(statusClickDetail==false){
+		var obj = $("#"+obj.getAttribute("id"));
+		if(obj.val() !=''){
+			obj.next().children().children().attr('style','border: 1px solid #d2d6de;');
+			var priceCode = $.trim($("#priceCode").val());
+			selectItem = JSON.parse($.ajax({
+				url: server+"quote/itemChange",
+				method: "POST",
+				async: false,
+				data: JSON.stringify({
+					"itemId" : obj.val(),
+					"priceCode" : priceCode
+					}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+				    }
+			}).responseText);
+			
+			var n = obj.parent().parent().parent().attr('val');
+			
+			if(selectItem.MESSAGE == "SUCCESS"){
+				selectItem = selectItem.DATA;
+				$("#up"+n).val(formatNumByLength(selectItem.up, 6));			
+				$("#uom"+n).select2('val', selectItem.UOM)	
+				$("#reportPrice"+n).val(formatNumByLength(selectItem.rp, 6));
+			}else{
+				$("#up"+n).val(formatNumByLength(0, 6));
+				//$("#uom"+n+" option[value='']").attr('selected','selected');	
+				$("#uom"+n).select2('val', '')
+				$("#reportPrice"+n).val(formatNumByLength(0, 6));
+			}
+			
 			actUomChange(document.getElementById('uom'+n));		
-		
-		$("#disP"+n).val(formatNumByLength(0, 2));
-		$("#disDol"+n).val(formatNumByLength(0, 2));
-		
-		$("#priceFactor"+n).val(formatNumByLength(1, 4));
-		$("#vatP"+n).val(formatNumByLength(0, 2));
-		$("#vatDol"+n).val(formatNumByLength(0, 2));
-		$("#stP"+n).val(formatNumByLength(0, 2));
-		$("#stDol"+n).val(formatNumByLength(0, 2));
-		
-		calculateByItem(n);
-		
-		
-		if($("#listItem tr").length<2){
-			setValueById('txtTSalOrd', formatNumByLength(0, 2));
-			setValueById('txtInvDis', formatNumByLength(0, 2));
-			setValueById('txtNetInv', formatNumByLength(0, 2));
-			setValueById('txtTPTDate', formatNumByLength(0, 2));
-			setValueById('txtAmtDue', formatNumByLength(0, 2));
+			
+			$("#disP"+n).val(formatNumByLength(0, 2));
+			$("#disDol"+n).val(formatNumByLength(0, 2));
+			
+			$("#priceFactor"+n).val(formatNumByLength(1, 4));
+			$("#vatP"+n).val(formatNumByLength(0, 2));
+			$("#vatDol"+n).val(formatNumByLength(0, 2));
+			$("#stP"+n).val(formatNumByLength(0, 2));
+			$("#stDol"+n).val(formatNumByLength(0, 2));
+			
+			calculateByItem(n);
+			
+			
+			if($("#listItem tr").length<2){
+				setValueById('txtTSalOrd', formatNumByLength(0, 2));
+				setValueById('txtInvDis', formatNumByLength(0, 2));
+				setValueById('txtNetInv', formatNumByLength(0, 2));
+				setValueById('txtTPTDate', formatNumByLength(0, 2));
+				setValueById('txtAmtDue', formatNumByLength(0, 2));
+			}
+			
+			
+			setQtyAvailableToRow(n);
+			
+		}else{
+			obj.next().children().children().attr('style','border: 1px solid #dd4b39;');
 		}
-		
-		
-		setQtyAvailableToRow(n);
-		
-	}else{
-		obj.next().children().children().attr('style','border: 1px solid #dd4b39;');
+		showOneLocation(n);
+		statusClickDetail = false;
 	}
-	showOneLocation(n);
 }
+
+
 function actLocChange(obj){
 	var obj = $("#"+obj.getAttribute("id"));
-	var n = obj.parent().parent().attr('val');
+	var n = obj.parent().parent().parent().attr('val');
+	
 	if(obj.val() !=''){
 		setQtyAvailableToRow(n);
 		obj.next().children().children().attr('style','border: 1px solid #d2d6de;');
@@ -696,16 +922,15 @@ function actLocChange(obj){
 function actUomChange(obj){
 	var obj = $("#"+obj.getAttribute("id"));
 	if(obj.val() !=''){
-		obj.attr('style',styUom);
+		obj.next().children().children().attr('style','border: 1px solid #d2d6de;');		
 	}else{
-		obj.attr('style','border: 1px solid #dd4b39;'+styUom);
+		obj.next().children().children().attr('style','border: 1px solid #dd4b39;');
 	}
 }
 
 
 function select2Init(initId){
 	$('#'+initId).select2();
-	
 }
 function removeRowItem(RowID){
 	swal({   
@@ -741,6 +966,9 @@ function removeRowItem(RowID){
 }
 
 
+
+
+
 function addShipToAdd(data){
 	$('#shipToAdd').empty();
 	$('#shipToAdd').append("<option></option>");
@@ -760,8 +988,9 @@ function checkMaster(){
 	var cust = $("#customer").val();
 	var emp =  $("#employee").val();
 	var priceCode = $("#priceCode").val();
-	var orDate = $('#orderDate').val();
-	var duedate = $('#duedate').val();
+	
+	var startdate = $('#startDate').val();
+	var expiredate = $('#expireDate').val();
 	
 	if(cust == ''){
 		$("#customer").next().children().children().attr('style','border: 1px solid #dd4b39;');
@@ -773,7 +1002,7 @@ function checkMaster(){
 		$("#priceCode").next().children().children().attr('style','border: 1px solid #dd4b39;');
 	}
 	
-	if(cust == '' || emp == '' || priceCode == '' || checkDate(orDate)==false || checkDate(duedate)==false){
+	if(cust == '' || emp == '' || priceCode == '' || checkDate(startdate)==false || checkDate(expiredate)==false){
 		return false;
 	}
 	return true;
@@ -797,7 +1026,7 @@ function checkDetail(){
 				$("#location"+n).next().children().children().attr('style','border: 1px solid #dd4b39;');
 			}			
 			if(uomR == ''){
-				$("#uom"+n).attr('style','border: 1px solid #dd4b39;'+styUom);
+				$("#uom"+n).next().children().children().attr('style','border: 1px solid #dd4b39;');
 			}			
 			if(qtyR <=0){
 				$("#qty"+n).attr('style','border: 1px solid #dd4b39;'+styQty);
@@ -822,8 +1051,7 @@ function totalSalOrd(){
 		for(i=0;i<tr.length;i++){	
 			var n =tr.eq(i).attr('val');
 			totalSalOrd += toNum($("#nTAmt"+n).val());
-		}
-		
+		}	
 	}
 	
 	setValueById('txtTSalOrd', formatNumByLength(totalSalOrd, 2));
@@ -959,18 +1187,18 @@ function saleOrder(){
 	// master
 	
 	var entryNo = getValueStringById("entryNo");	
-	var salOrdType = $.trim($("#salOrdType").val());
-	var customer = $.trim($("#customer").val());
-	var employee = $.trim($("#employee").val());
-	var classCodeMaster = $.trim($("#classCodeMaster").val());
-	var orderDate = getDateById("orderDate");
-	var duedate = getDateById("duedate");
-	var reference = $.trim($("#reference").val());
-	var priceCode = $.trim($("#priceCode").val());
-	var shipToAdd = $.trim($("#shipToAdd").val());
-	var remark = $.trim($("#remark").val());
+	var customer = getValueStringById("customer");
+	var employee =getValueStringById("employee");
+	var classCodeMaster = getValueStringById("classCodeMaster");
+	var saleOrderType = getValueStringById("saleOrderType");
+	var staDate = getDateById("startDate");
+	var expDate = getDateById("expireDate");
+	var reference = getValueStringById("reference");
+	var priceCode = getValueStringById("priceCode");
+	var shipToAdd = getValueStringById("shipToAdd");
+	var remark = getValueStringById("remark");
 	var disInvDol = toNum($.trim($("#txtInvDis").val()));
-	var disInvP = toNum($.trim($("#txtInvDis").attr('data-persent')));
+	var disInvP = toNum($.trim($("#txtDisInv").val()));
 	var TotalAmt = 0;
 	var TotalDis = 0;
 	var NTAmt = toNum($.trim($("#txtNetInv").val()));
@@ -985,7 +1213,7 @@ function saleOrder(){
 			var n =tr.eq(i).attr('val');
 			detail.push({
 				saleId : entryNo,
-				lineNo : i+1,
+				lineNo : n,
 				itemId: getValueStringById('item'+n),
 				locationId: getValueStringById('location'+n),
 				classId: getValueStringById('classCode'+n),
@@ -1011,12 +1239,12 @@ function saleOrder(){
 	
 	var master ={
 			saleId : entryNo,
-			saleType : salOrdType,
 			custId : getCustomerByIndex(customer),
 			empId : employee,
+			saleType : saleOrderType,
 			classId : classCodeMaster,
-			saleDate : orderDate,
-			dueDate : duedate,
+			saleDate : staDate,
+			dueDate : expDate,
 			priceCode : priceCode,
 			shipTo : shipToAdd,
 			remark : remark,
@@ -1028,14 +1256,19 @@ function saleOrder(){
 			totalDis : TotalDis,
 			totalSTax : totalSTax,
 			totalVTax : totalVTax,
+			
 			saleOrderDetails: detail
 		};
 	
-	//dis(master)
+	var msg = "<span class='text-danger'>The total sale order: $ "+formatNumByLength(NTAmt,2)+" is more than credit limit: $ "+formatNumByLength(creditLimitByCustomer,2)+".</span><br><br>";
+	
+	if(creditLimitByCustomer >= toNum($.trim($("#txtNetInv").val()))){
+		msg = "";
+	}
 	
 	swal({   
 		title: "<span style='font-size: 25px;'>You are about to save a sale order.</span>",
-		text: "Click OK to continue or CANCEL to abort.",
+		text: msg+ 	"Click OK to continue or CANCEL to abort.",
 		type: "info",
 		html: true,
 		showCancelButton: true,
@@ -1046,7 +1279,6 @@ function saleOrder(){
 			 $.ajax({ 
 				url: server+"sale-order/insert-sale-order",
 				method: "POST",
-				async: false,
 				data: JSON.stringify(master),
 				beforeSend: function(xhr) {
 				    xhr.setRequestHeader("Accept", "application/json");
@@ -1077,16 +1309,15 @@ function saleOrder(){
 		}, 500);
 	});
 	
-	
-
 }
 
 function cancel(){
-	document.location.href = server+"sale-order/add";
+	location.reload();
 }
 function getCustomerByIndex(index){
 	return LCustomer[index].custID;
 }
+
 function findShipToAddressByCustomer(custId){
 	if(LShipToAddress != null){
 		if(LShipToAddress.length>0){
@@ -1099,5 +1330,300 @@ function findShipToAddressByCustomer(custId){
 			return shipAdd;
 		}
 	}	
+	return '';
+}
+
+
+
+// on modal
+
+function cancelProductClick(){
+	statusClickDetail = false;
+}
+
+function act1ItemChange(obj){
+	if(statusClickDetail != false){
+		var priceCode = getValueStringById("priceCode");
+		var item = getValueStringById("oppItem");
+		if(item != ""){
+			$.ajax({
+				url: server+"quote/itemChange",
+				method: "POST",
+				data: JSON.stringify({
+					"itemId" : item,
+					"priceCode" : priceCode
+				}),
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+			    },
+			    success: function(result){			    				    	
+			    	if(result.MESSAGE == "SUCCESS"){
+			    		
+			    		$("#oppUom").select2('val',result.DATA.UOM);
+			    		$("#oppUnitPrice").val(formatNumByLength(result.DATA.up,6));
+			    		$("#oppReportPrice").val(formatNumByLength(result.DATA.rp,6));
+			    		$("#oppPriceFactor").val(formatNumByLength(1, 4));
+			    		
+			    		$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppPriceFactor'));
+			    		$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppUnitPrice'));
+			    		calculateProductMaster();
+			    	}
+			    },
+	    		error:function(){	    		
+	    		} 
+			});
+		}else{			
+			//alert(0)			
+		}
+	}
+}
+
+function oppQtyChange(obj){	
+	calculateProductMaster();	
+}
+
+function oppUnitPriceChange(obj){
+	calculateProductMaster();
+}
+
+function oppPriceFactorChange(obj){
+	calculateProductMaster();
+}
+
+function calculateProductMaster(){
+	
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	
+	d_disPer = toNum(getValueStringById('oppDisPer'));
+	d_vatPer = toNum(getValueStringById('oppVatPer'));
+	d_stPer = toNum(getValueStringById('oppSTPer'));
+	
+	
+	d_disDol = d_tAmount * d_disPer / 100;
+	d_vatDol = d_tAmount * d_vatPer / 100;
+	d_stDol = d_tAmount * d_stPer / 100;
+	
+	
+	d_nTAmount = d_tAmount - d_disDol + d_vatDol + d_stDol;
+	
+	$("#oppTAmount").val(formatNumByLength(d_tAmount,2));
+		
+	$("#oppDisDol").val(formatNumByLength(d_disDol,2));	
+	$("#oppVatDol").val(formatNumByLength(d_vatDol,2));	
+	$("#oppSTDol").val(formatNumByLength(d_stDol,2));	
+	$("#oppNetTAmount").val(formatNumByLength(d_nTAmount,2));
+	
+	evtChangeStatus = false;
+	
+}
+
+function calculateProductDetail(){
+	d_disDol = toNum(getValueStringById('oppDisDol'));
+	d_vatDol = toNum(getValueStringById('oppVatDol'));
+	d_stDol = toNum(getValueStringById('oppSTDol'));
+		
+	d_nTAmount = d_tAmount - d_disDol + d_vatDol + d_stDol;	
+	$("#oppNetTAmount").val(formatNumByLength(d_nTAmount,2));
+	
+	evtChangeStatus = false;
+	
+}
+
+
+function fToNumber(obj, l){ 
+	obj.value = formatNumByLength(toNum(obj.value),l);
+}
+
+function oppDisPerChange(){
+	
+	d_disPer = toNum(getValueStringById('oppDisPer'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_disDol = d_tAmount * d_disPer / 100;
+	
+	$("#oppDisDol").val(formatNumByLength(d_disDol,2));	
+	
+	calculateProductDetail();
+	
+	
+}
+function oppDisDolChange(){
+	d_disDol = toNum(getValueStringById('oppDisDol'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_disPer = 0;
+	if(d_tAmount !=0 )
+		d_disPer = d_disDol * 100 / d_tAmount;
+	
+	
+	$("#oppDisPer").val(formatNumByLength(d_disPer,5));	
+	
+	calculateProductDetail();
+}
+
+function oppVatPerChange(){
+	d_vatPer = toNum(getValueStringById('oppVatPer'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_vatDol = d_tAmount * d_vatPer / 100;
+	
+	$("#oppVatDol").val(formatNumByLength(d_vatDol,2));	
+	
+	calculateProductDetail();
+}
+function oppVatDolChange(){
+	d_vatDol = toNum(getValueStringById('oppVatDol'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_vatPer = 0;
+	if(d_tAmount !=0 )
+		d_vatPer = d_vatDol * 100 / d_tAmount;
+	
+	$("#oppVatPer").val(formatNumByLength(d_vatPer,5));	
+	
+	calculateProductDetail();
+}
+
+function oppSTPerChange(){
+	d_stPer = toNum(getValueStringById('oppSTPer'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_stDol = d_tAmount * d_stPer / 100;
+	
+	$("#oppSTDol").val(formatNumByLength(d_stDol,2));	
+	
+	calculateProductDetail();
+}
+function oppSTDolChange(){
+	d_stDol = toNum(getValueStringById('oppSTDol'));
+	d_qty =  toNum(getValueStringById('oppQty'));
+	d_up = toNum(getValueStringById('oppUnitPrice'));
+	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
+	
+	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_stPer = 0;
+	if(d_tAmount !=0 )
+		d_stPer = d_stDol * 100 / d_tAmount;
+	
+	$("#oppSTPer").val(formatNumByLength(d_stPer,5));	
+	
+	calculateProductDetail();
+}
+
+function btnProductSave(){
+	$('#frmAddProduct').data('bootstrapValidator').validate();
+	var statusAddPro = $("#frmAddProduct").data('bootstrapValidator').validate().isValid();
+	if(statusAddPro){
+		$("#item"+rowIndexLine).select2('val',getValueStringById('oppItem'));
+		$("#location"+rowIndexLine).select2('val',getValueStringById('oppLocation'));
+		$("#uom"+rowIndexLine).select2('val',getValueStringById('oppUom'));
+		$("#qty"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppQty')),5));
+		
+		
+		$("#up"+rowIndexLine).val(getValueStringById('oppUnitPrice'));
+		$("#classCode"+rowIndexLine).val(getValueStringById('oppClassDetail'));
+		
+		$("#priceFactor"+rowIndexLine).val(getValueStringById('oppPriceFactor'));
+		$("#reportPrice"+rowIndexLine).val(getValueStringById('oppReportPrice'));
+				
+		$("#disP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppDisPer')),6));
+		$("#disDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppDisDol')),2));
+		
+		$("#vatP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatPer')),6));
+		$("#vatDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatPer')),2));
+		
+		$("#stP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppSTPer')),6));
+		$("#stDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppSTDol')),2));
+		
+		
+		$("#tAmt"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppTAmount')),2));
+		$("#nTAmt"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppNetTAmount')),2));
+		
+		clearDetailRowByItem();
+		
+		totalSTandVAT();
+		totalSalOrd();
+		showOneLocation(rowIndexLine);
+		$("#frmProduct").modal('toggle');
+		clearFormProduct();
+		statusClickDetail = false;
+	}
+	
+}
+function detailRowItem(n){
+	statusClickDetail = false;
+	clearFormProduct();
+	rowIndexLine = n;
+	
+	$("#oppItem").select2('val',getValueStringById('item'+n));
+	$("#oppLocation").select2('val',getValueStringById('location'+n));
+	$("#oppClassDetail").select2('val', getValueStringById('classCode'+n));
+	$("#oppUom").select2('val', getValueStringById('uom'+n));
+	
+	$("#oppQty").val(toNum(getValueStringById('qty'+n)));
+	$("#oppUnitPrice").val(getValueStringById('up'+n));
+	$("#oppPriceFactor").val(getValueStringById('priceFactor'+n));
+	$("#oppReportPrice").val(getValueStringById('reportPrice'+n));
+	$("#oppTAmount").val(getValueStringById('tAmt'+n));
+	$("#oppDisPer").val(getValueStringById('disP'+n));
+	$("#oppDisDol").val(getValueStringById('disDol'+n));
+	$("#oppVatPer").val(getValueStringById('vatP'+n));
+	$("#oppVatDol").val(getValueStringById('vatDol'+n));
+	$("#oppSTPer").val(getValueStringById('stP'+n));
+	$("#oppSTDol").val(getValueStringById('stDol'+n));
+	$("#oppNetTAmount").val(getValueStringById('nTAmt'+n));
+	
+	
+	$('#frmAddProduct').data('bootstrapValidator').resetField($('#oppUom'));
+	$("#btn_show_product").click();	
+	statusClickDetail = true;
+}
+
+
+function clearFormProduct(){
+	
+	//alert()
+	
+	$("#oppItem").select2("val","");
+	$("#oppLocation").select2("val","");
+	$("#oppClassDetail").select2("val","");
+	$("#oppUom").select2("val","");
+	
+	$("#frmAddProduct").bootstrapValidator('resetForm', 'true');
+	$('#frmAddProduct')[0].reset();
+}
+
+function findIndexCutomer(custId){		
+	if(LCustomer != null){
+		var l = LCustomer.length;
+		if(l > 0){
+			for(var i=0;i<l;i++){
+				if(LCustomer[i].custID == custId){
+					return i;
+				}
+			}
+		}
+	}
+	
 	return '';
 }
