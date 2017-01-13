@@ -60,7 +60,7 @@ $(document).ready(function(){
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="marketing_icon_lead"></i> <span>Leads</span>
 					</a></li>
-					<li id="ul_li_competitor"><a
+					<%-- <li id="ul_li_competitor"><a
 						href="${pageContext.request.contextPath}/list-competitors"> <i
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="hbu_icon_competitor"></i> <span>Competitors</span>
@@ -70,7 +70,7 @@ $(document).ready(function(){
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="hbu_icon_survey"></i> <span>Market Survey</span>
 					</a>
-					</li>
+					</li> --%>
 
 				</ul></li>
 
@@ -240,10 +240,6 @@ $(document).ready(function(){
 				</ul>
 			</li>
 
-
-			<%
-				//if (role.equals("CRM_ADMIN")) {
-			%>
 			<li class='treeview ' id="admin"><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/images/Administrator.png"
 					style="width: 16px;">&nbsp;&nbsp;<!-- <i class="fa fa-cogs" aria-hidden="true"></i> -->
@@ -251,10 +247,10 @@ $(document).ready(function(){
 				<ul class="treeview-menu" id="ul_admin">
 
 					<li id="ul_li_add"><a
-						href="${pageContext.request.contextPath}/category-type"> <i
+					<%-- 	href="${pageContext.request.contextPath}/category-type"> <i
 							class='fa fa-circle-o' aria-hidden='true' id="admin_icon_add"></i>
 							<span>Category</span>
-					</a></li>
+					</a></li> --%>
 					<li id="ul_li_role"><a
 						href="${pageContext.request.contextPath}/role-management"> <i
 							class='fa fa-circle-o' aria-hidden='true' id="admin_icon_role"></i>
@@ -271,11 +267,7 @@ $(document).ready(function(){
 							<span>Employees</span>
 					</a></li> --%>
 				</ul></li>
-			<%
-				//}
-			%>
-
-
+		
 		</ul>
 	</section>
 	<!-- /.sidebar -->

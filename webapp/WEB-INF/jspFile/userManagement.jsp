@@ -29,11 +29,13 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			$scope.role = response.ROLE;
 			$scope.action = "Save";
 			$list_username = response.DATA;
-			$scope.rowNum = 1;
+			$scope.rowNum = 5;
 			$scope.curentUser = "";
 			$scope.curIndex = 0;
 		});
 	};
+	
+	
 	
 	$scope.saveUser =function(){
 		if($scope.action == "Save"){
@@ -502,7 +504,7 @@ $(document).ready(function(){
 				 	<div class="col-sm-1">
 				        <div class="form-group">
 				            <select class="form-control" ng-model="rowNum" style="width:100%" id="rowNum" name="rowNum">
-								<option value="5" selected>5</option>
+								<option value="5">5</option>
 								<option value="10">10</option>
 								<option value="15">15</option>
 								<option value="20">20</option>
@@ -534,7 +536,7 @@ $(document).ready(function(){
 							<th>Action</th>
 						</tr>
 
-						<tr dir-paginate="cc in user |orderBy:sortKey:reverse |filter:search |itemsPerPage:5">
+						<tr dir-paginate="cc in user |orderBy:sortKey:reverse |filter:search |itemsPerPage:rowNum">
 							<td>{{cc.userID}}</td>
 							<td>{{cc.username}}</td>
 							<td>{{cc.roleName}}</td>
