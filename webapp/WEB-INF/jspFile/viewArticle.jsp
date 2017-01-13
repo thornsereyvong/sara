@@ -29,7 +29,10 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 	$scope.startupView = function(){			
 		$http.get("${pageContext.request.contextPath}/article/view/"+articleId).success(function(response){
 			$scope.article = response.DATA;	
-			//dis(response.DATA)
+			setTimeout(function(){
+				$("#des-article").append($scope.article.articleDes);
+			},2000);
+			
 		});
 		
 	}
@@ -224,9 +227,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 						<h5 class="widget-user-desc ng-cloak"></h5>
 					</div>
 					<div class="widget-user-image">
-						<img class="img-circle"
-							src="${pageContext.request.contextPath}/resources/images/module/Call.png"
-							alt="User Avatar">
+						<img class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Knowledge.png" alt="User Avatar">
 					</div>
 					<div class="box-footer">
 						<div class="row">
@@ -301,7 +302,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																
 																<li class="list-group-item item_border" ng-if="call.callDes !=''">													
 																	
-																	<a class="show-text-detail ng-cloak">{{article.articleDes}}</a>
+																	<a class="show-text-detail ng-cloak" id="des-article"></a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
