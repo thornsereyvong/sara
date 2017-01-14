@@ -246,27 +246,7 @@ $(document).ready(function(){
 					<span>Administrator</span> <i class="fa fa-angle-left pull-right"></i></a>
 				<ul class="treeview-menu" id="ul_admin">
 
-					<li id="ul_li_add"><a
-					<%-- 	href="${pageContext.request.contextPath}/category-type"> <i
-							class='fa fa-circle-o' aria-hidden='true' id="admin_icon_add"></i>
-							<span>Category</span>
-					</a></li> --%>
-					<li id="ul_li_role"><a
-						href="${pageContext.request.contextPath}/role-management"> <i
-							class='fa fa-circle-o' aria-hidden='true' id="admin_icon_role"></i>
-							<span>Role Management</span>
-					</a></li>
-					<li id="ul_li_userMa"><a
-						href="${pageContext.request.contextPath}/user-management"> <i
-							class='fa fa-circle-o' aria-hidden='true' id="admin_icon_userMa"></i>
-							<span>User Management</span>
-					</a></li>
-					<%-- <li id="ul_li_empMa"><a
-						href="${pageContext.request.contextPath}/list-employee"> <i
-							class='fa fa-circle-o' aria-hidden='true' id="admin_icon_empMa"></i>
-							<span>Employees</span>
-					</a></li> --%>
-				</ul></li>
+					<li id="ul_li_add"></ul></li>
 		
 		</ul>
 	</section>
