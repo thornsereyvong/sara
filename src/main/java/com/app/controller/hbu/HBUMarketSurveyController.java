@@ -53,6 +53,14 @@ public class HBUMarketSurveyController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/view/{msId}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> findMarketSurveyById(HttpServletRequest req, @PathVariable("msId") String msId){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/view/"+msId, HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/find/{itemId}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> findMarketSurveyByItemId(HttpServletRequest req, @PathVariable("itemId") String itemId){
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
@@ -66,6 +74,15 @@ public class HBUMarketSurveyController {
 		survey.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(survey, header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/add", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/edit", method = RequestMethod.PUT)
+	public ResponseEntity<Map<String, Object>> updateMarketSurvey(HttpServletRequest req, @RequestBody HBUMarketSurvey survey){
+		survey.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(survey, header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/edit", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
