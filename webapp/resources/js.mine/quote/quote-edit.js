@@ -1079,7 +1079,7 @@ function saleOrder(){
 	var shipToAdd = $.trim($("#shipToAdd").val());
 	var remark = $.trim($("#remark").val());
 	var disInvDol = toNum($.trim($("#txtInvDis").val()));
-	var disInvP = toNum($.trim($("#txtInvDis").attr('data-persent')));
+	var disInvP = toNum($.trim($("#txtDisInv").val()));
 	var TotalAmt = 0;
 	var TotalDis = 0;
 	var NTAmt = toNum($.trim($("#txtNetInv").val()));

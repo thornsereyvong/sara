@@ -18,13 +18,14 @@
 	
 	<section class="content">
 		<div class="box box-danger">
-			<div class="box-header with-border">
+			<div class="box-header with-border">								
 				<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
 				<button type="button" class="btn btn-info btn-app" name="btnGenQuote" id="btnGenQuote" > <i class="fa fa-cog"></i> Quote</button>
-				<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
-				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/sale-order/list"> <i class="fa fa-reply"></i> Back </a>
+				<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+				
+				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/quote/list"> <i class="fa fa-reply"></i> Back </a>
 
-				<div class="clearfix"></div>
+				<div class="clearfix"></div>								
 			</div>
 			<div class="box-body">
 				<div class="row">
@@ -34,20 +35,20 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Entry No<span class="requrie"> (Required)</span></label> 
-									<input disabled class="form-control" name="entryNo" id="entryNo" type="text" value="" placeholder="***New***">
+									<input class="form-control" name="entryNo" id="entryNo" type="text" value="" placeholder="***New***">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Post Status</label> 
-									<input class="form-control" disabled="" id="postStatus" name="postStatus" type="text" placeholder="Post Status">
+									<input class="form-control" disabled="" id="postStatus" name="postStatus" type="text" placeholder="Open">
 								</div>
 							</div>
-							
+							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Customer<span class="requrie"> (Required)</span></label> 
-									<select id="customer" name="customer" class="form-control select2 input-lg" style="width: 100%;">
+									<select id="customer" name="customer" class="form-control select2-small input-lg" style="width: 100%;">
 										<option selected="selected" value="">Select A Customer</option>
 										
 									</select>
@@ -62,6 +63,7 @@
 									</select>
 								</div>
 							</div>
+							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Sale Rep. ID<span class="requrie"> (Required)</span></label> 
@@ -81,10 +83,9 @@
 									</select>
 								</div>
 							</div>
-							
+							<div class="clearfix"></div>
 						</div>
 						<div class="col-md-6">
-							
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Sale Order Date<span class="requrie"> (Required)</span></label>
@@ -92,7 +93,11 @@
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input data-date-format="dd-M-yyyy" data-default-date="" value="" name="orderDate" id="orderDate" type="text" class="form-control pull-right active">
+										<input readonly="readonly"  data-date-format="dd-M-yyyy"
+											data-default-date=""
+											value=""
+											name="startDate" id="startDate" type="text"
+											class="form-control pull-right active">
 									</div>
 								</div>
 							</div>
@@ -103,28 +108,32 @@
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input data-date-format="dd-M-yyyy" data-default-date="" value="" name="duedate" id="duedate" type="text" class="form-control pull-right active">
+										<input readonly="readonly"  data-date-format="dd-M-yyyy"
+											data-default-date=""
+											value=""
+											name="expireDate" id="expireDate" type="text"
+											class="form-control pull-right active">
 									</div>
 								</div>
 							</div>
 							
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Sale Order Type</label> 
-									<select name="salOrdType" id="salOrdType" class="form-control">								
-										<option value="General Item Sale">General Item Sale</option>
-									</select>
-								</div>
-							</div>
+							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Reference</label> 
 									<input class="form-control" id="reference" name="reference" type="text" placeholder="Reference...">
 								</div>
 							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Sale Order Type <span class="text-red"></span></label> 
+									<select name="saleOrderType" id="saleOrderType" class="form-control select2 input-lg" style="width: 100%;">
+										 <option value="General Item Sale">General Item Sale</option>
+									</select>
+								</div>
+							</div>
 							
-							
-							
+							<div class="clearfix"></div>
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Ship to Address <span class="text-red"></span></label> 
@@ -135,7 +144,6 @@
 							</div>
 						</div>
 						<div class="col-md-12">
-					
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Remark</label> 
@@ -149,22 +157,13 @@
 									<table id="table-content" class="table table-hover">
 										<thead>								
 											<tr>
-												<th>Item<span class="requrie"> (Required)</span></th>
+												<th colspan="2">Item<span class="requrie"> (Required)</span></th>
 												<th>Location<span class="requrie"> (Required)</span></th>
-												<th>Class</th>
 												<th>UOM<span class="requrie"> (Required)</span></th>
-												<th>Qty <span class="requrie"> (Required)</span></th>
+												<th>Quantity<span class="requrie"> (Required)</span></th>
 												<th>Unit Price</th>
-												<th>Price Factor</th>
-												<th>Report Price</th>
-												<th>Total Amount</th>
-												<th>Discount %</th>
-												<th>Discount $</th>
-												<th>VAT %</th>
-												<th>VAT $</th>
-												<th>ST %</th>
-												<th>ST $</th>
-												<th colspan="2">Net Total Amount</th>
+												<th>Net Total Amount</th>
+												<th></th>
 											</tr>	
 										</thead>
 										<tbody class="cursor_move" id="listItem">
@@ -173,7 +172,7 @@
 										</tbody>
 										<tfoot>
 											<tr>
-												<th colspan="11">
+												<th colspan="7">
 													<button type="button" name="addAnItem" id="addAnItem"
 														class="btn btn-success">
 														<i class="fa  fa-plus-circle"></i> &nbsp;Add An Item
@@ -188,28 +187,27 @@
 						</form>
 				
 					</div>
-						
 					</div>
-					<!-- <div class="clearfix"></div> -->
-					
-					
 				</div>
 				
 			<br><br>
 			<div class="box-footer" style="border-top: 1px solid #d8d8d8;">
-			
-			
 				<div class="row">
 					<div class="col-md-12">
-						
 						<div class="col-md-6">
-							<div class="col-md-6">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Credit Limit</label> 
+									<input disabled class="form-control" id="txtCLimit" type="text" placeholder="">
+								</div>
+							</div>
+							<div class="col-md-4">
 								<div class="form-group">
 									<label>Total Specific Tax</label> 
 									<input disabled class="form-control" id="txtTST" type="text" placeholder="">
 								</div>
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-4">
 								<div class="form-group">
 									<label>Total VAT</label> 
 									<input disabled id="txtTVAT" class="form-control" type="text" placeholder="">
@@ -252,12 +250,13 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-3">
-						</div>
+						
+						<div class="col-md-3"></div>
+						
 						<div class="col-md-3">
 							<div class="col-md-12">
 								<div class="form-group">
-									<label>Total Sale Order</label> 
+									<label>Total Quote</label> 
 									<input disabled id="txtTSalOrd" class="form-control text-align-right" type="text" placeholder="">
 								</div>
 							</div>
@@ -292,42 +291,21 @@
 								</div>
 							</div>
 						</div>
+						
 					</div>
-					
 				</div>
-				
-				
 			</div>
 			<div id="errors"></div>
 		</div>
-				
-			<input type="hidden" id="alertMes" data-toggle="modal" data-target="#myModal" />
-			<div class="modal fade modal-danger" id="myModal" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Require Field!</h4>
-						</div>
-						<div class="modal-body">
-							<p id="alertMsgText">Please input *field require.</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-outline pull-right"
-								data-dismiss="modal">Close</button>
-
-						</div>
-					</div>
-
-				</div>
-			</div>
+			
+			
 			<input type="hidden" id="GenQuote" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#ConQuote" />
 			<div ng-app="quoteApp" ng-controller="quoteController" class="modal fade modal-default" id="ConQuote" role="dialog">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h2 class="modal-title">Finder - Quotation</h2>
+							<h4 class="modal-title">Finder - Quotation</h4>
 						</div>
 						<div class="modal-body">
 							<div>
@@ -363,6 +341,7 @@
 											<th style="cursor: pointer;" ng-click="sort('totalAmt')">Total Amount
 												<span class="glyphicon sort-icon" ng-show="sortKey=='totalAmt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 											</th>
+											
 											<th style="cursor: pointer;" ng-click="sort('PostStatus')">Status
 												<span class="glyphicon sort-icon" ng-show="sortKey=='PostStatus'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 											</th>
@@ -376,7 +355,7 @@
 											<td>{{qq.saleDate | date:'dd-MMM-yyyy'}}</td>
 											<td>{{qq.custId}}</td>
 											<td>{{qq.custName}}</td>
-											<td>{{qq.totalAmt | number}}</td>
+											<td>{{qq.totalAmt | number}}</td>	
 											<td>{{qq.PostStatus}}</td>	
 											<td>
 												<button ng-if="curentQuoteId == qq.saleId" type="button" ng-click="selectQuote(qq.saleId)" class="btn btn-primary custom-width"><i class="fa fa-check-square-o" aria-hidden="true"></i></button>
@@ -393,6 +372,86 @@
 							       direction-links="true"
 							       boundary-links="true" >
 							    </dir-pagination-controls> 
+						</div>
+					</div>
+				</div>
+			</div>
+			
+				
+			<input type="hidden" id="alertMes" data-toggle="modal" data-target="#myModal" />
+			<div class="modal fade modal-danger" id="myModal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Require Field!</h4>
+						</div>
+						<div class="modal-body">
+							<p id="alertMsgText">Please input *field require.</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline pull-right"
+								data-dismiss="modal">Close</button>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+			
+			<input type="hidden" id="alertMesError" data-toggle="modal" data-target="#myError" />
+			<div class="modal fade modal-danger" id="myError" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Error!</h4>
+						</div>
+						<div class="modal-body">
+							<p id="txtMyError">Please try again...</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<input type="hidden" id="alertMesSucess" data-toggle="modal" data-target="#mySuccess" />
+			<div class="modal fade modal-success" id="mySuccess" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+							<h4 class="modal-title">Successful!</h4>
+						</div>
+						<div class="modal-body">
+							<p id="txtResultSuccess"></p>
+						</div>
+						<div class="modal-footer">
+							<!-- <button type="button" id="btnSucCancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; -->
+							<button type="button" id="btnSucOk" class="btn btn-outline pull-right" data-dismiss="modal">Ok</button>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<input type="hidden" id="alertMesConfirm" data-toggle="modal" data-target="#myConfirm" />
+			<div class="modal fade modal-info" id="myConfirm" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Confirmation!</h4>
+						</div>
+						<div class="modal-body">
+							<p>Are you sure you want to delete this line?</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="btnConfirmCancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+							<button type="button" id="btnConfirmOk" class="btn btn-outline pull-right" data-dismiss="modal">Ok</button>
+							
 						</div>
 					</div>
 				</div>
@@ -421,6 +480,182 @@
 					</div>
 				</div>
 			</div>
+			
+			
+			<input type="hidden" id="btn_show_product" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmProduct" />
+			<div class="modal fade modal-default" id="frmProduct" role="dialog">
+				<div class="modal-dialog  modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" onclick="cancelProductClick()" class="close"
+								data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">
+								<b  id="tProduct">Add An Item</b>
+							</h4>
+						</div>
+						<form id="frmAddProduct" method="post">
+						<div class="modal-body">
+							<div class="row">
+									<div class="col-md-12">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Item <span class="requrie">(Required)</span></label>
+												<select onChange="act1ItemChange(this)" class="form-control select2" name="oppItem" id="oppItem" style="width: 100%;">
+													<option value="" selected>-- SELECT AN ITEM --</option>
+													
+												</select>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="bootstrap-timepicker">
+												<div class="form-group">
+													<label>UOM ID <span class="requrie">(Required)</span></label>
+													<select class="form-control select2" name="oppUom" id="oppUom" style="width: 100%;">
+														<option value="">-- SELECT AN UOM --</option>
+														
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="bootstrap-timepicker">
+												<div class="form-group">
+													<label>Location ID <span class="requrie">(Required)</span></label>
+													<select class="form-control select2" name="oppLocation" id="oppLocation" style="width: 100%;">
+														<option value="">-- SELECT A LOCATION --</option>
+														
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="bootstrap-timepicker">
+												<div class="form-group">
+													<label>Class ID </label>
+													<select class="form-control select2" name="oppClassDetail" id="oppClassDetail" style="width: 100%;">
+														<option value="">-- SELECT A CLASS --</option>
+														
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Quantity <span class="requrie">(Required)</span></label>
+												<input id="oppQty"  onchange="oppQtyChange(this)"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Unit Price <span class="requrie">(Required)</span></label>
+												<input onblur="fToNumber(this, 6)" onkeypress='return isNumeric(this,event)' onchange="oppUnitPriceChange(this)" id="oppUnitPrice" name="oppUnitPrice" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Price Factor<span class="requrie">(Required)</span></label>
+												<input id="oppPriceFactor" onblur="fToNumber(this, 4)" onchange="oppPriceFactorChange(this)" onkeypress='return isNumeric(this,event)'  name="oppPriceFactor" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Report Price</label>
+												<input id="oppReportPrice" ng-model="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-md-6"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Total Amount</label>
+												<input id="oppTAmount"   ng-model="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Discount %</label>
+												<input ng-model="oppDisPer" onblur="fToNumber(this, 5)" onchange="oppDisPerChange()" onkeypress='return isPersent(this,event)' id="oppDisPer" name="oppDisPer" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Discount $</label>
+												<input ng-model="oppDisDol" onblur="fToNumber(this, 2)" onchange="oppDisDolChange()" id="oppDisDol" onkeypress='return isNumeric(this,event)' name="oppDisDol" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>VAT %</label>
+												<input ng-model="oppVatPer" onblur="fToNumber(this, 5)" onchange="oppVatPerChange()" onkeypress='return isPersent(this,event)' id="oppVatPer" name="oppVatPer" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>VAT $</label>
+												<input ng-model="oppVatDol" onblur="fToNumber(this, 2)" onchange="oppVatDolChange()" id="oppVatDol" onkeypress='return isNumeric(this,event)' name="oppVatDol" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>ST %</label>
+												<input ng-model="oppSTPer" onblur="fToNumber(this, 5)" onchange="oppSTPerChange()" onkeypress='return isPersent(this,event)' id="oppSTPer" name="oppSTPer" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>ST $</label>
+												<input ng-model="oppSTDol" onblur="fToNumber(this, 2)" onchange="oppSTDolChange()" id="oppSTDol" onkeypress='return isNumeric(this,event)' name="oppSTDol" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="col-md-6"></div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Net Total Amount</label>
+												<input ng-model="oppNetTAmount" id="oppNetTAmount" disabled="disabled" name="oppNetTAmount" class="form-control" type="text"
+												placeholder="">
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>						
+							</div>				
+						</div>
+						</form>
+						<div class="modal-footer">
+							<button type="button" id="btnProductCancel"
+								onclick="cancelProductClick()" name="btnProductCancel"
+								class="btn btn-danger" data-dismiss="modal">Cancel</button>
+							&nbsp;&nbsp;
+							<button type="button" onclick="btnProductSave()" class="btn btn-primary pull-right"
+								id="btnProductSave" name="btnProductSave">Save</button>
+		
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
 	</section>
 	
 </div>
@@ -431,131 +666,204 @@
 <script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
 <script>
 
-var server = "${pageContext.request.contextPath}/";
-var index=0;
-var SalID = "<%=request.getAttribute("saleId") %>";
+	var server = "${pageContext.request.contextPath}/";
+	var index=0;
+	
+	var SalID = "<%=request.getAttribute("saleId") %>";
 
-var content = JSON.parse($.ajax({ 
-	url: server+"sale-order/list-content-by-id/"+SalID,
-	method: "GET",
-	async: false,
-}).responseText);
-
-//dis(content)
-
-
-
-
-var tagItem = "";
-var LItem = content.SALE_ORDER_STARTUP[0].item;
-var tagLocation ="";
-var LLocation = content.SALE_ORDER_STARTUP[0].location;
-var tagClass ="";
-var LClass = content.SALE_ORDER_STARTUP[0].classCode;
-var tagUom ="";
-var LUom = content.SALE_ORDER_STARTUP[0].uom;
-
-//
-
-
-var LShipToAddress = content.SALE_ORDER_STARTUP[0].shipToAddress;
-var LCustomer = content.SALE_ORDER_STARTUP[0].customer;
-var LPriceCode = content.SALE_ORDER_STARTUP[0].priceCode;
-var LEmp = content.SALE_ORDER_STARTUP[0].employee;
-
-if(content.MESSAGE == "SUCCESS"){
-	if(LItem.length > 0){
-		for(var i=0;i<LItem.length;i++){
-			tagItem += "<option value="+LItem[i].ItemID+">["+LItem[i].ItemID+"] "+fmNull(LItem[i].ItemName)+"</option>";
-		}
-	}
-	if(LLocation.length > 0){
-		for(var i=0;i<LLocation.length;i++){
-			tagLocation += "<option value="+LLocation[i].LocationID+">["+LLocation[i].LocationID+"] "+fmNull(LLocation[i].LocationName)+"</option>";
-		}
-	}
-	if(LClass.length > 0){
-		for(var i=0;i<LClass.length;i++){
-			tagClass += "<option value="+LClass[i].ClassID+">["+LClass[i].ClassID+"] "+fmNull(LClass[i].ClassName)+"</option>";
-		}
-		$("#classCodeMaster").append(tagClass);
-	}
-	if(LUom.length > 0){
-		for(var i=0;i<LUom.length;i++){
-			tagUom += "<option value="+LUom[i].UomID+">["+LUom[i].UomID+"] "+fmNull(LUom[i].UomName)+"</option>";
-		}
-	}
-	if(LCustomer.length > 0){
-		for(var i=0;i<LCustomer.length;i++){
-			 $("#customer").append("<option value="+i+">["+LCustomer[i].custID+"] "+fmNull(LCustomer[i].custName)+"</option>");
-		}
-	}
-	if(LPriceCode.length > 0){
-		for(var i=0;i<LPriceCode.length;i++){
-			$("#priceCode").append("<option value='"+LPriceCode[i].PriceCode+"' > ["+LPriceCode[i].PriceCode+"] "+fmNull(LPriceCode[i].Description)+"</option>");
-		}
-	}
-	if(LEmp.length > 0){
-		for(var i=0;i<LEmp.length;i++){
-			 $("#employee").append("<option value="+LEmp[i].EmpID+">["+LEmp[i].EmpID+"] "+fmNull(LEmp[i].EmpName)+"</option>");
-		}
-	}
+	var content = JSON.parse($.ajax({ 
+		url: server+"sale-order/list-content-by-id/"+SalID,
+		method: "GET",
+		async: false,
+	}).responseText);
 	
 	
-}
+	var tagItem = "";
+	var LItem = content.SALE_ORDER_STARTUP[0].item;
+	var tagLocation ="";
+	var LLocation = content.SALE_ORDER_STARTUP[0].location;
+	var tagClass ="";
+	var LClass = content.SALE_ORDER_STARTUP[0].classCode;
+	var tagUom ="";
+	var LUom = content.SALE_ORDER_STARTUP[0].uom;
 
-function addAnItem(){
-	var addAnItem ="";
-	addAnItem += "<tr onclick='showDetailRow(this)' data-qty-available='0' id='RowItem"+index+"' val='"+index+"'>";	
+	//
+
+
+	var LShipToAddress = content.SALE_ORDER_STARTUP[0].shipToAddress;
+	var LCustomer = content.SALE_ORDER_STARTUP[0].customer;
+	var LPriceCode = content.SALE_ORDER_STARTUP[0].priceCode;
+	var LEmp = content.SALE_ORDER_STARTUP[0].employee;
 	
-	addAnItem += "<td><select title='Item is required.' onChange='actItemChange(this)' style='width:300px' id='item"+index+"' name='item' class='form-control select2'> <option selected='selected' value=''></option>"+tagItem+"</select></td>";	
-    addAnItem += "<td>"+
-		         "<select title='Location is required.' onChange='actLocChange(this)' name='location' id='location"+index+"' class='form-control select2 input-lg' style='width: 200px;'>"+
-			     "<option value='' selected='selected'></option>"+tagLocation+"</select></td>";
-	addAnItem += "<td>"+
-		         "<select name='classCode' id='classCode"+index+"' class='form-control' style='width: 100px;'>"+
-			     "<option value='' selected='selected'></option>"+tagClass+"</select></td>";
-	addAnItem += "<td>"+
-		         "<select onfocusout='actUomChange(this)' onChange='actUomChange(this)' name='uom' title='UOM is required.' id='uom"+index+"' class='form-control width-100' style='width: 100px;'>"+
-			     "<option value=''></option>"+tagUom+ "</select></td>";
-	addAnItem += "<td> <input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control width-80' style='width: 100px;' type='text' placeholder=''></td>"+
-				 "<td> <input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control width-80' style='width: 80px;' type='text' placeholder=''></td>"+								
-				 "<td> <input onfocusout='priceFactorChange(this,4)' onkeypress='return isNumeric(this,event)' title='Price factor can not equal 0.'  name='priceFactor' id='priceFactor"+index+"' class='form-control width-80' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input disabled onfocusout='reportPriceChange(this,6)' onkeypress='return isNumeric(this,event)'  name='reportPrice' id='reportPrice"+index+"' class='form-control width-80' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='tAmt' id='tAmt"+index+"' class='form-control width-90' style='width: 90px;' type='text' placeholder=''></td>"+
-				 "<td> <input onfocusout='disPerChange(this,5)' onkeypress='return isPersent(this,event)'  name='disP' id='disP"+index+"' class='form-control' style='width: 80px; width-80' type='text' placeholder=''></td>"+
-				 "<td> <input onfocus='disFocus(this,2)' onfocusout='disDolChange(this,2)' onkeypress='return isNumeric(this,event)'  name='disDol' id='disDol"+index+"' class='form-control width-80' style='width: 80px;' type='text' placeholder=''></td>"+				
-				 "<td> <input onfocusout='vatPerChange(this,5)' onkeypress='return isPersent(this,event)'  name='vatP' id='vatP"+index+"' class='form-control width-80' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input onfocus='vatFocus(this,2)' onfocusout='vatDolChange(this,2)' onkeypress='return isNumeric(this,event)'  name='vatDol' id='vatDol"+index+"' class='form-control width-80' style='width: 80px;' type='text' placeholder=''></td>"+				
-				 "<td> <input onfocusout='stPerChange(this,5)' onkeypress='return isPersent(this,event)'  name='stP' id='stP"+index+"' class='form-control width-80' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input onfocus='stFocus(this,2)' onfocusout='stDolChange(this,2)' onkeypress='return isNumeric(this,event)'  name='stDol' id='stDol"+index+"' class='form-control width-80' style='width: 80px;' type='text' placeholder=''></td>"+
-				 "<td> <input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control width-100' style='width: 100px;' type='text' placeholder=''></td>";
-	addAnItem += "<td><button onClick='removeRowItem("+index+")' class='btn btn-danger' type='button'><i class='fa  fa-trash'></i></button></td>";
-	addAnItem += "</tr>";
-
-	return addAnItem;
-} 
-
-function findIndexCutomer(custId){
-	if(LCustomer != null){
-		var l = LCustomer.length;
-		if(l > 0){
-			for(var i=0;i<l;i++){
-				if(LCustomer[i].custID == custId){ 
-					return i;
-				}
+	
+	if(content.MESSAGE == "SUCCESS"){
+		if(LItem.length > 0){
+			for(var i=0;i<LItem.length;i++){
+				tagItem += "<option value="+LItem[i].ItemID+">["+LItem[i].ItemID+"] "+fmNull(LItem[i].ItemName)+"</option>";
+			}
+		}
+		if(LLocation.length > 0){
+			for(var i=0;i<LLocation.length;i++){
+				tagLocation += "<option value="+LLocation[i].LocationID+">["+LLocation[i].LocationID+"] "+fmNull(LLocation[i].LocationName)+"</option>";
+			}
+		}
+		if(LClass.length > 0){
+			for(var i=0;i<LClass.length;i++){
+				tagClass += "<option value="+LClass[i].ClassID+">["+LClass[i].ClassID+"] "+fmNull(LClass[i].ClassName)+"</option>";
+			}
+			$("#classCodeMaster").append(tagClass);
+		}
+		if(LUom.length > 0){
+			for(var i=0;i<LUom.length;i++){
+				tagUom += "<option value="+LUom[i].UomID+">["+LUom[i].UomID+"] "+fmNull(LUom[i].UomName)+"</option>";
+			}
+		}
+		if(LCustomer.length > 0){
+			for(var i=0;i<LCustomer.length;i++){
+				 $("#customer").append("<option value="+i+">["+LCustomer[i].custID+"] "+fmNull(LCustomer[i].custName)+"</option>");
+			}
+		}
+		if(LPriceCode.length > 0){
+			for(var i=0;i<LPriceCode.length;i++){
+				$("#priceCode").append("<option value='"+LPriceCode[i].PriceCode+"' > ["+LPriceCode[i].PriceCode+"] "+fmNull(LPriceCode[i].Description)+"</option>");
+			}
+		}
+		if(LEmp.length > 0){
+			for(var i=0;i<LEmp.length;i++){
+				 $("#employee").append("<option value="+LEmp[i].EmpID+">["+LEmp[i].EmpID+"] "+fmNull(LEmp[i].EmpName)+"</option>");
 			}
 		}
 	}
+
+	function addAnItem(){
+		var addAnItem ="";
+		
+		addAnItem += "<tr onclick='showDetailRow(this)' data-qty-available='0' id='RowItem"+index+"' val='"+index+"'>";					
+		
+		addAnItem +="<td><div style='width: 15px;margin-top:5px; text-align: center;'><span class=\"handle ui-sortable-handle\">"+
+					'<i style="font-size:20px;" class="fa fa-ellipsis-v"></i>&nbsp;'+
+					'<i style="font-size:20px;" class="fa fa-ellipsis-v"></i>'+
+					'</span>'+
+					"</div></td>";
+		
+		addAnItem +="<td><div class='form-group' style='min-width:275px; margin-bottom: 0px;'><select onChange='actItemChange(this)' id='item"+index+"' name='item' class=\"form-control select2\" style=\"width:100% !important; display:none !important;\"><option selected='selected' value=''>-- SELECT AN ITEM --</option>"+tagItem+"</select></div></td>";
+		
+		addAnItem +="<td><div class='form-group' style='min-width:175px; margin-bottom: 0px;'><select onChange='actLocChange(this)' id='location"+index+"' name='location' class=\"form-control select2\" style=\"width:100% !important;display:none !important;\"><option selected='selected' value=''>-- SELECT A LOCATION --</option>"+tagLocation+"</select></div></td>";
+		
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><select onfocusout='actUomChange(this)' onChange='actUomChange(this)' name='uom' title='UOM is required.' id='uom"+index+"' class=\"form-control select2\" style=\"width:100% !important;display:none !important;\"><option selected='selected' value=''>-- SELECT AN UOM --</option>"+tagUom+"</select></div></td>";			
+		
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' type='text' placeholder='' /></div></td>";
+		
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' type='text' placeholder='' /> </div></td>";
+		
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' type='text' placeholder=''> </div></td>";
+		
+		// hidden field
+		
+		addAnItem += "<input type='hidden' name='classCode' id='classCode"+index+"' />";
+	 	addAnItem += "<input type='hidden' name='priceFactor' id='priceFactor"+index+"' >";
+	 	addAnItem += "<input type='hidden' name='reportPrice' id='reportPrice"+index+"' >";
+	 	addAnItem += "<input type='hidden' name='disP' id='disP"+index+"' >";
+	 	addAnItem += "<input type='hidden' name='disDol' id='disDol"+index+"' >";
+	 	addAnItem += "<input type='hidden' name='vatP' id='vatP"+index+"' >";
+	 	addAnItem += "<input type='hidden' name='vatDol' id='vatDol"+index+"' >";
+	 	addAnItem += "<input type='hidden' name='stP' id='stP"+index+"' >";
+	 	addAnItem += "<input type='hidden' name='stDol' id='stDol"+index+"' >";
+	 	addAnItem += "<input type='hidden' name='tAmt' id='tAmt"+index+"' >";
+	 	
+	 	
+		addAnItem += "<td><div style='width:100px;'><button onClick='removeRowItem("+index+")' class='btn btn-danger' type='button'><i class='fa  fa-trash'></i></button><button style='margin-left:5px;' onClick='detailRowItem("+index+")' class='btn btn-info' type='button'><i class='fa  fa-info'></i></button></div></td>";
+		addAnItem += "</tr>";
 	
-	return '';
-}
-$(function(){
-	listDataSalOrdById(content.DATA);
-})
+		return addAnItem;
+	}
+	
+	function listDataSalOrdByID(data){
+		
+		//dis(data)
+		
+		
+		if(data != ""){
+			
+			setValueById('entryNo', data.saleId);
+			$("#customer").select2('val',findIndexCutomer(data.custId));
+			$("#employee").select2('val',data.empId);
+			$("#priceCode").select2('val',data.priceCode);
+			$("#classCodeMaster").select2('val',data.classId);
+			
+			
+			setValueById('startDate', convertFromSQLToDate(data.saleDate));
+			setValueById('expireDate', convertFromSQLToDate(data.dueDate));
+			
+			setValueById('reference', data.saleReference);
+			setValueById('remark', data.remark);
+			setValueById('saleOrderType', data.saleType);				
+			$("#shipToAdd").select2('val',data.shipTo);
+			
+			$("#listItem").empty();
+			for(var i=0;i<data.saleOrderDetails.length;i++){
+				index++;
+				$("#listItem").append(addAnItem());
+				select2Init("item"+index);
+				select2Init("location"+index);
+				select2Init("uom"+index);
+				
+				$("#item"+index).select2('val',data.saleOrderDetails[i].itemId);
+				$("#location"+index).select2('val',data.saleOrderDetails[i].locationId);
+				
+				$("#classCode"+index+" option[value='"+data.saleOrderDetails[i].classId+"']").attr('selected','selected');	
+				$("#uom"+index+" option[value='"+data.saleOrderDetails[i].uomId+"']").attr('selected','selected');
+				
+				$("#qty"+index).val(formatNumByLength(data.saleOrderDetails[i].saleQuantity,5));
+				$("#up"+index).val(formatNumByLength(data.saleOrderDetails[i].unitPrice, 2));
+				
+				$("#disP"+index).val(formatNumByLength(data.saleOrderDetails[i].disPer, 5));
+				$("#disDol"+index).val(formatNumByLength(data.saleOrderDetails[i].disDol, 2));
+				$("#reportPrice"+index).val(formatNumByLength(data.saleOrderDetails[i].reportPrice, 6));
+				$("#priceFactor"+index).val(formatNumByLength(data.saleOrderDetails[i].factor, 4));
+				$("#vatP"+index).val(formatNumByLength(data.saleOrderDetails[i].vtaxPer, 5));
+				$("#vatDol"+index).val(formatNumByLength(data.saleOrderDetails[i].vtaxDol, 2));
+				$("#stP"+index).val(formatNumByLength(data.saleOrderDetails[i].staxPer, 5));
+				$("#stDol"+index).val(formatNumByLength(data.saleOrderDetails[i].staxDol, 2));
+				
+				$("#tAmt"+index).val(formatNumByLength(data.saleOrderDetails[i].totalAmt,2));
+				$("#nTAmt"+index).val(formatNumByLength(data.saleOrderDetails[i].netTotalAmt,2));
+				
+				
+				
+			}
+			
+			
+			
+			setValueById('postStatus', data.postStatus);
+			setValueById('txtTSalOrd', formatNumAccByLength(data.totalAmount,2));
+			setValueById('txtInvDis', formatNumAccByLength(data.disInvDol,2));
+			setValueById('txtDisInv', data.disInvPer);
+			
+			setValueById('txtNetInv', formatNumAccByLength(data.netTotalAmt,2));
+			
+			setValueById('txtTPTDate', formatNumAccByLength(data.pmtToDate,2));
+			setValueById('txtAmtDue', formatNumAccByLength(data.netTotalAmt,2));
+			
+			
+			setValueById('txtTST', formatNumAccByLength(data.totalSTax,2));
+			setValueById('txtTVAT', formatNumAccByLength(data.totalVTax,2));
+			
+			return true;
+			
+		}
+		
+	} 
+	
+	
+	$(function(){
+		$("#oppItem").append(tagItem);
+		$("#oppUom").append(tagUom);
+		$("#oppLocation").append(tagLocation);
+		$("#oppClassDetail").append(tagClass);
+		
+		listDataSalOrdByID(content.DATA);
 
+	});
+	
 </script>
-
-
-<!-- /.content-wrapper -->
-

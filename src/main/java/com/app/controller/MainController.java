@@ -283,6 +283,7 @@ public class MainController {
 	@RequestMapping("/update-role/{roleId}")
 	public String updateRole(ModelMap model, @PathVariable String roleId, HttpServletRequest req) {
 		model.addAttribute("menu", "updateRole");
+		model.addAttribute("roleId", roleId);
 		Map<String, Object> camMap = getRoleDetailsOfModule("RM",req);
 		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
 			return "updateRole";
@@ -610,6 +611,7 @@ public class MainController {
 	@RequestMapping(value = "/update-campaign/{campID}", method = RequestMethod.GET)
 	public String updateCampaigns(ModelMap model, @PathVariable("campID") String campID, HttpServletRequest req) {
 		model.addAttribute("menu", "updateCampaigns");
+		model.addAttribute("campId", campID);
 		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CA",req);
 		

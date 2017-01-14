@@ -1,5 +1,6 @@
 package com.app.entities;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -10,9 +11,9 @@ public class CrmRole {
 	private String description;
 	private List<CrmRoleDetail> roleDetails;
 	private String createBy;
-	private Date createDate;
+	private LocalDateTime createDate;
 	private String modifyBy;
-	private Date modifyDate;
+	private LocalDateTime modifyDate;
 	private int roleStatus;
 	private MeDataSource meDataSource;
 
@@ -56,12 +57,18 @@ public class CrmRole {
 		this.createBy = createBy;
 	}
 
-	public Date getCreateDate() {
+	
+
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
 
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
+	}
+
+	public void setModifyDate(LocalDateTime modifyDate) {
+		this.modifyDate = modifyDate;
 	}
 
 	public String getModifyBy() {
@@ -72,13 +79,6 @@ public class CrmRole {
 		this.modifyBy = modifyBy;
 	}
 
-	public Date getModifyDate() {
-		return modifyDate;
-	}
-
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
-	}
 
 	public List<CrmRoleDetail> getRoleDetails() {
 		return roleDetails;
