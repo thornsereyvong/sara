@@ -908,7 +908,6 @@ function backTap(obj){
 			<div class="col-md-12">
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">
-					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
 						<h1 class="widget-user-username">Market Survey</h1>
 					</div>
@@ -921,10 +920,9 @@ function backTap(obj){
 						<div class="row">
 							<div class="col-md-12">
 								<div class="nav-tabs-custom">
-									<!-- <ul class="nav nav-tabs">	
-										<li class="active"><a href="#list_tap" data-toggle="tab" aria-expanded="true">List Market Surveys</a></li>										
-									</ul> -->
+									
 									<div class="tab-content">
+									
 										<div class="tab-pane  in active" id="list_tap">
 											<div class="row">
 												<div class="col-sm-12">
@@ -989,6 +987,7 @@ function backTap(obj){
 											</div>
 
 										</div>
+										
 										<div class="tab-pane" id="addSurvey_tap">
 											<div class="row">
 												<div class="col-sm-12">
@@ -1127,16 +1126,14 @@ function backTap(obj){
 											</div>
 
 										</div>
+									
 									</div>
-									<!-- /.tab-content -->
 								</div>
 							</div>
 
 						</div>
-						<!-- /.row -->
 					</div>
 				</div>
-				<!-- /.widget-user -->
 			</div>
 		</div>
 		

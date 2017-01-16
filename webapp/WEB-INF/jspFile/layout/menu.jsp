@@ -250,5 +250,4 @@ $(document).ready(function(){
 		
 		</ul>
 	</section>
-	<!-- /.sidebar -->
 </aside>
