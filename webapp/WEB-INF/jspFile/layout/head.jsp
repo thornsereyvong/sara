@@ -49,8 +49,11 @@
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquerysession.js"></script>
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/angular.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/angular/angular-material.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/angular-animate.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/loading-bar.js"></script>
+<script src="${pageContext.request.contextPath}/resources/angular/angular-aria.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/angular/angular-messages.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/toggle/bootstrap-toggle.min.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/angular/svg-assets-cache.js"></script>
