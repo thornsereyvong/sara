@@ -61,10 +61,7 @@
 			} ]);
 </script>
 
-
-
 <div class="content-wrapper">
-	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Dashboard</h1>
 		<ol class="breadcrumb">
@@ -74,11 +71,7 @@
 		</ol>
 	</section>
 
-
-	<section class="content" ng-app="dashApp"
-		ng-controller="dashController">
-
-
+	<section class="content" ng-app="dashApp" ng-controller="dashController">
 		<div class="nav-tabs-custom" data-ng-init="dashStartup()">
 			<ul class="nav nav-tabs ui-sortable-handle">
 				<li class="active"><a href="#tabCamp" data-toggle="tab">Campaign<!--  <span class="badge bg-light-blue">3</span> --></a></li>
@@ -97,7 +90,7 @@
 				<li><a href="#tabSaleOrder" data-toggle="tab">Sale Order</a></li>
 			</ul>
 			<div class="tab-content no-padding">
-				<div class="chart tab-pane active" id="tabCamp">
+				<div class="chart tab-pane active min-height-300" id="tabCamp">
 					<table class="table table-striped">
 						<tr>
 							<th>#</th>
@@ -131,7 +124,7 @@
 						</tr>
 					</table>
 				</div>
-				<div class="chart tab-pane" id="tabLead">
+				<div class="chart tab-pane min-height-300" id="tabLead">
 					<table class="table table-striped">
 						<tr>
 							<th>#</th>
@@ -162,16 +155,16 @@
 						</tr>
 					</table>
 				</div>
-				<div class="chart tab-pane" id="tabCustomer">
+				<div class="chart tab-pane min-height-300" id="tabCustomer">
 					
 				</div>
-				<div class="chart tab-pane" id="tabContact">
+				<div class="chart tab-pane min-height-300" id="tabContact">
 					
 				</div>
-				<div class="chart tab-pane" id="tabOpportunity">
+				<div class="chart tab-pane min-height-300" id="tabOpportunity">
 					
 				</div>
-				<div class="chart tab-pane" id="tabCall">
+				<div class="chart tab-pane min-height-300" id="tabCall">
 					<table class="table table-striped">
 						<tbody>
 							<tr>
@@ -205,7 +198,7 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="chart tab-pane" id="tabMeeting">
+				<div class="chart tab-pane min-height-300" id="tabMeeting">
 					<table class="table">
 						<tbody>
 							<tr>
@@ -241,7 +234,7 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="chart tab-pane" id="tabTask">
+				<div class="chart tab-pane min-height-300" id="tabTask">
 					<table class="table table-striped">
 						<tr>
 							<th>#</th>
@@ -273,9 +266,8 @@
 							</td>
 						</tr>
 					</table>
-				</div>
-				
-				<div class="chart tab-pane" id="tabNote">
+				</div>				
+				<div class="chart tab-pane min-height-300" id="tabNote">
 					<table class="table table-striped">
 						<tr>
 							<th>#</th>
@@ -303,7 +295,7 @@
 						</tr>
 					</table>
 				</div>
-				<div class="chart tab-pane" id="tabEvent">
+				<div class="chart tab-pane min-height-300" id="tabEvent">
 					<table class="table table-striped">
 						<tr>
 							<th>#</th>
@@ -336,7 +328,7 @@
 						</tr>
 					</table>
 				</div>
-				<div class="chart tab-pane" id="tabCases">
+				<div class="chart tab-pane min-height-300" id="tabCases">
 					<table class="table table-striped">
 						<tr>
 							<th>#</th>
@@ -369,34 +361,19 @@
 						</tr>	
 					</table>
 				</div>
-				<div class="chart tab-pane" id="tabKnowledge">
-					
+				<div class="chart tab-pane min-height-300" id="tabKnowledge">					
 				</div>
-				<div class="chart tab-pane" id="tabQuote">
-					
+				<div class="chart tab-pane min-height-300" id="tabQuote">					
 				</div>
 				
-				<div class="chart tab-pane" id="tabSaleOrder">
-					
+				<div class="chart tab-pane min-height-300" id="tabSaleOrder">					
 				</div>
 			</div>
 		</div>
 
-		
 		<div id="errors"></div>
+	</section>
 </div>
-
-</section>
-<!-- /.content -->
-
-
-</div>
-
-
-<!-- /.content-wrapper -->
-
-
-
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 
