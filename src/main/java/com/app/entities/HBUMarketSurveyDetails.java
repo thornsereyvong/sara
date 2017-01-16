@@ -4,7 +4,7 @@ public class HBUMarketSurveyDetails{
 
 	private int msDetailId;
 	private String custId;
-	private String compId;
+	private String comId;
 	private short surveyValue;
 	private MeDataSource meDataSource;
 
@@ -24,12 +24,12 @@ public class HBUMarketSurveyDetails{
 		this.custId = custId;
 	}
 
-	public String getCompId() {
-		return compId;
+	public String getComId() {
+		return comId;
 	}
 
-	public void setCompId(String compId) {
-		this.compId = compId;
+	public void setComId(String comId) {
+		this.comId = comId;
 	}
 
 	public short getSurveyValue() {

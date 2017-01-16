@@ -10,7 +10,7 @@
 <script type="text/javascript">
 
 
-var app = angular.module('marketSurveyApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+var app = angular.module('marketSurveyApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate','ngMaterial']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
 }]);
 var self = this;
@@ -40,6 +40,37 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 		$http.get("${pageContext.request.contextPath}/hbu/market-survey/startup").success(function(response){
 			$scope.items = response.ITEMS;
 			$scope.customers = response.CUSTOMERS;
+			$scope.selected = [1];
+			$scope.toggle = function (cust, list) {
+				var idx = list.indexOf(cust);
+			    if (idx > -1) {
+			      list.splice(idx, 1);
+			    }
+			    else {
+			      list.push(cust);
+			    }
+			};
+	
+			$scope.exists = function (cust, list) {
+				return list.indexOf(cust) > -1;
+			};
+	
+			$scope.isIndeterminate = function() {
+				return ($scope.selected.length !== 0 &&
+			    	$scope.selected.length !== $scope.customers.length);
+			};
+	
+			$scope.isChecked = function() {
+				return $scope.selected.length === $scope.customers.length;
+			};
+	
+			$scope.toggleAll = function() {
+				if ($scope.selected.length === $scope.customers.length) {
+			    	$scope.selected = [];
+			    } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+			    	$scope.selected = $scope.customers.slice(0);
+			    }
+			};
 		});
 	};
 
@@ -67,6 +98,19 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 										document.getElementById($scope.item.competitors[j].comId+""+custId+""+1).value = value.surveyValue;
 									}
 								})
+							}
+						}
+						for(var i=0;i<tr.length-1;i++){
+							var td = $("#data-content-edit").children();
+							for(var index = 0; index < td.length; index++){
+								var selectOpt = $("#data-content-edit").find("select[name='surveyValue"+index+"']");
+								if(selectOpt.length>0){
+									var total = 0;
+									for(var i=0; i<selectOpt.length; i++){
+										total += Number($(selectOpt.eq(i)).val()); 
+									}
+									$("#totalEdit"+index).text(total);
+								}
 							}
 						}
 					}
@@ -236,7 +280,7 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 				//alert(dataIndex.customer.custId);
 			}
 			swal({   
-				title: "<span style='font-size: 25px;'>You are about to add market survey.</span>",
+				title: "<span style='font-size: 25px;'>Are you sure to update market survey ID: "+msId+"?.</span>",
 				text: "Click OK to continue or CANCEL to abort.",
 				type: "info",
 				html: true,
@@ -262,7 +306,8 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 						}).success(function(response) {	
 							$("#product").select2('val','');
 							$("#surveyDate").val('');
-							$('#frmSurveyDetail').bootstrapValidator('resetForm', true);
+							$('#frmEditSurveyDetail').bootstrapValidator('resetForm', true);
+							
 							$scope.listSurveys();
 							if(response.MESSAGE == "UPDATED"){						
 								swal({
@@ -876,10 +921,9 @@ function backTap(obj){
 						<div class="row">
 							<div class="col-md-12">
 								<div class="nav-tabs-custom">
-									<ul class="nav nav-tabs">	
+									<!-- <ul class="nav nav-tabs">	
 										<li class="active"><a href="#list_tap" data-toggle="tab" aria-expanded="true">List Market Surveys</a></li>										
-										<li class=""><a href="#systemInfo_tap" data-toggle="tab" aria-expanded="false">Market Share</a></li>										
-									</ul>
+									</ul> -->
 									<div class="tab-content">
 										<div class="tab-pane  in active" id="list_tap">
 											<div class="row">
@@ -953,7 +997,7 @@ function backTap(obj){
 															<div class="box-header with-border">
 																<div style="background: #fff;">
 																	<div class="col-sm-1">
-																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToList" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey()"><i class="fa fa-reply"></i> Back</a> 
+																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToList" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey();listSurveys()"><i class="fa fa-reply"></i> Back</a> 
 																	</div>
 																	<div class="col-sm-1">
 																		<a class="btn btn-info btn-app" id = "addCustToPro"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
@@ -1025,7 +1069,7 @@ function backTap(obj){
 															<div class="box-header with-border row">
 																<div style="background: #fff;">
 																	<div class="col-sm-1">
-																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToListTap" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey()"><i class="fa fa-reply"></i> Back</a> 
+																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToListTap" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey();listSurveys()"><i class="fa fa-reply"></i> Back</a> 
 																	</div>
 																	<!-- <div class="col-sm-1">
 																		<a class="btn btn-info btn-app" id = "addToPro"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
@@ -1075,7 +1119,7 @@ function backTap(obj){
 															</table>
 															<div id="showBtnEditLead">
 																<button type="button" class="btn btn-primary" ng-click="editMarketSurvey(survey.msId,survey.msDate,item.itemId)">Update</button>
-																<button type="reset" class="btn btn-danger" id="btnSurveyCancel" ng-click="cancelSurvey()">Cancel</button>
+																<button type="reset" class="btn btn-danger" id="btnSurveyCancel" ng-click="findMarketSurveyById(survey.msId)">Cancel</button>
 															</div>
 														</div>
 													</form>
@@ -1083,26 +1127,6 @@ function backTap(obj){
 											</div>
 
 										</div>
-										<div class="tab-pane" id="systemInfo_tap">
-											<div class="row">
-												<div class="col-sm-12">
-													<form id="frmLeadDetail">
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																>Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
-														</div>
-													</form>
-												</div>
-											</div>
-
-										</div>
-										
-
-
 									</div>
 									<!-- /.tab-content -->
 								</div>
@@ -1179,12 +1203,32 @@ function backTap(obj){
 											<tr class="active info">
 												<th><label>Customer List</label></th>
 												<th class="text-center"><input type="checkbox" name="checkAll" onClick()/><!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> --></th>
+												<!-- <th><div flex-xs flex="50">
+										            <md-checkbox aria-label="Select All"
+										                         ng-checked="isChecked()"
+										                         md-indeterminate="isIndeterminate()"
+										                         ng-click="toggleAll()">
+										             <span ng-if="isChecked()">Un-</span>Select All
+										           </md-checkbox>
+										         </div>
+										        </th> -->
 											</tr>
-											<tr ng-repeat = "cust in customers"><!-- dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6" -->
-												<td class="col-md-11">[{{cust.custId}}] {{cust.custName}}</td>
-												<td class="col-md-1 text-center"><input type="checkbox" onClick="clkCustomer(this)"  name="customer" value="{{cust.custId}}" /></td>
+											<tr dir-paginate="cust in customers |orderBy:sortKey:reverse |filter:search |itemsPerPage:10" class="ng-cloak">
+												<td class="col-md-10">[{{cust.custId}}] {{cust.custName}}</td>
+												<td class="col-md-2 text-center"><input type="checkbox" onClick="clkCustomer(this)" ng-model="cust.checked"  name="customer" value="{{cust.custId}}" /></td>
 											</tr>
+											<!-- <tr dir-paginate="cust in customers |orderBy:sortKey:reverse |filter:search |itemsPerPage:10" class="ng-cloak">
+												<td class="col-md-10">[{{cust.custId}}] {{cust.custName}}</td>
+											 	<td>
+											 		<md-checkbox ng-checked="exists(cust, selected)" ng-click="toggle(cust, selected)"> </md-checkbox>
+								             	</td>
+											</tr> -->
 										</table>
+										<dir-pagination-controls
+									       max-size="10"
+									       direction-links="true"
+									       boundary-links="true" >
+									    </dir-pagination-controls>
 									</div>
 								</div>
 							</form>

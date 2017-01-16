@@ -60,7 +60,7 @@ $(document).ready(function(){
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="marketing_icon_lead"></i> <span>Leads</span>
 					</a></li>
-					<%-- <li id="ul_li_competitor"><a
+					<li id="ul_li_competitor"><a
 						href="${pageContext.request.contextPath}/list-competitors"> <i
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="hbu_icon_competitor"></i> <span>Competitors</span>
@@ -70,7 +70,7 @@ $(document).ready(function(){
 							class='fa fa-circle-o color_menu' aria-hidden='true'
 							id="hbu_icon_survey"></i> <span>Market Survey</span>
 					</a>
-					</li> --%>
+					</li>
 
 				</ul></li>
 
