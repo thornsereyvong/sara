@@ -33,7 +33,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
          if(!user.getUserApp().getAppId().equals("CRM")){
         	 throw new BadCredentialsException("You have no permission! Please contact your administrator!");
          }
-        return new UsernamePasswordAuthenticationToken(user.getUsername(), password, null);
+        return new UsernamePasswordAuthenticationToken(user.getUserID(), password, null);
 	}
 
 	@Override

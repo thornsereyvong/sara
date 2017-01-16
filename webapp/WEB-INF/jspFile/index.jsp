@@ -85,7 +85,6 @@
 				<li><a href="#tabNote" data-toggle="tab">Note</a></li>
 				<li><a href="#tabEvent" data-toggle="tab">Event</a></li>
 				<li><a href="#tabCases" data-toggle="tab">Cases</a></li>
-				<li><a href="#tabKnowledge" data-toggle="tab">Knowledge</a></li>
 				<li><a href="#tabQuote" data-toggle="tab">Quotation</a></li>
 				<li><a href="#tabSaleOrder" data-toggle="tab">Sale Order</a></li>
 			</ul>
@@ -93,7 +92,7 @@
 				<div class="chart tab-pane active min-height-300" id="tabCamp">
 					<table class="table table-striped">
 						<tr>
-							<th>#</th>
+							<th>ID</th>
 							<th>Name</th>
 							<th>Status</th>
 							<th>Type</th>
@@ -112,7 +111,7 @@
 							
 						</tr>
 						<tr>
-							<td colspan="6">
+							<td colspan="7">
 								<div class="box-tools pull-right">
 									<dir-pagination-controls  pagination-id="camp_id" 
 								       max-size="5"
@@ -127,7 +126,7 @@
 				<div class="chart tab-pane min-height-300" id="tabLead">
 					<table class="table table-striped">
 						<tr>
-							<th>#</th>
+							<th>ID</th>
 							<th>Name</th>
 							<th>Status</th>
 							<th>Company</th>
@@ -168,7 +167,7 @@
 					<table class="table table-striped">
 						<tbody>
 							<tr>
-								<th>#</th>
+								<th>ID</th>
 								<th>Subject</th>
 								<th>Related To</th>
 								<th>Start Date</th>
@@ -202,7 +201,7 @@
 					<table class="table">
 						<tbody>
 							<tr>
-								<th>#</th>
+								<th>ID</th>
 								<th>Subject</th>
 								<th>Related To</th>
 								<th>Location</th>
@@ -237,7 +236,7 @@
 				<div class="chart tab-pane min-height-300" id="tabTask">
 					<table class="table table-striped">
 						<tr>
-							<th>#</th>
+							<th>ID</th>
 							<th>Subject</th>
 							<th>Related To</th>
 							<th>Priority</th>								
@@ -270,7 +269,7 @@
 				<div class="chart tab-pane min-height-300" id="tabNote">
 					<table class="table table-striped">
 						<tr>
-							<th>#</th>
+							<th>ID</th>
 							<th>Subject</th>
 							<th>Related To</th>
 							<th>Date</th>
@@ -283,7 +282,7 @@
 							
 						</tr>
 						<tr>
-							<td colspan="7">
+							<td colspan="4">
 								<div class="box-tools pull-right">
 									<dir-pagination-controls  pagination-id="note_id" 
 								       max-size="5"
@@ -298,7 +297,7 @@
 				<div class="chart tab-pane min-height-300" id="tabEvent">
 					<table class="table table-striped">
 						<tr>
-							<th>#</th>
+							<th>ID</th>
 							<th>Name</th>
 							<th>Related To</th>
 							<th>Location</th>
@@ -331,7 +330,7 @@
 				<div class="chart tab-pane min-height-300" id="tabCases">
 					<table class="table table-striped">
 						<tr>
-							<th>#</th>
+							<th>ID</th>
 							<th>Subject</th>
 							<th>Status</th>
 							<th>Priority</th>
@@ -349,7 +348,7 @@
 							<td><span ng-if=" case.custId !='' ">[{{case.custId}}] {{case.caseCustomer}}</span></td>
 						</tr>
 						<tr>
-							<td colspan="6">
+							<td colspan="7">
 								<div class="box-tools pull-right">
 									<dir-pagination-controls  pagination-id="lead_id" 
 								       max-size="5"
@@ -360,8 +359,6 @@
 							</td>
 						</tr>	
 					</table>
-				</div>
-				<div class="chart tab-pane min-height-300" id="tabKnowledge">					
 				</div>
 				<div class="chart tab-pane min-height-300" id="tabQuote">					
 				</div>
