@@ -50,6 +50,33 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 		});
 	};
 
+	$scope.findMarketSurveyById = function(msId){
+		$http.get("${pageContext.request.contextPath}/hbu/market-survey/view/"+msId).success(function(response){
+			$scope.survey = response.SURVEY;
+			$scope.item = $scope.survey.item;
+			setTimeout(function(){			
+				if($scope.item != null){
+					$("#msId").val($scope.survey.msId);
+					var tr = $("#data-content-edit tr");
+					if(tr.length>0){
+						for(i=0;i<tr.length-1;i++){
+							var custId = $scope.item.customers[i].custId;
+							for(var j=0; j<$scope.item.competitors.length; j++){
+								$.each($scope.survey.details, function(i, value){
+									if(value.custId == custId && value.comId == $scope.item.competitors[j].comId){
+										document.getElementById($scope.item.competitors[j].comId+""+custId+""+1).value = value.surveyValue;
+									}
+								})
+							}
+						}
+					}
+				}
+				
+			}, 1000);
+			
+		});
+	};
+
 	$scope.findMarketSurveyByItemId = function(itemId){
 		$http.get("${pageContext.request.contextPath}/hbu/market-survey/find/"+itemId).success(function(response){
 			$scope.survey = response.SURVEY;
@@ -140,6 +167,7 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 						var dataIndex = {"custId":custId, "comId":$scope.item.competitors[j].comId, "surveyValue":surveyVal};
 						objSurvey.push(dataIndex);
 					}
+					//alert(dataIndex.customer.custId);
 				}
 				swal({   
 					title: "<span style='font-size: 25px;'>You are about to add market survey.</span>",
@@ -190,6 +218,72 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 					}, 500);
 				});
 			}
+		}
+	}
+
+	$scope.editMarketSurvey = function(msId,msDate,itemId){
+		var dataString = [];
+		var tr = $("#data-content-edit tr");
+		if(tr.length>0){
+			var objSurvey = [];
+			for(i=0;i<tr.length-1;i++){
+				var custId = $scope.item.customers[i].custId;
+				for(var j=0; j<$scope.item.competitors.length; j++){
+					var surveyVal = document.getElementById($scope.item.competitors[j].comId+""+custId+""+1).value;
+					var dataIndex = {"custId":custId, "comId":$scope.item.competitors[j].comId, "surveyValue":surveyVal};
+					objSurvey.push(dataIndex);
+				}
+				//alert(dataIndex.customer.custId);
+			}
+			swal({   
+				title: "<span style='font-size: 25px;'>You are about to add market survey.</span>",
+				text: "Click OK to continue or CANCEL to abort.",
+				type: "info",
+				html: true,
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,		
+			}, function(){ 
+					setTimeout(function(){
+						$http({
+						    method: 'PUT',
+						    url: '${pageContext.request.contextPath}/hbu/market-survey/edit',
+						    data:{
+							    "msId":msId,
+						    	"msDate":msDate,
+						    	"item":{"itemId":itemId},
+						    	"details":objSurvey,
+						    	"msModifiedBy":username
+							    },
+						    headers: {
+						    	'Accept': 'application/json',
+						        'Content-Type': 'application/json'
+						    }
+						}).success(function(response) {	
+							$("#product").select2('val','');
+							$("#surveyDate").val('');
+							$('#frmSurveyDetail').bootstrapValidator('resetForm', true);
+							$scope.listSurveys();
+							if(response.MESSAGE == "UPDATED"){						
+								swal({
+		    						title: "SUCCESSFUL",
+		    					  	text: response.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "success"
+		    					});
+							}else{
+								swal({
+		    						title: "UNSUCCESSFUL",
+		    					  	text: response.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "error"
+		    					});
+							}
+						});
+				}, 500);
+			});
 		}
 	}
 
@@ -249,9 +343,18 @@ function calculateTotal(obj){
 		}
 		$("#total"+index).text(total);
 	}
+}
 
-
-	
+function calculateTotalEdit(obj){
+	var index = $(obj).attr("data-index");
+	var selectOpt = $("#data-content-edit").find("select[name='surveyValue"+index+"']");
+	if(selectOpt.length>0){
+		var total = 0;
+		for(var i=0; i<selectOpt.length; i++){
+			total += Number($(selectOpt.eq(i)).val()); 
+		}
+		$("#totalEdit"+index).text(total);
+	}
 }
 
 
@@ -559,7 +662,7 @@ function clkCustomer(obj){
 }
 
 function backTap(obj){
-	$("#surAdd").parent().removeAttr('class', 'active');
+	$("#btnEdit").parent().removeAttr('class', 'active');
 }
 </script>
 <style>
@@ -822,7 +925,7 @@ function backTap(obj){
 														                        <span class="sr-only">Toggle Dropdown</span>
 														                      </button>
 														                      <ul class="dropdown-menu" role="menu">
-														                        <li><a href="#editSurvey_tap" data-toggle="tab" ng-click="findMarketSurveyById(sur.msId)"><i class="fa fa-pencil"></i> Edit</a></li>
+														                        <li><a href="#editSurvey_tap" data-toggle="tab" ng-click="findMarketSurveyById(sur.msId)"  id="btnEdit"><i class="fa fa-pencil"></i> Edit</a></li>
 														                        <li ng-click="deleteMarketSurvey(sur.msId)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 														                        <li><a href="${pageContext.request.contextPath}/view-lead/{{cc.leadID}}"><i class="fa fa-eye"></i> View</a></li>
 														                      </ul>
@@ -862,7 +965,6 @@ function backTap(obj){
 															</div>
 														</div>
 														<div class="col-sm-6" style="margin-top: 15px;">
-															<input type="hidden" id="msId"/>
 															<label class="font-label">Product <span class="requrie">(Required)</span></label>
 															<div class="form-group">
 																<select class="form-control select2"  name="product" id="product" style="width: 100%;">
@@ -915,22 +1017,22 @@ function backTap(obj){
 
 										</div>
 										
-										<!-- <div class="tab-pane" id="editSurvey_tap">
+										<div class="tab-pane" id="editSurvey_tap">
 											<div class="row">
 												<div class="col-sm-12">
-													<form id="frmSurveyDetail">
+													<form id="frmEditSurveyDetail">
 														<div class="col-sm-12">
 															<div class="box-header with-border row">
 																<div style="background: #fff;">
 																	<div class="col-sm-1">
-																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToList" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey()"><i class="fa fa-reply"></i> Back</a> 
+																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToListTap" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey()"><i class="fa fa-reply"></i> Back</a> 
+																	</div>
+																	<!-- <div class="col-sm-1">
+																		<a class="btn btn-info btn-app" id = "addToPro"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
 																	</div>
 																	<div class="col-sm-1">
-																		<a class="btn btn-info btn-app" id = "addCustToPro"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
-																	</div>
-																	<div class="col-sm-1">
-																		<a class="btn btn-info btn-app" id = "addCompetitor"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
-																	</div>
+																		<a class="btn btn-info btn-app" id = "addToCom"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
+																	</div> -->
 																</div>
 															</div>
 														</div>
@@ -938,43 +1040,41 @@ function backTap(obj){
 															<input type="hidden" id="msId"/>
 															<label class="font-label">Product <span class="requrie">(Required)</span></label>
 															<div class="form-group">
-																<select class="form-control select2"  name="product" id="product" style="width: 100%;">
-											                      <option value="">[-- Select Product --]</option>
-											                      <option ng-repeat="item in items" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>            
-											                    </select>
+																<span>[{{item.itemId}}] {{item.itemName}}</span>
 															</div>
 														</div>
 														<div class="col-sm-6" style="margin-top: 15px;">
 															<label class="font-label">Survey Date <span class="requrie">(Required)</span></label>
 															<div class="form-group">
 																<div class="input-group">
-																	<div class="input-group-addon">
-																		<i class="fa fa-calendar"></i>
-																	</div>
-																	<input type="text" class="form-control pull-right date2" name="surveyDate" id="surveyDate">
+																	<span>{{survey.msDate}}</span>
 																</div> 
 															</div>
 														</div>
-														<div class="col-sm-12 table-responsive" id = "surveyContent">
+														<div class="col-sm-12 table-responsive" id = "surveyContentEdit">
 															<table class="table table-bordered">
 																<tr>
 																	<th class="col-sm-2">[{{item.itemId}}] {{item.itemName}}</th>
 																	<th  ng-repeat = "com in item.competitors" class="text-center">{{com.comName}}</th>
 																</tr>
-																<tbody id="data-content">
+																<tbody id="data-content-edit">
 																<tr ng-repeat="cust in item.customers" data-index="{{$index}}">
 																	<td>[{{cust.custId}}] {{cust.custName}}</td>
 																	<td ng-repeat = "com in item.competitors" class="text-center">
-																		<select name="surveyValue" class="form-control" id="{{com.comId}}{{cust.custId}}"  style="width: 56px; display: inline-flex !important;">
+																		<select name="surveyValue{{$index}}" data-index="{{$index}}" class="form-control" id="{{com.comId}}{{cust.custId}}1" onChange="calculateTotalEdit(this)" style="width: 56px; display: inline-flex !important;">
 																			<option value="0">0</option>
 																			<option value="1">1</option>
 																		</select>
 																	</td>
 																</tr>
+																<tr>
+																	<td><b>Total</b></td>
+																	<td ng-repeat = "com in item.competitors" id="totalEdit{{$index}}" class="text-center">0</td>
+																</tr>
 																</tbody>
 															</table>
 															<div id="showBtnEditLead">
-																<button type="button" class="btn btn-primary" ng-click="saveMarketSevey()">Save</button>
+																<button type="button" class="btn btn-primary" ng-click="editMarketSurvey(survey.msId,survey.msDate,item.itemId)">Update</button>
 																<button type="reset" class="btn btn-danger" id="btnSurveyCancel" ng-click="cancelSurvey()">Cancel</button>
 															</div>
 														</div>
@@ -982,7 +1082,7 @@ function backTap(obj){
 												</div>
 											</div>
 
-										</div> -->
+										</div>
 										<div class="tab-pane" id="systemInfo_tap">
 											<div class="row">
 												<div class="col-sm-12">

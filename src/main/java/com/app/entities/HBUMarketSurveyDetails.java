@@ -3,9 +3,8 @@ package com.app.entities;
 public class HBUMarketSurveyDetails{
 
 	private int msDetailId;
-	private String msId;
 	private String custId;
-	private String comId;
+	private String compId;
 	private short surveyValue;
 	private MeDataSource meDataSource;
 
@@ -17,14 +16,6 @@ public class HBUMarketSurveyDetails{
 		this.msDetailId = msDetailId;
 	}
 
-	public String getMsId() {
-		return msId;
-	}
-
-	public void setMsId(String msId) {
-		this.msId = msId;
-	}
-
 	public String getCustId() {
 		return custId;
 	}
@@ -33,12 +24,12 @@ public class HBUMarketSurveyDetails{
 		this.custId = custId;
 	}
 
-	public String getComId() {
-		return comId;
+	public String getCompId() {
+		return compId;
 	}
 
-	public void setComId(String comId) {
-		this.comId = comId;
+	public void setCompId(String compId) {
+		this.compId = compId;
 	}
 
 	public short getSurveyValue() {
