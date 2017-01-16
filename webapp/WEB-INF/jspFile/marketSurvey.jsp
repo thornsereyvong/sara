@@ -69,6 +69,19 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 								})
 							}
 						}
+						for(var i=0;i<tr.length-1;i++){
+							var td = $("#data-content-edit").children();
+							for(var index = 0; index < td.length; index++){
+								var selectOpt = $("#data-content-edit").find("select[name='surveyValue"+index+"']");
+								if(selectOpt.length>0){
+									var total = 0;
+									for(var i=0; i<selectOpt.length; i++){
+										total += Number($(selectOpt.eq(i)).val()); 
+									}
+									$("#totalEdit"+index).text(total);
+								}
+							}
+						}
 					}
 				}
 				
@@ -236,7 +249,7 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 				//alert(dataIndex.customer.custId);
 			}
 			swal({   
-				title: "<span style='font-size: 25px;'>You are about to add market survey.</span>",
+				title: "<span style='font-size: 25px;'>Are you sure to update market survey ID: "+msId+"?.</span>",
 				text: "Click OK to continue or CANCEL to abort.",
 				type: "info",
 				html: true,
@@ -262,7 +275,8 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 						}).success(function(response) {	
 							$("#product").select2('val','');
 							$("#surveyDate").val('');
-							$('#frmSurveyDetail').bootstrapValidator('resetForm', true);
+							$('#frmEditSurveyDetail').bootstrapValidator('resetForm', true);
+							
 							$scope.listSurveys();
 							if(response.MESSAGE == "UPDATED"){						
 								swal({
@@ -1075,7 +1089,7 @@ function backTap(obj){
 															</table>
 															<div id="showBtnEditLead">
 																<button type="button" class="btn btn-primary" ng-click="editMarketSurvey(survey.msId,survey.msDate,item.itemId)">Update</button>
-																<button type="reset" class="btn btn-danger" id="btnSurveyCancel" ng-click="cancelSurvey()">Cancel</button>
+																<button type="reset" class="btn btn-danger" id="btnSurveyCancel" ng-click="findMarketSurveyById(survey.msId)">Cancel</button>
 															</div>
 														</div>
 													</form>
