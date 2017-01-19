@@ -61,6 +61,14 @@ public class HBUMarketSurveyController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/view/data/{msId}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> data(HttpServletRequest req, @PathVariable("msId") String msId){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/hbu/market-survey/view/data/"+msId, HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/find/{itemId}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> findMarketSurveyByItemId(HttpServletRequest req, @PathVariable("itemId") String itemId){
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);

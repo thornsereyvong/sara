@@ -15,6 +15,9 @@ var app = angular.module('competitor', ['angularUtils.directives.dirPagination',
 }]);
 var self = this;
 app.controller('competitorController',['$scope','$http',function($scope, $http){
+	
+	$scope.rowNumCompetitor = 1;
+	
 	$scope.listCompetitors = function(){
 		$http.get("${pageContext.request.contextPath}/hbu/competitor/list").success(function(response){
 				$scope.competitors = response.COMPETITORS;
@@ -25,6 +28,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 	$scope.listItems = function(){
 		$http.get("${pageContext.request.contextPath}/hbu/competitor/startup").success(function(response){
 				$scope.items = response.ITEMS;
+				
 			});
 		};
 
@@ -41,18 +45,30 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		};
 
 	$scope.findHBUItemById = function(itemId){
-			$http.get("${pageContext.request.contextPath}/item/view/"+itemId).success(function(response){
-				$scope.item = response.ITEM;
-				$.each($scope.item.competitors,function(i, com){
-					$("input[name=competitor]:not(:checked)").each(function(){
-						if($(this).val() == com.comId){
-							$(this).prop('checked',true);
-						}
-					});
-					
+		$http.get("${pageContext.request.contextPath}/item/view/"+itemId).success(function(response){
+			$scope.item = response.ITEM;
+			/* $.each($scope.item.competitors,function(i, com){
+				$("input[name=competitor]:not(:checked)").each(function(){
+					if($(this).val() == com.comId){
+						$(this).prop('checked',true);
+					}
+				});
+				
+			}); */
+			
+			
+			$.each($scope.competitors,function(i, com){
+				$scope.competitors[i].meDataSource = false;
+				$.each($scope.item.competitors,function(y, c){
+					if(c.comId == com.comId){
+						$scope.competitors[i].meDataSource = true;
+					}
 				});
 			});
-		}
+			$scope.competitorsCheck = angular.copy($scope.item.competitors);
+			
+		});
+	}
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -113,6 +129,118 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 			alertMsgNoPermision();
 		}
 	};
+	
+	
+// competitor add
+	
+	$scope.addComToPro = function(bool){
+		//var proId = getValueStringById("product");		
+		$http.get("${pageContext.request.contextPath}/hbu/competitor/list").success(function(response){
+			
+			$scope.addCompetitors = response.COMPETITORS;
+			$scope.rowNumCompetitor = 1;
+			/*
+			$.each($scope.competitors,function(i, com){
+				$scope.competitors[i].meDataSource = false;
+				$.each($scope.item.competitors,function(y, c){
+					if(c.comId == com.comId){
+						$scope.competitors[i].meDataSource = true;
+					}
+				});
+			});
+			$scope.competitorsCheck = angular.copy($scope.item.competitors); */
+			
+			if(bool){
+				$("#frmAddCompetitorToProduct").modal('toggle');
+			}
+		});		
+	}
+	
+	
+	
+	$scope.competitorIndexSet = function(bool,comId){
+		var n = $scope.searchIndexByComId(comId);		
+		if(n != false || n==0){
+			$scope.competitors[n].meDataSource = bool;			
+			if(bool){
+				$scope.competitorsCheck.push(angular.copy($scope.competitors[n]));
+			}else{
+				if($scope.competitorsCheck.length>0){				
+					for(var i=0;i<$scope.competitorsCheck.length; i++){
+						if(comId == $scope.competitorsCheck[i].comId){
+							$scope.competitorsCheck.splice(i, 1);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	$scope.searchIndexByComId = function(comId){		
+		for(var i=0;i<$scope.competitors.length; i++){
+			if(comId == $scope.competitors[i].comId){
+				return i;
+			}
+		}		
+		return false;
+	}
+	
+	$scope.btnComAdd = function(){	
+		var itemCompetitor =[];
+		$.each($scope.competitorsCheck,function(y, c){
+			var comObj = {"comId": c.comId, "comName":c.comName};
+			itemCompetitor.push(comObj);
+		});
+		
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to save competitor to product.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				 $http({
+				        method : "POST",
+				        url : "${pageContext.request.contextPath}/item/add",
+				        data: JSON.stringify({
+							  "itemId" : getValueStringById("product"),
+							  "competitors": itemCompetitor
+						})
+				    }).then(function mySucces(result) {
+				    	if(result.data.MESSAGE == "INSERTED"){						
+							swal({
+								title: "SUCCESSFUL",
+							  	text: result.data.MSG,
+							  	html: true,
+							  	timer: 2000,
+							  	type: "success"
+							});
+							$scope.item.competitors = angular.copy($scope.competitorsCheck);
+							setTimeout(function(){
+								$("#frmAddCompetitorToProduct").modal('toggle');
+							}, 2000); 
+						}else{
+							swal({
+								title: "UNSUCCESSFUL",
+							  	text: result.data.MSG,
+							  	html: true,
+							  	timer: 2000,
+							  	type: "error"
+							});
+						}
+				    }, function myError(response) {
+				    	alertMsgErrorSweet();
+			    	});	
+			}, 500);
+		}); 	
+	}
+	
+	
+	
+	
 }]);
 </script>
 
@@ -166,10 +294,10 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		});
 
 		$("#ato_product").change(function(){
-			$("input[name=competitor]:checked").each(function(){
+			/* $("input[name=competitor]:checked").each(function(){
 				 //$(this).prop("checked", false);
 				this.checked = false;
-			});
+			}); */
 			if($("#ato_product").val() != ""){
 				angular.element(document.getElementById('competitorController')).scope().findHBUItemById($("#ato_product").val());
 			}
@@ -399,6 +527,20 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		});	
 		
 	}); 
+	
+	
+	function clkCompetitor(obj){
+		var n = obj.getAttribute("data-index");
+		var comId = obj.getAttribute("value");
+		var bool = false;
+		if ($(obj).is(':checked')) {
+			bool = true;
+		}
+		angular.element(document.getElementById('marketSurveyController')).scope().competitorIndexSet(bool,comId);	
+	}
+	
+	
+	
 </script>
 
 <div class="content-wrapper" ng-app="competitor" id="competitorController" ng-controller="competitorController">
@@ -417,11 +559,9 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div style="background: #fff; margin-top: 15px;">
-					<div class="col-sm-1">
-						<a class="btn btn-info btn-app" id = "btn-create"><i class="fa fa-plus" aria-hidden="true"></i> Create</a> 
-					</div>
-					<div class="col-sm-1">
-						<a class="btn btn-info btn-app" id = "btnAddToProduct"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add To Product</a> 
+					<div class="col-sm-12">
+						<a class="btn btn-info btn-app" id = "btn-create"><i class="fa fa-plus" aria-hidden="true"></i> Create</a> 					
+						<a class="btn btn-info btn-app" id = "addToCom" ng-click="addComToPro(true)" ><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add To Product</a> 
 					</div>
 				</div>
 			</div>
@@ -474,7 +614,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 	
 										<th>Action</th>
 									</tr>
-									<tr dir-paginate="com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
+									<tr dir-paginate="com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:5"   class="ng-cloak">
 										<td>{{com.comId}}</td>
 										<td>{{com.comName}}</td>
 										<td>{{com.comStatus}}</td>
@@ -501,17 +641,18 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 									</tr>
 								</table>
 							</div>
-							<dir-pagination-controls
+							<!-- <dir-pagination-controls
+								 pagination-id="compListRowId" 
 						       max-size="5"
 						       direction-links="true"
 						       boundary-links="true" >
-							</dir-pagination-controls>
+							</dir-pagination-controls> -->
 						</div>
 					</div>
 				</div>
 				<input type="hidden" id="btn-add-competitor" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCompetitor" />
 				<div ng-controller="competitorController" class="modal fade modal-default" id="frmCompetitor" role="dialog">
-					<div class="modal-dialog  modal-xs" data-ng-init="">
+					<div class="modal-dialog  modal-lg" data-ng-init="">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" ng-click="cancelAddCompetitor()" class="close"
@@ -577,45 +718,58 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 							</div>
 							<div class="modal-body">
 								<div class="row">
-									<form id="frmAddCompetitorToProduct">
+									<form id="frm_AddCompetitorToProduct">
 										<div class="col-md-12">
-											<div class="col-md-5">
-												<div class="form-group">
-												<table class="table table-bordered">
-													<tr>
-														<th>
-															<label>Product <span class="requrie">(Required)</span></label>
-														</th>
-													</tr>
-													<tr>
-														<td>
-															<select class="form-control select2" name="ato_product" id="ato_product" style="width: 100%;">
-																<option value="">-- SELECT Product --</option>
-																<option ng-repeat="item in items" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
-															</select>
-														</td>
-													</tr>
-												</table>
-												</div>
-											</div>
-											<div class="col-md-7">
-												<div class="form-group table-responsive">
-													<table class="table table-bordered">
-														<tr class="active info">
-															<th><label>Competitor List</label></th>
-															<th class="text-center"><input type="checkbox" name="check-all" onClick()/><!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> --></th>
-														</tr>
-														<tr ng-repeat = "com in competitors"><!-- dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6" -->
-															<td class="col-md-11">[{{com.comId}}] {{com.comName}}</td>
-															<td class="col-md-1 text-center"><input type="checkbox" onClick="clkCheck(this)" name="competitor" value="{{com.comId}}" /></td>
-														</tr>
-													</table>
-													<!-- <dir-pagination-controls
-												       max-size="6"
-												       direction-links="true"
-												       boundary-links="true" >
-													</dir-pagination-controls> -->
-												</div>
+											<div class="row">
+												<div class="col-sm-6">
+											        <div class="form-group">
+											            <select class="form-control select2" name="ato_product" id="ato_product" style="width: 100%;">
+															<option value="">-- SELECT Product --</option>
+															<option ng-repeat="item in items" value="{{item.itemId}}">[{{item.itemId}}] {{item.itemName}}</option>
+														</select>
+											        </div>
+											  	</div>
+												<div class="col-sm-4">
+											        <div class="form-group">
+											            <input type="text" ng-model="searchCom" class="form-control" placeholder="Search">
+											        </div>
+											  	</div>
+											 	<div class="col-sm-2">
+											        <div class="form-group">
+											            <select class="form-control" ng-model="rowNumCompetitor" style="width:100%" id="rowNumCom" name="rowNumCom">
+															<option value="1">1</option>
+															<option value="5">5</option>
+															<option value="10">10</option>
+															<option value="15">15</option>
+															<option value="20">20</option>
+															<option value="50">50</option>
+															<option value="100">100</option>
+														</select>
+											        </div>
+									  			</div>
+											  	<div class="clearfix"></div>
+													<div class="col-md-12">
+														<div class="form-group table-responsive">
+															<table class="table table-bordered">
+																<tr class="active info">
+																	<th><label>Competitor ID</label></th>
+																	<th><label>Competitor Name</label></th>
+																	<th class="text-center"></th>
+																</tr>
+																<tr ng-repeat = "com in addCompetitors |orderBy:sortKey:reverse |filter:searchCom |itemsPerPage:rowNumCompetitor"  pagination-id="compRowID">
+																	<td class="col-md-3">{{com.comId}}</td>
+																	<td>{{com.comName}}</td>
+																	<td class="col-md-1 text-center"><input type="checkbox" ng-checked="com.meDataSource" data-index="{{$index}}" onClick="clkCompetitor(this)"  name="competitor" value="{{com.comId}}" /></td>
+																</tr>
+															</table>
+															<dir-pagination-controls
+														       max-size="rowNumCompetitor"
+														       pagination-id="compRowID" 
+														       direction-links="true"
+														       boundary-links="true" >
+														    </dir-pagination-controls>
+														</div>														
+													</div>
 											</div>
 										</div>
 									</form>
@@ -627,19 +781,15 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 									class="btn btn-danger" data-dismiss="modal">Cancel</button>
 								&nbsp;&nbsp;
 								<button type="button" class="btn btn-primary pull-right"
-									id="btnAdd" name="btnAdd">Add</button>
+									id="btnAdd" name="btnAdd">Save</button>
 							</div>
 						</div>
 					</div>
 				</div>
-			<!-- /.box-body -->
 			<div class="box-footer"></div>
-			<!-- /.box-footer-->
+			<div id="errors"></div>
 		</div>
-		<!-- /.box -->
 	</section>
-	<!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 

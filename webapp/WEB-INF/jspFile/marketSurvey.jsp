@@ -23,23 +23,17 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 		
     });
 	
-	/* $scope.item = [];
-	$scope.item.customers = [];	
-	$scope.item.competitors = []; */
-	
-	
-	
-	
 	$scope.listCompetitors = function(){
 		$http.get("${pageContext.request.contextPath}/hbu/competitor/list").success(function(response){
-				$scope.competitors = response.COMPETITORS;
-				$scope.length = $scope.competitors.length;
-			});
-		};
+			$scope.competitors = response.COMPETITORS;
+			$scope.length = $scope.competitors.length;
+		});
+	};
 
 	$scope.listSurveys = function(){
 		$http.get("${pageContext.request.contextPath}/hbu/market-survey/list").success(function(response){
 				$scope.surveys = response.SURVEYS;
+				$scope.rowNumMS = 10;
 			});
 		};
 	
@@ -47,21 +41,14 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 		$http.get("${pageContext.request.contextPath}/hbu/market-survey/startup").success(function(response){
 			$scope.items = response.ITEMS;
 			$scope.customers = response.CUSTOMERS;
-			//$scope.competitors = response.competitors;
-			
-			//dis(response)
-			
 			$scope.rowNum = 5;
 			$scope.rowNumCom = 5;
-			//$scope.customersCheck2 =[];
-			//$scope.customersCheck = [];
 		});
 	};
 	
 	$scope.findCompetitorByItemId = function(itemId){
 		$http.get("${pageContext.request.contextPath}/item/view/"+itemId).success(function(response){
 			$scope.item = response.ITEM;
-			//$scope.findMarketSurveyByItemId(itemId);
 		});
 	};
 
@@ -69,6 +56,7 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 		$http.get("${pageContext.request.contextPath}/hbu/market-survey/view/"+msId).success(function(response){
 			$scope.survey = response.SURVEY;
 			$scope.item = $scope.survey.item;
+			$scope.customers = response.CUSTOMERS;
 			setTimeout(function(){			
 				if($scope.item != null){
 					$("#msId").val($scope.survey.msId);
@@ -135,8 +123,7 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 	}
 
 
-	$scope.cancelCompetitor = function(){
-		
+	$scope.cancelCompetitor = function(){		
 		$("#frmAddCompetitorToProduct").modal('toggle');
 	}
 
@@ -230,10 +217,9 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 					var dataIndex = {"custId":custId, "comId":$scope.item.competitors[j].comId, "surveyValue":surveyVal};
 					objSurvey.push(dataIndex);
 				}
-				//alert(dataIndex.customer.custId);
 			}
 			swal({   
-				title: "<span style='font-size: 25px;'>Are you sure to update market survey ID: "+msId+"?.</span>",
+				title: "<span style='font-size: 25px;'>You are about to update market survey ID: "+msId+"?.</span>",
 				text: "Click OK to continue or CANCEL to abort.",
 				type: "info",
 				html: true,
@@ -287,7 +273,7 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 
 	$scope.deleteMarketSurvey = function(msId){
 		swal({   
-			title: "<span style='font-size: 25px;'>Are you sure to delete market survey ID:"+msId+" ?</span>",
+			title: "<span style='font-size: 25px;'>You are about to delete market survey ID:"+msId+" ?</span>",
 			text: "Click OK to continue or CANCEL to abort.",
 			type: "info",
 			html: true,
@@ -326,26 +312,26 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 			}, 500);
 		});
 	}
-
+	
+	
+	
+	//  customer add
 	
 	$scope.addCustToPro = function(bool){
 		var proId = getValueStringById("product");		
-		//$http.get("${pageContext.request.contextPath}/item/view/"+proId).success(function(response){
-			//$scope.item = response.ITEM;			
-			$.each($scope.customers,function(i, cust){
-				$scope.customers[i].meDataSource = false;
-				$.each($scope.item.customers,function(y, c){
-					if(c.custId == cust.custId){
-						$scope.customers[i].meDataSource = true;
-					}
-				});
+		$.each($scope.customers,function(i, cust){
+			$scope.customers[i].meDataSource = false;
+			$.each($scope.item.customers,function(y, c){
+				if(c.custId == cust.custId){
+					$scope.customers[i].meDataSource = true;
+				}
 			});
-			$scope.customersCheck = angular.copy($scope.item.customers);
-			
-			if(bool){
-				$("#frmAddCustomerToProduct").modal('toggle');
-			}
-		//});		
+		});
+		$scope.customersCheck = angular.copy($scope.item.customers);
+		
+		if(bool){
+			$("#frmAddCustomerToProduct").modal('toggle');
+		}	
 	}
 
 	$scope.customerIndexSet = function(bool,custId){
@@ -377,9 +363,7 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 	
 	
 	
-	$scope.btnAddCust = function(){	
-		//$('#frm_AddCustomerToProduct').data('bootstrapValidator').validate();
-		//var statusAddPro = $("#frm_AddCustomerToProduct").data('bootstrapValidator').validate().isValid();
+	$scope.btnAddCust = function(){
 		
 		var itemCustomer =[];
 		$.each($scope.customersCheck,function(y, c){
@@ -387,59 +371,55 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 			itemCustomer.push(custObj);
 		});
 		
-		//if(statusAddPro){
-			swal({   
-				title: "<span style='font-size: 25px;'>You are about to add customers to product.</span>",
-				text: "Click OK to continue or CANCEL to abort.",
-				type: "info",
-				html: true,
-				showCancelButton: true,
-				closeOnConfirm: false,
-				showLoaderOnConfirm: true,		
-			}, function(){ 
-				setTimeout(function(){
-					 $http({
-					        method : "POST",
-					        url : "${pageContext.request.contextPath}/item/add/customer",
-					        data: JSON.stringify({
-								  "itemId" : getValueStringById("product"),
-								  "customers": itemCustomer
-							})
-					    }).then(function mySucces(result) {
-					    	if(result.data.MESSAGE == "INSERTED"){						
-								swal({
-									title: "SUCCESSFUL",
-								  	text: result.data.MSG,
-								  	html: true,
-								  	timer: 2000,
-								  	type: "success"
-								});
-								$scope.item.customers = angular.copy($scope.customersCheck);
-								setTimeout(function(){
-									$("#frmAddCustomerToProduct").modal('toggle');
-								}, 2000); 
-							}else{
-								swal({
-									title: "UNSUCCESSFUL",
-								  	text: result.data.MSG,
-								  	html: true,
-								  	timer: 2000,
-								  	type: "error"
-								});
-							}
-					    }, function myError(response) {
-					    	alertMsgErrorSweet();
-					    });	
-				}, 500);
-			}); 
-			
-		//}		
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to save customers to product.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				 $http({
+				        method : "POST",
+				        url : "${pageContext.request.contextPath}/item/add/customer",
+				        data: JSON.stringify({
+							  "itemId" : getValueStringById("product"),
+							  "customers": itemCustomer
+						})
+				    }).then(function mySucces(result) {
+				    	if(result.data.MESSAGE == "INSERTED"){						
+							swal({
+								title: "SUCCESSFUL",
+							  	text: result.data.MSG,
+							  	html: true,
+							  	timer: 2000,
+							  	type: "success"
+							});
+							$scope.item.customers = angular.copy($scope.customersCheck);
+							setTimeout(function(){
+								$("#frmAddCustomerToProduct").modal('toggle');
+							}, 2000); 
+						}else{
+							swal({
+								title: "UNSUCCESSFUL",
+							  	text: result.data.MSG,
+							  	html: true,
+							  	timer: 2000,
+							  	type: "error"
+							});
+						}
+				    }, function myError(response) {
+				    	alertMsgErrorSweet();
+				    });	
+			}, 500);
+		}); 	
 	}
 	
 	
 	
-	// competitor
-	
+	// competitor add
 	
 	$scope.addComToPro = function(bool){
 		var proId = getValueStringById("product");		
@@ -492,63 +472,101 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 	}
 	
 	$scope.btnComAdd = function(){	
-		//$('#frm_AddCustomerToProduct').data('bootstrapValidator').validate();
-		//var statusAddPro = $("#frm_AddCustomerToProduct").data('bootstrapValidator').validate().isValid();
-		
 		var itemCompetitor =[];
 		$.each($scope.competitorsCheck,function(y, c){
 			var comObj = {"comId": c.comId, "comName":c.comName};
 			itemCompetitor.push(comObj);
 		});
 		
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to save competitor to product.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				 $http({
+				        method : "POST",
+				        url : "${pageContext.request.contextPath}/item/add",
+				        data: JSON.stringify({
+							  "itemId" : getValueStringById("product"),
+							  "competitors": itemCompetitor
+						})
+				    }).then(function mySucces(result) {
+				    	if(result.data.MESSAGE == "INSERTED"){						
+							swal({
+								title: "SUCCESSFUL",
+							  	text: result.data.MSG,
+							  	html: true,
+							  	timer: 2000,
+							  	type: "success"
+							});
+							$scope.item.competitors = angular.copy($scope.competitorsCheck);
+							setTimeout(function(){
+								$("#frmAddCompetitorToProduct").modal('toggle');
+							}, 2000); 
+						}else{
+							swal({
+								title: "UNSUCCESSFUL",
+							  	text: result.data.MSG,
+							  	html: true,
+							  	timer: 2000,
+							  	type: "error"
+							});
+						}
+				    }, function myError(response) {
+				    	alertMsgErrorSweet();
+			    	});	
+			}, 500);
+		}); 	
+	}
+	
+	$scope.viewMarketSurveyById = function(msId){
 		
-		//if(statusAddPro){
-			swal({   
-				title: "<span style='font-size: 25px;'>You are about to add competitor to product.</span>",
-				text: "Click OK to continue or CANCEL to abort.",
-				type: "info",
-				html: true,
-				showCancelButton: true,
-				closeOnConfirm: false,
-				showLoaderOnConfirm: true,		
-			}, function(){ 
-				setTimeout(function(){
-					 $http({
-					        method : "POST",
-					        url : "${pageContext.request.contextPath}/item/add",
-					        data: JSON.stringify({
-								  "itemId" : getValueStringById("product"),
-								  "competitors": itemCompetitor
-							})
-					    }).then(function mySucces(result) {
-					    	if(result.data.MESSAGE == "INSERTED"){						
-								swal({
-									title: "SUCCESSFUL",
-								  	text: result.data.MSG,
-								  	html: true,
-								  	timer: 2000,
-								  	type: "success"
-								});
-								$scope.item.competitors = angular.copy($scope.competitorsCheck);
-								setTimeout(function(){
-									$("#frmAddCompetitorToProduct").modal('toggle');
-								}, 2000); 
-							}else{
-								swal({
-									title: "UNSUCCESSFUL",
-								  	text: result.data.MSG,
-								  	html: true,
-								  	timer: 2000,
-								  	type: "error"
-								});
-							}
-					    }, function myError(response) {
-					    	alertMsgErrorSweet();
-					    });	
-				}, 500);
-			}); 
+		$http.get("${pageContext.request.contextPath}/hbu/market-survey/view/data/"+msId).success(function(response){
+			if(response.MESSAGE == "SUCCESS"){
+				
+				$scope.color_grap =  [ '#3399FF', '#FFC575', '#99CC00', '#944DDB', "#3c8dbc", "#f56954","#00a65a","#f44336","#E57373","#E91e63","#F06292","#880E4F","#B71c1c","#9C27B0","#BA68C8","#4A148C","#FF8A80","#FF80AB","#EA80FC","#673AB7","#3F51B5","#2196F3","#9575CD","#7986CB","#64B5F6","#6200EA","#304FFE","#03A9F4","#00BCD4","#009688","#4FC3F7","#4DD0E1","#4DB6AC","#0091EA","#00B8D4","#00BFA5",
+				                                  "#4CAF50","#8BC34A","#CDDC39","#81C784","#AED581","#DCE775","#00C853","#64DD17","#AEEA00","#FFEB3B","#FFC107","#FF9800","#FFF176","#FFD54F","#FFB74D","#FF5722","#795548","#9E9E9E","#FF7043","#8D6E63","#BDBDBD","#3E2723","#212121","#DD2C00","#607D8B","#90A4AE","#263238","#000000",'#3399FF', '#FFC575', '#99CC00', '#944DDB', "#3c8dbc", "#f56954","#00a65a","#f44336","#E57373","#E91e63","#F06292","#880E4F","#B71c1c","#9C27B0","#BA68C8","#4A148C","#FF8A80","#FF80AB","#EA80FC","#673AB7","#3F51B5","#2196F3","#9575CD","#7986CB","#64B5F6","#6200EA","#304FFE","#03A9F4","#00BCD4","#009688","#4FC3F7","#4DD0E1","#4DB6AC","#0091EA","#00B8D4","#00BFA5",
+				                                  "#4CAF50","#8BC34A","#CDDC39","#81C784","#AED581","#DCE775","#00C853","#64DD17","#AEEA00","#FFEB3B","#FFC107","#FF9800","#FFF176","#FFD54F","#FFB74D","#FF5722","#795548","#9E9E9E","#FF7043","#8D6E63","#BDBDBD","#BF36OC","#3E2723","#212121","#DD2C00","#607D8B","#90A4AE","#263238","#000000","#FFFFFF"];
+				
+				
+				$scope.msData = response.SURVEY;
+				
+				$scope.itemId = response.SURVEY[0].itemId;
+				$scope.itemName = response.SURVEY[0].itemName; 
+				$scope.msDate = response.SURVEY[0].surveyDate; 
+				
+				var data = [], series = Math.floor(Math.random() * 6) + 5;
+
+				for (var i = 0; i < $scope.msData.length; i++) {
+					data[i] = {
+						label: $scope.msData[i].comName,
+						data:  $scope.msData[i].percent,
+						color: $scope.color_grap[i]
+					}
+				}
+				
+				var placeholder = $("#testChart");
+				placeholder.unbind();
+				$.plot(placeholder, data, {
+					series: {
+						pie: { 
+							show: true
+						}
+					},
+					legend: {
+						show: false
+					}
+				}); 
+				
+				$("#viewMarketShare").modal('toggle');
+			}
 			
-		//}		
+		});
 	}
 	
 	
@@ -579,6 +597,34 @@ function calculateTotalEdit(obj){
 	}
 }
 
+
+function clkCheck(obj){
+	$("input[name=check-all]").prop('checked',false);
+}
+
+function clkCustomer(obj){
+	var n = obj.getAttribute("data-index");
+	var custId = obj.getAttribute("value");
+	var bool = false;
+	if ($(obj).is(':checked')) {
+		bool = true;
+	}
+	angular.element(document.getElementById('marketSurveyController')).scope().customerIndexSet(bool,custId);	
+}
+
+function clkCompetitor(obj){
+	var n = obj.getAttribute("data-index");
+	var comId = obj.getAttribute("value");
+	var bool = false;
+	if ($(obj).is(':checked')) {
+		bool = true;
+	}
+	angular.element(document.getElementById('marketSurveyController')).scope().competitorIndexSet(bool,comId);	
+}
+
+function backTap(obj){
+	$("#btnEdit").parent().removeAttr('class', 'active');
+}
 
 
 $(document).ready(function(){
@@ -611,220 +657,6 @@ $(document).ready(function(){
 			$("#surveyContent").hide();
 		}
 	});
-
-
-	$("input[name=checkAll]").change(function(){
-		if($(this).is(':checked')){
-			$("input[name=customer]:not(:checked)").each(function(){
-				$(this).prop('checked',true);
-			});
-		}else{
-			$("input[name=customer]:checked").each(function(){
-				$(this).prop('checked',false);
-			});
-		}
-	});
-
-	function addCustomersToProduct(){
-		var customers = [];
-		$("input[name=customer]:checked").each(function(){
-			customers.push({"custId":$(this).val()});
-		});
-		$('#frmAddCompetitorToProduct').bootstrapValidator({
-			message: 'This value is not valid',
-			feedbackIcons: {
-				valid: 'glyphicon glyphicon-ok',
-				invalid: 'glyphicon glyphicon-remove',
-				validating: 'glyphicon glyphicon-refresh'
-			},
-			fields: {
-				product: {
-					validators: {
-						notEmpty: {
-							message: 'The product is required and can not be empty!'
-						}
-					}
-				}
-			}
-		}).on('success.form.bv', function(e) {
-			swal({   
-				title: "<span style='font-size: 25px;'>You are about to add customers to product.</span>",
-				text: "Click OK to continue or CANCEL to abort.",
-				type: "info",
-				html: true,
-				showCancelButton: true,
-				closeOnConfirm: false,
-				showLoaderOnConfirm: true,		
-			}, function(){ 
-					setTimeout(function(){
-						$.ajax({ 
-							url : "${pageContext.request.contextPath}/item/add/customer",
-							type : "POST",
-							data : JSON.stringify({
-								  "itemId" : getValueStringById("product"),
-								  "customers": customers,
-							}),
-							beforeSend: function(xhr) {
-							    xhr.setRequestHeader("Accept", "application/json");
-							    xhr.setRequestHeader("Content-Type", "application/json");
-						    }, 
-						    success: function(result){	
-						    	$("input[name=customer]:checked").attr('checked',false);
-						    	$('#frmAddCustomerToProduct').bootstrapValidator('resetForm', true);
-								if(result.MESSAGE == "INSERTED"){						
-									swal({
-			    						title: "SUCCESSFUL",
-			    					  	text: result.MSG,
-			    					  	html: true,
-			    					  	timer: 2000,
-			    					  	type: "success"
-			    					});
-									$("#frmAddCustomerToProduct").modal('toggle');
-									angular.element(document.getElementById('marketSurveyController')).scope().findCompetitorByItemId(getValueStringById("product"));
-								}else{
-									swal({
-			    						title: "UNSUCCESSFUL",
-			    					  	text: result.MSG,
-			    					  	html: true,
-			    					  	timer: 2000,
-			    					  	type: "error"
-			    					});
-								}
-							},
-				    		error:function(){
-				    			alertMsgErrorSweet();
-				    		} 
-						});
-				}, 500);
-			});
-		});
-		$("#frmAddCompetitorToProduct").submit();
-	}
-
-	
-	//$("#addCompetitor").click(function(){
-		/* $("#frmAddCompetitorToProduct").modal('toggle');
-		$("input[name=check-all]:checked").prop("checked", false);
-		$("input[name=competitor]:checked").each(function(){
-			 //$(this).prop("checked", false);
-			this.checked = false;
-		});
-		if($("product").val() != ""){
-			//angular.element(document.getElementById('marketSurveyController')).scope().findHBUItemById($("#product").val());
-		} */
-	//});
-
-/* 	$("input[name=check-all]").change(function(){
-		if($(this).is(':checked')){
-			$("input[name=competitor]:not(:checked)").each(function(){
-				$(this).prop('checked',true);
-			});
-		}else{
-			$("input[name=competitor]:checked").each(function(){
-				$(this).prop('checked',false);
-			});
-		}
-	}); */
-	
-	
-	/* $('#frm_AddCustomerToProduct').bootstrapValidator({
-		message: 'This value is not valid',
-		feedbackIcons: {
-			valid: 'glyphicon glyphicon-ok',
-			invalid: 'glyphicon glyphicon-remove',
-			validating: 'glyphicon glyphicon-refresh'
-		},
-		fields: {
-			product: {
-				validators: {
-					notEmpty: {
-						message: 'The product is required and can not be empty!'
-					}
-				}
-			}
-		}
-	}); */
-	
-	
-	/* function addCompetitorsToProduct(){
-		var competitors = [];
-		$("input[name=competitor]:checked").each(function(){
-			competitors.push({"comId":$(this).val()});
-		});
-		$('#frmAddCompetitorToProduct').bootstrapValidator({
-			message: 'This value is not valid',
-			feedbackIcons: {
-				valid: 'glyphicon glyphicon-ok',
-				invalid: 'glyphicon glyphicon-remove',
-				validating: 'glyphicon glyphicon-refresh'
-			},
-			fields: {
-				ato_product: {
-					validators: {
-						notEmpty: {
-							message: 'The product is required and can not be empty!'
-						}
-					}
-				}
-			}
-		}).on('success.form.bv', function(e) {
-			swal({   
-				title: "<span style='font-size: 25px;'>You are about to add competitors to product.</span>",
-				text: "Click OK to continue or CANCEL to abort.",
-				type: "info",
-				html: true,
-				showCancelButton: true,
-				closeOnConfirm: false,
-				showLoaderOnConfirm: true,		
-			}, function(){ 
-					setTimeout(function(){
-						$.ajax({ 
-							url : "${pageContext.request.contextPath}/item/add",
-							type : "POST",
-							data : JSON.stringify({
-								  "itemId" : getValueStringById("product"),
-								  "competitors": competitors,
-							}),
-							beforeSend: function(xhr) {
-							    xhr.setRequestHeader("Accept", "application/json");
-							    xhr.setRequestHeader("Content-Type", "application/json");
-						    }, 
-						    success: function(result){	
-						    	$("input[name=competitor]:checked").attr('checked',false);
-						    	$('#frmAddCompetitorToProduct').bootstrapValidator('resetForm', true);
-								if(result.MESSAGE == "INSERTED"){						
-									swal({
-			    						title: "SUCCESSFUL",
-			    					  	text: result.MSG,
-			    					  	html: true,
-			    					  	timer: 2000,
-			    					  	type: "success"
-			    					});
-									$("#frmAddCompetitorToProduct").modal('toggle');
-									angular.element(document.getElementById('marketSurveyController')).scope().findCompetitorByItemId(getValueStringById("product"));
-								}else{
-									swal({
-			    						title: "UNSUCCESSFUL",
-			    					  	text: result.MSG,
-			    					  	html: true,
-			    					  	timer: 2000,
-			    					  	type: "error"
-			    					});
-								}
-							},
-				    		error:function(){
-				    			alertMsgErrorSweet();
-				    		} 
-						});
-				}, 500);
-			});
-		});
-		$("#frmAddCompetitorToProduct").submit();
-	} */
-
-	/* $("#btnAdd").click(function(){
-		addCompetitorsToProduct();
-	}); */
 
 	/*End add competitor block*/
 
@@ -873,37 +705,11 @@ $(document).ready(function(){
 		});
 
 	/*End Market Survey Block*/
+	
 });
 
-function clkCheck(obj){
-	$("input[name=check-all]").prop('checked',false);
-}
-
-function clkCustomer(obj){
-	var n = obj.getAttribute("data-index");
-	var custId = obj.getAttribute("value");
-	var bool = false;
-	if ($(obj).is(':checked')) {
-		bool = true;
-	}
-	angular.element(document.getElementById('marketSurveyController')).scope().customerIndexSet(bool,custId);	
-}
-
-function clkCompetitor(obj){
-	var n = obj.getAttribute("data-index");
-	var comId = obj.getAttribute("value");
-	var bool = false;
-	if ($(obj).is(':checked')) {
-		bool = true;
-	}
-	angular.element(document.getElementById('marketSurveyController')).scope().competitorIndexSet(bool,comId);	
-}
 
 
-
-function backTap(obj){
-	$("#btnEdit").parent().removeAttr('class', 'active');
-}
 </script>
 <style>
 .panel-heading1 h4 {
@@ -1091,7 +897,7 @@ function backTap(obj){
 <div class="content-wrapper" id="marketSurveyController" ng-app="marketSurveyApp" ng-controller="marketSurveyController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1><!-- Market Survey -->&nbsp;</h1>
+		<h1>Market Survey</h1>
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i>Market Survey</a></li>
@@ -1104,7 +910,7 @@ function backTap(obj){
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">
 					<div class="widget-user-header bg-aqua-active">
-						<h1 class="widget-user-username">Market Survey</h1>
+						<h1 class="widget-user-username"></h1>
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
@@ -1122,66 +928,88 @@ function backTap(obj){
 											<div class="row">
 												<div class="col-sm-12">
 													<div class="tablecontainer" data-ng-init="listSurveys()" > 
-															<div class="box-header with-border row">
-																<div style="background: #fff;">
-																	<div class="">
-																		<div class="col-sm-1">
-																			<a href="#addSurvey_tap" class="btn btn-info btn-app"  data-toggle="tab" ng-click="startup()" id="surAdd"><i class="fa fa-plus"></i>Create</a> 
-																		</div>
+														<div class="box-header with-border row">
+															<div style="background: #fff;">
+																<div class="">
+																	<div class="col-sm-1">
+																		<a href="#addSurvey_tap" class="btn btn-info btn-app"  data-toggle="tab" ng-click="startup()" id="surAdd"><i class="fa fa-plus"></i>Create</a> 
 																	</div>
 																</div>
 															</div>
-															<table class="table table-hover" >
-																<tr>
-																	<th style="cursor: pointer;" ng-click="sort('msId')">ID
-																		<span class="glyphicon sort-icon" ng-show="sortKey=='msId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-																	</th>
-																	<th style="cursor: pointer;" ng-click="sort('item.itemId')">Product
-																		<span class="glyphicon sort-icon" ng-show="sortKey=='item.itemId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-																	</th>
-																	<th style="cursor: pointer;" ng-click="sort('msDate')">Survey Date
-																		<span class="glyphicon sort-icon" ng-show="sortKey=='msDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-																	</th>
-																	<th style="cursor: pointer;" ng-click="sort('msCreateBy')">Create By
-																		<span class="glyphicon sort-icon" ng-show="sortKey=='msCreateBy'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-																	</th>
-																					
-																	<th>Action</th>
-																</tr>
-										
-																<tr dir-paginate="sur in surveys |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
-																	<td>{{sur.msId}}</td>
-																	<td>[{{sur.item.itemId}}] {{sur.item.itemName}}</td>
-																	<td>{{sur.msDate}}</td>
-																	<td>{{sur.msCreateBy}}</td>
-																	<td>
-																		<div class="col-sm-2">
-																			<div class="btn-group">
-														                      <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
-														                        <span class="caret"></span>
-														                        <span class="sr-only">Toggle Dropdown</span>
-														                      </button>
-														                      <ul class="dropdown-menu" role="menu">
-														                        <li><a href="#editSurvey_tap" data-toggle="tab" ng-click="findMarketSurveyById(sur.msId)"  id="btnEdit"><i class="fa fa-pencil"></i> Edit</a></li>
-														                        <li ng-click="deleteMarketSurvey(sur.msId)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-														                        <li><a href="${pageContext.request.contextPath}/view-lead/{{cc.leadID}}"><i class="fa fa-eye"></i> View</a></li>
-														                      </ul>
-														                    </div>
-													                   	</div>	
-																	</td>
-																</tr>
+														</div>
 														
-														</table>
-														<dir-pagination-controls
-													       max-size="5"
-													       direction-links="true"
-													       boundary-links="true" >
-													    </dir-pagination-controls>
-													</div>	
-												</div>
+														<div class="col-sm-3">
+													        <div class="form-group">
+													            <input type="text" ng-model="searchMS" class="form-control" placeholder="Search">
+													        </div>
+													  	</div>
+													 	<div class="col-sm-2">
+													        <div class="form-group">
+													            <select class="form-control" ng-model="rowNumMS" style="width:100%" id="rowNumMS" name="rowNumMS">
+																	<option value="5">5</option>
+																	<option value="10">10</option>
+																	<option value="15">15</option>
+																	<option value="20">20</option>
+																	<option value="50">50</option>
+																	<option value="100">100</option>
+																</select>
+													        </div>
+											  			</div>
+													  	<div class="clearfix"></div>
+														
+														<table class="table table-hover" >
+															<tr>
+																<th style="cursor: pointer;" ng-click="sort('msId')">ID
+																	<span class="glyphicon sort-icon" ng-show="sortKey=='msId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+																</th>
+																<th style="cursor: pointer;" ng-click="sort('item.itemId')">Product
+																	<span class="glyphicon sort-icon" ng-show="sortKey=='item.itemId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+																</th>
+																<th style="cursor: pointer;" ng-click="sort('msDate')">Survey Date
+																	<span class="glyphicon sort-icon" ng-show="sortKey=='msDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+																</th>
+																<th style="cursor: pointer;" ng-click="sort('msCreateBy')">Create By
+																	<span class="glyphicon sort-icon" ng-show="sortKey=='msCreateBy'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+																</th>
+																				
+																<th>Action</th>
+															</tr>
+									
+															<tr dir-paginate="sur in surveys |orderBy:sortKey:reverse |filter:searchMS |itemsPerPage:rowNumMS" class="ng-cloak">
+																<td>{{sur.msId}}</td>
+																<td>[{{sur.item.itemId}}] {{sur.item.itemName}}</td>
+																<td>{{sur.msDate}}</td>
+																<td>{{sur.msCreateBy}}</td>
+																<td>
+																	<div class="col-sm-2">
+																		<div class="btn-group">
+													                      <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
+													                        <span class="caret"></span>
+													                        <span class="sr-only">Toggle Dropdown</span>
+													                      </button>
+													                      <ul class="dropdown-menu" role="menu">
+													                        <li><a href="#editSurvey_tap" data-toggle="tab" ng-click="findMarketSurveyById(sur.msId)"  id="btnEdit"><i class="fa fa-pencil"></i> Edit</a></li>
+													                        <li ng-click="deleteMarketSurvey(sur.msId)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
+													                        <li><a href="#" ng-click="viewMarketSurveyById(sur.msId)"  id="btnEdit"><i class="fa fa-eye"></i> View</a></li>
+													                      </ul>
+													                    </div>
+												                   	</div>	
+																</td>
+															</tr>
+													
+													</table>
+													<dir-pagination-controls
+												       max-size="rowNumMS"
+												       direction-links="true"
+												       boundary-links="true" >
+												    </dir-pagination-controls>
+													     
+													    
+												</div>	
 											</div>
-
 										</div>
+
+									</div>
 										
 										<div class="tab-pane" id="addSurvey_tap">
 											<div class="row">
@@ -1190,13 +1018,13 @@ function backTap(obj){
 														<div class="row">
 															<div class="box-header with-border">
 																<div style="background: #fff;">
-																	<div class="col-sm-1">
+																	
+																	<div class="col-md-12" >
+																		
 																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToList" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey();listSurveys()"><i class="fa fa-reply"></i> Back</a> 
-																	</div>
-																	<div class="col-sm-1">
+																	
 																		<a class="btn btn-info btn-app" id="addCustToPro" ng-click="addCustToPro(true)" ><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
-																	</div>
-																	<div class="col-sm-1">
+																	
 																		<a class="btn btn-info btn-app" id = "addCompetitor" ng-click="addComToPro(true)" ><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
 																	</div>
 																</div>
@@ -1262,15 +1090,13 @@ function backTap(obj){
 														<div class="col-sm-12">
 															<div class="box-header with-border row">
 																<div style="background: #fff;">
-																	<div class="col-sm-1">
+																	<div class="col-sm-12">
 																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToListTap" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey();listSurveys()"><i class="fa fa-reply"></i> Back</a> 
+																	
+																		<a class="btn btn-info btn-app" id = "addToPro" ng-click="addCustToPro(true)"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
+																	
+																		<a class="btn btn-info btn-app" id = "addToCom" ng-click="addComToPro(true)"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
 																	</div>
-																	<!-- <div class="col-sm-1">
-																		<a class="btn btn-info btn-app" id = "addToPro"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
-																	</div>
-																	<div class="col-sm-1">
-																		<a class="btn btn-info btn-app" id = "addToCom"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
-																	</div> -->
 																</div>
 															</div>
 														</div>
@@ -1321,7 +1147,33 @@ function backTap(obj){
 											</div>
 
 										</div>
-									
+										
+										
+										<div class="tab-pane" id="viewSurvey_tap">
+											<div class="row">
+												<div class="col-sm-12">
+													<div class="col-sm-12">
+														<div class="box-header with-border row">
+															<div style="background: #fff;">
+																<div class="col-sm-12">
+																	<a href="#list_tap" class="btn btn-info btn-app" id = "backToListTap" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey();listSurveys()"><i class="fa fa-reply"></i> Back</a>																	
+																</div>
+															</div>
+														</div>
+													</div>
+													
+													<div class="col-sm-12">
+													
+														
+														
+													</div>												
+												</div>
+											</div>
+
+										</div>
+										
+										
+										
 									</div>
 								</div>
 							</div>
@@ -1331,6 +1183,33 @@ function backTap(obj){
 				</div>
 			</div>
 		</div>
+		
+		
+		<div class="modal fade modal-default" id="viewMarketShare" role="dialog">
+			<div class="modal-dialog  modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close"
+							data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">
+							<b  id="tCustomerToProduct">MARKET SHARE: <span>[{{itemId}}] {{itemName}}</span></b>
+						</h4>
+						on <i>{{msDate}}</i>
+					</div>
+					<div class="modal-body">
+						<center>
+						<div class="row" id="contentChart">
+							<div id="testChart" style="width: 400px; height:400px;"></div>
+						</div>
+						</center>
+						<br><br><br>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		
+		
 		
 		<div ng-controller="marketSurveyController" class="modal fade modal-default" id="frmAddCompetitorToProduct" role="dialog">
 			<div class="modal-dialog  modal-lg">
@@ -1381,8 +1260,8 @@ function backTap(obj){
 												</tr>
 											</table>
 											<dir-pagination-controls
-												pagination-id="compRowId" 
 										       max-size="rowNumCom"
+										       pagination-id="compRowId" 
 										       direction-links="true"
 										       boundary-links="true" >
 										    </dir-pagination-controls>
@@ -1398,7 +1277,7 @@ function backTap(obj){
 							class="btn btn-danger" data-dismiss="modal">Cancel</button>
 						&nbsp;&nbsp;
 						<button type="button" ng-click="btnComAdd()" class="btn btn-primary pull-right"
-							id="btnAdd" name="btnAdd">Add</button>
+							id="btnAdd" name="btnAdd">Save</button>
 					</div>
 				</div>
 			</div>
@@ -1465,13 +1344,30 @@ function backTap(obj){
 					<div class="modal-footer">
 						<button type="button" id="btn-cancel" ng-click="cancelCustomer()" name="btn-cancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 						&nbsp;&nbsp;
-						<button type="button" class="btn btn-primary pull-right" ng-click="btnAddCust()" id="btnAddCust" name="btnAddCust">Add</button>
+						<button type="button" class="btn btn-primary pull-right" ng-click="btnAddCust()" id="btnAddCust" name="btnAddCust">Save</button>
 					</div>
 				</div>
 			</div>
 		</div>
+	
 	</section>
 	<div id="errors"></div>
+	
+	
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.flot.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.flot.pie.js"></script>
+
+<script>
+	function labelFormatter(label, series) {
+	    return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+	            + label
+	            + "<br>"
+	            + Math.round(series.percent) + "%</div>";
+	}
+</script>
+
+
+
