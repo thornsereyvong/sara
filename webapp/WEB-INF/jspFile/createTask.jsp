@@ -176,7 +176,7 @@ $(document).ready(function() {
 						      "taskSubject":  getValueStringById("ts_subject"),
 						      "startDate":  getValueStringById("ts_startDate"),
 						      "taskContact": getJsonById("conID","ts_contact","str"),
-						      "taskModifiedBy": $.session.get("parentID")
+						      "taskCreateBy": $.session.get("parentID")
 							}),
 						beforeSend: function(xhr) {
 						    xhr.setRequestHeader("Accept", "application/json");
