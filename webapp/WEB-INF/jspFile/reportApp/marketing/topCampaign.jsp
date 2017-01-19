@@ -5,28 +5,44 @@
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 <script type="text/javascript">
 
-var app = angular.module('objApp', ['angularUtils.directives.dirPagination']);
+var app = angular.module('objApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeSpinner = false;
+}]);
 var self = this;
 app.controller('objController',['$scope','$http',function($scope, $http){	
-	$scope.searchBtnClick = function(){		
-		swal({   
-			title: "Ajax request example",   
-			text: "Submit to run ajax request",   
-			type: "info",   
-			showCancelButton: true,   
-			closeOnConfirm: false,   
-			showLoaderOnConfirm: true, 
-		}, function(){   
-						
-			setTimeout(function(){     
-				$http.get("${pageContext.request.contextPath}/campaign/list").success(function(response){
-					$scope.campaigns = response.DATA;
-					dis($scope.campaigns)
-					swal("Ajax request finished!");   
-				});   
-			}, 2000);
-		});	
-	}	
+
+	$scope.reportStartup = function(userId){
+		$http.get("${pageContext.request.contextPath}/report/campaign/startup/"+userId).success(function(response){
+			$scope.camp_parents = response.CAMPAIGNS;
+			$scope.camp_status = response.STATUS;
+			$scope.camp_types = response.TYPES;
+			$scope.users = response.ASSIGN_TO;
+			$("#startdate").val(response.DEFAULT_DATE.startDate);
+			$("#todate").val(response.DEFAULT_DATE.endDate);
+		});
+	};
+	
+	$scope.searchBtnClick = function(){	
+   		$http({
+ 			method: 'POST',
+		    url: '${pageContext.request.contextPath}/report/campaign/top-campaign',
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    },
+		    data : {
+			    "startDate":getValueStringById("startdate"),
+			    "endDate":getValueStringById("todate"),
+			    "statusId":getValueStringById("cam_status"),
+			    "typeId":getValueStringById("cam_type"),
+			    "campParentId":getValueStringById("cam_parent"),
+			    "userId":getValueStringById("cam_assignTo")
+			}
+		}).success(function(response) {	
+			$scope.campaigns = response.TOP_CAMPAIGN;
+		});
+	}; 
+
 }]);
 
 $(function(){
@@ -92,6 +108,27 @@ $(function(){
 });
 
 </script>
+
+<style>
+	#loading-bar {
+	  pointer-events: all;
+	  z-index: 99999;
+	  border: none;
+	  margin: 0px;
+	  padding: 0px;
+	  width: 100%;
+	  height: 100%;
+	  top: 0px;
+	  left: 0px;
+	  cursor: wait;
+	  position: fixed;
+	 /*  background-color: rgba(0, 0, 0, 0.6); */
+	}
+	#loading-bar-spinner {
+	  top: 50%;
+	  left: 50%;
+	}
+</style>
 <div class="content-wrapper" ng-app="objApp" ng-controller="objController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
@@ -102,7 +139,7 @@ $(function(){
 		</ol>
 	</section>
 
-	<section class="content">
+	<section class="content" data-ng-init="reportStartup('${SESSION}')">
 		
 		<div class="row">
 			<div class="col-md-12">
@@ -137,7 +174,7 @@ $(function(){
 						                <div class="form-group">
 					                  		<div class="input-group">
 				                    			<div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-					                    		<input type="text" class="form-control pull-right date2" name="startdate" id="startdate">
+					                    		<input type="text" class="form-control pull-right date2" ng-model="startdate" name="startdate" id="startdate">
 					                 	 	</div>
 						                </div>
 					              	</div>
@@ -147,7 +184,7 @@ $(function(){
 					                	<div class="form-group">
 					                  		<div class="input-group">
 						                    	<div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-						                    	<input type="text" class="form-control pull-right date2" name="todate" id="todate">
+						                    	<input type="text" class="form-control pull-right date2" ng-model="todate" name="todate" id="todate">
 						                  	</div>
 				                		</div>
 					              	</div>
@@ -168,7 +205,7 @@ $(function(){
 											<select class="form-control select2" name="cam_type"
 												style="width: 100%;" id="cam_type">
 												<option value="">-- SELECT Type --</option>
-												<option ng-repeat="ty in camp_type" value="{{ty.typeID}}">{{ty.typeName}}</option>
+												<option ng-repeat="ty in camp_types" value="{{ty.typeID}}">{{ty.typeName}}</option>
 											</select>
 										</div>
 									</div>
@@ -228,11 +265,22 @@ $(function(){
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-								
+									<tr  dir-paginate="camp in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
+										<td>{{camp.campId}}</td>
+										<td>{{camp.campName}}</td>
+										<td>{{camp.typeName}}</td>
+										<td>{{camp.statusName}}</td>
+										<td>{{camp.startDate}}</td>
+										<td>{{camp.endDate}}</td>
+										<td>{{camp.numSent}}</td>
 									</tr>
 								</tbody>
 							</table>
+							<dir-pagination-controls
+						       max-size="5"
+						       direction-links="true"
+						       boundary-links="true" >
+							</dir-pagination-controls>
 						</div>
 					</div>
 				</div>
