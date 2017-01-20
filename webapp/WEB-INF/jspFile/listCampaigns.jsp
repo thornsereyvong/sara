@@ -25,7 +25,18 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
-	
+
+	$scope.pageSize = {};
+
+	$scope.pageSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.pageSize.row = $scope.pageSize.rows[0].value;
 	
 	$scope.deleteCamp = function(campID){
 		var str = '<%=roleDelete%>';
@@ -106,80 +117,96 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 
 			<div class="panel panel-default">
   				<div class="panel-body">
-  				
-				 <div class="col-sm-4">
-				  <form class="form-inline">
-				        <div class="form-group" style="padding-top: 10px;">
-				            <label >Search :</label>
-				            <input type="text" ng-model="search" class="form-control" placeholder="Search">
-				        </div>
-				    </form>
-				    <br/>
-				  </div>
-				  <div class="clearfix"></div>
-			<div class="tablecontainer table-responsive" data-ng-init="listCampaigns()" > 
-				<%				
-				   if(roleList.equals("YES")){
-				%>
-				
-					<table class="table table-hover" >
-						<tr>
-							<th style="cursor: pointer;" ng-click="sort('campID')">Campaign ID
-								<span class="glyphicon sort-icon" ng-show="sortKey=='campID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('campName')">Campaign Name
-								<span class="glyphicon sort-icon" ng-show="sortKey=='campName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('statusName')">Status
-								<span class="glyphicon sort-icon" ng-show="sortKey=='statusName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('typeName')">Type
-								<span class="glyphicon sort-icon" ng-show="sortKey=='typeName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('startDate')">Start Date
-								<span class="glyphicon sort-icon" ng-show="sortKey=='startDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('endDate')">End Date
-								<span class="glyphicon sort-icon" ng-show="sortKey=='endDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-											
-							<th>Action</th>
-						</tr>
-
-						<tr dir-paginate="cc in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
-							<td>{{cc.campID}}</td>
-							<td>{{cc.campName}}</td>
-							<td>{{cc.statusName}}</td>
-							<td>{{cc.typeName}}</td>
-							<td>{{cc.startDate | date:'dd-MM-yyyy'}}</td>
-							<td>{{cc.endDate | date:'dd-MM-yyyy'}}</td>	
-							<td>
-								<div class="col-sm-2">
-									<div class="btn-group">
-				                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
-				                        <span class="caret"></span>
-				                        <span class="sr-only">Toggle Dropdown</span>
-				                      </button>
-				                      <ul class="dropdown-menu" role="menu">
-				                        <li><a href="${pageContext.request.contextPath}/update-campaign/{{cc.campID}}"><i class="fa fa-pencil"></i> Edit</a></li>
-				                        <li><a href="#" ng-click="deleteCamp(cc.campID)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="${pageContext.request.contextPath}/view-campaign/{{cc.campID}}"><i class="fa fa-eye"></i> View</a></li>
-				                      </ul>
-				                    </div>
-			                   	</div>
-								<%-- <a href="${pageContext.request.contextPath}/update-campaign/{{cc.campID}}" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-								<button type="button" ng-click="deleteCamp(cc.campID)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>	 --%>
-							</td>
-						</tr>
-				
-				</table>
-				<dir-pagination-controls
-			       max-size="5"
-			       direction-links="true"
-			       boundary-links="true" >
-				   </dir-pagination-controls>
-				</div>
-					
+				 	<div class="col-sm-2">
+					  	<form class="form-inline">
+					        <div class="form-group" style="padding-top: 20px;">
+					        	<div class="input-group">
+					        		 <span class="input-group-btn">
+							       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
+							      	</span>
+					        		<input type="text" ng-model="search" class="form-control" placeholder="Search">
+					        	</div>
+					        </div>
+					    </form>
+					    <br/>
+					</div>
+					<div class="col-sm-2">
+					  	<form class="form-inline">
+					        <div class="form-group" style="padding-top: 20px;">
+					        	<label>Row: </label>
+					        	<div class="input-group">
+					        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        	</div>
+					        </div>
+					    </form>
+					    <br/>
+					</div>
+					<div class="clearfix"></div>
+				<div class="col-sm-12">
+					<div class="tablecontainer table-responsive" data-ng-init="listCampaigns()" > 
+						<%				
+						   if(roleList.equals("YES")){
+						%>
+						
+							<table class="table table-hover" >
+								<tr>
+									<th style="cursor: pointer;" ng-click="sort('campID')">Campaign ID
+										<span class="glyphicon sort-icon" ng-show="sortKey=='campID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('campName')">Campaign Name
+										<span class="glyphicon sort-icon" ng-show="sortKey=='campName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('statusName')">Status
+										<span class="glyphicon sort-icon" ng-show="sortKey=='statusName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('typeName')">Type
+										<span class="glyphicon sort-icon" ng-show="sortKey=='typeName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('startDate')">Start Date
+										<span class="glyphicon sort-icon" ng-show="sortKey=='startDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('endDate')">End Date
+										<span class="glyphicon sort-icon" ng-show="sortKey=='endDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+													
+									<th>Action</th>
+								</tr>
+		
+								<tr dir-paginate="cc in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+									<td>{{cc.campID}}</td>
+									<td>{{cc.campName}}</td>
+									<td>{{cc.statusName}}</td>
+									<td>{{cc.typeName}}</td>
+									<td ng-if="cc.startDate == null">-</td>
+									<td ng-if="cc.startDate != null">{{cc.startDate | date:'dd-MM-yyyy'}}</td>
+									<td>{{cc.endDate | date:'dd-MM-yyyy'}}</td>	
+									<td>
+										<div class="col-sm-2">
+											<div class="btn-group">
+						                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
+						                        <span class="caret"></span>
+						                        <span class="sr-only">Toggle Dropdown</span>
+						                      </button>
+						                      <ul class="dropdown-menu" role="menu">
+						                        <li><a href="${pageContext.request.contextPath}/update-campaign/{{cc.campID}}"><i class="fa fa-pencil"></i> Edit</a></li>
+						                        <li><a href="#" ng-click="deleteCamp(cc.campID)"><i class="fa fa-trash"></i> Delete</a></li>
+						                        <li><a href="${pageContext.request.contextPath}/view-campaign/{{cc.campID}}"><i class="fa fa-eye"></i> View</a></li>
+						                      </ul>
+						                    </div>
+					                   	</div>
+										<%-- <a href="${pageContext.request.contextPath}/update-campaign/{{cc.campID}}" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+										<button type="button" ng-click="deleteCamp(cc.campID)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i> Delete</button>	 --%>
+									</td>
+								</tr>
+						
+						</table>
+						<dir-pagination-controls
+					       max-size="pageSize.row"
+					       direction-links="true"
+					       boundary-links="true" >
+						   </dir-pagination-controls>
+						</div>
+					</div>
 				<%	   
 				   }else{
 					   

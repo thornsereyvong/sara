@@ -102,9 +102,6 @@ $(function(){
 		        break;
 		}				
 	});
-	
-	
-	
 });
 
 </script>
@@ -174,7 +171,7 @@ $(function(){
 						                <div class="form-group">
 					                  		<div class="input-group">
 				                    			<div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-					                    		<input type="text" class="form-control pull-right date2" ng-model="startdate" name="startdate" id="startdate">
+					                    		<input type="text" class="form-control pull-right date2" readonly="readonly" ng-model="startdate" name="startdate" id="startdate">
 					                 	 	</div>
 						                </div>
 					              	</div>
@@ -184,7 +181,7 @@ $(function(){
 					                	<div class="form-group">
 					                  		<div class="input-group">
 						                    	<div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-						                    	<input type="text" class="form-control pull-right date2" ng-model="todate" name="todate" id="todate">
+						                    	<input type="text" class="form-control pull-right date2" readonly="readonly" ng-model="todate" name="todate" id="todate">
 						                  	</div>
 				                		</div>
 					              	</div>
