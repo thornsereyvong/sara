@@ -1253,7 +1253,7 @@ $(document).ready(function(){
 													<th><label>Competitor Name</label></th>
 													<th class="text-center"></th>
 												</tr>
-												<tr ng-repeat = "com in competitors |orderBy:sortKey:reverse |filter:searchCom |itemsPerPage:rowNumCom" pagination-id="compRowId"><!-- dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6" -->
+												<tr dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:searchCom |itemsPerPage:rowNumCom" pagination-id="compRowId"><!-- dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6" -->
 													<td class="col-md-3">{{com.comId}}</td>
 													<td>{{com.comName}}</td>
 													<td class="col-md-1 text-center"><input type="checkbox" ng-checked="com.meDataSource" data-index="{{$index}}" onClick="clkCompetitor(this)"  name="competitor" value="{{com.comId}}" /></td>
