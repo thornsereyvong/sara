@@ -180,7 +180,8 @@
 								<td>{{camp.campType}}</td>
 								<td>{{camp.campStatus}}</td>
 								<td>{{camp.campBudget | number:2}}</td>	
-								<td>{{camp.campStartDate}}</td>							
+								<td ng-if="camp.campStartDate == ''">-</td>
+								<td ng-if="camp.campStartDate != ''">{{camp.campStartDate}}</td>							
 								<td>{{camp.campEndDate}}</td>
 								
 							</tr>
@@ -239,8 +240,10 @@
 								<td>{{lead.leadName}}</td>								
 								<td>{{lead.leadStatus}}</td>
 								<td>{{lead.leadCompany}}</td>
-								<td>{{lead.leadEmail}} </td>								
-								<td>{{lead.leadPhone}}</td>
+								<td ng-if="lead.leadEmail == ''">-</td>
+								<td ng-if="lead.leadEmail != ''">{{lead.leadEmail}} </td>	
+								<td ng-if="lead.leadPhone == ''">-</td>							
+								<td ng-if="lead.leadPhone != ''">{{lead.leadPhone}}</td>
 							</tr>
 							<tr>
 								<td colspan="6">
@@ -296,10 +299,14 @@
 								<tr dir-paginate="cust in customers |filter:search_customer |itemsPerPage:pageSize.row" pagination-id="cust_id"  class="ng-cloak">
 									<td><a href="${pageContext.request.contextPath}/view-customer/{{cust.custId}}">{{cust.custId}}</a></td>
 									<td>{{cust.custName}}</td>
-									<td>{{cust.custIndustry}}</td>
-									<td>{{cust.custLeadSource}}</td>
-									<td>{{cust.custPhone}}</td>
-									<td>{{cust.custEmail}}</td>
+									<td ng-if="cust.custIndustry == ''">-</td>
+									<td ng-if="cust.custIndustry != ''">{{cust.custIndustry}}</td>
+									<td ng-if="cust.custLeadSource == ''">-</td>
+									<td ng-if="cust.custLeadSource != ''">{{cust.custLeadSource}}</td>
+									<td ng-if="cust.custPhone == ''">-</td>
+									<td ng-if="cust.custPhone != ''">{{cust.custPhone}}</td>
+									<td ng-if="cust.custEmail == ''">-</td>
+									<td ng-if="cust.custEmail != ''">{{cust.custEmail}}</td>
 								</tr>
 								<tr>
 									<td colspan="6">
@@ -359,7 +366,8 @@
 									<td>[{{con.custId}}] {{con.custName}}</td>
 									<td>{{con.leadSource}}</td>
 									<td>{{con.conPhone}}</td>
-									<td>{{con.conEmail}}</td>
+									<td ng-if="con.conEmail == ''">-</td>
+									<td ng-if="con.conEmail != ''">{{con.conEmail}}</td>
 								</tr>
 								<tr>
 									<td colspan="6">
@@ -408,18 +416,22 @@
 								<tr>
 									<th>ID</th>
 									<th>Name</th>
-									<th>Amount</th>
 									<th>Customer</th>
+									<th>Amount</th>
+									<th>Stage</th>
 									<th>Campaign</th>
 									<th>Lead Source</th>
 								</tr>
 								<tr dir-paginate="op in opportunities |filter:search_opportunity |itemsPerPage:pageSize.row" pagination-id="opp_id"  class="ng-cloak">
 									<td><a href="${pageContext.request.contextPath}/view-opportunity/{{op.opId}}">{{op.opId}}</a></td>
 									<td>{{op.opName}}</td>
-									<td>{{op.opAmount}}</td>
 									<td>[{{op.opCustId}}] {{op.opCustName}}</td>
-									<td>[{{op.opCampId}}] {{op.opCampName}}</td>
-									<td>{{op.opLeadSource}}</td>
+									<td>{{op.opAmount}}</td>
+									<td>{{op.opStage}}</td>
+									<td ng-if="op.opCampId == ''">-</td>
+									<td ng-if="op.opCampId != ''">[{{op.opCampId}}] {{op.opCampName}}</td>
+									<td ng-if="op.opLeadSource == ''">-</td>
+									<td ng-if="op.opLeadSource != ''">{{op.opLeadSource}}</td>
 								</tr>
 								<tr>
 									<td colspan="6">
@@ -476,7 +488,8 @@
 								<tr dir-paginate="call in calls |filter:search_call |itemsPerPage:pageSize.row" pagination-id="call_id"  class="ng-cloak">
 									<td><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}">{{call.callId}}</a></td>
 									<td>{{call.callSubject}}</td>
-									<td><span ng-if=" call.callRelatedToType != '' "><span class="badge bg-red">{{call.callRelatedToType}}</span> <span>[{{call.callRelatedToId}}] {{call.callRelatedTo}}</span></span></td>
+									<td ng-if="call.callRelatedToType == ''">-</td>
+									<td ng-if=" call.callRelatedToType != '' "><span ><span class="badge bg-red">{{call.callRelatedToType}}</span> <span>[{{call.callRelatedToId}}] {{call.callRelatedTo}}</span></span></td>
 									<td>{{call.callStartDate}}</td>
 									<td>{{call.callDuration}} min</td>
 									<td>{{call.callStatus}}</td>
@@ -538,8 +551,10 @@
 								<tr dir-paginate="meet in meetings |filter:search_meeting |itemsPerPage:pageSize.row"  pagination-id="meet_id"  class="ng-cloak">
 									<td><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a></td>
 									<td>{{meet.meetingSubject}}</td>
-									<td><span ng-if=" meet.meetingRelatedToType != '' "><span  class="badge bg-red">{{meet.meetingRelatedToType}}</span> <span>[{{meet.meetingRelatedToId}}] {{meet.relatedRelatedTo}}</span></span></td>
-									<td>{{meet.meetingLocation}}</td>
+									<td ng-if="meet.meetingRelatedToType == '' ">-</td>
+									<td ng-if="meet.meetingRelatedToType != '' "><span><span  class="badge bg-red">{{meet.meetingRelatedToType}}</span> <span>[{{meet.meetingRelatedToId}}] {{meet.relatedRelatedTo}}</span></span></td>
+									<td ng-if="meet.meetingLocation == ''">-</td>
+									<td ng-if="meet.meetingLocation != ''">{{meet.meetingLocation}}</td>
 									<td>{{meet.meetingStartDate}}</td>
 									<td>{{meet.meetingEndDate}}</td>
 									<td>{{meet.meetingStatus}}</td>
@@ -600,11 +615,13 @@
 							<tr dir-paginate="task in tasks |filter:search_task |itemsPerPage:pageSize.row" pagination-id="task_id"  class="ng-cloak">
 								<td><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a></td>
 								<td>{{task.taskSubject}}</td>
-								<td><span ng-if=" task.taskRelatedToType != '' "><span  class="badge bg-red">{{task.taskRelatedToType}}</span> <span>[{{task.taskRelatedToId}}] {{task.taskRelatedTo}}</span></span></td>
+								<td ng-if=" task.taskRelatedToType == '' ">-</td>
+								<td ng-if=" task.taskRelatedToType != '' "><span><span  class="badge bg-red">{{task.taskRelatedToType}}</span> <span>[{{task.taskRelatedToId}}] {{task.taskRelatedTo}}</span></span></td>
 								<td>{{task.taskPriority}}</td>
 								<td>{{task.taskStatus}}</td>
 								<td>{{task.taskStartDate}}</td>
-								<td>{{task.taskDueDate}}</td>
+								<td ng-if="task.taskDueDate == ''">-</td>
+								<td ng-if="task.taskDueDate != ''">{{task.taskDueDate}}</td>
 							</tr>
 							<tr>
 								<td colspan="7">
@@ -657,7 +674,8 @@
 							<tr dir-paginate="note in notes|filter:search_note |itemsPerPage:pageSize.row"  pagination-id="note_id"  class="ng-cloak">
 								<td><a href="${pageContext.request.contextPath}/view-note/{{note.noteId}}">{{note.noteId}}</a></td>
 								<td>{{note.noteSubject}} </td>
-								<td><span ng-if=" note.noteRelatedToType != '' "><span  class="badge bg-red">{{note.noteRelatedToType}}</span> <span>[{{note.noteRelatedToId}}] {{note.noteRelatedTo}}</span></span></td>
+								<td ng-if=" note.noteRelatedToType == '' ">-</td>
+								<td ng-if=" note.noteRelatedToType != '' "><span><span  class="badge bg-red">{{note.noteRelatedToType}}</span> <span>[{{note.noteRelatedToId}}] {{note.noteRelatedTo}}</span></span></td>
 								<td>{{note.noteCreatedDate}}</td>
 								
 							</tr>
@@ -715,8 +733,10 @@
 							<tr dir-paginate="event in events|filter:search_event |itemsPerPage:pageSize.row"  pagination-id="event_id"  class="ng-cloak">
 								<td><a href="${pageContext.request.contextPath}/view-event/{{event.eventId}}">{{event.eventId}}</a></td>
 								<td>{{event.eventName}} </td>
-								<td><span ng-if=" event.eventRelatedToType != '' "><span  class="badge bg-red">{{event.eventRelatedToType}}</span> <span>[{{event.eventRelatedToId}}] {{event.eventRelatedTo}}</span></span></td>
-								<td>{{event.loName}}</td>
+								<td ng-if=" event.eventRelatedToType == '' ">-</td>
+								<td ng-if=" event.eventRelatedToType != '' "><span><span  class="badge bg-red">{{event.eventRelatedToType}}</span> <span>[{{event.eventRelatedToId}}] {{event.eventRelatedTo}}</span></span></td>
+								<td ng-if="event.eventLocation == ''">-</td>
+								<td ng-if="event.eventLocation != ''">{{event.eventLocation}}</td>
 								<td>{{event.eventStartDate}}</td>
 								<td>{{event.eventEndDate}}</td>
 								<td>{{event.eventBudget | number:2}}</td>	
@@ -778,8 +798,10 @@
 								<td>{{case.caseStatus}}</td>
 								<td>{{case.casePriority}}</td>
 								<td>{{case.caseType}} </td>	
-								<td><span ng-if=" case.conId !='' ">[{{case.conId}}] {{case.caseContact}}</span></td>							
-								<td><span ng-if=" case.custId !='' ">[{{case.custId}}] {{case.caseCustomer}}</span></td>
+								<td ng-if=" case.conId =='' ">-</td>
+								<td ng-if=" case.conId !='' "><span>[{{case.conId}}] {{case.caseContact}}</span></td>	
+								<td ng-if=" case.custId =='' ">-</td>						
+								<td ng-if=" case.custId !='' "><span>[{{case.custId}}] {{case.caseCustomer}}</span></td>
 							</tr>
 							<tr>
 								<td colspan="7">

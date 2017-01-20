@@ -50,9 +50,9 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			$scope.lead_industry = response.INDUSTRY;
 			$scope.campaigns = response.CAMPAIGN;
 			$scope.child = response.CHILD;	
-			if($scope.child === "NOT_EXIST"){
+			/* if($scope.child === "NOT_EXIST"){
 				$("#lea_assignTo").prop("disabled", true);
-			}
+			} */
 		});
 	};
 }]);
@@ -536,7 +536,7 @@ padding-right: 10px;
 								<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
 									<option value="">-- SELECT Status --</option>
 									<option ng-repeat="u in lead_status" value="{{u.statusID}}">{{u.statusName}}</option> 
-								</select>
+								</select>	
 							</div>
 						</div>
 							
