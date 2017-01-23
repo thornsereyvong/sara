@@ -79,7 +79,31 @@
                         		{ value: "30", label: "30" },
                         		];
 				$scope.pageSize.row = $scope.pageSize.rows[0].value;
+				
+				
+				
+				
+				$scope.setting = function(){
+					
+					$("#frm_setting").modal({backdrop: "static"});
+				}
+				
+				
+				
+				
 			} ]);
+	
+	$(function(){
+		
+		$(".todo-list").sortable({
+		    placeholder: "sort-highlight",
+		    handle: ".handle",
+		    forcePlaceholderSize: true,
+		    zIndex: 999999
+  		});	
+	
+	});
+	
 </script>
 
 <div class="content-wrapper">
@@ -108,6 +132,9 @@
 				<li><a href="#tabCases" data-toggle="tab">Cases</a></li>
 				<li><a href="#tabQuote" data-toggle="tab">Quotation</a></li>
 				<li><a href="#tabSaleOrder" data-toggle="tab">Sale Order</a></li>
+				
+					
+				<li class="pull-right header"><button ng-click="setting()" type="button" class="btn btn-default btn-sm"><i class="fa fa-gear"></i></button></li>
 			</ul>
 			<div class="tab-content no-padding">
 				<div class="chart tab-pane active " id="tabCamp">
@@ -907,10 +934,158 @@
 				</div>
 			</div>
 		</div>
-
+		
+		
+		<input type="hidden" id="btn_frm_setting" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="frm_setting" />
+		<div class="modal fade modal-default" id="frm_setting" role="dialog">
+			<div class="modal-dialog  modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" ng-click="ccSetting()" class="close"
+							data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">
+							<b  id="tCompetitorToProduct">Dashboard Setting</b>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-sm-12">
+							
+								<div class="nav-tabs-custom" data-ng-init="dashSettingStartup()">
+									<ul class="nav nav-tabs ui-sortable-handle">
+										<li class="active"><a href="#tabModule" data-toggle="tab">Module</a></li>
+										<li><a href="#tabChart" data-toggle="tab">Chart</a> </li>
+									</ul>
+								</div>
+								<div class="tab-content no-padding">
+									<div class="chart tab-pane active " id="tabModule">
+										<ul class="todo-list ui-sortable">
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="CA" name="module">
+												<span class="text">Campaign</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="LE" name="module">
+												<span class="text">Lead</span>										
+											</li>
+											
+											
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="CUST" name="module">
+												<span class="text">Customer</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="CO" name="module">
+												<span class="text">Contact</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="OP" name="module">
+												<span class="text">Opportunity</span>										
+											</li>
+											
+											
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="AC_CL" name="module">
+												<span class="text">Call</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="AC_ME" name="module">
+												<span class="text">Meeting</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="AC_TA" name="module">
+												<span class="text">Task</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="AC_NO" name="module">
+												<span class="text">Note</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="AC_EV" name="module">
+												<span class="text">Event</span>										
+											</li>
+											
+											
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="CS" name="module">
+												<span class="text">Case & Solution</span>										
+											</li>
+											
+											
+											
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="Q" name="module">
+												<span class="text">Quotation</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="S" name="module">
+												<span class="text">Sale Order</span>										
+											</li>
+											
+										</ul>
+									</div>
+									<div class="chart tab-pane" id="tabChart">
+										<ul class="todo-list ui-sortable">
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="S" name="module">
+												<span class="text">All Opportunities By Lead Source By Outcome</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="S" name="module">
+												<span class="text">All Opportunities by Lead Source</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="S" name="module">
+												<span class="text">Campaign ROI</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="S" name="module">
+												<span class="text">My Pipeline By Sales Stage</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="S" name="module">
+												<span class="text">Outcome by Month</span>										
+											</li>
+											<li class="">
+												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
+												<input type="checkbox" value="S" name="module">
+												<span class="text">Pipeline By Sales Stage</span>										
+											</li>
+										</ul>
+									</div>
+								</div>							
+							</div>
+							
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="btnCCSetting" ng-click="ccSetting()" name="btnCCSetting" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+						&nbsp;&nbsp;
+						<button type="button"  class="btn btn-primary pull-right" id="btnSaveSetting" ng-click="btnSaveSettingClick()"  name="btnSaveSetting">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div id="errors"></div>
 	</section>
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-
