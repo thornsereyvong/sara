@@ -19,14 +19,23 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 				$scope.cases = response.DATA;
 			});
 		} ;
-
-	
-	
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
+
+	$scope.pageSize = {};
+
+	$scope.pageSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.pageSize.row = $scope.pageSize.rows[0].value;
 	
 	$scope.deleteCon = function(oppID){
 		
@@ -114,117 +123,113 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 
 			<div class="panel panel-default">
   				<div class="panel-body">
-  				
-				 <div class="col-sm-4">
-				  <form class="form-inline">
-				        <div class="form-group" style="padding-top: 10px;">
-				            <label >Search :</label>
-				            <input type="text" ng-model="search" class="form-control" placeholder="Search">
-				        </div>
-				    </form>
-				    <br/>
-				  </div>
-				  <div class="clearfix"></div>
-			<div class="tablecontainer table-responsive" data-ng-init="listCase()" > 
-				<%
-				   if(roleList.equals("YES")){
-				%>
-				<table class="table table-hover" >
-						<tr>
-							<th style="cursor: pointer;" ng-click="sort('caseId')">Case ID
-								<span class="glyphicon sort-icon" ng-show="sortKey=='caseId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('subject')">Subject
-								<span class="glyphicon sort-icon" ng-show="sortKey=='subject'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('statusName')">Status
-								<span class="glyphicon sort-icon" ng-show="sortKey=='statusName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('caseTypeName')">Type 
-								<span class="glyphicon sort-icon" ng-show="sortKey=='caseTypeName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('priorityName')">priority 
-								<span class="glyphicon sort-icon" ng-show="sortKey=='priorityName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>
-							<th style="cursor: pointer;" ng-click="sort('custName')">Customer 
-								<span class="glyphicon sort-icon" ng-show="sortKey=='custName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-							</th>				
-							<th>Action</th>
-						</tr>
-
-						<tr dir-paginate="cc in cases |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
-							<td>{{cc.caseId}}</td>
-							<td>{{cc.subject}}</td>
-							<td>{{cc.statusName}}</td>
-							<td>{{cc.caseTypeName}}</td>
-							<td>{{cc.priorityName}}</td>
-							<td>[{{cc.custID}}] {{cc.custName}} </td>	
-							<td>
-								<div class="col-sm-2">
-									<div class="btn-group">
-				                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
-				                        <span class="caret"></span>
-				                        <span class="sr-only">Toggle Dropdown</span>
-				                      </button>
-				                      <ul class="dropdown-menu" role="menu">
-				                        <li><a href="${pageContext.request.contextPath}/update-case/{{cc.caseId}}"><i class="fa fa-pencil"></i> Edit</a></li>
-				                        <li><a href="#" ng-click="deleteCon(cc.caseId)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="${pageContext.request.contextPath}/view-case/{{cc.caseId}}"><i class="fa fa-eye"></i> View</a></li>
-				                      </ul>
-				                    </div>
-			                   	</div>
-			                  
-							</td>
-						</tr>
-				
-				</table>
-				<dir-pagination-controls
-			       max-size="5"
-			       direction-links="true"
-			       boundary-links="true" >
-			    </dir-pagination-controls>
-			    <%	   
-				   }else{
-					   
-				%>
-					<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>
-				<%
-				   }
-				
-				%>  
-			    
-			    
-			</div>	
-				
-
+  					<div class="col-sm-2">
+					  	<form class="form-inline">
+					        <div class="form-group" style="padding-top: 20px;">
+					        	<div class="input-group">
+					        		 <span class="input-group-btn">
+							       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
+							      	</span>
+					        		<input type="text" ng-model="search" class="form-control" placeholder="Search">
+					        	</div>
+					        </div>
+					    </form>
+					    <br/>
+					</div>
+					<div class="col-sm-2">
+					  	<form class="form-inline">
+					        <div class="form-group" style="padding-top: 20px;">
+					        	<label>Row: </label>
+					        	<div class="input-group">
+					        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        	</div>
+					        </div>
+					    </form>
+					    <br/>
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-sm-12">
+						<div class="tablecontainer table-responsive" data-ng-init="listCase()" > 
+							<%
+							   if(roleList.equals("YES")){
+							%>
+							<table class="table table-hover" >
+								<tr>
+									<th style="cursor: pointer;" ng-click="sort('caseId')">Case ID
+										<span class="glyphicon sort-icon" ng-show="sortKey=='caseId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('subject')">Subject
+										<span class="glyphicon sort-icon" ng-show="sortKey=='subject'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('statusName')">Status
+										<span class="glyphicon sort-icon" ng-show="sortKey=='statusName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('caseTypeName')">Type 
+										<span class="glyphicon sort-icon" ng-show="sortKey=='caseTypeName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('priorityName')">priority 
+										<span class="glyphicon sort-icon" ng-show="sortKey=='priorityName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>
+									<th style="cursor: pointer;" ng-click="sort('custName')">Customer 
+										<span class="glyphicon sort-icon" ng-show="sortKey=='custName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+									</th>				
+									<th>Action</th>
+								</tr>
+		
+								<tr dir-paginate="cc in cases |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+									<td>{{cc.caseId}}</td>
+									<td>{{cc.subject}}</td>
+									<td>{{cc.statusName}}</td>
+									<td>{{cc.caseTypeName}}</td>
+									<td>{{cc.priorityName}}</td>
+									<td ng-if="cc.custID == null">-</td>
+									<td ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}} </td>	
+									<td>
+										<div class="col-sm-2">
+											<div class="btn-group">
+						                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
+						                        <span class="caret"></span>
+						                        <span class="sr-only">Toggle Dropdown</span>
+						                      </button>
+						                      <ul class="dropdown-menu" role="menu">
+						                        <li><a href="${pageContext.request.contextPath}/update-case/{{cc.caseId}}"><i class="fa fa-pencil"></i> Edit</a></li>
+						                        <li><a href="#" ng-click="deleteCon(cc.caseId)"><i class="fa fa-trash"></i> Delete</a></li>
+						                        <li><a href="${pageContext.request.contextPath}/view-case/{{cc.caseId}}"><i class="fa fa-eye"></i> View</a></li>
+						                      </ul>
+						                    </div>
+					                   	</div>
+					                  
+									</td>
+								</tr>
+							</table>
+							<dir-pagination-controls
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
+						    <%	   
+							   }else{
+								   
+							%>
+								<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>
+							<%
+							   }
+							
+							%>  
+						</div>	
+					</div>
 			  </div>
-		</div>
+			</div>
 			</div>
 			<!-- /.box-body -->
-			<div class="box-footer">
-				
-			</div>
+			<div class="box-footer"></div>
 			<!-- /.box-footer-->
 		</div>
-		
 		<!-- /.box -->
-
-
 	</section>
 	<!-- /.content -->
-
-
 </div>
-
 <!-- /.content-wrapper -->
-
-
-
-<!-- /.content-wrapper -->
-
-
-
-
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 

@@ -138,7 +138,7 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 			<div class="clearfix"></div>
 			<div class="panel panel-default">
   				<div class="panel-body">
-  					<div class="col-sm-3">
+  					<div class="col-sm-2">
 					  	<form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -164,11 +164,11 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-					<div class="tablecontainer table-responsive" data-ng-init="listOpportunity('${SESSION}')" >
+						<div class="tablecontainer table-responsive" data-ng-init="listOpportunity('${SESSION}')" >
 						<%	
 							if(roleList.equals("YES")){
 						%> 
-						<table class="table table-hover" >
+							<table class="table table-hover" >
 								<tr>
 									<th style="cursor: pointer;" ng-click="sort('opId')">Opportunity ID
 										<span class="glyphicon sort-icon" ng-show="sortKey=='opId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
