@@ -619,7 +619,8 @@
 								<td ng-if=" task.taskRelatedToType != '' "><span><span  class="badge bg-red">{{task.taskRelatedToType}}</span> <span>[{{task.taskRelatedToId}}] {{task.taskRelatedTo}}</span></span></td>
 								<td>{{task.taskPriority}}</td>
 								<td>{{task.taskStatus}}</td>
-								<td>{{task.taskStartDate}}</td>
+								<td ng-if="task.taskStartDate == ''">-</td>
+								<td ng-if="task.taskStartDate != ''">{{task.taskStartDate}}</td>
 								<td ng-if="task.taskDueDate == ''">-</td>
 								<td ng-if="task.taskDueDate != ''">{{task.taskDueDate}}</td>
 							</tr>
@@ -677,7 +678,6 @@
 								<td ng-if=" note.noteRelatedToType == '' ">-</td>
 								<td ng-if=" note.noteRelatedToType != '' "><span><span  class="badge bg-red">{{note.noteRelatedToType}}</span> <span>[{{note.noteRelatedToId}}] {{note.noteRelatedTo}}</span></span></td>
 								<td>{{note.noteCreatedDate}}</td>
-								
 							</tr>
 							<tr>
 								<td colspan="4">

@@ -212,7 +212,6 @@ app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 													
 									<th>Action</th>
 								</tr>
-		
 								<tr dir-paginate="qq in saleOrder |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
 									<td>{{qq.saleId}}</td>
 									<td>{{qq.saleReference}}</td>
@@ -223,7 +222,6 @@ app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 									<td class="dis-number">{{qq.netTotalAmt | number:2}}</td>	
 									<td>{{qq.PostStatus}}</td>	
 									<td>
-										
 										<div class="col-sm-2">
 											<div class="btn-group">
 						                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
@@ -238,9 +236,6 @@ app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 						                      </ul>
 						                    </div>
 					                   	</div>
-										
-										
-										
 									</td>
 								</tr>
 							</table>
