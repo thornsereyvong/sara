@@ -45,7 +45,15 @@ public class CampaignReportController {
 		HttpEntity<Object> request = new HttpEntity<Object>(campaingReport, header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/report/campaign/top-campaign", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
-	}		
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/lead-by-campaign",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> LeadByCampaign(@RequestBody MeDataSource dataSource, HttpServletRequest req){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/report/campaign/lead-by-campaign", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
+	}	
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

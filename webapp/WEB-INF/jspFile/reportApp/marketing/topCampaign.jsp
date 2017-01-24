@@ -11,6 +11,18 @@ var app = angular.module('objApp', ['angularUtils.directives.dirPagination','ang
 var self = this;
 app.controller('objController',['$scope','$http',function($scope, $http){	
 
+	$scope.pageSize = {};
+
+	$scope.pageSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.pageSize.row = $scope.pageSize.rows[0].value;
+	
 	$scope.reportStartup = function(userId){
 		$http.get("${pageContext.request.contextPath}/report/campaign/startup/"+userId).success(function(response){
 			$scope.camp_parents = response.CAMPAIGNS;
@@ -19,6 +31,8 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 			$scope.users = response.ASSIGN_TO;
 			$("#startdate").val(response.DEFAULT_DATE.startDate);
 			$("#todate").val(response.DEFAULT_DATE.endDate);
+			$('#startdate').prop("disabled", true);  
+	        $('#todate').prop("disabled", true); 
 		});
 	};
 	
@@ -66,7 +80,6 @@ $(function(){
 		}		  
 	});
 	
-	
 	$("#datafilter").change(function(){
 		var action = $("#datafilter").val();
 		switch(action) {
@@ -74,7 +87,8 @@ $(function(){
 		        $('#startdate').prop("disabled", true);  
 		        $('#todate').prop("disabled", true);
 		        $('#startdate').val($('#startdate').attr('data-default-date'));  
-		        $('#todate').val($('#todate').attr('data-default-date'));  
+		        $('#todate').val($('#todate').attr('data-default-date')); 
+		        angular.element('#objController').scope().reportStartup('${SESSION}');
 		        break;
 		    case 'range':
 		    	$('#startdate').prop("disabled", false);  
@@ -126,7 +140,7 @@ $(function(){
 	  left: 50%;
 	}
 </style>
-<div class="content-wrapper" ng-app="objApp" ng-controller="objController">
+<div class="content-wrapper" ng-app="objApp" ng-controller="objController" id="objController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Top Campaign</h1>
@@ -151,7 +165,6 @@ $(function(){
 						<form method="post" id="frmFilter">	
 							<div class="row">
 								<div class="col-sm-12">
-									
 									<div class="col-md-3">
 										<div class="form-group">
 											<label>Date Filter</label> <select name="datafilter"
@@ -227,24 +240,31 @@ $(function(){
 											</select>
 										</div>
 									</div>
-					              	
-					              	
-					              	
 								</div>								
 							</div>
 						</form>
 					</div>
 					<div class="box-footer">						
-						<button ng-click="searchBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-default">
-							<i class="fa fa-print"></i> &nbsp;Print
-						</button>						
+						<div class="col-sm-2">
+						  	<form class="form-inline">
+						  		<div class="form-group">
+						        	<button ng-click="searchBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-default">
+										<i class="fa fa-print"></i> &nbsp;Print
+									</button>
+						        </div>
+						        <div class="form-group">
+						        	<div class="input-group">
+						        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+						        	</div>
+						        </div>
+						    </form>
+						</div>					
 						<button ng-click="searchBtnClick()" type="button" name="btnsearch" id="btnsearch" class="btn btn-info pull-right">
 							<i class="fa fa-search"></i> &nbsp;Search
 						</button>
 					</div>
 				</div>
 			</div>
-			
 			<div class="col-md-12">
 				<div class="box box-success">
 					<div class="box-body">
@@ -252,7 +272,7 @@ $(function(){
 							<table class="table table-hover">
 								<thead>
 									<tr>
-										<th>Campaign ID</th>
+										<th>ID</th>
 										<th>Campaign Name</th>
 										<th>Type</th>
 										<th>Status</th>
@@ -262,19 +282,20 @@ $(function(){
 									</tr>
 								</thead>
 								<tbody>
-									<tr  dir-paginate="camp in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
+									<tr  dir-paginate="camp in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
 										<td>{{camp.campId}}</td>
 										<td>{{camp.campName}}</td>
 										<td>{{camp.typeName}}</td>
 										<td>{{camp.statusName}}</td>
-										<td>{{camp.startDate}}</td>
+										<td ng-if="camp.startDate == null">-</td>
+										<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
 										<td>{{camp.endDate}}</td>
 										<td>{{camp.numSent}}</td>
 									</tr>
 								</tbody>
 							</table>
 							<dir-pagination-controls
-						       max-size="5"
+						       max-size="pageSize.row"
 						       direction-links="true"
 						       boundary-links="true" >
 							</dir-pagination-controls>

@@ -218,9 +218,7 @@ $(document).ready(function(){
 								<ul class="treeview-menu" id="repCampaignUl">
 									<li class="" id="repCampaignAct">
 										<a href="${pageContext.request.contextPath}/report/marketing/campaign/top-campaign"><i id="repCampaignIcon1" class="fa fa-circle-o color_menu"></i> Top Campaign</a>
-									</li>
-									<li>
-										<a href="#"><i class="fa fa-circle-o color_menu"></i> Lead By Campaign</a>
+										<a href="${pageContext.request.contextPath}/report/marketing/campaign/lead-by-campaign"><i id="repCampaignIcon2" class="fa fa-circle-o color_menu"></i> Lead By Campaign</a>
 									</li>
 								</ul>
 							</li>

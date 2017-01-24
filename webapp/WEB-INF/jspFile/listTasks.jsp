@@ -28,6 +28,18 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
+
+	$scope.pageSize = {};
+
+	$scope.pageSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.pageSize.row = $scope.pageSize.rows[0].value;
 	
 	$scope.deleteCon = function(oppID){
 		
@@ -129,93 +141,113 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 				<div class="clearfix"></div>
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<div class="col-sm-4">
-								<form class="form-inline">
-									<div class="form-group" style="padding-top: 10px;">
-										<label>Search :</label> <input type="text" ng-model="search"
-											class="form-control" placeholder="Search">
-									</div>
-								</form>
-								<br />
+							<div class="col-sm-2">
+							  	<form class="form-inline">
+							        <div class="form-group" style="padding-top: 20px;">
+							        	<div class="input-group">
+							        		 <span class="input-group-btn">
+									       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
+									      	</span>
+							        		<input type="text" ng-model="search" class="form-control" placeholder="Search">
+							        	</div>
+							        </div>
+							    </form>
+							    <br/>
+							</div>
+							<div class="col-sm-2">
+							  	<form class="form-inline">
+							        <div class="form-group" style="padding-top: 20px;">
+							        	<label>Row: </label>
+							        	<div class="input-group">
+							        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+							        	</div>
+							        </div>
+							    </form>
+							    <br/>
 							</div>
 							<div class="clearfix"></div>
+							<div class="col-sm-12">
 							<% if (roleList.equals("YES")) { %>
-							<div class="table-responsive">
-								<table class="table table-hover" data-ng-init="listContact()">
-									<tr>
-										<th style="cursor: pointer;" ng-click="sort('taskId')">Task
-											ID <span class="glyphicon sort-icon"
-											ng-show="sortKey=='taskId'"
-											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('taskSubject')">Subject
-											<span class="glyphicon sort-icon"
-											ng-show="sortKey=='taskSubject'"
-											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('taskStartDate')">Start
-											Date <span class="glyphicon sort-icon"
-											ng-show="sortKey=='taskStartDate'"
-											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('taskDueDate')">Due
-											Date <span class="glyphicon sort-icon"
-											ng-show="sortKey=='taskDueDate'"
-											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-	
-										<th style="cursor: pointer;" ng-click="sort('taskStatusName')">Status
-											<span class="glyphicon sort-icon"
-											ng-show="sortKey=='taskStatusName'"
-											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('conFirstname')">Contact
-											<span class="glyphicon sort-icon"
-											ng-show="sortKey=='conFirstname'"
-											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-	
-										<th>Action</th>
-									</tr>
-									<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
-										<td>{{cc.taskId}}</td>
-										<td>{{cc.taskSubject}}</td>
-										<td>{{cc.taskStartDate | date:'dd-MM-yyyy'}}</td>
-										<td>{{cc.taskDueDate | date:'dd-MM-yyyy'}}</td>
-										<td>{{cc.taskStatusName}}</td>
-										<td>{{cc.conFirstname}} {{cc.conLastname}}</td>
-										<td>
-											<div class="col-sm-2">
-												<div class="btn-group">
-							                      <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
-							                        <span class="caret"></span>
-							                        <span class="sr-only">Toggle Dropdown</span>
-							                      </button>
-							                      <ul class="dropdown-menu" role="menu">
-							                       <li><a href="${pageContext.request.contextPath}/update-task/{{cc.taskId}}"><i
-															class="fa fa-pencil"></i> Edit</a></li>
-													<li><a href="#" ng-click="deleteCon(cc.taskId)"><i
-															class="fa fa-trash"></i> Delete</a></li>
-													<li><a href="${pageContext.request.contextPath}/view-task/{{cc.taskId}}"><i class="fa fa-eye"></i> View</a></li>
-							                      </ul>
-							                    </div>
-						                   	</div>	
-										</td>
-									</tr>
-								</table>
-							</div>
-							<dir-pagination-controls max-size="5" direction-links="true"
-									boundary-links="true"> </dir-pagination-controls>
-								<%
-									} else {
-								%>
-								<div class="alert alert-warning" role="alert">
-									<i class="glyphicon glyphicon-cog"></i> You don't have
-									permission list data
+								<div class="table-responsive">
+									<table class="table table-hover" data-ng-init="listContact()">
+										<tr>
+											<th style="cursor: pointer;" ng-click="sort('taskId')">Task
+												ID <span class="glyphicon sort-icon"
+												ng-show="sortKey=='taskId'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('taskSubject')">Subject
+												<span class="glyphicon sort-icon"
+												ng-show="sortKey=='taskSubject'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('taskStartDate')">Start
+												Date <span class="glyphicon sort-icon"
+												ng-show="sortKey=='taskStartDate'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('taskDueDate')">Due
+												Date <span class="glyphicon sort-icon"
+												ng-show="sortKey=='taskDueDate'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+		
+											<th style="cursor: pointer;" ng-click="sort('taskStatusName')">Status
+												<span class="glyphicon sort-icon"
+												ng-show="sortKey=='taskStatusName'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('conFirstname')">Contact
+												<span class="glyphicon sort-icon"
+												ng-show="sortKey=='conFirstname'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+		
+											<th>Action</th>
+										</tr>
+										<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+											<td>{{cc.taskId}}</td>
+											<td>{{cc.taskSubject}}</td>
+											<td ng-if="cc.taskStartDate == null">-</td>
+											<td ng-if="cc.taskStartDate != null">{{cc.taskStartDate | date:'dd-MM-yyyy'}}</td>
+											<td ng-if="cc.taskDueDate == null">-</td>
+											<td ng-if="cc.taskDueDate != null">{{cc.taskDueDate | date:'dd-MM-yyyy'}}</td>
+											<td>{{cc.taskStatusName}}</td>
+											<td ng-if="cc.conID == null">-</td>
+											<td ng-if="cc.conID != null">[{{cc.conID}}] {{cc.conFirstname}} {{cc.conLastname}}</td>
+											<td>
+												<div class="col-sm-2">
+													<div class="btn-group">
+								                      <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
+								                        <span class="caret"></span>
+								                        <span class="sr-only">Toggle Dropdown</span>
+								                      </button>
+								                      <ul class="dropdown-menu" role="menu">
+								                       <li><a href="${pageContext.request.contextPath}/update-task/{{cc.taskId}}"><i
+																class="fa fa-pencil"></i> Edit</a></li>
+														<li><a href="#" ng-click="deleteCon(cc.taskId)"><i
+																class="fa fa-trash"></i> Delete</a></li>
+														<li><a href="${pageContext.request.contextPath}/view-task/{{cc.taskId}}"><i class="fa fa-eye"></i> View</a></li>
+								                      </ul>
+								                    </div>
+							                   	</div>	
+											</td>
+										</tr>
+									</table>
 								</div>
-								<%
-									}
-								%>
+								<dir-pagination-controls max-size="pageSize.row" direction-links="true"
+										boundary-links="true"> </dir-pagination-controls>
+									<%
+										} else {
+									%>
+									<div class="alert alert-warning" role="alert">
+										<i class="glyphicon glyphicon-cog"></i> You don't have
+										permission list data
+									</div>
+									<%
+										}
+									%>
+							</div>
 						</div>
 					</div>
 			</div>
