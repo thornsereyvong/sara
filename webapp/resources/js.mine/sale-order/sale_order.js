@@ -504,7 +504,7 @@ $(function(){
 		 netInvoice();	 
 	});
 	
-	$("#customer").select2('val', 0);
+	
 	$("#employee").select2('val', empLinkUser.EmpID);
 	
 		

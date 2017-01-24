@@ -21,9 +21,10 @@
 			<div class="box-header with-border">								
 				<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
 				<button type="button" class="btn btn-info btn-app" name="btnGenQuote" id="btnGenQuote" > <i class="fa fa-cog"></i> Quote</button>
+				<button class="btn btn-info btn-app" onclick="creditInfo()" > <i class="fa fa-info"></i> Credit Info </button>
 				<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
 				
-				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/quote/list"> <i class="fa fa-reply"></i> Back </a>
+				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/sale-order/list"> <i class="fa fa-reply"></i> Back </a>
 
 				<div class="clearfix"></div>								
 			</div>
@@ -655,6 +656,81 @@
 				</div>
 			</div>
 			
+			<input type="hidden" id="btn_show_creditInfo" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCreditInfo" />
+			<div class="modal fade modal-default" id="frmCreditInfo" role="dialog">
+				<div class="modal-dialog  modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close"
+								data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">
+								<b  id="tProduct">Credit Info</b>
+							</h4>
+						</div>
+						<form id="frmAddProduct" method="post">
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>Customer</label>
+											<input id="frmCredit_cust" disabled="disabled" class="form-control" type="text">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Credit Limit</label>
+											<input id="frmCredit_limit" disabled="disabled" class="form-control" type="text">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Temporary Credit</label>
+											<input id="frmCredit_tem" disabled="disabled" class="form-control" type="text">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Total Outstanding Invoice</label>
+											<input id="frmCredit_out" disabled="disabled" class="form-control" type="text">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label>Available Credit</label>
+											<input id="frmCredit_av" disabled="disabled" class="form-control" type="text">
+										</div>
+									</div>
+									
+									<div class="clearfix"></div>
+									<div class="tablecontainer table-responsive"> 
+										<table class="table table-hover" >
+											<tr>
+												<th>Invoice No</th>
+												<th>Reference</th>
+												<th>Invoice Date</th>
+												<th>Total Amount</th>
+												<th>Payment To Date</th>
+												<th>Outstanding</th>
+												<th>Due Date</th>
+												<th>Day Left</th>
+												<th>Over Due</th>
+											</tr>
+											<tbody id="con_creditInfo">
+											
+											</tbody>
+											
+										</table>
+									</div>
+									
+								</div>						
+							</div>				
+						</div>
+						</form>
+						
+					</div>
+				</div>
+			</div>
 			
 	</section>
 	
@@ -772,6 +848,60 @@
 	
 		return addAnItem;
 	}
+	
+	var cur_creditLimit = "";
+	function creditInfo(){		
+		var custId = getValueStringById("customer");
+		if(custId != "" && cur_creditLimit != custId){
+			cur_creditLimit = custId;
+			$.ajax({
+				url: server+"customer/credit-info/"+LCustomer[custId].custID,
+				method: "GET",
+				beforeSend: function(xhr) {
+				    xhr.setRequestHeader("Accept", "application/json");
+				    xhr.setRequestHeader("Content-Type", "application/json");
+			    },
+			    success: function(result){
+			    	
+			    	$("#frmCredit_cust").val("["+LCustomer[custId].custID+"] "+LCustomer[custId].custName);
+			    	$("#frmCredit_limit").val(formatNumAcc(result.DATA.CREDIT_LIMIT[0].CreditLimit, 2));
+			    	$("#frmCredit_tem").val(formatNumAcc(result.DATA.TEMP_CREDIT[0].TemporaryCredit, 2));
+			    	$("#frmCredit_out").val(formatNumAcc(result.DATA.OUT_STAND[0].Outstanding, 2));
+			    	$("#frmCredit_av").val(formatNumAcc(result.DATA.CREDIT_LIMIT[0].CreditLimit - result.DATA.OUT_STAND[0].Outstanding, 2));
+			    	
+			    	var str = "";
+			    	
+			    	for(var i=0; i<result.DATA.INVOICE.length; i++){
+			    		str += "<tr><td>"+result.DATA.INVOICE[i].InvoiceNo+"</td>";
+			    		str += "<td>"+result.DATA.INVOICE[i].Reference+"</td>";
+			    		str += "<td>"+result.DATA.INVOICE[i].InvoiceDate+"</td>";
+			    		str += "<td>"+formatNumAcc(result.DATA.INVOICE[i].TotalAmount, 2)+"</td>";
+			    		str += "<td>"+formatNumAcc(result.DATA.INVOICE[i].PaymenttoDate, 2)+"</td>";
+			    		str += "<td>"+formatNumAcc(result.DATA.INVOICE[i].Outstanding, 2)+"</td>";
+			    		str += "<td>"+result.DATA.INVOICE[i].DueDate+"</td>";
+			    		str += "<td>"+result.DATA.INVOICE[i].DaysLeft+"</td>";
+			    		str += "<td>"+result.DATA.INVOICE[i].OverDue+"</td></tr>";
+			    	}
+			    	
+			    	$("#con_creditInfo").append(str);
+			    },
+	    		error:function(){	    		
+	    		} 
+			});
+			$("#frmCreditInfo").modal('toggle');
+		}else if(cur_creditLimit == ""){
+			swal({  
+				   title: "Please select customer!",   
+				   text: "",   
+				   timer: 2000,   
+				   type: "warning",
+				   showConfirmButton: true 
+			});			
+		}else{
+			$("#frmCreditInfo").modal('toggle');
+		}
+	}
+	
 	
 	$(function(){
 		$("#oppItem").append(tagItem);

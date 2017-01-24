@@ -268,6 +268,8 @@ $(function(){
 			}
 			creditLimitByCustomer = LCustomer[customer].termCreditLimit;
 			$("#txtCLimit").val("$ "+formatNumByLength(LCustomer[customer].termCreditLimit,2));	
+			
+			
 		}else{
 			$("#customer").next().children().children().attr('style','border: 1px solid #dd4b39;');
 			$("#priceCode").select2('val','');

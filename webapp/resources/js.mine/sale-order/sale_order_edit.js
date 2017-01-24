@@ -56,6 +56,7 @@ function listDataSalOrdFromQuote(data){
 			$("#item"+index).select2('val',data.quoteDetails[i].itemId);
 			$("#location"+index).select2('val',data.quoteDetails[i].locationId);
 			
+		
 			$("#classCode"+index+" option[value='"+data.quoteDetails[i].classId+"']").attr('selected','selected');	
 			$("#uom"+index).select2('val',data.quoteDetails[i].uomId);
 			

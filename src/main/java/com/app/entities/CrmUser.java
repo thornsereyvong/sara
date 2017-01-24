@@ -1,5 +1,7 @@
 package com.app.entities;
 
+import java.util.List;
+
 public class CrmUser {
 
 	private String userID;
@@ -12,6 +14,15 @@ public class CrmUser {
 	private CrmRole role;
 	private UserApp userApp;
 	private MeDataSource dataSource;
+	private List<CrmConfDashboard> confDashboard;	
+	
+	public List<CrmConfDashboard> getConfDashboard() {
+		return confDashboard;
+	}
+
+	public void setConfDashboard(List<CrmConfDashboard> confDashboard) {
+		this.confDashboard = confDashboard;
+	}
 
 	public UserApp getUserApp() {
 		return userApp;

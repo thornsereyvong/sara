@@ -83,12 +83,38 @@
 				
 				
 				
-				$scope.setting = function(){
-					
+				$scope.setting = function(){					
 					$("#frm_setting").modal({backdrop: "static"});
 				}
 				
 				
+				$scope.btnSaveSettingClick = function(){
+					var li = $("#listModuleShow li");
+					var dataModule = [];
+					for(var i=0; i<li.length; i++){
+						var objLi = $(li.eq(i));						
+						var chk = $("#ck_"+objLi.attr('data-value'))						
+						var ckStatus = 0;
+						
+						if(chk.is(':checked')){
+							ckStatus = 1;
+						}
+						
+						dataModule.push({type: "module", moduleId: objLi.attr('data-value') , status: ckStatus , orderBy:  i+1 });
+						
+					}
+					
+					
+					
+					
+					
+				}
+				
+				$scope.ccSetting = function(){
+					alert(1)
+					
+					
+				}
 				
 				
 			} ]);
@@ -959,86 +985,86 @@
 								</div>
 								<div class="tab-content no-padding">
 									<div class="chart tab-pane active " id="tabModule">
-										<ul class="todo-list ui-sortable">
-											<li class="">
+										<ul class="todo-list ui-sortable" id="listModuleShow">
+											<li class="" data-value="CA">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="CA" name="module">
+												<input type="checkbox" id="ck_CA" value="CA" name="module">
 												<span class="text">Campaign</span>										
 											</li>
-											<li class="">
+											<li class="" data-value="LE">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="LE" name="module">
+												<input type="checkbox" id="ck_LE" value="LE" name="module">
 												<span class="text">Lead</span>										
 											</li>
 											
 											
-											<li class="">
+											<li class="" data-value="CUST">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="CUST" name="module">
+												<input type="checkbox" id="ck_CUST" value="CUST" name="module">
 												<span class="text">Customer</span>										
 											</li>
-											<li class="">
+											<li class="" data-value="CO">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="CO" name="module">
+												<input type="checkbox" id="ck_CO" value="CO" name="module">
 												<span class="text">Contact</span>										
 											</li>
-											<li class="">
+											<li class="" data-value="OP">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="OP" name="module">
+												<input type="checkbox" value="OP" id="ck_OP" name="module">
 												<span class="text">Opportunity</span>										
 											</li>
 											
 											
-											<li class="">
+											<li class="" data-value="AC_CL">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="AC_CL" name="module">
+												<input type="checkbox" value="AC_CL" id="ck_AC_CL" name="module">
 												<span class="text">Call</span>										
 											</li>
-											<li class="">
+											<li class="" data-value="AC_ME">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="AC_ME" name="module">
+												<input type="checkbox" value="AC_ME" id="ck_AC_ME" name="module">
 												<span class="text">Meeting</span>										
 											</li>
-											<li class="">
+											<li class="" data-value="AC_TA">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="AC_TA" name="module">
+												<input type="checkbox" id="ck_AC_TA" value="AC_TA" name="module">
 												<span class="text">Task</span>										
 											</li>
-											<li class="">
+											<li class="" data-value="AC_NO">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="AC_NO" name="module">
+												<input type="checkbox" id="ck_AC_NO" value="AC_NO" name="module">
 												<span class="text">Note</span>										
 											</li>
-											<li class="">
+											<li class="" data-value="AC_EV">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="AC_EV" name="module">
+												<input type="checkbox" id="ck_AC_EV" value="AC_EV" name="module">
 												<span class="text">Event</span>										
 											</li>
 											
 											
-											<li class="">
+											<li class="" data-value="CS">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="CS" name="module">
+												<input type="checkbox" id="ck_CS" value="CS" name="module">
 												<span class="text">Case & Solution</span>										
 											</li>
 											
 											
 											
-											<li class="">
+											<li class="" data-value="Q">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="Q" name="module">
+												<input type="checkbox" id="ck_Q" value="Q" name="module">
 												<span class="text">Quotation</span>										
 											</li>
-											<li class="">
+											<li class="" data-value="S">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="S" name="module">
+												<input type="checkbox" id="ck_S" value="S" name="module">
 												<span class="text">Sale Order</span>										
 											</li>
 											
 										</ul>
 									</div>
 									<div class="chart tab-pane" id="tabChart">
-										<ul class="todo-list ui-sortable">
+										<!-- <ul class="todo-list ui-sortable">
 											<li class="">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
 												<input type="checkbox" value="S" name="module">
@@ -1069,7 +1095,7 @@
 												<input type="checkbox" value="S" name="module">
 												<span class="text">Pipeline By Sales Stage</span>										
 											</li>
-										</ul>
+										</ul> -->
 									</div>
 								</div>							
 							</div>

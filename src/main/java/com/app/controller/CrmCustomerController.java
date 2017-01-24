@@ -91,6 +91,16 @@ public class CrmCustomerController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/customer/credit-info/{custID}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> creditInfo(@PathVariable("custID") String custID, HttpServletRequest req){	
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/customer/credit-info/"+custID, HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+		
+	}
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/customer/edit",method = RequestMethod.PUT)
 	public ResponseEntity<Map<String, Object>> updateCustomer(@RequestBody CrmCustomer customer, HttpServletRequest req){
 		customer.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
