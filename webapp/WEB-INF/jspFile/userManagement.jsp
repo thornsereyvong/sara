@@ -162,9 +162,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		
 	}
 	
-	$scope.listUserID = function(index){
+	$scope.listUserID = function(userId){
 		
 		$scope.action = "Update";
+		var index = $scope.searchUserById(userId);
 		$scope.curIndex = index;
 		
 		$("#userId").val($scope.user[index].userID);
@@ -247,6 +248,17 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		}
 		
 	};
+	
+	$scope.searchUserById = function(userId){
+		for(var i=0; i<$scope.user.length; i++){
+			if($scope.user[i].userID == userId){
+				return i;
+			}
+		}
+		return false;
+	}
+	
+	
 	
 }]);
 
@@ -542,7 +554,7 @@ $(document).ready(function(){
 							<td>{{cc.roleName}}</td>
 							<td>{{cc.status==1 ? 'Active' : 'Inactive'}}</td>						
 							<td>
-								<a ng-click="listUserID($index)" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								<a ng-click="listUserID(cc.userID)" class="btn btn-success custom-width"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 								<button type="button" ng-click="deleteStat(cc.userID)" class="btn btn-danger custom-width"><i class="fa fa-times" aria-hidden="true"></i></button>
 							</td>
 						</tr>

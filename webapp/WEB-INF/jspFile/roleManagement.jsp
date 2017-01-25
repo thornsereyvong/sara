@@ -92,12 +92,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			<div class="box-header with-border">
 				<div style="background: #fff; margin-top: 15px;">
 					<div class="col-sm-12">
-						<a href="${pageContext.request.contextPath}/create-role"
-							class="btn btn-info btn-app"><i class="fa fa-plus"
-							aria-hidden="true"></i> Create</a> <a
-							href="${pageContext.request.contextPath}/view-role-management"
-							class="btn btn-info btn-app"><i class="fa fa-clone"
-							aria-hidden="true"></i> View</a>
+						<a href="${pageContext.request.contextPath}/create-role" class="btn btn-info btn-app"><i class="fa fa-plus" aria-hidden="true"></i> Create</a> 
 					</div>
 				</div>
 			</div>

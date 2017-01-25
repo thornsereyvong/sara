@@ -22,9 +22,7 @@
 			'$http',
 			function($scope, $http) {
 				$scope.dashStartup = function() {
-
-					$http.get("${pageContext.request.contextPath}/dashboard/startup/"+ username).success(function(response) {
-						
+					$http.get("${pageContext.request.contextPath}/dashboard/startup/"+ username).success(function(response) {						
 						if (response.DASHBOARD != null) {
 							$scope.meetings = response.DASHBOARD.MEETINGS;
 							$scope.calls = response.DASHBOARD.CALLS;
@@ -42,7 +40,7 @@
 							$scope.quotations = response.DASHBOARD.QUOTATIONS;
 							$scope.saleorders = response.DASHBOARD.SALEORDERS;
 							$scope.confDash2 = response.DASHBOARD.CONF_DASH;
-						} else {
+						}else {
 							$scope.meetings = [];
 							$scope.calls = [];
 							$scope.tasks = [];
@@ -60,11 +58,36 @@
 							$scope.saleorders = [];
 							$scope.confDash2 = [];
 						}
-								
+						
 					});
+					
+					setTimeout(function(){						
+						$scope.active();						
+					},500);
+					
 
 				};
-
+				
+				
+				
+				$scope.active = function(){	
+					$scope.confDash2.sort(function(a, b){
+					    return a.orderBy-b.orderBy
+					});
+					
+					var first = 0;
+					for(var i=0; i<$scope.confDash2.length; i++){						
+						if($scope.confDash2[i].orderBy == 1 && $scope.confDash2[i].status == 1){ first++;
+							$("#tab"+$scope.confDash2[i].moduleId).addClass("chart tab-pane active");
+						}else if($scope.confDash2[i].status == 1 && first == 0){ first++;
+							$("#tab"+$scope.confDash2[i].moduleId).addClass("chart tab-pane active");
+							$("#li_"+$scope.confDash2[i].moduleId).addClass("active");
+							
+						}						
+					}					
+				}
+				
+				
 				$scope.sort = function(keyname) {
 					$scope.sortKey = keyname; //set the sortKey to the param passed
 					$scope.reverse = !$scope.reverse; //if true make it false and vice versa
@@ -149,15 +172,9 @@
 					
 				}
 				
-				$scope.ccSetting = function(){
-					
-					
-					
-				}
+				$scope.ccSetting = function(){}
 				
-				$scope.dashSettingStartup = function(){
-					
-				}
+				$scope.dashSettingStartup = function(){}
 				
 				
 			} ]);
@@ -179,8 +196,7 @@
 	<section class="content-header">
 		<h1>Dashboard</h1>
 		<ol class="breadcrumb">
-			<li><a href="${pageContext.request.contextPath}"><i
-					class="fa fa-home"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
 		</ol>
 	</section>
@@ -188,11 +204,11 @@
 	<section class="content" ng-app="dashApp" ng-controller="dashController">
 		<div class="nav-tabs-custom" data-ng-init="dashStartup()">
 			<ul class="nav nav-tabs ui-sortable-handle">
-				<li  ng-repeat="conf in confDash2 | orderBy : 'orderBy'" style="display: {{conf.status==false ? 'none':''}}" class="{{$index==0 ? 'active':''}}"><a href="#tab{{conf.moduleId}}" data-toggle="tab">{{conf.moduleName}}</a></li>
-				<li class="pull-right header"><button ng-click="setting()" type="button" class="btn btn-default btn-sm"><i class="fa fa-gear"></i></button></li>
+				<li  ng-repeat="conf in confDash2 | orderBy : 'orderBy'" id="li_{{conf.status==false ? '':conf.moduleId}}" style="display: {{conf.status==false ? 'none':''}}" class="{{$index==0 ? 'active':''}}"><a href="#tab{{conf.moduleId}}" class="ng-cloak" data-toggle="tab">{{conf.moduleName}}</a></li>
+				<li class="pull-right header"><button style="margin-top: -5px;" ng-click="setting()" type="button" class="btn btn-default btn-sm"><i class="fa fa-gear"></i></button></li>
 			</ul>
 			<div class="tab-content no-padding">
-				<div class="chart tab-pane active " id="tabCA">
+				<div class="chart tab-pane" id="tabCA">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -929,8 +945,7 @@
 							</tr>	
 						</table>
 					</div>	
-				</div>
-				
+				</div>				
 				<div class="chart tab-pane " id="tabS">	
 					<div class="col-sm-2">
 					  <form class="form-inline">
