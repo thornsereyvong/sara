@@ -1,19 +1,26 @@
 package com.app.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.app.entities.RestTemplateErrorHandler;
+import com.app.viewresolver.ExcelViewResolver;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
@@ -23,12 +30,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Bean
-	public InternalResourceViewResolver getInternalResourceViewResolver(){
+	public ViewResolver getInternalResourceViewResolver(){
 		InternalResourceViewResolver irv = new InternalResourceViewResolver();
 		irv.setPrefix("/WEB-INF/jspFile/");
 		irv.setSuffix(".jsp");
 		return irv;
 	}
+	
+	@Bean
+    public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
+        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+        resolver.setContentNegotiationManager(manager);
+ 
+        // Define all possible view resolvers
+        List<ViewResolver> resolvers = new ArrayList<ViewResolver>();
+        resolvers.add(excelViewResolver());
+        resolvers.add(getInternalResourceViewResolver()); 
+        resolver.setViewResolvers(resolvers);
+        return resolver;
+    }
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -39,10 +59,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	public HttpHeaders headsers(){
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Basic V0VCQVBJOldFQkFQSQ==");
-		headers.add("dbUsername", "posadmin");
-		headers.add("ip", "192.168.1.111");
-		headers.add("port", "3306");
-		headers.add("dbPassword","password");
 		return headers; 
 	}
 	
@@ -59,6 +75,11 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		//String  url = "http://192.168.10.5:8881/server/";
 		return url;
 	}
+	
+	@Bean
+    public ViewResolver excelViewResolver() {
+        return new ExcelViewResolver();
+    }
 	
 	@Bean
 	public ObjectMapper objectMapper(){
@@ -86,4 +107,5 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		messageSource.setBasename("messages");
 		return messageSource;
 	}
+	
 }
