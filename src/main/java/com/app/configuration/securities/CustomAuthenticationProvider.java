@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
          if (!password.equals(new PasswordEncrypt().BalDecrypt(user.getPassword()))) {
              throw new BadCredentialsException("Invalid Username and password!");
          }
-         if(!user.getAppId().equals("CRM")){
+         if(user.getAppId() == null || !user.getAppId().equals("CRM")){
         	 throw new BadCredentialsException("You have no permission! Please contact your administrator!");
          }
         return new UsernamePasswordAuthenticationToken(user.getUserID(), password, null);

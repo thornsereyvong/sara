@@ -79,9 +79,9 @@
 					for(var i=0; i<$scope.confDash2.length; i++){						
 						if($scope.confDash2[i].orderBy == 1 && $scope.confDash2[i].status == 1){ first++;
 							$("#tab"+$scope.confDash2[i].moduleId).addClass("chart tab-pane active");
-						}else if($scope.confDash2[i].status == 1 && first == 0){ first++;
-							$("#tab"+$scope.confDash2[i].moduleId).addClass("chart tab-pane active");
+						}else if($scope.confDash2[i].status == 1 && first == 0){ first++;							
 							$("#li_"+$scope.confDash2[i].moduleId).addClass("active");
+							$("#tab"+$scope.confDash2[i].moduleId).addClass("chart tab-pane active");
 							
 						}						
 					}					
