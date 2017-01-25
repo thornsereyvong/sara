@@ -24,7 +24,7 @@
 				$scope.dashStartup = function() {
 
 					$http.get("${pageContext.request.contextPath}/dashboard/startup/"+ username).success(function(response) {
-
+						
 						if (response.DASHBOARD != null) {
 							$scope.meetings = response.DASHBOARD.MEETINGS;
 							$scope.calls = response.DASHBOARD.CALLS;
@@ -41,6 +41,7 @@
 							$scope.opportunities = response.DASHBOARD.OPPORTUNITIES;
 							$scope.quotations = response.DASHBOARD.QUOTATIONS;
 							$scope.saleorders = response.DASHBOARD.SALEORDERS;
+							$scope.confDash2 = response.DASHBOARD.CONF_DASH;
 						} else {
 							$scope.meetings = [];
 							$scope.calls = [];
@@ -57,8 +58,9 @@
 							$scope.opportunities = [];
 							$scope.quotations = [];
 							$scope.saleorders = [];
+							$scope.confDash2 = [];
 						}
-
+								
 					});
 
 				};
@@ -83,36 +85,77 @@
 				
 				
 				
-				$scope.setting = function(){					
+				$scope.setting = function(){
+					$scope.confDash = angular.copy($scope.confDash2);
 					$("#frm_setting").modal({backdrop: "static"});
 				}
-				
-				
+												
 				$scope.btnSaveSettingClick = function(){
 					var li = $("#listModuleShow li");
 					var dataModule = [];
 					for(var i=0; i<li.length; i++){
 						var objLi = $(li.eq(i));						
 						var chk = $("#ck_"+objLi.attr('data-value'))						
-						var ckStatus = 0;
-						
+						var ckStatus = 0;						
 						if(chk.is(':checked')){
 							ckStatus = 1;
-						}
-						
-						dataModule.push({type: "module", moduleId: objLi.attr('data-value') , status: ckStatus , orderBy:  i+1 });
-						
-					}
+						}						
+						dataModule.push({type: "module", moduleId: objLi.attr('data-value') , status: ckStatus , orderBy:  i+1 });						
+					}				
+					swal({   
+						title: "<span style='font-size: 25px;'>You are about to save configuration dashboard.</span>",
+						text: "Click OK to continue or CANCEL to abort.",
+						type: "info",
+						html: true,
+						showCancelButton: true,
+						closeOnConfirm: false,
+						showLoaderOnConfirm: true,		
+					}, function(){ 
+							setTimeout(function(){
+								$http({
+								    method: 'POST',
+								    url: '${pageContext.request.contextPath}/dashboard/conf',
+								    data:{
+								    	"confDashboard": dataModule
+									    },
+								    headers: {
+								    	'Accept': 'application/json',
+								        'Content-Type': 'application/json'
+								    }
+								}).success(function(response) {	
+									if(response.MESSAGE == "INSERTED"){						
+										swal({
+				    						title: "SUCCESSFUL",
+				    					  	text: response.MSG,
+				    					  	html: true,
+				    					  	timer: 2000,
+				    					  	type: "success"
+				    					});
+										
+										reloadForm(2000);
+										
+									}else{
+										swal({
+				    						title: "UNSUCCESSFUL",
+				    					  	text: response.MSG,
+				    					  	html: true,
+				    					  	timer: 2000,
+				    					  	type: "error"
+				    					});
+									}
+								});
+						}, 500);
+					});
 					
-					
+				}
+				
+				$scope.ccSetting = function(){
 					
 					
 					
 				}
 				
-				$scope.ccSetting = function(){
-					alert(1)
-					
+				$scope.dashSettingStartup = function(){
 					
 				}
 				
@@ -145,25 +188,11 @@
 	<section class="content" ng-app="dashApp" ng-controller="dashController">
 		<div class="nav-tabs-custom" data-ng-init="dashStartup()">
 			<ul class="nav nav-tabs ui-sortable-handle">
-				<li class="active"><a href="#tabCamp" data-toggle="tab">Campaign<!--  <span class="badge bg-light-blue">3</span> --></a></li>
-				<li><a href="#tabLead" data-toggle="tab">Lead</a> </li>
-				<li><a href="#tabCustomer" data-toggle="tab">Customer</a></li>
-				<li><a href="#tabContact" data-toggle="tab">Contact</a></li>
-				<li><a href="#tabOpportunity" data-toggle="tab">Opportunity</a></li>
-				<li><a href="#tabCall" data-toggle="tab">Call</a></li>
-				<li><a href="#tabMeeting" data-toggle="tab">Meeting</a></li>
-				<li><a href="#tabTask" data-toggle="tab">Task</a></li>
-				<li><a href="#tabNote" data-toggle="tab">Note</a></li>
-				<li><a href="#tabEvent" data-toggle="tab">Event</a></li>
-				<li><a href="#tabCases" data-toggle="tab">Cases</a></li>
-				<li><a href="#tabQuote" data-toggle="tab">Quotation</a></li>
-				<li><a href="#tabSaleOrder" data-toggle="tab">Sale Order</a></li>
-				
-					
+				<li  ng-repeat="conf in confDash2 | orderBy : 'orderBy'" style="display: {{conf.status==false ? 'none':''}}" class="{{$index==0 ? 'active':''}}"><a href="#tab{{conf.moduleId}}" data-toggle="tab">{{conf.moduleName}}</a></li>
 				<li class="pull-right header"><button ng-click="setting()" type="button" class="btn btn-default btn-sm"><i class="fa fa-gear"></i></button></li>
 			</ul>
 			<div class="tab-content no-padding">
-				<div class="chart tab-pane active " id="tabCamp">
+				<div class="chart tab-pane active " id="tabCA">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -225,7 +254,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabLead">
+				<div class="chart tab-pane " id="tabLE">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -285,7 +314,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabCustomer">
+				<div class="chart tab-pane " id="tabCUST">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -349,7 +378,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabContact">
+				<div class="chart tab-pane " id="tabCO">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -410,7 +439,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabOpportunity">
+				<div class="chart tab-pane " id="tabOP">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -474,7 +503,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabCall">
+				<div class="chart tab-pane " id="tabAC_CL">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -536,7 +565,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabMeeting">
+				<div class="chart tab-pane " id="tabAC_ME">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -601,7 +630,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabTask">
+				<div class="chart tab-pane " id="tabAC_TA">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -664,7 +693,7 @@
 						</table>
 					</div>
 				</div>				
-				<div class="chart tab-pane " id="tabNote">
+				<div class="chart tab-pane " id="tabAC_NO">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -719,7 +748,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabEvent">
+				<div class="chart tab-pane " id="tabAC_EV">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -781,7 +810,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabCases">
+				<div class="chart tab-pane " id="tabCS">
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -843,7 +872,7 @@
 						</table>
 					</div>
 				</div>
-				<div class="chart tab-pane " id="tabQuote">	
+				<div class="chart tab-pane " id="tabQ">	
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -902,7 +931,7 @@
 					</div>	
 				</div>
 				
-				<div class="chart tab-pane " id="tabSaleOrder">	
+				<div class="chart tab-pane " id="tabS">	
 					<div class="col-sm-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
@@ -986,81 +1015,11 @@
 								<div class="tab-content no-padding">
 									<div class="chart tab-pane active " id="tabModule">
 										<ul class="todo-list ui-sortable" id="listModuleShow">
-											<li class="" data-value="CA">
+											<li ng-repeat="conf in confDash | orderBy : 'orderBy'" class="" data-value="{{conf.moduleId}}">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_CA" value="CA" name="module">
-												<span class="text">Campaign</span>										
+												<input type="checkbox" ng-checked="conf.status" id="ck_{{conf.moduleId}}" value="{{conf.moduleId}}" name="module">
+												<span class="text">{{conf.moduleName}}</span>										
 											</li>
-											<li class="" data-value="LE">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_LE" value="LE" name="module">
-												<span class="text">Lead</span>										
-											</li>
-											
-											
-											<li class="" data-value="CUST">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_CUST" value="CUST" name="module">
-												<span class="text">Customer</span>										
-											</li>
-											<li class="" data-value="CO">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_CO" value="CO" name="module">
-												<span class="text">Contact</span>										
-											</li>
-											<li class="" data-value="OP">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="OP" id="ck_OP" name="module">
-												<span class="text">Opportunity</span>										
-											</li>
-											
-											
-											<li class="" data-value="AC_CL">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="AC_CL" id="ck_AC_CL" name="module">
-												<span class="text">Call</span>										
-											</li>
-											<li class="" data-value="AC_ME">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" value="AC_ME" id="ck_AC_ME" name="module">
-												<span class="text">Meeting</span>										
-											</li>
-											<li class="" data-value="AC_TA">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_AC_TA" value="AC_TA" name="module">
-												<span class="text">Task</span>										
-											</li>
-											<li class="" data-value="AC_NO">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_AC_NO" value="AC_NO" name="module">
-												<span class="text">Note</span>										
-											</li>
-											<li class="" data-value="AC_EV">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_AC_EV" value="AC_EV" name="module">
-												<span class="text">Event</span>										
-											</li>
-											
-											
-											<li class="" data-value="CS">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_CS" value="CS" name="module">
-												<span class="text">Case & Solution</span>										
-											</li>
-											
-											
-											
-											<li class="" data-value="Q">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_Q" value="Q" name="module">
-												<span class="text">Quotation</span>										
-											</li>
-											<li class="" data-value="S">
-												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
-												<input type="checkbox" id="ck_S" value="S" name="module">
-												<span class="text">Sale Order</span>										
-											</li>
-											
 										</ul>
 									</div>
 									<div class="chart tab-pane" id="tabChart">
