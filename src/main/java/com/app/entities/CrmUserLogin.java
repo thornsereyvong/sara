@@ -7,19 +7,17 @@ public class CrmUserLogin{
 	private String password;
 	private int status;
 	private String parentID;
-	private UserApp userApp;
+	private String appId;
 	private MeDataSource dataSource;
 
-	
-	public UserApp getUserApp() {
-		return userApp;
+
+	public String getAppId() {
+		return appId;
 	}
 
-
-	public void setUserApp(UserApp userApp) {
-		this.userApp = userApp;
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
-
 
 	public String getUserID() {
 		return userID;
