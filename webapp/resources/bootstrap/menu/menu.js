@@ -435,6 +435,11 @@ function selectMenu(menu_slide){
     	document.title = 'Lead By Campaign | CRM';
         break;
         
+    case "leadReport":
+    	iAddClass("report_menu", "repMarketing","repLead",1);
+    	document.title = 'Lead Report | CRM';
+        break;
+        
     default:
     	$("#dashboard").removeAttr("class").attr('class', 'treeview active');
     	document.title = 'Dashbord';

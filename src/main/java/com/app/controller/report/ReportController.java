@@ -19,5 +19,11 @@ public class ReportController {
 		model.addAttribute("menu", "leadByCampaign");
 		return "reportApp/marketing/leadByCampaign";
 	}
+	
+	@RequestMapping({ "marketing/lead/report-lead"})
+	public String leadReport(ModelMap model) {
+		model.addAttribute("menu", "leadReport");
+		return "reportApp/marketing/leadReport";
+	}
 
 }

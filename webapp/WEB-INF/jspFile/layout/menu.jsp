@@ -222,22 +222,20 @@ $(document).ready(function(){
 									</li>
 								</ul>
 							</li>
-							<li class="">
+							<li id="repLeadLi">
 								<a href="#">
-									<i class="fa fa-circle-o"></i> Leads<i class="fa fa-angle-left pull-right"></i>
+									<i class="fa fa-circle-o" id="repLeadIcon"></i> Leads<i class="fa fa-angle-left pull-right"></i>
 								</a>
-								<ul class="treeview-menu">
-									<li>
-										<a href="#"><i class="fa fa-circle-o"></i>Exec Lead</a>
+								<ul class="treeview-menu" id="repLeadUl">
+									<li id="repLeadAct">
+										<a href="${pageContext.request.contextPath}/report/marketing/lead/report-lead"><i id="repLeadIcon1" class="fa fa-circle-o color_menu"></i>Exec Leads</a>
 									</li>
-									
 								</ul>
 							</li>
 						</ul>
 					</li>					
 				</ul>
 			</li>
-
 			<li class='treeview ' id="admin"><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/images/Administrator.png"
 					style="width: 16px;">&nbsp;&nbsp;<!-- <i class="fa fa-cogs" aria-hidden="true"></i> -->
