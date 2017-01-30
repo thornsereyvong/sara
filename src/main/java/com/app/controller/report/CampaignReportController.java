@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.MeDataSource;
 import com.app.entities.report.CampaingReport;
-import com.app.viewresolver.CampaignExcelView;
 
 @RestController
 @RequestMapping(value="/report/campaign")

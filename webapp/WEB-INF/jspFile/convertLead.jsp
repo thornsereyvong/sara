@@ -1312,7 +1312,7 @@ color:#2196F3;
 							</div>
 						</div>			
 			<div class="box-footer"></div>
-			<dis id="errors"></dis>
+			<!-- <dis id="errors"></dis> -->
 		</div>
 	</section>
 </div>
