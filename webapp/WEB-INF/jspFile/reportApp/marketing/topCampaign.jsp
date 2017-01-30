@@ -99,20 +99,20 @@ $(function(){
 		    case 'today':
 		    	 $('#startdate').prop("disabled", true);  
 			     $('#todate').prop("disabled", true); 				     				    
-			     $('#startdate').val(moment().format('D/MMM/YYYY'));  
-			     $('#todate').val(moment().format('D/MMM/YYYY'));
+			     $('#startdate').val(moment().format('YYYY-MM-DD'));  
+			     $('#todate').val(moment().format('YYYY-MM-DD'));
 		        break;
 		    case 'this period':
 		    	 $('#startdate').prop("disabled", true);  
 			     $('#todate').prop("disabled", true);
-			     $('#startdate').val("01/"+moment().format('MMM')+"/"+(new Date()).getFullYear());  
-			     $('#todate').val(getLastDayOfMonth()+"/"+moment().format('MMM')+"/"+(new Date()).getFullYear()); 
+			     $('#startdate').val((new Date()).getFullYear()+"-"+moment().format('MM')+"-"+"01");  
+			     $('#todate').val((new Date()).getFullYear()+"-"+moment().format('MM')+"-"+getLastDayOfMonth()); 
 		        break;
 		    case 'this year':
 		    	 $('#startdate').prop("disabled", true);  
 			     $('#todate').prop("disabled", true);
-			     $('#startdate').val("01/Jan/"+(new Date()).getFullYear());  
-			     $('#todate').val("31/Dec/"+(new Date()).getFullYear()); 
+			     $('#startdate').val((new Date()).getFullYear()+"-01-01");  
+			     $('#todate').val((new Date()).getFullYear()+"-12-01"); 
 		        break;
 		}				
 	});
