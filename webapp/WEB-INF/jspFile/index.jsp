@@ -14,7 +14,7 @@
 					'ngAnimate' ]).config(
 			[ 'cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 				cfpLoadingBarProvider.includeSpinner = false;
-			} ]);
+			}]);
 	var self = this;
 	var username = "${SESSION}";
 	app.controller('dashController', [
@@ -40,6 +40,11 @@
 							$scope.quotations = response.DASHBOARD.QUOTATIONS;
 							$scope.saleorders = response.DASHBOARD.SALEORDERS;
 							$scope.confDash2 = response.DASHBOARD.CONF_DASH;
+							
+							setTimeout(function(){						
+								$scope.active();						
+							},500);
+							
 						}else {
 							$scope.meetings = [];
 							$scope.calls = [];
@@ -58,23 +63,16 @@
 							$scope.saleorders = [];
 							$scope.confDash2 = [];
 						}
-						
 					});
-					
-					setTimeout(function(){						
-						$scope.active();						
-					},500);
-					
-
 				};
 				
 				
 				
 				$scope.active = function(){	
 					
-					/* $scope.confDash2.sort(function(a, b){
+					$scope.confDash2.sort(function(a, b){
 					    return a.orderBy-b.orderBy;
-					}); */
+					});
 					
 					var first = 0;
 					for(var i=0; i<$scope.confDash2.length; i++){						
@@ -106,7 +104,12 @@
                         		];
 				$scope.pageSize.row = $scope.pageSize.rows[0].value;
 				
-				
+				/* $scope.exportData = function () {
+	                var blob = new Blob([document.getElementById('exportable').innerHTML], {
+	                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+	                });
+	                saveAs(blob, "Report.xls");
+	            }; */
 				
 				
 				$scope.setting = function(){
@@ -188,6 +191,63 @@
 		    forcePlaceholderSize: true,
 		    zIndex: 999999
   		});	
+		
+		var chart;
+        var data = [
+            {
+                "title": "Website visits",
+                "value": 500
+            },
+            {
+                "title": "Downloads",
+                "value": 400
+            },
+            {
+                "title": "Requested price list",
+                "value": 300
+            },
+            {
+                "title": "Contaced for more info",
+                "value": 200
+            },
+            {
+                "title": "Purchased",
+                "value": 150
+            },
+            {
+                "title": "Contacted for support",
+                "value": 100
+            },
+            {
+                "title": "Purchased additional products",
+                "value": 50
+            }
+        ];
+       
+      AmCharts.ready(function () {
+
+            chart = new AmCharts.AmFunnelChart();
+            chart.titleField = "title";
+            chart.balloon.cornerRadius = 0;
+            chart.marginRight = 220;
+            chart.marginLeft = 15;
+            chart.labelPosition = "right";
+            chart.funnelAlpha = 0.9;
+            chart.valueField = "value";
+            chart.dataProvider = data;
+            chart.startX = 0;
+            chart.balloon.animationTime = 0.2;
+            chart.neckWidth = "40%";
+            chart.startAlpha = 0;
+            chart.neckHeight = "30%";
+            chart.balloonText = "[[title]]:<b>[[value]]</b>";
+
+            chart.creditsPosition = "top-right";
+            //chart.write("chartdiv");
+        });
+		
+		
+		
 	
 	});
 	
@@ -270,6 +330,29 @@
 							</tr>
 						</table>
 					</div>
+					<%-- <div class="col-sm-12" id="exportable" style="display:none;">
+						<table class="table table-striped">
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Status</th>
+								<th>Type</th>
+								<th>Budget</th>
+								<th>Start Date</th>
+								<th>End Date</th>
+							</tr>
+							<tr ng-repeat="camp in campaigns"  pagination-id="camp_id"  class="ng-cloak">
+								<td><a href="${pageContext.request.contextPath}/view-campaign/{{camp.campId}}">{{camp.campId}}</a></td>
+								<td>{{camp.campName}}</td>								
+								<td>{{camp.campType}}</td>
+								<td>{{camp.campStatus}}</td>
+								<td>{{camp.campBudget | number:2}}</td>	
+								<td ng-if="camp.campStartDate == ''">-</td>
+								<td ng-if="camp.campStartDate != ''">{{camp.campStartDate}}</td>							
+								<td>{{camp.campEndDate}}</td>								
+							</tr>							
+						</table>
+					</div> --%>
 				</div>
 				<div class="chart tab-pane " id="tabLE">
 					<div class="col-sm-2">
@@ -1007,6 +1090,8 @@
 		</div>
 		
 		
+		<div id="chartdiv" style="width: 500px; height: 300px;"></div>
+		
 		<input type="hidden" id="btn_frm_setting" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="frm_setting" />
 		<div class="modal fade modal-default" id="frm_setting" role="dialog">
 			<div class="modal-dialog  modal-lg">
@@ -1090,3 +1175,5 @@
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
+<script src="${pageContext.request.contextPath}/resources/plugins/amcharts/amcharts.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/amcharts/funnel.js" type="text/javascript"></script>
