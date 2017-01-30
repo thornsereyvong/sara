@@ -71,9 +71,10 @@
 				
 				
 				$scope.active = function(){	
-					$scope.confDash2.sort(function(a, b){
-					    return a.orderBy-b.orderBy
-					});
+					
+					/* $scope.confDash2.sort(function(a, b){
+					    return a.orderBy-b.orderBy;
+					}); */
 					
 					var first = 0;
 					for(var i=0; i<$scope.confDash2.length; i++){						

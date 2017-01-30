@@ -61,9 +61,9 @@
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/dirPagination.js"></script>
 <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrapValidator.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jPages.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/editor/summernote.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/select2/select2.full.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/dist/sweetalert/sweetalert-dev.js"></script>
+<script src="${pageContext.request.contextPath}/resources/editor/summernote.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/plugins/select2/select2.full.js"></script>
+<script src="${pageContext.request.contextPath}/resources/dist/sweetalert/sweetalert-dev.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.js"></script>
