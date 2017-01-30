@@ -4,6 +4,8 @@
 	pageEncoding="UTF-8"%>
 
 <jsp:include page="${request.contextPath}/head"></jsp:include>
+
+<link  type="text/css" href="${pageContext.request.contextPath}/resources/plugins/amcharts/plugins/export/export.css" rel="stylesheet">
 <jsp:include page="${request.contextPath}/header"></jsp:include>
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
@@ -191,63 +193,48 @@
 		    forcePlaceholderSize: true,
 		    zIndex: 999999
   		});	
-		
-		var chart;
-        var data = [
-            {
-                "title": "Website visits",
-                "value": 500
-            },
-            {
-                "title": "Downloads",
-                "value": 400
-            },
-            {
-                "title": "Requested price list",
-                "value": 300
-            },
-            {
-                "title": "Contaced for more info",
-                "value": 200
-            },
-            {
-                "title": "Purchased",
-                "value": 150
-            },
-            {
-                "title": "Contacted for support",
-                "value": 100
-            },
-            {
-                "title": "Purchased additional products",
-                "value": 50
-            }
-        ];
-       
-      AmCharts.ready(function () {
-
-            chart = new AmCharts.AmFunnelChart();
-            chart.titleField = "title";
-            chart.balloon.cornerRadius = 0;
-            chart.marginRight = 220;
-            chart.marginLeft = 15;
-            chart.labelPosition = "right";
-            chart.funnelAlpha = 0.9;
-            chart.valueField = "value";
-            chart.dataProvider = data;
-            chart.startX = 0;
-            chart.balloon.animationTime = 0.2;
-            chart.neckWidth = "40%";
-            chart.startAlpha = 0;
-            chart.neckHeight = "30%";
-            chart.balloonText = "[[title]]:<b>[[value]]</b>";
-
-            chart.creditsPosition = "top-right";
-            //chart.write("chartdiv");
-        });
-		
-		
-		
+      
+     /*  var chart = AmCharts.makeChart( "chartdiv", {
+    	  "type": "funnel",
+    	  "theme": "light",
+    	  "dataProvider": [ {
+    	    "title": "Website visits",
+    	    "value": 300
+    	  }, {
+    	    "title": "Downloads",
+    	    "value": 123
+    	  }, {
+    	    "title": "Requested prices",
+    	    "value": 98
+    	  }, {
+    	    "title": "Contacted",
+    	    "value": 72
+    	  }, {
+    	    "title": "Purchased",
+    	    "value": 35
+    	  }, {
+    	    "title": "Asked for support",
+    	    "value": 25
+    	  }, {
+    	    "title": "Purchased more",
+    	    "value": 18
+    	  } ],
+    	  "titleField": "title",
+    	  "marginRight": 160,
+    	  "marginLeft": 15,
+    	  "labelPosition": "right",
+    	  "funnelAlpha": 0.9,
+    	  "valueField": "value",
+    	  "startX": 0,
+    	  "neckWidth": "40%",
+    	  "startAlpha": 0,
+    	  "outlineThickness": 1,
+    	  "neckHeight": "30%",
+    	  "balloonText": "[[title]]:<b>[[value]]</b>",
+    	  "export": {
+    	    "enabled": true
+    	  }
+    	}); */
 	
 	});
 	
@@ -1177,3 +1164,4 @@
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 <script src="${pageContext.request.contextPath}/resources/plugins/amcharts/amcharts.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/amcharts/funnel.js" type="text/javascript"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/plugins/amcharts/plugins/export/export.js"></script>
