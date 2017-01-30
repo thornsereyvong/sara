@@ -21,7 +21,7 @@ app.controller('objController',['$scope','$http',function($scope, $http){
             		{ value: "25", label: "25" },
             		{ value: "30", label: "30" },
             		];
-	$scope.pageSize.row = $scope.pageSize.rows[0].value;
+	$scope.pageSize.row = $scope.pageSize.rows[1].value;
 	
 	$scope.reportStartup = function(userId){
 		$http.get("${pageContext.request.contextPath}/report/lead/startup/").success(function(response){
