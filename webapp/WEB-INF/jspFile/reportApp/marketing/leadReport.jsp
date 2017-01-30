@@ -87,12 +87,6 @@ $(function(){
 			$('#form-campaigns').bootstrapValidator('revalidateField', 'startdate');
 		}		  
 	});
-
-	$('#date_type').change(function(){
-		if($("#datafilter").val() == 'All'){
-			 angular.element('#objController').scope().reportStartupDate(getValueStringById("date_type"));
-		}
-	});
 	
 	$("#datafilter").change(function(){
 		var action = $("#datafilter").val();
@@ -102,7 +96,7 @@ $(function(){
 		        $('#todate').prop("disabled", true);
 		        $('#startdate').val($('#startdate').attr('data-default-date'));  
 		        $('#todate').val($('#todate').attr('data-default-date')); 
-		        angular.element('#objController').scope().reportStartupDate(getValueStringById("date_type"));
+		        angular.element('#objController').scope().reportStartup('${SESSION}');
 		        break;
 		    case 'range':
 		    	$('#startdate').prop("disabled", false);  
@@ -113,20 +107,20 @@ $(function(){
 		    case 'today':
 		    	 $('#startdate').prop("disabled", true);  
 			     $('#todate').prop("disabled", true); 				     				    
-			     $('#startdate').val(moment().format('D/MMM/YYYY'));  
-			     $('#todate').val(moment().format('D/MMM/YYYY'));
+			     $('#startdate').val(moment().format('YYYY-MM-DD'));  
+			     $('#todate').val(moment().format('YYYY-MM-DD'));
 		        break;
 		    case 'this period':
 		    	 $('#startdate').prop("disabled", true);  
 			     $('#todate').prop("disabled", true);
-			     $('#startdate').val("01/"+moment().format('MMM')+"/"+(new Date()).getFullYear());  
-			     $('#todate').val(getLastDayOfMonth()+"/"+moment().format('MMM')+"/"+(new Date()).getFullYear()); 
+			     $('#startdate').val((new Date()).getFullYear()+"-"+moment().format('MM')+"-"+"01");  
+			     $('#todate').val((new Date()).getFullYear()+"-"+moment().format('MM')+"-"+getLastDayOfMonth()); 
 		        break;
 		    case 'this year':
 		    	 $('#startdate').prop("disabled", true);  
 			     $('#todate').prop("disabled", true);
-			     $('#startdate').val("01/Jan/"+(new Date()).getFullYear());  
-			     $('#todate').val("31/Dec/"+(new Date()).getFullYear()); 
+			     $('#startdate').val((new Date()).getFullYear()+"-01-01");  
+			     $('#todate').val((new Date()).getFullYear()+"-12-01"); 
 		        break;
 		}				
 	});
@@ -289,7 +283,7 @@ $(function(){
 										<th>LEAD STATUS</th>
 										<th>LEAD NAME</th>
 										<th>COMPANY</th>
-										<th>OPPORTUNITY AMOUNT</th>
+										<th class="col-sm-1">OPPORTUNITY AMOUNT</th>
 										<th>CREATED DATE</th>
 										<th>CONVERTED DATE</th>
 										<th>OPPORTUNITY NAME</th>
@@ -298,7 +292,8 @@ $(function(){
 								<tbody>
 									<tr  dir-paginate="le in leads |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
 										<td>{{le.leadId}}</td>
-										<td>{{le.sourceName}}</td>
+										<td ng-if="le.sourceName == null">-</td>
+										<td ng-if="le.sourceName != null">{{le.sourceName}}</td>
 										<td>{{le.statusName}}</td>
 										<td>{{le.leadName}}</td>
 										<td>{{le.company}}</td>
