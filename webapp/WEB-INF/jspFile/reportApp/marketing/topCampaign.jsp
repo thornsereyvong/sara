@@ -54,6 +54,7 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 			}
 		}).success(function(response) {	
 			$scope.campaigns = response.TOP_CAMPAIGN;
+			
 		});
 	}; 
 
