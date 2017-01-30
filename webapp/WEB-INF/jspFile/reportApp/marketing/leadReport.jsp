@@ -24,33 +24,41 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 	$scope.pageSize.row = $scope.pageSize.rows[0].value;
 	
 	$scope.reportStartup = function(userId){
-		$http.get("${pageContext.request.contextPath}/report/campaign/startup/"+userId).success(function(response){
-			$scope.camp_parents = response.CAMPAIGNS;
-			$scope.camp_status = response.STATUS;
-			$scope.camp_types = response.TYPES;
+		$http.get("${pageContext.request.contextPath}/report/lead/startup/").success(function(response){
+			$scope.lead_status = response.STATUS;
+			$scope.lead_source = response.SOURCE;
 			$scope.users = response.ASSIGN_TO;
-			$("#startdate").val(response.DEFAULT_DATE.startDate);
-			$("#todate").val(response.DEFAULT_DATE.endDate);
+			$("#startdate").val(response.STARTUP_DATE.startDate);
+			$("#todate").val(response.STARTUP_DATE.endDate);
 			$('#startdate').prop("disabled", true);  
-	        $('#todate').prop("disabled", true); 
+	        $('#todate').prop("disabled", true);
+		});
+	};
+
+	$scope.reportStartupDate = function(dateType){
+		$http.get("${pageContext.request.contextPath}/report/lead/startup/date/"+dateType).success(function(response){
+			$("#startdate").val(response.STARTUP_DATE.startDate);
+			$("#todate").val(response.STARTUP_DATE.endDate);
+			$('#startdate').prop("disabled", true);  
+	        $('#todate').prop("disabled", true);
 		});
 	};
 	
 	$scope.searchBtnClick = function(){	
    		$http({
  			method: 'POST',
-		    url: '${pageContext.request.contextPath}/report/campaign/top-campaign',
+		    url: '${pageContext.request.contextPath}/report/lead/report-lead',
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
 		    data : {
+			    "dateType":getValueStringById("date_type"),
 			    "startDate":getValueStringById("startdate"),
 			    "endDate":getValueStringById("todate"),
-			    "statusId":getValueStringById("cam_status"),
-			    "typeId":getValueStringById("cam_type"),
-			    "campParentId":getValueStringById("cam_parent"),
-			    "userId":getValueStringById("cam_assignTo")
+			    "statusId":getValueStringById("lead_status"),
+			    "sourceId":getValueStringById("lead_source"),
+			    "userId":getValueStringById("lead_assignTo")
 			}
 		}).success(function(response) {	
 			$scope.campaigns = response.TOP_CAMPAIGN;
@@ -79,6 +87,12 @@ $(function(){
 			$('#form-campaigns').bootstrapValidator('revalidateField', 'startdate');
 		}		  
 	});
+
+	$('#date_type').change(function(){
+		if($("#datafilter").val() == 'All'){
+			 angular.element('#objController').scope().reportStartupDate(getValueStringById("date_type"));
+		}
+	});
 	
 	$("#datafilter").change(function(){
 		var action = $("#datafilter").val();
@@ -88,7 +102,7 @@ $(function(){
 		        $('#todate').prop("disabled", true);
 		        $('#startdate').val($('#startdate').attr('data-default-date'));  
 		        $('#todate').val($('#todate').attr('data-default-date')); 
-		        angular.element('#objController').scope().reportStartup('${SESSION}');
+		        angular.element('#objController').scope().reportStartupDate(getValueStringById("date_type"));
 		        break;
 		    case 'range':
 		    	$('#startdate').prop("disabled", false);  
@@ -181,8 +195,8 @@ $(function(){
 									<div class="col-sm-3">
 										<label class="font-label">Date Type</label>
 										<div class="form-group">
-											<select class="form-control select2" name="cam_status"
-												style="width: 100%;" id="cam_status">
+											<select class="form-control select2" name="date_type"
+												style="width: 100%;" id="date_type">
 												<option value="createdDate">Created Date</option>
 												<option value="convertedDate">Converted Date</option>
 											</select>
@@ -211,28 +225,28 @@ $(function(){
 					              	<div class="col-sm-3">
 										<label class="font-label">Status</label>
 										<div class="form-group">
-											<select class="form-control select2" name="cam_status"
-												style="width: 100%;" id="cam_status">
+											<select class="form-control select2" name="lead_status"
+												style="width: 100%;" id="lead_status">
 												<option value="">-- SELECT Status --</option>
-												<option ng-repeat="stat in camp_status" value="{{stat.statusID}}">{{stat.statusName}}</option>
+												<option ng-repeat="stat in lead_status" value="{{stat.statusId}}">{{stat.statusName}}</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-sm-3">
 										<label class="font-label">Source</label>
 										<div class="form-group">
-											<select class="form-control select2" name="cam_type"
-												style="width: 100%;" id="cam_type">
+											<select class="form-control select2" name="lead_source"
+												style="width: 100%;" id="lead_source">
 												<option value="">-- SELECT Source --</option>
-												<option ng-repeat="ty in camp_types" value="{{ty.typeID}}">{{ty.typeName}}</option>
+												<option ng-repeat="le in lead_source" value="{{le.sourceId}}">{{le.sourceName}}</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-sm-3">
 										<label class="font-label">Assigned to </label>
 										<div class="form-group">
-											<select class="form-control select2" name="cam_assignTo"
-												id="cam_assignTo" style="width: 100%;">
+											<select class="form-control select2" name="lead_assignTo"
+												id="lead_assignTo" style="width: 100%;">
 												<option value="">-- SELECT User --</option>
 												<option ng-repeat="user in users" value="{{user.userID}}">{{user.username}}</option>
 											</select>
@@ -301,11 +315,6 @@ $(function(){
 					</div>
 				</div>
 			</div>
-			
-			
-			
-			
-			
 			<div id="errors"></div>
 		</div>
 	
