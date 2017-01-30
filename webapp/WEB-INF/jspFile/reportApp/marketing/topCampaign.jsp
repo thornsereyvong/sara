@@ -63,7 +63,7 @@ $(function(){
 	$('#todate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        format: 'DD/MM/YYYY' 
+        format: 'YYYY-MM-DD' 
     }).on('change', function(e) {
 		if($("#todate").val() != ""){
 			$('#form-campaigns').bootstrapValidator('revalidateField', 'todate');
@@ -73,7 +73,7 @@ $(function(){
 	$('#startdate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        format: 'DD/MM/YYYY' 
+        format: 'YYYY-MM-DD' 
     }).on('change', function(e) {
 		if($("#startdate").val() != ""){
 			$('#form-campaigns').bootstrapValidator('revalidateField', 'startdate');

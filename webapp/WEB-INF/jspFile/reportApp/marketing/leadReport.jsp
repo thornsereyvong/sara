@@ -47,7 +47,7 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 	$scope.searchBtnClick = function(){	
    		$http({
  			method: 'POST',
-		    url: '${pageContext.request.contextPath}/report/lead/report-lead',
+		    url: '${pageContext.request.contextPath}/report/lead/exec-lead',
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
@@ -56,12 +56,12 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 			    "dateType":getValueStringById("date_type"),
 			    "startDate":getValueStringById("startdate"),
 			    "endDate":getValueStringById("todate"),
-			    "statusId":getValueStringById("lead_status"),
-			    "sourceId":getValueStringById("lead_source"),
-			    "userId":getValueStringById("lead_assignTo")
+			    "status":getValueStringById("lead_status"),
+			    "source":getValueStringById("lead_source"),
+			    "assignTo":getValueStringById("lead_assignTo")
 			}
 		}).success(function(response) {	
-			$scope.campaigns = response.TOP_CAMPAIGN;
+			$scope.leads = response.REPORT;
 		});
 	}; 
 
@@ -71,7 +71,7 @@ $(function(){
 	$('#todate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        format: 'DD/MM/YYYY' 
+        format: 'YYYY-MM-DD' 
     }).on('change', function(e) {
 		if($("#todate").val() != ""){
 			$('#form-campaigns').bootstrapValidator('revalidateField', 'todate');
@@ -81,7 +81,7 @@ $(function(){
 	$('#startdate').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        format: 'DD/MM/YYYY' 
+        format: 'YYYY-MM-DD' 
     }).on('change', function(e) {
 		if($("#startdate").val() != ""){
 			$('#form-campaigns').bootstrapValidator('revalidateField', 'startdate');
@@ -228,7 +228,7 @@ $(function(){
 											<select class="form-control select2" name="lead_status"
 												style="width: 100%;" id="lead_status">
 												<option value="">-- SELECT Status --</option>
-												<option ng-repeat="stat in lead_status" value="{{stat.statusId}}">{{stat.statusName}}</option>
+												<option ng-repeat="stat in lead_status" value="{{stat.statusID}}">{{stat.statusName}}</option>
 											</select>
 										</div>
 									</div>
@@ -238,7 +238,7 @@ $(function(){
 											<select class="form-control select2" name="lead_source"
 												style="width: 100%;" id="lead_source">
 												<option value="">-- SELECT Source --</option>
-												<option ng-repeat="le in lead_source" value="{{le.sourceId}}">{{le.sourceName}}</option>
+												<option ng-repeat="le in lead_source" value="{{le.sourceID}}">{{le.sourceName}}</option>
 											</select>
 										</div>
 									</div>
@@ -285,24 +285,30 @@ $(function(){
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>Campaign Name</th>
-										<th>Type</th>
-										<th>Status</th>
-										<th>Start Date</th>
-										<th>End Date</th>
-										<th>Num Sent</th>
+										<th>LEAD SOURCE</th>
+										<th>LEAD STATUS</th>
+										<th>LEAD NAME</th>
+										<th>COMPANY</th>
+										<th>OPPORTUNITY AMOUNT</th>
+										<th>CREATED DATE</th>
+										<th>CONVERTED DATE</th>
+										<th>OPPORTUNITY NAME</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr  dir-paginate="camp in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>{{camp.campId}}</td>
-										<td>{{camp.campName}}</td>
-										<td>{{camp.typeName}}</td>
-										<td>{{camp.statusName}}</td>
-										<td ng-if="camp.startDate == null">-</td>
-										<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
-										<td>{{camp.endDate}}</td>
-										<td>{{camp.numSent}}</td>
+									<tr  dir-paginate="le in leads |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+										<td>{{le.leadId}}</td>
+										<td>{{le.sourceName}}</td>
+										<td>{{le.statusName}}</td>
+										<td>{{le.leadName}}</td>
+										<td>{{le.company}}</td>
+										<td ng-if="le.opAmount == null">$ 0.00</td>
+										<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
+										<td>{{le.createdDate}}</td>
+										<td ng-if="le.convertedDate == null">-</td>
+										<td ng-if="le.convertedDate != null">{{le.convertedDate}}</td>
+										<th ng-if="le.opName == null">-</th>
+										<td ng-if="le.opName != null">{{le.opName}}</td>
 									</tr>
 								</tbody>
 							</table>
