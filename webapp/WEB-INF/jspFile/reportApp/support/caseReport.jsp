@@ -23,47 +23,46 @@ app.controller('objController',['$scope','$http',function($scope, $http){
             		];
 	$scope.pageSize.row = $scope.pageSize.rows[1].value;
 	
-	$scope.reportStartup = function(userId){
-		$http.get("${pageContext.request.contextPath}/report/lead/startup/").success(function(response){
-			$scope.lead_status = response.STATUS;
-			$scope.lead_source = response.SOURCE;
-			$scope.industries = response.INDUSTRIES;
+	$scope.reportStartup = function(){
+		$http.get("${pageContext.request.contextPath}/report/case/startup").success(function(response){
+			$scope.status = response.STATUS;
+			$scope.types = response.TYPES;
+			$scope.origins = response.ORIGINS;
+			$scope.priorities = response.PRIORITIES;
+			$scope.products = response.PRODUCTS;
+			$scope.customers = response.CUSTOMERS;
+			$scope.contacts = response.CONTACTS;
 			$scope.users = response.ASSIGN_TO;
-			$("#startdate").val(response.STARTUP_DATE.startDate);
-			$("#todate").val(response.STARTUP_DATE.endDate);
+			$("#startdate").val(response.STATUP_DATE.startDate);
+			$("#todate").val(response.STATUP_DATE.endDate);
 			$('#startdate').prop("disabled", true);  
-	        $('#todate').prop("disabled", true);
-		});
-	};
-
-	$scope.reportStartupDate = function(dateType){
-		$http.get("${pageContext.request.contextPath}/report/lead/startup/date/"+dateType).success(function(response){
-			$("#startdate").val(response.STARTUP_DATE.startDate);
-			$("#todate").val(response.STARTUP_DATE.endDate);
-			$('#startdate').prop("disabled", true);  
-	        $('#todate').prop("disabled", true);
+	        $('#todate').prop("disabled", true); 
 		});
 	};
 	
 	$scope.searchBtnClick = function(){	
    		$http({
  			method: 'POST',
-		    url: '${pageContext.request.contextPath}/report/lead/exec-lead',
+		    url: '${pageContext.request.contextPath}/report/case/case-report',
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
 		    data : {
-			    "dateType":getValueStringById("date_type"),
 			    "startDate":getValueStringById("startdate"),
 			    "endDate":getValueStringById("todate"),
-			    "status":getValueStringById("lead_status"),
-			    "source":getValueStringById("lead_source"),
-			    "assignTo":getValueStringById("lead_assignTo"),
-			    "industry":getValueStringById("industry")
+			    "status":getValueStringById("case_status"),
+			    "type":getValueStringById("case_type"),
+			    "origin":getValueStringById("case_origin"),
+			    "priority":getValueStringById("case_priority"),
+			    "product":getValueStringById("case_product"),
+			    "customer":getValueStringById("case_customer"),
+			    "contact":getValueStringById("case_contact"),
+			    "assignTo":getValueStringById("case_assignTo")
 			}
 		}).success(function(response) {	
-			$scope.leads = response.REPORT;
+			$scope.cases = response.REPORT;
+			
 		});
 	}; 
 
@@ -153,15 +152,13 @@ $(function(){
 <div class="content-wrapper" ng-app="objApp" ng-controller="objController" id="objController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>Exec Leads</h1>
+		<h1>Case Report</h1>
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
-			<li><a href="#"> Exec Leads</a></li>
+			<li><a href="#"> Case Report</a></li>
 		</ol>
 	</section>
-
-	<section class="content" data-ng-init="reportStartup('${SESSION}')">
-		
+	<section class="content" data-ng-init="reportStartup()">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="box box-primary">	
@@ -188,16 +185,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
-										<label class="font-label">Date Type</label>
-										<div class="form-group">
-											<select class="form-control select2" name="date_type"
-												style="width: 100%;" id="date_type">
-												<option value="createdDate">Created Date</option>
-												<option value="convertedDate">Converted Date</option>
-											</select>
-										</div>
-									</div>
+									
 									<div class="col-sm-3">
 						                <label class="font-label">Start date </label>
 						                <div class="form-group">
@@ -221,38 +209,81 @@ $(function(){
 					              	<div class="col-sm-3">
 										<label class="font-label">Status</label>
 										<div class="form-group">
-											<select class="form-control select2" name="lead_status"
-												style="width: 100%;" id="lead_status">
+											<select class="form-control select2" name="case_status"
+												style="width: 100%;" id="case_status">
 												<option value="">-- SELECT Status --</option>
-												<option ng-repeat="stat in lead_status" value="{{stat.statusID}}">{{stat.statusName}}</option>
+												<option ng-repeat="stat in status" value="{{stat.statusId}}">{{stat.statusName}}</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-sm-3">
-										<label class="font-label">Source</label>
+										<label class="font-label">Type</label>
 										<div class="form-group">
-											<select class="form-control select2" name="lead_source"
-												style="width: 100%;" id="lead_source">
-												<option value="">-- SELECT Source --</option>
-												<option ng-repeat="le in lead_source" value="{{le.sourceID}}">{{le.sourceName}}</option>
+											<select class="form-control select2" name="case_type"
+												style="width: 100%;" id="case_type">
+												<option value="">-- SELECT Type --</option>
+												<option ng-repeat="ty in types" value="{{ty.caseTypeId}}">{{ty.caseTypeName}}</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-sm-3">
-										<label class="font-label">Industry</label>
+										<label class="font-label">Origin</label>
 										<div class="form-group">
-											<select class="form-control select2" name="industry"
-												style="width: 100%;" id="industry">
-												<option value="">-- SELECT Industry --</option>
-												<option ng-repeat="ins in industries" value="{{ins.industID}}">{{ins.industName}}</option>
+											<select class="form-control select2" name="case_origin"
+												style="width: 100%;" id="case_origin">
+												<option value="">-- SELECT Origin --</option>
+												<option ng-repeat= "or in origins" value="{{or.originId}}">{{or.originTitle}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<label class="font-label">Priority</label>
+										<div class="form-group">
+											<select class="form-control select2" name="case_priority"
+												style="width: 100%;" id="case_priority">
+												<option value="">-- SELECT Priority --</option>
+												<option ng-repeat="pr in priorities" value="{{pr.priorityId}}">{{pr.priorityName}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<label class="font-label">Product </label>
+										<div class="form-group">
+											<select class="form-control select2" name="case_product"
+												style="width: 100%;" id="case_product">
+												<option value="">-- SELECT Product --</option>
+												<option ng-repeat="p in products" value="{{p.itemId}}">[{{p.itemId}}]
+													{{p.itemName}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<label class="font-label">Customer </label>
+										<div class="form-group">
+											<select class="form-control select2" name="case_customer"
+												style="width: 100%;" id="case_customer">
+												<option value="">-- SELECT Customer --</option>
+												<option ng-repeat="cust in customers" value="{{cust.custID}}">[{{cust.custID}}]
+													{{cust.custName}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<label class="font-label">Contact </label>
+										<div class="form-group">
+											<select class="form-control select2" name="case_contact"
+												style="width: 100%;" id="case_contact">
+												<option value="">-- SELECT Contact --</option>
+												<option ng-repeat="con in contacts" value="{{con.conID}}">[{{con.conID}}]
+													{{con.conSalutation}} {{con.conFirstname}} {{con.conLastname}}</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-sm-3">
 										<label class="font-label">Assigned to </label>
 										<div class="form-group">
-											<select class="form-control select2" name="lead_assignTo"
-												id="lead_assignTo" style="width: 100%;">
+											<select class="form-control select2" name="case_assignTo"
+												id="case_assignTo" style="width: 100%;">
 												<option value="">-- SELECT User --</option>
 												<option ng-repeat="user in users" value="{{user.userID}}">{{user.username}}</option>
 											</select>
@@ -291,33 +322,36 @@ $(function(){
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>LEAD SOURCE</th>
-										<th>LEAD STATUS</th>
-										<th>LEAD NAME</th>
-										<th>COMPANY</th>
-										<th class="col-sm-1">OPPORTUNITY AMOUNT</th>
-										<th>CREATED DATE</th>
-										<th>INDUSTRY</th>
-										<th>CONVERTED DATE</th>
-										<th>OPPORTUNITY NAME</th>
+										<th>SUBJECT</th>
+										<th>TYPE</th>
+										<th>STATUS</th>
+										<th>PRIORITY</th>
+										<th>ORIGIN</th>
+										<th>PRODUCT</th>
+										<th>CUSTOMER</th>
+										<th>CONTACT</th>
+										<th>RESOLVED BY</th>
+										<th>RESOLVED DATE</th>
+										<th>ARTICLE</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr  dir-paginate="le in leads |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>{{le.leadId}}</td>
-										<td ng-if="le.sourceName == null">-</td>
-										<td ng-if="le.sourceName != null">{{le.sourceName}}</td>
-										<td>{{le.statusName}}</td>
-										<td>{{le.leadName}}</td>
-										<td>{{le.company}}</td>
-										<td ng-if="le.opAmount == null">$ 0.00</td>
-										<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
-										<td>{{le.createdDate}}</td>
-										<td>{{le.industId == 0 ? '-':le.industName}}</td>
-										<td ng-if="le.convertedDate == null">-</td>
-										<td ng-if="le.convertedDate != null">{{le.convertedDate}}</td>
-										<th ng-if="le.opName == null">-</th>
-										<td ng-if="le.opName != null">{{le.opName}}</td>
+									<tr dir-paginate="ca in cases |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+										<td>{{ca.caseId}}</td>
+										<td>{{ca.caseSubject}}</td>
+										<td>{{ca.typeName}}</td>
+										<td>{{ca.statusName}}</td>
+										<td>{{ca.priorityName}}</td>
+										<td>{{ca.originId==null ? '-':ca.originName}}</td>
+										<td ng-if="ca.itemId==null">-</td>
+										<td ng-if="ca.itemId!=null">[{{ca.itemId}}] {{ca.itemName}}</td>
+										<td ng-if="ca.custId==null">-</td>
+										<td ng-if="ca.custId!=null">[{{ca.custId}}] {{ca.custName}}</td>
+										<td ng-if="ca.contactId==null">-</td>
+										<td ng-if="ca.contactId!=null">[{{ca.contactId}}] {{ca.contactName}}</td>
+										<td>{{ca.resolvedBy == null ? '-':ca.resovedBy}}</td>
+										<td>{{ca.resolvedDate == null ? '-':ca.resolvedDate}}</td>
+										<td>{{ca.articleTitle == null ? '-':ca.articleTitle}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -332,9 +366,6 @@ $(function(){
 			</div>
 			<div id="errors"></div>
 		</div>
-	
-		
-				
 	</section>
 </div>
 <jsp:include page="${request.contextPath}/footer"></jsp:include>

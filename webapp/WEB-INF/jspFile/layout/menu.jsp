@@ -235,6 +235,19 @@ $(document).ready(function(){
 						</ul>
 					</li>					
 				</ul>
+				<ul class="treeview-menu" id="repSupportUl">					
+					<li class="" id="repSupportLi">
+						<a href="#">
+							<i class="fa fa-circle-o color_menu" id="repSupportIcon"></i> Support<i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu" id="repCaseUl">
+							<li class="" id="repCaseAct">
+								<a href="${pageContext.request.contextPath}/report/support/case"><i id="repCaseIcon1" class="fa fa-circle-o color_menu"></i> Case</a>
+								<a href="${pageContext.request.contextPath}/report/support/article"><i id="repCaseIcon2" class="fa fa-circle-o color_menu"></i> Article</a>
+							</li>
+						</ul>
+					</li>					
+				</ul>
 			</li>
 			<li class='treeview ' id="admin"><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/images/Administrator.png"

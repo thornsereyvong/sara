@@ -25,5 +25,11 @@ public class ReportController {
 		model.addAttribute("menu", "leadReport");
 		return "reportApp/marketing/leadReport";
 	}
+	
+	@RequestMapping({ "support/case"})
+	public String caseReport(ModelMap model) {
+		model.addAttribute("menu", "reportCase");
+		return "reportApp/support/caseReport";
+	}
 
 }

@@ -69,8 +69,6 @@ function funcSelectContact(id, name_select, val){
 
 function selectMenu(menu_slide){
 	
-	
-	
 	switch (menu_slide) {
 	
     case "listCampaigns":
@@ -438,6 +436,11 @@ function selectMenu(menu_slide){
     case "leadReport":
     	iAddClass("report_menu", "repMarketing","repLead",1);
     	document.title = 'Lead Report | CRM';
+        break;
+        
+    case "reportCase":
+    	iAddClass("report_menu", "repSupport","repCase",1);
+    	document.title = 'Case Report | CRM';
         break;
         
     default:
