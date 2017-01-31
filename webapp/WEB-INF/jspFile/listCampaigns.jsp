@@ -27,7 +27,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	};
 
 	$scope.pageSize = {};
-
+	$scope.currentPage = 1;
 	$scope.pageSize.rows = [ 
 					{ value: "5", label: "5" },
     				{ value: "10", label: "10" },
@@ -172,8 +172,8 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 									<th>Action</th>
 								</tr>
 		
-								<tr dir-paginate="cc in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-									<td>{{cc.campID}}</td>
+								<tr dir-paginate="cc in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" current-page="currentPage" class="ng-cloak">
+									<td data-index="{{ ($index + 1) + (currentPage - 1) * pageSize.row}}">{{cc.campID}}</td>
 									<td>{{cc.campName}}</td>
 									<td>{{cc.statusName}}</td>
 									<td>{{cc.typeName}}</td>
@@ -189,7 +189,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 						                      </button>
 						                      <ul class="dropdown-menu" role="menu">
 						                        <li><a href="${pageContext.request.contextPath}/update-campaign/{{cc.campID}}"><i class="fa fa-pencil"></i> Edit</a></li>
-						                        <li><a href="#" ng-click="deleteCamp(cc.campID)"><i class="fa fa-trash"></i> Delete</a></li>
+						                        <li><a href="#"  ng-click="deleteCamp(cc.campID)"><i class="fa fa-trash"></i> Delete</a></li>
 						                        <li><a href="${pageContext.request.contextPath}/view-campaign/{{cc.campID}}"><i class="fa fa-eye"></i> View</a></li>
 						                      </ul>
 						                    </div>

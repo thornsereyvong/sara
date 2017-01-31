@@ -36,6 +36,19 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 		});
 	};
 	
+	
+	$scope.calROI = function(gain, invest){
+		if(invest <= 0 && gain <= 0){
+			return 0;
+		}else if((gain-invest)==0){
+			return 0;
+		}else if(invest <= 0 && gain > 0){
+			return 100;
+		}else{
+			return ((gain-invest)/invest)*100;
+		}
+	}
+	
 	$scope.searchBtnClick = function(){	
    		$http({
  			method: 'POST',
@@ -57,7 +70,15 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 			
 		});
 	}; 
-
+	
+	$scope.excelBtnClick = function(){		
+		 var blob = new Blob([document.getElementById('exportTbl').innerHTML], {
+             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+         });
+         saveAs(blob, "top-campaign.xls");		
+	}
+	
+	
 }]);
 
 $(function(){
@@ -168,9 +189,8 @@ $(function(){
 								<div class="col-sm-12">
 									<div class="col-md-3">
 										<div class="form-group">
-											<label>Date Filter</label> <select name="datafilter"
-												id="datafilter" class="form-control select2 input-lg"
-												style="width: 100%;">
+											<label>Date Filter</label> 
+											<select name="datafilter" id="datafilter" class="form-control select2 input-lg" style="width: 100%;">
 												<option value="All">All</option>
 												<option value="range">Range</option>
 												<option value="today">Today</option>
@@ -248,11 +268,12 @@ $(function(){
 					<div class="box-footer">						
 						<div class="col-sm-2">
 						  	<form class="form-inline">
-						  		<div class="form-group">
-						        	<button ng-click="searchBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-default">
-										<i class="fa fa-print"></i> &nbsp;Print
+						        <div class="form-group">
+						        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+										<i class="fa fa-file-excel-o"></i> &nbsp;excel
 									</button>
 						        </div>
+						        
 						        <div class="form-group">
 						        	<div class="input-group">
 						        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
@@ -273,13 +294,19 @@ $(function(){
 							<table class="table table-hover">
 								<thead>
 									<tr>
-										<th>ID</th>
-										<th>Campaign Name</th>
+										<th>Camp ID</th>
+										<th>Camp Name</th>
 										<th>Type</th>
 										<th>Status</th>
 										<th>Start Date</th>
 										<th>End Date</th>
 										<th>Num Sent</th>
+										<th>Response</th>
+										<th>Num Total Opport</th>
+										<th>Num Won Opport</th>
+										<th>Total Amount Won Opport</th>
+										<th>Actual Cost</th>
+										<th>ROI</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -292,6 +319,12 @@ $(function(){
 										<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
 										<td>{{camp.endDate}}</td>
 										<td>{{camp.numSent}}</td>
+										<td>{{camp.expResponse}} %</td>
+										<td>{{camp.totalOpp}}</td>
+										<td>{{camp.totalOppWon}}</td>
+										<td>{{camp.totalAmtWon | number:2}}</td>
+										<td>{{camp.actCost | number:2}}</td>
+										<td>{{calROI(camp.totalAmtWon, camp.actCost) | number}} %</td>
 									</tr>
 								</tbody>
 							</table>
@@ -301,19 +334,51 @@ $(function(){
 						       boundary-links="true" >
 							</dir-pagination-controls>
 						</div>
+						<div style="display:none;" id="exportTbl">
+							<table>
+								<thead>
+									<tr>
+										<th>Camp ID</th>
+										<th>Camp Name</th>
+										<th>Type</th>
+										<th>Status</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+										<th>Num Sent</th>
+										<th>Response</th>
+										<th>Num Total Opport</th>
+										<th>Num Won Opport</th>
+										<th>Total Amount Won Opport</th>
+										<th>Actual Cost</th>
+										<th>ROI</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr  ng-repeat="camp in campaigns">
+										<td>{{camp.campId}}</td>
+										<td>{{camp.campName}}</td>
+										<td>{{camp.typeName}}</td>
+										<td>{{camp.statusName}}</td>
+										<td ng-if="camp.startDate == null">-</td>
+										<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
+										<td>{{camp.endDate}}</td>
+										<td>{{camp.numSent}}</td>
+										<td>{{camp.expResponse}} %</td>
+										<td>{{camp.totalOpp}}</td>
+										<td>{{camp.totalOppWon}}</td>
+										<td>{{camp.totalAmtWon | number:2}}</td>
+										<td>{{camp.actCost | number:2}}</td>
+										<td>{{calROI(camp.totalAmtWon, camp.actCost) | number}} %</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
-			
-			
-			
-			
-			
 			<div id="errors"></div>
 		</div>
-	
 		
-				
 	</section>
 </div>
 <jsp:include page="${request.contextPath}/footer"></jsp:include>

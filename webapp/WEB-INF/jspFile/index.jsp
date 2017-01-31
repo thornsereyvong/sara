@@ -179,10 +179,7 @@
 				}
 				
 				$scope.ccSetting = function(){}
-				
 				$scope.dashSettingStartup = function(){}
-				
-				
 			} ]);
 	
 	$(function(){
@@ -194,6 +191,8 @@
 		    zIndex: 999999
   		});	
       
+		
+		
      /*  var chart = AmCharts.makeChart( "chartdiv", {
     	  "type": "funnel",
     	  "theme": "light",
@@ -243,6 +242,7 @@
 <div class="content-wrapper">
 	<section class="content-header">
 		<h1>Dashboard</h1>
+		
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -317,8 +317,8 @@
 							</tr>
 						</table>
 					</div>
-					<%-- <div class="col-sm-12" id="exportable" style="display:none;">
-						<table class="table table-striped">
+					<%-- <div class="col-sm-12"  style="display:none;">
+						<table id="exportable" border="1" cellpadding="3">
 							<tr>
 								<th>ID</th>
 								<th>Name</th>

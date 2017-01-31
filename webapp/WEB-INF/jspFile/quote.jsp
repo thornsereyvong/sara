@@ -424,7 +424,7 @@
 											</div>
 										</div>
 										<div class="col-md-6">
-											<div class="bootstrap-timepicker">
+											<div class="">
 												<div class="form-group">
 													<label>UOM ID <span class="requrie">(Required)</span></label>
 													<select class="form-control select2" name="oppUom" id="oppUom" style="width: 100%;">
