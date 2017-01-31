@@ -27,6 +27,7 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 		$http.get("${pageContext.request.contextPath}/report/lead/startup/").success(function(response){
 			$scope.lead_status = response.STATUS;
 			$scope.lead_source = response.SOURCE;
+			$scope.industries = response.INDUSTRIES;
 			$scope.users = response.ASSIGN_TO;
 			$("#startdate").val(response.STARTUP_DATE.startDate);
 			$("#todate").val(response.STARTUP_DATE.endDate);
@@ -58,7 +59,8 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 			    "endDate":getValueStringById("todate"),
 			    "status":getValueStringById("lead_status"),
 			    "source":getValueStringById("lead_source"),
-			    "assignTo":getValueStringById("lead_assignTo")
+			    "assignTo":getValueStringById("lead_assignTo"),
+			    "industry":getValueStringById("industry")
 			}
 		}).success(function(response) {	
 			$scope.leads = response.REPORT;
@@ -237,6 +239,16 @@ $(function(){
 										</div>
 									</div>
 									<div class="col-sm-3">
+										<label class="font-label">Industry</label>
+										<div class="form-group">
+											<select class="form-control select2" name="industry"
+												style="width: 100%;" id="industry">
+												<option value="">-- SELECT Industry --</option>
+												<option ng-repeat="ins in industries" value="{{ins.industID}}">{{ins.industName}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
 										<label class="font-label">Assigned to </label>
 										<div class="form-group">
 											<select class="form-control select2" name="lead_assignTo"
@@ -285,6 +297,7 @@ $(function(){
 										<th>COMPANY</th>
 										<th class="col-sm-1">OPPORTUNITY AMOUNT</th>
 										<th>CREATED DATE</th>
+										<th>INDUSTRY</th>
 										<th>CONVERTED DATE</th>
 										<th>OPPORTUNITY NAME</th>
 									</tr>
@@ -300,6 +313,7 @@ $(function(){
 										<td ng-if="le.opAmount == null">$ 0.00</td>
 										<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
 										<td>{{le.createdDate}}</td>
+										<td>{{le.industId == 0 ? '-':le.industName}}</td>
 										<td ng-if="le.convertedDate == null">-</td>
 										<td ng-if="le.convertedDate != null">{{le.convertedDate}}</td>
 										<th ng-if="le.opName == null">-</th>
