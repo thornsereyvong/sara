@@ -83,6 +83,32 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 						}	
 					}
 					
+					var tr_report = $("#data_table_role_report tr");
+					
+					if(tr_report.length>0){
+						for(var i=0; i<tr_report.length; i++){
+							var moduleId = tr_report.eq(i).children().eq(0).attr("row-code");
+							var access = getRoleDetailByModule(tr_report.eq(i).children().eq(1));
+							var edit = access;
+							var view = access;
+							var list = access;
+							var del = access;
+							var imp = access;
+							var exp = access;			
+							roleDetails.push({
+						          "module": {"moduleId": moduleId},
+						          "roleAccess": access,
+						          "roleDelete": del,
+						          "roleEdit": edit,
+						          "roleExport": exp,
+						          "roleImport": imp,
+						          "roleList": list,
+						          "roleView": view
+					        });
+						}	
+					}
+					
+					
 					$.ajax({ 
 						url : "${pageContext.request.contextPath}/role/add",
 						type : "POST",
@@ -214,9 +240,7 @@ $(document).ready(function(){
 		<form id="form_status">
 			<div class="box">
 				<div class="box-header with-border">
-
 					<div style="background: #fff; margin-top: 15px;">
-
 						<div class="col-sm-12">
 							<button type="button" ng-click="btnClickSave()" class="btn btn-info btn-app"  value="{{action}}">
 								<i class="fa fa-save"></i>{{action}}
@@ -234,9 +258,7 @@ $(document).ready(function(){
 				<div class="box-body">
 
 					<div class="col-sm-12">
-
-						<input type="hidden" id="id" name="id">
-
+						
 						<div class="col-sm-2">
 							<label class="font-label">Role Name :</label>
 						</div>
@@ -254,91 +276,126 @@ $(document).ready(function(){
 									id="desc" ng-model="statusID.description" class="form-control"></textarea>
 							</div>
 						</div>
-						<div class="col-sm-12 table-responsive"
-							data-ng-init="listModule()">
-							<table class="table" my-main-directive>
-								<tr>
-									<th>Module</th>
-									<th>Access</th>
-									<th>Edit</th>
-									<th>View</th>
-									<th>List</th>
-									<th>Delete</th>
-									<th>Import</th>
-									<th>Export</th>
-								</tr>
-								<tbody id="data_table_role">
-									<tr ng-repeat="u in module" my-repeat-directive >
-										<td row-code="{{u.moduleId}}">{{u.moduleName}}</td>
-										<td>
-											<div class="form-group no-margin">
-												<label class="no-margin"> 
-													<input class="btn-on-off " data-index="{{$index}}" onchange="accessClick(this)" id="accID$index" data-on="YES"
-													data-onstyle="success" data-offstyle="warning"
-													data-off="NO" data-size="small" type="checkbox">
-												</label>
-											</div>
-										</td>
-										<td>
-											<div class="form-group no-margin">
-												<label class="no-margin"> 
-												<input class="btn-on-off "
-													id="editID{{$index}}" disabled="disabled" data-on="YES"
-													data-onstyle="success" data-offstyle="warning"
-													data-off="NO" data-size="small" type="checkbox">
-												</label>
-											</div>
-										</td>
-										<td>
-											<div class="form-group no-margin">
-												<label class="no-margin"> <input class="btn-on-off"
-													id="viewID{{$index}}" data-on="YES"
-													data-onstyle="success" disabled="disabled" data-offstyle="warning"
-													data-off="NO" data-size="small" type="checkbox">
-												</label>
-											</div>
-										</td>
-										<td>
-											<div class="form-group no-margin">
-												<label class="no-margin"> <input class="btn-on-off"
-													id="listID{{$index}}" data-on="YES"
-													data-onstyle="success" disabled="disabled" data-offstyle="warning"
-													data-off="NO" data-size="small" type="checkbox">
-												</label>
-											</div>
-										</td>
-										<td>
-											<div class="form-group no-margin">
-												<label class="no-margin"> <input class="btn-on-off"
-													id="deleteID{{$index}}" data-on="YES"
-													data-onstyle="success" disabled="disabled" data-offstyle="warning"
-													data-off="NO" data-size="small" type="checkbox">
-												</label>
-											</div>
-										</td>
-										<td>
-											<div class="form-group no-margin">
-												<label class="no-margin"> <input class="btn-on-off"
-													id="importID{{$index}}" data-on="YES"
-													data-onstyle="success" disabled="disabled" data-offstyle="warning"
-													data-off="NO" data-size="small" type="checkbox">
-												</label>
-											</div>
-										</td>
-										<td>
-											<div class="form-group no-margin">
-												<label class="no-margin"> <input class="btn-on-off"
-													id="exportID{{$index}}" data-on="YES"
-													data-onstyle="success" disabled="disabled" data-offstyle="warning"
-													data-off="NO" data-size="small" type="checkbox">
-												</label>
-											</div>
-										</td>
-									</tr>
-
-								</tbody>
-							</table>
+						
+						<div class="nav-tabs-custom" data-ng-init="listModule()">
+							<ul class="nav nav-tabs ui-sortable-handle">
+								<li class="active"><a href="#tabModule" class="ng-cloak" data-toggle="tab">Module</a></li>
+								<li class=""><a href="#tabReport" class="ng-cloak" data-toggle="tab">Report</a></li>
+							</ul>
+							<div class="tab-content no-padding">
+								<div class="chart tab-pane active" id="tabModule">
+									<div class="col-sm-12 table-responsive">
+										<table class="table" my-main-directive>
+											<tr>
+												<th>Module Name</th>
+												<th>Access</th>
+												<th>Edit</th>
+												<th>View</th>
+												<th>List</th>
+												<th>Delete</th>
+												<th>Import</th>
+												<th>Export</th>
+											</tr>
+											<tbody id="data_table_role">
+												<tr ng-repeat="u in module |filter:'!Report'" my-repeat-directive >
+													<td row-code="{{u.moduleId}}">{{u.moduleName}}</td>
+													<td>
+														<div class="form-group no-margin">
+															<label class="no-margin"> 
+																<input class="btn-on-off " data-index="{{$index}}" onchange="accessClick(this)" id="accID$index" data-on="YES"
+																data-onstyle="success" data-offstyle="warning"
+																data-off="NO" data-size="small" type="checkbox">
+															</label>
+														</div>
+													</td>
+													<td>
+														<div class="form-group no-margin">
+															<label class="no-margin"> 
+															<input class="btn-on-off "
+																id="editID{{$index}}" disabled="disabled" data-on="YES"
+																data-onstyle="success" data-offstyle="warning"
+																data-off="NO" data-size="small" type="checkbox">
+															</label>
+														</div>
+													</td>
+													<td>
+														<div class="form-group no-margin">
+															<label class="no-margin"> <input class="btn-on-off"
+																id="viewID{{$index}}" data-on="YES"
+																data-onstyle="success" disabled="disabled" data-offstyle="warning"
+																data-off="NO" data-size="small" type="checkbox">
+															</label>
+														</div>
+													</td>
+													<td>
+														<div class="form-group no-margin">
+															<label class="no-margin"> <input class="btn-on-off"
+																id="listID{{$index}}" data-on="YES"
+																data-onstyle="success" disabled="disabled" data-offstyle="warning"
+																data-off="NO" data-size="small" type="checkbox">
+															</label>
+														</div>
+													</td>
+													<td>
+														<div class="form-group no-margin">
+															<label class="no-margin"> <input class="btn-on-off"
+																id="deleteID{{$index}}" data-on="YES"
+																data-onstyle="success" disabled="disabled" data-offstyle="warning"
+																data-off="NO" data-size="small" type="checkbox">
+															</label>
+														</div>
+													</td>
+													<td>
+														<div class="form-group no-margin">
+															<label class="no-margin"> <input class="btn-on-off"
+																id="importID{{$index}}" data-on="YES"
+																data-onstyle="success" disabled="disabled" data-offstyle="warning"
+																data-off="NO" data-size="small" type="checkbox">
+															</label>
+														</div>
+													</td>
+													<td>
+														<div class="form-group no-margin">
+															<label class="no-margin"> <input class="btn-on-off"
+																id="exportID{{$index}}" data-on="YES"
+																data-onstyle="success" disabled="disabled" data-offstyle="warning"
+																data-off="NO" data-size="small" type="checkbox">
+															</label>
+														</div>
+													</td>
+												</tr>
+			
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="chart tab-pane" id="tabReport">
+									<div class="col-sm-12 table-responsive">
+										<table class="table" my-main-directive>
+											<tr>
+												<th>Report Name</th>
+												<th>Access</th>
+											</tr>
+											<tbody id="data_table_role_report">
+												<tr ng-repeat="u in module |filter:'Report'" my-repeat-directive >
+													<td row-code="{{u.moduleId}}">{{u.moduleName}}</td>
+													<td>
+														<div class="form-group no-margin">
+															<label class="no-margin"> 
+																<input class="btn-on-off " data-index="{{$index}}" onchange="accessClick(this)" id="rpt_accID$index" data-on="YES"
+																data-onstyle="success" data-offstyle="warning"
+																data-off="NO" data-size="small" type="checkbox">
+															</label>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
 						</div>
+						
 					</div>
 				</div>
 			</div>

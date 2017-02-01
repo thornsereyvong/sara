@@ -16,8 +16,8 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	$scope.listContact = function(){
 		$http.get("${pageContext.request.contextPath}/role/list").success(function(response){
 				$scope.contact = response.DATA;
-			});
-		} ;
+		});
+	};
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
