@@ -161,10 +161,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 							%>
 							<table class="table table-hover" >
 									<tr>
-										<th style="cursor: pointer;" ng-click="sort('loId')">Location ID
+										<th style="cursor: pointer;" ng-click="sort('loId')">ID
 											<span class="glyphicon sort-icon" ng-show="sortKey=='loId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
-										<th style="cursor: pointer;" ng-click="sort('loName')">Location Name
+										<th style="cursor: pointer;" ng-click="sort('loName')">Name
 											<span class="glyphicon sort-icon" ng-show="sortKey=='loName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
 										<th style="cursor: pointer;" ng-click="sort('loNo')">No 

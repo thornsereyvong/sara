@@ -163,8 +163,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 							%>
 							<table class="table table-hover">
 								<tr>
-									<th style="cursor: pointer;" ng-click="sort('callId')">Call
-										ID <span class="glyphicon sort-icon"
+									<th style="cursor: pointer;" ng-click="sort('callId')">ID <span class="glyphicon sort-icon"
 										ng-show="sortKey=='callId'"
 										ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 									</th>

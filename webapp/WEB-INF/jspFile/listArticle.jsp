@@ -132,7 +132,7 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 				
 					<table class="table table-hover" >
 						<tr>
-							<th style="cursor: pointer;" ng-click="sort('articleId')">Article ID
+							<th style="cursor: pointer;" ng-click="sort('articleId')">ID
 								<span class="glyphicon sort-icon" ng-show="sortKey=='articleId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 							<th style="cursor: pointer;" ng-click="sort('atricleTitle')">Subject

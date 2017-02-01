@@ -162,10 +162,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 							<% if(roleList.equals("YES")){ %>
 								<table class="table table-hover" >
 									<tr>
-										<th style="cursor: pointer;" ng-click="sort('leadID')">Lead ID
+										<th style="cursor: pointer;" ng-click="sort('leadID')">ID
 											<span class="glyphicon sort-icon" ng-show="sortKey=='campID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
-										<th style="cursor: pointer;" ng-click="sort('salutation')">Lead Name
+										<th style="cursor: pointer;" ng-click="sort('salutation')">Name
 											<span class="glyphicon sort-icon" ng-show="sortKey=='campName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
 										<th style="cursor: pointer;" ng-click="sort('statusName')">Status

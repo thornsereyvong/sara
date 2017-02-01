@@ -214,12 +214,12 @@ app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 								</tr>
 								<tr dir-paginate="qq in saleOrder |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
 									<td>{{qq.saleId}}</td>
-									<td>{{qq.saleReference}}</td>
+									<td>{{qq.saleReference == null ?'-':qq.saleReference}}</td>
 									<td>{{qq.saleDate | date:'dd-MM-yyyy'}}</td>							
 									<td>[{{qq.custId}}] {{qq.custName}}</td>
 									<td ng-if="qq.empId == null">-</td>
 									<td ng-if="qq.empId != null">[{{qq.empId}}] {{qq.empName}}</td>
-									<td class="dis-number">{{qq.netTotalAmt | number:2}}</td>	
+									<td class="dis-number">$ {{qq.netTotalAmt | number:2}}</td>	
 									<td>{{qq.PostStatus}}</td>	
 									<td>
 										<div class="col-sm-2">

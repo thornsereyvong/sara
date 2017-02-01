@@ -150,10 +150,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 						
 							<table class="table table-hover" >
 								<tr>
-									<th style="cursor: pointer;" ng-click="sort('campID')">Campaign ID
+									<th style="cursor: pointer;" ng-click="sort('campID')">ID
 										<span class="glyphicon sort-icon" ng-show="sortKey=='campID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 									</th>
-									<th style="cursor: pointer;" ng-click="sort('campName')">Campaign Name
+									<th style="cursor: pointer;" ng-click="sort('campName')">Name
 										<span class="glyphicon sort-icon" ng-show="sortKey=='campName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 									</th>
 									<th style="cursor: pointer;" ng-click="sort('statusName')">Status

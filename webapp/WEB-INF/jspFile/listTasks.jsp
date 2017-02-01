@@ -171,8 +171,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 								<div class="table-responsive">
 									<table class="table table-hover" data-ng-init="listContact()">
 										<tr>
-											<th style="cursor: pointer;" ng-click="sort('taskId')">Task
-												ID <span class="glyphicon sort-icon"
+											<th style="cursor: pointer;" ng-click="sort('taskId')">ID <span class="glyphicon sort-icon"
 												ng-show="sortKey=='taskId'"
 												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 											</th>
