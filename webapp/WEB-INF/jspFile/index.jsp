@@ -104,7 +104,7 @@
                         		{ value: "25", label: "25" },
                         		{ value: "30", label: "30" },
                         		];
-				$scope.pageSize.row = $scope.pageSize.rows[0].value;
+				$scope.pageSize.row = $scope.pageSize.rows[1].value;
 				
 				/* $scope.exportData = function () {
 	                var blob = new Blob([document.getElementById('exportable').innerHTML], {

@@ -46,7 +46,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
             		{ value: "25", label: "25" },
             		{ value: "30", label: "30" },
             		];
-	$scope.pageSize.row = $scope.pageSize.rows[0].value;
+	$scope.pageSize.row = $scope.pageSize.rows[1].value;
 	
 	$scope.deleteLead = function(leadID){
 		
@@ -162,10 +162,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 							<% if(roleList.equals("YES")){ %>
 								<table class="table table-hover" >
 									<tr>
-										<th style="cursor: pointer;" ng-click="sort('leadID')">Lead ID
+										<th style="cursor: pointer;" ng-click="sort('leadID')">ID
 											<span class="glyphicon sort-icon" ng-show="sortKey=='campID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
-										<th style="cursor: pointer;" ng-click="sort('salutation')">Lead Name
+										<th style="cursor: pointer;" ng-click="sort('salutation')">Name
 											<span class="glyphicon sort-icon" ng-show="sortKey=='campName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
 										<th style="cursor: pointer;" ng-click="sort('statusName')">Status

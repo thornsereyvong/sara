@@ -36,7 +36,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
             		{ value: "25", label: "25" },
             		{ value: "30", label: "30" },
             		];
-	$scope.pageSize.row = $scope.pageSize.rows[0].value;
+	$scope.pageSize.row = $scope.pageSize.rows[1].value;
 	
 	$scope.deleteCamp = function(campID){
 		var str = '<%=roleDelete%>';
@@ -142,10 +142,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 						
 							<table class="table table-hover" >
 								<tr>
-									<th style="cursor: pointer;" ng-click="sort('campID')">Campaign ID
+									<th style="cursor: pointer;" ng-click="sort('campID')">ID
 										<span class="glyphicon sort-icon" ng-show="sortKey=='campID'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 									</th>
-									<th style="cursor: pointer;" ng-click="sort('campName')">Campaign Name
+									<th style="cursor: pointer;" ng-click="sort('campName')">Name
 										<span class="glyphicon sort-icon" ng-show="sortKey=='campName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 									</th>
 									<th style="cursor: pointer;" ng-click="sort('statusName')">Status

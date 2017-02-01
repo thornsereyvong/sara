@@ -35,7 +35,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
             		{ value: "25", label: "25" },
             		{ value: "30", label: "30" },
             		];
-	$scope.pageSize.row = $scope.pageSize.rows[0].value;
+	$scope.pageSize.row = $scope.pageSize.rows[1].value;
 	
 	$scope.deleteCon = function(oppID){
 		
@@ -158,10 +158,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 							%>
 							<table class="table table-hover" >
 								<tr>
-									<th style="cursor: pointer;" ng-click="sort('evId')">Event ID
+									<th style="cursor: pointer;" ng-click="sort('evId')">ID
 										<span class="glyphicon sort-icon" ng-show="sortKey=='evId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 									</th>
-									<th style="cursor: pointer;" ng-click="sort('evName')">Event Name
+									<th style="cursor: pointer;" ng-click="sort('evName')">Name
 										<span class="glyphicon sort-icon" ng-show="sortKey=='evName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 									</th>
 									<th style="cursor: pointer;" ng-click="sort('loName')">Location 
