@@ -58,7 +58,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    		beforeSend: function(xhr) {
 			    		    xhr.setRequestHeader("Accept", "application/json");
 			    		    xhr.setRequestHeader("Content-Type", "application/json");
-			    	    }, 
+			    	    },
 			    	    success: function(result){	  
 			    			if(result.MESSAGE == "DELETED"){
 			    				alertMsgSuccessSweetWithTxt(result.MSG);
@@ -97,24 +97,16 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	</section>
 
 	<section class="content">
-
-		<!-- Default box -->
-		
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div style="background: #fff;margin-top: 15px;">
 				 <div class="col-sm-12">
 				 	<a href="${pageContext.request.contextPath}/create-campaign" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
-				 	
 				 </div>
 			</div>
 			</div>
-			
 			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
-				
-			 
 			<div class="clearfix"></div>
-
 			<div class="panel panel-default">
   				<div class="panel-body">
 				 	<div class="col-sm-2">

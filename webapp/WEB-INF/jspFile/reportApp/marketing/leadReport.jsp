@@ -65,7 +65,16 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 		}).success(function(response) {	
 			$scope.leads = response.REPORT;
 		});
-	}; 
+	};
+	
+	
+	$scope.excelBtnClick = function(){		
+		 var blob = new Blob([document.getElementById('exportTbl').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "exec-Leads.xls");		
+	}
+	
 
 }]);
 
@@ -266,8 +275,8 @@ $(function(){
 						<div class="col-sm-2">
 						  	<form class="form-inline">
 						  		<div class="form-group">
-						        	<button ng-click="searchBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-default">
-										<i class="fa fa-print"></i> &nbsp;Print
+						        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+										<i class="fa fa-file-excel-o"></i> &nbsp;excel
 									</button>
 						        </div>
 						        <div class="form-group">
@@ -326,6 +335,45 @@ $(function(){
 						       direction-links="true"
 						       boundary-links="true" >
 							</dir-pagination-controls>
+							
+							<div style="display:none;" id="exportTbl">
+							
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>LEAD SOURCE</th>
+											<th>LEAD STATUS</th>
+											<th>LEAD NAME</th>
+											<th>COMPANY</th>
+											<th>OPPORTUNITY AMOUNT</th>
+											<th>CREATED DATE</th>
+											<th>INDUSTRY</th>
+											<th>CONVERTED DATE</th>
+											<th>OPPORTUNITY NAME</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr  ng-repeat="le in leads |orderBy:sortKey:reverse |filter:search " class="ng-cloak">
+											<td>{{le.leadId}}</td>
+											<td ng-if="le.sourceName == null">-</td>
+											<td ng-if="le.sourceName != null">{{le.sourceName}}</td>
+											<td>{{le.statusName}}</td>
+											<td>{{le.leadName}}</td>
+											<td>{{le.company}}</td>
+											<td ng-if="le.opAmount == null">$ 0.00</td>
+											<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
+											<td>{{le.createdDate}}</td>
+											<td>{{le.industId == 0 ? '-':le.industName}}</td>
+											<td ng-if="le.convertedDate == null">-</td>
+											<td ng-if="le.convertedDate != null">{{le.convertedDate}}</td>
+											<th ng-if="le.opName == null">-</th>
+											<td ng-if="le.opName != null">{{le.opName}}</td>
+										</tr>
+									</tbody>
+								</table>
+							
+							</div>
 						</div>
 					</div>
 				</div>

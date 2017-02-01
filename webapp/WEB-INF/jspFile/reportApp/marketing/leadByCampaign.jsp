@@ -28,6 +28,13 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 			$scope.leadCampaigns = response.LEAD_BY_CAMPAIGN;
 		});
 	};
+	
+	$scope.excelBtnClick = function(){		
+		 var blob = new Blob([document.getElementById('exportTbl').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "lead-by-campaign.xls");		
+	}
 
 }]);
 
@@ -72,8 +79,8 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 						<div class="">
 						  	<form class="form-inline" style="padding-top: 20px;">
 						  		<div class="form-group">
-						        	<button ng-click="searchBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-default">
-										<i class="fa fa-print"></i> &nbsp;Print
+						        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+										<i class="fa fa-file-excel-o"></i> &nbsp;excel
 									</button>
 						        </div>
 						        <div class="form-group">
@@ -117,6 +124,34 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 						       direction-links="true"
 						       boundary-links="true" >
 							</dir-pagination-controls>
+							
+							<div style="display:none;" id="exportTbl">
+								<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>CAMPAIGN</th>
+										<th>LEAD OWNER</th>
+										<th>LEAD NAME</th>
+										<th>COMPANY</th>
+										<th>EMAIL</th>
+										<th>LEAD STATUS</th>
+										<th>LEAD CREATED DATE</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr  ng-repeat="lc in leadCampaigns |orderBy:sortKey:reverse |filter:search " class="ng-cloak">
+										<td>[{{lc.campId}}] {{lc.campName}}</td>
+										<td>{{lc.leadOwner}}</td>
+										<td>[{{lc.leadId}}] {{lc.leadName}}</td>
+										<td>{{lc.leadCompany}}</td>
+										<td ng-if="lc.leadEmail == ''">-</td>
+										<td ng-if="lc.leadEmail != ''">{{lc.leadEmail}}</td>
+										<td>{{lc.leadStatus}}</td>
+										<td>{{lc.leadCreatedDate}}</td>
+									</tr>
+								</tbody>
+							</table>
+							</div>
 						</div>
 					</div>
 				</div>
