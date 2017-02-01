@@ -43,7 +43,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
             		{ value: "25", label: "25" },
             		{ value: "30", label: "30" },
             		];
-	$scope.pageSize.row = $scope.pageSize.rows[0].value;
+	$scope.pageSize.row = $scope.pageSize.rows[1].value;
 	
 	$scope.deleteCon = function(conId){
 		var str = '<%=roleDelete%>';
@@ -188,11 +188,11 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 									<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
 										<td>{{cc.conID}}</td>
 										<td>{{cc.conSalutation}} {{cc.conFirstName}} {{cc.conLastName}}</td>
-										<td>{{cc.conTitle}}</td>
-										
+										<td>{{cc.conTitle == ''?'-':cc.conTitle}}</td>
+										<td ng-if="cc.custID == null">-</td>
 										<td><span ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}}</span></td>
-										<td>{{cc.conEmail}}</td>
-										<td>{{cc.sourceName}}</td>	
+										<td>{{cc.conEmail == ''?'-':cc.conEmail}}</td>
+										<td>{{cc.sourceName == null?'-':cc.sourceName}}</td>	
 										<td>
 											<div class="col-sm-2">
 												<div class="btn-group">

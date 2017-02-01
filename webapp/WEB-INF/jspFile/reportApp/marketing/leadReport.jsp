@@ -332,9 +332,6 @@ $(function(){
 			</div>
 			<div id="errors"></div>
 		</div>
-	
-		
-				
 	</section>
 </div>
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
