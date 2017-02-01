@@ -443,6 +443,11 @@ function selectMenu(menu_slide){
     	document.title = 'Case Report | CRM';
         break;
         
+    case "reportOpportunity":
+    	iAddClass("report_menu", "repSale","repSales",1);
+    	document.title = 'Opportunity Report | CRM';
+        break;
+        
     default:
     	$("#dashboard").removeAttr("class").attr('class', 'treeview active');
     	document.title = 'Dashbord';

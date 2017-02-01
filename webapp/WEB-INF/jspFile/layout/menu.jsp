@@ -235,6 +235,18 @@ $(document).ready(function(){
 						</ul>
 					</li>					
 				</ul>
+				<ul class="treeview-menu" id="repSaleUl">					
+					<li class="" id="repSaleLi">
+						<a href="#">
+							<i class="fa fa-circle-o color_menu" id="repSaleIcon"></i> Sales<i class="fa fa-angle-left pull-right"></i>
+						</a>
+						<ul class="treeview-menu" id="repSalesUl">
+							<li class="" id="repSalesAct">
+								<a href="${pageContext.request.contextPath}/report/sales/opportunity"><i id="repSalesIcon1" class="fa fa-circle-o color_menu"></i> Opportunity</a>
+							</li>
+						</ul>
+					</li>					
+				</ul>
 				<ul class="treeview-menu" id="repSupportUl">					
 					<li class="" id="repSupportLi">
 						<a href="#">
@@ -248,6 +260,7 @@ $(document).ready(function(){
 						</ul>
 					</li>					
 				</ul>
+				
 			</li>
 			<li class='treeview ' id="admin"><a href="#"><img
 					src="${pageContext.request.contextPath}/resources/images/Administrator.png"

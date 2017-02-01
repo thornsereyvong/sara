@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("report/")
 public class ReportController {
 
+	/*Marketing Report*/
+	
 	@RequestMapping({ "marketing/campaign/top-campaign"})
 	public String topCampaign(ModelMap model) {
 		model.addAttribute("menu", "topCampaign");
@@ -25,6 +27,17 @@ public class ReportController {
 		model.addAttribute("menu", "leadReport");
 		return "reportApp/marketing/leadReport";
 	}
+	
+	
+	/*Sale Report*/
+	@RequestMapping({ "sales/opportunity"})
+	public String opportunityReport(ModelMap model) {
+		model.addAttribute("menu", "reportOpportunity");
+		return "reportApp/sales/reportOpportunity";
+	}
+	
+	
+	/*Support Report*/
 	
 	@RequestMapping({ "support/case"})
 	public String caseReport(ModelMap model) {
