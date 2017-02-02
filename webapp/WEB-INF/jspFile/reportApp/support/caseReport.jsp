@@ -65,7 +65,12 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 			
 		});
 	}; 
-
+	$scope.excelBtnClick = function(){		
+		 var blob = new Blob([document.getElementById('exportTbl').innerHTML], {
+           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+       });
+       saveAs(blob, "case&solution.xls");		
+	}
 }]);
 
 $(function(){
@@ -297,8 +302,8 @@ $(function(){
 						<div class="col-sm-2">
 						  	<form class="form-inline">
 						  		<div class="form-group">
-						        	<button ng-click="searchBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-default">
-										<i class="fa fa-print"></i> &nbsp;Print
+						        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+										<i class="fa fa-file-excel-o"></i> &nbsp;excel
 									</button>
 						        </div>
 						        <div class="form-group">
@@ -360,6 +365,48 @@ $(function(){
 						       direction-links="true"
 						       boundary-links="true" >
 							</dir-pagination-controls>
+							
+							<div style="display:none;" id="exportTbl">
+								
+								<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>SUBJECT</th>
+										<th>TYPE</th>
+										<th>STATUS</th>
+										<th>PRIORITY</th>
+										<th>ORIGIN</th>
+										<th>PRODUCT</th>
+										<th>CUSTOMER</th>
+										<th>CONTACT</th>
+										<th>RESOLVED BY</th>
+										<th>RESOLVED DATE</th>
+										<th>ARTICLE</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="ca in cases" class="ng-cloak">
+										<td>{{ca.caseId}}</td>
+										<td>{{ca.caseSubject}}</td>
+										<td>{{ca.typeName}}</td>
+										<td>{{ca.statusName}}</td>
+										<td>{{ca.priorityName}}</td>
+										<td>{{ca.originId==null ? '-':ca.originName}}</td>
+										<td ng-if="ca.itemId==null">-</td>
+										<td ng-if="ca.itemId!=null">[{{ca.itemId}}] {{ca.itemName}}</td>
+										<td ng-if="ca.custId==null">-</td>
+										<td ng-if="ca.custId!=null">[{{ca.custId}}] {{ca.custName}}</td>
+										<td ng-if="ca.contactId==null">-</td>
+										<td ng-if="ca.contactId!=null">[{{ca.contactId}}] {{ca.contactName}}</td>
+										<td>{{ca.resolvedBy == null ? '-':ca.resovedBy}}</td>
+										<td>{{ca.resolvedDate == null ? '-':ca.resolvedDate}}</td>
+										<td>{{ca.articleTitle == null ? '-':ca.articleTitle}}</td>
+									</tr>
+								</tbody>
+							</table>
+							
+							</div>
 						</div>
 					</div>
 				</div>

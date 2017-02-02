@@ -64,15 +64,31 @@ public class ReportController {
 	}
 	
 	@RequestMapping({ "marketing/lead/report-lead"})
-	public String leadReport(ModelMap model) {
+	public String leadReport(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "leadReport");
-		return "reportApp/marketing/leadReport";
+		
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("LE_00001",req);
+		if(camMap.get("access").equals("YES")){
+			return "reportApp/marketing/leadReport";
+		}else{
+			return "permission";
+		}
+		
 	}
 	
 	@RequestMapping({ "support/case"})
-	public String caseReport(ModelMap model) {
+	public String caseReport(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "reportCase");
-		return "reportApp/support/caseReport";
+		
+		
+		Map<String, Object> camMap = getRoleDetailsOfModule("CS_00001",req);
+		if(camMap.get("access").equals("YES")){
+			return "reportApp/support/caseReport";
+		}else{
+			return "permission";
+		}
+		
 	}
 	
 	

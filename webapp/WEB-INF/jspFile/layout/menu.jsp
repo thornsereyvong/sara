@@ -243,7 +243,7 @@ $(document).ready(function(){
 						<ul class="treeview-menu" id="repCaseUl">
 							<li class="" id="repCaseAct">
 								<a href="${pageContext.request.contextPath}/report/support/case"><i id="repCaseIcon1" class="fa fa-circle-o color_menu"></i> Case</a>
-								<a href="${pageContext.request.contextPath}/report/support/article"><i id="repCaseIcon2" class="fa fa-circle-o color_menu"></i> Article</a>
+								<%-- <a href="${pageContext.request.contextPath}/report/support/article"><i id="repCaseIcon2" class="fa fa-circle-o color_menu"></i> Article</a> --%>
 							</li>
 						</ul>
 					</li>					

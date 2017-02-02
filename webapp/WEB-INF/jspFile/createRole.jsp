@@ -89,6 +89,9 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 						for(var i=0; i<tr_report.length; i++){
 							var moduleId = tr_report.eq(i).children().eq(0).attr("row-code");
 							var access = getRoleDetailByModule(tr_report.eq(i).children().eq(1));
+							
+							alert(moduleId+"/"+access);
+							
 							var edit = access;
 							var view = access;
 							var list = access;
