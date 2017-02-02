@@ -42,36 +42,38 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			
 			setTimeout(function(){
 				var tr = $("#data_table_role tr");
+				var x = 0;
 				for(var i=0; i<$scope.module.length;i++){
 					if($scope.module[i].groupType != "Report"){
 						if($scope.module[i].access == 'YES'){
-							disableCheck("accID"+i,false);
-							$("#accID"+i).next().click();
+							disableCheck("accID"+x,false);
+							$("#accID"+x).next().click();
 						}
 						if($scope.module[i].edit == 'YES'){
-							disableCheck("editID"+i,false);
-							$("#editID"+i).next().click();
+							disableCheck("editID"+x,false);
+							$("#editID"+x).next().click();
 						}
 						if($scope.module[i].view == 'YES'){
-							disableCheck("viewID"+i,false);
-							$("#viewID"+i).next().click();
+							disableCheck("viewID"+x,false);
+							$("#viewID"+x).next().click();
 						}
 						if($scope.module[i].list == 'YES'){
-							disableCheck("listID"+i,false);
-							$("#listID"+i).next().click();
+							disableCheck("listID"+x,false);
+							$("#listID"+x).next().click();
 						}
 						if($scope.module[i].delete == 'YES'){
-							disableCheck("deleteID"+i,false);
-							$("#deleteID"+i).next().click();
+							disableCheck("deleteID"+x,false);
+							$("#deleteID"+x).next().click();
 						}
 						if($scope.module[i].import == 'YES'){
-							disableCheck("importID"+i,false);
-							$("#importID"+i).next().click();
+							disableCheck("importID"+x,false);
+							$("#importID"+x).next().click();
 						}
 						if($scope.module[i].export == 'YES'){
-							disableCheck("exportID"+i,false);
-							$("#exportID"+i).next().click();
+							disableCheck("exportID"+x,false);
+							$("#exportID"+x).next().click();
 						}
+						x++;
 					}
 				}
 				
@@ -81,8 +83,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 					if($scope.module[i].groupType == 'Report'){
 						if($scope.module[i].access == 'YES'){
 							disableCheck("rpt_accID"+y,false);
-							$("#rpt_accID"+y).next().click();
-							
+							$("#rpt_accID"+y).next().click();							
 						}
 						y++;
 					}

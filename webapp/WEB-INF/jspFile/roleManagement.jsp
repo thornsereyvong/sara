@@ -24,7 +24,8 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
 	
-	$scope.deleteCon = function(oppID){				
+	$scope.deleteCon = function(oppID){		
+		
 		if(str == "YES"){
 			swal({   
 				title: "<span style='font-size: 25px;'>You are about to delete role with ID: <span class='color_msg'>"+oppID+"</span>.</span>",   
