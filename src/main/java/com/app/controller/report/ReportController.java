@@ -36,6 +36,7 @@ public class ReportController {
 	@Autowired
 	private String URL;
 	
+	/*Marketing Report*/
 	
 	@RequestMapping({ "marketing/campaign/top-campaign"})
 	public String topCampaign(ModelMap model,HttpServletRequest req) {
@@ -76,6 +77,17 @@ public class ReportController {
 		}
 		
 	}
+	
+	
+	/*Sale Report*/
+	@RequestMapping({ "sales/opportunity"})
+	public String opportunityReport(ModelMap model) {
+		model.addAttribute("menu", "reportOpportunity");
+		return "reportApp/sales/reportOpportunity";
+	}
+	
+	
+	/*Support Report*/
 	
 	@RequestMapping({ "support/case"})
 	public String caseReport(ModelMap model, HttpServletRequest req) {

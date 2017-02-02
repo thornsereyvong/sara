@@ -322,8 +322,8 @@ $(function(){
 										<td>{{camp.expResponse}} %</td>
 										<td>{{camp.totalOpp}}</td>
 										<td>{{camp.totalOppWon}}</td>
-										<td>{{camp.totalAmtWon | number:2}}</td>
-										<td>{{camp.actCost | number:2}}</td>
+										<td>$ {{camp.totalAmtWon | number:2}}</td>
+										<td>$ {{camp.actCost | number:2}}</td>
 										<td>{{calROI(camp.totalAmtWon, camp.actCost) | number}} %</td>
 									</tr>
 								</tbody>
