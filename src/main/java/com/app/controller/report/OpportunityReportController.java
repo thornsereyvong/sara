@@ -12,12 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.MeDataSource;
+import com.app.entities.report.OpportunityReport;
 
 @RestController
 @RequestMapping("/report/opportunity")
@@ -48,6 +50,15 @@ public class OpportunityReportController {
 	public ResponseEntity<Map<String, Object>> reportStartupDate(@PathVariable("dateType") String dateType,HttpServletRequest req){
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req,getPrincipal()), header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"/api/report/opportunity/startup/date/"+dateType, HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/opportunity-report",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> opportunityReport(@RequestBody OpportunityReport filter,HttpServletRequest req){
+		filter.setDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
+		HttpEntity<Object> request = new HttpEntity<Object>(filter, header);	
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"/api/report/opportunity/opportunity-report", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
 	}
 	
