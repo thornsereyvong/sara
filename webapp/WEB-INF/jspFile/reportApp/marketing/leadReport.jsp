@@ -98,6 +98,12 @@ $(function(){
 			$('#form-campaigns').bootstrapValidator('revalidateField', 'startdate');
 		}		  
 	});
+
+	$("#date_type").change(function(){
+		if($('#datafilter').val() == 'All'){
+			 angular.element('#objController').scope().reportStartupDate($('#date_type').val());
+		}
+	});
 	
 	$("#datafilter").change(function(){
 		var action = $("#datafilter").val();
@@ -107,7 +113,7 @@ $(function(){
 		        $('#todate').prop("disabled", true);
 		        $('#startdate').val($('#startdate').attr('data-default-date'));  
 		        $('#todate').val($('#todate').attr('data-default-date')); 
-		        angular.element('#objController').scope().reportStartup('${SESSION}');
+		        angular.element('#objController').scope().reportStartupDate(getValueStringById("date_type"));
 		        break;
 		    case 'range':
 		    	$('#startdate').prop("disabled", false);  

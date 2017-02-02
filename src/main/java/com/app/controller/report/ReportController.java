@@ -11,7 +11,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -92,8 +91,6 @@ public class ReportController {
 	@RequestMapping({ "support/case"})
 	public String caseReport(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "reportCase");
-		
-		
 		Map<String, Object> camMap = getRoleDetailsOfModule("CS_00001",req);
 		if(camMap.get("access").equals("YES")){
 			return "reportApp/support/caseReport";
@@ -102,12 +99,6 @@ public class ReportController {
 		}
 		
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	// end report URL
@@ -182,13 +173,13 @@ public class ReportController {
 		return null;
 	}
 	
-	private String getErrorMessage(HttpServletRequest request, String key){
+	/*private String getErrorMessage(HttpServletRequest request, String key){
 		Exception exception = (Exception) request.getSession().getAttribute(key);
 		String error = "";
 		if (exception instanceof BadCredentialsException) {
 			error = exception.getMessage();
 		}
 		return error;
-	}
+	}*/
 	
 }
