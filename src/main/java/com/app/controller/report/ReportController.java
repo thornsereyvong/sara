@@ -80,9 +80,14 @@ public class ReportController {
 	
 	/*Sale Report*/
 	@RequestMapping({ "sales/opportunity"})
-	public String opportunityReport(ModelMap model) {
+	public String opportunityReport(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "reportOpportunity");
-		return "reportApp/sales/reportOpportunity";
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP_00001",req);
+		if(camMap.get("access").equals("YES")){
+			return "reportApp/sales/reportOpportunity";
+		}else{
+			return "permission";
+		}
 	}
 	
 	
