@@ -97,13 +97,13 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 							<table class="table table-hover">
 								<thead>
 									<tr>
-										<th>CAMPAIGN NAME</th>
-										<th>LEAD OWNER</th>
-										<th>LEAD NAME</th>
-										<th>COMPANY</th>
-										<th>EMAIL</th>
-										<th>LEAD STATUS</th>
-										<th>LEAD CREATED DATE</th>
+										<th>Campaign Name</th>
+										<th>Lead Owner</th>
+										<th>Lead Name</th>
+										<th>Company</th>
+										<th>Email</th>
+										<th>Lead Status</th>
+										<th>Lead Created Date</th>
 									</tr>
 								</thead>
 								<tbody>

@@ -224,7 +224,7 @@ $(document).ready(function(){
 							</li>
 							<li id="repLeadLi">
 								<a href="#">
-									<i class="fa fa-circle-o" id="repLeadIcon"></i> Leads<i class="fa fa-angle-left pull-right"></i>
+									<i class="fa fa-circle-o color_menu" id="repLeadIcon"></i> Leads<i class="fa fa-angle-left pull-right"></i>
 								</a>
 								<ul class="treeview-menu" id="repLeadUl">
 									<li id="repLeadAct">
@@ -243,6 +243,7 @@ $(document).ready(function(){
 						<ul class="treeview-menu" id="repSalesUl">
 							<li class="" id="repSalesAct">
 								<a href="${pageContext.request.contextPath}/report/sales/opportunity"><i id="repSalesIcon1" class="fa fa-circle-o color_menu"></i> Opportunity</a>
+								<a href="${pageContext.request.contextPath}/report/sales/top-customer"><i id="repSalesIcon2" class="fa fa-circle-o color_menu"></i> Top Customer</a>
 							</li>
 						</ul>
 					</li>					

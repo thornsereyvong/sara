@@ -306,15 +306,15 @@ $(function(){
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>LEAD SOURCE</th>
-										<th>LEAD STATUS</th>
-										<th>LEAD NAME</th>
-										<th>COMPANY</th>
-										<th>OPPORTUNITY AMOUNT</th>
-										<th>CREATED DATE</th>
-										<th>INDUSTRY</th>
-										<th>CONVERTED DATE</th>
-										<th>OPPORTUNITY NAME</th>
+										<th>Lead Source</th>
+										<th>Lead Status</th>
+										<th>Lead name</th>
+										<th>Company</th>
+										<th>Created Date</th>
+										<th>Industry</th>
+										<th>Converted Date</th>
+										<th>Opportunity Name</th>
+										<th>Opportunity Amount</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -325,14 +325,14 @@ $(function(){
 										<td>{{le.statusName}}</td>
 										<td>{{le.leadName}}</td>
 										<td>{{le.company}}</td>
-										<td ng-if="le.opAmount == null">$ 0.00</td>
-										<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
 										<td>{{le.createdDate}}</td>
 										<td>{{le.industId == 0 ? '-':le.industName}}</td>
 										<td ng-if="le.convertedDate == null">-</td>
 										<td ng-if="le.convertedDate != null">{{le.convertedDate}}</td>
 										<th ng-if="le.opName == null">-</th>
 										<td ng-if="le.opName != null">{{le.opName}}</td>
+										<td ng-if="le.opAmount == null">$ 0.00</td>
+										<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
 									</tr>
 								</tbody>
 							</table>

@@ -143,10 +143,10 @@ $(function(){
 <div class="content-wrapper" ng-app="objApp" ng-controller="objController" id="objController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>Top Campaign</h1>
+		<h1>Top Customer</h1>
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
-			<li><a href="#"> Top Campaign</a></li>
+			<li><a href="#"> Top Customer</a></li>
 		</ol>
 	</section>
 
@@ -273,12 +273,10 @@ $(function(){
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>Campaign Name</th>
-										<th>Type</th>
-										<th>Status</th>
-										<th>Start Date</th>
-										<th>End Date</th>
-										<th>Num Sent</th>
+										<th>Customer Name</th>
+										<th>Contact</th>
+										<th>Opportunity</th>
+										<th>Opportunity Amount</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -303,16 +301,8 @@ $(function(){
 					</div>
 				</div>
 			</div>
-			
-			
-			
-			
-			
 			<div id="errors"></div>
 		</div>
-	
-		
-				
 	</section>
 </div>
 <jsp:include page="${request.contextPath}/footer"></jsp:include>

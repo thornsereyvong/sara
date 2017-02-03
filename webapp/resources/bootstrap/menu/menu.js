@@ -448,6 +448,11 @@ function selectMenu(menu_slide){
     	document.title = 'Opportunity Report | CRM';
         break;
         
+    case "topCustomer":
+    	iAddClass("report_menu", "repSale","repSales",2);
+    	document.title = 'Top Customer Report | CRM';
+        break;
+        
     default:
     	$("#dashboard").removeAttr("class").attr('class', 'treeview active');
     	document.title = 'Dashbord';
