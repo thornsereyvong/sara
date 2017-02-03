@@ -39,7 +39,6 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			$scope.roleName = $scope.module[0].roleName;
 			$scope.roleDecription = $scope.module[0].roleDescription;
 			
-			
 			setTimeout(function(){
 				var tr = $("#data_table_role tr");
 				var x = 0;
@@ -162,8 +161,6 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 					        });
 						}	
 					}
-					
-					
 					
 					$.ajax({ 
 						url : "${pageContext.request.contextPath}/role/edit",
