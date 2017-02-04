@@ -38,9 +38,9 @@ app.controller('campController',['$scope','$http',function($scope, $http){
             		];
 	$scope.pageSize.row = $scope.pageSize.rows[1].value;
 	
-	$scope.deleteCustomer = function(custId){
+	$scope.deleteCustomer = function(custId, approved){
 		var str = '<%=roleDelete%>';
-		if(str == "YES"){
+		if(str == "YES" && approved == 0){
 			swal({   
 				title: "<span style='font-size: 25px;'>You are about to delete customer with ID: <span class='color_msg'>"+custId+"</span>.</span>",   
 				text: "Click OK to continue or CANCEL to abort.",   
@@ -200,7 +200,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 								                      </button>
 								                      <ul class="dropdown-menu" role="menu">
 								                        <li><a href="${pageContext.request.contextPath}/update-customer/{{cc.custID}}"><i class="fa fa-pencil"></i> Edit</a></li>
-								                        <li><a href="#" ng-click="deleteCustomer(cc.custID)"><i class="fa fa-trash"></i> Delete</a></li>
+								                        <li><a href="#" ng-click="deleteCustomer(cc.custID, cc.approval)"><i class="fa fa-trash"></i> Delete</a></li>
 								                        <li><a href="${pageContext.request.contextPath}/view-customer/{{cc.custID}}"><i class="fa fa-eye"></i> View</a></li>
 								                      </ul>
 								                    </div>
