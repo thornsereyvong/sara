@@ -169,7 +169,7 @@ $(function(){
 			<li><a href="#"> Opportunity Report</a></li>
 		</ol>
 	</section>
-	<section class="content" data-ng-init="reportStartup('${SESSION}')">
+	<section class="content" data-ng-init="reportStartup()">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="box box-primary">	
