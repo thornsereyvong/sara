@@ -1,7 +1,6 @@
 package com.app.entities;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public class CrmRole {
@@ -94,6 +93,10 @@ public class CrmRole {
 
 	public void setRoleStatus(int roleStatus) {
 		this.roleStatus = roleStatus;
+	}
+
+	public LocalDateTime getModifyDate() {
+		return modifyDate;
 	}
 
 }

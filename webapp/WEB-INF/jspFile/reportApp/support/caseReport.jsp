@@ -327,17 +327,17 @@ $(function(){
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>SUBJECT</th>
-										<th>TYPE</th>
-										<th>STATUS</th>
-										<th>PRIORITY</th>
-										<th>ORIGIN</th>
-										<th>PRODUCT</th>
-										<th>CUSTOMER</th>
-										<th>CONTACT</th>
-										<th>RESOLVED BY</th>
-										<th>RESOLVED DATE</th>
-										<th>ARTICLE</th>
+										<th>Subject</th>
+										<th>Type</th>
+										<th>Status</th>
+										<th>Priority</th>
+										<th>Origin</th>
+										<th>Product</th>
+										<th>Customer</th>
+										<th>Contact</th>
+										<th>Resolved By</th>
+										<th>Resolved Date</th>
+										<th>Article</th>
 									</tr>
 								</thead>
 								<tbody>

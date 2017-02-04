@@ -169,7 +169,7 @@ $(function(){
 			<li><a href="#"> Opportunity Report</a></li>
 		</ol>
 	</section>
-	<section class="content" data-ng-init="reportStartup('${SESSION}')">
+	<section class="content" data-ng-init="reportStartup()">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="box box-primary">	
@@ -318,16 +318,16 @@ $(function(){
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>NAME</th>
-										<th>STAGE</th>
-										<th>TYPE</th>
-										<th>PROBABILITY</th>
-										<th>AMOUNT</th>
-										<th>CREATED DATE</th>
-										<th>CLOSED DATE</th>
-										<th>CUSTOMER</th>
-										<th>CAMPAIGN</th>
-										<th>LEAD SOURCE</th>
+										<th>Name</th>
+										<th>Stage</th>
+										<th>Type</th>
+										<th>Probability</th>
+										<th>Amount</th>
+										<th>Created Date</th>
+										<th>Closed Date</th>
+										<th>Customer</th>
+										<th>Campaign</th>
+										<th>Lead Source</th>
 									</tr>
 								</thead>
 								<tbody>

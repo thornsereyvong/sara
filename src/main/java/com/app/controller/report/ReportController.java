@@ -90,6 +90,17 @@ public class ReportController {
 		}
 	}
 	
+	@RequestMapping({ "sales/top-customer"})
+	public String toCustomerReport(ModelMap model, HttpServletRequest req) {
+		model.addAttribute("menu", "topCustomer");
+		Map<String, Object> camMap = getRoleDetailsOfModule("CUST_00001",req);
+		if(camMap.get("access").equals("YES")){
+			return "reportApp/sales/topCustomer";
+		}else{
+			return "permission";
+		}
+	}
+	
 	
 	/*Support Report*/
 	
@@ -177,14 +188,4 @@ public class ReportController {
 		}
 		return null;
 	}
-	
-	/*private String getErrorMessage(HttpServletRequest request, String key){
-		Exception exception = (Exception) request.getSession().getAttribute(key);
-		String error = "";
-		if (exception instanceof BadCredentialsException) {
-			error = exception.getMessage();
-		}
-		return error;
-	}*/
-	
 }

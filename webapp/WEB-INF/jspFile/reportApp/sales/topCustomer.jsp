@@ -21,39 +21,53 @@ app.controller('objController',['$scope','$http',function($scope, $http){
             		{ value: "25", label: "25" },
             		{ value: "30", label: "30" },
             		];
-	$scope.pageSize.row = $scope.pageSize.rows[0].value;
+	$scope.pageSize.row = $scope.pageSize.rows[1].value;
 	
-	$scope.reportStartup = function(userId){
-		$http.get("${pageContext.request.contextPath}/report/campaign/startup/"+userId).success(function(response){
-			$scope.camp_parents = response.CAMPAIGNS;
-			$scope.camp_status = response.STATUS;
-			$scope.camp_types = response.TYPES;
+	$scope.reportStartup = function(){
+		$http.get("${pageContext.request.contextPath}/report/opportunity/startup/").success(function(response){
+			$scope.campaigns = response.CAMPAIGNS;
+			$scope.stages = response.STAGES;
+			$scope.types = response.TYPES;
+			$scope.sources = response.SOURCES;
+			$scope.customers = response.CUSTOMERS;
 			$scope.users = response.ASSIGN_TO;
-			$("#startdate").val(response.DEFAULT_DATE.startDate);
-			$("#todate").val(response.DEFAULT_DATE.endDate);
+			$("#startdate").val(response.STARTUP_DATE.startDate);
+			$("#todate").val(response.STARTUP_DATE.endDate);
 			$('#startdate').prop("disabled", true);  
 	        $('#todate').prop("disabled", true); 
+		});
+	};
+
+	$scope.reportStartupDate = function(dateType){
+		$http.get("${pageContext.request.contextPath}/report/opportunity/startup/date/"+dateType).success(function(response){
+			$("#startdate").val(response.STARTUP_DATE.startDate);
+			$("#todate").val(response.STARTUP_DATE.endDate);
+			$('#startdate').prop("disabled", true);  
+	        $('#todate').prop("disabled", true);
 		});
 	};
 	
 	$scope.searchBtnClick = function(){	
    		$http({
  			method: 'POST',
-		    url: '${pageContext.request.contextPath}/report/campaign/top-campaign',
+		    url: '${pageContext.request.contextPath}/report/opportunity/opportunity-report',
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
 		    data : {
+			    "dateType":getValueStringById("date_type"),
 			    "startDate":getValueStringById("startdate"),
 			    "endDate":getValueStringById("todate"),
-			    "statusId":getValueStringById("cam_status"),
-			    "typeId":getValueStringById("cam_type"),
-			    "campParentId":getValueStringById("cam_parent"),
-			    "userId":getValueStringById("cam_assignTo")
+			    "stage":getValueStringById("op_stage"),
+			    "type":getValueStringById("op_type"),
+			    "campaign":getValueStringById("op_campaign"),
+			    "customer":getValueStringById("op_customer"),
+			    "source":getValueStringById("op_source"),
+			    "assignTo":getValueStringById("op_assignTo")
 			}
 		}).success(function(response) {	
-			$scope.campaigns = response.TOP_CAMPAIGN;
+			$scope.opportunities = response.REPORT;
 		});
 	}; 
 
@@ -79,6 +93,12 @@ $(function(){
 			$('#form-campaigns').bootstrapValidator('revalidateField', 'startdate');
 		}		  
 	});
+
+	$("#date_type").change(function(){
+		if($('#datafilter').val() == 'All'){
+			 angular.element('#objController').scope().reportStartupDate($('#date_type').val());
+		}
+	});
 	
 	$("#datafilter").change(function(){
 		var action = $("#datafilter").val();
@@ -88,7 +108,7 @@ $(function(){
 		        $('#todate').prop("disabled", true);
 		        $('#startdate').val($('#startdate').attr('data-default-date'));  
 		        $('#todate').val($('#todate').attr('data-default-date')); 
-		        angular.element('#objController').scope().reportStartup('${SESSION}');
+		        angular.element('#objController').scope().reportStartupDate(getValueStringById("date_type"));
 		        break;
 		    case 'range':
 		    	$('#startdate').prop("disabled", false);  
@@ -143,15 +163,13 @@ $(function(){
 <div class="content-wrapper" ng-app="objApp" ng-controller="objController" id="objController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>Top Campaign</h1>
+		<h1>Top Customer</h1>
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
-			<li><a href="#"> Top Campaign</a></li>
+			<li><a href="#"> Top Customer</a></li>
 		</ol>
 	</section>
-
-	<section class="content" data-ng-init="reportStartup('${SESSION}')">
-		
+	<section class="content" data-ng-init="reportStartup()">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="box box-primary">	
@@ -178,6 +196,15 @@ $(function(){
 											</select>
 										</div>
 									</div>
+									<div class="col-sm-3">
+										<label class="font-label">Date Type</label>
+										<div class="form-group">
+											<select class="form-control select2" name="date_type" style="width: 100%;" id="date_type">
+												<option value="createdDate">Created Date</option>
+												<option value="closedDate">Closed Date</option>
+											</select>
+										</div>
+									</div>
 									
 									<div class="col-sm-3">
 						                <label class="font-label">Start date </label>
@@ -198,43 +225,61 @@ $(function(){
 						                  	</div>
 				                		</div>
 					              	</div>
-					              	
 					              	<div class="col-sm-3">
-										<label class="font-label">Status</label>
+										<label class="font-label">Stage</label>
 										<div class="form-group">
-											<select class="form-control select2" name="cam_status"
-												style="width: 100%;" id="cam_status">
-												<option value="">-- SELECT Status --</option>
-												<option ng-repeat="stat in camp_status" value="{{stat.statusID}}">{{stat.statusName}}</option>
+											<select class="form-control select2" name="op_stage"
+												style="width: 100%;" id="op_stage">
+												<option value="">-- SELECT Stage --</option>
+												<option ng-repeat="st in stages" value="{{st.osId}}">{{st.osName}}</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-sm-3">
 										<label class="font-label">Type</label>
 										<div class="form-group">
-											<select class="form-control select2" name="cam_type"
-												style="width: 100%;" id="cam_type">
+											<select class="form-control select2" name="op_type"
+												style="width: 100%;" id="op_type">
 												<option value="">-- SELECT Type --</option>
-												<option ng-repeat="ty in camp_types" value="{{ty.typeID}}">{{ty.typeName}}</option>
+												<option ng-repeat="ty in types" value="{{ty.otId}}">{{ty.otName}}</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-sm-3">
-										<label class="font-label">Parent campaign </label>
+										<label class="font-label">Campaign </label>
 										<div class="form-group">
-											<select class="form-control select2" name="cam_parent"
-												style="width: 100%;" id="cam_parent">
-												<option value="">-- SELECT Parent --</option>
-												<option ng-repeat="cam in camp_parents" value="{{cam.campID}}">[{{cam.campID}}]
-													{{cam.campName}}</option>
+											<select class="form-control select2" name="op_campaign"
+												style="width: 100%;" id="op_campaign">
+												<option value="">-- SELECT Campaign --</option>
+												<option ng-repeat="cam in campaigns" value="{{cam.campID}}">[{{cam.campID}}] {{cam.campName}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<label class="font-label">Customer </label>
+										<div class="form-group">
+											<select class="form-control select2" name="op_customer"
+												style="width: 100%;" id="op_customer">
+												<option value="">-- SELECT Customer --</option>
+												<option ng-repeat="cust in customers" value="{{cust.custID}}">[{{cust.custID}}] {{cust.custName}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<label class="font-label">Lead Source </label>
+										<div class="form-group">
+											<select class="form-control select2" name="op_source"
+												style="width: 100%;" id="op_source">
+												<option value="">-- SELECT Lead Source --</option>
+												<option ng-repeat="sr in sources" value="{{sr.sourceID}}">{{sr.sourceName}}</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-sm-3">
 										<label class="font-label">Assigned to </label>
 										<div class="form-group">
-											<select class="form-control select2" name="cam_assignTo"
-												id="cam_assignTo" style="width: 100%;">
+											<select class="form-control select2" name="op_assignTo"
+												id="op_assignTo" style="width: 100%;">
 												<option value="">-- SELECT User --</option>
 												<option ng-repeat="user in users" value="{{user.userID}}">{{user.username}}</option>
 											</select>
@@ -273,24 +318,32 @@ $(function(){
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>Campaign Name</th>
+										<th>Name</th>
+										<th>Stage</th>
 										<th>Type</th>
-										<th>Status</th>
-										<th>Start Date</th>
-										<th>End Date</th>
-										<th>Num Sent</th>
+										<th>Probability</th>
+										<th>Amount</th>
+										<th>Created Date</th>
+										<th>Closed Date</th>
+										<th>Customer</th>
+										<th>Campaign</th>
+										<th>Lead Source</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr  dir-paginate="camp in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>{{camp.campId}}</td>
-										<td>{{camp.campName}}</td>
-										<td>{{camp.typeName}}</td>
-										<td>{{camp.statusName}}</td>
-										<td ng-if="camp.startDate == null">-</td>
-										<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
-										<td>{{camp.endDate}}</td>
-										<td>{{camp.numSent}}</td>
+									<tr  dir-paginate="op in opportunities |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+										<td>{{op.opId}}</td>
+										<td>{{op.opName}}</td>
+										<td>{{op.stageName}}</td>
+										<td>{{op.typeId==null?'-':op.typeName}}</td>
+										<td>{{op.opProbability == null ? '-':op.opProbability}}</td>
+										<td>{{op.opAmount}}</td>
+										<td>{{op.opCreatedDate}}</td>
+										<td>{{op.opClosedDate}}</td>
+										<td>[{{op.custId}}] {{op.custName}}</td>
+										<td ng-if="op.campaignId == null"> - </td>
+										<td ng-if="op.campaignId != null">[{{op.campaignId}}] {{op.campaignName}}</td>
+										<td>{{op.sourceId == null ? '-':op.sourceName}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -303,16 +356,7 @@ $(function(){
 					</div>
 				</div>
 			</div>
-			
-			
-			
-			
-			
-			<div id="errors"></div>
 		</div>
-	
-		
-				
 	</section>
 </div>
 <jsp:include page="${request.contextPath}/footer"></jsp:include>

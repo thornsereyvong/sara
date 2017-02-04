@@ -294,8 +294,8 @@ $(function(){
 							<table class="table table-hover">
 								<thead>
 									<tr>
-										<th>Camp ID</th>
-										<th>Camp Name</th>
+										<th>ID</th>
+										<th>Campaign Name</th>
 										<th>Type</th>
 										<th>Status</th>
 										<th>Start Date</th>
