@@ -36,26 +36,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 	$scope.keyS = -1;
 	$scope.CUSTOMER = [];
 	angular.element(document).ready(function () {					
-		setTimeout(function(){
-			$("#c_group").select2("val",$scope.CUSTOMER.custGroup.custGroupId);
-			$("#c_price").select2("val",$scope.CUSTOMER.priceCode.priceCode);						
-			
-			if($scope.CUSTOMER.accountTypeID == null){
-				$("#c_type").select2("val","");
-			}else{
-				$("#c_type").select2("val",$scope.CUSTOMER.accountTypeID.accountID);
-			}
-			
-			if($scope.CUSTOMER.industID == null){
-				$("#c_industry").select2("val","");
-			}else{
-				$("#c_industry").select2("val",$scope.CUSTOMER.industID.industID);
-			}
-			
-			$('#form-customer').data('bootstrapValidator').resetField($('#c_group'));
-			$('#form-customer').data('bootstrapValidator').resetField($('#c_price'));
-			
-		}, 1000);
+		
     });
 	
 	
@@ -69,7 +50,29 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			$scope.type = response.TYPE;
 			$scope.shipToAdd = response.CUSTOMER.shipAddresses;
 			$scope.CUSTOMER = response.CUSTOMER;
-						
+				
+			dis($scope.shipToAdd)
+			
+			setTimeout(function(){
+				$("#c_group").select2("val",$scope.CUSTOMER.custGroup.custGroupId);
+				$("#c_price").select2("val",$scope.CUSTOMER.priceCode.priceCode);						
+				
+				if($scope.CUSTOMER.accountTypeID == null){
+					$("#c_type").select2("val","");
+				}else{
+					$("#c_type").select2("val",$scope.CUSTOMER.accountTypeID.accountID);
+				}
+				
+				if($scope.CUSTOMER.industID == null){
+					$("#c_industry").select2("val","");
+				}else{
+					$("#c_industry").select2("val",$scope.CUSTOMER.industID.industID);
+				}
+				
+				$('#form-customer').data('bootstrapValidator').resetField($('#c_group'));
+				$('#form-customer').data('bootstrapValidator').resetField($('#c_price'));
+				
+			}, 1000);
 			
 		});
 		
@@ -290,6 +293,9 @@ $(document).ready(function() {
 					closeOnConfirm: false,
 					showLoaderOnConfirm: true,		
 				}, function(){
+					
+					//dis(ship.data);
+					//alertMsgErrorSweet();
 					setTimeout(function(){
 						$.ajax({ 
 							url : "${pageContext.request.contextPath}/customer/edit",
@@ -330,7 +336,13 @@ $(document).ready(function() {
 			    					});
 									reloadForm(2000);																																
 								}else{
-									swal("UNSUCCESSFUL", result.MSG, "error");
+									swal({
+			    						title: "UNSUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "error"
+			    					});
 								}
 							},
 				    		error:function(){
