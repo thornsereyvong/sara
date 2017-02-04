@@ -249,28 +249,6 @@ $(document).ready(function() {
 			var ship = angular.element(document.getElementById('campController')).scope().getAddress();
 			var ckShip = $('input[name=ckShipAdd]:checked', '#form-customer').val();
 			
-			dis({ 
-			      "custName": getValueStringById("cs_name"),
-			      "custTel1": getValueStringById("c_tel1"),
-			      "custTel2": getValueStringById("c_tel2"),
-			      "custFax": getValueStringById("c_fax"),
-			      "custEmail": getValueStringById("c_email"),
-			      "custWebsite": getValueStringById("c_website"),
-			      "custAddress": getValueStringById("c_billAddr"),
-			      "facebook": getValueStringById("c_facebook"),
-			      "line": getValueStringById("c_line"),
-			      "viber": getValueStringById("c_viber"),
-			      "whatApp": getValueStringById("c_whatapp"),
-			      "industID": getJsonById("industID","c_industry","int"),
-				  "accountTypeID": getJsonById("accountID","c_type","int"),
-				  "shipAddresses" : ship.data,
-				  "priceCode" : getJsonById("priceCode","c_price","str"),
-				  "custGroup" : getJsonById("custGroupId","c_group","str"),
-				  "imageName" : "",
-				  "aId" : ckShip
-			})
-			
-			
 			if(ship.msg == true){
 				swal({   
 					title: "<span style='font-size: 25px;'>You are about to create customer.</span>",

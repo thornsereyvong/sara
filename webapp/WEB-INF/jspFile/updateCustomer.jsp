@@ -51,7 +51,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			$scope.shipToAdd = response.CUSTOMER.shipAddresses;
 			$scope.CUSTOMER = response.CUSTOMER;
 				
-			dis($scope.shipToAdd)
+		
 			
 			setTimeout(function(){
 				$("#c_group").select2("val",$scope.CUSTOMER.custGroup.custGroupId);
