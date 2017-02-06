@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -68,7 +69,7 @@ public class MainController {
 	
 	@Autowired
 	private MeDataSource dataSource;
-
+	
 	/* -- Front Page -- */
 
 	@RequestMapping({ "/", "/index", "/home" })
@@ -580,6 +581,10 @@ public class MainController {
 		dataSource.setPort(request.getSession().getAttribute("port").toString());
 		dataSource.setUn(request.getSession().getAttribute("usernamedb").toString());
 		dataSource.setPw(request.getSession().getAttribute("passworddb").toString());
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		 if(auth != null && !new AuthenticationTrustResolverImpl().isAnonymous(auth)){
+			 return "redirect:/";
+		 }
 		return "login";
 	}
 	

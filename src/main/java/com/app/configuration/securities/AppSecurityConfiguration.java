@@ -41,10 +41,10 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.passwordParameter("crm_password")
 		.failureUrl("/login?error")
 		.and()
-		.exceptionHandling().accessDeniedPage("/login?error")
+		/*.exceptionHandling().accessDeniedPage("/login?error")
 		.and()
 		.logout().logoutSuccessUrl("/login?logout")
-		.and()
+		.and()*/
 		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.authorizeRequests().anyRequest().authenticated();
 		http.csrf().disable();
@@ -63,6 +63,7 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	    AuthenticationManager authenticationManager = new ProviderManager(authenticationProviderList);
 	    authFilter.setAuthenticationManager(authenticationManager);
 	    authFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+	    //authFilter.setAuthenticationSuccessHandler(successHandler);
 	    authFilter.setUsernameParameter("crm_username");
 	    authFilter.setPasswordParameter("crm_password");
 	    return authFilter;
