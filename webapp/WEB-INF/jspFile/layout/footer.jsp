@@ -1,6 +1,6 @@
 
    		<footer class="main-footer">
-   			<strong>Copyright &copy; 2015-2016 <a href="http://balancikacambodia.com/">Balancika Cambodia</a>.</strong> All rights reserved.
+   			<strong>Copyright &copy; 2017-2018 <a href="http://balancikacambodia.com/">Balancika Cambodia</a>.</strong> All rights reserved.
     	</footer>
    	<div class="control-sidebar-bg"></div>
     </div>

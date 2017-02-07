@@ -50,6 +50,24 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 		});
 	}; 
 
+	$scope.sumOpportunityAmount = function(op){
+		var total = 0;
+		$.each(op, function(i, value){
+			total = total + parseFloat(value.opAmount);
+		});
+		return total;
+	};
+
+	$scope.totalAmount = function(customers){
+		var total = 0;
+		$.each(customers, function(i, val){
+			$.each(val.opportunities, function(j, value){
+				total = total + parseFloat(value.opAmount);
+			});
+		});
+		return total;
+	};
+
 }]);
 
 $(function(){
@@ -150,7 +168,7 @@ $(function(){
 	</section>
 	<section class="content" data-ng-init="reportStartupDate('createdDate')">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-sm-12">
 				<div class="box box-primary">	
 					<div class="box-header with-border">
 		        		<h3 class="box-title">Filter</h3>
@@ -162,7 +180,7 @@ $(function(){
 						<form method="post" id="frmFilter">	
 							<div class="row">
 								<div class="col-sm-12">
-									<div class="col-md-3">
+									<div class="col-sm-3">
 										<div class="form-group">
 											<label>Date Filter</label> <select name="datafilter"
 												id="datafilter" class="form-control select2 input-lg"
@@ -229,7 +247,7 @@ $(function(){
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12">
+			<div class="col-sm-12">
 				<div class="box box-success">
 					<div class="box-body">
 						<div class="tablecontainer table-responsive">
@@ -246,24 +264,39 @@ $(function(){
 										<th>Stage</th>
 										<th>Probability(%)</th>
 										<th>Created Date</th>
-										<th>Campaign</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr  dir-paginate="cust in customers |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>[{{cust.custId}}] {{cust.custName}}</td>
-										<td>
-											<table>
-												<tbody>
-													<tr ng-repeat="op in cust.opportunities">
-														<td>{{op.opName}}</td>
-														<td>{{op.opAmount}}</td> 
-													</tr>
-												</tbody>
-											</table>
+								<tbody dir-paginate="cust in customers |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+									<tr>
+										<td rowspan="{{cust.opportunities.length + 2}}">
+										[{{cust.custId}}] {{cust.custName}}
+										<br/>
+										({{cust.opportunities.length}} {{cust.opportunities.length > 1?'opportunities':'opportunity'}})
 										</td>
 									</tr>
+									<tr ng-repeat = "op in cust.opportunities">
+										<td>[{{op.opId}}]{{op.opName}}</td>
+										<td>$ {{op.opAmount}}</td>
+										<td>{{op.type == null? '-':op.type.otName}}</td> 
+										<td>{{op.leadSource == null? '-':op.leadSource.sourceName}}</td>
+										<td>{{op.opCloseDate}}</td>
+										<td>{{op.opNextStep == ''?'-':op.opNextStep}}</td>
+										<td>{{op.stage.osName}}</td>
+										<td>{{op.opProbability}}%</td>
+										<td>{{op.opCreatedDate}}</td>
+									</tr>
+									<tr>
+										<td>Subtotal</td>
+										<td colspan="8">$ {{sumOpportunityAmount(cust.opportunities)}}</td>
+									</tr>
 								</tbody>
+								<tfoot ng-if="customers != null">
+									<tr>
+										<td></td>
+										<td><strong>Total Amount</strong></td>
+										<td colspan="8"><strong>$ {{totalAmount(customers)}}</strong></td>
+									</tr>
+								</tfoot>
 							</table>
 							<dir-pagination-controls
 						       max-size="pageSize.row"
