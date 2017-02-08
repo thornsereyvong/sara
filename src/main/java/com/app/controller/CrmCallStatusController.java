@@ -9,6 +9,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,73 +37,41 @@ public class CrmCallStatusController {
 	@Autowired
 	private String URL;
 	
+	@Autowired
+	private MeDataSource dataSource;
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/call_status/list",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> getAllCallStatus(HttpServletRequest req){
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call_status/list", HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/call_status/add",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addCallStatus(@RequestBody CrmCallStatus status, HttpServletRequest req){
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		status.setMeDataSource(dataSource);
+		status.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
-		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call_status/add", HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/call_status/list/{id}",method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> CallStatusID(@PathVariable("id") String id, HttpServletRequest req){
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		HttpEntity<Object> request = new HttpEntity<Object>(dataSource, header);
-		
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call_status/view/"+id, HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/call_status/edit",method = RequestMethod.PUT)
 	public ResponseEntity<Map<String, Object>> updateCallStatus(@RequestBody CrmCallStatus status, HttpServletRequest req){
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		status.setMeDataSource(dataSource);
+		status.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
-		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call_status/edit", HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -109,18 +79,21 @@ public class CrmCallStatusController {
 	public ResponseEntity<Map<String, Object>> deleteCallStatus(@PathVariable("statusID") int statusID, HttpServletRequest req){
 		CrmCallStatus status = new CrmCallStatus();
 		status.setCallStatusId(statusID);
-		MeDataSource dataSource = new MeDataSource();
-		dataSource.setDb(req.getSession().getAttribute("databaseName").toString());
-		dataSource.setIp(req.getSession().getAttribute("ip").toString());
-		dataSource.setPort(req.getSession().getAttribute("port").toString());
-		dataSource.setUn(req.getSession().getAttribute("usernamedb").toString());
-		dataSource.setPw(req.getSession().getAttribute("passworddb").toString());
-		status.setMeDataSource(dataSource);
+		status.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(status,header);
-		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/call_status/remove", HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
+	}
+	
+	private String getPrincipal() {
+		String userName = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			userName = ((UserDetails) principal).getUsername();
+		} else {
+			userName = principal.toString();
+		}
+		return userName;
 	}
 }

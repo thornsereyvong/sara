@@ -321,7 +321,7 @@ $(function(){
 										<th>Name</th>
 										<th>Stage</th>
 										<th>Type</th>
-										<th>Probability</th>
+										<th>Probability(%)</th>
 										<th>Amount</th>
 										<th>Created Date</th>
 										<th>Closed Date</th>
