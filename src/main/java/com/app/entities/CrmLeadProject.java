@@ -1,6 +1,6 @@
 package com.app.entities;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class CrmLeadProject{
 
@@ -18,11 +18,11 @@ public class CrmLeadProject{
 	private String owner;
 	private String consultant;
 	private String construction;
-	private String mainConstructor;
+	private String mainConstruction;
 	private String subConstructor;
 	private String remark;
-	private LocalDateTime startDate;
-	private LocalDateTime endDate;
+	private Date startDate;
+	private Date endDate;
 	private MeDataSource dataSource;
 
 	public int getId() {
@@ -137,12 +137,12 @@ public class CrmLeadProject{
 		this.construction = construction;
 	}
 
-	public String getMainConstructor() {
-		return mainConstructor;
+	public String getMainConstruction() {
+		return mainConstruction;
 	}
 
-	public void setMainConstructor(String mainConstructor) {
-		this.mainConstructor = mainConstructor;
+	public void setMainConstruction(String mainConstruction) {
+		this.mainConstruction = mainConstruction;
 	}
 
 	public String getSubConstructor() {
@@ -161,19 +161,19 @@ public class CrmLeadProject{
 		this.remark = remark;
 	}
 
-	public LocalDateTime getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(LocalDateTime startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public LocalDateTime getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(LocalDateTime endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 

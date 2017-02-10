@@ -54,6 +54,8 @@
 <script src="${pageContext.request.contextPath}/resources/angular/loading-bar.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/angular-aria.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/angular-messages.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/angular/datetime.js"></script>
+<script src="${pageContext.request.contextPath}/resources/angular/custom-input.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/FileSaver.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/toggle/bootstrap-toggle.min.js"></script>
 

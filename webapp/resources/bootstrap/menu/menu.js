@@ -111,6 +111,26 @@ function selectMenu(menu_slide){
         break;
         
         
+    case "listLeadProjects":
+    	removeCla("#marketing","#ul_marketing","#ul_li_lead_project","#hbu_icon_lead_project");
+    	document.title = 'Lead Projects | CRM';
+        break;
+        
+    case "createLeadProject":
+    	removeCla("#marketing","#ul_marketing","#ul_li_lead_project","#hbu_icon_lead_project");
+    	document.title = 'Create Lead Projects | CRM';
+        break; 
+        
+    case "updateLeadProject":
+    	removeCla("#marketing","#ul_marketing","#ul_li_lead_project","#hbu_icon_lead_project");
+    	document.title = 'Update Lead Projects | CRM';
+        break; 
+        
+    case "viewLeadProject":
+    	removeCla("#marketing","#ul_marketing","#ul_li_lead_project","#hbu_icon_lead_project");
+    	document.title = 'Lead Project | CRM';
+        break;
+        
       
     case "listCustomer":
     	removeCla("#sale","#ul_sale","#ul_li_customer","#sale_icon_customer");
@@ -452,7 +472,8 @@ function selectMenu(menu_slide){
     	iAddClass("report_menu", "repSale","repSales",2);
     	document.title = 'Top Customer Report | CRM';
         break;
-        
+       
+       
     default:
     	$("#dashboard").removeAttr("class").attr('class', 'treeview active');
     	document.title = 'Dashbord';

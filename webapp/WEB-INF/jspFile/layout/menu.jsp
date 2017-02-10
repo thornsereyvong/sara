@@ -71,6 +71,12 @@ $(document).ready(function(){
 							id="hbu_icon_survey"></i> <span>Market Survey</span>
 					</a>
 					</li>
+					<li id="ul_li_lead_project"><a
+						href="${pageContext.request.contextPath}/lead-project"> <i
+							class='fa fa-circle-o color_menu' aria-hidden='true'
+							id="hbu_icon_lead_project"></i> <span>Lead Project</span>
+					</a>
+					</li>
 
 				</ul></li>
 
