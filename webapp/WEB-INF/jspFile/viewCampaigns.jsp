@@ -2315,6 +2315,50 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</div>
+	<input type="hidden" id="btn_show_email" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmEmail" />
+	<div ng-controller="eventController" class="modal fade modal-default" id="frmEmail" role="dialog">
+		<div class="modal-dialog  modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" ng-click="cancelEmailClick()" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><b id="tEmail">New Message</b></h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form id="frmSendEmail">
+						<div class="col-md-12">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>To</label>
+									<input id="emailTo" name="emailTo" class="form-control" type="email" placeholder="Recipient">
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Subject</label> 
+									<input id="emailSubject" name="emailSubject" class="form-control" type="text" placeholder="Subject">
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<textarea rows="20" cols="" name="msg" id="msg" class="form-control"></textarea>
+								</div>
+							</div>
+						</div>
+						</form>
+					</div> 
+				</div>
+				<div class="modal-footer">
+					<div class="col-md-12">
+						<button type="button" id="btnEmailSave" name="btnEmailSave"  class="btn btn-primary pull-left">Send</button>
+						<input type="file" id="attachment" name="attachment" class="btn pull-left filestyle" data-input="false" data-iconName="fa fa-paperclip" data-buttonText="">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="errors"></div>
 </div>
 
