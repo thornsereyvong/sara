@@ -34,6 +34,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/dist/sweetalert/sweetalert.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/angular/css/angular-material.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/angular/css/loading-bar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/angular/css/angular-block-ui.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/toggle/bootstrap-toggle.min.css">
 
 <style type="text/css">
@@ -57,6 +58,7 @@
 <script src="${pageContext.request.contextPath}/resources/angular/angular-material.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/angular-animate.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/loading-bar.js"></script>
+<script src="${pageContext.request.contextPath}/resources/angular/angular-block-ui.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/angular-aria.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/angular-messages.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/angular/datetime.js"></script>

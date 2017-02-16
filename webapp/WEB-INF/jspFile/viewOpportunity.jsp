@@ -15,7 +15,7 @@ var permission = ${permission};
 var curAssign = "";
 var ownerItem = "";
 
-var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate','blockUI']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
 }]);
 var self = this;
@@ -52,7 +52,7 @@ var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Propos
 
 
 
-app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
+app.controller('viewOpportunityController',['$scope','$http',function($scope, $http, blockUI){
 	
 	angular.element(document).ready(function () {				
 		/* $("#oppStage").select2('val',response.OPPORTUNITY.osId);
@@ -76,7 +76,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	
 	$scope.listLeads = function(){
 			//response = getLeadData();	
-			
+			blockUI.start();
 			$http({
 			    method: 'POST',
 			    url: '${pageContext.request.contextPath}/opportunity/view',
@@ -152,6 +152,8 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				
 				//dis($scope.opportunity)
 			});
+			
+			blockUI.stop();
 	}
 	
 	
@@ -2404,7 +2406,7 @@ function iSplitBySplint(obj){
 														<div class="form-group">
 															<label>Tags </label> 
 															<select  class="form-control" multiple name="collabTags" id="collabTags" style="width: 100%;">
-																<option ng-repeat="tag in tags" value="{{tag.username}}">{{tag.username}}</option>																
+																<option ng-repeat="tag in tags" value="{{tag.userID}}">{{tag.username}}</option>																
 															</select>
 														</div>
 													</div>
@@ -2871,8 +2873,6 @@ function iSplitBySplint(obj){
 												</div>
 											</div>
 										</div>
-										
-										
 										<div class="tab-pane " id="related_tap">
 											<div class="row">
 												<div class="col-md-12" >
@@ -2885,7 +2885,9 @@ function iSplitBySplint(obj){
 														<a class="btn btn-app" ng-click="sale_order_click()"> 
 															<i class="fa fa-file-text-o"></i> Sale Order
 														</a> 
-														
+														<a class="btn btn-app" ng-click="lead_project_click()"> 
+															<i class="fa fa-file-text-o"></i> Lead Project
+														</a>
 												</div>
 												<div class="col-md-12">
 																																																	

@@ -1594,6 +1594,8 @@ public class MainController {
 		model.addAttribute("menu", "listLeadProjects");
 		Map<String, Object> camMap = getRoleDetailsOfModule("LP", req);
 		model.addAttribute("roleDelete", camMap.get("delete"));
+		model.addAttribute("roleView", camMap.get("view"));
+		model.addAttribute("roleEdit", camMap.get("edit"));
 		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
 			return "listLeadProject";
 		} else {
@@ -1624,9 +1626,10 @@ public class MainController {
 		}
 	}
 	
-	@RequestMapping("/view-lead-project")
-	public String viewLeadProject(ModelMap model, HttpServletRequest req) {
+	@RequestMapping("/view-lead-project/{id}")
+	public String viewLeadProject(ModelMap model, HttpServletRequest req, @PathVariable("id") int id) {
 		model.addAttribute("menu", "viewLeadProject");
+		model.addAttribute("id", id);
 		Map<String, Object> camMap = getRoleDetailsOfModule("LP", req);
 		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
 			return "viewLeadProject";

@@ -128,6 +128,8 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {
+		var startDate = moment(getValueStringById("startDate"), "DD/MM/YYYY H:mm").unix();
+		var endDate = moment(getValueStringById("endDate"), "DD/MM/YYYY H:mm").unix();
 		var frmDataLead = {
 				"id":id,
 				"name": getValueStringById("name"),
@@ -146,8 +148,8 @@ $(document).ready(function() {
 			    "mainConstruction": getValueStringById("main_construction"),
 			    "subConstructor": getValueStringById("subconstructor"),
 			    "remark": getValueStringById("lea_state"),
-			    "startDate": new Date(getValueStringById("startDate")).toUTCString(),
-			    "endDate": new Date(getValueStringById("endDate")).toUTCString()
+			    "startDate": moment.unix(startDate),
+			    "endDate": moment.unix(endDate)
 		};
 		 swal({   
 			title: "<span style='font-size: 25px;'>You are about to update lead project.</span>",

@@ -5,7 +5,11 @@
 <jsp:include page="${request.contextPath}/header"></jsp:include>
 <jsp:include page="${request.contextPath}/menu"></jsp:include>
 
-<% String roleDelete = (String)request.getAttribute("roleDelete"); %>
+<% 
+	String roleDelete = (String)request.getAttribute("roleDelete"); 
+	String roleView = (String)request.getAttribute("roleView");
+	String roleEdit = (String)request.getAttribute("roleEdit");
+%>
 
 <script type="text/javascript">
 
@@ -167,9 +171,10 @@ app.controller('leadProjectController',['$scope','$http',function($scope, $http)
 										<td>{{lp.accountManager == ''?'-':lp.accountManager}}</td>
 										<td>{{lp.companyName == ''?'-':lp.companyName}}</td>
 										<td>{{lp.email == ''?'-':lp.email}}</td>
-										<td>{{lp.startDate == ''?'-':lp.startDate | date:'dd/MM/yyyy'}}</td>
-										<td>{{lp.endDate == ''?'-':lp.endDate | date:'dd/MM/yyyy'}}</td>		
-										<td>
+										<td>{{lp.startDate == null?'-':lp.startDate | date:'dd/MM/yyyy'}}</td>
+										<td>{{lp.endDate == null?'-':lp.endDate | date:'dd/MM/yyyy'}}</td>	
+										<td ng-if="'<%=roleEdit%>' == 'NO' && '<%=roleDelete%>' == 'NO'&& '<%=roleView%>' == 'NO'">-</td>	
+										<td ng-if="'<%=roleEdit%>' == 'YES' || '<%=roleDelete%>' == 'YES'|| '<%=roleView%>' == 'YES'">
 											<div class="col-sm-2">
 												<div class="btn-group">
 							                      <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
@@ -177,9 +182,9 @@ app.controller('leadProjectController',['$scope','$http',function($scope, $http)
 							                        <span class="sr-only">Toggle Dropdown</span>
 							                      </button>
 							                      <ul class="dropdown-menu" role="menu">
-							                        <li><a href="${pageContext.request.contextPath}/update-lead-project/{{lp.id}}"><i class="fa fa-pencil"></i> Edit</a></li>
+							                        <li ng-if="'<%=roleEdit%>' == 'YES'"><a href="${pageContext.request.contextPath}/update-lead-project/{{lp.id}}"><i class="fa fa-pencil"></i> Edit</a></li>
 							                        <li ng-if="'<%=roleDelete%>' == 'YES'" ng-click="deleteLeadProject(lp.id)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-							                        <li><a href="${pageContext.request.contextPath}/view-lead-project/{{lp.id}}"><i class="fa fa-eye"></i> View</a></li>
+							                        <li ng-if="'<%=roleView%>' == 'YES'"><a href="${pageContext.request.contextPath}/view-lead-project/{{lp.id}}"><i class="fa fa-eye"></i> View</a></li>
 							                      </ul>
 							                    </div>
 						                   	</div>	
