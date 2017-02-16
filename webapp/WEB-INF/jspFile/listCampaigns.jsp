@@ -19,7 +19,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		$http.get("${pageContext.request.contextPath}/campaign/list").success(function(response){
 				$scope.campaigns = response.DATA;
 			});
-		} ;
+	};
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed

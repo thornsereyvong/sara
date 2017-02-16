@@ -42,7 +42,7 @@
 							$scope.quotations = response.DASHBOARD.QUOTATIONS;
 							$scope.saleorders = response.DASHBOARD.SALEORDERS;
 							$scope.confDash2 = response.DASHBOARD.CONF_DASH;
-							
+													
 							setTimeout(function(){						
 								$scope.active();						
 							},500);
@@ -105,14 +105,6 @@
                         		{ value: "30", label: "30" },
                         		];
 				$scope.pageSize.row = $scope.pageSize.rows[1].value;
-				
-				/* $scope.exportData = function () {
-	                var blob = new Blob([document.getElementById('exportable').innerHTML], {
-	                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-	                });
-	                saveAs(blob, "Report.xls");
-	            }; */
-				
 				
 				$scope.setting = function(){
 					$scope.confDash = angular.copy($scope.confDash2);
@@ -1103,7 +1095,7 @@
 								<div class="tab-content no-padding">
 									<div class="chart tab-pane active " id="tabModule">
 										<ul class="todo-list ui-sortable" id="listModuleShow">
-											<li ng-repeat="conf in confDash | orderBy : 'orderBy'" class="" data-value="{{conf.moduleId}}">
+											<li ng-repeat="conf in confDash |filter:'!Report' | orderBy : 'orderBy'" class="" data-value="{{conf.moduleId}}">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
 												<input type="checkbox" ng-checked="conf.status" id="ck_{{conf.moduleId}}" value="{{conf.moduleId}}" name="module">
 												<span class="text">{{conf.moduleName}}</span>										
