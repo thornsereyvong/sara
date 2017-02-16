@@ -126,10 +126,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			</div>
 			
 			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
-				
-			 
 			<div class="clearfix"></div>
-
 			<div class="panel panel-default">
   				<div class="panel-body">
 				 	<div class="col-sm-2">
@@ -158,7 +155,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<div class="tablecontainer" data-ng-init="listLeads('${SESSION}')" > 
+						<div class="tablecontainer table-responsive" data-ng-init="listLeads('${SESSION}')" > 
 							<% if(roleList.equals("YES")){ %>
 								<table class="table table-hover" >
 									<tr>
@@ -177,7 +174,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 										<th style="cursor: pointer;" ng-click="sort('email')">Email
 											<span class="glyphicon sort-icon" ng-show="sortKey=='startDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
-										<th style="cursor: pointer;" ng-click="sort('createDate')">Date Create
+										<th style="cursor: pointer;" ng-click="sort('createDate')">Created Date
 											<span class="glyphicon sort-icon" ng-show="sortKey=='endDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
 										<th>Action</th>

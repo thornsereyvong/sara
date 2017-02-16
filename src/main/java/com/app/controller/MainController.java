@@ -1585,8 +1585,56 @@ public class MainController {
 			return "permission";
 		}
 	}
+	
 	/*End of HBU Module*/
 	
+	/*CSBU Module*/
+	@RequestMapping("/lead-project")
+	public String listLeadProject(ModelMap model, HttpServletRequest req) {
+		model.addAttribute("menu", "listLeadProjects");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LP", req);
+		model.addAttribute("roleDelete", camMap.get("delete"));
+		if(camMap.get("access").equals("YES") && camMap.get("list").equals("YES")){
+			return "listLeadProject";
+		} else {
+			return "permission";
+		}
+	}
+	
+	@RequestMapping("/create-lead-project")
+	public String createLeadProject(ModelMap model, HttpServletRequest req) {
+		model.addAttribute("menu", "createLeadProject");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LP", req);
+		if(camMap.get("access").equals("YES")){
+			return "createLeadProject";
+		} else {
+			return "permission";
+		}
+	}
+	
+	@RequestMapping("/update-lead-project/{id}")
+	public String updateLeadProject(ModelMap model, HttpServletRequest req, @PathVariable("id") int id) {
+		model.addAttribute("menu", "updateLeadProject");
+		model.addAttribute("id", id);
+		Map<String, Object> camMap = getRoleDetailsOfModule("LP", req);
+		if(camMap.get("access").equals("YES") && camMap.get("edit").equals("YES")){
+			return "updateLeadProject";
+		} else {
+			return "permission";
+		}
+	}
+	
+	@RequestMapping("/view-lead-project")
+	public String viewLeadProject(ModelMap model, HttpServletRequest req) {
+		model.addAttribute("menu", "viewLeadProject");
+		Map<String, Object> camMap = getRoleDetailsOfModule("LP", req);
+		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
+			return "viewLeadProject";
+		} else {
+			return "permission";
+		}
+	}
+	/*End CSBU Module*/
 	
 	/* Other */
 

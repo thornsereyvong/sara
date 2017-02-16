@@ -98,24 +98,27 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 								<thead>
 									<tr>
 										<th>Campaign Name</th>
-										<th>Lead Owner</th>
 										<th>Lead Name</th>
 										<th>Company</th>
 										<th>Email</th>
-										<th>Lead Status</th>
+										<th>Status</th>
+										<th>Source</th>
+										<th>Industry</th>
 										<th>Lead Created Date</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr  dir-paginate="lc in leadCampaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>[{{lc.campId}}] {{lc.campName}}</td>
-										<td>{{lc.leadOwner}}</td>
-										<td>[{{lc.leadId}}] {{lc.leadName}}</td>
-										<td>{{lc.leadCompany}}</td>
-										<td ng-if="lc.leadEmail == ''">-</td>
-										<td ng-if="lc.leadEmail != ''">{{lc.leadEmail}}</td>
-										<td>{{lc.leadStatus}}</td>
-										<td>{{lc.leadCreatedDate}}</td>
+								<tbody dir-paginate="lc in leadCampaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+									<tr>
+										<td rowspan="{{lc.leads.length + 1}}">[{{lc.campId}}] {{lc.campName}}</td>
+									</tr>
+									<tr ng-repeat="la in lc.leads">
+										<td>[{{la.leadId}}] {{la.salutation}} {{la.firstName}} {{la.lastName}}</td>
+										<td>{{la.accountName}}</td>
+										<td>{{la.email == null ? '-':la.email}}</td>
+										<td>{{la.status == null?'-':la.status.statusName}}</td>
+										<td>{{la.source == null?'-':la.source.sourceName}}</td>
+										<td>{{la.industry == null?'-':la.industry.industName}}</td>
+										<td>{{la.createdDate}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -127,30 +130,33 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 							
 							<div style="display:none;" id="exportTbl">
 								<table class="table table-hover">
-								<thead>
-									<tr>
-										<th>CAMPAIGN</th>
-										<th>LEAD OWNER</th>
-										<th>LEAD NAME</th>
-										<th>COMPANY</th>
-										<th>EMAIL</th>
-										<th>LEAD STATUS</th>
-										<th>LEAD CREATED DATE</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr  ng-repeat="lc in leadCampaigns |orderBy:sortKey:reverse |filter:search " class="ng-cloak">
-										<td>[{{lc.campId}}] {{lc.campName}}</td>
-										<td>{{lc.leadOwner}}</td>
-										<td>[{{lc.leadId}}] {{lc.leadName}}</td>
-										<td>{{lc.leadCompany}}</td>
-										<td ng-if="lc.leadEmail == ''">-</td>
-										<td ng-if="lc.leadEmail != ''">{{lc.leadEmail}}</td>
-										<td>{{lc.leadStatus}}</td>
-										<td>{{lc.leadCreatedDate}}</td>
-									</tr>
-								</tbody>
-							</table>
+									<thead>
+										<tr>
+											<th>Campaign Name</th>
+											<th>Lead Name</th>
+											<th>Company</th>
+											<th>Email</th>
+											<th>Status</th>
+											<th>Source</th>
+											<th>Industry</th>
+											<th>Lead Created Date</th>
+										</tr>
+									</thead>
+									<tbody dir-paginate="lc in leadCampaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+										<tr>
+											<td rowspan="{{lc.leads.length + 1}}">[{{lc.campId}}] {{lc.campName}}</td>
+										</tr>
+										<tr ng-repeat="la in lc.leads">
+											<td>[{{la.leadId}}] {{la.salutation}} {{la.firstName}} {{la.lastName}}</td>
+											<td>{{la.accountName}}</td>
+											<td>{{la.email == null ? '-':la.email}}</td>
+											<td>{{la.status == null?'-':la.status.statusName}}</td>
+											<td>{{la.source == null?'-':la.source.sourceName}}</td>
+											<td>{{la.industry == null?'-':la.industry.industName}}</td>
+											<td>{{la.createdDate}}</td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
