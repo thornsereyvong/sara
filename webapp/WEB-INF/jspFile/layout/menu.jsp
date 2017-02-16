@@ -1,9 +1,7 @@
 
 
 <style>
-.color_menu {
-	color: #b9292d;
-}
+.color_menu { color: #b9292d; }
 </style>
 <script>
 

@@ -1632,11 +1632,8 @@ public class MainController {
 	public String getPrincipal() {
 		String userName = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
 		if (principal instanceof UserDetails) {
 			userName = ((UserDetails) principal).getUsername();
-			// session.setAttribute("SESSION_NAME",
-			// ((UserDetails)principal).getUsername());
 		} else {
 			userName = principal.toString();
 		}

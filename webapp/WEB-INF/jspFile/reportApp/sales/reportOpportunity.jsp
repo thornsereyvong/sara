@@ -70,7 +70,16 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 			$scope.opportunities = response.REPORT;
 		});
 	}; 
-
+	
+	
+	$scope.excelBtnClick = function(){		
+		 var blob = new Blob([document.getElementById('exportTbl').innerHTML], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+      });
+      saveAs(blob, "opportunity.xls");		
+	}
+	
+	
 }]);
 
 $(function(){
@@ -293,8 +302,8 @@ $(function(){
 						<div class="col-sm-2">
 						  	<form class="form-inline">
 						  		<div class="form-group">
-						        	<button ng-click="searchBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-default">
-										<i class="fa fa-print"></i> &nbsp;Print
+						        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+										<i class="fa fa-file-excel-o"></i> &nbsp;excel
 									</button>
 						        </div>
 						        <div class="form-group">
@@ -352,6 +361,43 @@ $(function(){
 						       direction-links="true"
 						       boundary-links="true" >
 							</dir-pagination-controls>
+						</div>
+						<div style="display:none;" id="exportTbl">
+						
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Name</th>
+										<th>Stage</th>
+										<th>Type</th>
+										<th>Probability</th>
+										<th>Amount</th>
+										<th>Created Date</th>
+										<th>Closed Date</th>
+										<th>Customer</th>
+										<th>Campaign</th>
+										<th>Lead Source</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="op in opportunities" class="ng-cloak">
+										<td>{{op.opId}}</td>
+										<td>{{op.opName}}</td>
+										<td>{{op.stageName}}</td>
+										<td>{{op.typeId==null?'-':op.typeName}}</td>
+										<td>{{op.opProbability == null ? '-':op.opProbability}}</td>
+										<td>{{op.opAmount}}</td>
+										<td>{{op.opCreatedDate}}</td>
+										<td>{{op.opClosedDate}}</td>
+										<td>[{{op.custId}}] {{op.custName}}</td>
+										<td ng-if="op.campaignId == null"> - </td>
+										<td ng-if="op.campaignId != null">[{{op.campaignId}}] {{op.campaignName}}</td>
+										<td>{{op.sourceId == null ? '-':op.sourceName}}</td>
+									</tr>
+								</tbody>
+							</table>
+						
 						</div>
 					</div>
 				</div>

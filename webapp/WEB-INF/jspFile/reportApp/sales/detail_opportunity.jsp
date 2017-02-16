@@ -56,6 +56,15 @@ app.controller('objController',['$scope','$http',function($scope, $http){
 			$scope.campaigns = response.TOP_CAMPAIGN;
 		});
 	}; 
+	
+	
+
+	$scope.excelBtnClick = function(){		
+		 var blob = new Blob([document.getElementById('exportTbl').innerHTML], {
+           type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+       });
+       saveAs(blob, "opportunity.xls");		
+	}
 
 }]);
 
@@ -248,8 +257,8 @@ $(function(){
 						<div class="col-sm-2">
 						  	<form class="form-inline">
 						  		<div class="form-group">
-						        	<button ng-click="searchBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-default">
-										<i class="fa fa-print"></i> &nbsp;Print
+						        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+										<i class="fa fa-file-excel-o"></i> &nbsp;excel
 									</button>
 						        </div>
 						        <div class="form-group">
@@ -300,14 +309,37 @@ $(function(){
 						       boundary-links="true" >
 							</dir-pagination-controls>
 						</div>
+						
+						<div style="display:none;" id="exportTbl">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Campaign Name</th>
+										<th>Type</th>
+										<th>Status</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+										<th>Num Sent</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr  ng-repeat="camp in campaigns" class="ng-cloak">
+										<td>{{camp.campId}}</td>
+										<td>{{camp.campName}}</td>
+										<td>{{camp.typeName}}</td>
+										<td>{{camp.statusName}}</td>
+										<td ng-if="camp.startDate == null">-</td>
+										<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
+										<td>{{camp.endDate}}</td>
+										<td>{{camp.numSent}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
-			
-			
-			
-			
-			
 			<div id="errors"></div>
 		</div>
 	

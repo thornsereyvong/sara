@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 @Repository
 public class UserServiceImpl implements UserService{
 	
-	
 	@Autowired
 	private String URL; 
 	
