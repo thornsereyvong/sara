@@ -220,7 +220,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 					</div>
 					<div class="widget-user-image">
 						<img class="img-circle"
-							src="${pageContext.request.contextPath}/resources/images/module/Call.png"
+							src="${pageContext.request.contextPath}/resources/images/module/project1.png"
 							alt="User Avatar">
 					</div>
 					<div class="box-footer">
@@ -318,7 +318,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item item_border">Address</li>
 																
-																<li class="list-group-item">													
+																<li class="list-group-item" ng-if="project.address != ''">													
 																	<a class="show-text-detail ng-cloak">{{project.address}}</a>
 																</li>
 																

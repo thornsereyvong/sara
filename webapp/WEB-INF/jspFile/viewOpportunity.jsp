@@ -15,7 +15,7 @@ var permission = ${permission};
 var curAssign = "";
 var ownerItem = "";
 
-var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate','blockUI']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+var app = angular.module('viewOpportunity', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
 }]);
 var self = this;
@@ -52,7 +52,7 @@ var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Propos
 
 
 
-app.controller('viewOpportunityController',['$scope','$http',function($scope, $http, blockUI){
+app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
 		/* $("#oppStage").select2('val',response.OPPORTUNITY.osId);
@@ -76,7 +76,6 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	
 	$scope.listLeads = function(){
 			//response = getLeadData();	
-			blockUI.start();
 			$http({
 			    method: 'POST',
 			    url: '${pageContext.request.contextPath}/opportunity/view',
@@ -152,8 +151,6 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				
 				//dis($scope.opportunity)
 			});
-			
-			blockUI.stop();
 	}
 	
 	
@@ -1515,6 +1512,14 @@ $scope.actDeleteEvent = function(eventId){
 	}
 	
 	// end sale order	
+
+	//Lead Project
+
+	$scope.sale_order_click = function(){
+		$("#btn_show_lead_project").click();
+	}
+	
+	//End Lead Project
 	
 }]);
 
@@ -2886,7 +2891,7 @@ function iSplitBySplint(obj){
 															<i class="fa fa-file-text-o"></i> Sale Order
 														</a> 
 														<a class="btn btn-app" ng-click="lead_project_click()"> 
-															<i class="fa fa-file-text-o"></i> Lead Project
+															<img class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Project-2.png" alt="User Avatar"><br/>Lead Project
 														</a>
 												</div>
 												<div class="col-md-12">
@@ -3090,18 +3095,78 @@ function iSplitBySplint(obj){
 																</div>
 															</div>
 														</div>
-														
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title pull-left">
+																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RLeadProject">Lead Projects  </a>																	
+																</h4>
+																<%-- <a href="${pageContext.request.contextPath}/create-case" class="btn btn-default pull-right">New</a> --%>
+																<span class="badge bg-blue pull-right">{{saleOrder.length <= 0 ? '' : saleOrder.length }}</span>
+																<div class="clearfix"></div>
+															</div>
+															<div id="RLeadProject" class="panel-collapse collapse">
+																<div class="panel-body">
+																	<div class="mailbox-messages">
+																			<table class="table iTable"> 					
+																				<thead>
+																					<tr>
+																						<th class="text-center">#</th>
+																						<th>Name</th>
+																						<th>Account Manager</th>
+																						<th>Due Date</th>
+																						<th>Employee</th>
+																						<th>Total Amount</th>
+																						<th></th>
+																					</tr>
+																				</thead>
+																				<tbody ng-repeat="(key, s) in saleOrder">
+																					<tr>
+																						<td class="iTD-width-50">
+																							<a href="#">
+																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
+																							</a>
+																						</td>
+																						<td>{{s.saleOrderId}}</td>
+																						<td>{{s.saleOrderDate | date:'dd/MM/yyyy'}}</td>
+																						<td>{{s.saleDueDate | date:'dd/MM/yyyy'}}</td>
+																						<td>[{{s.empId}}] {{s.empName}}</td>
+																						<td>{{s.totalAmount | number:2}}</td>
+																						<td class="mailbox-date">
+																							<div class="col-sm-2">
+																								<div class="btn-group">
+																									<button type="button"
+																										class="btn btn-default dropdown-toggle btn-sm"
+																										data-toggle="dropdown" aria-expanded="false">
+																										<span class="caret"></span> <span class="sr-only">Toggle
+																											Dropdown</span>
+																									</button>
+																									<ul class="dropdown-menu" role="menu">
+																										
+																										<li><a href="#" ng-click="deleteSaleOrderClick(s.opSaleOrderId, key)" >
+																												<i class="fa fa-trash"></i> Delete
+																										</a></li>																											
+																										<li><a href="${pageContext.request.contextPath}/sale-order/edit/{{s.saleOrderId}}"> <i class="fa fa-eye"></i>
+																												View
+																										</a></li>
+					
+																									</ul>
+																								</div>
+																							</div>
+																						</td>
+																					</tr>
+																			</table>
+																		</div>
+																</div>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-									
-									
 									</div>
 									<!-- /.tab-content -->
 								</div>
 							</div>
-
 						</div>
 						<!-- /.row -->
 					</div>
