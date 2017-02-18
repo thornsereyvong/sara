@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <jsp:include page="${request.contextPath}/head"></jsp:include>
 <jsp:include page="${request.contextPath}/header"></jsp:include>
@@ -94,6 +93,8 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				$scope.oppCustomer = response.CUSTOMERS;			
 				$scope.opportunity = response.OPPORTUNITY;			
 				$scope.listNote1(response.NOTES);
+				$scope.projects = response.LEAD_PROJECT.PROJECT_STARTUP;
+				$scope.opProjects = response.LEAD_PROJECT.OP_PROJECT;
 						
 				userAllList($scope.oppAssignTo,'#callAssignTo','');
 				userAllList($scope.oppAssignTo,'#meetAssignTo','');
@@ -257,8 +258,6 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		}else{
 			
 		}
-    	
-		
 	}
 	
 	$scope.assignValuePro = function(data){
@@ -677,15 +676,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		
 	}
 	
-	
-	
 	// end tab product
-	
-	
-	
-	
-	
-	
 	
 // Tab Collaborate***************************
 	
@@ -822,10 +813,6 @@ $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){
     }	
 	
 	// End Collaborate***************************
-	
-	
-	
-	
 	
 	
 	// note
@@ -970,6 +957,7 @@ $scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){
 			$("#btn_show_call").click();
 		});		
 	}
+	
 	$scope.actDeleteCall = function(callId){
 		if(getPermissionByModule("AC_CL","delete") == "YES"){
 			swal({   
@@ -1515,8 +1503,55 @@ $scope.actDeleteEvent = function(eventId){
 
 	//Lead Project
 
-	$scope.sale_order_click = function(){
+	$scope.lead_project_click = function(){
 		$("#btn_show_lead_project").click();
+	}
+
+	$scope.cancelLeadProjectClick = function(){		
+		$("#leadProject").select2("val","");
+		$('#frmAddLeadProject').data('bootstrapValidator').resetField($('#leadProject'));
+	}
+
+	$scope.saveProjectClick = function(){
+		$http({
+		    method: 'POST',
+		    url: "${pageContext.request.contextPath}/op/project/add/"+oppId+"/"+getValueStringById('leadProject'),
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    }
+		}).success(function(response) {
+			if(response.MESSAGE == "INSERTED"){
+				swal({
+            		title:"Successful",
+            		text:"You have been added a new lead project!",
+            		type:"success",  
+            		timer: 2000,   
+            		showConfirmButton: false
+    			});	
+				
+				$scope.opProjects.push(response.OP_PROJECT); 
+				
+				setTimeout(function(){			
+					$scope.cancelLeadProjectClick();
+					$('#frmLeadProject').modal('toggle');
+				}, 2000);
+				
+									
+			}else if(response.MESSAGE == "EXIST"){
+				swal({
+            		title:"Warning!",
+            		text:"This sale order is already exist!",
+            		type:"error",  
+            		timer: 2000,   
+            		showConfirmButton: false
+    			});
+			}else{
+				alertMsgErrorSweet();
+			}				
+		}).error(function(){
+			alertMsgErrorSweet();
+		});
 	}
 	
 	//End Lead Project
@@ -2043,26 +2078,14 @@ function iSplitBySplint(obj){
 											aria-expanded="false">RELATED</a></li>
 									</ul>
 									<div class="tab-content">
-									
 										<div class="tab-pane active" id="activity">
 											<div class="row">
-
 												<div class="col-md-12" >
-													<a style="margin-left: 0px;" class="btn btn-app" ng-click="call_click()"> 
-														<i class="fa fa-phone"></i> Call
-													</a> 
-													<a class="btn btn-app" ng-click="meet_click()"> 
-														<i class="fa fa-users"></i> Meeting
-													</a> 
-													<a class="btn btn-app" ng-click="task_click()"> 
-														<i class="fa fa-list-alt "></i> Task
-													</a> 
-													<a class="btn btn-app" ng-click="event_click()"> 
-														<i class="fa  fa-calendar-check-o"></i> Event
-													</a> 
-													<a class="btn btn-app" ng-click="email_click()"> 
-														<i class="fa fa-envelope"></i> Email
-													</a>
+													<a style="margin-left: 0px;" class="btn btn-app" ng-click="call_click()"><i class="fa fa-phone"></i> Call</a> 
+													<a class="btn btn-app" ng-click="meet_click()"><i class="fa fa-users"></i> Meeting</a> 
+													<a class="btn btn-app" ng-click="task_click()"> <i class="fa fa-list-alt "></i> Task</a> 
+													<a class="btn btn-app" ng-click="event_click()"> <i class="fa  fa-calendar-check-o"></i> Event</a> 
+													<a class="btn btn-app" ng-click="email_click()"> <i class="fa fa-envelope"></i> Email</a>
 												</div>
 												<div class="col-md-12">
 													<div class="panel-group" id="accordion">
@@ -2117,7 +2140,6 @@ function iSplitBySplint(obj){
 																										<li><a href="#" ng-click="actEditCall(call.callId)"><i class="fa fa-pencil"></i> Edit</a></li>
 																										<li ng-click="actDeleteCall(call.callId)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																										<li><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}"><i class="fa fa-eye"></i> View</a></li>
-					
 																									</ul>
 																								</div>
 																							</div>
@@ -2169,11 +2191,8 @@ function iSplitBySplint(obj){
 																					<td class="mailbox-date">
 																						<div class="col-sm-2">
 																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
+																								<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
+																									<span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
 																								</button>
 																								<ul class="dropdown-menu" role="menu">
 																									<li ng-click="actEditMeeting(meet.meetingId)">
@@ -2182,7 +2201,6 @@ function iSplitBySplint(obj){
 																									<li ng-click="actDeleteMeeting(meet.meetingId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																									<li><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}"><i class="fa fa-eye"></i> View</a></li>
-				
 																								</ul>
 																							</div>
 																						</div>
@@ -2314,7 +2332,6 @@ function iSplitBySplint(obj){
 																									<li ng-click="actDeleteEvent(event.evId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																									<li><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><i class="fa fa-eye"></i> View</a></li>
-				
 																								</ul>
 																							</div>
 																						</div>
@@ -2380,7 +2397,6 @@ function iSplitBySplint(obj){
 																									<li ng-click="actDeleteEvent(event.evId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																									<li><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><i class="fa fa-eye"></i> View</a></li>
-				
 																								</ul>
 																							</div>
 																						</div>
@@ -2398,7 +2414,6 @@ function iSplitBySplint(obj){
 										</div>
 
 										<div class="tab-pane" id="collaborate">
-
 											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
 												<form id="frmCollab">													
 													<div class="col-sm-12"  style="padding-right: 0px; padding-left: 0px;">
@@ -2448,7 +2463,6 @@ function iSplitBySplint(obj){
 													</li>
 												</ul>
 												
-												
 												<div style="padding-top: 15px;" class="box-footer box-comments">													
 													<div class="box-comment" ng-repeat="(key_comment, com) in collab.details">
 														<img class="img-circle img-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image">
@@ -2461,22 +2475,14 @@ function iSplitBySplint(obj){
 														</div>
 													</div>
 												</div>
-												
-																							
 												<form id="" ng-submit="postCommand(key_post, collab.colId)">
 													<div class="form-group">
 														<input ng-model="newcomment[key_post].comment" id="txtComment"  class="form-control input-sm" type="text" placeholder="Type a comment">
 													</div>
 												</form>
-												
 											</div>
-											
-											
-											
-											
 											<!-- end content collab -->
 										</div>
-
 										<div class="tab-pane" id="note_tap">
 											<div class="post clearfix">
 												<form id="frmAddNote">
@@ -2504,12 +2510,10 @@ function iSplitBySplint(obj){
 											<div class="clearfix"></div>
 											<ul class="timeline timeline-inverse"
 												ng-repeat="notePerDate in noteToFilter() | filter:filterNote">
-
 												<!-- START DATE -->
 												<li class="time-label"><span class="bg-red">{{notePerDate.noteCreateDate}}</span>
 												</li>
-												<li
-													ng-repeat="note in notes | filter:{noteCreateDate: notePerDate.noteCreateDate}">
+												<li ng-repeat="note in notes | filter:{noteCreateDate: notePerDate.noteCreateDate}">
 													<i class="fa  fa-edit bg-blue"></i>
 													<div class="timeline-item">
 														<span class="time"><i class="fa fa-clock-o"></i>
@@ -2526,12 +2530,8 @@ function iSplitBySplint(obj){
 														</div>
 													</div>
 												</li>
-
-
 											</ul>
 										</div>
-
-
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
 												<form id="frmOpportDetail">
@@ -2613,8 +2613,6 @@ function iSplitBySplint(obj){
 																	</select>
 																</div>
 															</li>
-															
-															
 														</ul>
 													</div>
 													<div class="col-md-4">
@@ -2695,7 +2693,6 @@ function iSplitBySplint(obj){
 																			value="{{user.userID}}">{{user.username}}</option>
 																	</select>
 																</div>
-
 															</li>
 														</ul>
 													</div>
@@ -2725,9 +2722,7 @@ function iSplitBySplint(obj){
 															ng-click="cancelEditDetailLead()">Cancel</button>
 													</div>
 												</form>
-
 											</div>
-
 										</div>
 
 										
@@ -2808,7 +2803,6 @@ function iSplitBySplint(obj){
 																										<li>
 																											<a href="#" ng-click="deleteProductClick(key)" ><i class="fa fa-trash"></i> Delete </a>
 																										</li>																										
-																															
 																									</ul>
 																								</div>
 																							</div>
@@ -2895,7 +2889,6 @@ function iSplitBySplint(obj){
 														</a>
 												</div>
 												<div class="col-md-12">
-																																																	
 													<div class="panel-group" id="relatedGroup">														
 														<div class="panel panel-default">
 															<div class="panel-heading">
@@ -2909,56 +2902,55 @@ function iSplitBySplint(obj){
 															<div id="RContact" class="panel-collapse collapse">
 																<div class="panel-body">
 																	<div class="mailbox-messages">
-																			<table class="table iTable"> 					
-																				<thead>
-																					<tr>
-																						<th class="text-center">#</th>
-																						<th>Name</th>
-																						<th>Title</th>
-																						<th>Department</th>
-																						<th>Phone</th>
-																						<th>Email</th>
-																						<th>Type</th>
-																						<th></th>
-																					</tr>
-																				</thead>
-																				<tbody ng-repeat="(key, con) in contact">
-																					<tr>
-																						<td class="iTD-width-50">
-																							<a href="#">
-																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Contact.png" alt="User Avatar">
-																							</a>
-																						</td>
-																						<td>{{con.conName}}</td>
-																						<td>{{con.conTitle}}</td>
-																						<td>{{con.conDepartment}}</td>
-																						<td>{{con.conPhone}}</td>
-																						<td>{{con.conEmail}}</td>
-																						<td>{{con.Type}}</td>
-																						<td class="mailbox-date">
-																							<div class="col-sm-2">
-																								<div class="btn-group">
-																									<button type="button"
-																										class="btn btn-default dropdown-toggle btn-sm"
-																										data-toggle="dropdown" aria-expanded="false">
-																										<span class="caret"></span> <span class="sr-only">Toggle
-																											Dropdown</span>
-																									</button>
-																									<ul class="dropdown-menu" role="menu">
-																										<li>
-																											<a href="#" ng-click="deleteContactClick(con.id, key)" ><i class="fa fa-trash"></i> Delete </a>
-																										</li>																										
-																										<li>
-																											<a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}"> <i class="fa fa-eye"></i> View</a>
-																										</li>					
-																									</ul>
-																								</div>
+																		<table class="table iTable"> 					
+																			<thead>
+																				<tr>
+																					<th class="text-center">#</th>
+																					<th>Name</th>
+																					<th>Title</th>
+																					<th>Department</th>
+																					<th>Phone</th>
+																					<th>Email</th>
+																					<th>Type</th>
+																					<th></th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="(key, con) in contact">
+																				<tr>
+																					<td class="iTD-width-50">
+																						<a href="#">
+																							<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Contact.png" alt="User Avatar">
+																						</a>
+																					</td>
+																					<td>{{con.conName}}</td>
+																					<td>{{con.conTitle}}</td>
+																					<td>{{con.conDepartment}}</td>
+																					<td>{{con.conPhone}}</td>
+																					<td>{{con.conEmail}}</td>
+																					<td>{{con.Type}}</td>
+																					<td class="mailbox-date">
+																						<div class="col-sm-2">
+																							<div class="btn-group">
+																								<button type="button"
+																									class="btn btn-default dropdown-toggle btn-sm"
+																									data-toggle="dropdown" aria-expanded="false">
+																									<span class="caret"></span> <span class="sr-only">Toggle
+																										Dropdown</span>
+																								</button>
+																								<ul class="dropdown-menu" role="menu">
+																									<li>
+																										<a href="#" ng-click="deleteContactClick(con.id, key)" ><i class="fa fa-trash"></i> Delete </a>
+																									</li>																										
+																									<li>
+																										<a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}"> <i class="fa fa-eye"></i> View</a>
+																									</li>					
+																								</ul>
 																							</div>
-																						</td>
-																					</tr>
-																					
-																			</table>
-																		</div>
+																						</div>
+																					</td>
+																				</tr>
+																		</table>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -2975,58 +2967,57 @@ function iSplitBySplint(obj){
 															<div id="RQuote" class="panel-collapse collapse">
 																<div class="panel-body">
 																	<div class="mailbox-messages">
-																			<table class="table iTable"> 					
-																				<thead>
-																					<tr>
-																						<th class="text-center">#</th>
-																						<th>Entry No</th>
-																						<th>Quote Date</th>
-																						<th>Start Date</th>
-																						<th>Expire Date</th>
-																						<th>Employee</th>
-																						<th>Total Amount</th>
-																						<th></th>
-																					</tr>
-																				</thead>
-																				<tbody ng-repeat="(key, q) in quote">
-																					<tr>
-																						<td class="iTD-width-50">
-																							<a href="#">
-																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
-																							</a>
-																						</td>
-																						<td>{{q.quoteId}}</td>
-																						<td>{{q.quoteDate | date:'dd/MM/yyyy h:mm a'}}</td>
-																						<td>{{q.startDate | date:'dd/MM/yyyy'}}</td>
-																						<td>{{q.expireDate | date:'dd/MM/yyyy'}}</td>
-																						<td>[{{q.empId}}] {{q.empName}}</td>
-																						<td>{{q.totalAmmount | number:2}}</td>
-																						<td class="mailbox-date">
-																							<div class="col-sm-2">
-																								<div class="btn-group">
-																									<button type="button"
-																										class="btn btn-default dropdown-toggle btn-sm"
-																										data-toggle="dropdown" aria-expanded="false">
-																										<span class="caret"></span> <span class="sr-only">Toggle
-																											Dropdown</span>
-																									</button>
-																									<ul class="dropdown-menu" role="menu">
-																										
-																										<li><a href="#" ng-click="deleteQuoteClick(q.opQuoteId, key, q.quoteId)"  >
-																												<i class="fa fa-trash"></i> Delete
-																										</a></li>																									
-																										<li><a href="${pageContext.request.contextPath}/quote/edit/{{q.quoteId}}"> <i class="fa fa-eye"></i>
-																												View
-																										</a></li>
-					
-																									</ul>
-																								</div>
+																		<table class="table iTable"> 					
+																			<thead>
+																				<tr>
+																					<th class="text-center">#</th>
+																					<th>Entry No</th>
+																					<th>Quote Date</th>
+																					<th>Start Date</th>
+																					<th>Expire Date</th>
+																					<th>Employee</th>
+																					<th>Total Amount</th>
+																					<th></th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="(key, q) in quote">
+																				<tr>
+																					<td class="iTD-width-50">
+																						<a href="#">
+																							<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
+																						</a>
+																					</td>
+																					<td>{{q.quoteId}}</td>
+																					<td>{{q.quoteDate | date:'dd/MM/yyyy h:mm a'}}</td>
+																					<td>{{q.startDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{q.expireDate | date:'dd/MM/yyyy'}}</td>
+																					<td>[{{q.empId}}] {{q.empName}}</td>
+																					<td>{{q.totalAmmount | number:2}}</td>
+																					<td class="mailbox-date">
+																						<div class="col-sm-2">
+																							<div class="btn-group">
+																								<button type="button"
+																									class="btn btn-default dropdown-toggle btn-sm"
+																									data-toggle="dropdown" aria-expanded="false">
+																									<span class="caret"></span> <span class="sr-only">Toggle
+																										Dropdown</span>
+																								</button>
+																								<ul class="dropdown-menu" role="menu">
+																									
+																									<li><a href="#" ng-click="deleteQuoteClick(q.opQuoteId, key, q.quoteId)"  >
+																											<i class="fa fa-trash"></i> Delete
+																									</a></li>																									
+																									<li><a href="${pageContext.request.contextPath}/quote/edit/{{q.quoteId}}"> <i class="fa fa-eye"></i>
+																											View
+																									</a></li>
+				
+																								</ul>
 																							</div>
-																						</td>
-																					</tr>
-																					
-																			</table>
-																		</div>
+																						</div>
+																					</td>
+																				</tr>
+																		</table>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -3042,56 +3033,54 @@ function iSplitBySplint(obj){
 															<div id="RSaleOrder" class="panel-collapse collapse">
 																<div class="panel-body">
 																	<div class="mailbox-messages">
-																			<table class="table iTable"> 					
-																				<thead>
-																					<tr>
-																						<th class="text-center">#</th>
-																						<th>Entry No</th>
-																						<th>Sale Date</th>
-																						<th>Due Date</th>
-																						<th>Employee</th>
-																						<th>Total Amount</th>
-																						<th></th>
-																					</tr>
-																				</thead>
-																				<tbody ng-repeat="(key, s) in saleOrder">
-																					<tr>
-																						<td class="iTD-width-50">
-																							<a href="#">
-																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
-																							</a>
-																						</td>
-																						<td>{{s.saleOrderId}}</td>
-																						<td>{{s.saleOrderDate | date:'dd/MM/yyyy'}}</td>
-																						<td>{{s.saleDueDate | date:'dd/MM/yyyy'}}</td>
-																						<td>[{{s.empId}}] {{s.empName}}</td>
-																						<td>{{s.totalAmount | number:2}}</td>
-																						<td class="mailbox-date">
-																							<div class="col-sm-2">
-																								<div class="btn-group">
-																									<button type="button"
-																										class="btn btn-default dropdown-toggle btn-sm"
-																										data-toggle="dropdown" aria-expanded="false">
-																										<span class="caret"></span> <span class="sr-only">Toggle
-																											Dropdown</span>
-																									</button>
-																									<ul class="dropdown-menu" role="menu">
-																										
-																										<li><a href="#" ng-click="deleteSaleOrderClick(s.opSaleOrderId, key)" >
-																												<i class="fa fa-trash"></i> Delete
-																										</a></li>																											
-																										<li><a href="${pageContext.request.contextPath}/sale-order/edit/{{s.saleOrderId}}"> <i class="fa fa-eye"></i>
-																												View
-																										</a></li>
-					
-																									</ul>
-																								</div>
+																		<table class="table iTable"> 					
+																			<thead>
+																				<tr>
+																					<th class="text-center">#</th>
+																					<th>Entry No</th>
+																					<th>Sale Date</th>
+																					<th>Due Date</th>
+																					<th>Employee</th>
+																					<th>Total Amount</th>
+																					<th></th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="(key, s) in saleOrder">
+																				<tr>
+																					<td class="iTD-width-50">
+																						<a href="#">
+																							<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
+																						</a>
+																					</td>
+																					<td>{{s.saleOrderId}}</td>
+																					<td>{{s.saleOrderDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{s.saleDueDate | date:'dd/MM/yyyy'}}</td>
+																					<td>[{{s.empId}}] {{s.empName}}</td>
+																					<td>{{s.totalAmount | number:2}}</td>
+																					<td class="mailbox-date">
+																						<div class="col-sm-2">
+																							<div class="btn-group">
+																								<button type="button"
+																									class="btn btn-default dropdown-toggle btn-sm"
+																									data-toggle="dropdown" aria-expanded="false">
+																									<span class="caret"></span> <span class="sr-only">Toggle
+																										Dropdown</span>
+																								</button>
+																								<ul class="dropdown-menu" role="menu">
+																									
+																									<li><a href="#" ng-click="deleteSaleOrderClick(s.opSaleOrderId, key)" >
+																											<i class="fa fa-trash"></i> Delete
+																									</a></li>																											
+																									<li><a href="${pageContext.request.contextPath}/sale-order/edit/{{s.saleOrderId}}"> <i class="fa fa-eye"></i>
+																											View
+																									</a></li>
+																								</ul>
 																							</div>
-																						</td>
-																					</tr>
-																					
-																			</table>
-																		</div>
+																						</div>
+																					</td>
+																				</tr>
+																		</table>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -3370,14 +3359,13 @@ function iSplitBySplint(obj){
 					<div class="row">
 						<form id="frmAddContact">
 						<div class="col-md-12">
-							
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Contact<span class="requrie"> (Required)</span></label>
 									<select class="form-control select2" name="ConContact" id="ConContact" style="width: 100%;">
-											<option value="">-- SELECT Contact --</option>
-											<option ng-repeat="a in allContact" value="{{a.conID}}">{{a.conSalutation}}{{a.conFirstname}} {{a.conLastname}}</option>
-										</select>
+										<option value="">-- SELECT Contact --</option>
+										<option ng-repeat="a in allContact" value="{{a.conID}}">{{a.conSalutation}}{{a.conFirstname}} {{a.conLastname}}</option>
+									</select>
 								</div>
 							</div>							
 							<div class="clearfix"></div>
@@ -3390,7 +3378,6 @@ function iSplitBySplint(obj){
 									</select>
 								</div>
 							</div>
-							
 						</div>
 						</form>
 					</div>
@@ -3399,7 +3386,6 @@ function iSplitBySplint(obj){
 					<button type="button" id="btnContactCancel" ng-click="cancelContactClick()" name="btnContactCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
 					<button type="button" ng-click="saveContactClick()" id="btnContactSave" name="btnContactSave"  class="btn btn-primary pull-right">Save</button>
-
 				</div>
 			</div>
 		</div>
@@ -3473,11 +3459,46 @@ function iSplitBySplint(obj){
 					<button type="button" id="btnSaleOrderCancel" ng-click="cancelSaleOrderClick()" name="btnSaleOrderCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
 					<button type="button" ng-click="saveSaleOrderClick()" id="btnSaleOrderSave" name="btnSaleOrderSave"  class="btn btn-primary pull-right">Save</button>
-
 				</div>
 			</div>
 		</div>
 	</div>
+	
+	<!-- Lead Project popup block -->
+	<input type="hidden" id="btn_show_lead_project" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmLeadProject" />
+	<div class="modal fade modal-default" id="frmLeadProject" role="dialog">
+		<div class="modal-dialog  modal-md">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" ng-click="cancelProjectClick()" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><b>Add Lead Project</b></h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form id="frmAddLeadProject">
+						<div class="col-md-12">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Lead Project<span class="requrie"> (Required)</span></label>
+									<select class="form-control select2" name="leadProject" id="leadProject" style="width: 100%;">
+										<option value="">-- SELECT Lead Project --</option>
+										<option ng-repeat="p in projects" value="{{p.id}}">{{p.name}}</option>	
+									</select>
+								</div>
+							</div>							
+						</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="btnProjectCancel" ng-click="cancelProjectClick()" name="btnProjectCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					&nbsp;&nbsp;
+					<button type="button" ng-click="saveProjectClick()" id="btnProjectSave" name="btnProjectSave"  class="btn btn-primary pull-right">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Lead Project popup block -->
 
 	<input type="hidden" id="btn_show_call" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
 	<div ng-controller="callController" class="modal fade modal-default" id="frmCall" role="dialog">
@@ -3559,9 +3580,6 @@ function iSplitBySplint(obj){
 							</div>
 						</form>
 					</div>
-
-
-
 				</div>
 				<div class="modal-footer">
 					<button type="button" id="btnCallCancel"
@@ -3570,7 +3588,6 @@ function iSplitBySplint(obj){
 					&nbsp;&nbsp;
 					<button type="button" class="btn btn-primary pull-right"
 						id="btnCallSave" name="btnCallSave">Save</button>
-
 				</div>
 			</div>
 		</div>
@@ -3616,7 +3633,6 @@ function iSplitBySplint(obj){
 									</select>
 								</div>
 							</div>
-
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -3640,7 +3656,6 @@ function iSplitBySplint(obj){
 									</div>
 								</div>
 							</div>
-
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -3650,7 +3665,6 @@ function iSplitBySplint(obj){
 									</select>
 								</div>
 							</div>
-
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Status</label> 
@@ -3660,7 +3674,6 @@ function iSplitBySplint(obj){
 									</select>
 								</div>
 							</div>
-
 							<div class="clearfix"></div>
 							<div class="col-md-12">
 								<div class="form-group">
@@ -3836,7 +3849,6 @@ function iSplitBySplint(obj){
 									</div>
 								</div>
 							</div>
-
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -3892,21 +3904,15 @@ function iSplitBySplint(obj){
 						</div>
 						</form>
 					</div>
-
-
-
 				</div>
 				<div class="modal-footer">
 					<button type="button" id="btnEventCancel" ng-click="cancelEventClick()" name="btnEventCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 					&nbsp;&nbsp;
 					<button type="button" id="btnEventSave" name="btnEventSave"  class="btn btn-primary pull-right">Save</button>
-
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	
 	<div id="errors"></div>
 </div>
 
