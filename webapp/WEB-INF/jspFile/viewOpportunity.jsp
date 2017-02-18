@@ -503,7 +503,6 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		}else{
 			// error
 			
-			
 		}
 		
 		
@@ -3090,7 +3089,7 @@ function iSplitBySplint(obj){
 																	<a data-toggle="collapse" data-parent="relatedGroup" href="#RLeadProject">Lead Projects  </a>																	
 																</h4>
 																<%-- <a href="${pageContext.request.contextPath}/create-case" class="btn btn-default pull-right">New</a> --%>
-																<span class="badge bg-blue pull-right">{{saleOrder.length <= 0 ? '' : saleOrder.length }}</span>
+																<span class="badge bg-blue pull-right">{{opProjects.length <= 0 ? '' : opProjects.length }}</span>
 																<div class="clearfix"></div>
 															</div>
 															<div id="RLeadProject" class="panel-collapse collapse">
@@ -3108,16 +3107,15 @@ function iSplitBySplint(obj){
 																						<th></th>
 																					</tr>
 																				</thead>
-																				<tbody ng-repeat="(key, s) in saleOrder">
+																				<tbody ng-repeat="(key, p) in opProjects">
 																					<tr>
 																						<td class="iTD-width-50">
 																							<a href="#">
 																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
 																							</a>
 																						</td>
-																						<td>{{s.saleOrderId}}</td>
-																						<td>{{s.saleOrderDate | date:'dd/MM/yyyy'}}</td>
-																						<td>{{s.saleDueDate | date:'dd/MM/yyyy'}}</td>
+																						<td>{{p.name}}</td>
+																						<td>{{p.accountManager}}</td>
 																						<td>[{{s.empId}}] {{s.empName}}</td>
 																						<td>{{s.totalAmount | number:2}}</td>
 																						<td class="mailbox-date">
