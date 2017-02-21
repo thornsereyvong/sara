@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 import com.app.entities.RestTemplateErrorHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,7 +49,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	public String URL(){
 		//String  url = "http://203.189.150.234:8812/api/";
 		//String  url = "http://192.168.123.1:8881/api/";
-		//String  url = "http://192.168.123.2:8881/api/";
+		//String  url = "http://192.168.123.2:8881/server/";
 		String  url = "http://localhost:8080/BalancikaCRM/";
 		//String  url = "http://bmgcorpapi.balancikaapps.com/";
 		//String  url = "http://balancikaapi.balancikaapps.com/";

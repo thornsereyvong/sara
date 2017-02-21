@@ -1169,16 +1169,22 @@ function setSelect2ToResolveBy(value){
 					</div>
 					<div class="box-footer">
 						<div class="row">
-							<div class="col-sm-2 border-right">
+							<div class="col-sm-1 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{cases.caseTypeName}}</h5>
 									<span class="description-text">Type</span>
 								</div>
 							</div>
-							<div class="col-sm-2 border-right">
+							<div class="col-sm-1 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{cases.priorityName}}</h5>
 									<span class="description-text">Priority</span>
+								</div>
+							</div>
+							<div class="col-sm-1 border-right">
+								<div class="description-block">
+									<h5 class="description-header ng-cloak">{{cases.originName}}</h5>
+									<span class="description-text">Origin</span>
 								</div>
 							</div>
 							<div class="col-sm-3 border-right">
@@ -1189,7 +1195,7 @@ function setSelect2ToResolveBy(value){
 									<span class="description-text">Customer</span>
 								</div>
 							</div>
-							<div class="col-sm-2 border-right">
+							<div class="col-sm-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak"
 										ng-if="cases.conID != null">[{{cases.conID}}]
@@ -1198,7 +1204,7 @@ function setSelect2ToResolveBy(value){
 									<span class="description-text">Contact</span>
 								</div>
 							</div>
-							<div class="col-sm-2 border-right">
+							<div class="col-sm-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{cases.followupDate}}</h5>
 									<span class="description-text">Follow-up Date</span>
