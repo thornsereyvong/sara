@@ -120,6 +120,7 @@ public class CrmOpportunityController {
 	public ResponseEntity<Map<String, Object>> deleteQuote(@PathVariable("opQuoteId") Integer opQuoteId, HttpServletRequest req){	
 		CrmOpportunityQuotation opQuote = new CrmOpportunityQuotation();
 		opQuote.setOpQuoteId(opQuoteId);
+		opQuote.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(opQuote,header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity_quote/remove/", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
@@ -151,7 +152,7 @@ public class CrmOpportunityController {
 		opSaleorder.setOpSaleId(saleId);
 		opSaleorder.setMeDataSource(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()));
 		HttpEntity<Object> request = new HttpEntity<Object>(opSaleorder, header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity_saleorder/remove/", HttpMethod.POST, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/opportunity_saleorder/remove/"+saleId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	

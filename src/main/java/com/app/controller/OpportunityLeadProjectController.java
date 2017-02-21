@@ -35,6 +35,14 @@ RestTemplate  restTemplate = new RestTemplate();
 	private MeDataSource dataSource;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/startup",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> startupLeadProject(HttpServletRequest req){
+		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/op/project/startup", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/add/{opId}/{lpId}",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> addOpportunityLeadProject(@PathVariable("opId") String opId,@PathVariable("lpId") String lpId, HttpServletRequest req){
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
@@ -43,7 +51,7 @@ RestTemplate  restTemplate = new RestTemplate();
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/remove/{opId}/{lpId}",method = RequestMethod.POST)
+	@RequestMapping(value="/remove/{opId}/{lpId}",method = RequestMethod.DELETE)
 	public ResponseEntity<Map<String, Object>> removeOpportunityLeadProject(@PathVariable("opId") String opId,@PathVariable("lpId") String lpId, HttpServletRequest req){
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource.getMeDataSourceByHttpServlet(req, getPrincipal()), header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/op/project/remove/"+opId+"/"+lpId, HttpMethod.POST, request, Map.class);

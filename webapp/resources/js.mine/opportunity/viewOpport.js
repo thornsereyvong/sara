@@ -1500,6 +1500,25 @@ $(function(){
 			
 		}
 	});
+	
+	$('#frmAddLeadProject').bootstrapValidator({
+		message: 'This value is not valid',
+		feedbackIcons: {
+			valid: 'glyphicon glyphicon-ok',
+			invalid: 'glyphicon glyphicon-remove',
+			validating: 'glyphicon glyphicon-refresh'
+		},
+		fields: {
+			leadProject: {
+				validators: {
+					notEmpty: {
+						message: 'The lead project is required and can not be empty!'
+					}
+				}
+			}
+			
+		}
+	});
 });
 
 

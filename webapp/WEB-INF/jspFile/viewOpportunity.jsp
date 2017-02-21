@@ -93,8 +93,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				$scope.oppCustomer = response.CUSTOMERS;			
 				$scope.opportunity = response.OPPORTUNITY;			
 				$scope.listNote1(response.NOTES);
-				$scope.projects = response.LEAD_PROJECT.PROJECT_STARTUP;
-				$scope.opProjects = response.LEAD_PROJECT.OP_PROJECT;
+				$scope.opProjects = response.OP_PROJECT;
 						
 				userAllList($scope.oppAssignTo,'#callAssignTo','');
 				userAllList($scope.oppAssignTo,'#meetAssignTo','');
@@ -119,8 +118,8 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				$scope.contact = response.CONTACTS;
 				$scope.quote = response.QUOTATIONS;
 				$scope.saleOrder = response.SALE_ORDERS;
-				
-				
+
+				dis($scope.quote)
 				
 				$scope.allContact = response.ALL_CONTACTS;
 				$scope.allQuote = response.ALL_QUOTATIONS;
@@ -1447,7 +1446,7 @@ $scope.actDeleteEvent = function(eventId){
 	            		showConfirmButton: false
 	    			});	
 					
-					$scope.saleOrder.push(response.DATA); 
+					$scope.saleOrder = angular.copy(response.DATA); 
 					
 					setTimeout(function(){			
 						$scope.cancelSaleOrderClick();
@@ -1475,7 +1474,7 @@ $scope.actDeleteEvent = function(eventId){
 	$scope.deleteSaleOrderClick = function(opSaleId, key){
 		$http({
 		    method: 'DELETE',
-		    url: "${pageContext.request.contextPath}/opportunity/sale_order/delete/"+opSaleId,
+		    url: "${pageContext.request.contextPath}/opportunity/sale_order/delete/"+opSaleId+"",
 		    headers: {
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
@@ -1504,11 +1503,25 @@ $scope.actDeleteEvent = function(eventId){
 
 	$scope.lead_project_click = function(){
 		$("#btn_show_lead_project").click();
+		$scope.leadProjectStartup();
 	}
 
-	$scope.cancelLeadProjectClick = function(){		
+	$scope.cancelLeadProjectClick = function(){	
 		$("#leadProject").select2("val","");
 		$('#frmAddLeadProject').data('bootstrapValidator').resetField($('#leadProject'));
+	}
+
+	$scope.leadProjectStartup = function(){
+		$http({
+		    method: 'GET',
+		    url: "${pageContext.request.contextPath}/op/project/startup",
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    }
+		}).success(function(response) {
+			$scope.projects = response.PROJECT_STARTUP;
+		});
 	}
 
 	$scope.saveProjectClick = function(){
@@ -1528,23 +1541,12 @@ $scope.actDeleteEvent = function(eventId){
             		timer: 2000,   
             		showConfirmButton: false
     			});	
-				
-				$scope.opProjects.push(response.OP_PROJECT); 
-				
-				setTimeout(function(){			
+
+				$scope.opProjects =  angular.copy(response.OP_PROJECT); 
+				setTimeout(function(){	
 					$scope.cancelLeadProjectClick();
 					$('#frmLeadProject').modal('toggle');
 				}, 2000);
-				
-									
-			}else if(response.MESSAGE == "EXIST"){
-				swal({
-            		title:"Warning!",
-            		text:"This sale order is already exist!",
-            		type:"error",  
-            		timer: 2000,   
-            		showConfirmButton: false
-    			});
 			}else{
 				alertMsgErrorSweet();
 			}				
@@ -1552,7 +1554,32 @@ $scope.actDeleteEvent = function(eventId){
 			alertMsgErrorSweet();
 		});
 	}
-	
+
+	$scope.deleteLeadProjectClick = function(id, key){
+		$http({
+		    method: 'DELETE',
+		    url: "${pageContext.request.contextPath}/op/project/remove/"+oppId+"/"+id,
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    }
+		}).success(function(response){			
+			if(response.MESSAGE == "DELETED"){
+				swal({
+	            		title:"Deleted",
+	            		text:"Lead Project have been deleted!",
+	            		type:"success",  
+	            		timer: 2000,   
+	            		showConfirmButton: false
+     			});
+				$scope.opProjects.splice(key,1);	
+			}else{
+				alertMsgErrorSweet();
+			}			
+		}).error(function(){
+			alertMsgErrorSweet();
+		});
+	}
 	//End Lead Project
 	
 }]);
@@ -3101,9 +3128,10 @@ function iSplitBySplint(obj){
 																						<th class="text-center">#</th>
 																						<th>Name</th>
 																						<th>Account Manager</th>
-																						<th>Due Date</th>
-																						<th>Employee</th>
-																						<th>Total Amount</th>
+																						<th>Company</th>
+																						<th>Email</th>
+																						<th>Start Date</th>
+																						<th>End Date</th>
 																						<th></th>
 																					</tr>
 																				</thead>
@@ -3115,9 +3143,11 @@ function iSplitBySplint(obj){
 																							</a>
 																						</td>
 																						<td>{{p.name}}</td>
-																						<td>{{p.accountManager}}</td>
-																						<td>[{{s.empId}}] {{s.empName}}</td>
-																						<td>{{s.totalAmount | number:2}}</td>
+																						<td>{{p.accountManager == ""?'-':p.accountManager}}</td>
+																						<td>{{p.company == ''?'-':p.company}}</td>
+																						<td>{{p.email == ''?'-':p.email}}</td>
+																						<td>{{p.startDate == null?'-':p.startDate | date:'dd/MM/yyyy'}}</td>
+																						<td>{{p.endDate == null?'-':p.endDate |date:'dd/MM/yyyy'}}</td>
 																						<td class="mailbox-date">
 																							<div class="col-sm-2">
 																								<div class="btn-group">
@@ -3129,10 +3159,10 @@ function iSplitBySplint(obj){
 																									</button>
 																									<ul class="dropdown-menu" role="menu">
 																										
-																										<li><a href="#" ng-click="deleteSaleOrderClick(s.opSaleOrderId, key)" >
+																										<li><a href="#" ng-click="deleteLeadProjectClick(p.id, key)" >
 																												<i class="fa fa-trash"></i> Delete
 																										</a></li>																											
-																										<li><a href="${pageContext.request.contextPath}/sale-order/edit/{{s.saleOrderId}}"> <i class="fa fa-eye"></i>
+																										<li><a href="${pageContext.request.contextPath}/view-lead-project/{{p.id}}"> <i class="fa fa-eye"></i>
 																												View
 																										</a></li>
 					
