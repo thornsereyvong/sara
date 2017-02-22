@@ -4,22 +4,22 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 public class MailMessage {
 	private String from;
-	private String[] to;
+	private String to;
 	private String subject;
 	private String msg;
-	private String[] Cc;
-	private String[] Bcc;
-	private CommonsMultipartFile attachement;
+	private String Cc;
+	private String Bcc;
+	private CommonsMultipartFile attachment;
 	public String getFrom() {
 		return from;
 	}
 	public void setFrom(String from) {
 		this.from = from;
 	}
-	public String[] getTo() {
+	public String getTo() {
 		return to;
 	}
-	public void setTo(String[] to) {
+	public void setTo(String to) {
 		this.to = to;
 	}
 	public String getSubject() {
@@ -34,22 +34,22 @@ public class MailMessage {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	public String[] getCc() {
+	public String getCc() {
 		return Cc;
 	}
-	public void setCc(String[] cc) {
+	public void setCc(String cc) {
 		Cc = cc;
 	}
-	public String[] getBcc() {
+	public String getBcc() {
 		return Bcc;
 	}
-	public void setBcc(String[] bcc) {
+	public void setBcc(String bcc) {
 		Bcc = bcc;
 	}
-	public CommonsMultipartFile getAttachement() {
-		return attachement;
+	public CommonsMultipartFile getAttachment() {
+		return attachment;
 	}
-	public void setAttachement(CommonsMultipartFile attachFile) {
-		this.attachement = attachFile;
+	public void setAttachment(CommonsMultipartFile attachment) {
+		this.attachment = attachment;
 	}
 }
