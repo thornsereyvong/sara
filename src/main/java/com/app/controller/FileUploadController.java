@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +41,17 @@ public class FileUploadController {
 		header.setContentType(MediaType.MULTIPART_FORM_DATA);
 		HttpEntity<Object> request = new HttpEntity<Object>(multipartMap,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/upload/image", HttpMethod.POST, request, Map.class);
+		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="/upload/{srcFolder}",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> uploadAttachment(@RequestParam(value = "file", required = false) MultipartFile file, @PathVariable("srcFolder") String srcFolder){
+		LinkedMultiValueMap<String, Object> multipartMap = new LinkedMultiValueMap<String, Object>();
+		multipartMap.add("file", new MultipartFileResource(file, file.getOriginalFilename()));
+		header.setContentType(MediaType.MULTIPART_FORM_DATA);
+		HttpEntity<Object> request = new HttpEntity<Object>(multipartMap,header);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/upload/attachment/"+srcFolder, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 }

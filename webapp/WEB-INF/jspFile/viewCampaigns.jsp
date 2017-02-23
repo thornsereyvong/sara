@@ -2335,7 +2335,7 @@ function addDataToDetailLead(){
 		</div>
 	</div>
 	<input type="hidden" id="btn_show_email" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmEmail" />
-	<div ng-controller="eventController" class="modal fade modal-default" id="frmEmail" role="dialog">
+	<div ng-controller="eventController" class="modal fade modal-default" id="frmEmail" role="dialog" ng-app="upload" ng-controller ="uploadCtrl">
 		<div class="modal-dialog  modal-md">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -2372,7 +2372,8 @@ function addDataToDetailLead(){
 				<div class="modal-footer">
 					<div class="col-md-12">
 						<button type="button" id="btnEmailSave" name="btnEmailSave"  class="btn btn-primary pull-left" ng-click="sendMail()">Send</button>
-						<input type="file" multiple="multiple" id="attachment" name="attachment" class="btn pull-left filestyle" data-input="false" data-iconName="fa fa-paperclip" data-buttonText="">
+						<input type="file" multiple="multiple" id="attachment" name="attachment" 
+						onchange="angular.element(this).scope().uploadFile(this,'attachment')" class="btn pull-left filestyle" data-input="false" data-iconName="fa fa-paperclip" data-buttonText="">
 					</div>
 				</div>
 			</div>

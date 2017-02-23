@@ -75,4 +75,5 @@
 <script src="${pageContext.request.contextPath}/resources/dist/sweetalert/sweetalert-dev.js"></script>
 <script src="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/bootstrap/menu/menu.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js.mine/uploadFile.js"></script>
 </head>
