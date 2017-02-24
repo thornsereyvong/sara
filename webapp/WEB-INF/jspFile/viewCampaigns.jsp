@@ -688,21 +688,32 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	};
 
 	$scope.sendMail = function(){
-		$http({
-		    method: 'POST',
-		    url: "${pageContext.request.contextPath}/mail/send",
-		    headers: {
-		    	'Accept': 'application/json',
-		        'Content-Type': 'application/json'
-		    },
-		    data: {
-			    "to":getValueStringById("emailTo"),
-			    "subject":getValueStringById("emailSubject"), 
-			    "msg":getValueStringById("msg")
-			}
-		}).success(function(response) {	
-			alert(response.MESSAGE);
-		});
+		if(getValueStringById("emailTo") != ''){
+			$http({
+			    method: 'POST',
+			    url: "${pageContext.request.contextPath}/mail/send",
+			    headers: {
+			    	'Accept': 'application/json',
+			        'Content-Type': 'application/json'
+			    },
+			    data: {
+				    "to":getValueStringById("emailTo"),
+				    "subject":getValueStringById("emailSubject"), 
+				    "msg":getValueStringById("msg")
+				}
+			}).success(function(response) {	
+				alert(response.MESSAGE);
+			});
+		}else{
+			swal({
+				title: "Warning",
+			  	text: "Please input at least one repciption!",
+			  	html: true,
+			  	timer: 2000,
+			  	showConfirmButton: false,
+			  	type: "warning"
+			});	
+		}
 	};
 
 	//end Email block
@@ -2373,7 +2384,7 @@ function addDataToDetailLead(){
 					<div class="col-md-12">
 						<button type="button" id="btnEmailSave" name="btnEmailSave"  class="btn btn-primary pull-left" ng-click="sendMail()">Send</button>
 						<input type="file" multiple="multiple" id="attachment" name="attachment" 
-						onchange="angular.element(this).scope().uploadFile(this,'attachment')" class="btn pull-left filestyle" data-input="false" data-iconName="fa fa-paperclip" data-buttonText="">
+						onchange="angular.element(this).scope().uploadFile()" class="btn pull-left filestyle" data-input="false" data-iconName="fa fa-paperclip" data-buttonText="">
 					</div>
 				</div>
 			</div>

@@ -55,6 +55,12 @@ app.controller('contactController',['$scope','$http',function($scope, $http){
 			$scope.customer = response.CUSTOMERS;
 			$scope.assignTo = response.ASSIGN_TO;
 			$scope.reportTo = response.REPORT_TO;
+			var custId = "${custId}";
+			if(custId != ''){
+				setTimeout(function(){
+					$('#con_customer').select2('val', custId);
+				}, 1000);
+			}
 		});
 	};		
 }]);

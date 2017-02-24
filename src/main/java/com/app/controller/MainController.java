@@ -154,15 +154,27 @@ public class MainController {
 	@RequestMapping("/sale-order/add")
 	public String sale_order(ModelMap model, HttpServletRequest req) {		
 		model.addAttribute("menu", "saleOrder");			
-		
+		model.addAttribute("custId", "");
 		Map<String, Object> camMap = getRoleDetailsOfModule("S",req);
 		if(camMap.get("access").equals("YES")){
 			return "saleOrder";	
 		}else{
 			return "permission";
 		}
-		
 	}
+	
+	@RequestMapping("/sale-order/add/{custId}")
+	public String sale_order(ModelMap model, HttpServletRequest req, @PathVariable("custId") String custId) {		
+		model.addAttribute("menu", "saleOrder");			
+		model.addAttribute("custId", custId);
+		Map<String, Object> camMap = getRoleDetailsOfModule("S",req);
+		if(camMap.get("access").equals("YES")){
+			return "saleOrder";	
+		}else{
+			return "permission";
+		}
+	}
+	
 	@RequestMapping("/sale-order/list")
 	public String listSaleOrder(ModelMap model, HttpServletRequest req) {		
 		model.addAttribute("menu", "saleOrderList");
@@ -205,7 +217,7 @@ public class MainController {
 	@RequestMapping("/quote/add")
 	public String quote(ModelMap model, HttpServletRequest req) {		
 		model.addAttribute("menu", "quote");		
-		
+		model.addAttribute("custId", "");
 		Map<String, Object> camMap = getRoleDetailsOfModule("Q",req);
 		if(camMap.get("access").equals("YES")){
 			return "quote";	
@@ -214,6 +226,19 @@ public class MainController {
 		}
 		
 	}
+	
+	@RequestMapping("/quote/add/{custId}")
+	public String quote(ModelMap model, HttpServletRequest req, @PathVariable("custId") String custId) {		
+		model.addAttribute("menu", "quote");		
+		model.addAttribute("custId", custId);
+		Map<String, Object> camMap = getRoleDetailsOfModule("Q",req);
+		if(camMap.get("access").equals("YES")){
+			return "quote";	
+		}else{
+			return "permission";
+		}
+	}
+	
 	@RequestMapping("/quote/list")
 	public String listQuote(ModelMap model, HttpServletRequest req) {		
 		model.addAttribute("menu", "quoteList");		
@@ -761,9 +786,20 @@ public class MainController {
 	@RequestMapping("/create-contact")
 	public String createContact(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createContacts");
-		
+		model.addAttribute("custId", "");
 		Map<String, Object> camMap = getRoleDetailsOfModule("CO",req);
-		
+		if(camMap.get("access").equals("YES")){
+			return "createContacts";
+		}else{
+			return "permission";
+		}
+	}
+	
+	@RequestMapping("/create-contact/{custId}")
+	public String createContact(ModelMap model,HttpServletRequest req,@PathVariable("custId") String custId) {
+		model.addAttribute("menu", "createContacts");
+		model.addAttribute("custId", custId);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CO",req);
 		if(camMap.get("access").equals("YES")){
 			return "createContacts";
 		}else{
@@ -831,10 +867,21 @@ public class MainController {
 	@RequestMapping("/create-opportunity")
 	public String createOpportunity(ModelMap model,HttpServletRequest req) {
 		model.addAttribute("menu", "createOpportunity");
-		
-		
+		model.addAttribute("custId", "");
 		Map<String, Object> camMap = getRoleDetailsOfModule("OP",req);
+		if(camMap.get("access").equals("YES")){
+			return "createOpportunity";
+		}else{
+			return "permission";
+		}
 		
+	}
+	
+	@RequestMapping("/create-opportunity/{custId}")
+	public String createOpportunity(ModelMap model,HttpServletRequest req, @PathVariable("custId") String custId) {
+		model.addAttribute("menu", "createOpportunity");
+		model.addAttribute("custId", custId);
+		Map<String, Object> camMap = getRoleDetailsOfModule("OP",req);
 		if(camMap.get("access").equals("YES")){
 			return "createOpportunity";
 		}else{
@@ -1277,17 +1324,25 @@ public class MainController {
 	@RequestMapping("/create-case")
 	public String createCase(ModelMap model, HttpServletRequest req) {
 		model.addAttribute("menu", "createCase");
-		
+		model.addAttribute("caseId", "");
 		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
-
 		if (camMap.get("access").equals("YES")) {
-			
 			return "createCase";
 		}else{
 			return "permission";
 		}
-		
-		
+	}
+	
+	@RequestMapping("/create-case/{custId}")
+	public String createCase(ModelMap model, HttpServletRequest req, @PathVariable("custId") String custId) {
+		model.addAttribute("menu", "createCase");
+		model.addAttribute("custId", custId);
+		Map<String, Object> camMap = getRoleDetailsOfModule("CS", req);
+		if (camMap.get("access").equals("YES")) {
+			return "createCase";
+		}else{
+			return "permission";
+		}
 	}
 
 	@RequestMapping("/list-cases")

@@ -38,19 +38,18 @@ app.controller('caseController',['$scope','$http',function($scope, $http){
 			$scope.assignTo = response.ASSIGN_TO;	
 			$scope.items = response.ITEMS;
 			$scope.case_origin = response.CASE_ORIGIN;
+			var custId = "${custId}";
+			if(custId != ''){
+				setTimeout(function(){
+					$('#ca_customer').select2('val', custId);
+				}, 1000);
+			}
 		});
 	};			
 }]);
 $(document).ready(function() {
 	$("#btn_clear").click(function(){
-		$("#ca_type").select2("val","");	
-		$("#ca_status").select2("val","");
-		$("#ca_priority").select2("val","");
-		$("#ca_assignTo").select2("val","");
-		$("#ca_customer").select2("val","");
-		$("#ca_contact").select2("val","");      	
-      	$("#form-case").bootstrapValidator('resetForm', 'true');
-		$('#form-case')[0].reset();		
+		location.reload();	
 	});
 
 	$('.date2').daterangepicker({

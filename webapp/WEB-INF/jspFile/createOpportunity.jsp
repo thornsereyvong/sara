@@ -47,6 +47,12 @@ app.controller('opportunityController',['$scope','$http',function($scope, $http)
 			$scope.assignTo = response.ASSIGN_TO;
 			$scope.classCode = response.CLASSES;
 			$scope.priceCode = response.PRICE_CODE;
+			var custId = "${custId}";
+			if(custId != ''){
+				setTimeout(function(){
+					$('#op_customer').select2('val', custId);
+				}, 1000);
+			}
 		});
 	};
 	

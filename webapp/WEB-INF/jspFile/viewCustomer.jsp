@@ -1826,19 +1826,19 @@ function addDataToDetailLead(){
 										<div class="tab-pane " id="related_tap">
 											<div class="row">
 												<div class="col-md-12" >
-													<a href="${pageContext.request.contextPath}/create-opportunity"  style="margin-left: 0px;" class="btn btn-app"> 
+													<a href="${pageContext.request.contextPath}/create-opportunity/{{customer.custID}}"  style="margin-left: 0px;" class="btn btn-app"> 
 														<i class="fa  fa-lightbulb-o"></i> Opportunity
 													</a> 
-													<a href="${pageContext.request.contextPath}/create-contact"  class="btn btn-app"> 
+													<a href="${pageContext.request.contextPath}/create-contact/{{customer.custID}}"  class="btn btn-app"> 
 														<i class="fa fa-user"></i> Contact
 													</a> 
-													<a  href="${pageContext.request.contextPath}/create-case" class="btn btn-app"> 
+													<a  href="${pageContext.request.contextPath}/create-case/{{customer.custID}}" class="btn btn-app"> 
 														<i class="fa fa-briefcase "></i> Case
 													</a> 
-													<a href="${pageContext.request.contextPath}/quote/add" class="btn btn-app"> 
+													<a href="${pageContext.request.contextPath}/quote/add/{{customer.custID}}" class="btn btn-app"> 
 														<i class="fa fa-file-code-o"></i> Quotation
 													</a> 
-													<a href="${pageContext.request.contextPath}/sale-order/add" class="btn btn-app"> 
+													<a href="${pageContext.request.contextPath}/sale-order/add/{{customer.custID}}" class="btn btn-app"> 
 														<i class="fa fa-file-text-o"></i> Sale Order
 													</a>
 												</div>
