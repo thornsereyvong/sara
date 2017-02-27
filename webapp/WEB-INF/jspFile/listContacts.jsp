@@ -190,7 +190,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 										<td>{{cc.conSalutation}} {{cc.conFirstName}} {{cc.conLastName}}</td>
 										<td>{{cc.conTitle == ''?'-':cc.conTitle}}</td>
 										<td ng-if="cc.custID == null">-</td>
-										<td><span ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}}</span></td>
+										<td ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}}</td>
 										<td>{{cc.conEmail == ''?'-':cc.conEmail}}</td>
 										<td>{{cc.sourceName == null?'-':cc.sourceName}}</td>	
 										<td>
@@ -207,10 +207,8 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 							                      </ul>
 							                    </div>
 						                   	</div>
-											
 										</td>
 									</tr>
-							
 							</table>
 							<dir-pagination-controls
 						       max-size="pageSize.row"

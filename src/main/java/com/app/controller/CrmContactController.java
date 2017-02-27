@@ -37,14 +37,14 @@ public class CrmContactController {
 	private String URL;	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/contact/view/{userId}/{custId}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> viewContact( @PathVariable("userId") String userId, @PathVariable("custId") String custId, HttpServletRequest req){
+	@RequestMapping(value="/contact/view/{userId}/{contactId}",method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> viewContact( @PathVariable("userId") String userId, @PathVariable("contactId") String contactId, HttpServletRequest req){
 		
 		MeDataSource dataSource = new MeDataSource();		
 		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
 		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/view/"+custId+"/"+userId, HttpMethod.POST, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/view/"+contactId+"/"+userId, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());		
 	}
 	

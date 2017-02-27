@@ -25,7 +25,7 @@ var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
 var leadId = "";
 var lLead = "";
-var oppId = "${conId}";
+var conId = "${conId}";
 var lOpportunity = "";
 
 var typeModule = "Contact";
@@ -71,7 +71,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			
 			$http({
 			    method: 'GET',
-			    url: '${pageContext.request.contextPath}/contact/view/'+username+"/"+oppId,
+			    url: '${pageContext.request.contextPath}/contact/view/'+username+"/"+conId,
 			    headers: {
 			    	'Accept': 'application/json',
 			        'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		    	'Accept': 'application/json',
 		        'Content-Type': 'application/json'
 		    },
-		    data: {"moduleId":oppId, "username":username}
+		    data: {"moduleId":conId, "username":username}
 		}).success(function(response) {
 			//dis(response)
 			$scope.listCollab(response.DATA);		
@@ -349,7 +349,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
    		});
     }
     $scope.getListNoteByLead = function(){    	
-		$http.get("${pageContext.request.contextPath}/note/list/module/"+oppId).success(function(response){ 
+		$http.get("${pageContext.request.contextPath}/note/list/module/"+conId).success(function(response){ 
 			$scope.listNote1(response.NOTES);
 		});
 	};
@@ -387,7 +387,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		$scope.listAllCallByLead = data;	
 	}
 	$scope.listDataCallByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/call/list/module/"+oppId).success(function(response){	
+		$http.get("${pageContext.request.contextPath}/call/list/module/"+conId).success(function(response){	
 			$scope.listAllCallByLeadId(response.CALLS);				
 		});	
 	}
@@ -458,7 +458,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	}
 	
 	$scope.listDataMeetByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/meeting/list/module/"+oppId).success(function(response){		
+		$http.get("${pageContext.request.contextPath}/meeting/list/module/"+conId).success(function(response){		
 			$scope.listAllMeetByLeadId(response.MEETINGS);	
 		});	
 	}
@@ -535,7 +535,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		$scope.listAllTaskByLead = data;	
 	}
 	$scope.listDataTaskByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/task/list/module/"+oppId).success(function(response){		
+		$http.get("${pageContext.request.contextPath}/task/list/module/"+conId).success(function(response){		
 			$scope.listAllTaskByLeadId(response.TASKS);	
 		});	
 	}
@@ -615,7 +615,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		$scope.listAllEventByLead = data;	
 	}
 	$scope.listDataEventByRalateType = function(){
-		$http.get("${pageContext.request.contextPath}/event/list/module/"+oppId).success(function(response){
+		$http.get("${pageContext.request.contextPath}/event/list/module/"+conId).success(function(response){
 			$scope.listAllEventByLeadId(response.EVENTS);	
 		});	
 	}
@@ -843,7 +843,7 @@ function getLeadData(){
 	var data = JSON.parse(
 		$.ajax({
 			method: 'GET',
-		    url: '${pageContext.request.contextPath}/contact/view/'+username+"/"+oppId,
+		    url: '${pageContext.request.contextPath}/contact/view/'+username+"/"+conId,
 		    async: false,
 		    headers: {
 		    	'Accept': 'application/json',
@@ -857,7 +857,7 @@ function getLeadById(){
 	var data = JSON.parse(
 		$.ajax({
 			method: 'GET',
-		    url: '${pageContext.request.contextPath}/customer/list/'+oppId,
+		    url: '${pageContext.request.contextPath}/customer/list/'+conId,
 		    async: false
 		}).responseText);	
 	return data;
@@ -1154,16 +1154,16 @@ function addDataToDetailLead(){
 											<div class="row">
 
 												<div class="col-md-12" >
-													<a style="margin-left: 0px;" class="btn btn-app" ng-click="call_click()"> 
+													<a style="margin-left: 0px;" class="btn btn-app" ng-click="call_click();startupCallForm()"> 
 														<i class="fa fa-phone"></i> Call
 													</a> 
-													<a class="btn btn-app" ng-click="meet_click()"> 
+													<a class="btn btn-app" ng-click="meet_click();startupMeetForm()"> 
 														<i class="fa fa-users"></i> Meeting
 													</a> 
-													<a class="btn btn-app" ng-click="task_click()"> 
+													<a class="btn btn-app" ng-click="task_click();startupTaskForm()"> 
 														<i class="fa fa-list-alt "></i> Task
 													</a> 
-													<a class="btn btn-app" ng-click="event_click()"> 
+													<a class="btn btn-app" ng-click="event_click();startupEventForm()"> 
 														<i class="fa  fa-calendar-check-o"></i> Event
 													</a> 
 													<a class="btn btn-app" ng-click="email_click()"> 
@@ -1997,7 +1997,7 @@ function addDataToDetailLead(){
 
 	<input type="hidden" id="btn_show_call" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
 	<div ng-controller="callController" class="modal fade modal-default" id="frmCall" role="dialog">
-		<div class="modal-dialog  modal-lg" data-ng-init="startupCallForm()">
+		<div class="modal-dialog  modal-lg" data-ng-init="">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelCallClick()" class="close"
@@ -2093,7 +2093,7 @@ function addDataToDetailLead(){
 	</div>
 	<input type="hidden" id="btn_show_meet" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmMeet" />
 	<div ng-controller="meetController"  class="modal fade modal-default" id="frmMeet" role="dialog">
-		<div class="modal-dialog  modal-lg" data-ng-init="startupMeetForm()">
+		<div class="modal-dialog  modal-lg" data-ng-init="">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelMeetClick()" class="close" data-dismiss="modal">&times;</button>
@@ -2204,10 +2204,10 @@ function addDataToDetailLead(){
 	</div>
 	<input type="hidden" id="btn_show_task" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmTask" />
 	<div ng-controller="taskController" class="modal fade modal-default" id="frmTask" role="dialog">
-		<div class="modal-dialog  modal-lg" data-ng-init="startupTaskForm()">
+		<div class="modal-dialog  modal-lg" data-ng-init="">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" ng-click="cancelTaskClick()" class="close" data-dismiss="modal">&times;</button>
+					<button type="button" ng-click="cancelClick()" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title"><b id="tTask">Create Task</b></h4>
 				</div>
 				<div class="modal-body">
@@ -2309,7 +2309,7 @@ function addDataToDetailLead(){
 	</div>
 	<input type="hidden" id="btn_show_event" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmEvent" />
 	<div ng-controller="eventController" class="modal fade modal-default" id="frmEvent" role="dialog">
-		<div class="modal-dialog  modal-lg" data-ng-init="startupEventForm()">
+		<div class="modal-dialog  modal-lg" data-ng-init="">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelEventClick()" class="close" data-dismiss="modal">&times;</button>
