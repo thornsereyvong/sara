@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.app.entities.CrmContact;
 import com.app.entities.MeDataSource;
-import com.app.utilities.RestUtil;
 
 
 @RestController
@@ -79,32 +78,11 @@ public class CrmContactController {
 		
 		MeDataSource dataSource = new MeDataSource();		
 		dataSource = dataSource.getMeDataSourceByHttpServlet(req,mainController.getPrincipal());
-		
-		//System.out.println(dataSource.toString());
-		
 		HttpEntity<Object> request = new HttpEntity<Object>(dataSource,header);	
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/list", HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 		
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/contact/list/validate/{contact}",method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getContact(@PathVariable("contact") String contact){	
-		HttpEntity<String> request = new HttpEntity<String>(header);	
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/list/validate/"+contact, HttpMethod.GET, request, Map.class);
-		try{
-			if(RestUtil.isError(response.getStatusCode())){
-				 return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-			}else{
-				return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-			}	
-		}catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		
-	}
-	
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
