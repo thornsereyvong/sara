@@ -393,6 +393,8 @@ $(function(){
 	
 	$("#employee").select2('val', empLinkUser.EmpID);
 	
+	$("#customer").select2('val', findIndexCutomer(custId));
+	
 	
 });
 
@@ -596,8 +598,6 @@ function vatDolChange(obj,l){
 	}else{
 		disOnChangeAct = formatNumByLength(vatP,5);
 	}
-	
-	
 	
 	totalSalOrd();
 	showOneLocation(n);
@@ -1498,3 +1498,17 @@ function clearFormProduct(){
 	$('#frmAddProduct')[0].reset();
 }
 
+function findIndexCutomer(custId){		
+	if(LCustomer != null){
+		var l = LCustomer.length;
+		if(l > 0){
+			for(var i=0;i<l;i++){
+				if(LCustomer[i].custID == custId){
+					return i;
+				}
+			}
+		}
+	}
+	
+	return '';
+}

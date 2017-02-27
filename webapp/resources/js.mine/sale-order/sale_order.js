@@ -506,10 +506,15 @@ $(function(){
 	
 	
 	$("#employee").select2('val', empLinkUser.EmpID);
-	
+	$("#customer").select2('val', findIndexCutomer(custId));
 		
 });
 
+
+//End Document.ready()
+
+
+//Define function
 function alertCreditLimit(totalSaleOrder){
 	swal({  
 		   title: "Credit Limit!",   
@@ -1308,7 +1313,6 @@ function saleOrder(){
 			});
 		}, 500);
 	});
-	
 }
 
 function cancel(){
@@ -1317,6 +1321,7 @@ function cancel(){
 function getCustomerByIndex(index){
 	return LCustomer[index].custID;
 }
+
 
 function findShipToAddressByCustomer(custId){
 	if(LShipToAddress != null){
@@ -1332,7 +1337,6 @@ function findShipToAddressByCustomer(custId){
 	}	
 	return '';
 }
-
 
 
 // on modal

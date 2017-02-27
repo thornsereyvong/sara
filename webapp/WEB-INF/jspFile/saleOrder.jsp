@@ -790,6 +790,7 @@
 			}
 		}
 		if(LCustomer.length > 0){
+			var custId = '${custId}';
 			for(var i=0;i<LCustomer.length;i++){
 				 $("#customer").append("<option value="+i+">["+LCustomer[i].custID+"] "+fmNull(LCustomer[i].custName)+"</option>");
 			}
