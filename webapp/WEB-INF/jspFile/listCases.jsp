@@ -173,7 +173,7 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 									<th style="cursor: pointer;" ng-click="sort('custName')">Customer 
 										<span class="glyphicon sort-icon" ng-show="sortKey=='custName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 									</th>				
-									<th>Action</th>
+									<th class="text-center">Action</th>
 								</tr>
 		
 								<tr dir-paginate="cc in cases |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
@@ -184,21 +184,10 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 									<td>{{cc.priorityName}}</td>
 									<td ng-if="cc.custID == null">-</td>
 									<td ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}} </td>	
-									<td>
-										<div class="col-sm-2">
-											<div class="btn-group">
-						                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
-						                        <span class="caret"></span>
-						                        <span class="sr-only">Toggle Dropdown</span>
-						                      </button>
-						                      <ul class="dropdown-menu" role="menu">
-						                        <li><a href="${pageContext.request.contextPath}/update-case/{{cc.caseId}}"><i class="fa fa-pencil"></i> Edit</a></li>
-						                        <li><a href="#" ng-click="deleteCon(cc.caseId)"><i class="fa fa-trash"></i> Delete</a></li>
-						                        <li><a href="${pageContext.request.contextPath}/view-case/{{cc.caseId}}"><i class="fa fa-eye"></i> View</a></li>
-						                      </ul>
-						                    </div>
-					                   	</div>
-					                  
+									<td class="text-center">
+										<a href="${pageContext.request.contextPath}/update-case/{{cc.caseId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+										<a href="#" ng-click="deleteCon(cc.caseId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+										<a href="${pageContext.request.contextPath}/view-case/{{cc.caseId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 									</td>
 								</tr>
 							</table>

@@ -3941,8 +3941,6 @@ function iSplitBySplint(obj){
 			</div>
 		</div>
 	</div>
-	<div id="errors"></div>
 </div>
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 <script src="${pageContext.request.contextPath}/resources/js.mine/opportunity/viewOpport.js"></script>

@@ -149,7 +149,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<label>Row: </label>
 					        	<div class="input-group">
-					        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        		<select class="form-control" ng-model="Size.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
 					        </div>
 					    </form>
@@ -182,7 +182,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 											<span class="glyphicon sort-icon" ng-show="sortKey=='sourceName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
 														
-										<th>Action</th>
+										<th class="text-center">Action</th>
 									</tr>
 			
 									<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
@@ -193,20 +193,10 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 										<td ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}}</td>
 										<td>{{cc.conEmail == ''?'-':cc.conEmail}}</td>
 										<td>{{cc.sourceName == null?'-':cc.sourceName}}</td>	
-										<td>
-											<div class="col-sm-2">
-												<div class="btn-group">
-							                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
-							                        <span class="caret"></span>
-							                        <span class="sr-only">Toggle Dropdown</span>
-							                      </button>
-							                      <ul class="dropdown-menu" role="menu">
-							                        <li><a href="${pageContext.request.contextPath}/update-contact/{{cc.conID}}"><i class="fa fa-pencil"></i> Edit</a></li>
-							                        <li><a href="#" ng-click="deleteCon(cc.conID)"><i class="fa fa-trash"></i> Delete</a></li>
-							                        <li><a href="${pageContext.request.contextPath}/view-contact/{{cc.conID}}"><i class="fa fa-eye"></i> View</a></li>
-							                      </ul>
-							                    </div>
-						                   	</div>
+										<td class="text-center">
+											<a href="${pageContext.request.contextPath}//update-contact/{{cc.conID}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+											<a href="#" ng-click="deleteCon(cc.conID)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+											<a href="${pageContext.request.contextPath}/view-contact/{{cc.conID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 										</td>
 									</tr>
 							</table>

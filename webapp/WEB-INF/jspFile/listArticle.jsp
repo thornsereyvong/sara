@@ -149,7 +149,7 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 								<span class="glyphicon sort-icon" ng-show="sortKey=='articleCreateBy'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 							</th>
 											
-							<th>Action</th>
+							<th class="text-center">Action</th>
 						</tr>
 
 						<tr dir-paginate="art in article |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
@@ -158,20 +158,10 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 							<td>[{{art.item.itemId}}] {{art.item.itemName}}</td>
 							<td>{{art.convertCreateDate}}</td>
 							<td>{{art.articleCreateBy}}</td>	
-							<td>
-								<div class="col-sm-2">
-									<div class="btn-group">
-				                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
-				                        <span class="caret"></span>
-				                        <span class="sr-only">Toggle Dropdown</span>
-				                      </button>
-				                      <ul class="dropdown-menu" role="menu">
-				                        <li><a href="${pageContext.request.contextPath}/update-article/{{art.articleId}}"><i class="fa fa-pencil"></i> Edit</a></li>
-				                        <li><a href="#" ng-click="deleteArticle(art.articleId)"><i class="fa fa-trash"></i> Delete</a></li>
-				                        <li><a href="${pageContext.request.contextPath}/view-article/{{art.articleId}}"><i class="fa fa-eye"></i> View</a></li>
-				                      </ul>
-				                    </div>
-			                   	</div>
+							<td class="text-center">
+								<a href="${pageContext.request.contextPath}/update-article/{{art.articleId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+								<a href="#" ng-click="deleteArticle(art.articleId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+								<a href="${pageContext.request.contextPath}/view-article/{{art.articleId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 							</td>
 						</tr>
 				

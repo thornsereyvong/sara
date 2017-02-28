@@ -568,7 +568,7 @@
 									<td ng-if="op.opLeadSource != ''">{{op.opLeadSource}}</td>
 								</tr>
 								<tr>
-									<td colspan="6">
+									<td colspan="7">
 										<div class="box-tools pull-right">
 											<dir-pagination-controls  pagination-id="opp_id" 
 										       max-size="pageSize.row"

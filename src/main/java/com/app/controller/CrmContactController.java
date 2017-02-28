@@ -150,13 +150,9 @@ public class CrmContactController {
 		CrmContact con = new CrmContact();
 		con.setConID(contact);
 		con.setMeDataSource(dataSource);
-		
 		HttpEntity<Object> request = new HttpEntity<Object>(con,header);
-		
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/contact/remove", HttpMethod.POST, request, Map.class);
-		
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-		
 	}
 	
 }

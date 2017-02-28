@@ -22,9 +22,32 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		$http.get("${pageContext.request.contextPath}/hbu/competitor/list").success(function(response){
 				$scope.competitors = response.COMPETITORS;
 				$scope.length = $scope.competitors.length;
-				$scope.rowNumListCompetitor = 5;
 			});
 		};
+
+	$scope.pageSize = {};
+
+	$scope.pageSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.pageSize.row = $scope.pageSize.rows[1].value;
+
+	$scope.comSize = {};
+
+	$scope.comSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.comSize.row = $scope.comSize.rows[1].value;
 
 	$scope.listItems = function(){
 		$http.get("${pageContext.request.contextPath}/hbu/competitor/startup").success(function(response){
@@ -126,7 +149,9 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 			if(bool){
 				$("#frmAddCompetitorToProduct").modal({backdrop: "static"});
 			}
+			$scope.listItems();
 		});
+		
 		
 	}
 	
@@ -583,27 +608,29 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 				<div class="clearfix"></div>
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<div class="col-sm-4">
+							<div class="col-sm-2">
 								<form class="form-inline">
-									<div class="form-group" style="padding-top: 10px;">
-										<label>Search :</label> <input type="text" ng-model="search"
-											class="form-control" placeholder="Search">
-									</div>
-								</form>
-								<br />
+							        <div class="form-group" style="padding-top: 20px;">
+							        	<div class="input-group">
+							        		 <span class="input-group-btn">
+									       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
+									      	</span>
+							        		<input type="text" ng-model="search" class="form-control" placeholder="Search">
+							        	</div>
+							        </div>
+							    </form>
+							    <br/>
 							</div>
 							<div class="col-sm-2">
-						        <div class="form-group">
-						            <select class="form-control" ng-model="rowNumListCompetitor" style="width:100%" id="rowNumCom" name="rowNumCom">
-										
-										<option value="5">5</option>
-										<option value="10">10</option>
-										<option value="15">15</option>
-										<option value="20">20</option>
-										<option value="50">50</option>
-										<option value="100">100</option>
-									</select>
-						        </div>
+						        <form class="form-inline">
+							        <div class="form-group" style="padding-top: 20px;">
+							        	<label>Row: </label>
+							        	<div class="input-group">
+							        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+							        	</div>
+							        </div>
+							    </form>
+							    <br/>
 				  			</div>
 							<div class="clearfix"></div>
 							<div class="table-responsive">
@@ -638,37 +665,24 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 											ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 										</th>
 	
-										<th>Action</th>
+										<th class="text-center">Action</th>
 									</tr>
-									<tr dir-paginate="com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:rowNumListCompetitor"  pagination-id="compListRowId" class="ng-cloak">
+									<tr dir-paginate="com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row"  pagination-id="compListRowId" class="ng-cloak">
 										<td>{{com.comId}}</td>
 										<td>{{com.comName}}</td>
 										<td>{{com.comStatus}}</td>
 										<td>{{com.comAddress}}</td>
 										<td>{{com.comCreateBy}}</td>
-										<td>
-											<div class="col-sm-2">
-												<div class="btn-group">
-							                      <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
-							                        <span class="caret"></span>
-							                        <span class="sr-only">Toggle Dropdown</span>
-							                      </button>
-							                      <ul class="dropdown-menu" role="menu">
-							                       <li><a href="#" ng-click="findCompetitorById(com.comId)"><i
-															class="fa fa-pencil"></i> Edit</a></li>
-													<li><a href="#" ng-click="deleteCompetitor(com.comId)"><i
-															class="fa fa-trash"></i> Delete</a></li>
-													<%-- <li><a href="${pageContext.request.contextPath}/view-competitor/{{com.comId}}"><i class="fa fa-eye"></i> View</a></li> --%>
-							                      </ul>
-							                    </div>
-						                   	</div>	
+										<td class="text-center">
+											<a href="#" ng-click="findCompetitorById(com.comId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+											<a href="#" ng-click="deleteCompetitor(com.comId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
 										</td>
 									</tr>
 								</table>
 							</div>
 							<dir-pagination-controls
 								 pagination-id="compListRowId" 
-						       	max-size="rowNumListCompetitor"
+						       	max-size="pageSize.row"
 						       direction-links="true"
 						       boundary-links="true" >
 							</dir-pagination-controls>
@@ -731,9 +745,8 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 						</div>
 					</div>
 				</div>
-				
 				<input type="hidden" id="btnAddCompetitorToProduct" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="frmAddCompetitorToProduct" />
-				<div data-ng-init="listItems()" ng-controller="competitorController" class="modal fade modal-default" id="frmAddCompetitorToProduct" role="dialog">
+				<div ng-controller="competitorController" class="modal fade modal-default" id="frmAddCompetitorToProduct" role="dialog">
 					<div class="modal-dialog  modal-lg">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -757,20 +770,16 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 											        </div>
 											  	</div>
 												<div class="col-sm-4">
-											        <div class="form-group">
-											            <input type="text" ng-model="searchCom" class="form-control" placeholder="Search">
-											        </div>
+											        <div class="input-group">
+										        		 <span class="input-group-btn">
+												       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
+												      	</span>
+										        		<input type="text" ng-model="searchCom" class="form-control" placeholder="Search">
+										        	</div>
 											  	</div>
 											 	<div class="col-sm-2">
 											        <div class="form-group">
-											            <select class="form-control" ng-model="rowNumCompetitor" style="width:100%" id="rowNumCom" name="rowNumCom">															
-															<option value="5">5</option>
-															<option value="10">10</option>
-															<option value="15">15</option>
-															<option value="20">20</option>
-															<option value="50">50</option>
-															<option value="100">100</option>
-														</select>
+											            <select class="form-control" ng-model="comSize.row" style="width:100%" id="rowNumCom" name="rowNumCom" ng-options="obj.value as obj.label for obj in comSize.rows"></select>
 											        </div>
 									  			</div>
 											  	<div class="clearfix"></div>
@@ -782,14 +791,14 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 																	<th><label>Competitor Name</label></th>
 																	<th class="text-center"></th>
 																</tr>
-																<tr dir-paginate = "com in addCompetitors |orderBy:sortKey:reverse |filter:searchCom |itemsPerPage:rowNumCompetitor"  pagination-id="compRowID">
+																<tr dir-paginate = "com in addCompetitors |orderBy:sortKey:reverse |filter:searchCom |itemsPerPage:comSize.row"  pagination-id="compRowID">
 																	<td class="col-md-3">{{com.comId}}</td>
 																	<td>{{com.comName}}</td>
 																	<td class="col-md-1 text-center"><input type="checkbox" ng-checked="com.meDataSource" data-index="{{$index}}" onClick="clkCompetitor(this)"  name="competitor" value="{{com.comId}}" /></td>
 																</tr>
 															</table>
 															<dir-pagination-controls
-														       max-size="rowNumCompetitor"
+														       max-size="comSize.row"
 														       pagination-id="compRowID" 
 														       direction-links="true"
 														       boundary-links="true" >

@@ -136,7 +136,7 @@ $(function(){
 						    data: JSON.stringify({			    	
 						    	"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), 
 						    	"noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":typeModule,
-						    	"noteRelatedToModuleId":oppId,"noteCreateBy":username			    	
+						    	"noteRelatedToModuleId":conId,"noteCreateBy":username			    	
 						    }),
 							beforeSend: function(xhr) {
 							    xhr.setRequestHeader("Accept", "application/json");
@@ -185,7 +185,7 @@ $(function(){
 						    type: 'PUT',
 						    data: JSON.stringify({"noteId":noteIdEdit,"noteSubject":getValueStringById("note_subject"), 
 						    	"noteDes":getValueStringById("note_description"),"noteRelatedToModuleType":typeModule,
-						    	"noteRelatedToModuleId":oppId,"noteModifyBy":username
+						    	"noteRelatedToModuleId":conId,"noteModifyBy":username
 						    }),
 							beforeSend: function(xhr) {
 							    xhr.setRequestHeader("Accept", "application/json");
@@ -307,7 +307,7 @@ $(function(){
 							      "callDes": getValueStringById("callDescription"),
 							      "callSubject": getValueStringById("callSubject"),
 							      "callAssignTo": getJsonById("userID","callAssignTo","str"),
-							      "callRelatedToFieldId": oppId,
+							      "callRelatedToFieldId": conId,
 							      "callRelatedToModuleType": typeModule
 							      
 							}),
@@ -369,7 +369,7 @@ $(function(){
 							      "callSubject": getValueStringById("callSubject"),
 							      "callAssignTo": getJsonById("userID","callAssignTo","str"),
 							      "callStatus": getJsonById("callStatusId","callStatus","int"),
-							      "callRelatedToFieldId": oppId,
+							      "callRelatedToFieldId": conId,
 							      "callRelatedToModuleType": typeModule,
 							      "callModifiedBy" : username
 							}),
@@ -515,7 +515,7 @@ $(function(){
 							      "meetingStatus": getJsonById("statusId","meetStatus","int"),
 							      "meetingLocation":  getValueStringById("meetLocation"),
 							      "meetingRelatedToModuleType": typeModule,
-							      "meetingRelatedToModuleId": oppId,
+							      "meetingRelatedToModuleId": conId,
 							      "meetingCreateBy": username
 							}),
 							beforeSend: function(xhr) {
@@ -578,7 +578,7 @@ $(function(){
 							      "meetingAssignTo": getJsonById("userID","meetAssignTo","str"),
 							      "meetingLocation":  getValueStringById("meetLocation"),
 							      "meetingRelatedToModuleType": typeModule,
-							      "meetingRelatedToModuleId": oppId,
+							      "meetingRelatedToModuleId": conId,
 							      "meetingModifiedBy" : username
 							}),
 							beforeSend: function(xhr) {
@@ -704,7 +704,7 @@ $(function(){
 							      "taskStatus": getJsonById("taskStatusId","taskStatus","int"),
 							      "taskPriority": getValueStringById("taskPriority"),
 							      "taskAssignTo": getJsonById("userID","taskAssignTo","str"),
-							      "taskRelatedToId": oppId,
+							      "taskRelatedToId": conId,
 							      "taskRelatedToModule": typeModule,
 							      "taskDes": getValueStringById("taskDescription"),
 							      "dueDate": getValueStringById("taskEndDate"),
@@ -766,7 +766,7 @@ $(function(){
 							data : JSON.stringify({
 								  "taskId" : taskIdForEdit,					 
 							      "taskPriority": getValueStringById("taskPriority"),				      
-							      "taskRelatedToId": oppId,
+							      "taskRelatedToId": conId,
 							      "taskRelatedToModule": typeModule,
 							      "taskDes": getValueStringById("taskDescription"),
 							      "dueDate": getValueStringById("taskEndDate"),
@@ -918,7 +918,7 @@ $(function(){
 							      "endDate": getValueStringById("eventEndDate"),
 							      "assignTo": getJsonById("userID","eventAssignTo","str"),
 							      "evlocation": getJsonById("loId","eventLocation","str"),
-							      "evRelatedToModuleId" : oppId,
+							      "evRelatedToModuleId" : conId,
 							      "evRelatedToModuleType" : typeModule
 							}),
 							beforeSend: function(xhr) {
@@ -983,7 +983,7 @@ $(function(){
 							      "endDate": getValueStringById("eventEndDate"),
 							      "assignTo": getJsonById("userID","eventAssignTo","str"),
 							      "evlocation": getJsonById("loId","eventLocation","str"),
-						    	  "evRelatedToModuleId" : oppId,
+						    	  "evRelatedToModuleId" : conId,
 							      "evRelatedToModuleType" : typeModule
 							}),
 							beforeSend: function(xhr) {
@@ -1075,7 +1075,7 @@ $(function(){
 			
 		}
 	}).on('success.form.bv', function(e) {		
-		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":typeModule, "colRelatedToModuleId":oppId};
+		var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":typeModule, "colRelatedToModuleId":conId};
 		swal({   
 			title: "<span style='font-size: 25px;'>You are about to post collaboration.</span>",
 			text: "Click OK to continue or CANCEL to abort.",

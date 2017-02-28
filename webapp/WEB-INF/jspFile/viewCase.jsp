@@ -1244,7 +1244,7 @@ function setSelect2ToResolveBy(value){
 
 												<div class="col-md-12">
 													<a style="margin-left: 0px;" class="btn btn-app"
-														ng-click="call_click()"> <i class="fa fa-phone"></i>
+														ng-click="call_click();startupCallForm()"> <i class="fa fa-phone"></i>
 														Call
 													</a> <a class="btn btn-app" ng-click="meet_click()"> <i
 														class="fa fa-users"></i> Meeting
@@ -2040,7 +2040,7 @@ function setSelect2ToResolveBy(value){
 																<div class="form-group">
 																	<select class="form-control select2" name="ca_escalateTo"
 																		id="ca_escalateTo" style="width: 100%">
-																		<option value="">-- SELECT Resolved by --</option>
+																		<option value="">-- SELECT Escalate To --</option>
 																		<option ng-repeat="u in users" value="{{u.userID}}">{{u.username}}</option>
 																	</select>
 																</div>
@@ -2251,7 +2251,7 @@ function setSelect2ToResolveBy(value){
 	<input type="hidden" id="btn_show_call" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
 	<div ng-controller="callController" class="modal fade modal-default"
 		id="frmCall" role="dialog">
-		<div class="modal-dialog  modal-lg" data-ng-init="startupCallForm()">
+		<div class="modal-dialog  modal-lg" data-ng-init="">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" ng-click="cancelCallClick()" class="close"

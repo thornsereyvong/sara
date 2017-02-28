@@ -103,13 +103,13 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 </script>
 <script>
 	$(document).ready(function() {
-		$('.table-responsive').on('show.bs.dropdown', function () {
+		/* $('.table-responsive').on('show.bs.dropdown', function () {
 		     $('.table-responsive').css( "overflow", "inherit" );
-		});
+		}); */
 	
-		$('.table-responsive').on('hide.bs.dropdown', function () {
+		/* $('.table-responsive').on('hide.bs.dropdown', function () {
 		     $('.table-responsive').css( "overflow", "auto" );
-		}); 
+		});  */
 	}); 
 </script>
 <div class="content-wrapper" ng-app="campaign" ng-controller="campController">
@@ -164,7 +164,7 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<div class="tablecontainer table-responsive" data-ng-init="listOpportunity('${SESSION}')" >
+						<div class="tablecontainer table-responsive" data-ng-init="listOpportunity('${SESSION}')" style="overflow: auto;">
 						<%	
 							if(roleList.equals("YES")){
 						%> 
@@ -189,7 +189,7 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 										<span class="glyphicon sort-icon" ng-show="sortKey=='opCloseDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
 									</th>
 													
-									<th>Action</th>
+									<th class="text-center">Action</th>
 								</tr>
 		
 								<tr dir-paginate="cc in opportunity |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
@@ -199,24 +199,12 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 									<td>{{cc.osName}}</td>
 									<td>{{cc.opAmount | number:2}}</td>
 									<td>{{cc.opCloseDate | date:'dd-MM-yyyy'}}</td>	
-									<td>
-										<div class="col-sm-2">
-											<div class="btn-group">
-						                      <button type="button" class="btn btn-default btn-flat btn-sm" data-toggle="dropdown" aria-expanded="false">
-												<span class="caret"></span> <span class="sr-only">Toggle
-													Dropdown</span>
-											 </button>
-						                      <ul class="dropdown-menu" role="menu">
-						                        <li><a href="${pageContext.request.contextPath}/update-opportunity/{{cc.opId}}"><i class="fa fa-pencil"></i> Edit</a></li>
-						                        <li><a href="#" ng-click="deleteOpp(cc.opId)"><i class="fa fa-trash"></i> Delete</a></li>
-						                        <li><a href="${pageContext.request.contextPath}/view-opportunity/{{cc.opId}}"><i class="fa fa-eye"></i> View</a></li>
-						                      </ul>
-						                    </div>
-					                   	</div>
-										
+									<td class="text-center">
+										<a href="${pageContext.request.contextPath}/update-opportunity/{{cc.opId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+										<a href="#" ng-click="deleteOpp(cc.opId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+										<a href="${pageContext.request.contextPath}/view-opportunity/{{cc.opId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 									</td>
 								</tr>
-						
 						</table>
 						<dir-pagination-controls
 					       max-size="pageSize.row"

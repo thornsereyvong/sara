@@ -15,9 +15,6 @@
 						},
 					}).success(function(response) {					
 						$scope.database = response.DATABASE;
-						
-						setTimeout(function(){ 	$("#company").val("balancikapos_class12345CRM NEW 2017"); },1000);
-						
 					});
 			};
 		}]);
