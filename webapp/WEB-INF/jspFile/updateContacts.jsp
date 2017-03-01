@@ -33,7 +33,7 @@ padding-right: 10px;
 	<section class="content-header">
 		<h1>Update Contact</h1>
 		<ol class="breadcrumb">
-			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}/"><i class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i> Update Contact</a></li>
 		</ol>
 	</section>
@@ -308,18 +308,18 @@ $(document).ready(function() {
 			<div class="box-body">
 			
 			<form method="post" id="form-contact" data-ng-init="startupPage()">
-				
-				<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
-				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
-				<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-contacts"> <i class="fa fa-reply"></i> Back </a>
-
+				<div class="col-sm-12">
+					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
+					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
+					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-contacts"> <i class="fa fa-reply"></i> Back </a>
+				</div>
 				<div class="clearfix"></div>
 				<div class="col-sm-2"><h4>Overview</h4></div>
 				<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="col-sm-12">
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">First name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<div class="input-group">
@@ -336,28 +336,28 @@ $(document).ready(function() {
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Last name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<input type="text" class="form-control ng-cloak" value="{{CONTACT.conLastName}}" name="con_lastName" id="con_lastName">
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label>Phone <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<input type="text"  value="{{CONTACT.conPhone}}" class="form-control ng-cloak" id="con_phone" name="con_phone">
 								</div>	
 							</div>
 													
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Mobile phone :</label>
 								<div class="form-group">
 									<input type="text"  value="{{CONTACT.conMobile}}" class="form-control ng-cloak" id="con_mobilePhone" name="con_mobilePhone">
 								</div>	
 							</div>
 							
-							<div class="clearfix"></div>
-							<div class="col-sm-3">
+							<div class="clearfix hidden-xs"></div>
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Customer </label>
 								<div class="form-group">
 									<select class="form-control select2" name="con_customer" id="con_customer" style="width:100%">
@@ -366,21 +366,23 @@ $(document).ready(function() {
 									</select>
 								</div>
 							</div>
-							<div class="col-sm-3">
+							
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label>Title </label>
 								<div class="form-group">
 									<input type="text"  value="{{CONTACT.conTitle}}"  class="form-control ng-cloak" id="con_title" name="con_title">
 								</div>
 							</div>
 							
-							<div class="col-sm-3">
+							<div class="clearfix hidden-md hidden-lg"></div>
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Department </label>
 								<div class="form-group">
 									<input type="text"  value="{{CONTACT.conDepartment}}"  class="form-control ng-cloak" id="con_department" name="con_department">
 								</div>	
 							</div>
 								
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Email :</label>
 								<div class="form-group">
 									<input type="email"  value="{{CONTACT.conEmail}}"  class="form-control ng-cloak" id="con_email" name="con_email">
@@ -397,56 +399,56 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="col-sm-12">
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">No </label>
 								<div class="form-group">
 									<input type="text"  class="form-control ng-cloak" value="{{LEAD.no}}" id="con_no" name="con_no">
 								</div>	
 							</div>
 							
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Street </label>
 								<div class="form-group">
 									<input type="text"  class="form-control ng-cloak" value="{{LEAD.street}}" id="con_street" name="con_street">
 								</div>
 							</div>
 							
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Village </label>
 								<div class="form-group">
 									<input type="text"  class="form-control ng-cloak" value="{{LEAD.village}}"  id="con_village" name="con_village">
 								</div>
 							</div>
 							
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Commune </label>
 								<div class="form-group">
 									<input type="text"  class="form-control ng-cloak" value="{{LEAD.commune}}" id="con_commune" name="con_commune">
 								</div>	
 							</div>
 							<div class="clearfix"></div>
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">District </label>
 								<div class="form-group">
 									<input type="text"  class="form-control ng-cloak" value="{{LEAD.district}}" id="con_district" name="con_district">
 								</div>
 							</div>
 							
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">City </label>
 								<div class="form-group">
 									<input type="text"  class="form-control ng-cloak" value="{{LEAD.city}}" id="con_city" name="con_city">
 								</div>	
 							</div>
 							
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">State</label>
 								<div class="form-group">
 									<input type="text"  class="form-control ng-cloak" value="{{LEAD.state}}" id="con_state" name="con_state">
 								</div>	
 							</div>
 							
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Country </label>
 								<div class="form-group">
 									<input type="text"  class="form-control ng-cloak" value="{{LEAD.country}}" id="con_country" name="con_country">
@@ -461,7 +463,7 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="col-sm-12">
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Assign To</label>
 								<div class="form-group">
 									
@@ -471,7 +473,7 @@ $(document).ready(function() {
 									</select>
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Lead source </label>
 								<div class="form-group">
 									<select class="form-control select2" name="con_leadSource" id="con_leadSource" style="width:100%">
@@ -480,7 +482,7 @@ $(document).ready(function() {
 									</select>
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
 								<label class="font-label">Report to</label>
 								<div class="form-group">
 									<select class="form-control select2" name="con_report" id="con_report" style="width:100%">
