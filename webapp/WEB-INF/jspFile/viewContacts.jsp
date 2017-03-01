@@ -1086,7 +1086,7 @@ function addDataToDetailLead(){
 
 		<div class="row">
 
-			<div class="col-md-12">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
@@ -1101,25 +1101,25 @@ function addDataToDetailLead(){
 					</div>
 					<div class="box-footer">
 						<div class="row">
-							<div class="col-sm-3">
+							<div class="col-sm-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak" ng-if="contact.custID != null">[{{contact.custID}}]{{contact.custName}}</h5>
 									<span class="description-text">Customer</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-sm-3 border-right hidden-xs">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{contact.conTitle}}</h5>
 									<span class="description-text">Title</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-sm-2 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{contact.conPhone}}</h5>
 									<span class="description-text">Tel</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-sm-4 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{contact.conEmail}}</h5>
 									<span class="description-text">Email</span>
@@ -1642,9 +1642,9 @@ function addDataToDetailLead(){
 
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
-												<div class="col-sm-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-6 col-md-4">
 															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item"><b>Overview</b> <!-- <a
 																	class="pull-right cusor_pointer"
@@ -1694,14 +1694,14 @@ function addDataToDetailLead(){
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Mobile <a
-																	class="pull-right show-text-detail">{{contact.conMobile}}</a>
+																	class="pull-right show-text-detail">{{contact.conMobile == ""?'-':contact.conMobile}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Customer<a
-																	class="pull-right show-text-detail">{{contact.custName}}</a>
+																	class="pull-right show-text-detail">{{contact.custName == ''?'-':contact.custName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -1724,7 +1724,7 @@ function addDataToDetailLead(){
 																
 															</ul>
 														</div>
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-6 col-md-4">
 															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item"><b>Address</b> <!-- <a
 																	class="pull-right cusor_pointer"
@@ -1795,8 +1795,8 @@ function addDataToDetailLead(){
 																</li>
 															</ul>
 														</div>
-																										
-														<div class="col-sm-4">
+														<div class="clearfix hidden-md"></div>											
+														<div class="col-xs-12 col-sm-6 col-md-4">
 															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item"><b>Other</b> <!-- <a
 																	class="pull-right cusor_pointer"
@@ -1826,8 +1826,6 @@ function addDataToDetailLead(){
 															</ul>
 														</div>
 														<div class="clearfix"></div>
-														
-														
 														<br>
 														<div class="col-sm-12 text-center" id="showBtnEditLead"
 															style="display: none;">
@@ -2025,7 +2023,7 @@ function addDataToDetailLead(){
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input value="" name="callStartDate" id="callStartDate"
+											<input value="" name="callStartDate" id="callStartDate" readonly="readonly"
 												type="text" class="form-control date pull-right active">
 										</div>
 									</div>
@@ -2038,7 +2036,7 @@ function addDataToDetailLead(){
 												<div class="input-group-addon">
 													<i class="fa fa-clock-o"></i>
 												</div>
-												<input type="text" class="form-control timepicker active"
+												<input type="text" class="form-control timepicker active" readonly="readonly"
 													name="callDuration" id="callDuration" placeholder="hours:minutes">
 											</div>
 										</div>
@@ -2140,7 +2138,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input value="" name="meetStartDate" id="meetStartDate" type="text" class="form-control meet-data-time pull-right active">
+										<input value="" name="meetStartDate" id="meetStartDate" type="text" readonly="readonly" class="form-control meet-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -2151,7 +2149,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="meetEndDate" id="meetEndDate" type="text" class="form-control meet-data-time pull-right active">
+										<input name="meetEndDate" id="meetEndDate" type="text" readonly="readonly" class="form-control meet-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -2231,7 +2229,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input value="" name="taskStartDate" id="taskStartDate" type="text" class="form-control task-data-time pull-right active">
+										<input value="" name="taskStartDate" id="taskStartDate" readonly="readonly" type="text" class="form-control task-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -2242,7 +2240,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="taskEndDate" id="taskEndDate" type="text" class="form-control task-data-time pull-right active">
+										<input name="taskEndDate" id="taskEndDate" readonly="readonly" type="text" class="form-control task-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -2333,7 +2331,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input  name="eventStartDate" id="eventStartDate" type="text" class="form-control event-date-time pull-right active">
+										<input  name="eventStartDate" id="eventStartDate" type="text" readonly="readonly" class="form-control event-date-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -2344,7 +2342,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="eventEndDate" id="eventEndDate" type="text" class="form-control event-date-time pull-right active">
+										<input name="eventEndDate" id="eventEndDate" type="text" readonly="readonly" class="form-control event-date-time pull-right active">
 									</div>
 								</div>
 							</div>

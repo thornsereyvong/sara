@@ -116,110 +116,108 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		
 		<div class="box box-danger">
 			<div class="box-header with-border">
-				
 				<div style="background: #fff;margin-top: 15px;">
 				 <div class="col-sm-12">
-				 	<a href="${pageContext.request.contextPath}/create-contact" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>				 	
+				 	<a href="${pageContext.request.contextPath}/create-contact" class="btn btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>				 	
 				 </div>
-			</div>
+				</div>
 			</div>
 			
-			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
-				
-			 
+			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);">
 			<div class="clearfix"></div>
-
-			<div class="panel panel-default">
+			<div class="panel">
   				<div class="panel-body">
-				 	<div class="col-sm-2">
-					  	<form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<div class="input-group">
-					        		 <span class="input-group-btn">
-							       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
-							      	</span>
-					        		<input type="text" ng-model="search" class="form-control" placeholder="Search">
-					        	</div>
-					        </div>
-					    </form>
-					    <br/>
+  					<div class="row"> 
+					 	<div class="col-md-8 col-sm-8 col-xs-9 col-lg-2">
+						  	<form class="form-inline">
+						        <div class="form-group">
+						        	<div class="input-group">
+						        		 <span class="input-group-btn">
+								       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
+								      	</span>
+						        		<input type="text" ng-model="search" class="form-control" placeholder="Search">
+						        	</div>
+						        </div>
+						    </form>
+						    <br/>
+						</div>
+						<div class="col-md-2 col-sm-4 col-xs-3 col-lg-1 col-md-offset-2">
+						  	<form class="form-inline">
+						        <div class="form-group pull-right">
+						        	<div class="input-group">
+						        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+						        	</div>
+						        </div>
+						    </form>
+						    <br/>
+						</div>
+						<div class="clearfix"></div>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="tablecontainer table-responsive" data-ng-init="listContact()" > 
+							    <%
+									if(roleList.equals("YES")){
+								%>
+								<table class="table table-hover" >
+										<tr>
+											<th style="cursor: pointer;" ng-click="sort('conID')">ID
+												<span class="glyphicon sort-icon" ng-show="sortKey=='opId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('conFirstname')">Name
+												<span class="glyphicon sort-icon" ng-show="sortKey=='conFirstname'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('conTitle')">Title 
+												<span class="glyphicon sort-icon" ng-show="sortKey=='conTitle'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('customer')">Customer 
+												<span class="glyphicon sort-icon" ng-show="sortKey=='customer'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('conEmial')">Email 
+												<span class="glyphicon sort-icon" ng-show="sortKey=='conEmial'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('sourceName')">Lead Source
+												<span class="glyphicon sort-icon" ng-show="sortKey=='sourceName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+															
+											<th class="text-center">Action</th>
+										</tr>
+				
+										<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+											<td>{{cc.conID}}</td>
+											<td>{{cc.conSalutation}} {{cc.conFirstName}} {{cc.conLastName}}</td>
+											<td>{{cc.conTitle == ''?'-':cc.conTitle}}</td>
+											<td ng-if="cc.custID == null">-</td>
+											<td ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}}</td>
+											<td>{{cc.conEmail == ''?'-':cc.conEmail}}</td>
+											<td>{{cc.sourceName == null?'-':cc.sourceName}}</td>	
+											<td class="text-center" style="min-width: 100px;">
+												<span>
+													<a href="${pageContext.request.contextPath}/update-contact/{{cc.conID}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+													<a href="#" ng-click="deleteCon(cc.conID)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+													<a href="${pageContext.request.contextPath}/view-contact/{{cc.conID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+												</span>
+											</td>
+										</tr>
+								</table>
+								<dir-pagination-controls
+							       max-size="pageSize.row"
+							       direction-links="true"
+							       boundary-links="true" >
+							    </dir-pagination-controls>
+							     <%
+									}else{
+								%>
+									<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>	
+								<%		
+									}
+								%>
+							</div>	
+						</div>
 					</div>
-					<div class="col-sm-2">
-					  	<form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
-					        	<div class="input-group">
-					        		<select class="form-control" ng-model="Size.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
-					        	</div>
-					        </div>
-					    </form>
-					    <br/>
-					</div>
-					<div class="clearfix"></div>
-					<div class="col-sm-12">
-						<div class="tablecontainer table-responsive" data-ng-init="listContact()" > 
-						    <%
-								if(roleList.equals("YES")){
-							%>
-							<table class="table table-hover" >
-									<tr>
-										<th style="cursor: pointer;" ng-click="sort('conID')">ID
-											<span class="glyphicon sort-icon" ng-show="sortKey=='opId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('conFirstname')">Name
-											<span class="glyphicon sort-icon" ng-show="sortKey=='conFirstname'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('conTitle')">Title 
-											<span class="glyphicon sort-icon" ng-show="sortKey=='conTitle'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('customer')">Customer 
-											<span class="glyphicon sort-icon" ng-show="sortKey=='customer'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('conEmial')">Email 
-											<span class="glyphicon sort-icon" ng-show="sortKey=='conEmial'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('sourceName')">Lead Source
-											<span class="glyphicon sort-icon" ng-show="sortKey=='sourceName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-														
-										<th class="text-center">Action</th>
-									</tr>
-			
-									<tr dir-paginate="cc in contact |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>{{cc.conID}}</td>
-										<td>{{cc.conSalutation}} {{cc.conFirstName}} {{cc.conLastName}}</td>
-										<td>{{cc.conTitle == ''?'-':cc.conTitle}}</td>
-										<td ng-if="cc.custID == null">-</td>
-										<td ng-if="cc.custID != null">[{{cc.custID}}] {{cc.custName}}</td>
-										<td>{{cc.conEmail == ''?'-':cc.conEmail}}</td>
-										<td>{{cc.sourceName == null?'-':cc.sourceName}}</td>	
-										<td class="text-center">
-											<a href="${pageContext.request.contextPath}//update-contact/{{cc.conID}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
-											<a href="#" ng-click="deleteCon(cc.conID)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
-											<a href="${pageContext.request.contextPath}/view-contact/{{cc.conID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
-										</td>
-									</tr>
-							</table>
-							<dir-pagination-controls
-						       max-size="pageSize.row"
-						       direction-links="true"
-						       boundary-links="true" >
-						    </dir-pagination-controls>
-						     <%
-								}else{
-							%>
-								<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>	
-							<%		
-								}
-							%>
-						</div>	
-					</div>
-			  </div>
-		</div>
+			  	</div>
+			</div>
 			</div>
 			<!-- /.box-body -->
-			<div class="box-footer"></div>
-			<div id="errors"></div>
+			<!-- <div class="box-footer"></div> -->
 			<!-- /.box-footer-->
 		</div>
 		

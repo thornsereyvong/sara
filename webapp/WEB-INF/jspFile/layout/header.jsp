@@ -229,15 +229,15 @@ function userReportList(id,vals){
     border-radius: 2px;
 }
 </style>
-  <body class="sidebar-mini wysihtml5-supported skin-red-light">
+  <body class="sidebar-mini wysihtml5-supported skin-red-light sidebar-collapse">
     <div class="wrapper">
       <header class="main-header">
         <!-- Logo -->
-        <a href="#" class="logo">
+        <a href="#" class="logo hidden-xs">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini" ><b>CRM</b></span>
+          <span class="logo-mini" >CRM</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg" id="ffa"><b>CRM</b></span>
+          <span class="logo-lg" id="ffa">CRM</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -245,9 +245,14 @@ function userReportList(id,vals){
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
           </a>
-          <div class="navbar-custom-menu pull-left" style="font-size: 20px">
+          <div class="navbar-custom-menu pull-left hidden-sm hidden-md hidden-lg" style="font-size: 15px;">
             <ul class="nav navbar-nav">
-            	<li><a><span >Company: ${company}</span></a></li>
+            	<li><a><span >${company}</span></a></li>
+            </ul>
+           </div>
+          <div class="navbar-custom-menu pull-left hidden-xs" style="font-size: 20px">
+            <ul class="nav navbar-nav">
+            	<li><a><span >${company}</span></a></li>
             </ul>
            </div>
           <div class="navbar-custom-menu">

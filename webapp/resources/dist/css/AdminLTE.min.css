@@ -550,12 +550,13 @@ color:#ccc
 }
 }
 @media (max-width:767px) {
-.sidebar-open .main-sidebar, .sidebar-open .left-side {
-	-webkit-transform: translate(0, 0);
-	-ms-transform: translate(0, 0);
-	-o-transform: translate(0, 0);
-	transform: translate(0, 0)
-}
+	.sidebar-open .main-sidebar, .sidebar-open .left-side {
+		-webkit-transform: translate(0, 0);
+		-ms-transform: translate(0, 0);
+		-o-transform: translate(0, 0);
+		transform: translate(0, 0)
+	}
+	
 }
 .sidebar {
 	padding-bottom: 10px
@@ -1683,7 +1684,7 @@ opacity:1
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
-	padding: 10px
+	padding: 10px 0px 0px 0px;
 }
 .no-header .box-body {
 	border-top-right-radius: 3px;
@@ -2160,40 +2161,7 @@ opacity:1
 	-webkit-box-shadow: inset 0 0 100px rgba(0,0,0,0.2);
 	box-shadow: inset 0 0 100px rgba(0,0,0,0.2)
 }
-.btn-app {
-	border-radius: 3px;
-	position: relative;
-	padding: 15px 5px;
-	margin: 0 0 10px 10px;
-	min-width: 80px;
-	height: 60px;
-	text-align: center;
-	color: #666;
-	border: 1px solid #ddd;
-	background-color: #f4f4f4;
-	font-size: 12px
-}
-.btn-app>.fa, .btn-app>.glyphicon, .btn-app>.ion {
-	font-size: 20px;
-	display: block
-}
-.btn-app:hover {
-	background: #f4f4f4;
-	color: #444;
-	border-color: #aaa
-}
-.btn-app:active, .btn-app:focus {
-	-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
-	-moz-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
-	box-shadow: inset 0 3px 5px rgba(0,0,0,0.125)
-}
-.btn-app>.badge {
-	position: absolute;
-	top: -3px;
-	right: -10px;
-	font-size: 10px;
-	font-weight: 400
-}
+
 .callout {
 	border-radius: 3px;
 	margin: 0 0 20px 0;
@@ -2723,12 +2691,174 @@ table.text-center, table.text-center td, table.text-center th {
 	box-shadow: 0 2px 3px rgba(0,0,0,0.125);
 	border: 0
 }
-@media (min-width:768px) {
-.modal-content {
-	-webkit-box-shadow: 0 2px 3px rgba(0,0,0,0.125);
-	box-shadow: 0 2px 3px rgba(0,0,0,0.125)
+
+/*Customize screen size*/
+@media screen and (min-width:768px){
+	.modal-content {
+		-webkit-box-shadow: 0 2px 3px rgba(0,0,0,0.125);
+		box-shadow: 0 2px 3px rgba(0,0,0,0.125)
+	}
+	.btn-app {
+	    border-radius: 3px;
+	    position: relative;
+	    padding: 9px 5px;
+	    margin: 0 0 10px 5px;
+	    min-width: 45px;
+	    height: 45px;
+	    text-align: center;
+	    color: #666;
+	    border: 1px solid #ddd;
+	    background-color: #f4f4f4;
+	    font-size: 12px;
+	}
+	.btn-app>.fa, .btn-app>.glyphicon, .btn-app>.ion {
+		font-size: 14px;
+		display: block
+	}
+	.btn-app:hover {
+		background: #f4f4f4;
+		color: #444;
+		border-color: #aaa
+	}
+	.btn-app:active, .btn-app:focus {
+		-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+		-moz-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+		box-shadow: inset 0 3px 5px rgba(0,0,0,0.125)
+	}
+	.btn-app>.badge {
+		position: absolute;
+		top: -3px;
+		right: -10px;
+		font-size: 10px;
+		font-weight: 400
+	}
+	
+	.box-header {
+	    color: #444;
+	    display: block;
+	    padding: 0px;
+	    position: relative;
+	}
 }
+
+@media screen and (max-width:767px){
+	.modal-content {
+		-webkit-box-shadow: 0 2px 3px rgba(0,0,0,0.125);
+		box-shadow: 0 2px 3px rgba(0,0,0,0.125)
+	}
+	.content-header>h1 {
+	    margin: 0;
+	    font-size: 16px;
+	}
+	
+	.widget-user .widget-user-header {
+	    padding: 20px;
+	    height: 89px !important;
+	    border-top-right-radius: 3px;
+	    border-top-left-radius: 3px;
+	}
+	
+	.widget-user .widget-user-username {
+	    margin-top: 0;
+	    margin-bottom: 5px;
+	    font-size: 18px !important;
+	    font-weight: 300;
+	    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+	}
+	
+	.widget-user .widget-user-image>img {
+	    width: 59px !important;
+	    top: 10px;
+	    height: auto;
+	    /* border: 3px solid #fff; */
+	}
+	
+	.widget-user .widget-user-image {
+	    position: absolute;
+	    top: 57px !important;
+	    left: 50%;
+	    margin-left: -26px !important;
+	}
+	
+	.h5, h5 {
+    	font-size: 12px !important;
+	}
+	
+	.btn-app {
+	    border-radius: 3px;
+	    position: relative;
+	    padding: 9px 5px;
+	    margin: 0 0 10px 5px;
+	    min-width: 45px;
+	    height: 45px;
+	    text-align: center;
+	    color: #666;
+	    border: 1px solid #ddd;
+	    background-color: #f4f4f4;
+	    font-size: 10px;
+	}
+	.btn-app>.fa, .btn-app>.glyphicon, .btn-app>.ion {
+		font-size: 11px;
+		display: block
+	}
+	.btn-app:hover {
+		background: #f4f4f4;
+		color: #444;
+		border-color: #aaa
+	}
+	.btn-app:active, .btn-app:focus {
+		-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+		-moz-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+		box-shadow: inset 0 3px 5px rgba(0,0,0,0.125)
+	}
+	.btn-app>.badge {
+		position: absolute;
+		top: -3px;
+		right: -10px;
+		font-size: 10px;
+		font-weight: 400
+	}
+	
+	.box-header {
+	    color: #444;
+	    display: block;
+	    padding: 0px;
+	    position: relative;
+	}
+	.description-block>.description-header {
+	    margin: 0;
+	    padding: 0;
+	    font-weight: 400 !important;
+	    font-size: 12px !important;
+	}
+	
+	body{
+		font-size: 11px !important;
+		font-weight: 600;
+	}
+	
+	.panel-title{
+		font-size: 11px !important;
+		font-weight: 600;
+	}
+	
+	.badge {
+	    display: inline-block;
+	    min-width: 10px;
+	    padding: 3px 7px;
+	    font-size: 9px;
+	    font-weight: 700;
+	    line-height: 1;
+	    color: #fff;
+	    text-align: center;
+	    white-space: nowrap;
+	    vertical-align: middle;
+	    background-color: #777;
+	    border-radius: 10px;
+	}
 }
+
+/*End customize screen size*/
 .modal-header {
 	border-bottom-color: #f4f4f4
 }
