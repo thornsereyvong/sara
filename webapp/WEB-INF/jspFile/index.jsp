@@ -249,33 +249,37 @@
 			</ul>
 			<div class="tab-content no-padding">
 				<div class="chart tab-pane" id="tabCA">
-					<div class="col-sm-2">
-					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<div class="input-group">
-					        		 <span class="input-group-btn">
-							       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
-							      	</span>
-					        		<input type="text" ng-model="search_campaign" class="form-control" placeholder="Search">
-					        	</div>
-					        </div>
-					    </form>
-					    <br/>
-					</div>
-					<div class="col-sm-2">
-					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
-					        	<div class="input-group">
-					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
-					        	</div>
-					        </div>
-					    </form>
-					    <br/>
+					<div class="col-xs-12">
+						<div class="row">
+							<div class="col-xs-7 col-sm-10 col-md-4 col-lg-2">
+							  <form class="form-inline">
+							        <div class="form-group" style="padding-top: 20px;">
+							        	<div class="input-group">
+							        		 <span class="input-group-btn">
+									       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
+									      	</span>
+							        		<input type="text" ng-model="search_campaign" class="form-control" placeholder="Search">
+							        	</div>
+							        </div>
+							    </form>
+							    <br/>
+							</div>
+							<div class="col-xs-4 col-xs-offset-1 col-sm-2 col-md-1 col-md-offset-7 col-lg-1 col-lg-offset-9">
+							  <form class="form-inline">
+							        <div class="form-group pull-rigth" style="padding-top: 20px;">
+							        	<div class="input-group">
+							        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+							        	</div>
+							        </div>
+							    </form>
+							    <br/>
+							</div>
+						</div>
 					</div>
 					<div class="clearfix"></div>
-					<div class="col-sm-12">
-						<table class="table table-striped">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="table-responsive">
+							<table class="table table-striped">
 							<tr>
 								<th>ID</th>
 								<th>Name</th>
@@ -308,30 +312,8 @@
 								</td>
 							</tr>
 						</table>
+						</div>
 					</div>
-					<%-- <div class="col-sm-12"  style="display:none;">
-						<table id="exportable" border="1" cellpadding="3">
-							<tr>
-								<th>ID</th>
-								<th>Name</th>
-								<th>Status</th>
-								<th>Type</th>
-								<th>Budget</th>
-								<th>Start Date</th>
-								<th>End Date</th>
-							</tr>
-							<tr ng-repeat="camp in campaigns"  pagination-id="camp_id"  class="ng-cloak">
-								<td><a href="${pageContext.request.contextPath}/view-campaign/{{camp.campId}}">{{camp.campId}}</a></td>
-								<td>{{camp.campName}}</td>								
-								<td>{{camp.campType}}</td>
-								<td>{{camp.campStatus}}</td>
-								<td>{{camp.campBudget | number:2}}</td>	
-								<td ng-if="camp.campStartDate == ''">-</td>
-								<td ng-if="camp.campStartDate != ''">{{camp.campStartDate}}</td>							
-								<td>{{camp.campEndDate}}</td>								
-							</tr>							
-						</table>
-					</div> --%>
 				</div>
 				<div class="chart tab-pane " id="tabLE">
 					<div class="col-sm-2">

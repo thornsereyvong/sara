@@ -8,7 +8,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>${title}</title>
 <!-- Tell the browser to be responsive to screen width -->
-<meta	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"	name="viewport">
+<meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1, width=device-width">
+<meta name="viewport" content="initial-scale=1, user-scalable=no, maximum-scale=1">
 
 <link rel="shortcut icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/favicon.png"/>
 
@@ -19,7 +20,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/ionicons.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker-bs3.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.css">
-
 
 
 
@@ -36,6 +36,24 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/angular/css/loading-bar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/angular/css/angular-block-ui.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/toggle/bootstrap-toggle.min.css">
+
+<!-- Mobiscroll CSS Includes -->
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.animation.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.icons.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.frame.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.frame.android-holo.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.frame.ios.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.frame.jqm.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.frame.wp.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.scroller.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.scroller.android-holo.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.scroller.ios.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.scroller.jqm.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.scroller.wp.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.image.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.android-holo-light.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.wp-light.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resources/mobiscroll/css/mobiscroll.mobiscroll-dark.css" rel="stylesheet" type="text/css" />
 
 <style type="text/css">
 	.cursor_move{ cursor: move; }
@@ -76,4 +94,41 @@
 <script src="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/bootstrap/menu/menu.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js.mine/uploadFile.js"></script>
+
+
+<!-- Mobiscroll JS Includes -->
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.dom.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.core.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.scrollview.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.frame.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.frame.android-holo.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.frame.ios.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.frame.jqm.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.frame.wp.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.scroller.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.android-holo-light.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.wp-light.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/mobiscroll.mobiscroll-dark.js"></script>
+
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.cs.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.de.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.en-UK.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.es.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.fa.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.fr.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.hu.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.it.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.ja.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.nl.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.no.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.pl.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.pt-BR.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.pt-PT.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.ro.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.ru.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.ru-UA.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.sk.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.sv.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.tr.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/mobiscroll/js/i18n/mobiscroll.i18n.zh.js"></script>
 </head>

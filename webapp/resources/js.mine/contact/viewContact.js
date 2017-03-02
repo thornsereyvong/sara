@@ -4,7 +4,6 @@ $(function(){
 	
 	$("#collabTags").select2();
 	
-	
 	$("#callDuration").timepicker({
 		format: 'h:mm',
         showInputs: false,
@@ -23,13 +22,13 @@ $(function(){
      	$('#frmOpportDetail').bootstrapValidator('revalidateField', 'oppCloseDate');
  	});
 	
-	
 	$('#callStartDate').daterangepicker({
         format: 'DD/MM/YYYY h:mm A',
         singleDatePicker: true,
         showDropdowns: true,
         timePicker: true, 
         timePickerIncrement: 5,
+        opens:'left'
     }).on('change', function(e) {
     	var date = getValueStringById("callStartDate");
     	if(date === ""){

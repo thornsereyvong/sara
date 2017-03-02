@@ -2746,6 +2746,19 @@ table.text-center, table.text-center td, table.text-center th {
 		-webkit-box-shadow: 0 2px 3px rgba(0,0,0,0.125);
 		box-shadow: 0 2px 3px rgba(0,0,0,0.125)
 	}
+	.content-header {
+	    position: relative;
+	    padding: 5px 5px 0 5px !important;
+	}
+	
+	.content {
+	    min-height: 250px;
+	    padding: 5px !important;
+	    margin-right: auto;
+	    margin-left: auto;
+	    padding-left: 5px !important;
+	    padding-right: 5px !important;
+	}
 	.content-header>h1 {
 	    margin: 0;
 	    font-size: 16px;
@@ -2780,6 +2793,10 @@ table.text-center, table.text-center td, table.text-center th {
 	    margin-left: -26px !important;
 	}
 	
+	.form-control {
+		font-size: 12px !important;
+	}
+	
 	.h5, h5 {
     	font-size: 12px !important;
 	}
@@ -2789,8 +2806,8 @@ table.text-center, table.text-center td, table.text-center th {
 	    position: relative;
 	    padding: 9px 5px;
 	    margin: 0 0 10px 5px;
-	    min-width: 45px;
-	    height: 45px;
+	    min-width: 39px;
+	    height: 39px;
 	    text-align: center;
 	    color: #666;
 	    border: 1px solid #ddd;
