@@ -13,7 +13,6 @@
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/moment.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="${pageContext.request.contextPath}/resources/plugins/datepicker/bootstrap-datepicker.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/plugins/fastclick/fastclick.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/dist/js/app.min.js"></script>

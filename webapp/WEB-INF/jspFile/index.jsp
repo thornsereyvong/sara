@@ -249,9 +249,9 @@
 			</ul>
 			<div class="tab-content no-padding">
 				<div class="chart tab-pane" id="tabCA">
-					<div class="col-xs-12">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="row">
-							<div class="col-xs-7 col-sm-10 col-md-4 col-lg-2">
+							<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 							  <form class="form-inline">
 							        <div class="form-group" style="padding-top: 20px;">
 							        	<div class="input-group">
@@ -264,9 +264,9 @@
 							    </form>
 							    <br/>
 							</div>
-							<div class="col-xs-4 col-xs-offset-1 col-sm-2 col-md-1 col-md-offset-7 col-lg-1 col-lg-offset-9">
+							<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 							  <form class="form-inline">
-							        <div class="form-group pull-rigth" style="padding-top: 20px;">
+							        <div class="form-group " style="padding-top: 20px; float: right;">
 							        	<div class="input-group">
 							        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 							        	</div>
@@ -316,7 +316,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabLE">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -329,10 +329,9 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
 					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
@@ -342,41 +341,43 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tr>
-								<th>ID</th>
-								<th>Name</th>
-								<th>Status</th>
-								<th>Company</th>
-								<th>Email</th>
-								<th>Phone</th>
-							</tr>
-							<tr dir-paginate="lead in leads |filter:search_lead |itemsPerPage:pageSize.row"  pagination-id="lead_id"  class="ng-cloak">
-								<td><a href="${pageContext.request.contextPath}/view-lead/{{lead.leadId}}">{{lead.leadId}}</a></td>
-								<td>{{lead.leadName}}</td>								
-								<td>{{lead.leadStatus}}</td>
-								<td>{{lead.leadCompany}}</td>
-								<td ng-if="lead.leadEmail == ''">-</td>
-								<td ng-if="lead.leadEmail != ''">{{lead.leadEmail}} </td>	
-								<td ng-if="lead.leadPhone == ''">-</td>							
-								<td ng-if="lead.leadPhone != ''">{{lead.leadPhone}}</td>
-							</tr>
-							<tr>
-								<td colspan="6">
-									<div class="box-tools pull-right">
-										<dir-pagination-controls  pagination-id="lead_id" 
-									       max-size="pageSize.row"
-									       direction-links="true"
-									       boundary-links="true" >
-									    </dir-pagination-controls>
-									</div>
-								</td>
-							</tr>
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tr>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Status</th>
+									<th>Company</th>
+									<th>Email</th>
+									<th>Phone</th>
+								</tr>
+								<tr dir-paginate="lead in leads |filter:search_lead |itemsPerPage:pageSize.row"  pagination-id="lead_id"  class="ng-cloak">
+									<td><a href="${pageContext.request.contextPath}/view-lead/{{lead.leadId}}">{{lead.leadId}}</a></td>
+									<td>{{lead.leadName}}</td>								
+									<td>{{lead.leadStatus}}</td>
+									<td>{{lead.leadCompany}}</td>
+									<td ng-if="lead.leadEmail == ''">-</td>
+									<td ng-if="lead.leadEmail != ''">{{lead.leadEmail}} </td>	
+									<td ng-if="lead.leadPhone == ''">-</td>							
+									<td ng-if="lead.leadPhone != ''">{{lead.leadPhone}}</td>
+								</tr>
+								<tr>
+									<td colspan="6">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="lead_id" 
+										       max-size="pageSize.row"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabCUST">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -389,10 +390,9 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
 					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
@@ -402,45 +402,47 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tbody>
-								<tr>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Industry</th>
-									<th>Lead Source</th>
-									<th>Phone</th>
-									<th>Email</th>
-								</tr>
-								<tr dir-paginate="cust in customers |filter:search_customer |itemsPerPage:pageSize.row" pagination-id="cust_id"  class="ng-cloak">
-									<td><a href="${pageContext.request.contextPath}/view-customer/{{cust.custId}}">{{cust.custId}}</a></td>
-									<td>{{cust.custName}}</td>
-									<td ng-if="cust.custIndustry == ''">-</td>
-									<td ng-if="cust.custIndustry != ''">{{cust.custIndustry}}</td>
-									<td ng-if="cust.custLeadSource == ''">-</td>
-									<td ng-if="cust.custLeadSource != ''">{{cust.custLeadSource}}</td>
-									<td ng-if="cust.custPhone == ''">-</td>
-									<td ng-if="cust.custPhone != ''">{{cust.custPhone}}</td>
-									<td ng-if="cust.custEmail == ''">-</td>
-									<td ng-if="cust.custEmail != ''">{{cust.custEmail}}</td>
-								</tr>
-								<tr>
-									<td colspan="6">
-										<div class="box-tools pull-right">
-											<dir-pagination-controls  pagination-id="cust_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tbody>
+									<tr>
+										<th>ID</th>
+										<th>Name</th>
+										<th>Industry</th>
+										<th>Lead Source</th>
+										<th>Phone</th>
+										<th>Email</th>
+									</tr>
+									<tr dir-paginate="cust in customers |filter:search_customer |itemsPerPage:pageSize.row" pagination-id="cust_id"  class="ng-cloak">
+										<td><a href="${pageContext.request.contextPath}/view-customer/{{cust.custId}}">{{cust.custId}}</a></td>
+										<td>{{cust.custName}}</td>
+										<td ng-if="cust.custIndustry == ''">-</td>
+										<td ng-if="cust.custIndustry != ''">{{cust.custIndustry}}</td>
+										<td ng-if="cust.custLeadSource == ''">-</td>
+										<td ng-if="cust.custLeadSource != ''">{{cust.custLeadSource}}</td>
+										<td ng-if="cust.custPhone == ''">-</td>
+										<td ng-if="cust.custPhone != ''">{{cust.custPhone}}</td>
+										<td ng-if="cust.custEmail == ''">-</td>
+										<td ng-if="cust.custEmail != ''">{{cust.custEmail}}</td>
+									</tr>
+									<tr>
+										<td colspan="6">
+											<div class="box-tools pull-right">
+												<dir-pagination-controls  pagination-id="cust_id" 
+											       max-size="pageSize.row"
+											       direction-links="true"
+											       boundary-links="true" >
+											    </dir-pagination-controls>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabCO">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -453,10 +455,9 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
 					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
@@ -466,42 +467,45 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tbody>
-								<tr>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Customer</th>
-									<th>Lead Source</th>
-									<th>Phone</th>
-									<th>Email</th>
-								</tr>
-								<tr dir-paginate="con in contacts |filter:search_contact |itemsPerPage:pageSize.row" pagination-id="con_id"  class="ng-cloak">
-									<td><a href="${pageContext.request.contextPath}/view-contact/{{con.conId}}">{{con.conId}}</a></td>
-									<td>{{con.conName}}</td>
-									<td>[{{con.custId}}] {{con.custName}}</td>
-									<td>{{con.leadSource}}</td>
-									<td>{{con.conPhone}}</td>
-									<td ng-if="con.conEmail == ''">-</td>
-									<td ng-if="con.conEmail != ''">{{con.conEmail}}</td>
-								</tr>
-								<tr>
-									<td colspan="6">
-										<div class="box-tools pull-right">
-											<dir-pagination-controls  pagination-id="con_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tbody>
+									<tr>
+										<th>ID</th>
+										<th>Name</th>
+										<th>Customer</th>
+										<th>Lead Source</th>
+										<th>Phone</th>
+										<th>Email</th>
+									</tr>
+									<tr dir-paginate="con in contacts |filter:search_contact |itemsPerPage:pageSize.row" pagination-id="con_id"  class="ng-cloak">
+										<td><a href="${pageContext.request.contextPath}/view-contact/{{con.conId}}">{{con.conId}}</a></td>
+										<td>{{con.conName}}</td>
+										<td ng-if="con.custId == ''">-</td>
+										<td ng-if="con.custId != ''">[{{con.custId}}] {{con.custName}}</td>
+										<td>{{con.leadSource == ''?'-':con.leadSource}}</td>
+										<td>{{con.conPhone}}</td>
+										<td ng-if="con.conEmail == ''">-</td>
+										<td ng-if="con.conEmail != ''">{{con.conEmail}}</td>
+									</tr>
+									<tr>
+										<td colspan="6">
+											<div class="box-tools pull-right">
+												<dir-pagination-controls  pagination-id="con_id" 
+											       max-size="pageSize.row"
+											       direction-links="true"
+											       boundary-links="true" >
+											    </dir-pagination-controls>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabOP">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -514,10 +518,9 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
 					        		<select class="form-control" ng-model="pageSize.row" id ="quoteRow" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
@@ -527,45 +530,47 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tbody>
-								<tr>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Customer</th>
-									<th>Amount</th>
-									<th>Stage</th>
-									<th>Campaign</th>
-									<th>Lead Source</th>
-								</tr>
-								<tr dir-paginate="op in opportunities |filter:search_opportunity |itemsPerPage:pageSize.row" pagination-id="opp_id"  class="ng-cloak">
-									<td><a href="${pageContext.request.contextPath}/view-opportunity/{{op.opId}}">{{op.opId}}</a></td>
-									<td>{{op.opName}}</td>
-									<td>[{{op.opCustId}}] {{op.opCustName}}</td>
-									<td>{{op.opAmount}}</td>
-									<td>{{op.opStage}}</td>
-									<td ng-if="op.opCampId == ''">-</td>
-									<td ng-if="op.opCampId != ''">[{{op.opCampId}}] {{op.opCampName}}</td>
-									<td ng-if="op.opLeadSource == ''">-</td>
-									<td ng-if="op.opLeadSource != ''">{{op.opLeadSource}}</td>
-								</tr>
-								<tr>
-									<td colspan="7">
-										<div class="box-tools pull-right">
-											<dir-pagination-controls  pagination-id="opp_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tbody>
+									<tr>
+										<th>ID</th>
+										<th>Name</th>
+										<th>Customer</th>
+										<th>Amount</th>
+										<th>Stage</th>
+										<th>Campaign</th>
+										<th>Lead Source</th>
+									</tr>
+									<tr dir-paginate="op in opportunities |filter:search_opportunity |itemsPerPage:pageSize.row" pagination-id="opp_id"  class="ng-cloak">
+										<td><a href="${pageContext.request.contextPath}/view-opportunity/{{op.opId}}">{{op.opId}}</a></td>
+										<td>{{op.opName}}</td>
+										<td>[{{op.opCustId}}] {{op.opCustName}}</td>
+										<td>{{op.opAmount}}</td>
+										<td>{{op.opStage}}</td>
+										<td ng-if="op.opCampId == ''">-</td>
+										<td ng-if="op.opCampId != ''">[{{op.opCampId}}] {{op.opCampName}}</td>
+										<td ng-if="op.opLeadSource == ''">-</td>
+										<td ng-if="op.opLeadSource != ''">{{op.opLeadSource}}</td>
+									</tr>
+									<tr>
+										<td colspan="7">
+											<div class="box-tools pull-right">
+												<dir-pagination-controls  pagination-id="opp_id" 
+											       max-size="pageSize.row"
+											       direction-links="true"
+											       boundary-links="true" >
+											    </dir-pagination-controls>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabAC_CL">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -578,12 +583,11 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
-					        		<select class="form-control" ng-model="pageSize.row" id ="quoteRow" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
 					        </div>
 					    </form>
@@ -591,43 +595,45 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tbody>
-								<tr>
-									<th>ID</th>
-									<th>Subject</th>
-									<th>Related To</th>
-									<th>Start Date</th>
-									<th>Duration</th>
-									<th>Status</th>
-								</tr>
-								<tr dir-paginate="call in calls |filter:search_call |itemsPerPage:pageSize.row" pagination-id="call_id"  class="ng-cloak">
-									<td><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}">{{call.callId}}</a></td>
-									<td>{{call.callSubject}}</td>
-									<td ng-if="call.callRelatedToType == ''">-</td>
-									<td ng-if=" call.callRelatedToType != '' "><span ><span class="badge bg-red">{{call.callRelatedToType}}</span> <span>[{{call.callRelatedToId}}] {{call.callRelatedTo}}</span></span></td>
-									<td>{{call.callStartDate}}</td>
-									<td>{{call.callDuration}} min</td>
-									<td>{{call.callStatus}}</td>
-									
-								</tr>
-								<tr>
-									<td colspan="6">
-										<div class="box-tools pull-right">
-											<dir-pagination-controls  pagination-id="call_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tbody>
+									<tr>
+										<th>ID</th>
+										<th>Subject</th>
+										<th>Related To</th>
+										<th>Start Date</th>
+										<th>Duration</th>
+										<th>Status</th>
+									</tr>
+									<tr dir-paginate="call in calls |filter:search_call |itemsPerPage:pageSize.row" pagination-id="call_id"  class="ng-cloak">
+										<td><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}">{{call.callId}}</a></td>
+										<td>{{call.callSubject}}</td>
+										<td ng-if="call.callRelatedToType == ''">-</td>
+										<td ng-if=" call.callRelatedToType != '' "><span ><span class="badge bg-red">{{call.callRelatedToType}}</span> <span>[{{call.callRelatedToId}}] {{call.callRelatedTo}}</span></span></td>
+										<td>{{call.callStartDate}}</td>
+										<td>{{call.callDuration}} min</td>
+										<td>{{call.callStatus}}</td>
+										
+									</tr>
+									<tr>
+										<td colspan="6">
+											<div class="box-tools pull-right">
+												<dir-pagination-controls  pagination-id="call_id" 
+											       max-size="pageSize.row"
+											       direction-links="true"
+											       boundary-links="true" >
+											    </dir-pagination-controls>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabAC_ME">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -640,12 +646,11 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
-					        		<select class="form-control" ng-model="pageSize.row" id ="quoteRow" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
 					        </div>
 					    </form>
@@ -653,46 +658,48 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tbody>
-								<tr>
-									<th>ID</th>
-									<th>Subject</th>
-									<th>Related To</th>
-									<th>Location</th>
-									<th>Start Date</th>
-									<th>End Date</th>
-									<th>Status</th>
-								</tr>
-								<tr dir-paginate="meet in meetings |filter:search_meeting |itemsPerPage:pageSize.row"  pagination-id="meet_id"  class="ng-cloak">
-									<td><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a></td>
-									<td>{{meet.meetingSubject}}</td>
-									<td ng-if="meet.meetingRelatedToType == '' ">-</td>
-									<td ng-if="meet.meetingRelatedToType != '' "><span><span  class="badge bg-red">{{meet.meetingRelatedToType}}</span> <span>[{{meet.meetingRelatedToId}}] {{meet.relatedRelatedTo}}</span></span></td>
-									<td ng-if="meet.meetingLocation == ''">-</td>
-									<td ng-if="meet.meetingLocation != ''">{{meet.meetingLocation}}</td>
-									<td>{{meet.meetingStartDate}}</td>
-									<td>{{meet.meetingEndDate}}</td>
-									<td>{{meet.meetingStatus}}</td>
-									
-								</tr>
-								<tr>
-									<td colspan="7">
-										<div class="box-tools pull-right">
-											<dir-pagination-controls  pagination-id="meet_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tbody>
+									<tr>
+										<th>ID</th>
+										<th>Subject</th>
+										<th>Related To</th>
+										<th>Location</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+										<th>Status</th>
+									</tr>
+									<tr dir-paginate="meet in meetings |filter:search_meeting |itemsPerPage:pageSize.row"  pagination-id="meet_id"  class="ng-cloak">
+										<td><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a></td>
+										<td>{{meet.meetingSubject}}</td>
+										<td ng-if="meet.meetingRelatedToType == '' ">-</td>
+										<td ng-if="meet.meetingRelatedToType != '' "><span><span  class="badge bg-red">{{meet.meetingRelatedToType}}</span> <span>[{{meet.meetingRelatedToId}}] {{meet.relatedRelatedTo}}</span></span></td>
+										<td ng-if="meet.meetingLocation == ''">-</td>
+										<td ng-if="meet.meetingLocation != ''">{{meet.meetingLocation}}</td>
+										<td>{{meet.meetingStartDate}}</td>
+										<td>{{meet.meetingEndDate}}</td>
+										<td>{{meet.meetingStatus}}</td>
+										
+									</tr>
+									<tr>
+										<td colspan="7">
+											<div class="box-tools pull-right">
+												<dir-pagination-controls  pagination-id="meet_id" 
+											       max-size="pageSize.row"
+											       direction-links="true"
+											       boundary-links="true" >
+											    </dir-pagination-controls>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabAC_TA">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -705,12 +712,11 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
-					        		<select class="form-control" ng-model="pageSize.row" id ="quoteRow" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
 					        </div>
 					    </form>
@@ -718,44 +724,46 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tr>
-								<th>ID</th>
-								<th>Subject</th>
-								<th>Related To</th>
-								<th>Priority</th>								
-								<th>Status</th>
-								<th>Start Date</th>
-								<th>Due Date</th>
-							</tr>
-							<tr dir-paginate="task in tasks |filter:search_task |itemsPerPage:pageSize.row" pagination-id="task_id"  class="ng-cloak">
-								<td><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a></td>
-								<td>{{task.taskSubject}}</td>
-								<td ng-if=" task.taskRelatedToType == '' ">-</td>
-								<td ng-if=" task.taskRelatedToType != '' "><span><span  class="badge bg-red">{{task.taskRelatedToType}}</span> <span>[{{task.taskRelatedToId}}] {{task.taskRelatedTo}}</span></span></td>
-								<td>{{task.taskPriority}}</td>
-								<td>{{task.taskStatus}}</td>
-								<td ng-if="task.taskStartDate == ''">-</td>
-								<td ng-if="task.taskStartDate != ''">{{task.taskStartDate}}</td>
-								<td ng-if="task.taskDueDate == ''">-</td>
-								<td ng-if="task.taskDueDate != ''">{{task.taskDueDate}}</td>
-							</tr>
-							<tr>
-								<td colspan="7">
-									<div class="box-tools pull-right">
-										<dir-pagination-controls  pagination-id="task_id" 
-									       max-size="pageSize.row"
-									       direction-links="true"
-									       boundary-links="true" >
-									    </dir-pagination-controls>
-									</div>
-								</td>
-							</tr>
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tr>
+									<th>ID</th>
+									<th>Subject</th>
+									<th>Related To</th>
+									<th>Priority</th>								
+									<th>Status</th>
+									<th>Start Date</th>
+									<th>Due Date</th>
+								</tr>
+								<tr dir-paginate="task in tasks |filter:search_task |itemsPerPage:pageSize.row" pagination-id="task_id"  class="ng-cloak">
+									<td><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a></td>
+									<td>{{task.taskSubject}}</td>
+									<td ng-if=" task.taskRelatedToType == '' ">-</td>
+									<td ng-if=" task.taskRelatedToType != '' "><span><span  class="badge bg-red">{{task.taskRelatedToType}}</span> <span>[{{task.taskRelatedToId}}] {{task.taskRelatedTo}}</span></span></td>
+									<td>{{task.taskPriority}}</td>
+									<td>{{task.taskStatus}}</td>
+									<td ng-if="task.taskStartDate == ''">-</td>
+									<td ng-if="task.taskStartDate != ''">{{task.taskStartDate}}</td>
+									<td ng-if="task.taskDueDate == ''">-</td>
+									<td ng-if="task.taskDueDate != ''">{{task.taskDueDate}}</td>
+								</tr>
+								<tr>
+									<td colspan="7">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="task_id" 
+										       max-size="pageSize.row"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>				
 				<div class="chart tab-pane " id="tabAC_NO">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -768,12 +776,11 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
 					        	<div class="input-group">
-					        		<select class="form-control" ng-model="pageSize.row" id ="quoteRow" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
 					        </div>
 					    </form>
@@ -781,36 +788,38 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tr>
-								<th>ID</th>
-								<th>Subject</th>
-								<th>Related To</th>
-								<th>Date</th>
-							</tr>
-							<tr dir-paginate="note in notes|filter:search_note |itemsPerPage:pageSize.row"  pagination-id="note_id"  class="ng-cloak">
-								<td><a href="${pageContext.request.contextPath}/view-note/{{note.noteId}}">{{note.noteId}}</a></td>
-								<td>{{note.noteSubject}} </td>
-								<td ng-if=" note.noteRelatedToType == '' ">-</td>
-								<td ng-if=" note.noteRelatedToType != '' "><span><span  class="badge bg-red">{{note.noteRelatedToType}}</span> <span>[{{note.noteRelatedToId}}] {{note.noteRelatedTo}}</span></span></td>
-								<td>{{note.noteCreatedDate}}</td>
-							</tr>
-							<tr>
-								<td colspan="4">
-									<div class="box-tools pull-right">
-										<dir-pagination-controls  pagination-id="note_id" 
-									       max-size="pageSize.row"
-									       direction-links="true"
-									       boundary-links="true" >
-									    </dir-pagination-controls>
-									</div>
-								</td>
-							</tr>
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tr>
+									<th>ID</th>
+									<th>Subject</th>
+									<th>Related To</th>
+									<th>Date</th>
+								</tr>
+								<tr dir-paginate="note in notes|filter:search_note |itemsPerPage:pageSize.row"  pagination-id="note_id"  class="ng-cloak">
+									<td><a href="${pageContext.request.contextPath}/view-note/{{note.noteId}}">{{note.noteId}}</a></td>
+									<td>{{note.noteSubject}} </td>
+									<td ng-if=" note.noteRelatedToType == '' ">-</td>
+									<td ng-if=" note.noteRelatedToType != '' "><span><span  class="badge bg-red">{{note.noteRelatedToType}}</span> <span>[{{note.noteRelatedToId}}] {{note.noteRelatedTo}}</span></span></td>
+									<td>{{note.noteCreatedDate}}</td>
+								</tr>
+								<tr>
+									<td colspan="4">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="note_id" 
+										       max-size="pageSize.row"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabAC_EV">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -823,12 +832,11 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
-					        		<select class="form-control" ng-model="pageSize.row" id ="quoteRow" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
 					        </div>
 					    </form>
@@ -836,43 +844,45 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tr>
-								<th>ID</th>
-								<th>Name</th>
-								<th>Related To</th>
-								<th>Location</th>
-								<th>Start Date</th>
-								<th>End Date</th>
-								<th>Budget</th>
-							</tr>
-							<tr dir-paginate="event in events|filter:search_event |itemsPerPage:pageSize.row"  pagination-id="event_id"  class="ng-cloak">
-								<td><a href="${pageContext.request.contextPath}/view-event/{{event.eventId}}">{{event.eventId}}</a></td>
-								<td>{{event.eventName}} </td>
-								<td ng-if=" event.eventRelatedToType == '' ">-</td>
-								<td ng-if=" event.eventRelatedToType != '' "><span><span  class="badge bg-red">{{event.eventRelatedToType}}</span> <span>[{{event.eventRelatedToId}}] {{event.eventRelatedTo}}</span></span></td>
-								<td ng-if="event.eventLocation == ''">-</td>
-								<td ng-if="event.eventLocation != ''">{{event.eventLocation}}</td>
-								<td>{{event.eventStartDate}}</td>
-								<td>{{event.eventEndDate}}</td>
-								<td>{{event.eventBudget | number:2}}</td>	
-							</tr>
-							<tr>
-								<td colspan="7">
-									<div class="box-tools pull-right">
-										<dir-pagination-controls  pagination-id="event_id" 
-									       max-size="pageSize.row"
-									       direction-links="true"
-									       boundary-links="true" >
-									    </dir-pagination-controls>
-									</div>
-								</td>
-							</tr>
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tr>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Related To</th>
+									<th>Location</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Budget</th>
+								</tr>
+								<tr dir-paginate="event in events|filter:search_event |itemsPerPage:pageSize.row"  pagination-id="event_id"  class="ng-cloak">
+									<td><a href="${pageContext.request.contextPath}/view-event/{{event.eventId}}">{{event.eventId}}</a></td>
+									<td>{{event.eventName}} </td>
+									<td ng-if=" event.eventRelatedToType == '' ">-</td>
+									<td ng-if=" event.eventRelatedToType != '' "><span><span  class="badge bg-red">{{event.eventRelatedToType}}</span> <span>[{{event.eventRelatedToId}}] {{event.eventRelatedTo}}</span></span></td>
+									<td ng-if="event.eventLocation == ''">-</td>
+									<td ng-if="event.eventLocation != ''">{{event.eventLocation}}</td>
+									<td>{{event.eventStartDate}}</td>
+									<td>{{event.eventEndDate}}</td>
+									<td>{{event.eventBudget | number:2}}</td>	
+								</tr>
+								<tr>
+									<td colspan="7">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="event_id" 
+										       max-size="pageSize.row"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabCS">
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -885,12 +895,11 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
-					        		<select class="form-control" ng-model="pageSize.row" id ="quoteRow" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
 					        </div>
 					    </form>
@@ -898,43 +907,45 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tr>
-								<th>ID</th>
-								<th>Subject</th>
-								<th>Status</th>
-								<th>Priority</th>
-								<th>Type</th>
-								<th>Contact</th>
-								<th>Customer</th>
-							</tr>
-							<tr dir-paginate="case in cases |filter:search_case |itemsPerPage:pageSize.row"  pagination-id="case_id"  class="ng-cloak">
-								<td><a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}">{{case.caseId}}</a></td>
-								<td>{{case.caseSubject}}</td>								
-								<td>{{case.caseStatus}}</td>
-								<td>{{case.casePriority}}</td>
-								<td>{{case.caseType}} </td>	
-								<td ng-if=" case.conId =='' ">-</td>
-								<td ng-if=" case.conId !='' "><span>[{{case.conId}}] {{case.caseContact}}</span></td>	
-								<td ng-if=" case.custId =='' ">-</td>						
-								<td ng-if=" case.custId !='' "><span>[{{case.custId}}] {{case.caseCustomer}}</span></td>
-							</tr>
-							<tr>
-								<td colspan="7">
-									<div class="box-tools pull-right">
-										<dir-pagination-controls  pagination-id="lead_id" 
-									       max-size="pageSize.row"
-									       direction-links="true"
-									       boundary-links="true" >
-									    </dir-pagination-controls>
-									</div>
-								</td>
-							</tr>	
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tr>
+									<th>ID</th>
+									<th>Subject</th>
+									<th>Status</th>
+									<th>Priority</th>
+									<th>Type</th>
+									<th>Contact</th>
+									<th>Customer</th>
+								</tr>
+								<tr dir-paginate="case in cases |filter:search_case |itemsPerPage:pageSize.row"  pagination-id="case_id"  class="ng-cloak">
+									<td><a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}">{{case.caseId}}</a></td>
+									<td>{{case.caseSubject}}</td>								
+									<td>{{case.caseStatus}}</td>
+									<td>{{case.casePriority}}</td>
+									<td>{{case.caseType}} </td>	
+									<td ng-if=" case.conId =='' ">-</td>
+									<td ng-if=" case.conId !='' "><span>[{{case.conId}}] {{case.caseContact}}</span></td>	
+									<td ng-if=" case.custId =='' ">-</td>						
+									<td ng-if=" case.custId !='' "><span>[{{case.custId}}] {{case.caseCustomer}}</span></td>
+								</tr>
+								<tr>
+									<td colspan="7">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="lead_id" 
+										       max-size="pageSize.row"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>	
+							</table>
+						</div>
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabQ">	
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -947,10 +958,9 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
 					        		<select class="form-control" ng-model="pageSize.row" id ="quoteRow" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
@@ -960,39 +970,41 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tr>
-								<th>ID</th>
-								<th>Customer</th>
-								<th>Employee</th>
-								<th>Quote Date</th>
-								<th>Start Date</th>
-								<th>Expire Date</th>
-							</tr>
-							<tr dir-paginate="qu in quotations |filter:search_quote |itemsPerPage:pageSize.row"  pagination-id="quote_id"  class="ng-cloak">
-								<td>{{qu.quoteId}}</td>
-								<td>[{{qu.custId}}] {{qu.custName}}</td>								
-								<td>[{{qu.empId}}] {{qu.empName}}</td>
-								<td>{{qu.quoteDate}}</td>
-								<td>{{qu.startDate}} </td>	
-								<td>{{qu.expireDate}}</td>
-							</tr>
-							<tr>
-								<td colspan="6">
-									<div class="box-tools pull-right">
-										<dir-pagination-controls  pagination-id="quote_id" 
-									       max-size="pageSize.row"
-									       direction-links="true"
-									       boundary-links="true" >
-									    </dir-pagination-controls>
-									</div>
-								</td>
-							</tr>	
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tr>
+									<th>ID</th>
+									<th>Customer</th>
+									<th>Employee</th>
+									<th>Quote Date</th>
+									<th>Start Date</th>
+									<th>Expire Date</th>
+								</tr>
+								<tr dir-paginate="qu in quotations |filter:search_quote |itemsPerPage:pageSize.row"  pagination-id="quote_id"  class="ng-cloak">
+									<td>{{qu.quoteId}}</td>
+									<td>[{{qu.custId}}] {{qu.custName}}</td>								
+									<td>[{{qu.empId}}] {{qu.empName}}</td>
+									<td>{{qu.quoteDate}}</td>
+									<td>{{qu.startDate == ''?'-':qu.startDate}} </td>	
+									<td>{{qu.expireDate == ''?'-':qu.expireDate}}</td>
+								</tr>
+								<tr>
+									<td colspan="6">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="quote_id" 
+										       max-size="pageSize.row"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>	
+							</table>
+						</div>
 					</div>	
 				</div>				
 				<div class="chart tab-pane " id="tabS">	
-					<div class="col-sm-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -1005,10 +1017,9 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
+					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
 					        		<select class="form-control" ng-model="pageSize.row" id ="quoteRow" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
@@ -1018,33 +1029,35 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
-						<table class="table table-striped">
-							<tr>
-								<th>ID</th>
-								<th>Customer</th>
-								<th>Employee</th>
-								<th>Sale Date</th>
-								<th>Due Date</th>
-							</tr>
-							<tr dir-paginate="sal in saleorders|filter:search_saleorder |itemsPerPage:pageSize.row"  pagination-id="sale_id"  class="ng-cloak">
-								<td>{{sal.saleId}}</td>
-								<td>[{{sal.custId}}] {{sal.custName}}</td>								
-								<td>[{{sal.empId}}] {{sal.empName}}</td>
-								<td>{{sal.saleDate}}</td>
-								<td>{{sal.dueDate}} </td>	
-							</tr>
-							<tr>
-								<td colspan= "5">
-									<div class="box-tools pull-right">
-										<dir-pagination-controls  pagination-id="sale_id" 
-									       max-size="pageSize.row"
-									       direction-links="true"
-									       boundary-links="true" >
-									    </dir-pagination-controls>
-									</div>
-								</td>
-							</tr>	
-						</table>
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tr>
+									<th>ID</th>
+									<th>Customer</th>
+									<th>Employee</th>
+									<th>Sale Date</th>
+									<th>Due Date</th>
+								</tr>
+								<tr dir-paginate="sal in saleorders|filter:search_saleorder |itemsPerPage:pageSize.row"  pagination-id="sale_id"  class="ng-cloak">
+									<td>{{sal.saleId}}</td>
+									<td>[{{sal.custId}}] {{sal.custName}}</td>								
+									<td>[{{sal.empId}}] {{sal.empName}}</td>
+									<td>{{sal.saleDate}}</td>
+									<td>{{sal.dueDate}} </td>	
+								</tr>
+								<tr>
+									<td colspan= "5">
+										<div class="box-tools pull-right">
+											<dir-pagination-controls  pagination-id="sale_id" 
+										       max-size="pageSize.row"
+										       direction-links="true"
+										       boundary-links="true" >
+										    </dir-pagination-controls>
+										</div>
+									</td>
+								</tr>	
+							</table>
+						</div>
 					</div>				
 				</div>
 			</div>
