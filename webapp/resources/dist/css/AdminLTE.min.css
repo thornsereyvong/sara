@@ -2702,7 +2702,7 @@ table.text-center, table.text-center td, table.text-center th {
 	    border-radius: 3px;
 	    position: relative;
 	    padding: 9px 5px;
-	    margin: 0 0 10px 5px;
+	    margin: 0 0 10px 0px;
 	    min-width: 45px;
 	    height: 45px;
 	    text-align: center;
@@ -2738,6 +2738,12 @@ table.text-center, table.text-center td, table.text-center th {
 	    display: block;
 	    padding: 0px;
 	    position: relative;
+	}
+	
+	#con_salutation {
+		height: 34px; 
+		width: 75px;
+		text-align:center;
 	}
 }
 
@@ -2794,18 +2800,50 @@ table.text-center, table.text-center td, table.text-center th {
 	}
 	
 	.form-control {
-		font-size: 12px !important;
+		height:22px !important;
+		font-size: 10px !important;
+		padding:2px 5px !important;
+	}
+	
+	textarea.form-control {
+		height:50px !important;
+		width:100%;
+	}
+	
+	.form-control-feedback {
+	    width: 22px !important;
+	    height: 3px !important;
+	    line-height: 23px !important;
+	}
+	
+	.font-label {
+	    font-size: 10px !important;
+	    padding-top: 2px !important;
 	}
 	
 	.h5, h5 {
     	font-size: 12px !important;
 	}
 	
+	.h4, h4 {
+    	font-size: 11px !important;
+	}
+	
+	.content-header>.breadcrumb {
+		font-size: 9px;
+	}
+	
+	.btn {
+		font-size: 10px !important;
+		padding: 3px 6px !important;
+	}
+	
+	
 	.btn-app {
 	    border-radius: 3px;
 	    position: relative;
-	    padding: 9px 5px;
-	    margin: 0 0 10px 5px;
+	    padding: 9px 5px !important;
+	    margin: 0 0 10px 0px !important;
 	    min-width: 39px;
 	    height: 39px;
 	    text-align: center;
@@ -2874,6 +2912,32 @@ table.text-center, table.text-center td, table.text-center th {
 	    border-radius: 10px;
 	}
 	
+	.sidebar-menu .treeview-menu>li>a {
+	    font-size: 10px !important;
+	}
+	
+	.input-group-addon {
+	    font-size: 8px !important;
+	}
+	
+	.form-group {
+	    margin-bottom: 5px !important;
+	}
+	
+	.select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
+	    padding: 0px 7px !important;
+	    height: 22px !important;
+	}
+	
+	.select2-container--default .select2-selection--single .select2-selection__arrow b {
+	    top: 33% !important;
+	}
+		
+	#con_salutation {
+		height: 22px; 
+		width: 50px;
+		text-align:center;
+	}
 }
 
 /*End customize screen size*/

@@ -265,12 +265,12 @@
     
     <div class="box box-danger">
       <div class="box-body" data-ng-init = "startupAddPage('${SESSION}')">
-        <form method="post" id="form-campaigns">
-          <button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save </button>
-          <a class="btn btn-info btn-app" id="btn_clear"> <i
-						class="fa fa-refresh" aria-hidden="true"></i>Clear </a> <a class="btn btn-info btn-app"
-						href="${pageContext.request.contextPath}/list-campaigns"> <i
-						class="fa fa-reply"></i> Back </a>
+      	<form method="post" id="form-campaigns">
+      		<div class="col-xs-12 col-sm-12">
+        		<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save </button>
+	        	<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear </a> 
+				<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-campaigns"> <i class="fa fa-reply"></i> Back </a>
+			</div>
           <div class="clearfix"></div>
           <div class="col-sm-2">
             <h4>Overview</h4>
@@ -280,14 +280,14 @@
           </div>
           <div class="row">
           	<div class="col-sm-12">
-            <div class="col-sm-6">
-              <div class="col-sm-12">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+              <div class="col-xs-12 col-sm-12 col-md-12">
                 <label class="font-label">Name <span class="requrie">(Required)</span></label>
                 <div class="form-group" id="div_camName">
                   <input type="text" class="form-control" name="cam_name" id="cam_name">
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <label class="font-label">Start date </label>
                 <div class="form-group">
                   <div class="input-group">
@@ -297,7 +297,7 @@
                 </div>
               </div>
 
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <label class="font-label">End date <span class="requrie">(Required)</span></label>
                 <div class="form-group">
                   <div class="input-group">
@@ -306,11 +306,9 @@
                   </div>
                 </div>
               </div>
-              
-              
             </div>
-            <div class="col-sm-6">
-              <div class="col-sm-6">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <label class="font-label">Status <span class="requrie">(Required)</span></label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_status" style="width:100%;"
@@ -320,7 +318,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <label class="font-label">Type <span class="requrie">(Required)</span></label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_type" style="width: 100%;" id="cam_type">
@@ -329,7 +327,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <label class="font-label">Parent campaign </label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_parent" style="width: 100%;" id="cam_parent">
@@ -338,7 +336,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-xs-12 col-sm-12 col-md-6">
                 <label class="font-label">Assigned to  </label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_assignTo" id="cam_assignTo" style="width: 100%;">
@@ -366,15 +364,15 @@
           <div class="col-sm-12">
             <hr />
           </div>
-          <div class="col-sm-6">
-            <div class="col-sm-6">
+          <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="col-xs-12 col-sm-6 col-md-6">
               <label class="font-label">Budget</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_budget"
 									id="cam_budget">
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-xs-12 col-sm-6 col-md-6">
               <label class="font-label">Actual cost</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_actualCost"
@@ -382,14 +380,14 @@
               </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-sm-6">
+            <div class="col-xs-12 col-sm-6 col-md-6">
               <label class="font-label">Number send</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_numSend"
 									id="cam_numSend">
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-xs-12 col-sm-6 col-md-6">
               <label class="font-label">Expected response (%)</label>
               <div class="form-group">
                 <input type="text" class="form-control"
@@ -397,15 +395,15 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-6">
-            <div class="col-sm-6">
+          <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="col-xs-12 col-sm-6 col-md-6">
               <label class="font-label">Expected cost</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_expectedCost"
 									id="cam_expectedCost">
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-xs-12 col-sm-6 col-md-6">
               <label class="font-label">Expected revenue</label>
               <div class="form-group">
                 <input type="text" class="form-control"

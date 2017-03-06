@@ -294,7 +294,7 @@
 								<td>{{camp.campName}}</td>								
 								<td>{{camp.campType}}</td>
 								<td>{{camp.campStatus}}</td>
-								<td>{{camp.campBudget | number:2}}</td>	
+								<td><span>$</span>{{camp.campBudget | number:2}}</td>	
 								<td ng-if="camp.campStartDate == ''">-</td>
 								<td ng-if="camp.campStartDate != ''">{{camp.campStartDate}}</td>							
 								<td>{{camp.campEndDate}}</td>
@@ -546,7 +546,7 @@
 										<td><a href="${pageContext.request.contextPath}/view-opportunity/{{op.opId}}">{{op.opId}}</a></td>
 										<td>{{op.opName}}</td>
 										<td>[{{op.opCustId}}] {{op.opCustName}}</td>
-										<td>{{op.opAmount}}</td>
+										<td><span>$</span>{{op.opAmount}}</td>
 										<td>{{op.opStage}}</td>
 										<td ng-if="op.opCampId == ''">-</td>
 										<td ng-if="op.opCampId != ''">[{{op.opCampId}}] {{op.opCampName}}</td>
@@ -864,7 +864,7 @@
 									<td ng-if="event.eventLocation != ''">{{event.eventLocation}}</td>
 									<td>{{event.eventStartDate}}</td>
 									<td>{{event.eventEndDate}}</td>
-									<td>{{event.eventBudget | number:2}}</td>	
+									<td><span>$</span>{{event.eventBudget | number:2}}</td>	
 								</tr>
 								<tr>
 									<td colspan="7">

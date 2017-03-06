@@ -382,7 +382,7 @@ $(document).ready(function() {
 								<div class="form-group">
 									<div class="input-group">
 		                            	<span class="input-group-btn">
-			                                 <select class="btn" style="height: 34px; width: 75px;text-align:center" name="con_salutation" id="con_salutation">		                                      
+			                                 <select class="btn" name="con_salutation" id="con_salutation">		                                      
 			                                     <option value="Mr.">Mr.</option>
 			                                     <option value="Ms.">Ms.</option>
 			                                     <option value="Mrs.">Mrs.</option>
