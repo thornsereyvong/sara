@@ -470,6 +470,25 @@ function fmNull(str){
 	return str;
 }
 
+function calculateMeetingDuration(startDate, endDate, durationId, formId){
+	var start = moment($("#"+startDate+"").val(),"DD/MM/YYYY H:mm a").valueOf();
+	var end = moment($("#"+endDate+"").val(),"DD/MM/YYYY H:mm a").valueOf();
+	var duration = end - start;
+	var hours = duration / (60*60*1000);
+	var mins = (duration % (60*60*1000)) /(60 * 1000);
+	
+	if(mins == 0){
+		mins = mins + "0";
+	}
+	
+	if(hours < 1){
+		$("#"+durationId+"").val(mins+" minutes");
+	}else{
+		$("#"+durationId+"").val(parseInt(hours)+" hours "+mins+" minutes");
+	}
+	$("#"+formId+"").bootstrapValidator('revalidateField', durationId);
+}
+
 $(function(){
 	$("#op_stage").change(function(){ $("#op_probability").val(probab[getInt("op_stage")]); });
 	$("#oppStage").change(function(){ $("#oppProbability").val(probab[getInt("oppStage")]); });	

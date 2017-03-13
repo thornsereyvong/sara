@@ -789,41 +789,45 @@ color:#2196F3;
 			
 			<div class="box-body" >
 				<div class="row">		
-					<div class="col-sm-12" style="border-bottom: 1px solid #f4f4f4;">
-						<div class="col-sm-3">					
-							<div class="form-group">
-								<input type="checkbox" value="1"  class="minimal-red " checked="checked" id="checkContact" name="checkContact" data-toggle="collapse" data-target="#collabContactFrm" aria-expanded="true" aria-controls="collabContactFrm">
-								<label>Create Contact Or Select Contact <span class="requrie">(Required)</span></label>						
-							</div>
-						</div>
-						<div class="col-sm-3">
-							<form id="ctrContact">
-								<div class="form-group" style="margin-left: 15px;">
-									<select class="form-control select2" name="ConContact" id="ConContact" style="width: 100%;">
-										<option value="">-- SELECT Contact --</option>
-										<option ng-repeat="u in CONTACT" value="{{u.conID}}">[{{u.conID}}] {{u.conSalutation}} {{u.conFirstname}} {{u.conLastname}}</option>
-									</select>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-bottom: 1px solid #f4f4f4;">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">					
+									<div class="form-group">
+										<input type="checkbox" value="1"  class="minimal-red " checked="checked" id="checkContact" name="checkContact" data-toggle="collapse" data-target="#collabContactFrm" aria-expanded="true" aria-controls="collabContactFrm">
+										<label>Create Or Select Contact <span class="requrie">(Required)</span></label>						
+									</div>
 								</div>
-							</form>
+								<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+									<form id="ctrContact">
+										<div class="form-group">
+											<select class="form-control select2" name="ConContact" id="ConContact" style="width: 100%;">
+												<option value="">-- SELECT Contact --</option>
+												<option ng-repeat="u in CONTACT" value="{{u.conID}}">[{{u.conID}}] {{u.conSalutation}} {{u.conFirstname}} {{u.conLastname}}</option>
+											</select>
+										</div>
+									</form>
+								</div>
+							</div>
 						</div>
 						<div class="clearfix"></div>
 						<div class="collapse in" id="collabContactFrm" aria-expanded="true">
 							<div class="row">
 							<form id="frmContact">
-								<div class="col-sm-12">
-									<div class="col-sm-12">
+								<div class="col-xs-12 col-sm-12">
+									<div class="col-xs-12 col-sm-12">
 									  	<div class="clearfix"></div>
 										<div class="col-sm-2"><h4>Overview</h4></div>
-										<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
+										<div class="col-xs-12 col-sm-12"><hr style="margin-top: 3px;" /></div>
 										<div class="row">
-											<div class="col-sm-12">
-												<div class="col-sm-12">
-													<div class="col-sm-3">
+											<div class="col-xs-12 col-sm-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">First name <span class="requrie">(Required)</span></label>
 														<div class="form-group">
 															<div class="input-group">
 								                            	<span class="input-group-btn">
-									                                 <select class="btn" style="height: 34px; width: 75px;text-align:center" name="con_salutation" id="con_salutation">		                                      
+									                                 <select class="btn" name="con_salutation" id="con_salutation">		                                      
 									                                     <option value="Mr.">Mr.</option>
 									                                     <option value="Ms.">Ms.</option>
 									                                     <option value="Mrs.">Mrs.</option>
@@ -835,43 +839,41 @@ color:#2196F3;
 															</div>
 														</div>
 													</div>
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Last name <span class="requrie">(Required)</span></label>
 														<div class="form-group">
 															<input type="text" class="form-control ng-cloak" value="{{LEAD.lastName}}" name="con_lastName" id="con_lastName">
 														</div>
 													</div>
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label>Phone <span class="requrie">(Required)</span></label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.phone}}" id="con_phone" name="con_phone">
 														</div>	
 													</div>
-																			
-													<div class="col-sm-3">
+													<div class="clearfix hidden-lg hidden-sm"></div>						
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Mobile phone :</label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.mobile}}" id="con_mobilePhone" name="con_mobilePhone">
 														</div>	
 													</div>
-													
-													<div class="clearfix"></div>
-													
-													<div class="col-sm-3">
+													<div class="clearfix hidden-md"></div>
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label>Title </label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.title}}" id="con_title" name="con_title">
 														</div>
 													</div>
 													
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Department </label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.department}}" id="con_department" name="con_department">
 														</div>	
 													</div>
 														
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Email :</label>
 														<div class="form-group">
 															<input type="email"  class="form-control ng-cloak" value="{{LEAD.email}}" id="con_email" name="con_email">
@@ -886,58 +888,58 @@ color:#2196F3;
 										<div class="col-sm-2"><h4>Address </h4></div>				
 										<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 										<div class="row">
-											<div class="col-sm-12">
-												<div class="col-sm-12">
-													<div class="col-sm-3">
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">No </label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.no}}" id="con_no" name="con_no">
 														</div>	
 													</div>
 													
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Street </label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.street}}" id="con_street" name="con_street">
 														</div>
 													</div>
 													
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Village </label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.village}}"  id="con_village" name="con_village">
 														</div>
 													</div>
 													
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Commune </label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.commune}}" id="con_commune" name="con_commune">
 														</div>	
 													</div>
-													<div class="clearfix"></div>
-													<div class="col-sm-3">
+													<div class="clearfix hidden-md"></div>
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">District </label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.district}}" id="con_district" name="con_district">
 														</div>
 													</div>
 													
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">City </label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.city}}" id="con_city" name="con_city">
 														</div>	
 													</div>
 													
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">State</label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.state}}" id="con_state" name="con_state">
 														</div>	
 													</div>
 													
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Country </label>
 														<div class="form-group">
 															<input type="text"  class="form-control ng-cloak" value="{{LEAD.country}}" id="con_country" name="con_country">
@@ -950,9 +952,9 @@ color:#2196F3;
 										<div class="col-sm-2"><h4>Other </h4></div>				
 										<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 										<div class="row">
-											<div class="col-sm-12">
-												<div class="col-sm-12">
-													<div class="col-sm-3">
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Assign To</label>
 														<div class="form-group">
 															
@@ -962,7 +964,7 @@ color:#2196F3;
 															</select>
 														</div>
 													</div>
-													<div class="col-sm-3">
+													<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 														<label class="font-label">Lead source </label>
 														<div class="form-group">
 															<select class="form-control select2" name="con_leadSource" id="con_leadSource" style="width:100%">
@@ -971,34 +973,37 @@ color:#2196F3;
 															</select>
 														</div>
 													</div>
-													
 												</div>
 											</div>
 										</div>
+							  		</div>
 							  	</div>
-							  </div>
-						</form>
+							</form>
 						</div>
 					</div>  
 				</div>	
 				<div class="clearfix"></div>
 				<br>	
-				<div class="col-sm-12" style="border-bottom: 1px solid #f4f4f4;">
-					<div class="col-sm-3">					
-						<div class="form-group">
-							<input type="checkbox" value="1" class="minimal-red" checked="checked" id="checkCustomer"  name="checkCustomer" data-toggle="collapse" data-target="#custo" aria-expanded="true" aria-controls="custo">
-							<label>Create Customer Or Select Customer <span class="requrie">(Required)</span></label>						
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<form id="ctrCustomer">
-							<div class="form-group" style="margin-left: 15px;">
-								<select class="form-control select2" name="CustCustomer" id="CustCustomer" style="width: 100%;">
-									<option value="">-- SELECT Customer --</option>
-									<option ng-repeat="u in CUSTOMER" value="{{u.custID}}">[{{u.custID}}] {{u.custName}}</option>
-								</select>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border-bottom: 1px solid #f4f4f4;">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">					
+								<div class="form-group">
+									<input type="checkbox" value="1" class="minimal-red" checked="checked" id="checkCustomer"  name="checkCustomer" data-toggle="collapse" data-target="#custo" aria-expanded="true" aria-controls="custo">
+									<label>Create Or Select Customer <span class="requrie">(Required)</span></label>						
+								</div>
 							</div>
-						</form>
+							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+								<form id="ctrCustomer">
+									<div class="form-group">
+										<select class="form-control select2" name="CustCustomer" id="CustCustomer" style="width: 100%;">
+											<option value="">-- SELECT Customer --</option>
+											<option ng-repeat="u in CUSTOMER" value="{{u.custID}}">[{{u.custID}}] {{u.custName}}</option>
+										</select>
+									</div>
+								</form>
+							</div>
+						</div>
 					</div>
 					<div class="clearfix"></div>
 					<div class="collapse in" id="custo" aria-expanded="true">
@@ -1009,15 +1014,15 @@ color:#2196F3;
 									<div class="col-sm-2"><h4>Overview</h4></div>
 									<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 									<div class="row">
-										<div class="col-sm-12">
-											<div class="col-sm-12">
-												<div class="col-sm-3">
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Name <span class="requrie">(Required)</span></label>
 													<div class="form-group" id="c_name">
 														<input type="text" class="form-control ng-cloak" value="{{LEAD.accountName}}" name="cs_name" id="cs_name">
 													</div>
 												</div>							
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Tel <span class="requrie">(Required)</span></label>
 													<div class="form-group">
 														<input type="text" value="{{LEAD.phone}}"  class="form-control ng-cloak" name="c_tel1" id="c_tel1">
@@ -1025,26 +1030,26 @@ color:#2196F3;
 												</div>							
 												
 												
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Tel </label>
 													<div class="form-group">
 														<input type="text" class="form-control ng-cloak" name="c_tel2" id="c_tel2">
 													</div>
 												</div>							
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Fax </label>
 													<div class="form-group">
 														<input type="text" class="form-control ng-cloak" name="c_fax" id="c_fax">
 													</div>
 												</div>																		
-												<div class="clearfix"></div>
-												<div class="col-sm-3">
+												<div class="clearfix hidden-md hidden-sm hidden-xs"></div>
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Email </label>
 													<div class="form-group">
 														<input type="email" value="{{LEAD.email}}"  class="form-control ng-cloak" name="c_email" id="c_email">
 													</div>
 												</div>							
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Website </label>
 													<div class="form-group">
 														<input type="url" value="{{LEAD.website}}"  placeholder="http://www.example.com" class="form-control ng-cloak" name="c_website" id="c_website">
@@ -1055,14 +1060,13 @@ color:#2196F3;
 										</div>
 									</div>
 									
-									
 									<div class="clearfix"></div>				
 									<div class="col-sm-2"><h4>Address</h4></div>				
 									<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
 									<div class="row">				
-										<div class="col-sm-12">					
-											<div class="col-sm-12">						
-												<div class="col-sm-12">
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">					
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">						
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<label class="font-label">Bill To Address</label>
 													<div class="form-group">
 														<input type="text" placeholder="" class="form-control ng-cloak" name="c_billAddr" id="c_billAddr">
@@ -1078,34 +1082,34 @@ color:#2196F3;
 									<div class="col-sm-2"><h4>Other</h4></div>				
 									<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
 									<div class="row">				
-										<div class="col-sm-12">
-											<div class="col-sm-12">				
-												<div class="col-sm-3">
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">				
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Facebook</label>
 													<div class="form-group">
 														<input type="text" class="form-control " name="c_facebook" id="c_facebook">
 													</div>
 												</div>												
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Line</label>
 													<div class="form-group">
 														<input type="text" class="form-control" name="c_line" id="c_line">
 													</div>
 												</div>											
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Viber</label>
 													<div class="form-group">
 														<input type="text" class="form-control" name="c_viber" id="c_viber">
 													</div>
 												</div>												
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">WhatApp</label>
 													<div class="form-group">
 														<input type="text" class="form-control" name="c_whatapp" id="c_whatapp">
 													</div>
 												</div>
-												<div class="clearfix"></div>				
-												<div class="col-sm-3">
+												<div class="clearfix  hidden-md hidden-sm hidden-xs"></div>				
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Industry</label>
 													<div class="form-group">
 														<select class="form-control select2" name="c_industry" id="c_industry" style="width:100%">
@@ -1114,7 +1118,7 @@ color:#2196F3;
 														</select>
 													</div>
 												</div>						
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Type</label>
 													<div class="form-group">
 														<select style="width:100%" class="form-control select2" name="c_type" id="c_type">
@@ -1132,9 +1136,9 @@ color:#2196F3;
 									<div class="col-sm-2"><h4>Setting</h4></div>				
 									<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
 									<div class="row">			
-										<div class="col-sm-12">					
-											<div class="col-sm-12">						
-												<div class="col-sm-3">
+										<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">					
+											<div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">						
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Customer Group <span class="requrie">(Required)</span></label>
 													<div class="form-group">
 														<select style="width:100%" class="form-control select2" name="c_group" id="c_group">
@@ -1143,7 +1147,7 @@ color:#2196F3;
 														</select>
 													</div>
 												</div>															
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
 													<div class="form-group">
 														<select style="width:100%" class="form-control select2" name="c_price" id="c_price">
@@ -1161,7 +1165,6 @@ color:#2196F3;
 						</div>
 					</div>
 				</div>
-				
 				
 				<div class="clearfix"></div>
 				<br>	
@@ -1183,16 +1186,16 @@ color:#2196F3;
 									<div class="col-sm-2"><h4>Overview</h4></div>	
 									<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>	
 									<div class="row">
-										<div  class="col-sm-12">
-											<div class="col-sm-12">
-												<div class="col-sm-3">
+										<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+											<div class="col-xs-12 col-sm-12 col-lg-12">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Name <span class="requrie">(Required)</span></label>
 													<div class="form-group">
 														<input type="text" class="form-control" id="op_name" name="op_name">
 													</div>
 												</div>
 												
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Amount <span class="requrie">(Required)</span></label>
 													<div class="form-group">
 														<input type="text" class="form-control" id="op_amount" name="op_amount">
@@ -1200,7 +1203,7 @@ color:#2196F3;
 												</div>
 																				
 												
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
 													<div class="form-group">
 														<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
@@ -1209,14 +1212,14 @@ color:#2196F3;
 														</select>
 													</div>
 												</div>
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Probability (%) </label>
 													<div class="form-group">
 														<input type="text" class="form-control" id="op_probability" name="op_probability">
 													</div>
 												</div>
-												<div class="clearfix"></div>
-												<div class="col-sm-3">
+												<div class="clearfix hidden-md"></div>
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Close date <span class="requrie">(Required)</span></label>
 													<div class="form-group">
 														<div class="input-group">
@@ -1228,14 +1231,14 @@ color:#2196F3;
 													</div>
 												</div>
 				
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Next Step </label>
 													<div class="form-group">
 														<input type="text" class="form-control" id="op_nextStep" name="op_nextStep">
 													</div>
 												</div>
 																					
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Campaign </label>
 													<div class="form-group">
 														<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
@@ -1246,7 +1249,7 @@ color:#2196F3;
 												</div>
 											
 												
-												<div class="col-sm-3">
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Type </label>
 													<div class="form-group">
 														<select class="form-control select2" name="op_type" id="op_type" style="width: 100%;">
@@ -1255,12 +1258,8 @@ color:#2196F3;
 														</select>
 													</div>
 												</div>
-												
-												
-												
-												
-												<div class="clearfix"></div>
-												<div class="col-sm-3">
+												<div class="clearfix hidden-md"></div>
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Lead Source </label>
 													<div class="form-group">
 														<select class="form-control select2" name="op_leadSource" id="op_leadSource" style="width: 100%;">
@@ -1270,11 +1269,9 @@ color:#2196F3;
 														</select>
 													</div>
 												</div>
-												
-						
 											</div>
-											<div class="col-sm-12">
-												<div class="col-sm-12">
+											<div class="col-xs-12 col-sm-12 col-lg-12">
+												<div class="col-xs-12 col-sm-12 col-lg-12">
 													<label class="font-label">Description </label>
 													<div class="form-group">
 														<textarea rows="3" cols="" name="cam_description" id="cam_description"
@@ -1289,9 +1286,9 @@ color:#2196F3;
 									<div class="col-sm-2"><h4>Other </h4></div>				
 									<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>					
 									<div class="row">
-										<div class="col-sm-12">
-											<div class="col-sm-12">				
-												<div class="col-sm-3">
+										<div class="col-xs-12 col-sm-12 col-lg-12">
+											<div class="col-xs-12 col-sm-12 col-lg-12">				
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 													<label class="font-label">Assigned to  </label>
 													<div class="form-group">
 														<select class="form-control select2" name="op_assignTo" id="op_assignTo" style="width:100%">

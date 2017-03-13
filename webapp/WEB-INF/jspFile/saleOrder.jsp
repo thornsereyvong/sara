@@ -23,7 +23,6 @@
 				<button type="button" class="btn btn-info btn-app" name="btnGenQuote" id="btnGenQuote" > <i class="fa fa-cog"></i> Quote</button>
 				<button class="btn btn-info btn-app" onclick="creditInfo()" > <i class="fa fa-info"></i> Credit Info </button>
 				<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-				
 				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/sale-order/list"> <i class="fa fa-reply"></i> Back </a>
 
 				<div class="clearfix"></div>								

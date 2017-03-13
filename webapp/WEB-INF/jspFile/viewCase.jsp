@@ -463,10 +463,6 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	// End Collaborate***************************
 	
 	
-	
-	
-	
-	
 	// note
 	$scope.addNote = function(){
 		$('#frmAddNote').submit();
@@ -1150,11 +1146,8 @@ function setSelect2ToResolveBy(value){
 	</section>
 
 	<section class="content" data-ng-init="listLeads()">
-
-
 		<div class="row">
-
-			<div class="col-md-12">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
@@ -1169,25 +1162,29 @@ function setSelect2ToResolveBy(value){
 					</div>
 					<div class="box-footer">
 						<div class="row">
-							<div class="col-sm-1 border-right">
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-1 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{cases.caseTypeName}}</h5>
 									<span class="description-text">Type</span>
 								</div>
+								<hr class="hidden-lg">
 							</div>
-							<div class="col-sm-1 border-right">
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-1 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{cases.priorityName}}</h5>
 									<span class="description-text">Priority</span>
 								</div>
+								<hr class="hidden-lg">
 							</div>
-							<div class="col-sm-1 border-right">
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-1 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{cases.originName}}</h5>
 									<span class="description-text">Origin</span>
 								</div>
+								<hr class="hidden-lg">
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="clearfix hidden-lg"></div>
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak"
 										ng-if="cases.custID != null">[{{cases.custID}}]
@@ -1195,7 +1192,7 @@ function setSelect2ToResolveBy(value){
 									<span class="description-text">Customer</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak"
 										ng-if="cases.conID != null">[{{cases.conID}}]
@@ -1204,416 +1201,309 @@ function setSelect2ToResolveBy(value){
 									<span class="description-text">Contact</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{cases.followupDate}}</h5>
 									<span class="description-text">Follow-up Date</span>
 								</div>
 							</div>
-
-							<div class="col-sm-12">
-								<ul class="breadcrumb1" id="objStatus">
-								</ul>
-							</div>
-
-
+						</div>
+						<ul class="breadcrumb1 hidden-xs" id="objStatus"></ul>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="row">
 							<div class="clearfix"></div>
 							<br />
-							<div class="col-md-12">
-								<div class="nav-tabs-custom">
-									<ul class="nav nav-tabs">
-										<li class="active"><a href="#activity" data-toggle="tab"
-											aria-expanded="true">ACTIVITY</a></li>
-										<li class=""><a href="#collaborate" data-toggle="tab"
-											aria-expanded="false">COLLABORATE</a></li>
-										<li class=""><a href="#note_tap" data-toggle="tab"
-											aria-expanded="false">NOTES</a></li>
-										<li class=""><a href="#detail_tap" data-toggle="tab"
-											aria-expanded="false">DETAILS</a></li>
-										<li class=""><a href="#resolution_tap" data-toggle="tab"
-											aria-expanded="false">SOLUTION</a></li>
-										<li class=""><a href="#escalate_tap" data-toggle="tab"
-											aria-expanded="false">ESCALATE</a></li>
-										<!-- <li class=""><a href="#history_tap" data-toggle="tab"
-											aria-expanded="false">HISTORY</a></li> -->
-									</ul>
-									<div class="tab-content">
-									
-										<div class="tab-pane active" id="activity">
-											<div class="row">
-
-												<div class="col-md-12">
-													<a style="margin-left: 0px;" class="btn btn-app"
-														ng-click="call_click();startupCallForm()"> <i class="fa fa-phone"></i>
-														Call
-													</a> <a class="btn btn-app" ng-click="meet_click()"> <i
-														class="fa fa-users"></i> Meeting
-													</a> <a class="btn btn-app" ng-click="task_click()"> <i
-														class="fa fa-list-alt "></i> Task
-													</a> <a class="btn btn-app" ng-click="event_click()"> <i
-														class="fa  fa-calendar-check-o"></i> Event
-													</a> <a class="btn btn-app" ng-click="email_click()"> <i
-														class="fa fa-envelope"></i> Email
-													</a>
-												</div>
-												<div class="col-md-12">
-													<div class="panel-group" id="accordion">
-														<div class="panel panel-default">
-															<div class="panel-heading">
-																<h4 class="panel-title">
-																	<a data-toggle="collapse" data-parent="#accordion"
-																		href="#collapse1">Calls</a> <span
-																		class="badge bg-blue pull-right ng-cloak">{{listAllCallByLead.length
-																		<= 0 ? '' : listAllCallByLead.length }}</span>
-																</h4>
-															</div>
-															<div id="collapse1" class="panel-collapse collapse">
-																<div class="panel-body">
-																	<div class="mailbox-messages">
-																		<table class="table iTable">
-																			<thead>
-																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
-																					<th>Start Date</th>
-																					<th>Duration</th>
-																					<th>Assign To</th>
-																					<th>Create By</th>
-																				</tr>
-																			</thead>
-																			<tbody ng-repeat="call in listAllCallByLead">
-																				<tr>
-																					<td class="iTD-width-50">{{call.callId}}</td>
-																					<td colspan="2">{{call.callSubject}}</td>
-																					<td>{{call.callStartDate | date:'dd/MM/yyyy'}}
-																					</td>
-																					<td>{{call.callDuration}}</td>
-																					<td>{{call.username}}</td>
-																					<td>{{call.callCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="6"><a href="#">{{call.callDes
-																							| limitTo:200}}{{call.callDes.length <= 200 ? ''
-																							: '...'}}</a></td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span
-																										class="sr-only">Toggle Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li><a href="#"
-																										ng-click="actEditCall(call.callId)"> <i
-																											class="fa fa-pencil"></i> Edit
-																									</a></li>
-																									<li ng-click="actDeleteCall(call.callId)"><a
-																										href="#"><i class="fa fa-trash"></i>
-																											Delete</a></li>
-																									<li><a
-																										href="${pageContext.request.contextPath}/view-call/{{call.callId}}">
-																											<i class="fa fa-eye"></i>View
-																									</a></li>
-
-																								</ul>
-																							</div>
-																						</div>
-																					</td>
-																				</tr>
-																		</table>
-																	</div>
+							<div class="nav-tabs-custom">
+								<ul class="nav nav-tabs">
+									<li class="active"><a href="#activity" data-toggle="tab"
+										aria-expanded="true">ACTIVITY</a></li>
+									<li class=""><a href="#collaborate" data-toggle="tab"
+										aria-expanded="false">COLLABORATE</a></li>
+									<li class=""><a href="#note_tap" data-toggle="tab"
+										aria-expanded="false">NOTES</a></li>
+									<li class=""><a href="#detail_tap" data-toggle="tab"
+										aria-expanded="false">DETAILS</a></li>
+									<li class=""><a href="#resolution_tap" data-toggle="tab"
+										aria-expanded="false">SOLUTION</a></li>
+									<li class=""><a href="#escalate_tap" data-toggle="tab"
+										aria-expanded="false">ESCALATE</a></li>
+									<!-- <li class=""><a href="#history_tap" data-toggle="tab"
+										aria-expanded="false">HISTORY</a></li> -->
+								</ul>
+								<div class="tab-content">
+								
+									<div class="tab-pane active" id="activity">
+										<div class="row">
+	
+											<div class="col-md-12">
+												<a style="margin-left: 0px;" class="btn btn-app"
+													ng-click="call_click();startupCallForm()"> <i class="fa fa-phone"></i>
+													Call
+												</a> <a class="btn btn-app" ng-click="meet_click()"> <i
+													class="fa fa-users"></i> Meeting
+												</a> <a class="btn btn-app" ng-click="task_click()"> <i
+													class="fa fa-list-alt "></i> Task
+												</a> <a class="btn btn-app" ng-click="event_click()"> <i
+													class="fa  fa-calendar-check-o"></i> Event
+												</a> <a class="btn btn-app" ng-click="email_click()"> <i
+													class="fa fa-envelope"></i> Email
+												</a>
+											</div>
+											<div class="col-md-12">
+												<div class="panel-group" id="accordion">
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h4 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapse1">Calls</a> <span
+																	class="badge bg-blue pull-right ng-cloak">{{listAllCallByLead.length
+																	<= 0 ? '' : listAllCallByLead.length }}</span>
+															</h4>
+														</div>
+														<div id="collapse1" class="panel-collapse collapse">
+															<div class="panel-body">
+																<div class="mailbox-messages table-responsive">
+																	<table class="table iTable">
+																		<thead>
+																			<tr>
+																				<th>ID</th>
+																				<th>Subject</th>
+																				<th>Start Date</th>
+																				<th>Duration</th>
+																				<th>Assign To</th>
+																				<th>Create By</th>
+																				<th class="text-center">Action</th>
+																			</tr>
+																		</thead>
+																		<tbody ng-repeat="call in listAllCallByLead">
+																			<tr>
+																				<td class="iTD-width-50">{{call.callId}}</td>
+																				<td>{{call.callSubject}}</td>
+																				<td>{{call.callStartDate | date:'dd/MM/yyyy'}}</td>
+																				<td>{{call.callDuration}}<span> min</span></td>
+																				<td>{{call.username == null?'-':call.username}}</td>
+																				<td>{{call.callCreateBy}}</td>
+																				<td class="text-center mailbox-date">
+																					<a href="#" ng-click="actEditCall(call.callId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																					<a href="#" ng-click="actDeleteCall(call.callId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																					<a href="${pageContext.request.contextPath}/view-call/{{call.callId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
 																</div>
 															</div>
 														</div>
-														<div class="panel panel-default">
-															<div class="panel-heading">
-																<h4 class="panel-title">
-																	<a data-toggle="collapse" data-parent="#accordion"
-																		href="#collapse2"> Meetings</a> <span
-																		class="badge bg-blue pull-right ng-cloak">{{listAllMeetByLead.length
-																		<= 0 ? '' : listAllMeetByLead.length }}</span>
-																</h4>
-															</div>
-															<div id="collapse2" class="panel-collapse collapse">
-																<div class="panel-body">
-																	<div class="mailbox-messages">
-																		<table class="table iTable">
-																			<thead>
-																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
-																					<th>Status</th>
-																					<th>Start Date</th>
-																					<th>End Date</th>
-																					<th>Assign To</th>
-																					<th>Create By</th>
-																				</tr>
-																			</thead>
-																			<tbody ng-repeat="meet in listAllMeetByLead">
-																				<tr>
-																					<td class="iTD-width-50">{{meet.meetingId}}</td>
-																					<td colspan="2">{{meet.meetingSubject}}</td>
-																					<td>{{meet.statusName}}</td>
-																					<td>{{meet.meetingStartDate |
-																						date:'dd/MM/yyyy'}}</td>
-																					<td>{{meet.meetingEndDate |
-																						date:'dd/MM/yyyy'}}</td>
-																					<td>{{meet.username}}</td>
-																					<td>{{meet.meetingCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7"><a href="#">{{meet.meetingDes
-																							| limitTo:200}}{{meet.meetingDes.length <= 200 ?
-																							'' : '...'}}</a></td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span
-																										class="sr-only">Toggle Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditMeeting(meet.meetingId)">
-																										<a href="#"><i class="fa fa-pencil"></i>
-																											Edit</a>
-																									</li>
-																									<li ng-click="actDeleteMeeting(meet.meetingId)">
-																										<a href="#"><i class="fa fa-trash"></i>
-																											Delete</a>
-																									</li>
-																									<li><a
-																										href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">
-																											<i class="fa fa-eye"></i>View
-																									</a></li>
-
-																								</ul>
-																							</div>
-																						</div>
-																					</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
+													</div>
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h4 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapse2"> Meetings</a> <span
+																	class="badge bg-blue pull-right ng-cloak">{{listAllMeetByLead.length
+																	<= 0 ? '' : listAllMeetByLead.length }}</span>
+															</h4>
+														</div>
+														<div id="collapse2" class="panel-collapse collapse">
+															<div class="panel-body">
+																<div class="mailbox-messages table-responsive">
+																	<table class="table iTable">
+																		<thead>
+																			<tr>
+																				<th>ID</th>
+																				<th>Subject</th>
+																				<th>Status</th>
+																				<th>Start Date</th>
+																				<th>End Date</th>
+																				<th>Assign To</th>
+																				<th>Create By</th>
+																				<th class="text-center">Action</th>
+																			</tr>
+																		</thead>
+																		<tbody ng-repeat="meet in listAllMeetByLead">
+																			<tr>
+																				<td class="iTD-width-50">{{meet.meetingId}}</td>
+																				<td>{{meet.meetingSubject}}</td>
+																				<td>{{meet.statusName}}</td>
+																				<td>{{meet.meetingStartDate |date:'dd/MM/yyyy'}}</td>
+																				<td>{{meet.meetingEndDate |date:'dd/MM/yyyy'}}</td>
+																				<td>{{meet.username}}</td>
+																				<td>{{meet.meetingCreateBy}}</td>
+																				<td class="text-center mailbox-date">
+																					<a href="#" ng-click="actEditMeeting(meet.meetingId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																					<a href="#" ng-click="actDeleteMeeting(meet.meetingId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																					<a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
 																</div>
 															</div>
 														</div>
-														<div class="panel panel-default">
-															<div class="panel-heading">
-																<h4 class="panel-title">
-																	<a data-toggle="collapse" data-parent="#accordion"
-																		href="#collapse3"> Tasks</a> <span
-																		class="badge bg-blue pull-right ng-cloak">{{listAllTaskByLead.length
-																		<= 0 ? '' : listAllTaskByLead.length }}</span>
-																</h4>
-															</div>
-															<div id="collapse3" class="panel-collapse collapse">
-																<div class="panel-body">
-																	<div class="mailbox-messages">
-																		<table class="table iTable">
-																			<thead>
-																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
-																					<th>Status</th>
-																					<th>Start Date</th>
-																					<th>End Date</th>
-																					<th>Assign To</th>
-																					<th>Create By</th>
-																				</tr>
-																			</thead>
-																			<tbody ng-repeat="task in listAllTaskByLead">
-																				<tr>
-																					<td class="iTD-width-50">{{task.taskId}}</td>
-																					<td colspan="2">{{task.taskSubject}}</td>
-																					<td>{{task.taskStatusName}}</td>
-																					<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{task.taskDueDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{task.username}}</td>
-																					<td>{{task.taskCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7"><a href="#">{{task.taskDes
-																							| limitTo:200}}{{task.taskDes.length <= 200 ? ''
-																							: '...'}}</a></td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span
-																										class="sr-only">Toggle Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditTask(task.taskId)"><a
-																										href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteTask(task.taskId)">
-																										<a href="#"><i class="fa fa-trash"></i>
-																											Delete</a>
-																									</li>
-																									<li><a
-																										href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">
-																											<i class="fa fa-eye"></i>View
-																									</a></li>
-
-																								</ul>
-																							</div>
-																						</div>
-																					</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
+													</div>
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h4 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapse3"> Tasks</a> <span
+																	class="badge bg-blue pull-right ng-cloak">{{listAllTaskByLead.length
+																	<= 0 ? '' : listAllTaskByLead.length }}</span>
+															</h4>
+														</div>
+														<div id="collapse3" class="panel-collapse collapse">
+															<div class="panel-body">
+																<div class="mailbox-messages table-responsive">
+																	<table class="table iTable">
+																		<thead>
+																			<tr>
+																				<th>ID</th>
+																				<th>Subject</th>
+																				<th>Status</th>
+																				<th>Start Date</th>
+																				<th>End Date</th>
+																				<th>Assign To</th>
+																				<th>Create By</th>
+																				<th class="text-center">Action</th>
+																			</tr>
+																		</thead>
+																		<tbody ng-repeat="task in listAllTaskByLead">
+																			<tr>
+																				<td class="iTD-width-50">{{task.taskId}}</td>
+																				<td>{{task.taskSubject}}</td>
+																				<td>{{task.taskStatusName}}</td>
+																				<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
+																				<td>{{task.taskDueDate | date:'dd/MM/yyyy'}}</td>
+																				<td>{{task.username}}</td>
+																				<td>{{task.taskCreateBy}}</td>
+																				<td class="text-center mailbox-date">
+																					<a href="#" ng-click="actEditTask(task.taskId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																					<a href="#" ng-click="actDeleteTask(task.taskId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																					<a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
 																</div>
 															</div>
 														</div>
-														<div class="panel panel-default">
-															<div class="panel-heading">
-																<h4 class="panel-title">
-																	<a data-toggle="collapse" data-parent="#accordion"
-																		href="#collapse4"> Events</a> <span
-																		class="badge bg-blue pull-right ng-cloak">{{listAllEventByLead.length
-																		<= 0 ? '' : listAllEventByLead.length }}</span>
-																</h4>
-															</div>
-															<div id="collapse4" class="panel-collapse collapse">
-																<div class="panel-body">
-																	<div class="mailbox-messages">
-																		<table class="table iTable">
-																			<thead>
-																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Name</th>
-																					<th>Location</th>
-																					<th>Start Date</th>
-																					<th>End Date</th>
-																					<th>Assign To</th>
-																					<th>Create By</th>
-																				</tr>
-																			</thead>
-																			<tbody ng-repeat="event in listAllEventByLead">
-																				<tr>
-																					<td class="iTD-width-50">{{event.evId}}</td>
-																					<td colspan="2">{{event.evName}}</td>
-																					<td>{{event.locateName}}</td>
-																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{event.username}}</td>
-																					<td>{{event.evCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7"><a href="#">{{event.evDes
-																							| limitTo:200}}{{event.evDes.length <= 200 ? '' :
-																							'...'}}</a></td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span
-																										class="sr-only">Toggle Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditEvent(event.evId)"><a
-																										href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteEvent(event.evId)">
-																										<a href="#"><i class="fa fa-trash"></i>
-																											Delete</a>
-																									</li>
-																									<li><a
-																										href="${pageContext.request.contextPath}/view-event/{{event.evId}}">
-																											<i class="fa fa-eye"></i>View
-																									</a></li>
-
-																								</ul>
-																							</div>
-																						</div>
-																					</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
+													</div>
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h4 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapse4"> Events</a> <span
+																	class="badge bg-blue pull-right ng-cloak">{{listAllEventByLead.length
+																	<= 0 ? '' : listAllEventByLead.length }}</span>
+															</h4>
+														</div>
+														<div id="collapse4" class="panel-collapse collapse">
+															<div class="panel-body">
+																<div class="mailbox-messages table-responsive">
+																	<table class="table iTable">
+																		<thead>
+																			<tr>
+																				<th>ID</th>
+																				<th>Name</th>
+																				<th>Location</th>
+																				<th>Start Date</th>
+																				<th>End Date</th>
+																				<th>Assign To</th>
+																				<th>Create By</th>
+																				<th class="text-center">Action</th>
+																			</tr>
+																		</thead>
+																		<tbody ng-repeat="event in listAllEventByLead">
+																			<tr>
+																				<td class="iTD-width-50">{{event.evId}}</td>
+																				<td>{{event.evName}}</td>
+																				<td>{{event.locateName}}</td>
+																				<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
+																				<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
+																				<td>{{event.username}}</td>
+																				<td>{{event.evCreateBy}}</td>
+																				<td class="text-center mailbox-date">
+																					<a href="#" ng-click="actEditEvent(event.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																					<a href="#" ng-click="actDeleteEvent(event.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																					<a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
 																</div>
 															</div>
 														</div>
-														<div class="panel panel-default">
-															<div class="panel-heading">
-																<h4 class="panel-title">
-																	<a data-toggle="collapse" data-parent="#accordion"
-																		href="#collapse5"> Emails</a> <span
-																		class="badge bg-blue pull-right ng-cloak">{{listAllEmailByLead.length
-																		<= 0 ? '' : listAllEmailByLead.length }}</span>
-																</h4>
-															</div>
-															<div id="collapse5" class="panel-collapse collapse">
-																<div class="panel-body">
-																	<div class="mailbox-messages">
-																		<table class="table iTable"
-																			data-ng-init="listAllEmailByLeadId()">
-																			<thead>
-																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
-																					<th>Sent To</th>
-																					<th>Date</th>
-																					<th>Status</th>
-																					<th>Assign To</th>
-																					<th>Create By</th>
-																				</tr>
-																			</thead>
-																			<tbody ng-repeat="email in listAllEmailByLead">
-																				<tr>
-																					<td class="iTD-width-50"><a href="#"><i
-																							class="fa fa-envelope text-green font-size-icon-30"></i></a>
-																					</td>
-																					<td colspan="2">{{event.evName}}</td>
-																					<td>{{event.locateName}}</td>
-																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{event.username}}</td>
-																					<td>{{event.evCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7"><a href="#">{{event.evDes
-																							| limitTo:200}}{{event.evDes.length <= 200 ? '' :
-																							'...'}}</a></td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span
-																										class="sr-only">Toggle Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditEvent(event.evId)"><a
-																										href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteEvent(event.evId)">
-																										<a href="#"><i class="fa fa-trash"></i>
-																											Delete</a>
-																									</li>
-																									<li><a
-																										href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">
-																											<i class="fa fa-eye"></i>View
-																									</a></li>
-
-																								</ul>
-																							</div>
+													</div>
+													<div class="panel panel-default">
+														<div class="panel-heading">
+															<h4 class="panel-title">
+																<a data-toggle="collapse" data-parent="#accordion"
+																	href="#collapse5"> Emails</a> <span
+																	class="badge bg-blue pull-right ng-cloak">{{listAllEmailByLead.length
+																	<= 0 ? '' : listAllEmailByLead.length }}</span>
+															</h4>
+														</div>
+														<div id="collapse5" class="panel-collapse collapse">
+															<div class="panel-body">
+																<div class="mailbox-messages table-responsive">
+																	<table class="table iTable"
+																		data-ng-init="listAllEmailByLeadId()">
+																		<thead>
+																			<tr>
+																				<th>ID</th>
+																				<th>Subject</th>
+																				<th>Sent To</th>
+																				<th>Date</th>
+																				<th>Status</th>
+																				<th>Assign To</th>
+																				<th>Create By</th>
+																				<th class="text-center">Action</th>
+																			</tr>
+																		</thead>
+																		<tbody ng-repeat="email in listAllEmailByLead">
+																			<tr>
+																				<td class="iTD-width-50"><a href="#"><i
+																						class="fa fa-envelope text-green font-size-icon-30"></i></a>
+																				</td>
+																				<td colspan="2">{{event.evName}}</td>
+																				<td>{{event.locateName}}</td>
+																				<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
+																				<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
+																				<td>{{event.username}}</td>
+																				<td>{{event.evCreateBy}}</td>
+																			</tr>
+																			<tr>
+																				<td colspan="7"><a href="#">{{event.evDes
+																						| limitTo:200}}{{event.evDes.length <= 200 ? '' :
+																						'...'}}</a></td>
+																				<td class="mailbox-date">
+																					<div class="col-sm-2">
+																						<div class="btn-group">
+																							<button type="button"
+																								class="btn btn-default dropdown-toggle btn-sm"
+																								data-toggle="dropdown" aria-expanded="false">
+																								<span class="caret"></span> <span
+																									class="sr-only">Toggle Dropdown</span>
+																							</button>
+																							<ul class="dropdown-menu" role="menu">
+																								<li ng-click="actEditEvent(event.evId)"><a
+																									href="#"><i class="fa fa-pencil"></i> Edit</a>
+																								</li>
+																								<li ng-click="actDeleteEvent(event.evId)">
+																									<a href="#"><i class="fa fa-trash"></i>
+																										Delete</a>
+																								</li>
+																								<li><a
+																									href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">
+																										<i class="fa fa-eye"></i>View
+																								</a></li>
+	
+																							</ul>
 																						</div>
-																					</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
+																					</div>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
 																</div>
 															</div>
 														</div>
@@ -1621,503 +1511,456 @@ function setSelect2ToResolveBy(value){
 												</div>
 											</div>
 										</div>
-
-										<div class="tab-pane" id="collaborate">
-
-											<div class="col-md-12"
-												style="padding-right: 0px; padding-left: 0px;">
-												<form id="frmCollab">
-													<div class="col-sm-12"
-														style="padding-right: 0px; padding-left: 0px;">
-														<div class="form-group">
-															<label>Post <span class="requrie">(Required)</span></label>
-															<textarea rows="3" cols="" name="collabPostDescription"
-																id="collabPostDescription" class="form-control"
-																placeholder=""></textarea>
-														</div>
-													</div>
-													<div class="col-sm-12"
-														style="padding-right: 0px; padding-left: 0px;">
-														<div class="form-group">
-															<label>Tags </label> <select class="form-control"
-																multiple name="collabTags" id="collabTags"
-																style="width: 100%;">
-																<option ng-repeat="tag in tags" value="{{tag.username}}">{{tag.username}}</option>
-															</select>
-														</div>
-													</div>
-												</form>
+									</div>
+	
+									<div class="tab-pane" id="collaborate">
+	
+										<div class="col-md-12"
+											style="padding-right: 0px; padding-left: 0px;">
+											<form id="frmCollab">
 												<div class="col-sm-12"
 													style="padding-right: 0px; padding-left: 0px;">
-													<button style="margin-top: 10px; margin-left: 10px;"
-														ng-click="resetFrmCollab()" type="button"
-														class="btn btn-danger pull-right">Reset</button>
-													<button type="button" style="margin-top: 10px;"
-														ng-click="addCollab()" name="collabBtnPost"
-														id="collabBtnPost" class="btn btn-primary pull-right">POST</button>
+													<div class="form-group">
+														<label>Post <span class="requrie">(Required)</span></label>
+														<textarea rows="3" cols="" name="collabPostDescription"
+															id="collabPostDescription" class="form-control"
+															placeholder=""></textarea>
+													</div>
 												</div>
+												<div class="col-sm-12"
+													style="padding-right: 0px; padding-left: 0px;">
+													<div class="form-group">
+														<label>Tags </label> <select class="form-control"
+															multiple name="collabTags" id="collabTags"
+															style="width: 100%;">
+															<option ng-repeat="tag in tags" value="{{tag.username}}">{{tag.username}}</option>
+														</select>
+													</div>
+												</div>
+											</form>
+											<div class="col-sm-12"
+												style="padding-right: 0px; padding-left: 0px;">
+												<button style="margin-top: 10px; margin-left: 10px;"
+													ng-click="resetFrmCollab()" type="button"
+													class="btn btn-danger pull-right">Reset</button>
+												<button type="button" style="margin-top: 10px;"
+													ng-click="addCollab()" name="collabBtnPost"
+													id="collabBtnPost" class="btn btn-primary pull-right">POST</button>
 											</div>
-											<div class="clearfix"></div>
-											<br>
-											<!-- content collab -->
-
-											<div class="post clearfix" ng-repeat="(key_post,collab) in collaborates track by $index">
-												<div class="user-block">
-													<img class="img-circle img-bordered-sm"
-														src="${pageContext.request.contextPath}/resources/images/av.png"
-														alt="user image"> <span class="username"> <a
-														href="#">{{collab.colUser}}</a> <a
-														style="color: #999; font-size: 13px;">on
-															{{collab.createDate}}</a> <span
-														ng-if="collab.colOwn == 'true'"
-														ng-click="btnDeleteCollabPost(key_post,collab.colId)"
-														class="pull-right btn-box-tool cusor_pointer"><button
+										</div>
+										<div class="clearfix"></div>
+										<br>
+										<!-- content collab -->
+	
+										<div class="post clearfix" ng-repeat="(key_post,collab) in collaborates track by $index">
+											<div class="user-block">
+												<img class="img-circle img-bordered-sm"
+													src="${pageContext.request.contextPath}/resources/images/av.png"
+													alt="user image"> <span class="username"> <a
+													href="#">{{collab.colUser}}</a> <a
+													style="color: #999; font-size: 13px;">on
+														{{collab.createDate}}</a> <span
+													ng-if="collab.colOwn == 'true'"
+													ng-click="btnDeleteCollabPost(key_post,collab.colId)"
+													class="pull-right btn-box-tool cusor_pointer"><button
+															class="btn btn-default btn-sm">
+															<i class="fa fa-trash trask-btn"></i>
+														</button></span>
+												</span> <span class="description"><i
+													ng-if="collab.tags.length > 0 " class="fa fa-tags"></i> <span
+													ng-repeat="t in collab.tags">{{t.username}} </span></span>
+											</div>
+											<p>{{collab.colDes}}</p>
+	
+											<ul class="list-inline">
+												<li><span href="#" class="link-black text-sm ">
+														<span ng-if="collab.checkLike == true"><button
+																ng-click="postLike(key_post,collab.colId)"
 																class="btn btn-default btn-sm">
-																<i class="fa fa-trash trask-btn"></i>
-															</button></span>
-													</span> <span class="description"><i
-														ng-if="collab.tags.length > 0 " class="fa fa-tags"></i> <span
-														ng-repeat="t in collab.tags">{{t.username}} </span></span>
-												</div>
-												<p>{{collab.colDes}}</p>
-
-												<ul class="list-inline">
-													<li><span href="#" class="link-black text-sm ">
-															<span ng-if="collab.checkLike == true"><button
-																	ng-click="postLike(key_post,collab.colId)"
+																<i class="fa fa-thumbs-up like-btn"></i>
+															</button>&nbsp;&nbsp;&nbsp;You {{collab.like <= 0 ? "" :
+															collab.like==1 ? "and 1 other" : "and "+collab.like+"
+															others"}}</span> <span ng-if="collab.checkLike == false"><button
+																ng-click="postLike(key_post,collab.colId)"
+																class="btn btn-default btn-sm">
+																<i class="fa fa-thumbs-o-up unlike-btn"></i>
+															</button>&nbsp;&nbsp;&nbsp;{{collab.like <= 0 ? "" :
+															collab.like}}</span>
+												</span></li>
+												<li class="pull-right"><a href="#"
+													class="link-black text-sm"><i
+														class="fa fa-comments-o margin-r-5"></i> <span>
+															Comments{{collab.details.length <= 0 ? "" :
+															"("+collab.details.length+")"}}</span></a></li>
+											</ul>
+	
+	
+											<div style="padding-top: 15px;"
+												class="box-footer box-comments">
+												<div class="box-comment"
+													ng-repeat="(key_comment, com) in collab.details">
+													<img class="img-circle img-sm"
+														src="${pageContext.request.contextPath}/resources/images/av.png"
+														alt="user image">
+													<div class="comment-text">
+														<span class="username"> <span>
+																{{com.username}} <span class="text-muted"> on
+																	{{com.formatCreateDate}}</span>
+														</span> <span ng-if="com.username == username"
+															ng-click="btnDeleteCollabCom(key_post, key_comment,com.commentId)"
+															class="pull-right btn-box-tool cusor_pointer"><button
 																	class="btn btn-default btn-sm">
-																	<i class="fa fa-thumbs-up like-btn"></i>
-																</button>&nbsp;&nbsp;&nbsp;You {{collab.like <= 0 ? "" :
-																collab.like==1 ? "and 1 other" : "and "+collab.like+"
-																others"}}</span> <span ng-if="collab.checkLike == false"><button
-																	ng-click="postLike(key_post,collab.colId)"
-																	class="btn btn-default btn-sm">
-																	<i class="fa fa-thumbs-o-up unlike-btn"></i>
-																</button>&nbsp;&nbsp;&nbsp;{{collab.like <= 0 ? "" :
-																collab.like}}</span>
-													</span></li>
-													<li class="pull-right"><a href="#"
-														class="link-black text-sm"><i
-															class="fa fa-comments-o margin-r-5"></i> <span>
-																Comments{{collab.details.length <= 0 ? "" :
-																"("+collab.details.length+")"}}</span></a></li>
-												</ul>
-
-
-												<div style="padding-top: 15px;"
-													class="box-footer box-comments">
-													<div class="box-comment"
-														ng-repeat="(key_comment, com) in collab.details">
-														<img class="img-circle img-sm"
-															src="${pageContext.request.contextPath}/resources/images/av.png"
-															alt="user image">
-														<div class="comment-text">
-															<span class="username"> <span>
-																	{{com.username}} <span class="text-muted"> on
-																		{{com.formatCreateDate}}</span>
-															</span> <span ng-if="com.username == username"
-																ng-click="btnDeleteCollabCom(key_post, key_comment,com.commentId)"
-																class="pull-right btn-box-tool cusor_pointer"><button
-																		class="btn btn-default btn-sm">
-																		<i class="fa fa-trash trask-btn"></i>
-																	</button></span>
-															</span> {{com.comment}}
-														</div>
+																	<i class="fa fa-trash trask-btn"></i>
+																</button></span>
+														</span> {{com.comment}}
 													</div>
 												</div>
-
-
-												<form id="" ng-submit="postCommand(key_post, collab.colId)">
-													<div class="form-group">
-														<input ng-model="newcomment[key_post].comment"
-															id="txtComment" class="form-control input-sm" type="text"
-															placeholder="Type a comment">
-													</div>
-												</form>
-
 											</div>
-
-
-
-
-											<!-- end content collab -->
+	
+	
+											<form id="" ng-submit="postCommand(key_post, collab.colId)">
+												<div class="form-group">
+													<input ng-model="newcomment[key_post].comment"
+														id="txtComment" class="form-control input-sm" type="text"
+														placeholder="Type a comment">
+												</div>
+											</form>
+	
 										</div>
-
-										<div class="tab-pane" id="note_tap">
-											<div class="post clearfix">
-												<form id="frmAddNote">
-													<div class="form-group">
-														<input ng-model="note_subject" data-ng-init="note_subject"
-															style="margin-top: 10px;" type="text"
-															class="form-control" name="note_subject"
-															id="note_subject" placeholder="Subject">
+	
+	
+	
+	
+										<!-- end content collab -->
+									</div>
+	
+									<div class="tab-pane" id="note_tap">
+										<div class="post clearfix">
+											<form id="frmAddNote">
+												<div class="form-group">
+													<input ng-model="note_subject" data-ng-init="note_subject"
+														style="margin-top: 10px;" type="text"
+														class="form-control" name="note_subject"
+														id="note_subject" placeholder="Subject">
+												</div>
+												<div class="form-group">
+													<textarea ng-model="note_description"
+														data-ng-init="note_description" style="margin-top: 10px;"
+														rows="3" cols="" name="note_description"
+														id="note_description" class="form-control"
+														placeholder="Description"></textarea>
+												</div>
+												<button style="margin-top: 10px; margin-left: 10px;"
+													ng-click="resetFrmNote()" type="button"
+													ng-click="resetNote()" class="btn btn-danger pull-right">Reset</button>
+												<button style="margin-top: 10px;" type="button"
+													id="btnAddNote" ng-click="addNote()"
+													class="btn btn-primary pull-right">Note</button>
+											</form>
+										</div>
+										<div class="clearfix"></div>
+										<ul class="timeline timeline-inverse"
+											ng-repeat="notePerDate in noteToFilter() | filter:filterNote">
+	
+											<!-- START DATE -->
+											<li class="time-label"><span class="bg-red">{{notePerDate.createDate}}</span>
+											</li>
+											<li
+												ng-repeat="note in notes | filter:{createDate: notePerDate.createDate}">
+												<i class="fa  fa-edit bg-blue"></i>
+												<div class="timeline-item">
+													<span class="time"><i class="fa fa-clock-o"></i>
+														&nbsp;{{notePerDate.createTime}}</span>
+													<h3 class="timeline-header">
+														{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
+													</h3>
+													<div class="timeline-body">{{note.noteDes}}</div>
+													<div class="timeline-footer">
+														<a class="btn btn-primary btn-xs"
+															ng-click="editNoteById(note.noteId)">Edit</a> <a
+															class="btn btn-danger btn-xs"
+															ng-click="deleteNoteById(note.noteId)">Delete</a>
 													</div>
-													<div class="form-group">
-														<textarea ng-model="note_description"
-															data-ng-init="note_description" style="margin-top: 10px;"
-															rows="3" cols="" name="note_description"
-															id="note_description" class="form-control"
-															placeholder="Description"></textarea>
+												</div>
+											</li>
+	
+	
+										</ul>
+									</div>
+	
+									<div class="tab-pane " id="detail_tap">
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+												<form id="frmLeadDetail">
+													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item"><b>Overview</b> <!-- <a
+																class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a> --></li>
+	
+															<li class="list-group-item item_border">Case ID <a
+																class="pull-right show-text-detail">{{cases.caseId}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}"> -->
+																	<div class="clearfix"></div>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Status<a
+																class="pull-right show-text-detail">{{cases.statusName}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}"> -->
+																	<div class="clearfix"></div>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Type<a
+																class="pull-right show-text-detail">{{cases.caseTypeName}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_lastName"
+																		id="lea_lastName" class="form-control"
+																		value="{{lead.lastName}}"> -->
+																</div>
+															</li>
+															<li class="list-group-item item_border">Priority<a
+																class="pull-right show-text-detail">{{cases.priorityName}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
+																</div>
+															</li>
+															<li class="list-group-item item_border">Origin<a
+																class="pull-right show-text-detail">{{cases.caseOriginTitle}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
+																</div>
+															</li>
+															<li class="list-group-item item_border">Subject <a
+																class="pull-right show-text-detail">{{cases.subject}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_title" id="lea_title"
+																		class="form-control" value="{{lead.title}}"> -->
+																</div>
+															</li>
+	
+														</ul>
 													</div>
-													<button style="margin-top: 10px; margin-left: 10px;"
-														ng-click="resetFrmNote()" type="button"
-														ng-click="resetNote()" class="btn btn-danger pull-right">Reset</button>
-													<button style="margin-top: 10px;" type="button"
-														id="btnAddNote" ng-click="addNote()"
-														class="btn btn-primary pull-right">Note</button>
+													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item"><b>Related To</b> <!-- <a
+																class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a> --></li>
+															<li class="list-group-item item_border">Product<a
+																class="pull-right show-text-detail">[{{cases.caseItemId}}]
+																	{{cases.caseItemName}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_no" id="lea_no"
+																		class="form-control" value="{{lead.no}}"> -->
+																</div>
+															</li>
+															<li class="list-group-item item_border">Customer<a
+																class="pull-right show-text-detail">[{{cases.custID}}]
+																	{{cases.custName}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_no" id="lea_no"
+																		class="form-control" value="{{lead.no}}"> -->
+																</div>
+															</li>
+															<li class="list-group-item item_border">Contact <a
+																class="pull-right show-text-detail">[{{cases.conID}}]
+																	{{cases.conSalutation}}{{cases.conFirstname}}
+																	{{cases.conLastname}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_street" id="lea_street"
+																		class="form-control" value="{{lead.street}}"> -->
+																</div>
+															</li>
+	
+														</ul>
+													</div>
+													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item"><b>Other</b> <!-- <a
+																class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a> --></li>
+															<li class="list-group-item item_border">Assigned to
+																<a class="pull-right show-text-detail">{{cases.username}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}"> -->
+																	<div class="clearfix"></div>
+																</div>
+															</li>
+	
+	
+														</ul>
+													</div>
+	
+	
+													<div class="clearfix"></div>
+													<div class="col-sm-12">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item"><b>Description</b> <!-- <a
+																class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a> --></li>
+															<li class="list-group-item item_border"
+																ng-if="cases.des != null"><a
+																class="show-text-detail">{{cases.des}}</a>
+																<div class="form-group show-edit"
+																	style="display: none;">
+																	<!-- <input type="text" name="lea_firstName"
+																		id="lea_firstName" class="form-control"
+																		value="{{lead.firstName}}"> -->
+																	<div class="clearfix"></div>
+																</div></li>
+														</ul>
+													</div>
+	
+	
+	
+													<br>
+													<div class="col-sm-12 text-center" id="showBtnEditLead"
+														style="display: none;">
+														<button type="button" class="btn btn-primary"
+															ng-click="saveEditDetailLead()">Save</button>
+														<button type="button" class="btn btn-danger"
+															ng-click="cancelEditDetailLead()">Cancel</button>
+													</div>
 												</form>
+											</div>
+										</div>
+	
+									</div>
+	
+									<div class="tab-pane " id="resolution_tap">
+										<div class="row">
+											<div class="col-md-12">
+												<a style="margin-left: 0px;" class="btn btn-app"
+													ng-click="resolve_click()"> <i
+													class="fa  fa-check-square-o"></i> Resolve
+												</a>
+											</div>
+											<div class="col-sm-4">
+												<ul class="list-group list-group-unbordered">
+													<li class="list-group-item item_border">Resolve by<a
+														class="pull-right show-text-detail">{{cases.resolveByName}}</a>
+														<div class="form-group show-edit" style="display: none;">
+															<!-- <input type="text" name="lea_firstName"
+																id="lea_firstName" class="form-control"
+																value="{{lead.firstName}}"> -->
+															<div class="clearfix"></div>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<div class="col-sm-4">
+												<ul class="list-group list-group-unbordered">
+													<li class="list-group-item item_border">Resolve Date<a
+														class="pull-right show-text-detail">{{cases.resolveDate}}</a>
+														<div class="form-group show-edit" style="display: none;">
+															<!-- <input type="text" name="lea_firstName"
+																id="lea_firstName" class="form-control"
+																value="{{lead.firstName}}"> -->
+															<div class="clearfix"></div>
+														</div></li>
+												</ul>
+											</div>
+											<div class="col-sm-4">
+												<ul class="list-group list-group-unbordered">
+													<li class="list-group-item item_border">Article <a
+														class="pull-right show-text-detail">[{{cases.articleId}}]{{cases.articleTitle}}</a>
+														<div class="form-group show-edit" style="display: none;">
+															<!-- <input type="text" name="lea_lastName"
+																id="lea_lastName" class="form-control"
+																value="{{lead.lastName}}"> -->
+														</div>
+													</li>
+												</ul>
 											</div>
 											<div class="clearfix"></div>
-											<ul class="timeline timeline-inverse"
-												ng-repeat="notePerDate in noteToFilter() | filter:filterNote">
-
-												<!-- START DATE -->
-												<li class="time-label"><span class="bg-red">{{notePerDate.createDate}}</span>
-												</li>
-												<li
-													ng-repeat="note in notes | filter:{createDate: notePerDate.createDate}">
-													<i class="fa  fa-edit bg-blue"></i>
-													<div class="timeline-item">
-														<span class="time"><i class="fa fa-clock-o"></i>
-															&nbsp;{{notePerDate.createTime}}</span>
-														<h3 class="timeline-header">
-															{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
-														</h3>
-														<div class="timeline-body">{{note.noteDes}}</div>
-														<div class="timeline-footer">
-															<a class="btn btn-primary btn-xs"
-																ng-click="editNoteById(note.noteId)">Edit</a> <a
-																class="btn btn-danger btn-xs"
-																ng-click="deleteNoteById(note.noteId)">Delete</a>
-														</div>
-													</div>
-												</li>
-
-
-											</ul>
-										</div>
-
-										<div class="tab-pane " id="detail_tap">
-											<div class="row">
-
-
-
-												<div class="col-sm-12">
-													<form id="frmLeadDetail">
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item"><b>Overview</b> <!-- <a
-																	class="pull-right cusor_pointer"
-																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																		Edit</a> --></li>
-
-																<li class="list-group-item item_border">Case ID <a
-																	class="pull-right show-text-detail">{{cases.caseId}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_firstName"
-																			id="lea_firstName" class="form-control"
-																			value="{{lead.firstName}}"> -->
-																		<div class="clearfix"></div>
-																	</div>
-																</li>
-																<li class="list-group-item item_border">Status<a
-																	class="pull-right show-text-detail">{{cases.statusName}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_firstName"
-																			id="lea_firstName" class="form-control"
-																			value="{{lead.firstName}}"> -->
-																		<div class="clearfix"></div>
-																	</div>
-																</li>
-																<li class="list-group-item item_border">Type<a
-																	class="pull-right show-text-detail">{{cases.caseTypeName}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_lastName"
-																			id="lea_lastName" class="form-control"
-																			value="{{lead.lastName}}"> -->
-																	</div>
-																</li>
-																<li class="list-group-item item_border">Priority<a
-																	class="pull-right show-text-detail">{{cases.priorityName}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_title" id="lea_title"
-																			class="form-control" value="{{lead.title}}"> -->
-																	</div>
-																</li>
-																<li class="list-group-item item_border">Origin<a
-																	class="pull-right show-text-detail">{{cases.caseOriginTitle}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_title" id="lea_title"
-																			class="form-control" value="{{lead.title}}"> -->
-																	</div>
-																</li>
-																<li class="list-group-item item_border">Subject <a
-																	class="pull-right show-text-detail">{{cases.subject}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_title" id="lea_title"
-																			class="form-control" value="{{lead.title}}"> -->
-																	</div>
-																</li>
-
-															</ul>
-														</div>
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item"><b>Related To</b> <!-- <a
-																	class="pull-right cusor_pointer"
-																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																		Edit</a> --></li>
-																<li class="list-group-item item_border">Product<a
-																	class="pull-right show-text-detail">[{{cases.caseItemId}}]
-																		{{cases.caseItemName}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_no" id="lea_no"
-																			class="form-control" value="{{lead.no}}"> -->
-																	</div>
-																</li>
-																<li class="list-group-item item_border">Customer<a
-																	class="pull-right show-text-detail">[{{cases.custID}}]
-																		{{cases.custName}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_no" id="lea_no"
-																			class="form-control" value="{{lead.no}}"> -->
-																	</div>
-																</li>
-																<li class="list-group-item item_border">Contact <a
-																	class="pull-right show-text-detail">[{{cases.conID}}]
-																		{{cases.conSalutation}}{{cases.conFirstname}}
-																		{{cases.conLastname}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_street" id="lea_street"
-																			class="form-control" value="{{lead.street}}"> -->
-																	</div>
-																</li>
-
-															</ul>
-														</div>
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item"><b>Other</b> <!-- <a
-																	class="pull-right cusor_pointer"
-																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																		Edit</a> --></li>
-																<li class="list-group-item item_border">Assigned to
-																	<a class="pull-right show-text-detail">{{cases.username}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_firstName"
-																			id="lea_firstName" class="form-control"
-																			value="{{lead.firstName}}"> -->
-																		<div class="clearfix"></div>
-																	</div>
-																</li>
-
-
-															</ul>
-														</div>
-
-
-														<div class="clearfix"></div>
-														<div class="col-sm-12">
-															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item"><b>Description</b> <!-- <a
-																	class="pull-right cusor_pointer"
-																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																		Edit</a> --></li>
-																<li class="list-group-item item_border"
-																	ng-if="cases.des != null"><a
-																	class="show-text-detail">{{cases.des}}</a>
-																	<div class="form-group show-edit"
-																		style="display: none;">
-																		<!-- <input type="text" name="lea_firstName"
-																			id="lea_firstName" class="form-control"
-																			value="{{lead.firstName}}"> -->
-																		<div class="clearfix"></div>
-																	</div></li>
-															</ul>
-														</div>
-
-
-
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
-														</div>
-													</form>
-												</div>
+											<div class="col-sm-12" style="margin-top: -20px;">
+												<ul class="list-group list-group-unbordered">
+													<li class="list-group-item item_border"
+														style="border-top: 0px !important">Solution</li>
+													<li class="list-group-item item_border" style="border: 1px solid #d4d4d4;">
+														<p id="display_solution" style="padding:10px;"></p>
+														<div class="form-group show-edit" style="display: none;">
+															<!-- <input type="text" name="lea_firstName"
+																id="lea_firstName" class="form-control"
+																value="{{lead.firstName}}"> -->
+															<div class="clearfix"></div>
+														</div></li>
+												</ul>
 											</div>
-
+	
 										</div>
-
-										<div class="tab-pane " id="resolution_tap">
-											<div class="row">
-												<div class="col-md-12">
-													<a style="margin-left: 0px;" class="btn btn-app"
-														ng-click="resolve_click()"> <i
-														class="fa  fa-check-square-o"></i> Resolve
-													</a>
-												</div>
-												<div class="col-sm-4">
-													<ul class="list-group list-group-unbordered">
-														<li class="list-group-item item_border">Resolve by<a
-															class="pull-right show-text-detail">{{cases.resolveByName}}</a>
-															<div class="form-group show-edit" style="display: none;">
-																<!-- <input type="text" name="lea_firstName"
-																	id="lea_firstName" class="form-control"
-																	value="{{lead.firstName}}"> -->
-																<div class="clearfix"></div>
-															</div>
-														</li>
-													</ul>
-												</div>
-												<div class="col-sm-4">
-													<ul class="list-group list-group-unbordered">
-														<li class="list-group-item item_border">Resolve Date<a
-															class="pull-right show-text-detail">{{cases.resolveDate}}</a>
-															<div class="form-group show-edit" style="display: none;">
-																<!-- <input type="text" name="lea_firstName"
-																	id="lea_firstName" class="form-control"
-																	value="{{lead.firstName}}"> -->
-																<div class="clearfix"></div>
-															</div></li>
-													</ul>
-												</div>
-												<div class="col-sm-4">
-													<ul class="list-group list-group-unbordered">
-														<li class="list-group-item item_border">Article <a
-															class="pull-right show-text-detail">[{{cases.articleId}}]{{cases.articleTitle}}</a>
-															<div class="form-group show-edit" style="display: none;">
-																<!-- <input type="text" name="lea_lastName"
-																	id="lea_lastName" class="form-control"
-																	value="{{lead.lastName}}"> -->
-															</div>
-														</li>
-													</ul>
-												</div>
-												<div class="clearfix"></div>
-												<div class="col-sm-12" style="margin-top: -20px;">
-													<ul class="list-group list-group-unbordered">
-														<li class="list-group-item item_border"
-															style="border-top: 0px !important">Solution</li>
-														<li class="list-group-item item_border" style="border: 1px solid #d4d4d4;">
-															<p id="display_solution" style="padding:10px;"></p>
-															<div class="form-group show-edit" style="display: none;">
-																<!-- <input type="text" name="lea_firstName"
-																	id="lea_firstName" class="form-control"
-																	value="{{lead.firstName}}"> -->
-																<div class="clearfix"></div>
-															</div></li>
-													</ul>
-												</div>
-
-											</div>
-
-										</div>
-										
-										<div class="tab-pane " id="escalate_tap">
-
-											<div class="row">
-												
-												<form method="post" id="frmEscalateTo">
-													<div class="col-sm-4">
-														
-														<div class="col-sm-12">
-															<div class="form-group">
-																<label>Escalate To<span class="requrie">(Required)</span></label>
-																<div class="form-group">
-																	<select class="form-control select2" name="ca_escalateTo"
-																		id="ca_escalateTo" style="width: 100%">
-																		<option value="">-- SELECT Escalate To --</option>
-																		<option ng-repeat="u in users" value="{{u.userID}}">{{u.username}}</option>
-																	</select>
-																</div>
-															</div>
-														</div>
-														<div class="col-sm-12">
-															<div class="form-group">
-																<label>Escalate Status<span class="requrie">(Required)</span></label>
-																<div class="form-group">
-																	<select class="form-control select2" name="ca_escalateStatus"
-																		id="ca_escalateStatus" style="width: 100%">
-																		<option value="Escalated">Escalated</option>
-																		
-																	</select>
-																</div>
-															</div>
-														</div>
-														<div class="col-sm-12">
-															<button type="button" id="btnEscalateCancel"
-																ng-click="cancelEscalateClick()" name="btnEscalateCancel"
-																class="btn btn-danger pull-right" style="margin-left:5px;" data-dismiss="modal">Cancel</button>
-															&nbsp;&nbsp;
-															<button ng-click="escalateClick()" type="button" class="btn btn-primary pull-right"
-																id="btnEscalateSave" name="btnEscalateSave">Escalate</button>
-														</div>
-													</div>
-												</form>
-												
-												
-												<!-- <div class="col-md-12">
-													<a style="margin-left: 0px;" class="btn btn-app"
-														ng-click="escalate_click()"> <i class="fa  fa-exchange"></i>
-														Escalate
-													</a>
-												</div>
-												<div class="col-md-4">
-												
-													<table class="table table-bordered">
-														<tbody>
-															<tr>
-																<th style="width: 10px">#</th>
-																<th>From</th>
-																<th>To</th>
-																<th style="width: 40px">Status</th>
-															</tr>
-															<tr>
-																<td>1.</td>
-																<td>Vichet</td>
-																<td>
-																	Sereyvong
-																</td>
-																<td></td>
-															</tr>
-															<tr>
-																<td>2.</td>
-																<td>Vichet</td>
-																<td>
-																	Sereyvong
-																</td>
-																<td>
-																	<span class="badge bg-green">Current</span>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-												
-												</div> -->
-												
-
-											</div>
-
-										</div>
+	
+									</div>
 									
+									<div class="tab-pane " id="escalate_tap">
+	
+										<div class="row">
+											
+											<form method="post" id="frmEscalateTo">
+												<div class="col-sm-4">
+													
+													<div class="col-sm-12">
+														<div class="form-group">
+															<label>Escalate To<span class="requrie">(Required)</span></label>
+															<div class="form-group">
+																<select class="form-control select2" name="ca_escalateTo"
+																	id="ca_escalateTo" style="width: 100%">
+																	<option value="">-- SELECT Escalate To --</option>
+																	<option ng-repeat="u in users" value="{{u.userID}}">{{u.username}}</option>
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col-sm-12">
+														<div class="form-group">
+															<label>Escalate Status<span class="requrie">(Required)</span></label>
+															<div class="form-group">
+																<select class="form-control select2" name="ca_escalateStatus"
+																	id="ca_escalateStatus" style="width: 100%">
+																	<option value="Escalated">Escalated</option>
+																	
+																</select>
+															</div>
+														</div>
+													</div>
+													<div class="col-sm-12">
+														<button type="button" id="btnEscalateCancel"
+															ng-click="cancelEscalateClick()" name="btnEscalateCancel"
+															class="btn btn-danger pull-right" style="margin-left:5px;" data-dismiss="modal">Cancel</button>
+														&nbsp;&nbsp;
+														<button ng-click="escalateClick()" type="button" class="btn btn-primary pull-right"
+															id="btnEscalateSave" name="btnEscalateSave">Escalate</button>
+													</div>
+												</div>
+											</form>
+										</div>
 									</div>
 								</div>
 							</div>
-
+						</div>
 						</div>
 					</div>
 				</div>
@@ -2279,8 +2122,8 @@ function setSelect2ToResolveBy(value){
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input value="" name="callStartDate" id="callStartDate"
-												type="text" class="form-control date pull-right active">
+											<input value="" name="callStartDate" id="callStartDate" readonly="readonly"
+												type="text" class="form-control call-date-time pull-right active">
 										</div>
 									</div>
 								</div>
@@ -2293,7 +2136,7 @@ function setSelect2ToResolveBy(value){
 													<i class="fa fa-clock-o"></i>
 												</div>
 												<input type="text" class="form-control timepicker active"
-													name="callDuration" id="callDuration"
+													name="callDuration" id="callDuration" readonly="readonly"
 													placeholder="hours:minutes">
 											</div>
 										</div>
@@ -2330,9 +2173,6 @@ function setSelect2ToResolveBy(value){
 							</div>
 						</form>
 					</div>
-
-
-
 				</div>
 				<div class="modal-footer">
 					<button type="button" id="btnCallCancel"
@@ -2362,65 +2202,51 @@ function setSelect2ToResolveBy(value){
 				<div class="modal-body">
 					<div class="row">
 						<form id="frmAddMeet">
-							<div class="col-md-12">
-								<div class="col-md-6">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-xs-12 col-sm-12 col-md-6">
 									<div class="form-group">
 										<label>Subject <span class="requrie">(Required)</span></label>
 										<input id="meetSubject" name="meetSubject"
 											class="form-control" type="text" placeholder="">
 									</div>
 								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label>Duration <span class="requrie">(Required)</span></label>
-										<select class="form-control select2" name="meetDuration"
-											id="meetDuration" style="width: 100%;">
-											<option value="">-- Select A Duration --</option>
-											<option value="15 minutes">15 minutes</option>
-											<option value="30 minutes">30 minutes</option>
-											<option value="45 minutes">45 minutes</option>
-											<option value="1 hour">1 hour</option>
-											<option value="1:30 hours">1:30 hours</option>
-											<option value="2 hours">2 hours</option>
-											<option value="3 hours">3 hours</option>
-											<option value="6 hours">6 hours</option>
-											<option value="1 day">1 day</option>
-											<option value="2 days">2 days</option>
-											<option value="3 days">3 days</option>
-											<option value="1 week">1 week</option>
-										</select>
-									</div>
-								</div>
 
-								<div class="clearfix"></div>
-								<div class="col-md-6">
+								<div class="clearfix hidden-md hidden-lg"></div>
+								<div class="col-xs-12 col-sm-12 col-md-6">
 									<div class="form-group">
 										<label>Start Date<span class="requrie">(Required)</span></label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input value="" name="meetStartDate" id="meetStartDate"
+											<input value="" name="meetStartDate" id="meetStartDate" readonly="readonly"
 												type="text"
-												class="form-control meet-data-time pull-right active">
+												class="form-control meet-data-time pull-right active"  onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6">
+								<div class="clearfix"></div>
+								<div class="col-xs-12 col-sm-12 col-md-6">
 									<div class="form-group">
 										<label>End Date<span class="requrie">(Required)</span></label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input name="meetEndDate" id="meetEndDate" type="text"
-												class="form-control meet-data-time pull-right active">
+											<input name="meetEndDate" id="meetEndDate" type="text" readonly="readonly"
+												class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 										</div>
 									</div>
 								</div>
-
+								<div class="col-xs-12 col-sm-12 col-md-6">
+									<div class="form-group">
+										<label>Duration <span class="requrie">(Required)</span></label>
+										<input type="text" class="form-control" name="meetDuration" id="meetDuration"/>
+									</div>
+								</div>
 								<div class="clearfix"></div>
-								<div class="col-md-6">
+								<div class="clearfix hidden-md"></div>
+								<div class="col-xs-12 col-sm-12 col-md-6">
 									<div class="form-group">
 										<label>Assign To </label> <select class="form-control select2"
 											name="meetAssignTo" id="meetAssignTo" style="width: 100%;">
@@ -2429,7 +2255,7 @@ function setSelect2ToResolveBy(value){
 									</div>
 								</div>
 
-								<div class="col-md-6">
+								<div class="col-xs-12 col-sm-12 col-md-6">
 									<div class="form-group">
 										<label>Status</label> <select class="form-control select2"
 											name="meetStatus" id="meetStatus" style="width: 100%;">
@@ -2506,7 +2332,7 @@ function setSelect2ToResolveBy(value){
 												<i class="fa fa-calendar"></i>
 											</div>
 											<input value="" name="taskStartDate" id="taskStartDate"
-												type="text"
+												type="text" readonly="readonly"
 												class="form-control task-data-time pull-right active">
 										</div>
 									</div>
@@ -2518,7 +2344,7 @@ function setSelect2ToResolveBy(value){
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input name="taskEndDate" id="taskEndDate" type="text"
+											<input name="taskEndDate" id="taskEndDate" type="text" readonly="readonly"
 												class="form-control task-data-time pull-right active">
 										</div>
 									</div>
@@ -2625,8 +2451,8 @@ function setSelect2ToResolveBy(value){
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input name="eventStartDate" id="eventStartDate" type="text"
-												class="form-control event-date-time pull-right active">
+											<input name="eventStartDate" id="eventStartDate" type="text" readonly="readonly"
+												class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 										</div>
 									</div>
 								</div>
@@ -2637,32 +2463,17 @@ function setSelect2ToResolveBy(value){
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input name="eventEndDate" id="eventEndDate" type="text"
-												class="form-control event-date-time pull-right active">
+											<input name="eventEndDate" id="eventEndDate" type="text" readonly="readonly"
+												class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 										</div>
 									</div>
 								</div>
 
 								<div class="clearfix"></div>
-								<div class="col-md-6">
+								<div class="col-xs-12 col-sm-12 col-md-6">
 									<div class="form-group">
 										<label>Duration <span class="requrie">(Required)</span></label>
-										<select class="form-control select2" name="eventDuration"
-											id="eventDuration" style="width: 100%;">
-											<option value="">-- SELECT A Duration --</option>
-											<option value="15 minutes">15 minutes</option>
-											<option value="30 minutes">30 minutes</option>
-											<option value="45 minutes">45 minutes</option>
-											<option value="1 hour">1 hour</option>
-											<option value="1:30 hours">1:30 hours</option>
-											<option value="2 hours">2 hours</option>
-											<option value="3 hours">3 hours</option>
-											<option value="6 hours">6 hours</option>
-											<option value="1 day">1 day</option>
-											<option value="2 days">2 days</option>
-											<option value="3 days">3 days</option>
-											<option value="1 week">1 week</option>
-										</select>
+										<input type="text" class="form-control" name="eventDuration" id="eventDuration"/>
 									</div>
 								</div>
 								<div class="col-md-6">

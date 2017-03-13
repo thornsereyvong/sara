@@ -1,4 +1,4 @@
-package com.app.entities;
+ package com.app.entities;
 
 import javax.servlet.http.HttpServletRequest;
 

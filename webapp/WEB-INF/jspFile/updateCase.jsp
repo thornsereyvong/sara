@@ -235,24 +235,25 @@ $(document).ready(function() {
 	<section class="content">
 		<div class="box box-danger">			
 			<div class="box-body">			
-				<form method="post" id="form-case" data-ng-init="startupPage()">					
-					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
-					<a class="btn btn-info btn-app" id="btn_reload"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
-					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-cases"> <i class="fa fa-reply"></i> Back </a>
-	
+				<form method="post" id="form-case" data-ng-init="startupPage()">	
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
+						<a class="btn btn-info btn-app" id="btn_reload"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
+						<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-cases"> <i class="fa fa-reply"></i> Back </a>
+					</div>
 					<div class="clearfix"></div>
-					<div class="col-sm-2"><h4>Overview</h4></div>
+					<div class="col-sm-12"><h4>Overview</h4></div>
 					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 					<div class="row">
-						<div class="col-sm-12">
-							<div class="col-sm-6">
-								<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<input type="text" value="{{dataCase.subject}}" class="form-control ng-cloak" id="ca_subject" name="ca_subject">
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Status <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select class="form-control select2" data-item="{{dataCase.statusId}}" name="ca_status" id="ca_status" style="width:100%">
@@ -261,7 +262,8 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="clearfix hidden-md hidden-lg"></div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label"> Type <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select class="form-control select2" name="ca_type" id="ca_type" style="width:100%">
@@ -270,7 +272,8 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="clearfix hidden-lg hidden-sm"></div>	
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Priority <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select class="form-control select2" name="ca_priority" id="ca_priority" style="width:100%">
@@ -279,8 +282,8 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>	
-								<div class="clearfix"></div>							
-								<div class="col-sm-6">
+								<div class="clearfix hidden-md"></div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Origin </span></label>
 									<div class="form-group">
 										<select class="form-control select2" name="ca_origin" id="ca_origin" style="width:100%">
@@ -289,7 +292,7 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Followup Date</label>
 									<div class="form-group">
 										<div class="input-group">
@@ -300,9 +303,8 @@ $(document).ready(function() {
 										</div> 
 									</div>
 								</div>	
-							</div>
-							<div class="col-sm-6">
-								<div class="col-sm-6">
+								<div class="clearfix hidden-lg"></div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Product </label>
 									<div class="form-group">
 										<select class="form-control select2" name="ca_product" id="ca_product" style="width:100%">
@@ -311,7 +313,7 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Customer </label>
 									<div class="form-group">
 										<select class="form-control select2" name="ca_customer" id="ca_customer" style="width:100%">
@@ -320,7 +322,7 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Contact </label>
 									<div class="form-group">
 										<select class="form-control select2" name="ca_contact" id="ca_contact" style="width:100%">
@@ -329,7 +331,7 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="col-sm-12">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Keyword</label>
 									<div class="form-group">
 										<input type="text" class="form-control ng-cloak" value="{{dataCase.caseKey}}" id="ca_key" name="ca_key">
@@ -353,9 +355,9 @@ $(document).ready(function() {
 					<div class="col-sm-2"><h4>Other </h4></div>
 					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 					<div class="row">
-						<div class="col-sm-12">
-							<div class="col-sm-6">				
-								<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">				
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Assigned to  </label>
 									<div class="form-group">
 										<select class="form-control select2" name="ca_assignTo" id="ca_assignTo" style="width:100%">

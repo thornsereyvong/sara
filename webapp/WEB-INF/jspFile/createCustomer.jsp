@@ -317,52 +317,50 @@ $(document).ready(function() {
 		<div class="box box-danger">
 			
 			<div class="box-body">			
-				<form method="post" id="form-customer" data-ng-init="startupCustomer()">					
-					<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
-					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-					<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/list-customers"> <i class="fa fa-reply"></i> Back </a>
-	
+				<form method="post" id="form-customer" data-ng-init="startupCustomer()">	
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">				
+						<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
+						<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+						<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/list-customers"> <i class="fa fa-reply"></i> Back </a>
+					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-2"><h4>Overview</h4></div>
 					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 					<div class="row">
-						<div class="col-sm-12">
-							<div class="col-sm-6">
-								<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Name <span class="requrie">(Required)</span></label>
 									<div class="form-group" id="c_name">
 										<input type="text" class="form-control  ng-cloak" name="cs_name" id="cs_name">
 									</div>
 								</div>							
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Tel <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<input type="text" class="form-control  ng-cloak" name="c_tel1" id="c_tel1">
 									</div>
 								</div>							
 								
-								<div class="clearfix"></div>
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Tel </label>
 									<div class="form-group">
 										<input type="text" class="form-control  ng-cloak" name="c_tel2" id="c_tel2">
 									</div>
 								</div>							
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Fax </label>
 									<div class="form-group">
 										<input type="text" class="form-control  ng-cloak" name="c_fax" id="c_fax">
 									</div>
 								</div>																		
-							</div>
-							<div class="col-sm-6">
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Email </label>
 									<div class="form-group">
 										<input type="email" class="form-control  ng-cloak" name="c_email" id="c_email">
 									</div>
 								</div>							
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Website </label>
 									<div class="form-group">
 										<input type="url" placeholder="http://www.example.com" class="form-control  ng-cloak" name="c_website" id="c_website">
@@ -373,25 +371,24 @@ $(document).ready(function() {
 						</div>
 					</div>
 					
-					
 					<div class="clearfix"></div>				
-					<div class="col-sm-2"><h4>Address</h4></div>				
+					<div class="col-sm-12"><h4>Address</h4></div>				
 					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
 					<div class="row">				
-						<div class="col-sm-12">					
-							<div class="col-sm-12">						
-								<div class="col-sm-12">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">					
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">						
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 									<label class="font-label">Bill To Address</label>
 									<div class="form-group">
 										<input type="text" placeholder="" class="form-control  ng-cloak" name="c_billAddr" id="c_billAddr">
 									</div>
 								</div>															
-								<div class="col-sm-12">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 									<label class="font-label">Ship To Address</label>	
 								</div>
 								
-								<div class="col-sm-12" style="margin-bottom: 10px;" ng-repeat="(key, add) in shipToAdd">									
-									<div class="col-sm-2" style="padding-left: 0px;padding-right: 0px;">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 10px;" ng-repeat="(key, add) in shipToAdd">									
+									<div class="col-xs-6 col-sm-4 col-md-4 col-lg-2" style="padding-left: 0px;padding-right: 0px;">
 										 <div class="input-group"  style="margin-bottom: 5px;">                            	
 											<span class="input-group-addon">
 										       <input ng-if="key ==0 ||  shipToAdd.length <= 1 || key== keyS " type="radio" style="cursor: pointer;" checked="checked" name="ckShipAdd" value="{{shipToAdd[key].code}}" aria-label="...">
@@ -400,16 +397,16 @@ $(document).ready(function() {
 										     <input type="text" placeholder="Address Code"  ng-model="shipToAdd[key].code" name="c_shipCode" class="form-control  ng-cloak" id="c_shipCode{{key}}" >
 										</div>	
 									</div>
-									<div class="col-sm-10" style="padding-left: 0px;padding-right: 0px;">										 										
+									<div class="col-xs-6 col-sm-8 col-md-8 col-lg-10" style="padding-left: 0px;padding-right: 0px;">										 										
 										<div class="input-group"  style="margin-bottom: 5px;">                            												
 										     <input type="text"  placeholder="Description" ng-model="shipToAdd[key].addr" name="c_shipAddr" class="form-control  ng-cloak" id="c_shipAddr{{key}}" >
 											 <span class="input-group-btn">
-										     	<button style="height: 34px;"  name="c_shipAddr" type="button" ng-click="btnRemoveMoreShip(key)" class="btn btn-danger"><i class="fa  fa-minus-square-o"></i></button>
+										     	<button  name="c_shipAddr" type="button" ng-click="btnRemoveMoreShip(key)" class="btn btn-danger"><i class="fa  fa-minus-square-o"></i></button>
 										     </span>
 										</div>									
 									</div>																
 								</div>
-								<div class="col-sm-12" style="margin-bottom: 15px;">													
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 15px;">													
 									<button type="button" ng-click="btnAddMoreShip()" id="btnAddMoreShip" class="btn btn-primary"><i class="fa fa-plus-square-o"></i></button>
 								</div>																
 							</div>					
@@ -421,36 +418,34 @@ $(document).ready(function() {
 					<div class="col-sm-2"><h4>Other</h4></div>				
 					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
 					<div class="row">				
-						<div class="col-sm-12">
-							<div class="col-sm-6">				
-								<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">				
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Facebook</label>
 									<div class="form-group">
 										<input type="text" class="form-control  ng-cloak" name="c_facebook" id="c_facebook">
 									</div>
 								</div>												
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Line</label>
 									<div class="form-group">
 										<input type="text" class="form-control  ng-cloak" name="c_line" id="c_line">
 									</div>
 								</div>											
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Viber</label>
 									<div class="form-group">
 										<input type="text" class="form-control  ng-cloak" name="c_viber" id="c_viber">
 									</div>
 								</div>												
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">WhatApp</label>
 									<div class="form-group">
 										<input type="text" class="form-control  ng-cloak" name="c_whatapp" id="c_whatapp">
 									</div>
 								</div>
 								
-							</div>				
-							<div class="col-sm-6">				
-								<div class="col-sm-6" data-ng-init="listIndustry()">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" data-ng-init="listIndustry()">
 									<label class="font-label">Industry</label>
 									<div class="form-group">
 										<select class="form-control  ng-cloak select2" name="c_industry" id="c_industry" style="width:100%">
@@ -459,7 +454,7 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>						
-								<div class="col-sm-6" data-ng-init="listAccount()">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" data-ng-init="listAccount()">
 									<label class="font-label">Type</label>
 									<div class="form-group">
 										<select style="width:100%" class="form-control  ng-cloak select2" name="c_type" id="c_type">
@@ -477,9 +472,9 @@ $(document).ready(function() {
 					<div class="col-sm-2"><h4>Setting</h4></div>				
 					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
 					<div class="row">			
-						<div class="col-sm-12">					
-							<div class="col-sm-6">						
-								<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">					
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">						
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Customer Group <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select style="width:100%" class="form-control  ng-cloak select2" name="c_group" id="c_group">
@@ -488,7 +483,7 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>															
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select style="width:100%" class="form-control  ng-cloak select2" name="c_price" id="c_price">
@@ -502,12 +497,12 @@ $(document).ready(function() {
 					</div>
 					
 					<div class="clearfix"></div>				
-					<div class="col-sm-2"><h4>Attachment Picture</h4></div>				
+					<div class="col-sm-12"><h4>Attachment Picture</h4></div>				
 					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
 					<div class="row">				
-						<div class="col-sm-12">					
-							<div class="col-sm-6">					
-								<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">					
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">					
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Logo</label>
 									<div class="form-group">
 										<input style="width: 100%;" accept="image/*" type="file" name="file" id="fileLogo" class="btn btn-default">
@@ -519,7 +514,6 @@ $(document).ready(function() {
 				</form>
 			</div>
 			<div class="box-footer"><div id="test_div"></div></div>
-			<div id="errors"></div>
 		</div>
 	</section>
 </div>

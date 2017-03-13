@@ -2703,13 +2703,13 @@ table.text-center, table.text-center td, table.text-center th {
 	    position: relative;
 	    padding: 9px 5px;
 	    margin: 0 0 10px 0px;
-	    min-width: 45px;
-	    height: 45px;
+	    min-width: 70px;
+	    height: 50px;
 	    text-align: center;
 	    color: #666;
 	    border: 1px solid #ddd;
 	    background-color: #f4f4f4;
-	    font-size: 12px;
+	    font-size: 14px;
 	}
 	.btn-app>.fa, .btn-app>.glyphicon, .btn-app>.ion {
 		font-size: 14px;
@@ -2741,6 +2741,12 @@ table.text-center, table.text-center td, table.text-center th {
 	}
 	
 	#con_salutation {
+		height: 34px; 
+		width: 75px;
+		text-align:center;
+	}
+	
+	#lea_salutation{
 		height: 34px; 
 		width: 75px;
 		text-align:center;
@@ -2920,6 +2926,10 @@ table.text-center, table.text-center td, table.text-center th {
 	    font-size: 8px !important;
 	}
 	
+	.input-group-addon {
+	    padding: 3px 3px !important;
+	}
+	
 	.form-group {
 	    margin-bottom: 5px !important;
 	}
@@ -2934,6 +2944,12 @@ table.text-center, table.text-center td, table.text-center th {
 	}
 		
 	#con_salutation {
+		height: 22px; 
+		width: 50px;
+		text-align:center;
+	}
+	
+	#lea_salutation{
 		height: 22px; 
 		width: 50px;
 		text-align:center;

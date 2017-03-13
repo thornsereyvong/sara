@@ -345,23 +345,23 @@ padding-right: 10px;
 			<div class="box-body">
 			
 			<form method="post" id="form-leads" data-ng-init="addLeadOnStartup()">
-				
-				<a class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</a> 
-				<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-				<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-leads"> <i class="fa fa-reply"></i> Back </a>
-
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<a class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</a> 
+					<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-leads"> <i class="fa fa-reply"></i> Back </a>
+				</div>
 				<div class="clearfix"></div>
-				<div class="col-sm-2"><h4>Overview</h4></div>
+				<div class="col-xs-12 col-sm-2"><h4>Overview</h4></div>
 				<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 				<div class="row">
-					<div class="col-sm-12">
-						<div class="col-sm-6">
-							<div class="col-sm-6">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">First Name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 		                            <div class="input-group">
 		                            	<span class="input-group-btn">
-			                                 <select class="btn" style="height: 34px; width: 75px;text-align:center" name="lea_salutation" id="lea_salutation">		                                      
+			                                 <select class="btn" name="lea_salutation" id="lea_salutation">		                                      
 			                                     <option value="Mr.">Mr.</option>
 			                                     <option value="Ms.">Ms.</option>
 			                                     <option value="Mrs.">Mrs.</option>
@@ -374,54 +374,53 @@ padding-right: 10px;
 								</div>	
 							</div>
 							
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Last Name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<input type="text" class="form-control" id="lea_lastName" name="lea_lastName">
 								</div>
 							</div>
-							
-							<div class="clearfix"></div>
-							<div class="col-sm-6">
+							<div class="clearfix hidden-xs hidden-md hidden-lg"></div>
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Company Name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_accountName" name="lea_accountName">
 								</div>	
 							</div>
-							<div class="col-sm-6">
+							<div class="clearfix hidden-xs hidden-sm hidden-lg"></div>
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Title </label>
 								<div class="form-group">
 									<input type="text" class="form-control" id="lea_title" name="lea_title">
 								</div>	
 							</div>
-							<div class="clearfix"></div>
-							<div class="col-sm-6">
+							<div class="clearfix hidden-xs hidden-md"></div>
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Department </label>
 								<div class="form-group">
 									<input type="text" class="form-control" id="lea_department" name="lea_department">
 								</div>
 							</div>						
-						</div>
-						<div class="col-sm-6">
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label>Phone :</label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_phone" name="lea_phone">
 								</div>	
 							</div>
-							<div class="col-sm-6 ">
+							<div class="clearfix hidden-lg"></div>
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Mobile Phone </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_mobilePhone" name="lea_mobilePhone">
 								</div>	
 							</div>
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Website </label>
 								<div class="form-group">
 									<input type="url" placeholder="http://www.example.com" class="form-control" id="lea_website" name="lea_website">
 								</div>	
 							</div>
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Email </label>
 								<div class="form-group">
 									<input type="email"  class="form-control" id="lea_email" name="lea_email">
@@ -441,67 +440,62 @@ padding-right: 10px;
 					
 				</div>
 				
-				
 				<div class="clearfix"></div>				
-				<div class="col-sm-2"><h4>Address </h4></div>				
+				<div class="col-xs-12 col-sm-2"><h4>Address </h4></div>				
 				<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 				<div class="row">
-					<div class="col-sm-12">
-						<div class="col-sm-6">
-						
-							<div class="col-sm-6">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">No </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_no" name="lea_no">
 								</div>	
 							</div>
 								
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Street </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_street" name="lea_street">
 								</div>	
 							</div>
 								
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Village </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_village" name="lea_village">
 								</div>
 							</div>
 								
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Commune </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_commune" name="lea_commune">
 								</div>
 							</div>
 								
-							
-						</div>
-						<div class="col-sm-6">
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">District </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_district" name="lea_district">
 								</div>	
 							</div>
 							
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">City </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_city" name="lea_city">
 								</div>	
 							</div>
 							
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">State </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_state" name="lea_state">
 								</div>
 							</div>
 							
-							<div class="col-sm-6">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Country </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="lea_country" name="lea_country">
@@ -515,13 +509,13 @@ padding-right: 10px;
 						
 						
 			<div class="clearfix"></div>
-			<div class="col-sm-2"><h4>More Information </h4></div>
+			<div class="col-xs-12 col-sm-12"><h4>More Information </h4></div>
 			<div class="col-sm-12"> <hr style="margin-top: 3px;" />
 			</div>
 			<div class="row" >
-				<div class="col-sm-12">
-					<div class="col-sm-6">
-						<div class="col-sm-6">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 							<label class="font-label">Campaign <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<select class="form-control select2" name="lea_ca" id="lea_ca" style="width: 100%;">
@@ -530,7 +524,7 @@ padding-right: 10px;
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-6"">
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"">
 							<label class="font-label">Status <span class="requrie">(Required)</span></label>
 							<div class="form-group">
 								<select class="form-control select2" name="lea_status" id="lea_status" style="width: 100%;">
@@ -539,11 +533,8 @@ padding-right: 10px;
 								</select>	
 							</div>
 						</div>
-							
-						
-					</div>
-				  	<div class="col-sm-6">		
-						<div class="col-sm-6">
+						<div class="clearfix hidden-md hidden-xs hidden-lg"></div>
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 							<label class="font-label">Source </label>
 							<div class="form-group">
 								<select class="form-control select2" name="lea_source" id="lea_source" style="width: 100%;">
@@ -552,7 +543,8 @@ padding-right: 10px;
 								</select>
 							</div>
 						</div>
-						<div class="col-sm-6">
+						<div class="clearfix hidden-xs hidden-sm hidden-lg"></div>
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 							<label class="font-label">Industry </label>
 							<div class="form-group" >
 								<select class="form-control select2" name="lea_industry" id="lea_industry" style="width: 100%;">
@@ -570,24 +562,24 @@ padding-right: 10px;
 			<div class="col-sm-2"><h4>Other </h4></div>
 			<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 			<div class="row">
-				<div class="col-sm-12">
-				<div class="col-sm-6">
-					<div class="col-sm-6">
-						<label class="font-label">Assigned to : </label>
-						<div class="form-group">
-							<select class="form-control select2"  name="lea_assignTo" id="lea_assignTo" style="width: 100%;">
-		                      	<option value="">-- SELECT User --</option>
-								<option ng-repeat="user in users" value="{{user.userID}}">{{user.username}}</option>         
-			            	</select>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+							<label class="font-label">Assigned to : </label>
+							<div class="form-group">
+								<select class="form-control select2"  name="lea_assignTo" id="lea_assignTo" style="width: 100%;">
+			                      	<option value="">-- SELECT User --</option>
+									<option ng-repeat="user in users" value="{{user.userID}}">{{user.username}}</option>         
+				            	</select>
+							</div>
 						</div>
+						<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+							<label class="font-label">Image :</label>
+							<div class="form-group">
+								<input style="width: 100%;" accept="image/*" type="file" name="file" id="fileLogo" class="btn btn-default">
+							</div>
+						</div>	
 					</div>
-					<div class="col-sm-6">
-						<label class="font-label">Image :</label>
-						<div class="form-group">
-							<input style="width: 100%;" accept="image/*" type="file" name="file" id="fileLogo" class="btn btn-default">
-						</div>
-					</div>	
-				</div>
 				</div>
 			</div>
 			

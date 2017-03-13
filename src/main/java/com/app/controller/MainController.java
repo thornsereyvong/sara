@@ -1068,7 +1068,7 @@ public class MainController {
 		model.put("role_list",camMap.get("list"));
 		model.put("role_view",camMap.get("view"));
 		if(camMap.get("access").equals("YES") && camMap.get("view").equals("YES")){
-			return "viewCall";
+			return "viewMeeting";
 		}else{
 			return "permission";
 		}

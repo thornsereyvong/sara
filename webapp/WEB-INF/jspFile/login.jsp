@@ -15,6 +15,9 @@
 						},
 					}).success(function(response) {					
 						$scope.database = response.DATABASE;
+						setTimeout(function(){ 	
+							$("#company").val("bk_balancika_crm12345Balancika (CRM) "); 
+						},1000);
 					});
 			};
 		}]);
@@ -30,8 +33,6 @@
 		$(document).ready(function() {
 
 			getUrlError();
-			
-		
 			
 			$("#company").change(function() {
 				//alert($("#company :selected").val());

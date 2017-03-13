@@ -18,13 +18,14 @@
 	
 	<section class="content">
 		<div class="box box-danger">
-			<div class="box-header with-border">								
-				<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
-				<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-				<button class="btn btn-info btn-app" onclick="creditInfo()" > <i class="fa fa-info"></i> Credit Info </button>
-				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/quote/list"> <i class="fa fa-reply"></i> Back </a>
-
-				<div class="clearfix"></div>								
+			<div class="box-header with-border">	
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">							
+					<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
+					<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+					<button class="btn btn-info btn-app" onclick="creditInfo()" > <i class="fa fa-info"></i> Credit Info </button>
+					<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/quote/list"> <i class="fa fa-reply"></i> Back </a>
+					<div class="clearfix"></div>
+				</div>								
 			</div>
 			<div class="box-body">
 				<div class="row">

@@ -126,7 +126,6 @@ $(function(){
 	$("#ca_article").prop("disabled", true);
 	$("#collabTags").select2();
 	
-	
 	$("#callDuration").timepicker({
 		format: 'h:mm',
         showInputs: false,
@@ -145,7 +144,7 @@ $(function(){
      	$('#frmOpportDetail').bootstrapValidator('revalidateField', 'oppCloseDate');
  	});
 	
-	$('#').daterangepicker({
+	$('.call-date-time').daterangepicker({
         format: 'DD/MM/YYYY h:mm A',
         singleDatePicker: true,
         showDropdowns: true,
@@ -153,12 +152,12 @@ $(function(){
         timePickerIncrement: 5,
     }).on('change', function(e) {
     	var date = getValueStringById("callStartDate");
-    	if(date === ""){
+    	/*if(date === ""){
     		setValueById("callStartDate",callStartDateOld);    	
     		$('#frmAddCall').data('bootstrapValidator').resetField($('#callStartDate'));
     	}else{
     		callStartDateOld = date;
-    	}
+    	}*/
      	$('#frmAddCall').bootstrapValidator('revalidateField', 'callStartDate');
  	});
 	
@@ -657,14 +656,14 @@ $(function(){
                     }
 				}
 			},
-			meetDuration : {
+			meetDuration: {
 				validators: {
 					notEmpty: {
 						message: 'The duration is required and can not be empty!'
 					}
 				}
 			},
-			meetStatus : {
+			meetStatus: {
 				validators: {
 					
 				}
@@ -718,7 +717,6 @@ $(function(){
 									angular.element(document.getElementById('viewOpportunityController')).scope().listDataMeetByRalateType();
 									$("#meetStatus").select2('val',"");
 									$("#meetAssignTo").select2('val',"");	
-									$("#meetDuration").select2('val',"");
 									$('#frmAddMeet').bootstrapValidator('resetForm', true);
 									swal({
 			    						title: "SUCCESSFUL",
@@ -781,7 +779,6 @@ $(function(){
 									angular.element(document.getElementById('viewOpportunityController')).scope().listDataMeetByRalateType();
 									$("#meetStatus").select2('val',"");
 									$("#meetAssignTo").select2('val',"");	
-									$("#meetDuration").select2('val',"");
 									$('#frmAddMeet').bootstrapValidator('resetForm', true);					
 									swal({
 			    						title: "SUCCESSFUL",
@@ -1119,8 +1116,6 @@ $(function(){
 						    success: function(result){					    						    
 								if(result.MESSAGE == "INSERTED"){						
 									angular.element(document.getElementById('viewOpportunityController')).scope().listDataEventByRalateType();						
-									
-									$("#eventDuration").select2('val',"");
 									$("#eventAssignTo").select2('val',"");	
 									$("#eventLocation").select2('val',"");
 									
@@ -1184,8 +1179,6 @@ $(function(){
 						    success: function(result){					    						    
 								if(result.MESSAGE == "UPDATED"){						
 									angular.element(document.getElementById('viewOpportunityController')).scope().listDataEventByRalateType();						
-									
-									$("#eventDuration").select2('val',"");
 									$("#eventAssignTo").select2('val',"");	
 									$("#eventLocation").select2('val',"");
 									

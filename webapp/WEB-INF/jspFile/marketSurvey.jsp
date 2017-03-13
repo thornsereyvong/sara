@@ -22,6 +22,42 @@ app.controller('marketSurveyController',['$scope','$http',function($scope, $http
 	angular.element(document).ready(function () {				
 		
     });
+
+	$scope.pageSize = {};
+
+	$scope.pageSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.pageSize.row = $scope.pageSize.rows[1].value;
+
+	$scope.custSize = {};
+
+	$scope.custSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.custSize.row = $scope.custSize.rows[1].value;
+
+	$scope.comSize = {};
+
+	$scope.comSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.comSize.row = $scope.comSize.rows[1].value;
 	
 	$scope.listCompetitors = function(){
 		$http.get("${pageContext.request.contextPath}/hbu/competitor/list").success(function(response){
@@ -921,96 +957,81 @@ $(document).ready(function(){
 						<div class="row">
 							<div class="col-md-12">
 								<div class="nav-tabs-custom">
-									
 									<div class="tab-content">
-									
 										<div class="tab-pane  in active" id="list_tap">
 											<div class="row">
-												<div class="col-sm-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<div class="tablecontainer" data-ng-init="listSurveys()" > 
-														<div class="box-header with-border row">
+														<div class="box-header row">
 															<div style="background: #fff;">
-																<div class="">
-																	<div class="col-sm-1">
-																		<a href="#addSurvey_tap" class="btn btn-info btn-app"  data-toggle="tab" ng-click="startup()" id="surAdd"><i class="fa fa-plus"></i>Create</a> 
-																	</div>
+																<div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
+																	<a href="#addSurvey_tap" class="btn btn-info btn-app"  data-toggle="tab" ng-click="startup()" id="surAdd"><i class="fa fa-plus"></i>Create</a> 
 																</div>
+																<div class="col-xs-6 col-sm-offset-3 col-sm-6 col-md-offset-5 col-md-4 col-lg-offset-8 col-lg-2">
+														        	<form class="form-inline">
+																        <div class="form-group" style="float: right;">
+																        	<div class="input-group">
+																        		<span class="input-group-btn">
+																		       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
+																		      	</span>
+																        		<input type="text" ng-model="searchMS" class="form-control" placeholder="Search">
+																        	</div>
+																        </div>
+																    </form>
+																    <br/>
+													  			</div>
+															 	<div class="col-xs-4 col-sm-2 col-md-2 col-lg-1">
+															        <form class="form-inline">
+																        <div class="form-group" style="float: right;">
+																        	<div class="input-group">
+																        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+																        	</div>
+																        </div>
+																    </form>
+																    <br/>
+													  			</div>
 															</div>
 														</div>
-														
-														<div class="col-sm-3">
-													        <div class="form-group">
-													            <input type="text" ng-model="searchMS" class="form-control" placeholder="Search">
-													        </div>
-													  	</div>
-													 	<div class="col-sm-2">
-													        <div class="form-group">
-													            <select class="form-control" ng-model="rowNumMS" style="width:100%" id="rowNumMS" name="rowNumMS">
-																	<option value="5">5</option>
-																	<option value="10">10</option>
-																	<option value="15">15</option>
-																	<option value="20">20</option>
-																	<option value="50">50</option>
-																	<option value="100">100</option>
-																</select>
-													        </div>
-											  			</div>
 													  	<div class="clearfix"></div>
-														
-														<table class="table table-hover" >
-															<tr>
-																<th style="cursor: pointer;" ng-click="sort('msId')">ID
-																	<span class="glyphicon sort-icon" ng-show="sortKey=='msId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-																</th>
-																<th style="cursor: pointer;" ng-click="sort('item.itemId')">Product
-																	<span class="glyphicon sort-icon" ng-show="sortKey=='item.itemId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-																</th>
-																<th style="cursor: pointer;" ng-click="sort('msDate')">Survey Date
-																	<span class="glyphicon sort-icon" ng-show="sortKey=='msDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-																</th>
-																<th style="cursor: pointer;" ng-click="sort('msCreateBy')">Create By
-																	<span class="glyphicon sort-icon" ng-show="sortKey=='msCreateBy'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-																</th>
-																				
-																<th>Action</th>
-															</tr>
-									
-															<tr dir-paginate="sur in surveys |orderBy:sortKey:reverse |filter:searchMS |itemsPerPage:rowNumMS" class="ng-cloak">
-																<td>{{sur.msId}}</td>
-																<td>[{{sur.item.itemId}}] {{sur.item.itemName}}</td>
-																<td>{{sur.msDate}}</td>
-																<td>{{sur.msCreateBy}}</td>
-																<td>
-																	<div class="col-sm-2">
-																		<div class="btn-group">
-													                      <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
-													                        <span class="caret"></span>
-													                        <span class="sr-only">Toggle Dropdown</span>
-													                      </button>
-													                      <ul class="dropdown-menu" role="menu">
-													                        <li><a href="#editSurvey_tap" data-toggle="tab" ng-click="findMarketSurveyById(sur.msId)"  id="btnEdit"><i class="fa fa-pencil"></i> Edit</a></li>
-													                        <li ng-click="deleteMarketSurvey(sur.msId)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-													                        <li><a href="#" ng-click="viewMarketSurveyById(sur.msId)"  id="btnEdit"><i class="fa fa-eye"></i> View</a></li>
-													                      </ul>
-													                    </div>
-												                   	</div>	
-																</td>
-															</tr>
-													
-													</table>
+														<div class="table-responsive">
+															<table class="table table-hover" >
+																<tr>
+																	<th style="cursor: pointer;" ng-click="sort('msId')">ID
+																		<span class="glyphicon sort-icon" ng-show="sortKey=='msId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+																	</th>
+																	<th style="cursor: pointer;" ng-click="sort('item.itemId')">Product
+																		<span class="glyphicon sort-icon" ng-show="sortKey=='item.itemId'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+																	</th>
+																	<th style="cursor: pointer;" ng-click="sort('msDate')">Survey Date
+																		<span class="glyphicon sort-icon" ng-show="sortKey=='msDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+																	</th>
+																	<th style="cursor: pointer;" ng-click="sort('msCreateBy')">Create By
+																		<span class="glyphicon sort-icon" ng-show="sortKey=='msCreateBy'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+																	</th>
+																	<th class="text-center">Action</th>
+																</tr>
+																<tr dir-paginate="sur in surveys |orderBy:sortKey:reverse |filter:searchMS |itemsPerPage:pageSize.row" class="ng-cloak">
+																	<td>{{sur.msId}}</td>
+																	<td>[{{sur.item.itemId}}] {{sur.item.itemName}}</td>
+																	<td>{{sur.msDate}}</td>
+																	<td>{{sur.msCreateBy}}</td>
+																	<td class="text-center">
+																		<a href="#editSurvey_tap" data-toggle="tab" ng-click="findMarketSurveyById(sur.msId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																		<a href="#" ng-click="deleteMarketSurvey(sur.msId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																		<a href="#" ng-click="viewMarketSurveyById(sur.msId)"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																	</td>
+																</tr>
+														</table>
+													</div>
 													<dir-pagination-controls
-												       max-size="rowNumMS"
+												       max-size="pageSize.row"
 												       direction-links="true"
 												       boundary-links="true" >
 												    </dir-pagination-controls>
-													     
-													    
 												</div>	
 											</div>
 										</div>
-
 									</div>
-										
 										<div class="tab-pane" id="addSurvey_tap">
 											<div class="row">
 												<div class="col-sm-12">
@@ -1018,13 +1039,9 @@ $(document).ready(function(){
 														<div class="row">
 															<div class="box-header with-border">
 																<div style="background: #fff;">
-																	
 																	<div class="col-md-12" >
-																		
 																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToList" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey();listSurveys()"><i class="fa fa-reply"></i> Back</a> 
-																	
 																		<a class="btn btn-info btn-app" id="addCustToPro" ng-click="addCustToPro(true)" ><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
-																	
 																		<a class="btn btn-info btn-app" id = "addCompetitor" ng-click="addComToPro(true)" ><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
 																	</div>
 																</div>
@@ -1092,9 +1109,7 @@ $(document).ready(function(){
 																<div style="background: #fff;">
 																	<div class="col-sm-12">
 																		<a href="#list_tap" class="btn btn-info btn-app" id = "backToListTap" data-toggle="tab" aria-expanded="false" onClick="backTap(this)" ng-click="cancelSurvey();listSurveys()"><i class="fa fa-reply"></i> Back</a> 
-																	
 																		<a class="btn btn-info btn-app" id = "addToPro" ng-click="addCustToPro(true)"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Customer</a> 
-																	
 																		<a class="btn btn-info btn-app" id = "addToCom" ng-click="addComToPro(true)"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add Competitor</a> 
 																	</div>
 																</div>
@@ -1148,7 +1163,6 @@ $(document).ready(function(){
 
 										</div>
 										
-										
 										<div class="tab-pane" id="viewSurvey_tap">
 											<div class="row">
 												<div class="col-sm-12">
@@ -1161,23 +1175,14 @@ $(document).ready(function(){
 															</div>
 														</div>
 													</div>
-													
 													<div class="col-sm-12">
-													
-														
-														
 													</div>												
 												</div>
 											</div>
-
 										</div>
-										
-										
-										
 									</div>
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -1198,9 +1203,9 @@ $(document).ready(function(){
 					</div>
 					<div class="modal-body">
 						<center>
-						<div class="row" id="contentChart">
-							<div id="testChart" style="width: 400px; height:400px;"></div>
-						</div>
+							<div class="row" id="contentChart">
+								<div id="testChart" style="width: 400px; height:400px;"></div>
+							</div>
 						</center>
 						<br><br><br>
 					</div>
@@ -1231,36 +1236,30 @@ $(document).ready(function(){
 						  	</div>
 						 	<div class="col-sm-2">
 						        <div class="form-group">
-						            <select class="form-control" ng-model="rowNumCom" style="width:100%" id="rowNumCom" name="rowNumCom">
-										<option value="5">5</option>
-										<option value="10">10</option>
-										<option value="15">15</option>
-										<option value="20">20</option>
-										<option value="50">50</option>
-										<option value="100">100</option>
-									</select>
+						             <select class="form-control" ng-model="custSize.row" ng-options="obj.value as obj.label for obj in custSize.rows"></select>
 						        </div>
 				  			</div>
 						  	<div class="clearfix"></div>
-						
 							<form id="">
 								<div class="col-md-12">
 									<div>
 										<div class="form-group table-responsive">
 											<table class="table table-bordered">
 												<tr class="active info">
-													<th><label>Competitor ID</label></th>
-													<th><label>Competitor Name</label></th>
+													<th>ID</th>
+													<th>Name</th>
+													<th>Type</th>
 													<th class="text-center"></th>
 												</tr>
-												<tr dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:searchCom |itemsPerPage:rowNumCom" pagination-id="compRowId"><!-- dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6" -->
+												<tr dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:searchCom |itemsPerPage:custSize.row" pagination-id="compRowId"><!-- dir-paginate = "com in competitors |orderBy:sortKey:reverse |filter:search |itemsPerPage:6" -->
 													<td class="col-md-3">{{com.comId}}</td>
 													<td>{{com.comName}}</td>
+													<td>{{com.comStatus}}</td>
 													<td class="col-md-1 text-center"><input type="checkbox" ng-checked="com.meDataSource" data-index="{{$index}}" onClick="clkCompetitor(this)"  name="competitor" value="{{com.comId}}" /></td>
 												</tr>
 											</table>
 											<dir-pagination-controls
-										       max-size="rowNumCom"
+										       max-size="custSize.row"
 										       pagination-id="compRowId" 
 										       direction-links="true"
 										       boundary-links="true" >
@@ -1302,14 +1301,7 @@ $(document).ready(function(){
 						  	</div>
 						 	<div class="col-sm-2">
 						        <div class="form-group">
-						            <select class="form-control" ng-model="rowNum" style="width:100%" id="rowNum" name="rowNum">
-										<option value="5">5</option>
-										<option value="10">10</option>
-										<option value="15">15</option>
-										<option value="20">20</option>
-										<option value="50">50</option>
-										<option value="100">100</option>
-									</select>
+						            <select class="form-control" ng-model="custSize.row" ng-options="obj.value as obj.label for obj in custSize.rows"></select>
 						        </div>
 				  			</div>
 						  	<div class="clearfix"></div>
@@ -1321,18 +1313,16 @@ $(document).ready(function(){
 												<th><label>Customer ID</label></th>
 												<th>Customer Name</th>
 												<th class="text-center"></th>
-												
 											</tr>
-											<tr dir-paginate="cust in customers |orderBy:sortKey:reverse |filter:search |itemsPerPage:rowNum" pagination-id="custRowId"   class="ng-cloak">
+											<tr dir-paginate="cust in customers |orderBy:sortKey:reverse |filter:search |itemsPerPage:custSize.row" pagination-id="custRowId"   class="ng-cloak">
 												<td class="col-md-3">{{cust.custId}} </td>
 												<td>{{cust.custName}}</td>
 												<td class="col-md-2 text-center"><input type="checkbox" ng-checked="cust.meDataSource" data-index="{{$index}}" onClick="clkCustomer(this)" ng-model="cust.checked"  name="customer" value="{{cust.custId}}" /></td>
 											</tr>
-											
 										</table>
 										<dir-pagination-controls
 											pagination-id="custRowId" 
-									       	max-size="rowNum"
+									       	max-size="custSize.row"
 									       	direction-links="true"
 									       	boundary-links="true" >
 									    </dir-pagination-controls>
@@ -1349,11 +1339,7 @@ $(document).ready(function(){
 				</div>
 			</div>
 		</div>
-	
 	</section>
-	<div id="errors"></div>
-	
-	
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
@@ -1368,6 +1354,3 @@ $(document).ready(function(){
 	            + Math.round(series.percent) + "%</div>";
 	}
 </script>
-
-
-

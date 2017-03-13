@@ -87,12 +87,14 @@ app.controller('leadProjectController',['$scope','$http',function($scope, $http)
 
 </script>
 
-<div class="content-wrapper" ng-app="leadProject" ng-controller="leadProjectController">
+<div class="content-wrapper" ng-app="leadProject"
+	ng-controller="leadProjectController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>Lead Projects</h1>
 		<ol class="breadcrumb">
-			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
+			<li><a href="${pageContext.request.contextPath}"><i
+					class="fa fa-home"></i> Home</a></li>
 			<li><a href="#"><i class="fa fa-dashboard"></i>Lead Projects</a></li>
 		</ol>
 	</section>
@@ -100,106 +102,116 @@ app.controller('leadProjectController',['$scope','$http',function($scope, $http)
 	<section class="content">
 
 		<!-- Default box -->
-		
+
 		<div class="box box-danger">
 			<div class="box-header with-border">
-				<div style="background: #fff;margin-top: 15px;">
-				 <div class="col-sm-12">
-				 	<a href="${pageContext.request.contextPath}/create-lead-project" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
-				 </div>
-			</div>
-			</div>
-			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
-			<div class="clearfix"></div>
-			<div class="panel panel-default">
-  				<div class="panel-body">
-				 	<div class="col-sm-2">
-					  	<form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<div class="input-group">
-					        		 <span class="input-group-btn">
-							       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
-							      	</span>
-					        		<input type="text" ng-model="search" class="form-control" placeholder="Search">
-					        	</div>
-					        </div>
-					    </form>
-					    <br/>
-					</div>
-					<div class="col-sm-2">
-					  	<form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
-					        	<label>Row: </label>
-					        	<div class="input-group">
-					        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
-					        	</div>
-					        </div>
-					    </form>
-					    <br/>
-					</div>
-					<div class="clearfix"></div>
+				<div style="background: #fff; margin-top: 15px;">
 					<div class="col-sm-12">
-						<div class="tablecontainer table-responsive" data-ng-init="listLeadProjects()" > 
-								<table class="table table-hover" >
-									<tr>
-										<th style="cursor: pointer;" ng-click="sort('id')">ID
-											<span class="glyphicon sort-icon" ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('name')">Name
-											<span class="glyphicon sort-icon" ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('accountManager')">Account Manager
-											<span class="glyphicon sort-icon" ng-show="sortKey=='accountManager'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('companyName')">Company
-											<span class="glyphicon sort-icon" ng-show="sortKey=='companyName'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('email')">Email
-											<span class="glyphicon sort-icon" ng-show="sortKey=='email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('startDate')">Start Date
-											<span class="glyphicon sort-icon" ng-show="sortKey=='startDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th style="cursor: pointer;" ng-click="sort('endDate')">End Date
-											<span class="glyphicon sort-icon" ng-show="sortKey=='endDate'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
-										</th>
-										<th>Action</th>
-									</tr>
-									<tr dir-paginate="lp in leadProjects |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>{{lp.id}}</td>
-										<td>{{lp.name == '' ?'-':lp.name}}</td>
-										<td>{{lp.accountManager == ''?'-':lp.accountManager}}</td>
-										<td>{{lp.companyName == ''?'-':lp.companyName}}</td>
-										<td>{{lp.email == ''?'-':lp.email}}</td>
-										<td>{{lp.startDate == null?'-':lp.startDate | date:'dd/MM/yyyy'}}</td>
-										<td>{{lp.endDate == null?'-':lp.endDate | date:'dd/MM/yyyy'}}</td>	
-										<td ng-if="'<%=roleEdit%>' == 'NO' && '<%=roleDelete%>' == 'NO'&& '<%=roleView%>' == 'NO'">-</td>	
-										<td ng-if="'<%=roleEdit%>' == 'YES' || '<%=roleDelete%>' == 'YES'|| '<%=roleView%>' == 'YES'">
-											<div class="col-sm-2">
-												<div class="btn-group">
-							                      <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
-							                        <span class="caret"></span>
-							                        <span class="sr-only">Toggle Dropdown</span>
-							                      </button>
-							                      <ul class="dropdown-menu" role="menu">
-							                        <li ng-if="'<%=roleEdit%>' == 'YES'"><a href="${pageContext.request.contextPath}/update-lead-project/{{lp.id}}"><i class="fa fa-pencil"></i> Edit</a></li>
-							                        <li ng-if="'<%=roleDelete%>' == 'YES'" ng-click="deleteLeadProject(lp.id)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-							                        <li ng-if="'<%=roleView%>' == 'YES'"><a href="${pageContext.request.contextPath}/view-lead-project/{{lp.id}}"><i class="fa fa-eye"></i> View</a></li>
-							                      </ul>
-							                    </div>
-						                   	</div>	
-										</td>
-									</tr>
-							</table>
-							<dir-pagination-controls
-						       max-size="pageSize.row"
-						       direction-links="true"
-						       boundary-links="true" >
-						    </dir-pagination-controls>
-						</div>	
+						<a href="${pageContext.request.contextPath}/create-lead-project"
+							class="btn btn-info btn-app"><i class="fa fa-plus"
+							aria-hidden="true"></i> Create</a>
 					</div>
-			  </div>
-		</div>
+				</div>
+			</div>
+			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);">
+				<!-- <div class="clearfix"></div> -->
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-11">
+								<form class="form-inline">
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-btn">
+												<button class="btn btn-default" type="button"
+													disabled="disabled">
+													<i class="fa fa-search" aria-hidden="true"></i>
+												</button>
+											</span> <input type="text" ng-model="search" class="form-control"
+												placeholder="Search">
+										</div>
+									</div>
+								</form>
+								<br />
+							</div>
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-1">
+								<form class="form-inline">
+									<div class="form-group" style="float: right;">
+										<div class="input-group">
+											<select class="form-control" ng-model="pageSize.row"
+												ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+										</div>
+									</div>
+								</form>
+								<br />
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-sm-12">
+								<div class="tablecontainer table-responsive"
+									data-ng-init="listLeadProjects()">
+									<table class="table table-hover">
+										<tr>
+											<th style="cursor: pointer;" ng-click="sort('id')">ID <span
+												class="glyphicon sort-icon" ng-show="sortKey=='id'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></th>
+											<th style="cursor: pointer;" ng-click="sort('name')">Name
+												<span class="glyphicon sort-icon" ng-show="sortKey=='name'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('accountManager')">Account
+												Manager <span class="glyphicon sort-icon"
+												ng-show="sortKey=='accountManager'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('companyName')">Company
+												<span class="glyphicon sort-icon"
+												ng-show="sortKey=='companyName'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('email')">Email
+												<span class="glyphicon sort-icon" ng-show="sortKey=='email'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('startDate')">Start
+												Date <span class="glyphicon sort-icon"
+												ng-show="sortKey=='startDate'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th style="cursor: pointer;" ng-click="sort('endDate')">End
+												Date <span class="glyphicon sort-icon"
+												ng-show="sortKey=='endDate'"
+												ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}">
+											</th>
+											<th class="text-center">Action</th>
+										</tr>
+										<tr
+											dir-paginate="lp in leadProjects |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row"
+											class="ng-cloak">
+											<td>{{lp.id}}</td>
+											<td>{{lp.name == '' ?'-':lp.name}}</td>
+											<td>{{lp.accountManager == ''?'-':lp.accountManager}}</td>
+											<td>{{lp.companyName == ''?'-':lp.companyName}}</td>
+											<td>{{lp.email == ''?'-':lp.email}}</td>
+											<td>{{lp.startDate == null?'-':lp.startDate |
+												date:'dd/MM/yyyy'}}</td>
+											<td>{{lp.endDate == null?'-':lp.endDate |
+												date:'dd/MM/yyyy'}}</td>
+											<td ng-if="'<%=roleEdit%>' == 'NO' && '<%=roleDelete%>' == 'NO'&& '<%=roleView%>' == 'NO'">-</td>
+											<td class="text-center" ng-if="'<%=roleEdit%>' == 'YES' || '<%=roleDelete%>' == 'YES'|| '<%=roleView%>' == 'YES'">
+												<a ng-if="'<%=roleEdit%>' == 'YES'" href="${pageContext.request.contextPath}/update-lead-project/{{lp.id}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+												<a ng-if="'<%=roleDelete%>' == 'YES'" href="#" ng-click="deleteLeadProject(lp.id)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+												<a ng-if="'<%=roleView%>' == 'YES'" href="${pageContext.request.contextPath}/view-lead-project/{{lp.id}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+											</td>
+										</tr>
+									</table>
+									<dir-pagination-controls max-size="pageSize.row"
+										direction-links="true" boundary-links="true">
+									</dir-pagination-controls>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<!-- /.box-footer -->
 			<div class="box-footer"></div>
@@ -209,5 +221,6 @@ app.controller('leadProjectController',['$scope','$http',function($scope, $http)
 	</section>
 	<!-- /.content -->
 </div>
+
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 
