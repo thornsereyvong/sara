@@ -723,7 +723,6 @@ app.controller('meetController',['$scope','$http',function( $scope, $http){
 	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;
-		$("#meetDuration").select2('val',"");
 		$("#meetStatus").select2('val',"");
 		$("#meetAssignTo").select2('val',"");	
 		$("#btnMeetSave").text("Save");
@@ -767,7 +766,6 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 	
 	$scope.cancelEventClick = function(){
 		eventIdForEdit = null;
-		$("#eventDuration").select2('val',"");
 		$("#eventLocation").select2('val',"");
 		$("#eventAssignTo").select2('val',"");	
 		$("#btnEventSave").text("Save");
@@ -1136,7 +1134,7 @@ function addDataToDetailLead(){
 								</div>
 							</div>
 
-							<div class="col-sm-12">
+							<div class="col-sm-12 hidden-xs">
 								<ul class="breadcrumb1" id="objStatus">
 								</ul>
 							</div>
@@ -1187,59 +1185,36 @@ function addDataToDetailLead(){
 															</div>
 															<div id="collapse1" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
-																			<table class="table iTable"> 					
-																				<thead>
-																					<tr>
-																						<th>#</th>
-																						<th colspan="2">Subject</th>
-																						<th>Start Date</th>
-																						<th>Duration</th>
-																						<th>Assign To</th>
-																						<th>Create By</th>
-																					</tr>
-																				</thead>
-																				<tbody ng-repeat="call in listAllCallByLead">
-																					<tr>
-																						<td class="iTD-width-50">
-																							{{call.callId}}
-																						</td>
-																						<td colspan="2">{{call.callSubject}}</td>
-																						<td> 
-																							{{call.callStartDate | date:'dd/MM/yyyy'}}
-																						</td>
-																						<td>{{call.callDuration}}</td>
-																						<td>{{call.username}}</td>
-																						<td>{{call.callCreateBy}}</td>
-																					</tr>
-																					<tr>
-																						<td colspan="6">
-																							<a href="#">{{call.callDes | limitTo:200}}{{call.callDes.length <= 200 ? '' : '...'}}</a>
-																						</td>
-																						<td class="mailbox-date">
-																							<div class="col-sm-2">
-																								<div class="btn-group">
-																									<button type="button"
-																										class="btn btn-default dropdown-toggle btn-sm"
-																										data-toggle="dropdown" aria-expanded="false">
-																										<span class="caret"></span> <span class="sr-only">Toggle
-																											Dropdown</span>
-																									</button>
-																									<ul class="dropdown-menu" role="menu">
-																										<li><a href="#" ng-click="actEditCall(call.callId)">
-																												<i class="fa fa-pencil"></i> Edit
-																										</a></li>
-																										<li ng-click="actDeleteCall(call.callId)"><a
-																											href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																										<li><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}"><i class="fa fa-eye"></i> View</a></li>
-					
-																									</ul>
-																								</div>
-																							</div>
-																						</td>
-																					</tr>
-																			</table>
-																		</div>
+																	<div class="mailbox-messages table-responsive">
+																		<table class="table iTable"> 					
+																			<thead>
+																				<tr>
+																					<th>ID</th>
+																					<th>Subject</th>
+																					<th>Start Date</th>
+																					<th>Duration</th>
+																					<th>Assign To</th>
+																					<th>Create By</th>
+																					<th class="text-center">Action</th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="call in listAllCallByLead">
+																				<tr>
+																					<td class="iTD-width-50">{{call.callId}}</td>
+																					<td>{{call.callSubject}}</td>
+																					<td>{{call.callStartDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{call.callDuration}}</td>
+																					<td>{{call.username}}</td>
+																					<td>{{call.callCreateBy}}</td>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="actEditCall(call.callId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="#" ng-click="actDeleteCall(call.callId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-call/{{call.callId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -1252,55 +1227,33 @@ function addDataToDetailLead(){
 															</div>
 															<div id="collapse2" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Status</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="meet in listAllMeetByLead">
 																				<tr>
-																					<td class="iTD-width-50">
-																						{{meet.meetingId}}
-																					</td>
-																					<td colspan="2">{{meet.meetingSubject}}</td>
+																					<td class="iTD-width-50">{{meet.meetingId}}</td>
+																					<td>{{meet.meetingSubject}}</td>
 																					<td>{{meet.statusName}}</td>
 																					<td>{{meet.meetingStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{meet.meetingEndDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{meet.username}}</td>
 																					<td>{{meet.meetingCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7">
-																						<a href="#">{{meet.meetingDes | limitTo:200}}{{meet.meetingDes.length <= 200 ? '' : '...'}}</a>
-																					</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditMeeting(meet.meetingId)">
-																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteMeeting(meet.meetingId)">
-																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}"><i class="fa fa-eye"></i> View</a></li>
-				
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="actEditMeeting(meet.meetingId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="#" ng-click="actDeleteMeeting(meet.meetingId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																					</td>
 																				</tr>
 																			</tbody>
@@ -1318,55 +1271,33 @@ function addDataToDetailLead(){
 															</div>
 															<div id="collapse3" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Status</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="task in listAllTaskByLead">
 																				<tr>
-																					<td class="iTD-width-50">
-																						{{task.taskId}}
-																					</td>
-																					<td colspan="2">{{task.taskSubject}}</td>
+																					<td class="iTD-width-50">{{task.taskId}}</td>
+																					<td>{{task.taskSubject}}</td>
 																					<td>{{task.taskStatusName}}</td>
 																					<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{task.taskDueDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{task.username}}</td>
 																					<td>{{task.taskCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7">
-																						<a href="#">{{task.taskDes | limitTo:200}}{{task.taskDes.length <= 200 ? '' : '...'}}</a>
-																					</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditTask(task.taskId)">
-																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteTask(task.taskId)">
-																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}"><i class="fa fa-eye"></i> View</a></li>
-				
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="actEditTask(task.taskId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="#" ng-click="actDeleteTask(task.taskId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																					</td>
 																				</tr>
 																			</tbody>
@@ -1384,55 +1315,33 @@ function addDataToDetailLead(){
 															</div>
 															<div id="collapse4" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Name</th>
+																					<th>ID</th>
+																					<th>Name</th>
 																					<th>Location</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="event in listAllEventByLead">
 																				<tr>
-																					<td class="iTD-width-50">
-																						{{event.evId}}
-																					</td>
-																					<td colspan="2">{{event.evName}}</td>
+																					<td class="iTD-width-50">{{event.evId}}</td>
+																					<td>{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
 																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.username}}</td>
 																					<td>{{event.evCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7">
-																						<a href="#">{{event.evDes | limitTo:200}}{{event.evDes.length <= 200 ? '' : '...'}}</a>
-																					</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditEvent(event.evId)">
-																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteEvent(event.evId)">
-																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><i class="fa fa-eye"></i> View</a></li>
-				
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="actEditEvent(event.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="#" ng-click="actDeleteEvent(event.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																					</td>
 																				</tr>
 																			</tbody>
@@ -1450,55 +1359,33 @@ function addDataToDetailLead(){
 															</div>
 															<div id="collapse5" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable" data-ng-init="listAllEmailByLeadId()"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Sent To</th>
 																					<th>Date</th>
 																					<th>Status</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="email in listAllEmailByLead">
 																				<tr>
-																					<td class="iTD-width-50">
-																						{{event.evId}}
-																					</td>
-																					<td colspan="2">{{event.evName}}</td>
+																					<td class="iTD-width-50">{{event.evId}}</td>
+																					<td>{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
 																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.username}}</td>
 																					<td>{{event.evCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7">
-																						<a href="#">{{event.evDes | limitTo:200}}{{event.evDes.length <= 200 ? '' : '...'}}</a>
-																					</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditEvent(event.evId)">
-																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteEvent(event.evId)">
-																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><i class="fa fa-eye"></i> View</a></li>
-				
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="actEditEvent(event.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="#" ng-click="actDeleteEvent(event.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																					</td>
 																				</tr>
 																			</tbody>
@@ -1641,12 +1528,10 @@ function addDataToDetailLead(){
 
 											</ul>
 										</div>
-
-
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
 												<form id="frmLeadDetail">
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
 														<ul class="list-group list-group-unbordered">
 															<li class="list-group-item"><b>Overview</b> <a
 																class="pull-right cusor_pointer"
@@ -1737,7 +1622,7 @@ function addDataToDetailLead(){
 															</li>
 														</ul>
 													</div>
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
 														<ul class="list-group list-group-unbordered">
 															<li class="list-group-item"><b>Address</b> <a
 																class="pull-right cusor_pointer"
@@ -1802,7 +1687,8 @@ function addDataToDetailLead(){
 															</li>
 														</ul>
 													</div>
-													<div class="col-md-4">
+													<div class="clearfix hidden-lg"></div>
+													<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
 														<ul class="list-group list-group-unbordered">
 															<li class="list-group-item"><b>More Information
 																	& Others</b> <a class="pull-right cusor_pointer"
@@ -1869,7 +1755,7 @@ function addDataToDetailLead(){
 															</li>
 														</ul>
 													</div>
-													<div class="col-md-12">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 														<ul class="list-group list-group-unbordered">
 															<li style="border-top: 0px;" class="list-group-item"><b>Description</b>
 																<a class="pull-right cusor_pointer"
@@ -1877,7 +1763,7 @@ function addDataToDetailLead(){
 																	Edit</a></li>
 														</ul>
 													</div>
-													<div class="col-md-12">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 														<div class="show-text-detail">{{lead.description}}</div>
 														<div class="form-group show-edit-non-style"
 															style="display: none;">
@@ -1887,7 +1773,7 @@ function addDataToDetailLead(){
 														</div>
 													</div>
 													<br>
-													<div class="col-md-12 text-center" id="showBtnEditLead"
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" id="showBtnEditLead"
 														style="display: none;">
 														<button type="button" class="btn btn-primary"
 															ng-click="saveEditDetailLead()">Save</button>
@@ -1946,7 +1832,7 @@ function addDataToDetailLead(){
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input value="" name="callStartDate" id="callStartDate"
+											<input value="" name="callStartDate" id="callStartDate" readonly="readonly"
 												type="text" class="form-control date pull-right active">
 										</div>
 									</div>
@@ -1959,7 +1845,7 @@ function addDataToDetailLead(){
 												<div class="input-group-addon">
 													<i class="fa fa-clock-o"></i>
 												</div>
-												<input type="text" class="form-control timepicker active"
+												<input type="text" class="form-control timepicker active" readonly="readonly"
 													name="callDuration" id="callDuration" placeholder="hours:minutes">
 											</div>
 										</div>
@@ -2023,62 +1909,45 @@ function addDataToDetailLead(){
 				<div class="modal-body">
 					<div class="row">
 						<form id="frmAddMeet">
-						<div class="col-md-12">
-							<div class="col-md-6">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<div class="col-xs-12 col-sm-12 col-md-6">
 								<div class="form-group">
 									<label>Subject <span class="requrie">(Required)</span></label>
 									<input id="meetSubject" name="meetSubject" class="form-control" type="text"
 										placeholder="">
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2" name="meetDuration"
-										id="meetDuration" style="width: 100%;">
-										<option value="">-- Select A Duration --</option>
-										<option value="15 minutes">15 minutes</option>
-										<option value="30 minutes">30 minutes</option>
-										<option value="45 minutes">45 minutes</option>
-										<option value="1 hour">1 hour</option>
-										<option value="1:30 hours">1:30 hours</option>
-										<option value="2 hours">2 hours</option>
-										<option value="3 hours">3 hours</option>
-										<option value="6 hours">6 hours</option>
-										<option value="1 day">1 day</option>
-										<option value="2 days">2 days</option>
-										<option value="3 days">3 days</option>
-										<option value="1 week">1 week</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="clearfix"></div>
-							<div class="col-md-6">
+							<div class="col-xs-12 col-sm-12 col-md-6">
 								<div class="form-group">
 									<label>Start Date<span class="requrie">(Required)</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input value="" name="meetStartDate" id="meetStartDate" type="text" class="form-control meet-data-time pull-right active">
+										<input value="" name="meetStartDate" id="meetStartDate" readonly="readonly" type="text" class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 									</div>
 								</div>
 							</div>
-							<div class="col-md-6">
+							<div class="clearfix"></div>
+							<div class="col-xs-12 col-sm-12 col-md-6">
 								<div class="form-group">
 									<label>End Date<span class="requrie">(Required)</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="meetEndDate" id="meetEndDate" type="text" class="form-control meet-data-time pull-right active">
+										<input name="meetEndDate" id="meetEndDate" readonly="readonly" type="text" class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 									</div>
 								</div>
 							</div>
-
+							<div class="col-xs-12 col-sm-12 col-md-6">
+								<div class="form-group">
+									<label>Duration <span class="requrie">(Required)</span></label>
+									<input type="text" class="form-control" name="meetDuration" id="meetDuration"/>
+								</div>
+							</div>
 							<div class="clearfix"></div>
-							<div class="col-md-6">
+							<div class="col-xs-12 col-sm-12 col-md-6">
 								<div class="form-group">
 									<label>Assign To </label> 
 									<select class="form-control select2" name="meetAssignTo" id="meetAssignTo" style="width: 100%;">
@@ -2087,7 +1956,7 @@ function addDataToDetailLead(){
 								</div>
 							</div>
 
-							<div class="col-md-6">
+							<div class="col-xs-12 col-sm-12 col-md-6">
 								<div class="form-group">
 									<label>Status</label> 
 									<select class="form-control select2" name="meetStatus" id="meetStatus" style="width: 100%;">
@@ -2255,7 +2124,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input  name="eventStartDate" id="eventStartDate" type="text" class="form-control event-date-time pull-right active">
+										<input  name="eventStartDate" id="eventStartDate" type="text" class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 									</div>
 								</div>
 							</div>
@@ -2266,30 +2135,16 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="eventEndDate" id="eventEndDate" type="text" class="form-control event-date-time pull-right active">
+										<input name="eventEndDate" id="eventEndDate" type="text" class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 									</div>
 								</div>
 							</div>
 
 							<div class="clearfix"></div>
-							<div class="col-md-6">
+							<div class="col-xs-12 col-sm-12 col-md-6">
 								<div class="form-group">
 									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2" name="eventDuration" id="eventDuration" style="width: 100%;">
-										<option value="">-- SELECT A Duration --</option>
-										<option value="15 minutes">15 minutes</option>
-										<option value="30 minutes">30 minutes</option>
-										<option value="45 minutes">45 minutes</option>
-										<option value="1 hour">1 hour</option>
-										<option value="1:30 hours">1:30 hours</option>
-										<option value="2 hours">2 hours</option>
-										<option value="3 hours">3 hours</option>
-										<option value="6 hours">6 hours</option>
-										<option value="1 day">1 day</option>
-										<option value="2 days">2 days</option>
-										<option value="3 days">3 days</option>
-										<option value="1 week">1 week</option>
-									</select>
+									<input type="text" class="form-control" name="eventDuration" id="eventDuration"/>
 								</div>
 							</div>
 							<div class="col-md-6">

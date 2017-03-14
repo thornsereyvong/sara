@@ -476,13 +476,29 @@ function calculateMeetingDuration(startDate, endDate, durationId, formId){
 	var duration = end - start;
 	var hours = duration / (60*60*1000);
 	var mins = (duration % (60*60*1000)) /(60 * 1000);
-	
 	if(mins == 0){
 		mins = mins + "0";
 	}
 	
 	if(hours < 1){
 		$("#"+durationId+"").val(mins+" minutes");
+	}else if(hours >= 24){
+		if(hours % 24 == 0){
+			var days = parseInt(hours/24);
+			if(days == 1){
+				$("#"+durationId+"").val(days+" day");
+			}else{
+				$("#"+durationId+"").val(days+" days");
+			}
+		}else{
+			var days = parseInt( hours / 24);
+			h = parseInt((hours % 24));
+			if(days == 1){
+				$("#"+durationId+"").val(days+" day "+parseInt(h)+" hours");
+			}else{
+				$("#"+durationId+"").val(days+" days "+parseInt(h)+" hours");
+			}
+		}
 	}else{
 		$("#"+durationId+"").val(parseInt(hours)+" hours "+mins+" minutes");
 	}

@@ -187,7 +187,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 										<td ng-if="cc.email == ''">-</td>
 										<td ng-if="cc.email !=''">{{cc.email}}</td>
 										<td>{{cc.createDate | date:'dd-MM-yyyy'}}</td>	
-										<td class="text-center">
+										<td class="text-center" style="min-width: 100px;">
 											<a href="${pageContext.request.contextPath}/update-lead/{{cc.leadID}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 											<a href="#" ng-click="deleteLead(cc.leadID)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
 											<a href="${pageContext.request.contextPath}/view-lead/{{cc.leadID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>

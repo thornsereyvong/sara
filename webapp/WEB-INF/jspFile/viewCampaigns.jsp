@@ -747,7 +747,6 @@ app.controller('meetController',['$scope','$http',function( $scope, $http){
 	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;
-		$("#meetDuration").select2('val',"");
 		$("#meetStatus").select2('val',"");
 		$("#meetAssignTo").select2('val',"");	
 		$("#btnMeetSave").text("Save");
@@ -791,7 +790,6 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 	
 	$scope.cancelEventClick = function(){
 		eventIdForEdit = null;
-		$("#eventDuration").select2('val',"");
 		$("#eventLocation").select2('val',"");
 		$("#eventAssignTo").select2('val',"");	
 		$("#btnEventSave").text("Save");
@@ -1098,12 +1096,12 @@ function addDataToDetailLead(){
 
 		<div class="row">
 
-			<div class="col-md-12">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">
 					<!-- Add the bg color to the header using any of the bg-* classes -->
 					<div class="widget-user-header bg-aqua-active">
-						<h3 class="widget-user-username ng-cloak">[{{campaign.campID}}] {{campaign.campName}}</h3>
+						<h3 class="widget-user-username ng-cloak">[{{campaign.campID}}] {{campaign.campName.trunc(10)}}</h3>
 						<h5 class="widget-user-desc">CAMPAIGN</h5>
 					</div>
 					<div class="widget-user-image">
@@ -1113,25 +1111,25 @@ function addDataToDetailLead(){
 					</div>
 					<div class="box-footer">
 						<div class="row">
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{campaign.statusName}}</h5>
 									<span class="description-text">Status</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{campaign.typeName}}</h5>
 									<span class="description-text">Type</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{campaign.startDate | date:'dd/MM/yyyy'}}</h5>
 									<span class="description-text">Start Date</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{campaign.endDate | date:'dd/MM/yyyy'}}</h5>
 									<span class="description-text">End Date</span>
@@ -1198,13 +1196,13 @@ function addDataToDetailLead(){
 																			<table class="table iTable"> 					
 																				<thead>
 																					<tr>
-																						<th>#</th>
-																						<th colspan="2">Subject</th>
+																						<th>ID</th>
+																						<th>Subject</th>
 																						<th>Start Date</th>
 																						<th>Duration</th>
 																						<th>Assign To</th>
 																						<th>Create By</th>
-																						<th>Action</th>
+																						<th class="text-center">Action</th>
 																					</tr>
 																				</thead>
 																				<tbody ng-repeat="call in listAllCallByLead">
@@ -1212,7 +1210,7 @@ function addDataToDetailLead(){
 																						<td class="iTD-width-50">
 																							{{call.callId}}
 																						</td>
-																						<td colspan="2">{{call.callSubject}}</td>
+																						<td>{{call.callSubject}}</td>
 																						<td> 
 																							{{call.callStartDate | date:'dd/MM/yyyy'}}
 																						</td>
@@ -1244,14 +1242,14 @@ function addDataToDetailLead(){
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Status</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
-																					<th>Action</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="meet in listAllMeetByLead">
@@ -1259,7 +1257,7 @@ function addDataToDetailLead(){
 																					<td class="iTD-width-50">
 																						{{meet.meetingId}}
 																					</td>
-																					<td colspan="2">{{meet.meetingSubject}}</td>
+																					<td>{{meet.meetingSubject}}</td>
 																					<td>{{meet.statusName}}</td>
 																					<td>{{meet.meetingStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{meet.meetingEndDate | date:'dd/MM/yyyy'}}</td>
@@ -1290,14 +1288,14 @@ function addDataToDetailLead(){
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Status</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
-																					<th>Action</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="task in listAllTaskByLead">
@@ -1336,14 +1334,14 @@ function addDataToDetailLead(){
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Name</th>
+																					<th>ID</th>
+																					<th>Name</th>
 																					<th>Location</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
-																					<th>Action</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="event in listAllEventByLead">
@@ -1351,7 +1349,7 @@ function addDataToDetailLead(){
 																					<td class="iTD-width-50">
 																						{{event.evId}}
 																					</td>
-																					<td colspan="2">{{event.evName}}</td>
+																					<td>{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
 																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
@@ -1382,14 +1380,14 @@ function addDataToDetailLead(){
 																		<table class="table iTable" data-ng-init="listAllEmailByLeadId()"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Sent To</th>
 																					<th>Date</th>
 																					<th>Status</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
-																					<th>Action</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="email in listAllEmailByLead">
@@ -1397,7 +1395,7 @@ function addDataToDetailLead(){
 																					<td class="iTD-width-50">
 																						<a href="#"><i class="fa fa-envelope text-green font-size-icon-30"></i></a>
 																					</td>
-																					<td colspan="2">{{event.evName}}</td>
+																					<td>{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
 																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
@@ -1468,8 +1466,6 @@ function addDataToDetailLead(){
 														<a href="#" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i> <span> Comments{{collab.details.length <= 0 ? "" : "("+collab.details.length+")"}}</span></a>
 													</li>
 												</ul>
-												
-												
 												<div style="padding-top: 15px;" class="box-footer box-comments">													
 													<div class="box-comment" ng-repeat="(key_comment, com) in collab.details">
 														<img class="img-circle img-sm" src="${pageContext.request.contextPath}/resources/images/av.png" alt="user image">
@@ -1482,19 +1478,15 @@ function addDataToDetailLead(){
 														</div>
 													</div>
 												</div>
-												
-																							
 												<form id="" ng-submit="postCommand(key_post, collab.colId)">
 													<div class="form-group">
 														<input ng-model="newcomment[key_post].comment" id="txtComment"  class="form-control input-sm" type="text" placeholder="Type a comment">
 													</div>
 												</form>
-												
 											</div>
 											
 											<!-- end content collab -->
 										</div>
-
 										<div class="tab-pane" id="note_tap">
 											<div class="post clearfix">
 												<form id="frmAddNote">
@@ -1789,8 +1781,6 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</section>
-
-
 	<input type="hidden" id="btn_show_call" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
 	<div ng-controller="callController" class="modal fade modal-default" id="frmCall" role="dialog">
 		<div class="modal-dialog  modal-lg" data-ng-init="startupCallForm()">
@@ -1870,9 +1860,6 @@ function addDataToDetailLead(){
 							</div>
 						</form>
 					</div>
-
-
-
 				</div>
 				<div class="modal-footer">
 					<button type="button" id="btnCallCancel"
@@ -1907,38 +1894,16 @@ function addDataToDetailLead(){
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2" name="meetDuration"
-										id="meetDuration" style="width: 100%;">
-										<option value="">-- Select A Duration --</option>
-										<option value="15 minutes">15 minutes</option>
-										<option value="30 minutes">30 minutes</option>
-										<option value="45 minutes">45 minutes</option>
-										<option value="1 hour">1 hour</option>
-										<option value="1:30 hours">1:30 hours</option>
-										<option value="2 hours">2 hours</option>
-										<option value="3 hours">3 hours</option>
-										<option value="6 hours">6 hours</option>
-										<option value="1 day">1 day</option>
-										<option value="2 days">2 days</option>
-										<option value="3 days">3 days</option>
-										<option value="1 week">1 week</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="clearfix"></div>
-							<div class="col-md-6">
-								<div class="form-group">
 									<label>Start Date<span class="requrie">(Required)</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input value="" name="meetStartDate" readonly="readonly" id="meetStartDate" type="text" class="form-control meet-data-time pull-right active">
+										<input value="" name="meetStartDate" readonly="readonly" id="meetStartDate" type="text" class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 									</div>
 								</div>
 							</div>
+							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>End Date<span class="requrie">(Required)</span></label>
@@ -1946,11 +1911,16 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="meetEndDate" id="meetEndDate" readonly="readonly" type="text" class="form-control meet-data-time pull-right active">
+										<input name="meetEndDate" id="meetEndDate" readonly="readonly" type="text" class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 									</div>
 								</div>
 							</div>
-
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Duration <span class="requrie">(Required)</span></label>
+									<input type="text" class="form-control" name="meetDuration" id="meetDuration"/>
+								</div>
+							</div>
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -2016,8 +1986,6 @@ function addDataToDetailLead(){
 										placeholder="">
 								</div>
 							</div>
-							
-
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -2041,7 +2009,6 @@ function addDataToDetailLead(){
 									</div>
 								</div>
 							</div>
-								
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -2129,7 +2096,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input  name="eventStartDate" readonly="readonly" id="eventStartDate" type="text" class="form-control event-date-time pull-right active">
+										<input  name="eventStartDate" readonly="readonly" id="eventStartDate" type="text" class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 									</div>
 								</div>
 							</div>
@@ -2140,32 +2107,17 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="eventEndDate" readonly="readonly" id="eventEndDate" type="text" class="form-control event-date-time pull-right active">
+										<input name="eventEndDate" readonly="readonly" id="eventEndDate" type="text" class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 									</div>
 								</div>
 							</div>
-
 							<div class="clearfix"></div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2" name="eventDuration" id="eventDuration" style="width: 100%;">
-										<option value="">-- SELECT A Duration --</option>
-										<option value="15 minutes">15 minutes</option>
-										<option value="30 minutes">30 minutes</option>
-										<option value="45 minutes">45 minutes</option>
-										<option value="1 hour">1 hour</option>
-										<option value="1:30 hours">1:30 hours</option>
-										<option value="2 hours">2 hours</option>
-										<option value="3 hours">3 hours</option>
-										<option value="6 hours">6 hours</option>
-										<option value="1 day">1 day</option>
-										<option value="2 days">2 days</option>
-										<option value="3 days">3 days</option>
-										<option value="1 week">1 week</option>
-									</select>
+								<div class="col-xs-12 col-sm-12 col-md-6">
+									<div class="form-group">
+										<label>Duration <span class="requrie">(Required)</span></label>
+										<input type="text" class="form-control" name="eventDuration" id="eventDuration"/>
+									</div>
 								</div>
-							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Assign To </label> 
@@ -2200,9 +2152,6 @@ function addDataToDetailLead(){
 						</div>
 						</form>
 					</div>
-
-
-
 				</div>
 				<div class="modal-footer">
 					<button type="button" id="btnEventCancel" ng-click="cancelEventClick()" name="btnEventCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>

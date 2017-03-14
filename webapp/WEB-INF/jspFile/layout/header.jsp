@@ -235,7 +235,7 @@ $(function(){
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini" ><img class="img-responsive" src="${pageContext.request.contextPath}/resources/images/App Logo/Logo-CRM(50-X-50).png" /></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg" id="ffa"><img class="img-responsive" src="${pageContext.request.contextPath}/resources/images/App Logo/Logo-CRM(100-X40).png" /></span>
+          <span class="logo-lg" id="ffa"><img class="img-responsive" src="${pageContext.request.contextPath}/resources/images/App Logo/logo.png" /></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">

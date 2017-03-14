@@ -909,7 +909,6 @@ app.controller('meetController',['$scope','$http',function( $scope, $http){
 	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;
-		$("#meetDuration").select2('val',"");
 		$("#meetStatus").select2('val',"");
 		$("#meetAssignTo").select2('val',"");	
 		$("#btnMeetSave").text("Save");
@@ -953,7 +952,6 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 	
 	$scope.cancelEventClick = function(){
 		eventIdForEdit = null;
-		$("#eventDuration").select2('val',"");
 		$("#eventLocation").select2('val',"");
 		$("#eventAssignTo").select2('val',"");	
 		$("#btnEventSave").text("Save");
@@ -1512,9 +1510,7 @@ function setSelect2ToResolveBy(value){
 											</div>
 										</div>
 									</div>
-	
 									<div class="tab-pane" id="collaborate">
-	
 										<div class="col-md-12"
 											style="padding-right: 0px; padding-left: 0px;">
 											<form id="frmCollab">
@@ -2241,7 +2237,6 @@ function setSelect2ToResolveBy(value){
 										<input type="text" class="form-control" name="meetDuration" id="meetDuration"/>
 									</div>
 								</div>
-								<div class="clearfix"></div>
 								<div class="clearfix hidden-md"></div>
 								<div class="col-xs-12 col-sm-12 col-md-6">
 									<div class="form-group">

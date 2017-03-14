@@ -279,36 +279,35 @@
             <hr style="margin-top: 3px;" />
           </div>
           <div class="row">
-          	<div class="col-sm-12">
-            <div class="col-xs-12 col-sm-6 col-md-6">
-              <div class="col-xs-12 col-sm-12 col-md-12">
+          	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <label class="font-label">Name <span class="requrie">(Required)</span></label>
                 <div class="form-group" id="div_camName">
                   <input type="text" class="form-control" name="cam_name" id="cam_name">
                 </div>
               </div>
-              <div class="col-xs-12 col-sm-12 col-md-6">
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <label class="font-label">Start date </label>
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-                    <input type="text" class="form-control pull-right date2" name="cam_startDate" id="cam_startDate">
+                    <input type="text" class="form-control pull-right date2" name="cam_startDate" id="cam_startDate" readonly="readonly">
                   </div>
                 </div>
               </div>
-
-              <div class="col-xs-12 col-sm-12 col-md-6">
+			  <div class="clearfix hidden-md hidden-lg"></div>
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <label class="font-label">End date <span class="requrie">(Required)</span></label>
                 <div class="form-group">
                   <div class="input-group">
                     <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-                    <input type="text" class="form-control pull-right date2" name="cam_endDate" id="cam_endDate">
+                    <input type="text" class="form-control pull-right date2" name="cam_endDate" id="cam_endDate" readonly="readonly">
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
-              <div class="col-xs-12 col-sm-12 col-md-6">
+              <div class="clearfix hidden-sm hidden-lg"></div>
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <label class="font-label">Status <span class="requrie">(Required)</span></label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_status" style="width:100%;"
@@ -318,7 +317,8 @@
                   </select>
                 </div>
               </div>
-              <div class="col-xs-12 col-sm-12 col-md-6">
+              <div class="clearfix hidden-md hidden-lg"></div>
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <label class="font-label">Type <span class="requrie">(Required)</span></label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_type" style="width: 100%;" id="cam_type">
@@ -327,7 +327,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-xs-12 col-sm-12 col-md-6">
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <label class="font-label">Parent campaign </label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_parent" style="width: 100%;" id="cam_parent">
@@ -336,7 +336,8 @@
                   </select>
                 </div>
               </div>
-              <div class="col-xs-12 col-sm-12 col-md-6">
+              <div class="clearfix hidden-lg"></div>
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <label class="font-label">Assigned to  </label>
                 <div class="form-group">
                   <select class="form-control select2" name="cam_assignTo" id="cam_assignTo" style="width: 100%;">
@@ -364,46 +365,42 @@
           <div class="col-sm-12">
             <hr />
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-6">
-            <div class="col-xs-12 col-sm-6 col-md-6">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
               <label class="font-label">Budget</label>
               <div class="form-group">
-                <input type="text" class="form-control" name="cam_budget"
-									id="cam_budget">
+                <input type="text" class="form-control" name="cam_budget" id="cam_budget">
               </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
               <label class="font-label">Actual cost</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_actualCost"
 									id="cam_actualCost">
               </div>
             </div>
-            <div class="clearfix"></div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
               <label class="font-label">Number send</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_numSend"
 									id="cam_numSend">
               </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
               <label class="font-label">Expected response (%)</label>
               <div class="form-group">
                 <input type="text" class="form-control"
 									name="cam_expectedResponse" id="cam_expectedResponse">
               </div>
             </div>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6">
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
               <label class="font-label">Expected cost</label>
               <div class="form-group">
                 <input type="text" class="form-control" name="cam_expectedCost"
 									id="cam_expectedCost">
               </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
               <label class="font-label">Expected revenue</label>
               <div class="form-group">
                 <input type="text" class="form-control"

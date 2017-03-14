@@ -171,7 +171,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 										<td ng-if="cc.startDate == null">-</td>
 										<td ng-if="cc.startDate != null">{{cc.startDate | date:'dd-MM-yyyy'}}</td>
 										<td>{{cc.endDate | date:'dd-MM-yyyy'}}</td>	
-										<td class="text-center">
+										<td class="text-center" style="min-width: 100px;">
 											<a href="${pageContext.request.contextPath}/update-campaign/{{cc.campID}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 											<a href="#" ng-click="deleteCamp(cc.campID)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
 											<a href="${pageContext.request.contextPath}/view-campaign/{{cc.campID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
