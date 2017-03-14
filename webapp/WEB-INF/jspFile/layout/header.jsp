@@ -1,6 +1,3 @@
-
-
-
 <script type="text/javascript">
 
 var session = "${SESSION}";
@@ -81,10 +78,8 @@ function funcRelateTo(id, cust, vals){
 				header: "application/json",
 				success: function(dataString){
 					var dataObject = dataString.DATA;
-					
 					switch (cust) {
 						 case "Customer":
-							 	
 								$.each(dataObject, function(key, value){
 									var div = "<option value='"+value.custID+"' >["+value.custID+"] "+value.custName+"</option>";
 									$(id).append(div);
@@ -93,7 +88,6 @@ function funcRelateTo(id, cust, vals){
 								if(vals != ""){
 									$(id).select2("val",vals);	
 								} 
-								
 						        break;
 						 case "Lead":
 								$.each(dataObject, function(key, value){
@@ -103,7 +97,6 @@ function funcRelateTo(id, cust, vals){
 								if(vals != ""){
 									$(id).select2("val",vals);	
 								} 
-								
 						        break;
 						 case "Campaign":
 								$.each(dataObject, function(key, value){
@@ -158,14 +151,7 @@ function funcRelateTo(id, cust, vals){
 									$(id).select2("val",vals);	
 								} 
 						        break;
-						
-
-					
-					}		
-					 
-
-					
-					
+						}		
 					} 
 				}); 
 			
@@ -197,7 +183,6 @@ function testJson(data){
 
 function userReportList(id,vals){
 	var data = JSON.parse('${users}');
-	
 	$.each(data, function(i, value){
 		$.ajax({
 			url: "${pageContext.request.contextPath}/user/list/id/"+value.parentID,
@@ -210,13 +195,26 @@ function userReportList(id,vals){
 				if(vals != ""){
 					$(id).select2("val",vals);	
 				} 
-				
-				} 
-			}); 
-		
+			} 
+		}); 
 	});	
 }
 
+$(function(){
+	if($(window).width() > 768){
+		$("body").removeClass('class','sidebar-collapse');
+	}else{
+		$("body").addClass('sidebar-collapse');
+	}
+	$(window).resize(function(){
+		var winSize = $(window).width();
+		if(winSize <= 768){
+			$("body").attr('class','sidebar-mini wysihtml5-supported skin-red-light sidebar-collapse');
+		} else {
+			$("body").attr('class','sidebar-mini wysihtml5-supported skin-red-light');
+		}
+	});
+});
 
 </script>
 <style>
@@ -229,15 +227,15 @@ function userReportList(id,vals){
     border-radius: 2px;
 }
 </style>
-  <body class="sidebar-mini wysihtml5-supported skin-red-light sidebar-collapse">
+  <body class="sidebar-mini wysihtml5-supported skin-red-light">
     <div class="wrapper">
       <header class="main-header">
         <!-- Logo -->
         <a href="#" class="logo hidden-xs">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini" >CRM</span>
+          <span class="logo-mini" ><img class="img-responsive" src="${pageContext.request.contextPath}/resources/images/App Logo/Logo-CRM(50-X-50).png" /></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg" id="ffa">CRM</span>
+          <span class="logo-lg" id="ffa"><img class="img-responsive" src="${pageContext.request.contextPath}/resources/images/App Logo/Logo-CRM(100-X40).png" /></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">

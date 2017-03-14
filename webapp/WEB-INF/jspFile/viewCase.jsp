@@ -1763,7 +1763,7 @@ function setSelect2ToResolveBy(value){
 																	Edit</a> --></li>
 															<li class="list-group-item item_border">Product<a
 																class="pull-right show-text-detail">[{{cases.caseItemId}}]
-																	{{cases.caseItemName}}</a>
+																	{{cases.caseItemName.trunc(20)}}</a>
 																<div class="form-group show-edit"
 																	style="display: none;">
 																	<!-- <input type="text" name="lea_no" id="lea_no"
@@ -1772,7 +1772,7 @@ function setSelect2ToResolveBy(value){
 															</li>
 															<li class="list-group-item item_border">Customer<a
 																class="pull-right show-text-detail">[{{cases.custID}}]
-																	{{cases.custName}}</a>
+																	{{cases.custName.trunc(20)}}</a>
 																<div class="form-group show-edit"
 																	style="display: none;">
 																	<!-- <input type="text" name="lea_no" id="lea_no"
@@ -1808,8 +1808,6 @@ function setSelect2ToResolveBy(value){
 																	<div class="clearfix"></div>
 																</div>
 															</li>
-	
-	
 														</ul>
 													</div>
 	
@@ -1916,43 +1914,42 @@ function setSelect2ToResolveBy(value){
 									</div>
 									
 									<div class="tab-pane " id="escalate_tap">
-	
 										<div class="row">
-											
 											<form method="post" id="frmEscalateTo">
-												<div class="col-sm-4">
-													
-													<div class="col-sm-12">
-														<div class="form-group">
-															<label>Escalate To<span class="requrie">(Required)</span></label>
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+													<div class="row">
+														<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 															<div class="form-group">
-																<select class="form-control select2" name="ca_escalateTo"
-																	id="ca_escalateTo" style="width: 100%">
-																	<option value="">-- SELECT Escalate To --</option>
-																	<option ng-repeat="u in users" value="{{u.userID}}">{{u.username}}</option>
-																</select>
+																<label>Escalate To<span class="requrie">(Required)</span></label>
+																<div class="form-group">
+																	<select class="form-control select2" name="ca_escalateTo"
+																		id="ca_escalateTo" style="width: 100%">
+																		<option value="">-- SELECT Escalate To --</option>
+																		<option ng-repeat="u in users" value="{{u.userID}}">{{u.username}}</option>
+																	</select>
+																</div>
 															</div>
 														</div>
-													</div>
-													<div class="col-sm-12">
-														<div class="form-group">
-															<label>Escalate Status<span class="requrie">(Required)</span></label>
+														<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 															<div class="form-group">
-																<select class="form-control select2" name="ca_escalateStatus"
-																	id="ca_escalateStatus" style="width: 100%">
-																	<option value="Escalated">Escalated</option>
-																	
-																</select>
+																<label>Escalate Status<span class="requrie">(Required)</span></label>
+																<div class="form-group">
+																	<select class="form-control select2" name="ca_escalateStatus"
+																		id="ca_escalateStatus" style="width: 100%">
+																		<option value="Escalated">Escalated</option>
+																		
+																	</select>
+																</div>
 															</div>
 														</div>
-													</div>
-													<div class="col-sm-12">
-														<button type="button" id="btnEscalateCancel"
-															ng-click="cancelEscalateClick()" name="btnEscalateCancel"
-															class="btn btn-danger pull-right" style="margin-left:5px;" data-dismiss="modal">Cancel</button>
-														&nbsp;&nbsp;
-														<button ng-click="escalateClick()" type="button" class="btn btn-primary pull-right"
-															id="btnEscalateSave" name="btnEscalateSave">Escalate</button>
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+															<button type="button" id="btnEscalateCancel"
+																ng-click="cancelEscalateClick()" name="btnEscalateCancel"
+																class="btn btn-danger pull-right" style="margin-left:5px;" data-dismiss="modal">Cancel</button>
+															&nbsp;&nbsp;
+															<button ng-click="escalateClick()" type="button" class="btn btn-primary pull-right"
+																id="btnEscalateSave" name="btnEscalateSave">Escalate</button>
+														</div>
 													</div>
 												</div>
 											</form>
