@@ -377,7 +377,7 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="col-sm-12">
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">First name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<div class="input-group">
@@ -394,28 +394,29 @@ $(document).ready(function() {
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Last name <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<input type="text" class="form-control" name="con_lastName" id="con_lastName">
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="clearfix hidden-md hidden-lg"></div>
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label>Phone <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_phone" name="con_phone">
 								</div>	
 							</div>
-													
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="clearfix hidden-lg hidden-sm"></div>						
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Mobile phone :</label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_mobilePhone" name="con_mobilePhone">
 								</div>	
 							</div>
 							
-							<div class="clearfix hidden-sm"></div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="clearfix hidden-md"></div>
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Customer </label>
 								<div class="form-group">
 									<select class="form-control select2" name="con_customer" id="con_customer" style="width:100%">
@@ -424,27 +425,26 @@ $(document).ready(function() {
 									</select>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label>Title </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_title" name="con_title">
 								</div>
 							</div>
-							<div class="clearfix hidden-md hidden-lg"></div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="clearfix hidden-lg"></div>
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Department </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_department" name="con_department">
 								</div>	
 							</div>
 								
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Email :</label>
 								<div class="form-group">
 									<input type="email"  class="form-control" id="con_email" name="con_email">
 								</div>
 							</div>
-							<div class="clearfix hidden-sm"></div>					
 						</div>
 					</div>
 				</div>
@@ -455,56 +455,55 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="col-sm-12">
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">No </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_no" name="con_no">
 								</div>	
 							</div>
 							
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Street </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_street" name="con_street">
 								</div>
 							</div>
 							
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Village </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_village" name="con_village">
 								</div>
 							</div>
 							
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Commune </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_commune" name="con_commune">
 								</div>	
 							</div>
-							<div class="clearfix"></div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">District </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_district" name="con_district">
 								</div>
 							</div>
 							
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">City </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_city" name="con_city">
 								</div>	
 							</div>
 							
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">State</label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_state" name="con_state">
 								</div>	
 							</div>
 							
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Country </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="con_country" name="con_country">
@@ -519,7 +518,7 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="col-sm-12">
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Assign To</label>
 								<div class="form-group">
 									
@@ -529,7 +528,7 @@ $(document).ready(function() {
 									</select>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Lead source </label>
 								<div class="form-group">
 									<select class="form-control select2" name="con_leadSource" id="con_leadSource" style="width:100%">
@@ -538,7 +537,7 @@ $(document).ready(function() {
 									</select>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Report to</label>
 								<div class="form-group">
 									<select class="form-control select2" name="con_report" id="con_report" style="width:100%">

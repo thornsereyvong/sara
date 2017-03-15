@@ -189,10 +189,11 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 												<td ng-if="cc.custEmail != ''">{{cc.custEmail}}</td>
 												<td ng-if="cc.industID.industName == null">-</td>
 												<td ng-if="cc.industID.industName != null">{{cc.industID.industName}}</td>
-												<td class="text-center">
+												<td class="text-center" style="min-width: 100px;">
 													<a href="${pageContext.request.contextPath}/update-customer/{{cc.custID}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 													<a href="#" ng-click="deleteCustomer(cc.custID, cc.approval)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
-													<a href="${pageContext.request.contextPath}/view-customer/{{cc.custID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+													<a ng-if="cc.approval==1" href="${pageContext.request.contextPath}/view-customer/{{cc.custID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+													<button ng-if="cc.approval==0" ​​type="button" data-toggle="tooltip" class="btn btn-xs" title="This customer have to approve first before you can view!"><i class="fa fa-eye text-info"></i></button>
 												</td>
 											</tr>	
 											<tr>

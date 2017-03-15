@@ -2080,7 +2080,7 @@ function iSplitBySplint(obj){
 							</div>
 							
 
-							<div class="col-sm-12">
+							<div class="col-sm-12 hidden-sm hidden-xs">
 								<ul class="breadcrumb1" id="objStatus">
 								</ul>
 							</div>
@@ -2124,55 +2124,36 @@ function iSplitBySplint(obj){
 															</div>
 															<div id="collapse1" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
-																			<table class="table iTable"> 					
-																				<thead>
-																					<tr>
-																						<th>#</th>
-																						<th colspan="2">Subject</th>
-																						<th>Start Date</th>
-																						<th>Duration</th>
-																						<th>Assign To</th>
-																						<th>Create By</th>
-																					</tr>
-																				</thead>
-																				<tbody ng-repeat="call in listAllCallByLead">
-																					<tr>
-																						<td class="iTD-width-50">
-																							{{call.callId}}
-																						</td>
-																						<td colspan="2">{{call.callSubject}}</td>
-																						<td> 
-																							{{call.callStartDate | date:'dd/MM/yyyy'}}
-																						</td>
-																						<td>{{call.callDuration}}</td>
-																						<td>{{call.username}}</td>
-																						<td>{{call.callCreateBy}}</td>
-																					</tr>
-																					<tr>
-																						<td colspan="6">
-																							<a href="#">{{call.callDes | limitTo:200}}{{call.callDes.length <= 200 ? '' : '...'}}</a>
-																						</td>
-																						<td class="mailbox-date">
-																							<div class="col-sm-2">
-																								<div class="btn-group">
-																									<button type="button"
-																										class="btn btn-default dropdown-toggle btn-sm"
-																										data-toggle="dropdown" aria-expanded="false">
-																										<span class="caret"></span> <span class="sr-only">Toggle
-																											Dropdown</span>
-																									</button>
-																									<ul class="dropdown-menu" role="menu">
-																										<li><a href="#" ng-click="actEditCall(call.callId)"><i class="fa fa-pencil"></i> Edit</a></li>
-																										<li ng-click="actDeleteCall(call.callId)"><a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																										<li><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}"><i class="fa fa-eye"></i> View</a></li>
-																									</ul>
-																								</div>
-																							</div>
-																						</td>
-																					</tr>
-																			</table>
-																		</div>
+																	<div class="mailbox-messages table-responsive">
+																		<table class="table iTable"> 					
+																			<thead>
+																				<tr>
+																					<th>ID</th>
+																					<th>Subject</th>
+																					<th>Start Date</th>
+																					<th>Duration</th>
+																					<th>Assign To</th>
+																					<th>Create By</th>
+																					<th class="text-center">Action</th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="call in listAllCallByLead">
+																				<tr>
+																					<td class="iTD-width-50">{{call.callId}}</td>
+																					<td>{{call.callSubject.trunc(15)}}</td>
+																					<td> {{call.callStartDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{call.callDuration}}</td>
+																					<td>{{call.username}}</td>
+																					<td>{{call.callCreateBy}}</td>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="actEditCall(call.callId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="#" ng-click="actDeleteCall(call.callId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-call/{{call.callId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -2185,51 +2166,33 @@ function iSplitBySplint(obj){
 															</div>
 															<div id="collapse2" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Status</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="meet in listAllMeetByLead">
 																				<tr>
-																					<td class="iTD-width-50">
-																						{{meet.meetingId}}
-																					</td>
-																					<td colspan="2">{{meet.meetingSubject}}</td>
+																					<td class="iTD-width-50">{{meet.meetingId}}</td>
+																					<td>{{meet.meetingSubject.trunc(15)}}</td>
 																					<td>{{meet.statusName}}</td>
 																					<td>{{meet.meetingStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{meet.meetingEndDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{meet.username}}</td>
 																					<td>{{meet.meetingCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7">
-																						<a href="#">{{meet.meetingDes | limitTo:200}}{{meet.meetingDes.length <= 200 ? '' : '...'}}</a>
-																					</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditMeeting(meet.meetingId)">
-																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteMeeting(meet.meetingId)">
-																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}"><i class="fa fa-eye"></i> View</a></li>
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="actEditMeeting(meet.meetingId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="#" ng-click="actDeleteMeeting(meet.meetingId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																					</td>
 																				</tr>
 																			</tbody>
@@ -2247,55 +2210,33 @@ function iSplitBySplint(obj){
 															</div>
 															<div id="collapse3" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Status</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="task in listAllTaskByLead">
 																				<tr>
-																					<td class="iTD-width-50">
-																						{{task.taskId}}
-																					</td>
-																					<td colspan="2">{{task.taskSubject}}</td>
+																					<td class="iTD-width-50">{{task.taskId}}</td>
+																					<td>{{task.taskSubject.trunc(15)}}</td>
 																					<td>{{task.taskStatusName}}</td>
 																					<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{task.taskDueDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{task.username}}</td>
 																					<td>{{task.taskCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7">
-																						<a href="#">{{task.taskDes | limitTo:200}}{{task.taskDes.length <= 200 ? '' : '...'}}</a>
-																					</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditTask(task.taskId)">
-																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteTask(task.taskId)">
-																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}"><i class="fa fa-eye"></i> View</a></li>
-				
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="actEditTask(task.taskId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="#" ng-click="actDeleteTask(task.taskId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																					</td>
 																				</tr>
 																			</tbody>
@@ -2313,54 +2254,33 @@ function iSplitBySplint(obj){
 															</div>
 															<div id="collapse4" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Name</th>
+																					<th>ID</th>
+																					<th>Name</th>
 																					<th>Location</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="event in listAllEventByLead">
 																				<tr>
-																					<td class="iTD-width-50">
-																						{{event.evId}}
-																					</td>
-																					<td colspan="2">{{event.evName}}</td>
+																					<td class="iTD-width-50">{{event.evId}}</td>
+																					<td>{{event.evName.trunc(15)}}</td>
 																					<td>{{event.locateName}}</td>
 																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.username}}</td>
 																					<td>{{event.evCreateBy}}</td>
-																				</tr>
-																				<tr>
-																					<td colspan="7">
-																						<a href="#">{{event.evDes | limitTo:200}}{{event.evDes.length <= 200 ? '' : '...'}}</a>
-																					</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li ng-click="actEditEvent(event.evId)">
-																										<a href="#"><i class="fa fa-pencil"></i> Edit</a>
-																									</li>
-																									<li ng-click="actDeleteEvent(event.evId)">
-																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
-																									<li><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><i class="fa fa-eye"></i> View</a></li>
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="actEditEvent(event.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="#" ng-click="actDeleteEvent(event.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																					</td>
 																				</tr>
 																			</tbody>
@@ -2561,7 +2481,7 @@ function iSplitBySplint(obj){
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
 												<form id="frmOpportDetail">
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 														<ul class="list-group list-group-unbordered">
 															<li class="list-group-item"><b>Overview</b> <a
 																class="pull-right cusor_pointer"
@@ -2641,7 +2561,7 @@ function iSplitBySplint(obj){
 															</li>
 														</ul>
 													</div>
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 														<ul class="list-group list-group-unbordered">
 															<li class="list-group-item"><b>&nbsp;</b> <a
 																class="pull-right cusor_pointer"
@@ -2666,7 +2586,7 @@ function iSplitBySplint(obj){
 																</div>
 															</li>
 															<li class="list-group-item item_border">Customer <a
-																class="pull-right show-text-detail">[{{opportunity.custID}}] {{opportunity.custName}}</a>
+																class="pull-right show-text-detail">[{{opportunity.custID}}] {{opportunity.custName.trunc(15)}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<select class="form-control select2"
 																		name="oppCustomer" id="oppCustomer" style="width: 100%;">
@@ -2701,7 +2621,7 @@ function iSplitBySplint(obj){
 															
 														</ul>
 													</div>
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 														<ul class="list-group list-group-unbordered">
 															<li class="list-group-item"><b>Others</b> 
 																	<a class="pull-right cusor_pointer"

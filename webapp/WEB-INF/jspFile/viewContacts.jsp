@@ -718,7 +718,6 @@ app.controller('meetController',['$scope','$http',function( $scope, $http){
 	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;
-		$("#meetDuration").select2('val',"");
 		$("#meetStatus").select2('val',"");
 		$("#meetAssignTo").select2('val',"");	
 		$("#btnMeetSave").text("Save");
@@ -762,7 +761,6 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 	
 	$scope.cancelEventClick = function(){
 		eventIdForEdit = null;
-		$("#eventDuration").select2('val',"");
 		$("#eventLocation").select2('val',"");
 		$("#eventAssignTo").select2('val',"");	
 		$("#btnEventSave").text("Save");
@@ -1190,8 +1188,8 @@ function addDataToDetailLead(){
 																		<table class="table iTable"> 					
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Start Date</th>
 																					<th>Duration</th>
 																					<th>Assign To</th>
@@ -1204,7 +1202,7 @@ function addDataToDetailLead(){
 																					<td class="iTD-width-50">
 																						{{call.callId}}
 																					</td>
-																					<td colspan="2">{{call.callSubject}}</td>
+																					<td>{{call.callSubject.trunc(10)}}</td>
 																					<td> 
 																						{{call.callStartDate | date:'dd/MM/yyyy'}}
 																					</td>
@@ -1237,8 +1235,8 @@ function addDataToDetailLead(){
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Status</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
@@ -1252,7 +1250,7 @@ function addDataToDetailLead(){
 																					<td class="iTD-width-50">
 																						{{meet.meetingId}}
 																					</td>
-																					<td colspan="2">{{meet.meetingSubject}}</td>
+																					<td>{{meet.meetingSubject.trunc(10)}}</td>
 																					<td>{{meet.statusName}}</td>
 																					<td>{{meet.meetingStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{meet.meetingEndDate | date:'dd/MM/yyyy'}}</td>
@@ -1283,8 +1281,8 @@ function addDataToDetailLead(){
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Status</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
@@ -1298,7 +1296,7 @@ function addDataToDetailLead(){
 																					<td class="iTD-width-50">
 																						{{task.taskId}}
 																					</td>
-																					<td colspan="2">{{task.taskSubject}}</td>
+																					<td>{{task.taskSubject.trunc(10)}}</td>
 																					<td>{{task.taskStatusName}}</td>
 																					<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{task.taskDueDate | date:'dd/MM/yyyy'}}</td>
@@ -1329,8 +1327,8 @@ function addDataToDetailLead(){
 																		<table class="table iTable"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Name</th>
+																					<th>ID</th>
+																					<th>Name</th>
 																					<th>Location</th>
 																					<th>Start Date</th>
 																					<th>End Date</th>
@@ -1344,7 +1342,7 @@ function addDataToDetailLead(){
 																					<td class="iTD-width-50">
 																						{{event.evId}}
 																					</td>
-																					<td colspan="2">{{event.evName}}</td>
+																					<td>{{event.evName.trunc(10)}}</td>
 																					<td>{{event.locateName}}</td>
 																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
@@ -1375,8 +1373,8 @@ function addDataToDetailLead(){
 																		<table class="table iTable" data-ng-init="listAllEmailByLeadId()"> 
 																			<thead>
 																				<tr>
-																					<th>#</th>
-																					<th colspan="2">Subject</th>
+																					<th>ID</th>
+																					<th>Subject</th>
 																					<th>Sent To</th>
 																					<th>Date</th>
 																					<th>Status</th>
@@ -1389,7 +1387,7 @@ function addDataToDetailLead(){
 																					<td class="iTD-width-50">
 																						<a href="#"><i class="fa fa-envelope text-green font-size-icon-30"></i></a>
 																					</td>
-																					<td colspan="2">{{event.evName}}</td>
+																					<td>{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
 																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
@@ -1571,7 +1569,7 @@ function addDataToDetailLead(){
 											<div class="row">
 												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item"><b>Overview</b> <!-- <a
 																	class="pull-right cusor_pointer"
@@ -1628,7 +1626,7 @@ function addDataToDetailLead(){
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Customer<a
-																	class="pull-right show-text-detail">{{contact.custName == null?'-':contact.custName}}</a>
+																	class="pull-right show-text-detail">{{contact.custName == null?'-':contact.custName.trunc(30)}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -1651,7 +1649,7 @@ function addDataToDetailLead(){
 																
 															</ul>
 														</div>
-														<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item"><b>Address</b>
 																
@@ -1706,8 +1704,8 @@ function addDataToDetailLead(){
 																</li>
 															</ul>
 														</div>
-														<div class="clearfix hidden-md hidden-lg"></div>											
-														<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+														<div class="clearfix hidden-lg"></div>											
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item"><b>Other</b> <!-- <a
 																	class="pull-right cusor_pointer"
@@ -1771,13 +1769,13 @@ function addDataToDetailLead(){
 																		<table class="table iTable"> 					
 																			<thead>
 																				<tr>
-																					<th class="text-center">#</th>
+																					<th>ID</th>
 																					<th>Name</th>
 																					<th>Customer</th>
 																					<th>Stage</th>
 																					<th>Amount</th>
 																					<th>Close Date</th>
-																					<th></th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="opp in opportunity">
@@ -1788,37 +1786,19 @@ function addDataToDetailLead(){
 																					<td>{{opp.opName}}</td>
 																					<td>{{opp.custName}}</td>
 																					<td>{{opp.opStageName}}</td>
-																					<td>{{opp.opAmount | number:2}}</td>
+																					<td><span>$</span>{{opp.opAmount | number:2}}</td>
 																					<td>{{opp.opCloseDate | date:'dd/MM/yyyy'}}</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li><a href="${pageContext.request.contextPath}/update-opportunity/{{opp.opId}}" >
-																											<i class="fa fa-pencil"></i> Edit
-																									</a></li>																										
-																									<li><a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}"> <i class="fa fa-eye"></i>
-																											View
-																									</a></li>
-				
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="${pageContext.request.contextPath}/update-opportunity/{{opp.opId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																					</td>
 																				</tr>
+																			</tbody>
 																		</table>
 																	</div>
 																</div>
 															</div>
 														</div>
-														
-														
 														
 														<div class="panel panel-default">
 															<div class="panel-heading">
@@ -1832,62 +1812,39 @@ function addDataToDetailLead(){
 															<div id="RCase" class="panel-collapse collapse">
 																<div class="panel-body">
 																	<div class="mailbox-messages table-responsive">
-																			<table class="table iTable"> 					
-																				<thead>
-																					<tr>
-																						<th class="text-center">#</th>
-																						<th>Subject</th>
-																						<th>Status</th>
-																						<th>Priority</th>
-																						<th>Date</th>
-																						<th></th>
-																					</tr>
-																				</thead>
-																				<tbody ng-repeat="case in caseList">
-																					<tr>
-																						<td class="iTD-width-50">
-																							{{case.caseId}}
-																						</td>
-																						<td>{{case.subject}}</td>
-																						<td>{{case.status.statusName}}</td>
-																						<td>{{case.priority.priorityName}}</td>
-																						<td>{{case.convertCreateDate}}</td>
-																						<td class="mailbox-date">
-																							<div class="col-sm-2">
-																								<div class="btn-group">
-																									<button type="button"
-																										class="btn btn-default dropdown-toggle btn-sm"
-																										data-toggle="dropdown" aria-expanded="false">
-																										<span class="caret"></span> <span class="sr-only">Toggle
-																											Dropdown</span>
-																									</button>
-																									<ul class="dropdown-menu" role="menu">
-																										<li><a href="${pageContext.request.contextPath}/update-case/{{case.caseId}}" >
-																												<i class="fa fa-pencil"></i> Edit
-																										</a></li>																										
-																										<li><a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}"> <i class="fa fa-eye"></i>
-																												View
-																										</a></li>
-					
-																									</ul>
-																								</div>
-																							</div>
-																						</td>
-																					</tr>
-																					
-																			</table>
-																		</div>
+																		<table class="table iTable"> 					
+																			<thead>
+																				<tr>
+																					<th>ID</th>
+																					<th>Subject</th>
+																					<th>Status</th>
+																					<th>Priority</th>
+																					<th>Date</th>
+																					<th  class="text-center">Action</th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="case in caseList">
+																				<tr>
+																					<td class="iTD-width-50">{{case.caseId}}</td>
+																					<td>{{case.subject}}</td>
+																					<td>{{case.status.statusName}}</td>
+																					<td>{{case.priority.priorityName}}</td>
+																					<td>{{case.convertCreateDate}}</td>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="${pageContext.request.contextPath}/update-case/{{case.caseId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
 																</div>
 															</div>
 														</div>
-														
-														
 													</div>
 												</div>
 											</div>
 										</div>
-
-
 									</div>
 									<!-- /.tab-content -->
 								</div>
@@ -2108,38 +2065,16 @@ function addDataToDetailLead(){
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2" name="meetDuration"
-										id="meetDuration" style="width: 100%;">
-										<option value="">-- Select A Duration --</option>
-										<option value="15 minutes">15 minutes</option>
-										<option value="30 minutes">30 minutes</option>
-										<option value="45 minutes">45 minutes</option>
-										<option value="1 hour">1 hour</option>
-										<option value="1:30 hours">1:30 hours</option>
-										<option value="2 hours">2 hours</option>
-										<option value="3 hours">3 hours</option>
-										<option value="6 hours">6 hours</option>
-										<option value="1 day">1 day</option>
-										<option value="2 days">2 days</option>
-										<option value="3 days">3 days</option>
-										<option value="1 week">1 week</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="clearfix"></div>
-							<div class="col-md-6">
-								<div class="form-group">
 									<label>Start Date<span class="requrie">(Required)</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input value="" name="meetStartDate" id="meetStartDate" type="text" readonly="readonly" class="form-control meet-data-time pull-right active">
+										<input value="" name="meetStartDate" readonly="readonly" id="meetStartDate" type="text" class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 									</div>
 								</div>
 							</div>
+							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>End Date<span class="requrie">(Required)</span></label>
@@ -2147,11 +2082,16 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="meetEndDate" id="meetEndDate" type="text" readonly="readonly" class="form-control meet-data-time pull-right active">
+										<input name="meetEndDate" id="meetEndDate" readonly="readonly" type="text" class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 									</div>
 								</div>
 							</div>
-
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Duration <span class="requrie">(Required)</span></label>
+									<input type="text" class="form-control" name="meetDuration" id="meetDuration"/>
+								</div>
+							</div>
 							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
@@ -2335,7 +2275,7 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input  name="eventStartDate" id="eventStartDate" type="text" readonly="readonly" class="form-control event-date-time pull-right active">
+										<input  name="eventStartDate" readonly="readonly" id="eventStartDate" type="text" class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 									</div>
 								</div>
 							</div>
@@ -2346,30 +2286,15 @@ function addDataToDetailLead(){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="eventEndDate" id="eventEndDate" type="text" readonly="readonly" class="form-control event-date-time pull-right active">
+										<input name="eventEndDate" readonly="readonly" id="eventEndDate" type="text" class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 									</div>
 								</div>
 							</div>
-
 							<div class="clearfix"></div>
-							<div class="col-md-6">
+							<div class="col-xs-12 col-sm-12 col-md-6">
 								<div class="form-group">
 									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2" name="eventDuration" id="eventDuration" style="width: 100%;">
-										<option value="">-- SELECT A Duration --</option>
-										<option value="15 minutes">15 minutes</option>
-										<option value="30 minutes">30 minutes</option>
-										<option value="45 minutes">45 minutes</option>
-										<option value="1 hour">1 hour</option>
-										<option value="1:30 hours">1:30 hours</option>
-										<option value="2 hours">2 hours</option>
-										<option value="3 hours">3 hours</option>
-										<option value="6 hours">6 hours</option>
-										<option value="1 day">1 day</option>
-										<option value="2 days">2 days</option>
-										<option value="3 days">3 days</option>
-										<option value="1 week">1 week</option>
-									</select>
+									<input type="text" class="form-control" name="eventDuration" id="eventDuration"/>
 								</div>
 							</div>
 							<div class="col-md-6">

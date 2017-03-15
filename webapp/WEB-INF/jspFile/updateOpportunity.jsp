@@ -60,8 +60,6 @@ app.controller('opportunityController',['$scope','$http',function($scope, $http)
 			$scope.classCode = response.CLASSES;
 			$scope.priceCode = response.PRICE_CODE;
 			
-			
-			
 			setTimeout(function(){
 				$("#op_customer").select2("val",$scope.dataOpport.custID);
 				$("#op_stage").select2("val", $scope.dataOpport.osId);
@@ -267,32 +265,32 @@ $(document).ready(function() {
 			<div class="box-body">
 			
 				<form method="post" id="form-opportunity" data-ng-init="startupPage()">
-					
-					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
-					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
-					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-opportunity"> <i class="fa fa-reply"></i> Back </a>
-	
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
+						<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
+						<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
+						<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-opportunity"> <i class="fa fa-reply"></i> Back </a>
+					</div>
 					<div class="clearfix"></div>	
 					<div class="col-sm-2"><h4>Overview</h4></div>	
 					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>	
 					<div class="row">
-						<div  class="col-sm-12">
-							<div class="col-sm-6">
-								<div class="col-sm-6">
+						<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Name <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<input type="text" value="{{dataOpport.opName}}" class="form-control" id="op_name" name="op_name">
 									</div>
 								</div>
 								
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Amount <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<input type="text" value="{{dataOpport.opAmount}}" class="form-control" id="op_amount" name="op_amount">
 									</div>
 								</div>
-								<div class="clearfix"></div>									
-								<div class="col-sm-6">
+								<div class="clearfix hidden-md hidden-lg"></div>									
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Customer <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_customer" id="op_customer" style="width: 100%;">
@@ -301,7 +299,8 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="clearfix hidden-sm hidden-lg"></div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select style="width:100%" class="form-control select2" name="op_price" id="op_price">
@@ -310,20 +309,20 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="clearfix"></div>	
+								<div class="clearfix hidden-sm hidden-md"></div>	
 								
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Close date <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input type="text" value="{{dataOpport.opCloseDate | date:'dd/MM/yyyy'}}"  class="form-control pull-right" name="opCloseDate" id="opCloseDate">
+											<input type="text" value="{{dataOpport.opCloseDate | date:'dd/MM/yyyy'}}" readonly="readonly" class="form-control pull-right" name="opCloseDate" id="opCloseDate">
 										</div> 
 									</div>
 								</div>
-								<div class="col-md-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<div class="form-group">
 										<label>Class</label> 
 										<select id="op_classCode" name="op_classCode" class="form-control select2 input-lg" style="width: 100%;">
@@ -332,19 +331,14 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="clearfix"></div>	
+								<div class="clearfix hidden-md hidden-lg"></div>	
 								<div class="col-sm-12">
 									<label class="font-label">Next Step </label>
 									<div class="form-group">
 										<input type="text" value="{{dataOpport.opNextStep}}" class="form-control" id="op_nextStep" name="op_nextStep">
 									</div>
 								</div>
-																
-								
-							</div>
-		
-							<div class="col-sm-6">
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
@@ -353,16 +347,14 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Probability (%) </label>
 									<div class="form-group">
 										<input type="text" value="{{dataOpport.opProbability}}" class="form-control" id="op_probability" name="op_probability">
 									</div>
 								</div>
-								
-								
-								<div class="clearfix"></div>
-								<div class="col-sm-6">
+								<div class="clearfix hidden-md hidden-lg"></div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Campaign </label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
@@ -371,8 +363,8 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								
-								<div class="col-sm-6">
+								<div class="clearfix hidden-sm hidden-lg"></div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Type </label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_type" id="op_type" style="width: 100%;">
@@ -381,14 +373,12 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="clearfix"></div>
-								<div class="col-sm-6">
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Lead Source </label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_leadSource" id="op_leadSource" style="width: 100%;">
 											<option value="">-- SELECT Lead Source --</option>
 											<option ng-repeat="u in source" value="{{u.sourceID}}">{{u.sourceName}}</option>
-											
 										</select>
 									</div>
 								</div>
@@ -409,9 +399,9 @@ $(document).ready(function() {
 					<div class="col-sm-2"><h4>Other </h4></div>				
 					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>					
 					<div class="row">
-						<div class="col-sm-12">
-							<div class="col-sm-6">				
-								<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">				
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Assigned to  </label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_assignTo" id="op_assignTo" style="width:100%">
@@ -426,7 +416,6 @@ $(document).ready(function() {
 				</form>
 			</div>
 			<div class="box-footer"></div>
-			<dis id="errors"></dis>
 		</div>
 	</section>
 </div>

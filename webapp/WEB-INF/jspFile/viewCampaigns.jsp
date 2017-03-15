@@ -2112,12 +2112,12 @@ function addDataToDetailLead(){
 								</div>
 							</div>
 							<div class="clearfix"></div>
-								<div class="col-xs-12 col-sm-12 col-md-6">
-									<div class="form-group">
-										<label>Duration <span class="requrie">(Required)</span></label>
-										<input type="text" class="form-control" name="eventDuration" id="eventDuration"/>
-									</div>
+							<div class="col-xs-12 col-sm-12 col-md-6">
+								<div class="form-group">
+									<label>Duration <span class="requrie">(Required)</span></label>
+									<input type="text" class="form-control" name="eventDuration" id="eventDuration"/>
 								</div>
+							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Assign To </label> 
