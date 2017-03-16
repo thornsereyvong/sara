@@ -241,9 +241,9 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 									<div class="tab-content">
 										<div class="tab-pane in active" id="detail_tap">
 											<div class="row">
-												<div class="col-sm-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item item_border">Subject<a
 																	class="pull-right show-text-detail ng-cloak">{{call.callSubject}}</a>
@@ -272,13 +272,20 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																	</div>
 																</li>
 																
-																
+																<li class="list-group-item item_border hidden-lg">Status <a
+																	class="pull-right show-text-detail ng-cloak">{{call.callStatusName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
 															</ul>
 														</div>
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 															<ul class="list-group list-group-unbordered">
-																
-																<li class="list-group-item item_border">Status <a
+																<li class="list-group-item item_border hidden-xs hidden-sm hidden-md">Status <a
 																	class="pull-right show-text-detail ng-cloak">{{call.callStatusName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -296,20 +303,26 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Relate To<a
-																	class="pull-right show-text-detail ng-cloak">[{{call.callRelatedToFieldId}}] {{call.callRelatedName}}</a>
+																	class="pull-right show-text-detail ng-cloak">[{{call.callRelatedToFieldId}}] {{call.callRelatedName.trunc(10)}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
 																	</div>
 																</li>
 																
+																<li class="list-group-item item_border hidden-lg">Assign To <a
+																	class="pull-right show-text-detail ng-cloak">{{call.username}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
 																
 															</ul>
 														</div>
-																										
-														<div class="col-sm-4">
+														<div class="clearfix"></div>											
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 hidden-md hidden-sm hidden-xs">
 															<ul class="list-group list-group-unbordered">
-																
 																<li class="list-group-item item_border">Assign To <a
 																	class="pull-right show-text-detail ng-cloak">{{call.username}}</a>
 																	<div class="form-group show-edit" style="display: none;">
@@ -336,8 +349,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		Edit</a> -->
 																</li>
 																
-																<li class="list-group-item item_border" ng-if="call.callDes !=''">													
-																	
+																<li class="list-group-item item_border" ng-if="call.callDes != ''">													
 																	<a class="show-text-detail ng-cloak">{{call.callDes}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -365,9 +377,9 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 										</div>
 										<div class="tab-pane" id="systemInfo_tap">
 											<div class="row">
-												<div class="col-sm-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item ">Create By<a
 																	class="pull-right show-text-detail ng-cloak">{{call.callCreateBy}}</a>
@@ -389,7 +401,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item ">Modify By<a
 																	class="pull-right show-text-detail ng-cloak">{{call.callModifiedBy}}</a>
@@ -411,8 +423,6 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														
-														
 														<br>
 														<div class="col-sm-12 text-center" id="showBtnEditLead"
 															style="display: none;">

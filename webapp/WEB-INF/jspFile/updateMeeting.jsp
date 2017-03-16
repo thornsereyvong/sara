@@ -59,9 +59,9 @@ function listDataByCampID(){
 	var data = ${meeting};
 	var result = data.body.DATA;
 	var user_id = ${users};
-	$("#me_startDate").val(result.meetingStartDate);
+	$("#meetStartDate").val(result.meetingStartDate);
 	var end = new Date(result.meetingEndDate);
-	$("#me_endDate").val(result.meetingEndDate);
+	$("#meetEndDate").val(result.meetingEndDate);
 	$("#me_id").val(result.meetingId);
 	$("#me_subject").val(result.meetingSubject);
 	$("#me_location").val(result.meetingLocation);
@@ -75,7 +75,7 @@ function listDataByCampID(){
 		listStatusID(result.statusId);
 	}
 
-	$("#me_duration").select2("val",result.meetingDuration);
+	$("#meetDuration").val(result.meetingDuration);
 	
 	if(result.meetingRelatedToModuleType == null || result.meetingRelatedToModuleType == ""){
 		$("#me_relateTo").select2("val","");
@@ -108,12 +108,12 @@ $(document).ready(function() {
         format: 'DD/MM/YYYY' 
     }).on('change', function(e) {
 
-        if($("#me_startDate" != "")){
-        	$('#form-meeting').bootstrapValidator('revalidateField', 'me_startDate');
+        if($("#meetStartDate" != "")){
+        	$('#form-meeting').bootstrapValidator('revalidateField', 'meetStartDate');
          }
 
-        if($("#me_endDate" != "")){
-        	$('#form-meeting').bootstrapValidator('revalidateField', 'me_endDate');
+        if($("#meetEndDate" != "")){
+        	$('#form-meeting').bootstrapValidator('revalidateField', 'meetEndDate');
          }
     	 
     });
@@ -135,8 +135,9 @@ $(document).ready(function() {
         timePicker: true, 
         timePickerIncrement: 5,
     }).on('change', function(e) {
-    	$('#form-meeting').bootstrapValidator('revalidateField', 'me_startDate');
-    	$('#form-meeting').bootstrapValidator('revalidateField', 'me_endDate');
+    	$('#form-meeting').bootstrapValidator('revalidateField', 'meetStartDate');
+    	$('#form-meeting').bootstrapValidator('revalidateField', 'meetEndDate');
+    	$('#form-meeting').bootstrapValidator('revalidateField', 'meetDuration');
  	});
     
 	
@@ -148,8 +149,6 @@ $(document).ready(function() {
 	 $("#btn_save").click(function(){
 		$("#form-meeting").submit();
 	});
-
-
 		
 	$('#form-meeting').bootstrapValidator({
 			message: 'This value is not valid',
@@ -170,7 +169,7 @@ $(document).ready(function() {
 						}
 					}
 				},
-				me_startDate: {
+				meetStartDate: {
 					validators: {
 						notEmpty: {
 							message: 'The Start Date is required and can not be empty!'
@@ -181,7 +180,7 @@ $(document).ready(function() {
 	                    }
 					}
 				},
-				me_endDate: {
+				meetEndDate: {
 					validators: {
 						notEmpty: {
 							message: 'The End Date is required and can not be empty!'
@@ -190,6 +189,13 @@ $(document).ready(function() {
 	                        format: 'DD/MM/YYYY h:mm A',
 	                        message: 'The value is not a valid date'
 	                    }
+					}
+				},
+				meetDuration: {
+					validators: {
+						notEmpty: {
+							message: 'The duration is required and can not be empty!'
+						}
 					}
 				},
 				me_description: {
@@ -230,9 +236,9 @@ $(document).ready(function() {
 							  "meetingSubject": getValueStringById("me_subject"),
 						      "meetingAssignTo": getJsonById("userID","me_assignTo","str"),
 						      "meetingDes": getValueStringById("me_description"),
-						      "startDate": getValueStringById("me_startDate"),
-						      "meetingDuration": getValueStringById("me_duration"),
-						      "endDate":  getValueStringById("me_endDate"),
+						      "startDate": getValueStringById("meetStartDate"),
+						      "meetingDuration": getValueStringById("meetDuration"),
+						      "endDate":  getValueStringById("meetEndDate"),
 						      "meetingStatus": getJsonById("statusId","me_status","int"),
 						      "meetingLocation":  getValueStringById("me_location"),
 						      "meetingRelatedToModuleType": getValueStringById("me_relateTo"),
@@ -269,95 +275,65 @@ $(document).ready(function() {
 			});	
 			
 		});	
-});
+	});
 </script>
 	<section class="content">
-
 		<!-- Default box -->
-		
 		<div class="box box-danger">
-			
 			<div class="box-body">
-			
 			<form method="post" id="form-meeting">
-				
-				<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
-				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-				<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/list-meetings"> <i class="fa fa-reply"></i> Back </a>
-
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
+					<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
+					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
+					<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/list-meetings"> <i class="fa fa-reply"></i> Back </a>
+				</div>
 				<div class="clearfix"></div>
-
-				<div class="col-sm-2">
-					<h4>Overview</h4>
-				</div>
-
-				<div class="col-sm-12">
-					<hr style="margin-top: 3px;" />
-				</div>
-
+				<div class="col-sm-2"><h4>Overview</h4></div>
+				<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 				<div class="row">
-					<div class="col-sm-12">
-					<div class="col-sm-6">
-
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<input type="hidden" id="me_id">
-
-						<div class="col-sm-12">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 							<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 							<div class="form-group" id="c_name">
 								<input type="text" class="form-control" name="me_subject" id="me_subject">
 							</div>
 						</div>
-						
-						<div class="clearfix"></div>
-						<div class="col-sm-6">
-							<label class="font-label">Start date <span class="requrie">(Required)</span></label>
+						<div class="clearfix hidden-lg"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
+								<label>Start Date<span class="requrie">(Required)</span></label>
 								<div class="input-group">
 									<div class="input-group-addon">
 										<i class="fa fa-calendar"></i>
 									</div>
-									<input type="text" class="form-control pull-right meet-data-time" name="me_startDate" id="me_startDate">
-								</div> 
+									<input value="" name="meetStartDate" id="meetStartDate" readonly="readonly"
+										type="text"
+										class="form-control meet-data-time pull-right active"  onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
+								</div>
 							</div>
 						</div>
-					
-						<div class="col-sm-6">
-							<label class="font-label">End date <span class="requrie">(Required)</span></label>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
+								<label>End Date<span class="requrie">(Required)</span></label>
 								<div class="input-group">
 									<div class="input-group-addon">
 										<i class="fa fa-calendar"></i>
 									</div>
-									<input type="text" class="form-control pull-right meet-data-time" name="me_endDate" id="me_endDate">
-								</div> 
+									<input name="meetEndDate" id="meetEndDate" type="text" readonly="readonly"
+										class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
+								</div>
 							</div>
 						</div>
-						
 						<div class="clearfix"></div>
-						<div class="col-sm-6">
-							<label class="font-label">Duration </label>
-							<div class="bootstrap-timepicker">
-			                    <div class="form-group">
-			                    	<select class="form-control select2"  name="me_duration" id="me_duration" style="width: 100%;">
-				                      <option value="">--Select Duration--</option>   
-				                      <option value="15 minutes">15 minutes</option>
-				                      <option value="30 minutes">30 minutes</option>
-				                      <option value="45 minutes">45 minutes</option> 
-				                      <option value="1 hour">1 hour</option> 
-				                      <option value="1:30 hours">1:30 hours</option> 
-				                      <option value="2 hours">2 hours</option> 
-				                      <option value="3 hours">3 hours</option> 
-				                      <option value="6 hours">6 hours</option> 
-				                      <option value="1 day">1 day</option>
-				                      <option value="2 days">2 days</option>
-				                      <option value="3 days">3 days</option>
-				                      <option value="1 week">1 week</option>         
-				                    </select>
-			                    </div>
-			                  </div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+							<div class="form-group">
+								<label>Duration <span class="requrie">(Required)</span></label>
+								<input type="text" class="form-control" name="meetDuration" id="meetDuration"/>
+							</div>
 						</div>
-						
-						<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<label class="font-label">Assigned to </label>
 							<div class="form-group">
 								<select class="form-control select2"  name="me_assignTo" id="me_assignTo" style="width: 100%;">
@@ -365,15 +341,8 @@ $(document).ready(function() {
 			                    </select>
 							</div>
 						</div>
-					
-						
-						
-					</div>
-
-					<div class="col-sm-6">
-
-
-						<div class="col-sm-6" data-ng-init="listMeetignStatus()" >
+						<div class="clearfix hidden-lg"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3" data-ng-init="listMeetignStatus()" >
 							<label class="font-label">Status :</label>
 							<div class="form-group">
 								<select class="form-control select2" name="me_status" id="me_status" style="width: 100%;">
@@ -382,16 +351,14 @@ $(document).ready(function() {
 								</select>
 							</div>
 						</div>
-					
-						<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<label class="font-label">Location :</label>
 							<div class="form-group" id="">
 								<input type="text" class="form-control" name="me_location" id="me_location">
 							</div>
 						</div>
-						
 						<div class="clearfix"></div>
-						<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<label class="font-label">Related to </label>
 							<div class="form-group">								
 								<select class="form-control select2" name="me_relateTo" id="me_relateTo" style="width: 100%;">
@@ -415,19 +382,15 @@ $(document).ready(function() {
 								</select>
 							</div>
 						</div>
-						
-						<div class="col-sm-6">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 						<label class="font-label">&nbsp; </label>
 							<div class="form-group">
-								<select class="form-control select2" name="me_reportType" id="me_reportType">
+								<select class="form-control select2" style="width: 100%;" name="me_reportType" id="me_reportType">
 									<option value="">--SELECT--</option>
 								</select>
 							</div>
 						</div>
-
 					</div>
-					
-
 					<div class="clearfix"></div>
 					<div class="clearfix"></div>
 					<div class="col-sm-12">
@@ -439,29 +402,17 @@ $(document).ready(function() {
 						</div>
 					</div>
 				</div>
-				
-				
 				</div>
-				
-
 			</form>
 			</div>
 			<!-- /.box-body -->
 			<div class="box-footer"><div id="test_div"></div></div>
 			<!-- /.box-footer-->
 		</div>
-		
 		<!-- /.box -->
-
-
 	</section>
 	<!-- /.content -->
-
-
 </div>
-
 <!-- /.content-wrapper -->
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 

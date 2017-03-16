@@ -211,10 +211,7 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 	</section>
 
 	<section class="content" data-ng-init="startupView()">
-
-
 		<div class="row">
-
 			<div class="col-md-12">
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">
@@ -241,9 +238,9 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 									<div class="tab-content">
 										<div class="tab-pane in active" id="detail_tap">
 											<div class="row">
-												<div class="col-sm-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item item_border">Subject<a
 																	class="pull-right show-text-detail">{{meet.meetingSubject}}</a>
@@ -280,13 +277,10 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 																			value="{{lead.lastName}}"> -->
 																	</div>
 																</li>
-																
-																
 															</ul>
 														</div>
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">
-																
 																<li class="list-group-item item_border">Status <a
 																	class="pull-right show-text-detail">{{meet.statusName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
@@ -311,14 +305,6 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 																			class="form-control" value="{{lead.title}}"> -->
 																	</div>
 																</li>
-																
-																
-															</ul>
-														</div>
-																										
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">
-																
 																<li class="list-group-item item_border">Assign To <a
 																	class="pull-right show-text-detail">{{meet.username}}</a>
 																	<div class="form-group show-edit" style="display: none;">
@@ -326,21 +312,16 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 																			class="form-control" value="{{lead.no}}"> -->
 																	</div>
 																</li>
-																
-																
 															</ul>
 														</div>
-														<div class="clearfix"></div>
-														<div class="col-sm-12" style="margin-top: 15px;">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item item_border">Description <!-- <a
 																	class="pull-right cusor_pointer"
 																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																		Edit</a> -->
 																</li>
-																
 																<li class="list-group-item item_border" ng-if="meet.meetingDes !=''">													
-																	
 																	<a class="show-text-detail">{{meet.meetingDes}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -349,28 +330,17 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																
 															</ul>
-														</div>
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
 														</div>
 													</form>
 												</div>
 											</div>
-
 										</div>
 										<div class="tab-pane" id="systemInfo_tap">
 											<div class="row">
-												<div class="col-sm-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item ">Create By<a
 																	class="pull-right show-text-detail">{{meet.meetingCreateBy}}</a>
@@ -392,7 +362,7 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item ">Modify By<a
 																	class="pull-right show-text-detail">{{meet.meetingModifiedBy}}</a>

@@ -527,7 +527,6 @@ $(function(){
 										angular.element(document.getElementById('viewOpportunityController')).scope().listDataMeetByRalateType();
 										$("#meetStatus").select2('val',"");
 										$("#meetAssignTo").select2('val',"");	
-										$("#meetDuration").select2('val',"");
 										$('#frmAddMeet').bootstrapValidator('resetForm', true);
 										swal({
 				    						title: "SUCCESSFUL",
@@ -590,7 +589,6 @@ $(function(){
 										angular.element(document.getElementById('viewOpportunityController')).scope().listDataMeetByRalateType();
 										$("#meetStatus").select2('val',"");
 										$("#meetAssignTo").select2('val',"");	
-										$("#meetDuration").select2('val',"");
 										$('#frmAddMeet').bootstrapValidator('resetForm', true);					
 										swal({
 				    						title: "SUCCESSFUL",
@@ -929,7 +927,6 @@ $(function(){
 									if(result.MESSAGE == "INSERTED"){						
 										angular.element(document.getElementById('viewOpportunityController')).scope().listDataEventByRalateType();						
 										
-										$("#eventDuration").select2('val',"");
 										$("#eventAssignTo").select2('val',"");	
 										$("#eventLocation").select2('val',"");
 										
@@ -993,11 +990,8 @@ $(function(){
 							    success: function(result){					    						    
 									if(result.MESSAGE == "UPDATED"){						
 										angular.element(document.getElementById('viewOpportunityController')).scope().listDataEventByRalateType();						
-										
-										$("#eventDuration").select2('val',"");
 										$("#eventAssignTo").select2('val',"");	
 										$("#eventLocation").select2('val',"");
-										
 										$('#frmAddEvent').bootstrapValidator('resetForm', true);				
 										swal({
 				    						title: "SUCCESSFUL",

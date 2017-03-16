@@ -1612,7 +1612,6 @@ app.controller('meetController',['$scope','$http',function( $scope, $http){
 	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;
-		$("#meetDuration").select2('val',"");
 		$("#meetStatus").select2('val',"");
 		$("#meetAssignTo").select2('val',"");	
 		$("#btnMeetSave").text("Save");
@@ -1656,7 +1655,6 @@ app.controller('eventController',['$scope','$http',function( $scope, $http){
 	
 	$scope.cancelEventClick = function(){
 		eventIdForEdit = null;
-		$("#eventDuration").select2('val',"");
 		$("#eventLocation").select2('val',"");
 		$("#eventAssignTo").select2('val',"");	
 		$("#btnEventSave").text("Save");
@@ -2831,7 +2829,7 @@ function iSplitBySplint(obj){
 															<i class="fa fa-file-text-o"></i> Sale Order
 														</a> 
 														<a class="btn btn-app" ng-click="lead_project_click()"> 
-															<img class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Project-2.png" alt="User Avatar"><br/>Lead Project
+															<i class="fa fa-product-hunt" aria-hidden="true"></i>Lead Project
 														</a>
 												</div>
 												<div class="col-md-12">
@@ -2847,25 +2845,25 @@ function iSplitBySplint(obj){
 															</div>
 															<div id="RContact" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable"> 					
 																			<thead>
 																				<tr>
-																					<th class="text-center">#</th>
+																					<th class="iTD-width-50"><img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Contact.png" alt="User Avatar"></th>
 																					<th>Name</th>
 																					<th>Title</th>
 																					<th>Department</th>
 																					<th>Phone</th>
 																					<th>Email</th>
 																					<th>Type</th>
-																					<th></th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="(key, con) in contact">
 																				<tr>
 																					<td class="iTD-width-50">
 																						<a href="#">
-																							<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Contact.png" alt="User Avatar">
+																							<img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Contact.png" alt="User Avatar">
 																						</a>
 																					</td>
 																					<td>{{con.conName}}</td>
@@ -2874,27 +2872,12 @@ function iSplitBySplint(obj){
 																					<td>{{con.conPhone}}</td>
 																					<td>{{con.conEmail}}</td>
 																					<td>{{con.Type}}</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									<li>
-																										<a href="#" ng-click="deleteContactClick(con.id, key)" ><i class="fa fa-trash"></i> Delete </a>
-																									</li>																										
-																									<li>
-																										<a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}"> <i class="fa fa-eye"></i> View</a>
-																									</li>					
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="deleteContactClick(con.id, key)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																					</td>
 																				</tr>
+																			</tbody>
 																		</table>
 																	</div>
 																</div>
@@ -2912,25 +2895,25 @@ function iSplitBySplint(obj){
 															</div>
 															<div id="RQuote" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable"> 					
 																			<thead>
 																				<tr>
-																					<th class="text-center">#</th>
+																					<th class="iTD-width-50"><img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar"></th>
 																					<th>Entry No</th>
 																					<th>Quote Date</th>
 																					<th>Start Date</th>
 																					<th>Expire Date</th>
 																					<th>Employee</th>
 																					<th>Total Amount</th>
-																					<th></th>
+																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="(key, q) in quote">
 																				<tr>
 																					<td class="iTD-width-50">
 																						<a href="#">
-																							<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
+																							<img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
 																						</a>
 																					</td>
 																					<td>{{q.quoteId}}</td>
@@ -2938,30 +2921,13 @@ function iSplitBySplint(obj){
 																					<td>{{q.startDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{q.expireDate | date:'dd/MM/yyyy'}}</td>
 																					<td>[{{q.empId}}] {{q.empName}}</td>
-																					<td>{{q.totalAmmount | number:2}}</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									
-																									<li><a href="#" ng-click="deleteQuoteClick(q.opQuoteId, key, q.quoteId)"  >
-																											<i class="fa fa-trash"></i> Delete
-																									</a></li>																									
-																									<li><a href="${pageContext.request.contextPath}/quote/edit/{{q.quoteId}}"> <i class="fa fa-eye"></i>
-																											View
-																									</a></li>
-				
-																								</ul>
-																							</div>
-																						</div>
+																					<td><span>$</span>{{q.totalAmmount | number:2}}</td>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="deleteQuoteClick(q.opQuoteId, key, q.quoteId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/quote/edit/{{q.quoteId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 																					</td>
 																				</tr>
+																			</tbody>
 																		</table>
 																	</div>
 																</div>
@@ -2978,24 +2944,24 @@ function iSplitBySplint(obj){
 															</div>
 															<div id="RSaleOrder" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
+																	<div class="mailbox-messages table-responsive">
 																		<table class="table iTable"> 					
 																			<thead>
 																				<tr>
-																					<th class="text-center">#</th>
+																					<th class="iTD-width-50"><img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar"></th>
 																					<th>Entry No</th>
 																					<th>Sale Date</th>
 																					<th>Due Date</th>
 																					<th>Employee</th>
 																					<th>Total Amount</th>
-																					<th></th>
+																					<th class="text-center ">Action</th>
 																				</tr>
 																			</thead>
 																			<tbody ng-repeat="(key, s) in saleOrder">
 																				<tr>
 																					<td class="iTD-width-50">
 																						<a href="#">
-																							<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
+																							<img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
 																						</a>
 																					</td>
 																					<td>{{s.saleOrderId}}</td>
@@ -3003,28 +2969,12 @@ function iSplitBySplint(obj){
 																					<td>{{s.saleDueDate | date:'dd/MM/yyyy'}}</td>
 																					<td>[{{s.empId}}] {{s.empName}}</td>
 																					<td>{{s.totalAmount | number:2}}</td>
-																					<td class="mailbox-date">
-																						<div class="col-sm-2">
-																							<div class="btn-group">
-																								<button type="button"
-																									class="btn btn-default dropdown-toggle btn-sm"
-																									data-toggle="dropdown" aria-expanded="false">
-																									<span class="caret"></span> <span class="sr-only">Toggle
-																										Dropdown</span>
-																								</button>
-																								<ul class="dropdown-menu" role="menu">
-																									
-																									<li><a href="#" ng-click="deleteSaleOrderClick(s.opSaleOrderId, key)" >
-																											<i class="fa fa-trash"></i> Delete
-																									</a></li>																											
-																									<li><a href="${pageContext.request.contextPath}/sale-order/edit/{{s.saleOrderId}}"> <i class="fa fa-eye"></i>
-																											View
-																									</a></li>
-																								</ul>
-																							</div>
-																						</div>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="deleteSaleOrderClick(s.opSaleOrderId, key)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/sale-order/edit/{{s.saleOrderId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 																					</td>
 																				</tr>
+																			</tbody>
 																		</table>
 																	</div>
 																</div>
@@ -3041,58 +2991,41 @@ function iSplitBySplint(obj){
 															</div>
 															<div id="RLeadProject" class="panel-collapse collapse">
 																<div class="panel-body">
-																	<div class="mailbox-messages">
-																			<table class="table iTable"> 					
-																				<thead>
-																					<tr>
-																						<th class="text-center">#</th>
-																						<th>Name</th>
-																						<th>Account Manager</th>
-																						<th>Company</th>
-																						<th>Email</th>
-																						<th>Start Date</th>
-																						<th>End Date</th>
-																						<th></th>
-																					</tr>
-																				</thead>
-																				<tbody ng-repeat="(key, p) in opProjects">
-																					<tr>
-																						<td class="iTD-width-50">
-																							<a href="#">
-																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
-																							</a>
-																						</td>
-																						<td>{{p.name}}</td>
-																						<td>{{p.accountManager == ""?'-':p.accountManager}}</td>
-																						<td>{{p.company == ''?'-':p.company}}</td>
-																						<td>{{p.email == ''?'-':p.email}}</td>
-																						<td>{{p.startDate == null?'-':p.startDate | date:'dd/MM/yyyy'}}</td>
-																						<td>{{p.endDate == null?'-':p.endDate |date:'dd/MM/yyyy'}}</td>
-																						<td class="mailbox-date">
-																							<div class="col-sm-2">
-																								<div class="btn-group">
-																									<button type="button"
-																										class="btn btn-default dropdown-toggle btn-sm"
-																										data-toggle="dropdown" aria-expanded="false">
-																										<span class="caret"></span> <span class="sr-only">Toggle
-																											Dropdown</span>
-																									</button>
-																									<ul class="dropdown-menu" role="menu">
-																										
-																										<li><a href="#" ng-click="deleteLeadProjectClick(p.id, key)" >
-																												<i class="fa fa-trash"></i> Delete
-																										</a></li>																											
-																										<li><a href="${pageContext.request.contextPath}/view-lead-project/{{p.id}}"> <i class="fa fa-eye"></i>
-																												View
-																										</a></li>
-					
-																									</ul>
-																								</div>
-																							</div>
-																						</td>
-																					</tr>
-																			</table>
-																		</div>
+																	<div class="mailbox-messages table-responsive">
+																		<table class="table iTable"> 					
+																			<thead>
+																				<tr>
+																					<th class="iTD-width-50"><img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar"></th>
+																					<th>Name</th>
+																					<th>Account Manager</th>
+																					<th>Company</th>
+																					<th>Email</th>
+																					<th>Start Date</th>
+																					<th>End Date</th>
+																					<th  class="text-center">Action</th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="(key, p) in opProjects">
+																				<tr>
+																					<td class="iTD-width-50">
+																						<a href="#">
+																							<img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
+																						</a>
+																					</td>
+																					<td>{{p.name}}</td>
+																					<td>{{p.accountManager == ""?'-':p.accountManager}}</td>
+																					<td>{{p.company == ''?'-':p.company}}</td>
+																					<td>{{p.email == ''?'-':p.email}}</td>
+																					<td>{{p.startDate == null?'-':p.startDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{p.endDate == null?'-':p.endDate |date:'dd/MM/yyyy'}}</td>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="#" ng-click="deleteLeadProjectClick(p.id, key)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-lead-project/{{p.id}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
 																</div>
 															</div>
 														</div>
@@ -3478,7 +3411,7 @@ function iSplitBySplint(obj){
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input value="" name="callStartDate" id="callStartDate"
+											<input value="" name="callStartDate" id="callStartDate" readonly="readonly"
 												type="text" class="form-control date pull-right active">
 										</div>
 									</div>
@@ -3491,7 +3424,7 @@ function iSplitBySplint(obj){
 												<div class="input-group-addon">
 													<i class="fa fa-clock-o"></i>
 												</div>
-												<input type="text" class="form-control timepicker active"
+												<input type="text" class="form-control timepicker active" readonly="readonly"
 													name="callDuration" id="callDuration" placeholder="hours:minutes">
 											</div>
 										</div>
@@ -3562,37 +3495,16 @@ function iSplitBySplint(obj){
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2" name="meetDuration"
-										id="meetDuration" style="width: 100%;">
-										<option value="">-- Select A Duration --</option>
-										<option value="15 minutes">15 minutes</option>
-										<option value="30 minutes">30 minutes</option>
-										<option value="45 minutes">45 minutes</option>
-										<option value="1 hour">1 hour</option>
-										<option value="1:30 hours">1:30 hours</option>
-										<option value="2 hours">2 hours</option>
-										<option value="3 hours">3 hours</option>
-										<option value="6 hours">6 hours</option>
-										<option value="1 day">1 day</option>
-										<option value="2 days">2 days</option>
-										<option value="3 days">3 days</option>
-										<option value="1 week">1 week</option>
-									</select>
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="col-md-6">
-								<div class="form-group">
 									<label>Start Date<span class="requrie">(Required)</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input value="" name="meetStartDate" id="meetStartDate" type="text" class="form-control meet-data-time pull-right active">
+										<input value="" name="meetStartDate" readonly="readonly" id="meetStartDate" type="text" class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 									</div>
 								</div>
 							</div>
+							<div class="clearfix"></div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>End Date<span class="requrie">(Required)</span></label>
@@ -3600,8 +3512,14 @@ function iSplitBySplint(obj){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="meetEndDate" id="meetEndDate" type="text" class="form-control meet-data-time pull-right active">
+										<input name="meetEndDate" id="meetEndDate" readonly="readonly" type="text" class="form-control meet-data-time pull-right active" onchange="calculateMeetingDuration('meetStartDate','meetEndDate','meetDuration','frmAddMeet')">
 									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Duration <span class="requrie">(Required)</span></label>
+									<input type="text" class="form-control" name="meetDuration" id="meetDuration"/>
 								</div>
 							</div>
 							<div class="clearfix"></div>
@@ -3678,7 +3596,7 @@ function iSplitBySplint(obj){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input value="" name="taskStartDate" id="taskStartDate" type="text" class="form-control task-data-time pull-right active">
+										<input value="" name="taskStartDate" id="taskStartDate" readonly="readonly" type="text" class="form-control task-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -3689,7 +3607,7 @@ function iSplitBySplint(obj){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="taskEndDate" id="taskEndDate" type="text" class="form-control task-data-time pull-right active">
+										<input name="taskEndDate" id="taskEndDate" type="text" readonly="readonly" class="form-control task-data-time pull-right active">
 									</div>
 								</div>
 							</div>
@@ -3782,7 +3700,7 @@ function iSplitBySplint(obj){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input  name="eventStartDate" id="eventStartDate" type="text" class="form-control event-date-time pull-right active">
+										<input  name="eventStartDate" readonly="readonly" id="eventStartDate" type="text" class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 									</div>
 								</div>
 							</div>
@@ -3793,29 +3711,15 @@ function iSplitBySplint(obj){
 										<div class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</div>
-										<input name="eventEndDate" id="eventEndDate" type="text" class="form-control event-date-time pull-right active">
+										<input name="eventEndDate" readonly="readonly" id="eventEndDate" type="text" class="form-control event-date-time pull-right active" onchange="calculateMeetingDuration('eventStartDate','eventEndDate','eventDuration','frmAddEvent')">
 									</div>
 								</div>
 							</div>
 							<div class="clearfix"></div>
-							<div class="col-md-6">
+							<div class="col-xs-12 col-sm-12 col-md-6">
 								<div class="form-group">
 									<label>Duration <span class="requrie">(Required)</span></label>
-									<select class="form-control select2" name="eventDuration" id="eventDuration" style="width: 100%;">
-										<option value="">-- SELECT A Duration --</option>
-										<option value="15 minutes">15 minutes</option>
-										<option value="30 minutes">30 minutes</option>
-										<option value="45 minutes">45 minutes</option>
-										<option value="1 hour">1 hour</option>
-										<option value="1:30 hours">1:30 hours</option>
-										<option value="2 hours">2 hours</option>
-										<option value="3 hours">3 hours</option>
-										<option value="6 hours">6 hours</option>
-										<option value="1 day">1 day</option>
-										<option value="2 days">2 days</option>
-										<option value="3 days">3 days</option>
-										<option value="1 week">1 week</option>
-									</select>
+									<input type="text" class="form-control" name="eventDuration" id="eventDuration"/>
 								</div>
 							</div>
 							<div class="col-md-6">
