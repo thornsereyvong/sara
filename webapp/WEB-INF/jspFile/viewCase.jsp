@@ -2526,6 +2526,5 @@ function setSelect2ToResolveBy(value){
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-<script
-	src="${pageContext.request.contextPath}/resources/js.mine/case/viewCase.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js.mine/case/viewCase.js"></script>
 <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>

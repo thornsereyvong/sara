@@ -26,6 +26,17 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 	};
 	
+	$scope.pageSize = {};
+
+	$scope.pageSize.rows = [ 
+					{ value: "5", label: "5" },
+    				{ value: "10", label: "10" },
+            		{ value: "15", label: "15" },
+            		{ value: "20", label: "20" },
+            		{ value: "25", label: "25" },
+            		{ value: "30", label: "30" },
+            		];
+	$scope.pageSize.row = $scope.pageSize.rows[1].value;
 	
 	$scope.deleteArticle = function(articleId){
 		var str = '<%=roleDelete%>';
@@ -63,7 +74,14 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 			    					$scope.listArticle();
 			    				},2000);
 			    			}else{
-			    				swal("UNSUCCESSFUL", result.MSG, "error");
+			    				swal({
+			    					title:"UNSUCCESSFUL",
+			    					text: result.MSG, 
+			    					type:"error", 
+			    					html: true,
+			    					timer: 2000,
+			    					showConfirmButton: false
+			    				});
 			    			}
 			    		},
 			    		error:function(){
@@ -114,16 +132,31 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 
 			<div class="panel panel-default">
   				<div class="panel-body">
-  				
-				 <div class="col-sm-4">
-				  <form class="form-inline">
-				        <div class="form-group" style="padding-top: 10px;">
-				            <label >Search :</label>
-				            <input type="text" ng-model="search" class="form-control" placeholder="Search">
-				        </div>
-				    </form>
-				    <br/>
-				  </div>
+  					
+  					<div class="col-xs-9 col-sm-6 col-md-4 col-lg-2">
+					  	<form class="form-inline">
+					        <div class="form-group">
+					        	<div class="input-group">
+					        		 <span class="input-group-btn">
+							       	 	<button class="btn btn-default" type="button" disabled="disabled"><i class="fa fa-search" aria-hidden="true"></i></button>
+							      	</span>
+					        		<input type="text" ng-model="search" class="form-control" placeholder="Search">
+					        	</div>
+					        </div>
+					    </form>
+					    <br/>
+					</div>
+					<div class="col-xs-3 col-sm-2 col-sm-offset-4 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					  	<form class="form-inline">
+					        <div class="form-group pull-right">
+					        	<div class="input-group">
+					        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+					        	</div>
+					        </div>
+					    </form>
+					    <br/>
+					</div>
+				 
 				  <div class="clearfix"></div>
 			<div class="tablecontainer table-responsive" data-ng-init="listArticle()" > 
 				<%				
@@ -152,7 +185,7 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 							<th class="text-center">Action</th>
 						</tr>
 
-						<tr dir-paginate="art in article |orderBy:sortKey:reverse |filter:search |itemsPerPage:5" class="ng-cloak">
+						<tr dir-paginate="art in article |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
 							<td>{{art.articleId}}</td>
 							<td>{{art.articleTitle}}</td>
 							<td>[{{art.item.itemId}}] {{art.item.itemName}}</td>
@@ -167,24 +200,11 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 				
 				</table>
 				<dir-pagination-controls
-			       max-size="5"
+			       max-size="pageSize.row"
 			       direction-links="true"
 			       boundary-links="true" >
 				   </dir-pagination-controls>
 				</div>
-					
-				<%	   
-				  // }else{
-					   
-				%>
-					<!-- <div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div> -->
-				<%
-				 //  }
-				
-				%>
-				
-				
-
 			  </div>
 		</div>
 			</div>

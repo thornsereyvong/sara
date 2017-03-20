@@ -30,28 +30,29 @@ var articleId = "${articleId}";
 var username = "${SESSION}";
 var article = [];
 app.controller('caseController',['$scope','$http',function($scope, $http){	
-	$scope.article = [];
-	angular.element(document).ready(function () {					
-		setTimeout(function(){
-			$("#art_subject").val($scope.article.articleTitle);
-			$("#art_key").val($scope.article.articleKey);
-			$("#art_des").val($scope.article.articleDes);
-			$("#art_product").select2("val",$scope.article.item.itemId);	
-		}, 1000);
-    });
+	$scope.article = [];	
 	
 	$scope.startupPage = function(){
 		$http.get("${pageContext.request.contextPath}/article/startup/"+articleId).success(function(response){
 			$scope.article = response.ARTICLE;
 			$scope.items = response.ITEMS;
+			setTimeout(function(){
+				$("#art_subject").val($scope.article.articleTitle);
+				$("#art_key").val($scope.article.articleKey);
+				CKEDITOR.instances['art_des'].setData($scope.article.articleDes);
+				$("#art_product").select2("val",$scope.article.item.itemId);	
+			}, 2000);
 		});
 	};			
 }]);
 
 
 //function addData
-
+var ckTextarea = "";
 $(document).ready(function() {
+	
+	ckTextarea = CKEDITOR.replace('art_des');
+	
 	$("#btn_reload").click(function(){
 		location.reload();	
 	});
@@ -111,7 +112,7 @@ $(document).ready(function() {
 					      "articleKey": getValueStringById("art_key"),
 					      "item": getJsonById("itemId","art_product","str"),
 					      "articleModifiedBy": username,
-					      "articleDes" : getValueStringById("art_des")
+					      "articleDes" :  CKEDITOR.instances['art_des'].getData()
 				    }),
 					beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
@@ -177,12 +178,14 @@ $(document).ready(function() {
 								</div>
 							</div>
 							<div class="clearfix"></div>
-								<div class="col-sm-12">
-									<label class="font-label">Description </label>
-									<div class="form-group">
-										<textarea style="height: 120px" rows="" cols="" name="art_des" id="art_des"	class="form-control"></textarea>
-									</div>
+							<div class="col-sm-12 ">
+								<label class="font-label">Description </label>
+								<div class="form-group">
+									<textarea rows="5" cols="" name="art_des" id="art_des" class="form-control">
+									
+									</textarea>
 								</div>
+							</div>
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -194,4 +197,5 @@ $(document).ready(function() {
 	</section>
 </div>
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
+<script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
 

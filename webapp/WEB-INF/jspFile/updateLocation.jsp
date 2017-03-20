@@ -213,7 +213,14 @@ $(document).ready(function() {
 							}, 2000);
 																														
 						}else{
-							swal("UNSUCCESSFUL", result.MSG, "error");
+							
+							swal({
+	    						title: "UNSUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "error"
+	    					});
 						}
 					},
 		    		error:function(){

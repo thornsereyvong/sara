@@ -77,11 +77,17 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    					$scope.listContact();
 			    				},2000);
 			    			}else{
-			    				swal("Unsuccessful!", result.MSG, "error");
+			    				swal({
+			    					title:"UNSUCCESSFUL",
+			    					text: result.MSG, 
+			    					type:"error", 
+			    					html: true,
+			    					timer: 2000,
+			    				});
 			    			}
 			    		},
 			    		error:function(){
-			    			swal("Unsuccessful!", "Please try again!", "error");
+			    			swal("UNSUCCESSFUL!", "Please try again!", "error");
 			    		}		    	    
 			    	});
 				}, 500);

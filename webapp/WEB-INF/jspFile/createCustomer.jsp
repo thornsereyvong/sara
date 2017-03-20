@@ -296,9 +296,15 @@ $(document).ready(function() {
 			    					  	timer: 2000,
 			    					  	type: "success"
 			    					});
-									reloadForm(2000);																																
+									reloadForm(2000);																															
 								}else{
-									swal("UNSUCCESSFUL", result.MSG, "error");
+									swal({
+			    						title: "UNSUCCESSFUL",
+			    					  	text: result.MSG,
+			    					  	html: true,
+			    					  	timer: 2000,
+			    					  	type: "error"
+			    					});
 								}
 							},
 				    		error:function(){
@@ -496,7 +502,8 @@ $(document).ready(function() {
 						</div>
 					</div>
 					
-					<div class="clearfix"></div>				
+					<div class="clearfix"></div>
+					<!--  				
 					<div class="col-sm-12"><h4>Attachment Picture</h4></div>				
 					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
 					<div class="row">				
@@ -511,6 +518,7 @@ $(document).ready(function() {
 							</div>					
 						</div>
 					</div>
+					-->
 				</form>
 			</div>
 			<div class="box-footer"><div id="test_div"></div></div>

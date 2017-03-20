@@ -500,8 +500,8 @@ function disDolChange(obj,l){
 		$("#priceFactor"+n).val(formatNumByLength(priceFactor,4));
 	}
 	var disP = 0;
-	if(up*qty*priceFactor != 0 || num*100 != 0)
-		disP = (num*100/(up*qty*priceFactor));
+	if(up*qty/priceFactor != 0 || num*100 != 0)
+		disP = (num*100/(up*qty/priceFactor));
 	
 	$("#disP"+n).val(formatNumByLength(disP,5));
 	
@@ -580,7 +580,7 @@ function vatDolChange(obj,l){
 	
 	var vatP = 0;
 	if(up*qty != 0 || num*100 != 0)
-		vatP = (num*100/((up*qty*priceFactor)-disDol));
+		vatP = (num*100/((up*qty/priceFactor)-disDol));
 	
 	$("#vatP"+n).val(formatNumByLength(vatP,5));
 	
@@ -628,7 +628,7 @@ function stDolChange(obj,l){
 	}
 	var stP = 0;
 	if(up*qty != 0 || num*100 != 0)
-		stP = (num*100/((up*qty*priceFactor)-disDol));
+		stP = (num*100/((up*qty/priceFactor)-disDol));
 	
 	$("#stP"+n).val(formatNumByLength(stP,5));
 	
@@ -677,7 +677,7 @@ function calculateByItem(n){
 		priceFactor = 1;
 		$("#priceFactor"+n).val(formatNumByLength(priceFactor,4));
 	}
-	var tAmt = up*qty*priceFactor;
+	var tAmt = up*qty/priceFactor;
 
 	if(tAmt != 0){
 		
@@ -1279,7 +1279,7 @@ function calculateProductMaster(){
 	d_up = toNum(getValueStringById('oppUnitPrice'));
 	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
 	
-	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_tAmount = d_qty * d_up / d_priceFactor; 
 	
 	d_disPer = toNum(getValueStringById('oppDisPer'));
 	d_vatPer = toNum(getValueStringById('oppVatPer'));
@@ -1328,7 +1328,7 @@ function oppDisPerChange(){
 	d_up = toNum(getValueStringById('oppUnitPrice'));
 	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
 	
-	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_tAmount = d_qty * d_up / d_priceFactor; 
 	d_disDol = d_tAmount * d_disPer / 100;
 	
 	$("#oppDisDol").val(formatNumByLength(d_disDol,2));	
@@ -1343,7 +1343,7 @@ function oppDisDolChange(){
 	d_up = toNum(getValueStringById('oppUnitPrice'));
 	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
 	
-	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_tAmount = d_qty * d_up / d_priceFactor; 
 	d_disPer = 0;
 	if(d_tAmount !=0 )
 		d_disPer = d_disDol * 100 / d_tAmount;
@@ -1360,7 +1360,7 @@ function oppVatPerChange(){
 	d_up = toNum(getValueStringById('oppUnitPrice'));
 	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
 	
-	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_tAmount = d_qty * d_up / d_priceFactor; 
 	d_vatDol = d_tAmount * d_vatPer / 100;
 	
 	$("#oppVatDol").val(formatNumByLength(d_vatDol,2));	
@@ -1373,7 +1373,7 @@ function oppVatDolChange(){
 	d_up = toNum(getValueStringById('oppUnitPrice'));
 	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
 	
-	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_tAmount = d_qty * d_up / d_priceFactor; 
 	d_vatPer = 0;
 	if(d_tAmount !=0 )
 		d_vatPer = d_vatDol * 100 / d_tAmount;
@@ -1389,7 +1389,7 @@ function oppSTPerChange(){
 	d_up = toNum(getValueStringById('oppUnitPrice'));
 	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
 	
-	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_tAmount = d_qty * d_up / d_priceFactor; 
 	d_stDol = d_tAmount * d_stPer / 100;
 	
 	$("#oppSTDol").val(formatNumByLength(d_stDol,2));	
@@ -1402,7 +1402,7 @@ function oppSTDolChange(){
 	d_up = toNum(getValueStringById('oppUnitPrice'));
 	d_priceFactor = toNum(getValueStringById('oppPriceFactor'));
 	
-	d_tAmount = d_qty * d_up * d_priceFactor; 
+	d_tAmount = d_qty * d_up / d_priceFactor; 
 	d_stPer = 0;
 	if(d_tAmount !=0 )
 		d_stPer = d_stDol * 100 / d_tAmount;

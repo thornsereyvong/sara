@@ -27,6 +27,7 @@ var app = angular.module('caseApp', ['angular-loading-bar', 'ngAnimate']).config
 }]);
 var self = this;
 var username = "${SESSION}";
+var ckTextarea = "";
 app.controller('caseController',['$scope','$http',function($scope, $http){
 	$scope.startupPage = function(){
 		$http.get("${pageContext.request.contextPath}/article/startup").success(function(response){
@@ -35,10 +36,14 @@ app.controller('caseController',['$scope','$http',function($scope, $http){
 	};			
 }]);
 $(document).ready(function() {
+	
+	ckTextarea = CKEDITOR.replace('art_des');
+	
 	$("#btn_clear").click(function(){
 		$("#art_product").select2("val","");      	
       	$("#form-article").bootstrapValidator('resetForm', 'true');
-		$('#form-article')[0].reset();		
+		$('#form-article')[0].reset();
+		CKEDITOR.instances['art_des'].setData("");
 	});
 	
 	$("#btn_save").click(function(){
@@ -95,7 +100,7 @@ $(document).ready(function() {
 					      "articleKey": getValueStringById("art_key"),
 					      "item": getJsonById("itemId","art_product","str"),
 					      "articleCreateBy": username,
-					      "articleDes" : getValueStringById("art_des")
+					      "articleDes" : CKEDITOR.instances['art_des'].getData()
 				    }),
 					beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
@@ -114,11 +119,18 @@ $(document).ready(function() {
 		    				setTimeout(function(){		
 		    					$("#art_product").select2("val","");
 		    			      	$("#form-article").bootstrapValidator('resetForm', 'true');
-		    					$('#form-article')[0].reset(); 		    					
-		    				},1000);
+		    					$('#form-article')[0].reset(); 
+		    					CKEDITOR.instances['art_des'].setData("");
+		    				},2000);
 																														
 						}else{
-							swal("UNSUCCESSFUL", result.MSG, "error");
+							swal({
+	    						title: "UNSUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "error",
+	    					});
 						}
 					},
 		    		error:function(){
@@ -166,12 +178,15 @@ $(document).ready(function() {
 								</div>
 							</div>
 							<div class="clearfix"></div>
-								<div class="col-sm-12">
-									<label class="font-label">Description </label>
-									<div class="form-group">
-										<textarea style="height: 120px" rows="" cols="" name="art_des" id="art_des"	class="form-control"></textarea>
-									</div>
+							
+							<div class="col-sm-12 ">
+								<label class="font-label">Description </label>
+								<div class="form-group">
+									<textarea rows="5" cols="" name="art_des" id="art_des" class="form-control">
+									
+									</textarea>
 								</div>
+							</div>
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -184,4 +199,5 @@ $(document).ready(function() {
 	</section>
 </div>
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
+<script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
 

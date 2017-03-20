@@ -19,6 +19,7 @@
 	<section class="content">
 		<div class="box box-danger">
 			<div class="box-header with-border">
+				<br>
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">							
 					<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
 					<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 

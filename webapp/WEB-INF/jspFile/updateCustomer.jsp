@@ -291,9 +291,6 @@ $(document).ready(function() {
 					closeOnConfirm: false,
 					showLoaderOnConfirm: true,		
 				}, function(){
-					
-					//dis(ship.data);
-					//alertMsgErrorSweet();
 					setTimeout(function(){
 						$.ajax({ 
 							url : "${pageContext.request.contextPath}/customer/edit",
@@ -357,10 +354,9 @@ $(document).ready(function() {
 });
 </script>
 	<section class="content">
-		<div class="box box-danger">
-			
+		<div class="box box-danger">			
 			<div class="box-body">			
-				<form method="post" id="form-customer" data-ng-init="startupCustomer()">`
+				<form method="post" id="form-customer" data-ng-init="startupCustomer()">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">				
 						<button type="button" class="btn btn-info btn-app" id="btn_save" > <i class="fa fa-save"></i> Save</button> 
 						<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
@@ -539,7 +535,8 @@ $(document).ready(function() {
 						</div>
 					</div>
 					
-					<div class="clearfix"></div>				
+					<div class="clearfix"></div>
+					<!--  				
 					<div class="col-sm-12"><h4>Attachment Picture</h4></div>				
 					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
 					<div class="row">				
@@ -554,6 +551,7 @@ $(document).ready(function() {
 							</div>					
 						</div>
 					</div>
+					-->
 				</form>
 			</div>
 			<div class="box-footer"><div id="test_div"></div></div>
