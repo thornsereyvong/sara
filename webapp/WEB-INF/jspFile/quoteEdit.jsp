@@ -21,7 +21,7 @@
 			<div class="box-body">
 				<div class="box-header with-border">	
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">							
-						<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
+						<button type="button" class="btn btn-info btn-app" name="btnEdit" id="btnEdit" > <i class="fa fa-save"></i> Save</button> 
 						<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
 						<button class="btn btn-info btn-app" onclick="creditInfo()" > <i class="fa fa-info"></i> Credit Info </button>
 						<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/quote/list"> <i class="fa fa-reply"></i> Back </a>
@@ -40,7 +40,7 @@
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 							<div class="form-group">
 								<label>Post Status</label> 
-								<input class="form-control" disabled="" id="postStatus" name="postStatus" type="text" placeholder="Open">
+								<input class="form-control" disabled id="postStatus" name="postStatus" type="text" placeholder="Open">
 							</div>
 						</div>
 						<div class="clearfix hidden-lg"></div>

@@ -225,7 +225,7 @@ $(function(){
 		cancel();
 	});
 	
-	$("#btnSave").click(function(){
+	$("#btnEdit").click(function(){
 		
 		if(entryCheck == false){
 			alertEntryExist();
