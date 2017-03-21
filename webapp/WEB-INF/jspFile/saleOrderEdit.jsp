@@ -752,6 +752,7 @@
 		async: false,
 	}).responseText);
 	
+	dis(content)
 	
 	var tagItem = "";
 	var LItem = content.SALE_ORDER_STARTUP[0].item;
