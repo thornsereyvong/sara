@@ -239,10 +239,10 @@ app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane in active" id="detail_tap">
-											<div class="row">
-												<div class="col-sm-12">
+											<div class="row hidden-xs hidden-md hidden-sm">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-sx-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item item_border">Subject<a
 																	class="pull-right show-text-detail ng-cloak">{{task.taskSubject}}</a>
@@ -279,11 +279,9 @@ app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 																			value="{{lead.lastName}}"> -->
 																	</div>
 																</li>
-																
-																
 															</ul>
 														</div>
-														<div class="col-sm-4">
+														<div class="col-sx-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">
 																
 																<li class="list-group-item item_border">Status <a
@@ -310,14 +308,6 @@ app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 																			class="form-control" value="{{lead.title}}"> -->
 																	</div>
 																</li>
-																
-																
-															</ul>
-														</div>
-																										
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">
-																
 																<li class="list-group-item item_border">Assign To <a
 																	class="pull-right show-text-detail ng-cloak">{{task.username}}</a>
 																	<div class="form-group show-edit" style="display: none;">
@@ -325,8 +315,6 @@ app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 																			class="form-control" value="{{lead.no}}"> -->
 																	</div>
 																</li>
-																
-																
 															</ul>
 														</div>
 														<div class="clearfix"></div>
@@ -337,7 +325,97 @@ app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																		Edit</a> -->
 																</li>
-																
+																<li class="list-group-item item_border" ng-if="task.taskingDes !=''">													
+																	<a class="show-text-detail ng-cloak">{{task.taskDes}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+															</ul>
+														</div>
+													</form>
+												</div>
+											</div>
+											<!-- Tablet and mobile block  -->
+											<div class="row hidden-lg">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<form id="frmLeadDetail">
+														<div class="col-sx-12 col-sm-12 col-md-12 col-lg-6">
+															<ul class="list-group list-group-unbordered">																																
+																<li class="list-group-item item_border">Subject<a
+																	class="pull-right show-text-detail ng-cloak">{{task.taskSubject}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Start Date <a
+																	class="pull-right show-text-detail ng-cloak">{{task.taskStartDate}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Due Date <a
+																	class="pull-right show-text-detail ng-cloak">{{task.taskDueDate}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Priority<a
+																	class="pull-right show-text-detail ng-cloak">{{task.taskPriority}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Status <a
+																	class="pull-right show-text-detail ng-cloak">{{task.taskStatusName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Relate Type <a
+																	class="pull-right show-text-detail ng-cloak">{{task.taskRelatedToModule}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Relate To<a
+																	class="pull-right show-text-detail ng-cloak">[{{task.taskRelatedToId}}] {{task.taskRelatedName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Assign To <a
+																	class="pull-right show-text-detail ng-cloak">{{task.username}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Description <!-- <a
+																	class="pull-right cusor_pointer"
+																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																		Edit</a> -->
+																</li>
 																<li class="list-group-item item_border" ng-if="task.taskingDes !=''">													
 																	
 																	<a class="show-text-detail ng-cloak">{{task.taskDes}}</a>
@@ -351,27 +429,18 @@ app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 																
 															</ul>
 														</div>
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
-														</div>
 													</form>
 												</div>
 											</div>
-
+											<!-- /.end block -->
 										</div>
 										<div class="tab-pane" id="systemInfo_tap">
-											<div class="row">
+											<div class="row hidden-xs hidden-sm hidden-md">
 												<div class="col-sm-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-sx-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Create By<a
+																<li class="list-group-item item_border">Create By<a
 																	class="pull-right show-text-detail">{{task.taskCreateBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -391,9 +460,9 @@ app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														<div class="col-sm-4">
+														<div class="col-sx-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Modify By<a
+																<li class="list-group-item item_border">Modify By<a
 																	class="pull-right show-text-detail">{{task.taskModifiedBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -413,24 +482,58 @@ app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
-														</div>
 													</form>
 												</div>
 											</div>
-
+											<!-- tablet and mobile block  -->
+											<div class="row hidden-lg">
+												<div class="col-sm-12">
+													<form id="frmLeadDetail">
+														<div class="col-sx-12 col-sm-12 col-md-12 col-lg-6">
+															<ul class="list-group list-group-unbordered">																																
+																<li class="list-group-item item_border">Create By<a
+																	class="pull-right show-text-detail">{{task.taskCreateBy}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Create Date <a
+																	class="pull-right show-text-detail">{{task.taskCreateDate | date:'dd/MM/yyyy h:mma'}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Modify By<a
+																	class="pull-right show-text-detail">{{task.taskModifiedBy}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Modify Date <a ng-if="task.taskModifiedBy != null"
+																	class="pull-right show-text-detail">{{task.taskModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+															</ul>
+														</div>
+													</form>
+												</div>
+												<!-- /.end block -->
+											</div>
 										</div>
-										
-
-
 									</div>
 									<!-- /.tab-content -->
 								</div>

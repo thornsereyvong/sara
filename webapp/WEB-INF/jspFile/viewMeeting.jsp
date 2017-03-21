@@ -237,7 +237,7 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane in active" id="detail_tap">
-											<div class="row">
+											<div class="row hidden-xs hidden-sm hidden-md">
 												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
 														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
@@ -335,9 +335,99 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 													</form>
 												</div>
 											</div>
+											<div class="row hidden-lg">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<form id="frmLeadDetail">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+															<ul class="list-group list-group-unbordered">																																
+																<li class="list-group-item item_border">Subject<a
+																	class="pull-right show-text-detail">{{meet.meetingSubject}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Start Date <a
+																	class="pull-right show-text-detail">{{meet.meetingStartDate}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">End Date <a
+																	class="pull-right show-text-detail">{{meet.meetingEndDate}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Duration<a
+																	class="pull-right show-text-detail">{{meet.meetingDuration}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Status <a
+																	class="pull-right show-text-detail">{{meet.statusName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Relate Type <a
+																	class="pull-right show-text-detail">{{meet.meetingRelatedToModuleType}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Relate To<a
+																	class="pull-right show-text-detail">[{{meet.meetingRelatedToModuleId}}] {{meet.mettingRelatedName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Assign To <a
+																	class="pull-right show-text-detail">{{meet.username}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Description <!-- <a
+																	class="pull-right cusor_pointer"
+																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																		Edit</a> -->
+																</li>
+																<li class="list-group-item item_border" ng-if="meet.meetingDes !=''">													
+																	<a class="show-text-detail">{{meet.meetingDes}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+															</ul>
+														</div>
+													</form>
+												</div>
+											</div>
 										</div>
 										<div class="tab-pane" id="systemInfo_tap">
-											<div class="row">
+											<div class="row hidden-xs hidden-sm hidden-md">
 												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
 														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
@@ -384,24 +474,56 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
+													</form>
+												</div>
+											</div>
+											<div class="row hidden-lg">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<form id="frmLeadDetail">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+															<ul class="list-group list-group-unbordered">																																
+																<li class="list-group-item ">Create By<a
+																	class="pull-right show-text-detail">{{meet.meetingCreateBy}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Create Date <a
+																	class="pull-right show-text-detail">{{meet.meetingCreateDate | date:'dd/MM/yyyy h:mma'}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item ">Modify By<a
+																	class="pull-right show-text-detail">{{meet.meetingModifiedBy}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Modify Date <a ng-if="meet.meetingModifiedBy != null"
+																	class="pull-right show-text-detail">{{meet.meetingModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+															</ul>
 														</div>
 													</form>
 												</div>
 											</div>
-
 										</div>
-										
-
-
 									</div>
 									<!-- /.tab-content -->
 								</div>

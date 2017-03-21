@@ -510,3 +510,4 @@ $(function(){
 	$("#oppStage").change(function(){ $("#oppProbability").val(probab[getInt("oppStage")]); });	
 });
 
+

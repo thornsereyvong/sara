@@ -19,9 +19,6 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 				$scope.cases = response.DATA;
 			});
 		} ;
-
-	
-	
 	
 	$scope.sort = function(keyname){
 	    $scope.sortKey = keyname;   //set the sortKey to the param passed
@@ -123,10 +120,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			</div>
 			
 			<div class="box-body" style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
-				
-			 
 			<div class="clearfix"></div>
-
 			<div class="panel panel-default">
   				<div class="panel-body">
 	  				<div class="col-sm-2">

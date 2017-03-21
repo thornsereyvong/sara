@@ -230,7 +230,7 @@ app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 					</div>
 					<div class="box-footer">
 						<div class="row">
-							<div class="col-md-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 								<div class="nav-tabs-custom">
 									<ul class="nav nav-tabs">										
 										<li class="active"><a href="#detail_tap" data-toggle="tab"
@@ -241,9 +241,9 @@ app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 									<div class="tab-content">
 										<div class="tab-pane in active" id="detail_tap">
 											<div class="row">
-												<div class="col-sm-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item item_border">Subject<a
 																	class="pull-right show-text-detail">{{note.noteSubject}}</a>
@@ -269,12 +269,6 @@ app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 																			class="form-control" value="{{lead.title}}"> -->
 																	</div>
 																</li>
-																
-																
-															</ul>
-														</div>
-														<div class="col-sm-8">
-															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item item_border">Description <!-- <a
 																	class="pull-right cusor_pointer"
 																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
@@ -294,27 +288,17 @@ app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 																
 															</ul>
 														</div>
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
-														</div>
 													</form>
 												</div>
 											</div>
-
 										</div>
 										<div class="tab-pane" id="systemInfo_tap">
 											<div class="row">
 												<div class="col-sm-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Create By<a
+																<li class="list-group-item ">Created By<a
 																	class="pull-right show-text-detail">{{note.noteCreateBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -323,7 +307,7 @@ app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Create Date <a
+																<li class="list-group-item item_border">Created Date <a
 																	class="pull-right show-text-detail">{{note.createDateTime}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -332,12 +316,8 @@ app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-															</ul>
-														</div>
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Modify By<a
-																	class="pull-right show-text-detail">{{note.noteModifiedBy}}</a>
+																<li class="list-group-item item_border">Modified By
+																	<a class="pull-right show-text-detail">{{note.noteModifiedBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -345,7 +325,7 @@ app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a ng-if="note.noteModifiedBy != null "
+																<li class="list-group-item item_border">Modified Date <a ng-if="note.noteModifiedBy != null "
 																	class="pull-right show-text-detail">{{note.noteModifiedDate | date:'dd/MM/yyyy h:mm a'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -356,24 +336,10 @@ app.controller('viewnoteController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
-														</div>
 													</form>
 												</div>
 											</div>
-
 										</div>
-										
-
-
 									</div>
 									<!-- /.tab-content -->
 								</div>
