@@ -1158,7 +1158,7 @@ function saleOrder(){
 	}, function(){ 
 		setTimeout(function(){
 			 $.ajax({ 
-				url: server+"quote/insert-quote",
+				url: server+"quote/edit-quote",
 				method: "POST",
 				async: false,
 				data: JSON.stringify(master),
@@ -1167,21 +1167,25 @@ function saleOrder(){
 				    xhr.setRequestHeader("Content-Type", "application/json");
 			    }, 
 			    success: function(result){
-					if(result.MESSAGE == "INSERTED"){						
+					if(result.MESSAGE == "UPDATED"){						
 						swal({
     						title: "SUCCESSFUL",
     					  	text: result.MSG,
     					  	html: true,
     					  	timer: 2000,
     					  	type: "success"
-    					});
-	    				  
+    					});	    				  
 	    				setTimeout(function(){		
 	    					location.reload(); 
-	    				},2000);
-																													
+	    				},2000);																													
 					}else{
-						swal("UNSUCCESSFUL", result.MSG, "error");
+						swal({
+    						title: "UNSUCCESSFUL",
+    					  	text: result.MSG,
+    					  	html: true,
+    					  	timer: 2000,
+    					  	type: "error"
+    					});
 					}
 				},
 	    		error:function(){
@@ -1194,7 +1198,7 @@ function saleOrder(){
 }
 
 function cancel(){
-	document.location.href = server+"quote/add";
+	reloadForm(0);
 }
 function getCustomerByIndex(index){
 	return LCustomer[index].custID;
@@ -1432,7 +1436,7 @@ function btnProductSave(){
 		$("#disDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppDisDol')),2));
 		
 		$("#vatP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatPer')),6));
-		$("#vatDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatPer')),2));
+		$("#vatDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatDol')),2));
 		
 		$("#stP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppSTPer')),6));
 		$("#stDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppSTDol')),2));

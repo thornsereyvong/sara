@@ -30,20 +30,263 @@ var username = "${SESSION}";
 app.controller('campController',['$scope','$http',function($scope, $http){
 
 	$scope.listModule = function(){
-		$http.get("${pageContext.request.contextPath}/module/list").success(function(response){
+		$http.get("${pageContext.request.contextPath}/module/list/ereee").success(function(response){
 			$scope.module = response.DATA;
 			$scope.action = "Save";
 		});
 	};
-
 		
 	$scope.sort = function(keyname){
-	    $scope.sortKey = keyname;   //set the sortKey to the param passed
-	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	    $scope.sortKey = keyname;
+	    $scope.reverse = !$scope.reverse;
 	};
 	
-	$scope.btnClickSave = function(){
+	$scope.ckrAll = function(){	
+		var status = false;
+		if($("#ckrAll").is(':checked')){
+			status = true;
+		}					
+		for(var i=0; i<$scope.module.length; i++){
+			if($scope.module[i].groupType != "Report"){
+				$scope.module[i].access = status;
+				$scope.module[i].edit = status;
+				$scope.module[i].delete = status;
+				$scope.module[i].view = status;			
+				$scope.module[i].list = status;
+				$scope.module[i].export = status;
+				$scope.module[i].import = status;
+				$scope.disabled(i,!status);
+			}
+		}
+		$("input[name='ckr']").prop('checked',status);
+	}
+	
+	$scope.ckrReportAll = function(){
+		var status = false;
+		if($("#ckrReportAll").is(':checked')){
+			status = true;
+		}					
+		for(var i=0; i<$scope.module.length; i++){
+			if($scope.module[i].groupType == "Report"){
+				$scope.module[i].access = status;
+				$scope.module[i].edit = status;
+				$scope.module[i].delete = status;
+				$scope.module[i].view = status;			
+				$scope.module[i].list = status;
+				$scope.module[i].export = status;
+				$scope.module[i].import = status;
+				$scope.disabled(i,!status);
+			}
+		}
+		$("input[name='ckrReport']").prop('checked',status);
+	}
+	
+	$scope.checkStatusAll = function(){
+		var status = true;
+		for(var i=0; i<$scope.module.length; i++){
+			
+			if($scope.module[i].groupType != "Report"){			
+				if($scope.module[i].access == null || $scope.module[i].access == false || $scope.module[i].access == "NO"){
+					status = false; 
+					break;
+				}			
+				if($scope.module[i].edit == null || $scope.module[i].edit == false || $scope.module[i].edit == "NO"){
+					status = false;
+					break;
+				}
+				if($scope.module[i].view == null || $scope.module[i].view == false || $scope.module[i].view == "NO"){
+					status = false;
+					break;
+				}
+				if($scope.module[i].list == null || $scope.module[i].list == false || $scope.module[i].list == "NO"){
+					status = false;
+					break;
+				}
+				if($scope.module[i].delete == null || $scope.module[i].delete == false || $scope.module[i].delete == "NO"){
+					status = false;
+					break;
+				}
+				if($scope.module[i].export == null || $scope.module[i].export == false || $scope.module[i].export == "NO"){
+					status = false;
+					break;
+				}
+				if($scope.module[i].import == null || $scope.module[i].import == false || $scope.module[i].import == "NO"){
+					status = false;
+					break;
+				}
+			}
+		}
+		$("#ckrAll").prop('checked',status);	
+	}
 		
+	$scope.ckrAllByRow = function(index){
+		if($("#ckrAllByRow"+index).is(':checked')){			
+			$scope.ckecked(index,true);			
+			$scope.disabled(index, false);
+			$scope.updateByRow(index,true);
+		}else{
+			$scope.ckecked(index,false);
+			$scope.disabled(index,true);
+			$scope.updateByRow(index, false);
+		}		
+		$scope.checkStatusAll();	
+	}
+	
+	$scope.disabled = function(index,status){
+		$("#ckrEdit"+index).prop('disabled',status);
+		$("#ckrDelete"+index).prop('disabled',status);
+		$("#ckrView"+index).prop('disabled',status);
+		$("#ckrList"+index).prop('disabled',status);
+		$("#ckrImport"+index).prop('disabled',status);
+		$("#ckrExport"+index).prop('disabled',status);
+	}
+	
+	$scope.ckecked = function(index,status){
+		$("#ckrAccess"+index).prop('checked',status);
+		$("#ckrEdit"+index).prop('checked',status);
+		$("#ckrDelete"+index).prop('checked',status);
+		$("#ckrView"+index).prop('checked',status);
+		$("#ckrList"+index).prop('checked',status);
+		$("#ckrImport"+index).prop('checked',status);
+		$("#ckrExport"+index).prop('checked',status);
+	}
+	
+	$scope.ckrDetailClickAccess = function(index){
+		if($("#ckrAccess"+index).is(':checked')){			
+			$scope.disabled(index,false);
+			$scope.module[index].access = true;
+		}else{
+			$scope.module[index].access = false;
+			$scope.disabled(index,true);
+			$scope.ckecked(index,false);
+			$scope.updateByRow(index,false);
+		}		
+		$scope.checkStatusAllByRow(index);
+		$scope.checkStatusAll();
+	}
+	$scope.ckrDetailClickEdit = function(index){
+		if($("#ckrEdit"+index).is(':checked')){
+			$scope.module[index].edit = true;
+		}else{
+			$scope.module[index].edit = false;
+		}
+		$scope.checkStatusAllByRow(index);
+		$scope.checkStatusAll();
+	}
+	$scope.ckrDetailClickList = function(index){
+		if($("#ckrList"+index).is(':checked')){
+			$scope.module[index].list = true;
+		}else{
+			$scope.module[index].list = false;
+		}
+		$scope.checkStatusAllByRow(index);
+		$scope.checkStatusAll();
+	}
+	$scope.ckrDetailClickDelete = function(index){
+		if($("#ckrDelete"+index).is(':checked')){
+			$scope.module[index].delete = true;
+		}else{
+			$scope.module[index].delete = false;
+		}
+		$scope.checkStatusAllByRow(index);
+		$scope.checkStatusAll();
+	}
+	$scope.ckrDetailClickView = function(index){
+		if($("#ckrView"+index).is(':checked')){
+			$scope.module[index].view = true;
+		}else{
+			$scope.module[index].view = false;
+		}
+		$scope.checkStatusAllByRow(index);
+		$scope.checkStatusAll();
+	}
+	$scope.ckrDetailClickImport = function(index){
+		if($("#ckrImport"+index).is(':checked')){
+			$scope.module[index].import = true;
+		}else{
+			$scope.module[index].import = false;
+		}
+		$scope.checkStatusAllByRow(index);
+		$scope.checkStatusAll();
+	}
+	$scope.ckrDetailClickExport = function(index){
+		if($("#ckrExport"+index).is(':checked')){
+			$scope.module[index].export = true;
+		}else{
+			$scope.module[index].export = false;
+		}
+		$scope.checkStatusAllByRow(index);
+		$scope.checkStatusAll();
+	}
+	
+	$scope.updateByRow = function(index,status){
+		$scope.module[index].access = status;
+		$scope.module[index].edit = status;
+		$scope.module[index].delete = status;
+		$scope.module[index].view = status;			
+		$scope.module[index].list = status;
+		$scope.module[index].export = status;
+		$scope.module[index].import = status;		
+	}
+	$scope.checkStatusAllByRow = function(i){
+		var status = true;
+		if($scope.module[i].access == null || $scope.module[i].access == false || $scope.module[i].access == "NO"){
+			status = false; 
+		}			
+		if($scope.module[i].edit == null || $scope.module[i].edit == false || $scope.module[i].edit == "NO"){
+			status = false;
+		}
+		if($scope.module[i].view == null || $scope.module[i].view == false || $scope.module[i].view == "NO"){
+			status = false;
+		}
+		if($scope.module[i].list == null || $scope.module[i].list == false || $scope.module[i].list == "NO"){
+			status = false;
+		}
+		if($scope.module[i].delete == null || $scope.module[i].delete == false || $scope.module[i].delete == "NO"){
+			status = false;
+		}
+		if($scope.module[i].export == null || $scope.module[i].export == false || $scope.module[i].export == "NO"){
+			status = false;
+		}
+		if($scope.module[i].import == null || $scope.module[i].import == false || $scope.module[i].import == "NO"){
+			status = false;
+		}
+		$("#ckrAllByRow"+i).prop('checked',status);
+	}
+	
+	
+	// report 
+	
+	$scope.ckrDetailClickReportAccess = function(index){
+		if($("#ckrReportAccess"+index).is(':checked')){
+			$scope.module[index].access = true;
+		}else{
+			$scope.module[index].access = false;
+		}
+		$scope.checkStatusReportAll();
+	}
+	
+	$scope.checkStatusReportAll = function(){
+		var status = true;
+		for(var i=0; i<$scope.module.length; i++){			
+			if($scope.module[i].groupType == "Report"){			
+				if($scope.module[i].access == null || $scope.module[i].access == false || $scope.module[i].access == "NO"){
+					status = false; 
+					break;
+				}
+			}
+		}
+		$("#ckrReportAll").prop('checked',status);
+	}
+	
+	$scope.checkBool = function(status){
+		if(status == null || status == false || status == "NO")
+			return "NO";
+		else
+			return "YES";
+	}
+	
+	$scope.btnClickSave = function(){		
 		$('#form_status').data('bootstrapValidator').validate();
 		var statusAddRole = $("#form_status").data('bootstrapValidator').validate().isValid();
 		if(statusAddRole){
@@ -57,61 +300,20 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 				showLoaderOnConfirm: true,		
 			}, function(){ 
 				setTimeout(function(){
-					var tr = $("#data_table_role tr");
 					var roleDetails = [];
-					
-					if(tr.length>0){
-						for(var i=0; i<tr.length; i++){
-							var moduleId = tr.eq(i).children().eq(0).attr("row-code");
-							var access = getRoleDetailByModule(tr.eq(i).children().eq(1));
-							var edit = getRoleDetailByModule(tr.eq(i).children().eq(2));
-							var view = getRoleDetailByModule(tr.eq(i).children().eq(3));
-							var list = getRoleDetailByModule(tr.eq(i).children().eq(4));
-							var del = getRoleDetailByModule(tr.eq(i).children().eq(5));
-							var imp = getRoleDetailByModule(tr.eq(i).children().eq(6));
-							var exp = getRoleDetailByModule(tr.eq(i).children().eq(7));					
-							roleDetails.push({
-						          "module": {"moduleId": moduleId},
-						          "roleAccess": access,
-						          "roleDelete": del,
-						          "roleEdit": edit,
-						          "roleExport": exp,
-						          "roleImport": imp,
-						          "roleList": list,
-						          "roleView": view
-					        });
-						}	
+					for(var i=0; i<$scope.module.length; i++){
+						roleDetails.push({
+					          "module": {"moduleId": $scope.module[i].moduleId},
+					          "roleAccess": $scope.checkBool($scope.module[i].access),
+					          "roleDelete": $scope.checkBool($scope.module[i].delete),
+					          "roleEdit": $scope.checkBool($scope.module[i].edit),
+					          "roleExport": $scope.checkBool($scope.module[i].export),
+					          "roleImport": $scope.checkBool($scope.module[i].import),
+					          "roleList": $scope.checkBool($scope.module[i].list),
+					          "roleView": $scope.checkBool($scope.module[i].view)
+				        });
 					}
-					
-					var tr_report = $("#data_table_role_report tr");
-					
-					if(tr_report.length>0){
-						for(var i=0; i<tr_report.length; i++){
-							var moduleId = tr_report.eq(i).children().eq(0).attr("row-code");
-							var access = getRoleDetailByModule(tr_report.eq(i).children().eq(1));
-							
-							alert(moduleId+"/"+access);
-							
-							var edit = access;
-							var view = access;
-							var list = access;
-							var del = access;
-							var imp = access;
-							var exp = access;			
-							roleDetails.push({
-						          "module": {"moduleId": moduleId},
-						          "roleAccess": access,
-						          "roleDelete": del,
-						          "roleEdit": edit,
-						          "roleExport": exp,
-						          "roleImport": imp,
-						          "roleList": list,
-						          "roleView": view
-					        });
-						}	
-					}
-					
-					
+								
 					$.ajax({ 
 						url : "${pageContext.request.contextPath}/role/add",
 						type : "POST",
@@ -146,65 +348,18 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    			alertMsgErrorSweet();
 			    		} 
 					});
+					
 				}, 500);
 			});
 		}
-	}
-	
-	
+	}		
 }]);
 
-function getRoleDetailByModule(element){
-	var access = element.children().children().children().eq(0).attr("class");
-	access = access.search("off");
-	if(access>0){
-		return "NO";
-	}else{
-		return "YES";
-	}
-}
-
-
-function accessClick(a){
-	var n= $(a).attr('data-index');
-	if ($(a).is(':checked')) {
-		disableCheck("editID"+n,false);
-		disableCheck("viewID"+n,false);
-		disableCheck("listID"+n,false);
-		disableCheck("deleteID"+n,false);
-		disableCheck("importID"+n,false);
-		disableCheck("exportID"+n,false);
-	}else{
-		disableCheck("editID"+n,true);
-		disableCheck("viewID"+n,true);
-		disableCheck("listID"+n,true);
-		disableCheck("deleteID"+n,true);
-		disableCheck("importID"+n,true);
-		disableCheck("exportID"+n,true);
-	}
-	
-}
-
-function disableCheck(id, status){	
-	if(status == true){
-		if ($("#"+id).is(':checked')) {
-			$("#"+id).next().click();
-		}
-	}
-	$("#"+id).parent().attr("disabled",status);
-	$("#"+id).prop("disabled",status);
-}
 
 $(document).ready(function(){
 
-	$("#btn_clear").click(function(){
-		location.reload();
-	});
-	 
-	 $("#btn_save").click(function(){
-		$("#form_status").submit();
-	});
-	
+	$("#btn_clear").click(function(){location.reload();});	 
+	$("#btn_save").click(function(){$("#form_status").submit();});	
 	$('#form_status').bootstrapValidator({
 		message: 'This value is not valid',
 		submitButtons: 'button[type="button"]',
@@ -290,82 +445,46 @@ $(document).ready(function(){
 									<div class="col-sm-12 table-responsive">
 										<table class="table" my-main-directive>
 											<tr>
+												<th class="width-80 td-center">
+													<div class="icheckbox icheckbox-primary"><input name="ckr" ng-click="ckrAll()" id="ckrAll" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrAll"></label></div>
+												</th>
 												<th>Module Name</th>
-												<th>Access</th>
-												<th>Edit</th>
-												<th>View</th>
-												<th>List</th>
-												<th>Delete</th>
-												<th>Import</th>
-												<th>Export</th>
+												<th class="th-center">Access</th>
+												<th class="th-center">Edit</th>
+												<th class="th-center">View</th>
+												<th class="th-center">List</th>
+												<th class="th-center">Delete</th>
+												<th class="th-center">Import</th>
+												<th class="th-center">Export</th>
 											</tr>
 											<tbody id="data_table_role">
-												<tr ng-repeat="u in module |filter:'!Report'" my-repeat-directive >
+												<tr ng-repeat="u in module" ng-if="u.moduleName != 'Report' && u.groupType!= 'Report' && u.groupModule!= 'Report'" my-repeat-directive >
+													<td class="td-center">
+														<div class="icheckbox icheckbox-primary"><input name="ckr" ng-click="ckrAllByRow($index)" id="ckrAllByRow{{$index}}" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrAllByRow{{$index}}"></label></div>
+													</td>
 													<td row-code="{{u.moduleId}}">{{u.moduleName}}</td>
-													<td>
-														<div class="form-group no-margin">
-															<label class="no-margin"> 
-																<input class="btn-on-off " data-index="{{$index}}" onchange="accessClick(this)" id="accID$index" data-on="YES"
-																data-onstyle="success" data-offstyle="warning"
-																data-off="NO" data-size="small" type="checkbox">
-															</label>
-														</div>
+													<td class="td-center">
+														<div class="icheckbox icheckbox-primary"><input name="ckr" ng-click="ckrDetailClickAccess($index)" id="ckrAccess{{$index}}" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrAccess{{$index}}"></label></div>
 													</td>
-													<td>
-														<div class="form-group no-margin">
-															<label class="no-margin"> 
-															<input class="btn-on-off "
-																id="editID{{$index}}" disabled="disabled" data-on="YES"
-																data-onstyle="success" data-offstyle="warning"
-																data-off="NO" data-size="small" type="checkbox">
-															</label>
-														</div>
+													<td class="td-center">
+														<div class="icheckbox icheckbox-primary"><input disabled name="ckr" ng-click="ckrDetailClickEdit($index)" id="ckrEdit{{$index}}" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrEdit{{$index}}"></label></div>
 													</td>
-													<td>
-														<div class="form-group no-margin">
-															<label class="no-margin"> <input class="btn-on-off"
-																id="viewID{{$index}}" data-on="YES"
-																data-onstyle="success" disabled="disabled" data-offstyle="warning"
-																data-off="NO" data-size="small" type="checkbox">
-															</label>
-														</div>
+													<td class="td-center">
+														<div class="icheckbox icheckbox-primary"><input disabled name="ckr" ng-click="ckrDetailClickView($index)" id="ckrView{{$index}}" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrView{{$index}}"></label></div>
 													</td>
-													<td>
-														<div class="form-group no-margin">
-															<label class="no-margin"> <input class="btn-on-off"
-																id="listID{{$index}}" data-on="YES"
-																data-onstyle="success" disabled="disabled" data-offstyle="warning"
-																data-off="NO" data-size="small" type="checkbox">
-															</label>
-														</div>
+													<td class="td-center">
+														<div class="icheckbox icheckbox-primary"><input disabled name="ckr" ng-click="ckrDetailClickList($index)" id="ckrList{{$index}}" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrList{{$index}}"></label></div>
 													</td>
-													<td>
-														<div class="form-group no-margin">
-															<label class="no-margin"> <input class="btn-on-off"
-																id="deleteID{{$index}}" data-on="YES"
-																data-onstyle="success" disabled="disabled" data-offstyle="warning"
-																data-off="NO" data-size="small" type="checkbox">
-															</label>
-														</div>
+													<td class="td-center">
+														<div class="icheckbox icheckbox-primary"><input disabled name="ckr" ng-click="ckrDetailClickDelete($index)" id="ckrDelete{{$index}}" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrDelete{{$index}}"></label></div>
 													</td>
-													<td>
-														<div class="form-group no-margin">
-															<label class="no-margin"> <input class="btn-on-off"
-																id="importID{{$index}}" data-on="YES"
-																data-onstyle="success" disabled="disabled" data-offstyle="warning"
-																data-off="NO" data-size="small" type="checkbox">
-															</label>
-														</div>
+													<td class="td-center">
+														<div class="icheckbox icheckbox-primary"><input disabled name="ckr" ng-click="ckrDetailClickImport($index)" id="ckrImport{{$index}}" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrImport{{$index}}"></label></div>
 													</td>
-													<td>
-														<div class="form-group no-margin">
-															<label class="no-margin"> <input class="btn-on-off"
-																id="exportID{{$index}}" data-on="YES"
-																data-onstyle="success" disabled="disabled" data-offstyle="warning"
-																data-off="NO" data-size="small" type="checkbox">
-															</label>
-														</div>
+													<td class="td-center">
+														<div class="icheckbox icheckbox-primary"><input disabled name="ckr" ng-click="ckrDetailClickExport($index)" id="ckrExport{{$index}}" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrExport{{$index}}"></label></div>
 													</td>
+													
 												</tr>
 			
 											</tbody>
@@ -376,21 +495,17 @@ $(document).ready(function(){
 									<div class="col-sm-12 table-responsive">
 										<table class="table" my-main-directive>
 											<tr>
+												<th class="width-80 td-center">
+													<div class="icheckbox icheckbox-primary"><input name="ckrReport" ng-click="ckrReportAll()" id="ckrReportAll" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrReportAll"></label></div>
+												</th>
 												<th>Report Name</th>
-												<th>Access</th>
 											</tr>
 											<tbody id="data_table_role_report">
-												<tr ng-repeat="u in module |filter:'Report'" my-repeat-directive >
-													<td row-code="{{u.moduleId}}">{{u.moduleName}}</td>
-													<td>
-														<div class="form-group no-margin">
-															<label class="no-margin"> 
-																<input class="btn-on-off " data-index="{{$index}}" onchange="accessClick(this)" id="rpt_accID$index" data-on="YES"
-																data-onstyle="success" data-offstyle="warning"
-																data-off="NO" data-size="small" type="checkbox">
-															</label>
-														</div>
+												<tr ng-repeat="u in module" ng-if="u.moduleName == 'Report' || u.groupType == 'Report' || u.groupModule == 'Report'" my-repeat-directive >
+													<td class="td-center">
+														<div class="icheckbox icheckbox-primary"><input name="ckrReport" ng-click="ckrDetailClickReportAccess($index)" id="ckrReportAccess{{$index}}" class="styled" type="checkbox"><label class="cursor-pointer" for="ckrReportAccess{{$index}}"></label></div>
 													</td>
+													<td row-code="{{u.moduleId}}">{{u.moduleName}}</td>
 												</tr>
 											</tbody>
 										</table>
