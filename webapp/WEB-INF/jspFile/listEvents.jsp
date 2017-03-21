@@ -110,7 +110,6 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		
 		<div class="box box-danger">
 			<div class="box-header with-border">
-				
 				<div style="background: #fff;margin-top: 15px;">
 				 <div class="col-sm-12" style="margin-left: -5px;">
 				 	<a href="${pageContext.request.contextPath}/create-event" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
@@ -182,7 +181,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 										<td>{{cc.evEndDate | date:'dd-MM-yyyy'}}</td>
 										<td><span>$</span>{{cc.evBudget | number:2}}</td>
 										<td class="text-center" style="min-width: 100px;">
-											<a href="${pageContext.request.contextPath}/update-event/{{cc.evId}}""><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+											<a href="${pageContext.request.contextPath}/update-event/{{cc.evId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 											<a href="#" ng-click="deleteCon(cc.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
 											<a href="${pageContext.request.contextPath}/view-event/{{cc.evId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 										</td>	

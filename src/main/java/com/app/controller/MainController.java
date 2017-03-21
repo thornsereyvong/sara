@@ -99,7 +99,7 @@ public class MainController {
 	// article path	
 		@RequestMapping("/create-article")
 		public String article(ModelMap model,HttpServletRequest req) {		
-			model.addAttribute("menu", "creatArticle");		
+			model.addAttribute("menu", "createArticle");		
 			Map<String, Object> camMap = getRoleDetailsOfModule("ART",req);
 			if(camMap.get("access").equals("YES")){
 				return "createArticle";	

@@ -214,10 +214,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 	</section>
 
 	<section class="content" data-ng-init="startupView()">
-
-
 		<div class="row">
-
 			<div class="col-md-12">
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">
@@ -244,7 +241,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 											<div class="row">
 												<div class="col-sm-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-sm-12">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item item_border">Subject<a
 																	class="pull-right show-text-detail ng-cloak">{{article.articleTitle}}</a>
@@ -255,14 +252,6 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																
-																
-																
-															</ul>
-														</div>
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">
-																
 																<li class="list-group-item item_border">Key <a
 																	class="pull-right show-text-detail ng-cloak">{{article.articleKey}}</a>
 																	<div class="form-group show-edit" style="display: none;">
@@ -272,15 +261,6 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																
-																
-																
-															</ul>
-														</div>
-																										
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">
-																
 																<li class="list-group-item item_border">Product <a
 																	class="pull-right show-text-detail ng-cloak">[{{article.item.itemId}}] {{article.item.itemName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
@@ -288,20 +268,12 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																			class="form-control" value="{{lead.no}}"> -->
 																	</div>
 																</li>
-																
-															</ul>
-														</div>
-														<div class="clearfix"></div>
-														<div class="col-sm-12" style="margin-top: 15px;">
-															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item item_border">Description <!-- <a
 																	class="pull-right cusor_pointer"
 																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																		Edit</a> -->
 																</li>
-																
 																<li class="list-group-item item_border" ng-if="call.callDes !=''">													
-																	
 																	<a class="show-text-detail ng-cloak" id="des-article"></a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -310,30 +282,19 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																
 															</ul>
-														</div>
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
 														</div>
 													</form>
 												</div>
 											</div>
-
 										</div>
 										<div class="tab-pane" id="systemInfo_tap">
 											<div class="row">
 												<div class="col-sm-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-sm-12">
 															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Create By<a
+																<li class="list-group-item item_border">Created By<a
 																	class="pull-right show-text-detail ng-cloak">{{article.articleCreateBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -342,7 +303,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Create Date <a
+																<li class="list-group-item item_border">Created Date <a
 																	class="pull-right show-text-detail ng-cloak">{{article.convertCreateDate}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -351,11 +312,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-															</ul>
-														</div>
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Modify By<a
+																<li class="list-group-item item_border">Modified By<a
 																	class="pull-right show-text-detail ng-cloak">{{article.articleModifiedBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -364,7 +321,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a ng-if="article.articleModifiedBy != null"
+																<li class="list-group-item item_border">Modified Date <a ng-if="article.articleModifiedBy != null"
 																	class="pull-right show-text-detail ng-cloak">{{article.convertModifiedDate}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -375,24 +332,10 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
-														</div>
 													</form>
 												</div>
 											</div>
-
 										</div>
-										
-
-
 									</div>
 									<!-- /.tab-content -->
 								</div>

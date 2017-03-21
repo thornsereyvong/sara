@@ -2174,7 +2174,7 @@ table td[class*=col-], table th[class*=col-] {
 }
 
 /*Custom Media For Tablet*/
-@media screen and (max-width:968px) {
+@media screen and (max-width:1024px) {
 
 	.table-responsive {
 		width: 100%;

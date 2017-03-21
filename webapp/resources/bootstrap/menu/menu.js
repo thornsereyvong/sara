@@ -210,7 +210,11 @@ function selectMenu(menu_slide){
         break;
     case "listArticles":
     	removeCla("#support","#ul_support","#ul_li_article","#support_icon_article");
-    	document.title = 'Articles | CRM';
+    	document.title = 'List Articles | CRM';
+        break;
+    case "viewArticle":
+    	removeCla("#support","#ul_support","#ul_li_article","#support_icon_article");
+    	document.title = 'View Article | CRM';
         break;
 
     case "userManagement":

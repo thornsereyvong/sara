@@ -210,10 +210,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 	</section>
 
 	<section class="content" data-ng-init="startupView()">
-
-
 		<div class="row">
-
 			<div class="col-md-12">
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">
@@ -237,12 +234,12 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 										<li class=""><a href="#systemInfo_tap" data-toggle="tab"
 											aria-expanded="false">System Information</a></li>										
 									</ul>
-									<div class="tab-content">
+									<div class="tab-content ng-cloak">
 										<div class="tab-pane in active" id="detail_tap">
-											<div class="row">
-												<div class="col-sm-12">
+											<div class="row hidden-lg">
+												<div class="col-xs-12 col-sm-12 col-md-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
 																<li class="list-group-item item_border">Name<a
 																	class="pull-right show-text-detail">{{location.loName}}</a>
@@ -254,7 +251,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																	</div>
 																</li>
 																<li class="list-group-item item_border">No<a
-																	class="pull-right show-text-detail">{{location.loNo}}</a>
+																	class="pull-right show-text-detail">{{location.loNo == ''?'-':location.loNo}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -263,22 +260,15 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Street<a
-																	class="pull-right show-text-detail">{{location.loStreet}}</a>
+																	class="pull-right show-text-detail">{{location.loStreet == ''?'-':location.loStreet}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_lastName"
 																			id="lea_lastName" class="form-control"
 																			value="{{lead.lastName}}"> -->
 																	</div>
 																</li>
-																
-																
-															</ul>
-														</div>
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">
-																
 																<li class="list-group-item item_border">Village <a
-																	class="pull-right show-text-detail">{{location.village}}</a>
+																	class="pull-right show-text-detail">{{location.village == ''?'-':location.village}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -287,7 +277,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Commune <a
-																	class="pull-right show-text-detail">{{location.loCommune}}</a>
+																	class="pull-right show-text-detail">{{location.loCommune == ''?'-':location.loCommune}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_lastName"
 																			id="lea_lastName" class="form-control"
@@ -295,66 +285,133 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																	</div>
 																</li>
 																<li class="list-group-item item_border">District<a
-																	class="pull-right show-text-detail">{{location.loDistrict}}</a>
+																	class="pull-right show-text-detail">{{location.loDistrict == ''?'-':location.loDistrict}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
 																	</div>
 																</li>
-																
-																
-															</ul>
-														</div>
-																										
-														<div class="col-sm-4">
-															<ul class="list-group list-group-unbordered">
 																<li class="list-group-item item_border">City<a
-																	class="pull-right show-text-detail">{{location.loCity}}</a>
+																	class="pull-right show-text-detail">{{location.loCity == ''?'-':location.loCity}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_no" id="lea_no"
 																			class="form-control" value="{{lead.no}}"> -->
 																	</div>
 																</li>
 																<li class="list-group-item item_border">State<a
-																	class="pull-right show-text-detail">{{location.loState}}</a>
+																	class="pull-right show-text-detail">{{location.loState == ''?'-':location.loState}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_no" id="lea_no"
 																			class="form-control" value="{{lead.no}}"> -->
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Country<a
-																	class="pull-right show-text-detail">{{location.loCountry}}</a>
+																	class="pull-right show-text-detail">{{location.loCountry == ''?'-':location.loCountry}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_no" id="lea_no"
 																			class="form-control" value="{{lead.no}}"> -->
 																	</div>
 																</li>
-																
 															</ul>
 														</div>
 														<div class="clearfix"></div>
-														
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
-														</div>
 													</form>
 												</div>
 											</div>
-
+											<div class="row hidden-sm hidden-md hidden-xs">
+												<div class="col-xs-12 col-sm-12 col-md-12">
+													<form id="frmLeadDetail">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+															<ul class="list-group list-group-unbordered">																																
+																<li class="list-group-item item_border">Name<a
+																	class="pull-right show-text-detail">{{location.loName}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">No<a
+																	class="pull-right show-text-detail">{{location.loNo == ''?'-':location.loNo}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Street<a
+																	class="pull-right show-text-detail">{{location.loStreet == ''?'-':location.loStreet}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Village <a
+																	class="pull-right show-text-detail">{{location.village == ''?'-':location.village}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Commune <a
+																	class="pull-right show-text-detail">{{location.loCommune == ''?'-':location.loCommune}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_lastName"
+																			id="lea_lastName" class="form-control"
+																			value="{{lead.lastName}}"> -->
+																	</div>
+																</li>
+															</ul>
+														</div>
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+															<ul class="list-group list-group-unbordered">
+																<li class="list-group-item item_border">District<a
+																	class="pull-right show-text-detail">{{location.loDistrict == ''?'-':location.loDistrict}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_title" id="lea_title"
+																			class="form-control" value="{{lead.title}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">City<a
+																	class="pull-right show-text-detail">{{location.loCity == ''?'-':location.loCity}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">State<a
+																	class="pull-right show-text-detail">{{location.loState == ''?'-':location.loState}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Country<a
+																	class="pull-right show-text-detail">{{location.loCountry == ''?'-':location.loCountry}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_no" id="lea_no"
+																			class="form-control" value="{{lead.no}}"> -->
+																	</div>
+																</li>
+															</ul>
+														</div>
+														<div class="clearfix"></div>
+													</form>
+												</div>
+											</div>
 										</div>
 										<div class="tab-pane" id="systemInfo_tap">
-											<div class="row">
-												<div class="col-sm-12">
+											<div class="row hidden-xs hidden-sm hidden-md">
+												<div class="col-xs-12 col-sm-12 col-md-12">
 													<form id="frmLeadDetail">
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Create By<a
+																<li class="list-group-item item_border">Created By<a
 																	class="pull-right show-text-detail">{{location.loCreateBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -363,7 +420,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Create Date <a
+																<li class="list-group-item item_border">Created Date <a
 																	class="pull-right show-text-detail">{{location.loCreateDate}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -374,10 +431,10 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														<div class="col-sm-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Modify By<a
-																	class="pull-right show-text-detail">{{location.locModifiedBy}}</a>
+																<li class="list-group-item item_border">Modified By<a
+																	class="pull-right show-text-detail">{{location.loModifiedBy == ''?'-':location.loModifiedBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -385,7 +442,53 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a
+																<li class="list-group-item item_border">Modified Date <a
+																	class="pull-right show-text-detail">{{location.loModifiedDate == null?'-':location.loModifiedDate}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+															</ul>
+														</div>
+													</form>
+												</div>
+											</div>
+											<div class="row hidden-lg">
+												<div class="col-xs-12 col-sm-12 col-md-12">
+													<form id="frmLeadDetail">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+															<ul class="list-group list-group-unbordered">																																
+																<li class="list-group-item item_border">Created By<a
+																	class="pull-right show-text-detail">{{location.loCreateBy}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Created Date <a
+																	class="pull-right show-text-detail">{{location.loCreateDate}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Modified By<a
+																	class="pull-right show-text-detail">{{location.loModifiedBy == ''?'-':location.loModifiedBy}}</a>
+																	<div class="form-group show-edit" style="display: none;">
+																		<!-- <input type="text" name="lea_firstName"
+																			id="lea_firstName" class="form-control"
+																			value="{{lead.firstName}}"> -->
+																		<div class="clearfix"></div>
+																	</div>
+																</li>
+																<li class="list-group-item item_border">Modified Date <a
 																	class="pull-right show-text-detail">{{location.loModifiedDate}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -396,29 +499,14 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																</li>
 															</ul>
 														</div>
-														
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
-														</div>
 													</form>
 												</div>
 											</div>
-
 										</div>
-										
-
-
 									</div>
 									<!-- /.tab-content -->
 								</div>
 							</div>
-
 						</div>
 						<!-- /.row -->
 					</div>
@@ -427,7 +515,5 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 			</div>
 		</div>
 	</section>
-	<div id="errors"></div>
 </div>
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
