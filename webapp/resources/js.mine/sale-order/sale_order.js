@@ -1555,7 +1555,7 @@ function btnProductSave(){
 		$("#disDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppDisDol')),2));
 		
 		$("#vatP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatPer')),6));
-		$("#vatDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatPer')),2));
+		$("#vatDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppVatDol')),2));
 		
 		$("#stP"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppSTPer')),6));
 		$("#stDol"+rowIndexLine).val(formatNumByLength(toNum(getValueStringById('oppSTDol')),2));
