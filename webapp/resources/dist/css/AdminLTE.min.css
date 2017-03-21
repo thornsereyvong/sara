@@ -2932,7 +2932,7 @@ table.text-center, table.text-center td, table.text-center th {
 	}
 	
 	.input-group-addon {
-	    padding: 3px 3px !important;
+	    padding: 3px 10px !important;
 	}
 	
 	.form-group {

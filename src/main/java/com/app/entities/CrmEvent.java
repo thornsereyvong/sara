@@ -6,7 +6,7 @@ import java.util.Date;
 public class CrmEvent{
 	private String evId;
 	private String evName;
-	private CrmEventLocation evlocation;
+	private CrmEventLocation evLocation;
 	private String startDate;
 	private String endDate;
 	private String evDuration;
@@ -44,15 +44,15 @@ public class CrmEvent{
 	public void setEvName(String evName) {
 		this.evName = evName;
 	}
-
-	public CrmEventLocation getEvlocation() {
-		return evlocation;
-	}
-
-	public void setEvlocation(CrmEventLocation evlocation) {
-		this.evlocation = evlocation;
-	}
 	
+	public CrmEventLocation getEvLocation() {
+		return evLocation;
+	}
+
+	public void setEvLocation(CrmEventLocation evLocation) {
+		this.evLocation = evLocation;
+	}
+
 	public String getStartDate() {
 		return startDate;
 	}
