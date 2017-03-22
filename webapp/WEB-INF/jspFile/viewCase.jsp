@@ -91,10 +91,6 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 					$scope.listAllEmailByLead = [];	
 				}
 				
-				
-				
-				
-				
 				curAssign = fmNull(response.CASE.username);
 				ownerItem = fmNull(response.CASE.createBy);
 				
@@ -108,14 +104,14 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				$scope.users = response.ALL_USERS;
 				$scope.articles = response.ARTICLES;
 				
-				//dis($scope.users)
+				
 				
 				displayStatusLead(response.CASE.statusId);
 				
 				
 				var_ResolvedBy = response.CASE.resolvedBy;
 				var_ResolveSolution = response.CASE.resolution;
-				CKEDITOR.instances['ca_resolution'].setData(response.CASE.resolution);
+				
 				
 				
 				$("#ca_resolvedDate").val(response.CASE.resolveDate);
@@ -123,21 +119,17 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				
 				setTimeout(function(){ 
 					$("#ca_resolvedBy").select2("val",response.CASE.resolvedBy); 
+					$scope.article = "";
+					
 					if(response.CASE.articleId != null){
 						$("#ca_article").prop("disabled", false);
 						$("#ca_article").select2("val", response.CASE.articleId);
+						$scope.article = response.CASE.articleId;
 						$("#inp_existArticle").prop('checked', true);
 					}
-					
+					CKEDITOR.instances['ca_resolution'].setData(response.CASE.resolution);
 				}, 1000);
-				
-				
-				
-				
-				
-			});
-			
-			
+			});	
 	}
 	
 	
@@ -879,6 +871,17 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 		$("#btn_show_email").click();
 	}
 
+	
+	// article 
+	$scope.articleChange = function(){		
+		var index = $("#ca_article option:selected").attr("data-index");
+		if(index>=0)
+			CKEDITOR.instances['ca_resolution'].setData($scope.articles[index].articleDes);
+		else
+			CKEDITOR.instances['ca_resolution'].setData("");
+	}
+	
+	
 }]);
 
 
@@ -1847,11 +1850,11 @@ function setSelect2ToResolveBy(value){
 									<div class="tab-pane " id="resolution_tap">
 										<div class="row">
 											<div class="col-md-12">
-												<a style="margin-left: 0px;" class="btn btn-app"
-													ng-click="resolve_click()"> <i
+												<a style="margin-left: 0px;" class="btn btn-app" ng-click="resolve_click()"> <i
 													class="fa  fa-check-square-o"></i> Resolve
 												</a>
 											</div>
+											<div ng-if="cases.statusName != 'Open'">
 											<div class="col-sm-4">
 												<ul class="list-group list-group-unbordered">
 													<li class="list-group-item item_border">Resolve by<a
@@ -1904,7 +1907,7 @@ function setSelect2ToResolveBy(value){
 														</div></li>
 												</ul>
 											</div>
-	
+											</div>
 										</div>
 	
 									</div>
@@ -2051,11 +2054,10 @@ function setSelect2ToResolveBy(value){
 								<div class="col-sm-6">
 									<label class="font-label">Article </label>
 									<div class="form-group">
-										<select class="form-control select2" name="ca_article"
+										<select ng-change="articleChange()" ng-model="article" class="form-control select2" name="ca_article"
 											id="ca_article" style="width: 100%">
 											<option value="">-- SELECT An Article --</option>
-											<option ng-repeat="u in articles" value="{{u.articleId}}">[{{u.articleId}}]
-												{{u.articleTitle}}</option>
+											<option ng-repeat="u in articles" data-index="{{$index}}" value="{{u.articleId}}">[{{u.articleId}}] {{u.articleTitle}}</option>
 										</select>
 									</div>
 								</div>

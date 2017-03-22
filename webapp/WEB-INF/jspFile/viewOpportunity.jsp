@@ -266,7 +266,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 	}
 	
 	$scope.calculateProduct = function(){
-		$scope.oppTAmount = formatNumByLength((toNum($scope.oppQty) * toNum($scope.oppUnitPrice) * toNum($scope.oppPriceFactor)), 2);
+		$scope.oppTAmount = formatNumByLength((toNum($scope.oppQty) * toNum($scope.oppUnitPrice) / toNum($scope.oppPriceFactor)), 2);
 		
 		$scope.oppDisDol = "0.00";
 		$scope.oppVatDol = "0.00";
