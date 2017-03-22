@@ -189,8 +189,8 @@ $(function(){
 					<div class="box-body">
 						<form method="post" id="frmFilter">	
 							<div class="row">
-								<div class="col-sm-12">
-									<div class="col-md-3">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<div class="form-group">
 											<label>Date Filter</label> <select name="datafilter"
 												id="datafilter" class="form-control select2 input-lg"
@@ -203,7 +203,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Date Type</label>
 										<div class="form-group">
 											<select class="form-control select2" name="date_type"
@@ -213,7 +213,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 						                <label class="font-label">Start date </label>
 						                <div class="form-group">
 					                  		<div class="input-group">
@@ -223,7 +223,7 @@ $(function(){
 						                </div>
 					              	</div>
 						
-					              	<div class="col-sm-3">
+					              	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 					                	<label class="font-label">End date</label>
 					                	<div class="form-group">
 					                  		<div class="input-group">
@@ -233,7 +233,7 @@ $(function(){
 				                		</div>
 					              	</div>
 					              	
-					              	<div class="col-sm-3">
+					              	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Status</label>
 										<div class="form-group">
 											<select class="form-control select2" name="lead_status"
@@ -243,7 +243,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Source</label>
 										<div class="form-group">
 											<select class="form-control select2" name="lead_source"
@@ -253,7 +253,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Industry</label>
 										<div class="form-group">
 											<select class="form-control select2" name="industry"
@@ -263,7 +263,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Assigned to </label>
 										<div class="form-group">
 											<select class="form-control select2" name="lead_assignTo"
@@ -277,109 +277,117 @@ $(function(){
 							</div>
 						</form>
 					</div>
-					<div class="box-footer">						
-						<div class="col-sm-2">
-						  	<form class="form-inline">
-						  		<div class="form-group">
-						        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
-										<i class="fa fa-file-excel-o"></i> &nbsp;excel
-									</button>
-						        </div>
-						        <div class="form-group">
-						        	<div class="input-group">
-						        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
-						        	</div>
-						        </div>
-						    </form>
-						</div>					
-						<button ng-click="searchBtnClick()" type="button" name="btnsearch" id="btnsearch" class="btn btn-info pull-right">
-							<i class="fa fa-search"></i> &nbsp;Search
-						</button>
+					<div class="box-footer" style="padding-left: 0px; padding-right: 0px;">						
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="row">
+							  	<form class="form-inline">
+							  		<div class="col-xs-8">
+								        <div class="form-group">
+								        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+												<i class="fa fa-file-excel-o"></i> &nbsp;excel
+											</button>
+								        </div>
+								        <div class="form-group">
+								        	<div class="input-group">
+								        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+								        	</div>
+								        </div>
+								    </div>
+							        <div class="col-xs-4">
+								        <div class="form-group pull-right">
+								        	<button ng-click="searchBtnClick()" type="button" name="btnsearch" id="btnsearch" class="btn btn-info">
+												<i class="fa fa-search"></i> &nbsp;Search
+											</button>
+								        </div>
+							        </div>
+							    </form>
+						    </div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-12">
 				<div class="box box-success">
 					<div class="box-body">
-						<div class="tablecontainer table-responsive">
-							<table class="table table-hover">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>Lead Source</th>
-										<th>Lead Status</th>
-										<th>Lead name</th>
-										<th>Company</th>
-										<th>Created Date</th>
-										<th>Industry</th>
-										<th>Converted Date</th>
-										<th>Opportunity Name</th>
-										<th>Opportunity Amount</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr  dir-paginate="le in leads |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>{{le.leadId}}</td>
-										<td ng-if="le.sourceName == null">-</td>
-										<td ng-if="le.sourceName != null">{{le.sourceName}}</td>
-										<td>{{le.statusName}}</td>
-										<td>{{le.leadName}}</td>
-										<td>{{le.company}}</td>
-										<td>{{le.createdDate}}</td>
-										<td>{{le.industId == 0 ? '-':le.industName}}</td>
-										<td ng-if="le.convertedDate == null">-</td>
-										<td ng-if="le.convertedDate != null">{{le.convertedDate}}</td>
-										<th ng-if="le.opName == null">-</th>
-										<td ng-if="le.opName != null">{{le.opName}}</td>
-										<td ng-if="le.opAmount == null">$ 0.00</td>
-										<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
-									</tr>
-								</tbody>
-							</table>
-							<dir-pagination-controls
-						       max-size="pageSize.row"
-						       direction-links="true"
-						       boundary-links="true" >
-							</dir-pagination-controls>
-							
-							<div style="display:none;" id="exportTbl">
-							
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="tablecontainer table-responsive">
 								<table class="table table-hover">
 									<thead>
 										<tr>
 											<th>ID</th>
-											<th>LEAD SOURCE</th>
-											<th>LEAD STATUS</th>
-											<th>LEAD NAME</th>
-											<th>COMPANY</th>
-											<th>OPPORTUNITY AMOUNT</th>
-											<th>CREATED DATE</th>
-											<th>INDUSTRY</th>
-											<th>CONVERTED DATE</th>
-											<th>OPPORTUNITY NAME</th>
+											<th>Lead Source</th>
+											<th>Lead Status</th>
+											<th>Lead name</th>
+											<th>Company</th>
+											<th>Created Date</th>
+											<th>Industry</th>
+											<th>Converted Date</th>
+											<th>Opportunity Name</th>
+											<th>Opportunity Amount</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr  ng-repeat="le in leads |orderBy:sortKey:reverse |filter:search " class="ng-cloak">
+										<tr  dir-paginate="le in leads |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
 											<td>{{le.leadId}}</td>
 											<td ng-if="le.sourceName == null">-</td>
 											<td ng-if="le.sourceName != null">{{le.sourceName}}</td>
 											<td>{{le.statusName}}</td>
 											<td>{{le.leadName}}</td>
 											<td>{{le.company}}</td>
-											<td ng-if="le.opAmount == null">$ 0.00</td>
-											<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
 											<td>{{le.createdDate}}</td>
 											<td>{{le.industId == 0 ? '-':le.industName}}</td>
 											<td ng-if="le.convertedDate == null">-</td>
 											<td ng-if="le.convertedDate != null">{{le.convertedDate}}</td>
 											<th ng-if="le.opName == null">-</th>
 											<td ng-if="le.opName != null">{{le.opName}}</td>
+											<td ng-if="le.opAmount == null">$ 0.00</td>
+											<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
 										</tr>
 									</tbody>
 								</table>
-							
+								<div style="display:none;" id="exportTbl">
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>LEAD SOURCE</th>
+												<th>LEAD STATUS</th>
+												<th>LEAD NAME</th>
+												<th>COMPANY</th>
+												<th>OPPORTUNITY AMOUNT</th>
+												<th>CREATED DATE</th>
+												<th>INDUSTRY</th>
+												<th>CONVERTED DATE</th>
+												<th>OPPORTUNITY NAME</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr  ng-repeat="le in leads |orderBy:sortKey:reverse |filter:search " class="ng-cloak">
+												<td>{{le.leadId}}</td>
+												<td ng-if="le.sourceName == null">-</td>
+												<td ng-if="le.sourceName != null">{{le.sourceName}}</td>
+												<td>{{le.statusName}}</td>
+												<td>{{le.leadName}}</td>
+												<td>{{le.company}}</td>
+												<td ng-if="le.opAmount == null">$ 0.00</td>
+												<td ng-if="le.opAmount != null">$ {{le.opAmount}}</td>
+												<td>{{le.createdDate}}</td>
+												<td>{{le.industId == 0 ? '-':le.industName}}</td>
+												<td ng-if="le.convertedDate == null">-</td>
+												<td ng-if="le.convertedDate != null">{{le.convertedDate}}</td>
+												<th ng-if="le.opName == null">-</th>
+												<td ng-if="le.opName != null">{{le.opName}}</td>
+											</tr>
+										</tbody>
+									</table>
+								
+								</div>
 							</div>
+							<dir-pagination-controls
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+							</dir-pagination-controls>
 						</div>
 					</div>
 				</div>

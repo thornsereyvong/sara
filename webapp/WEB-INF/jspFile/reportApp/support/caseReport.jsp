@@ -176,8 +176,8 @@ $(function(){
 					<div class="box-body">
 						<form method="post" id="frmFilter">	
 							<div class="row">
-								<div class="col-sm-12">
-									<div class="col-md-3">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<div class="form-group">
 											<label>Date Filter</label> <select name="datafilter"
 												id="datafilter" class="form-control select2 input-lg"
@@ -191,7 +191,7 @@ $(function(){
 										</div>
 									</div>
 									
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 						                <label class="font-label">Start date </label>
 						                <div class="form-group">
 					                  		<div class="input-group">
@@ -201,7 +201,7 @@ $(function(){
 						                </div>
 					              	</div>
 						
-					              	<div class="col-sm-3">
+					              	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 					                	<label class="font-label">End date</label>
 					                	<div class="form-group">
 					                  		<div class="input-group">
@@ -211,7 +211,7 @@ $(function(){
 				                		</div>
 					              	</div>
 					              	
-					              	<div class="col-sm-3">
+					              	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Status</label>
 										<div class="form-group">
 											<select class="form-control select2" name="case_status"
@@ -221,7 +221,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Type</label>
 										<div class="form-group">
 											<select class="form-control select2" name="case_type"
@@ -231,7 +231,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Origin</label>
 										<div class="form-group">
 											<select class="form-control select2" name="case_origin"
@@ -241,7 +241,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Priority</label>
 										<div class="form-group">
 											<select class="form-control select2" name="case_priority"
@@ -251,7 +251,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Product </label>
 										<div class="form-group">
 											<select class="form-control select2" name="case_product"
@@ -262,7 +262,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Customer </label>
 										<div class="form-group">
 											<select class="form-control select2" name="case_customer"
@@ -273,7 +273,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Contact </label>
 										<div class="form-group">
 											<select class="form-control select2" name="case_contact"
@@ -284,7 +284,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Assigned to </label>
 										<div class="form-group">
 											<select class="form-control select2" name="case_assignTo"
@@ -298,115 +298,122 @@ $(function(){
 							</div>
 						</form>
 					</div>
-					<div class="box-footer">						
-						<div class="col-sm-2">
-						  	<form class="form-inline">
-						  		<div class="form-group">
-						        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
-										<i class="fa fa-file-excel-o"></i> &nbsp;excel
-									</button>
-						        </div>
-						        <div class="form-group">
-						        	<div class="input-group">
-						        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
-						        	</div>
-						        </div>
-						    </form>
-						</div>					
-						<button ng-click="searchBtnClick()" type="button" name="btnsearch" id="btnsearch" class="btn btn-info pull-right">
-							<i class="fa fa-search"></i> &nbsp;Search
-						</button>
+					<div class="box-footer" style="padding-left: 0px; padding-right: 0px;">						
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="row">
+							  	<form class="form-inline">
+							  		<div class="col-xs-8">
+								        <div class="form-group">
+								        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+												<i class="fa fa-file-excel-o"></i> &nbsp;excel
+											</button>
+								        </div>
+								        <div class="form-group">
+								        	<div class="input-group">
+								        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+								        	</div>
+								        </div>
+								    </div>
+							        <div class="col-xs-4">
+								        <div class="form-group pull-right">
+								        	<button ng-click="searchBtnClick()" type="button" name="btnsearch" id="btnsearch" class="btn btn-info">
+												<i class="fa fa-search"></i> &nbsp;Search
+											</button>
+								        </div>
+							        </div>
+							    </form>
+						    </div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-12">
 				<div class="box box-success">
 					<div class="box-body">
-						<div class="tablecontainer table-responsive">
-							<table class="table table-hover">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>Subject</th>
-										<th>Type</th>
-										<th>Status</th>
-										<th>Priority</th>
-										<th>Origin</th>
-										<th>Product</th>
-										<th>Customer</th>
-										<th>Contact</th>
-										<th>Resolved By</th>
-										<th>Resolved Date</th>
-										<th>Article</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr dir-paginate="ca in cases |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>{{ca.caseId}}</td>
-										<td>{{ca.caseSubject}}</td>
-										<td>{{ca.typeName}}</td>
-										<td>{{ca.statusName}}</td>
-										<td>{{ca.priorityName}}</td>
-										<td>{{ca.originId==null ? '-':ca.originName}}</td>
-										<td ng-if="ca.itemId==null">-</td>
-										<td ng-if="ca.itemId!=null">[{{ca.itemId}}] {{ca.itemName}}</td>
-										<td ng-if="ca.custId==null">-</td>
-										<td ng-if="ca.custId!=null">[{{ca.custId}}] {{ca.custName}}</td>
-										<td ng-if="ca.contactId==null">-</td>
-										<td ng-if="ca.contactId!=null">[{{ca.contactId}}] {{ca.contactName}}</td>
-										<td>{{ca.resolvedBy == null ? '-':ca.resovedBy}}</td>
-										<td>{{ca.resolvedDate == null ? '-':ca.resolvedDate}}</td>
-										<td>{{ca.articleTitle == null ? '-':ca.articleTitle}}</td>
-									</tr>
-								</tbody>
-							</table>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="tablecontainer table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Subject</th>
+											<th>Type</th>
+											<th>Status</th>
+											<th>Priority</th>
+											<th>Origin</th>
+											<th>Product</th>
+											<th>Customer</th>
+											<th>Contact</th>
+											<th>Resolved By</th>
+											<th>Resolved Date</th>
+											<th>Article</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr dir-paginate="ca in cases |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+											<td>{{ca.caseId}}</td>
+											<td>{{ca.caseSubject}}</td>
+											<td>{{ca.typeName}}</td>
+											<td>{{ca.statusName}}</td>
+											<td>{{ca.priorityName}}</td>
+											<td>{{ca.originId==null ? '-':ca.originName}}</td>
+											<td ng-if="ca.itemId==null">-</td>
+											<td ng-if="ca.itemId!=null">[{{ca.itemId}}] {{ca.itemName}}</td>
+											<td ng-if="ca.custId==null">-</td>
+											<td ng-if="ca.custId!=null">[{{ca.custId}}] {{ca.custName}}</td>
+											<td ng-if="ca.contactId==null">-</td>
+											<td ng-if="ca.contactId!=null">[{{ca.contactId}}] {{ca.contactName}}</td>
+											<td>{{ca.resolvedBy == null ? '-':ca.resovedBy}}</td>
+											<td>{{ca.resolvedDate == null ? '-':ca.resolvedDate}}</td>
+											<td>{{ca.articleTitle == null ? '-':ca.articleTitle}}</td>
+										</tr>
+									</tbody>
+								</table>
+								<div style="display:none;" id="exportTbl">
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>SUBJECT</th>
+												<th>TYPE</th>
+												<th>STATUS</th>
+												<th>PRIORITY</th>
+												<th>ORIGIN</th>
+												<th>PRODUCT</th>
+												<th>CUSTOMER</th>
+												<th>CONTACT</th>
+												<th>RESOLVED BY</th>
+												<th>RESOLVED DATE</th>
+												<th>ARTICLE</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="ca in cases" class="ng-cloak">
+												<td>{{ca.caseId}}</td>
+												<td>{{ca.caseSubject}}</td>
+												<td>{{ca.typeName}}</td>
+												<td>{{ca.statusName}}</td>
+												<td>{{ca.priorityName}}</td>
+												<td>{{ca.originId==null ? '-':ca.originName}}</td>
+												<td ng-if="ca.itemId==null">-</td>
+												<td ng-if="ca.itemId!=null">[{{ca.itemId}}] {{ca.itemName}}</td>
+												<td ng-if="ca.custId==null">-</td>
+												<td ng-if="ca.custId!=null">[{{ca.custId}}] {{ca.custName}}</td>
+												<td ng-if="ca.contactId==null">-</td>
+												<td ng-if="ca.contactId!=null">[{{ca.contactId}}] {{ca.contactName}}</td>
+												<td>{{ca.resolvedBy == null ? '-':ca.resovedBy}}</td>
+												<td>{{ca.resolvedDate == null ? '-':ca.resolvedDate}}</td>
+												<td>{{ca.articleTitle == null ? '-':ca.articleTitle}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
 							<dir-pagination-controls
 						       max-size="pageSize.row"
 						       direction-links="true"
 						       boundary-links="true" >
 							</dir-pagination-controls>
-							
-							<div style="display:none;" id="exportTbl">
-								
-								<table class="table table-hover">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>SUBJECT</th>
-										<th>TYPE</th>
-										<th>STATUS</th>
-										<th>PRIORITY</th>
-										<th>ORIGIN</th>
-										<th>PRODUCT</th>
-										<th>CUSTOMER</th>
-										<th>CONTACT</th>
-										<th>RESOLVED BY</th>
-										<th>RESOLVED DATE</th>
-										<th>ARTICLE</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="ca in cases" class="ng-cloak">
-										<td>{{ca.caseId}}</td>
-										<td>{{ca.caseSubject}}</td>
-										<td>{{ca.typeName}}</td>
-										<td>{{ca.statusName}}</td>
-										<td>{{ca.priorityName}}</td>
-										<td>{{ca.originId==null ? '-':ca.originName}}</td>
-										<td ng-if="ca.itemId==null">-</td>
-										<td ng-if="ca.itemId!=null">[{{ca.itemId}}] {{ca.itemName}}</td>
-										<td ng-if="ca.custId==null">-</td>
-										<td ng-if="ca.custId!=null">[{{ca.custId}}] {{ca.custName}}</td>
-										<td ng-if="ca.contactId==null">-</td>
-										<td ng-if="ca.contactId!=null">[{{ca.contactId}}] {{ca.contactName}}</td>
-										<td>{{ca.resolvedBy == null ? '-':ca.resovedBy}}</td>
-										<td>{{ca.resolvedDate == null ? '-':ca.resolvedDate}}</td>
-										<td>{{ca.articleTitle == null ? '-':ca.articleTitle}}</td>
-									</tr>
-								</tbody>
-							</table>
-							
-							</div>
 						</div>
 					</div>
 				</div>

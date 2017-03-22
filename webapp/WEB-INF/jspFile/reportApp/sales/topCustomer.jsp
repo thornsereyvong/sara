@@ -179,8 +179,8 @@ $(function(){
 					<div class="box-body">
 						<form method="post" id="frmFilter">	
 							<div class="row">
-								<div class="col-sm-12">
-									<div class="col-sm-3">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<div class="form-group">
 											<label>Date Filter</label> <select name="datafilter"
 												id="datafilter" class="form-control select2 input-lg"
@@ -193,7 +193,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Date Type</label>
 										<div class="form-group">
 											<select class="form-control select2" name="date_type" style="width: 100%;" id="date_type">
@@ -203,7 +203,7 @@ $(function(){
 										</div>
 									</div>
 									
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 						                <label class="font-label">Start date </label>
 						                <div class="form-group">
 					                  		<div class="input-group">
@@ -213,7 +213,7 @@ $(function(){
 						                </div>
 					              	</div>
 						
-					              	<div class="col-sm-3">
+					              	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 					                	<label class="font-label">End date</label>
 					                	<div class="form-group">
 					                  		<div class="input-group">
@@ -226,78 +226,88 @@ $(function(){
 							</div>
 						</form>
 					</div>
-					<div class="box-footer">						
-						<div class="col-sm-2">
-						  	<form class="form-inline">
-						  		<div class="form-group">
-						        	<button ng-click="searchBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-default">
-										<i class="fa fa-print"></i> &nbsp;Print
-									</button>
-						        </div>
-						        <div class="form-group">
-						        	<div class="input-group">
-						        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
-						        	</div>
-						        </div>
-						    </form>
-						</div>					
-						<button ng-click="searchBtnClick()" type="button" name="btnsearch" id="btnsearch" class="btn btn-info pull-right">
-							<i class="fa fa-search"></i> &nbsp;Search
-						</button>
+					<div class="box-footer" style="padding-left: 0px; padding-right: 0px;">						
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="row">
+							  	<form class="form-inline">
+							  		<div class="col-xs-8">
+								        <div class="form-group">
+								        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+												<i class="fa fa-file-excel-o"></i> &nbsp;excel
+											</button>
+								        </div>
+								        <div class="form-group">
+								        	<div class="input-group">
+								        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+								        	</div>
+								        </div>
+								    </div>
+							        <div class="col-xs-4">
+								        <div class="form-group pull-right">
+								        	<button ng-click="searchBtnClick()" type="button" name="btnsearch" id="btnsearch" class="btn btn-info">
+												<i class="fa fa-search"></i> &nbsp;Search
+											</button>
+								        </div>
+							        </div>
+							    </form>
+						    </div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-sm-12">
 				<div class="box box-success">
 					<div class="box-body">
-						<div class="tablecontainer table-responsive">
-							<table class="table table-hover">
-								<thead>
-									<tr>
-										<th>Customer Name</th>
-										<th>Opportunity Name</th>
-										<th>Amount</th>
-										<th>Type</th>
-										<th>Lead Source</th>
-										<th>Closed Date</th>
-										<th>Next Step</th>
-										<th>Stage</th>
-										<th>Probability(%)</th>
-										<th>Created Date</th>
-									</tr>
-								</thead>
-								<tbody dir-paginate="cust in customers |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-									<tr>
-										<td rowspan="{{cust.opportunities.length + 2}}">
-										[{{cust.custId}}] {{cust.custName}}
-										<br/>
-										({{cust.opportunities.length}} {{cust.opportunities.length > 1?'opportunities':'opportunity'}})
-										</td>
-									</tr>
-									<tr ng-repeat = "op in cust.opportunities">
-										<td>[{{op.opId}}]{{op.opName}}</td>
-										<td>$ {{op.opAmount}}</td>
-										<td>{{op.type == null? '-':op.type.otName}}</td> 
-										<td>{{op.leadSource == null? '-':op.leadSource.sourceName}}</td>
-										<td>{{op.opCloseDate}}</td>
-										<td>{{op.opNextStep == ''?'-':op.opNextStep}}</td>
-										<td>{{op.stage.osName}}</td>
-										<td>{{op.opProbability}}%</td>
-										<td>{{op.opCreatedDate}}</td>
-									</tr>
-									<tr>
-										<td>Subtotal</td>
-										<td colspan="8">$ {{sumOpportunityAmount(cust.opportunities)}}</td>
-									</tr>
-								</tbody>
-								<tfoot ng-if="customers != null">
-									<tr>
-										<td></td>
-										<td><strong>Total Amount</strong></td>
-										<td colspan="8"><strong>$ {{totalAmount(customers)}}</strong></td>
-									</tr>
-								</tfoot>
-							</table>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="tablecontainer table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>Customer Name</th>
+											<th>Opportunity Name</th>
+											<th>Amount</th>
+											<th>Type</th>
+											<th>Lead Source</th>
+											<th>Closed Date</th>
+											<th>Next Step</th>
+											<th>Stage</th>
+											<th>Probability(%)</th>
+											<th>Created Date</th>
+										</tr>
+									</thead>
+									<tbody dir-paginate="cust in customers |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+										<tr>
+											<td rowspan="{{cust.opportunities.length + 2}}">
+											[{{cust.custId}}] {{cust.custName}}
+											<br/>
+											({{cust.opportunities.length}} {{cust.opportunities.length > 1?'opportunities':'opportunity'}})
+											</td>
+										</tr>
+										<tr ng-repeat = "op in cust.opportunities">
+											<td>[{{op.opId}}]{{op.opName}}</td>
+											<td><span>$</span>{{op.opAmount}}</td>
+											<td>{{op.type == null? '-':op.type.otName}}</td> 
+											<td>{{op.leadSource == null? '-':op.leadSource.sourceName}}</td>
+											<td>{{op.opCloseDate}}</td>
+											<td>{{op.opNextStep == ''?'-':op.opNextStep}}</td>
+											<td>{{op.stage.osName}}</td>
+											<td>{{op.opProbability}}%</td>
+											<td>{{op.opCreatedDate}}</td>
+										</tr>
+										<tr>
+											<td>Subtotal</td>
+											<td colspan="8"><span>$</span>{{sumOpportunityAmount(cust.opportunities)}}</td>
+										</tr>
+									</tbody>
+									<tfoot ng-if="customers != null">
+										<tr>
+											<td></td>
+											<td><strong>Total Amount</strong></td>
+											<td colspan="8"><strong><span>$</span>{{totalAmount(customers)}}</strong></td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
 							<dir-pagination-controls
 						       max-size="pageSize.row"
 						       direction-links="true"
