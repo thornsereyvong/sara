@@ -393,7 +393,7 @@ $(function(){
 	
 	$("#employee").select2('val', empLinkUser.EmpID);
 	
-	if(custId != "")
+	if(custId != "" && custId != null)
 		$("#customer").select2('val', findIndexCutomer(custId));
 	
 	

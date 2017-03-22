@@ -14,10 +14,10 @@
 <div class="content-wrapper" ng-app="caseApp" ng-controller="caseController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>Update Case</h1>
+		<h1>Update Article</h1>
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
-			<li><a href="#"> Update Case</a></li>
+			<li><a href="#"> Update Article</a></li>
 		</ol>
 	</section>
 <script type="text/javascript">
@@ -41,7 +41,7 @@ app.controller('caseController',['$scope','$http',function($scope, $http){
 				$("#art_key").val($scope.article.articleKey);
 				CKEDITOR.instances['art_des'].setData($scope.article.articleDes);
 				$("#art_product").select2("val",$scope.article.item.itemId);	
-			}, 2000);
+			}, 1500);
 		});
 	};			
 }]);
@@ -146,29 +146,29 @@ $(document).ready(function() {
 		<div class="box box-danger">			
 			<div class="box-body">			
 				<form method="post" id="form-article" data-ng-init="startupPage()">
-					
-					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
-					<a class="btn btn-info btn-app" id="btn_reload"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-articles"> <i class="fa fa-reply"></i> Back </a>
-	
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
+						<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
+						<a class="btn btn-info btn-app" id="btn_reload"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+						<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-articles"> <i class="fa fa-reply"></i> Back </a>
+					</div>
 					<div class="clearfix"></div>
 					<div class="col-sm-2"><h4>Overview</h4></div>
 					<div class="col-sm-12"><hr style="margin-top: 3px;" /></div>
 					<div class="row">
-						<div class="col-sm-12">
-							<div class="col-sm-3">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 								<label class="font-label">Subject <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<input type="text" class="form-control" id="art_subject" name="art_subject">
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 								<label class="font-label">Key <span class="requrie">(Required)</span></label>
 								<div class="form-group">
 									<input type="text" class="form-control" id="art_key" name="art_key">
 								</div>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 								<label class="font-label">Product </label>
 								<div class="form-group">
 									<select class="form-control select2" name="art_product" id="art_product" style="width:100%">
@@ -198,4 +198,3 @@ $(document).ready(function() {
 </div>
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
 <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
-

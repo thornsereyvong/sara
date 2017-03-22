@@ -18,144 +18,134 @@
 	
 	<section class="content">
 		<div class="box box-danger">
-			<div class="box-header with-border">
-				<br>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">							
-					<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
-					<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-					<button class="btn btn-info btn-app" onclick="creditInfo()" > <i class="fa fa-info"></i> Credit Info </button>
-					<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/quote/list"> <i class="fa fa-reply"></i> Back </a>
-				</div>	
-				<div class="clearfix"></div>								
-			</div>
 			<div class="box-body">
+				<div class="box-header with-border">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">							
+						<button type="button" class="btn btn-info btn-app" name="btnSave" id="btnSave" > <i class="fa fa-save"></i> Save</button> 
+						<a class="btn btn-info btn-app" id="btn_clear" onclick="cancel()"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+						<button class="btn btn-info btn-app" onclick="creditInfo()" > <i class="fa fa-info"></i> Credit Info </button>
+						<a class="btn btn-info btn-app"  href="${pageContext.request.contextPath}/quote/list"> <i class="fa fa-reply"></i> Back </a>
+					</div>
+				</div>
+				<br/>
+				<div class="clearfix"></div>
 				<div class="row">
-					<div class="col-md-12">	
-							
-						<div class="col-md-6">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Entry No<span class="requrie"> (Required)</span></label> 
-									<input class="form-control" name="entryNo" id="entryNo" type="text" value="" placeholder="***New***">
-								</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">	
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Entry No<span class="requrie"> (Required)</span></label> 
+								<input class="form-control" name="entryNo" id="entryNo" type="text" value="" placeholder="***New***">
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Post Status</label> 
-									<input class="form-control" disabled="" id="postStatus" name="postStatus" type="text" placeholder="Open">
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Customer<span class="requrie"> (Required)</span></label> 
-									<select id="customer" name="customer" class="form-control select2-small input-lg" style="width: 100%;">
-										<option selected="selected" value="">Select A Customer</option>
-										
-									</select>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Price Code<span class="requrie"> (Required)</span></label> 
-									<select name="priceCode" id="priceCode" class="form-control select2 input-lg" style="width: 100%;">
-										<option value="">Select A Price Code</option>
-										 
-									</select>
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Sale Rep. ID<span class="requrie"> (Required)</span></label> 
-									<select name="employee" id="employee" class="form-control select2 input-lg" style="width: 100%;">
-										<option value="" selected="selected">Select A Employee</option>
-										 
-									</select>
-								</div>
-							</div>
-							
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Class</label> 
-									<select id="classCodeMaster" name="classCodeMaster" class="form-control select2 input-lg" style="width: 100%;">
-										<option selected="selected" value="">Select A Class</option>
-										
-									</select>
-								</div>
-							</div>
-							<div class="clearfix"></div>
 						</div>
-						<div class="col-md-6">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Quotation Date<span class="requrie"> (Required)</span></label>
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-calendar"></i>
-										</div>
-										<input readonly="readonly"  data-date-format="dd-M-yyyy"
-											data-default-date=""
-											value=""
-											name="quoteDate" id="quoteDate" type="text"
-											class="form-control pull-right active">
-									</div>
-								</div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Post Status</label> 
+								<input class="form-control" disabled="" id="postStatus" name="postStatus" type="text" placeholder="Open">
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Reference</label> 
-									<input class="form-control" id="reference" name="reference" type="text" placeholder="Reference...">
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="col-md-6">
-							
-								<div class="date-control">
-									<label for="startDate">Start Date<span class="requrie"> (Required)</span></label>
-									<div class="input-group datefield">
-										<span class="add-on input-group-addon"><i class="fa fa-calendar"></i></span>
-										<input readonly="readonly" id="startDate" name="startDate" class="form-control date" size="16" type="text" value="" validation="none">  			
-									</div>
+						</div>
+						<div class="clearfix hidden-lg"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Customer<span class="requrie"> (Required)</span></label> 
+								<select id="customer" name="customer" class="form-control select2-small input-lg" style="width: 100%;">
+									<option selected="selected" value="">Select A Customer</option>
 									
-								</div>
-							
+								</select>
 							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Expire Date<span class="requrie"> (Required)</span></label>
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-calendar"></i>
-										</div>
-										<input readonly="readonly"  data-date-format="dd-M-yyyy"
-											data-default-date=""
-											value=""
-											name="expireDate" id="expireDate" type="text"
-											class="form-control pull-right active">
+						</div>
+						<div class="clearfix hidden-md hidden-sm"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Price Code<span class="requrie"> (Required)</span></label> 
+								<select name="priceCode" id="priceCode" class="form-control select2 input-lg" style="width: 100%;">
+									<option value="">Select A Price Code</option>
+									 
+								</select>
+							</div>
+						</div>
+						<div class="clearfix hidden-lg"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Sale Rep. ID<span class="requrie"> (Required)</span></label> 
+								<select name="employee" id="employee" class="form-control select2 input-lg" style="width: 100%;">
+									<option value="" selected="selected">Select A Employee</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Class</label> 
+								<select id="classCodeMaster" name="classCodeMaster" class="form-control select2 input-lg" style="width: 100%;">
+									<option selected="selected" value="">Select A Class</option>
+									
+								</select>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Quotation Date<span class="requrie"> (Required)</span></label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
 									</div>
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="col-md-12">
-								<div class="form-group">
-									<label>Ship to Address <span class="text-red"></span></label> 
-									<select name="shipToAdd" id="shipToAdd" class="form-control select2 input-lg" style="width: 100%;">
-										 
-									</select>
+									<input readonly="readonly"  data-date-format="dd-M-yyyy"
+										data-default-date=""
+										value=""
+										name="quoteDate" id="quoteDate" type="text"
+										class="form-control pull-right active">
 								</div>
 							</div>
 						</div>
-						<div class="col-md-12">
-							<div class="col-md-12">
-								<div class="form-group">
-									<label>Remark</label> 
-									<input class="form-control" id="remark" name="remark" type="text" placeholder="Remark">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Reference</label> 
+								<input class="form-control" id="reference" name="reference" type="text" placeholder="Reference...">
+							</div>
+						</div>
+						<div class="clearfix hidden-lg"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="date-control">
+								<label for="startDate">Start Date<span class="requrie"> (Required)</span></label>
+								<div class="input-group datefield">
+									<span class="add-on input-group-addon"><i class="fa fa-calendar"></i></span>
+									<input readonly="readonly" id="startDate" name="startDate" class="form-control date" size="16" type="text" value="" validation="none">  			
 								</div>
+							</div>
+						</div>
+						<div class="clearfix  hidden-md hidden-sm"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Expire Date<span class="requrie"> (Required)</span></label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
+									<input readonly="readonly"  data-date-format="dd-M-yyyy"
+										data-default-date=""
+										value=""
+										name="expireDate" id="expireDate" type="text"
+										class="form-control pull-right active">
+								</div>
+							</div>
+						</div>
+						<div class="clearfix hidden-lg"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Ship to Address <span class="text-red"></span></label> 
+								<select name="shipToAdd" id="shipToAdd" class="form-control select2 input-lg" style="width: 100%;">
+									 
+								</select>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+							<div class="form-group">
+								<label>Remark</label> 
+								<input class="form-control" id="remark" name="remark" type="text" placeholder="Remark">
 							</div>
 						</div>
 						<form id="frmSaleOrder" action="" method="post">
-						<div class="col-md-12" style="padding-top: 25px;">
+							<div class="col-md-12" style="padding-top: 25px;">
 								<div class="col-md-12  table-responsive no-padding">
 									<table id="table-content" class="table table-hover">
 										<thead>								
@@ -184,116 +174,113 @@
 											</tr>
 										</tfoot>
 									</table>
-								
 								</div>
 							</div>
 						</form>
-				
-					</div>
-					</div>
-				</div>
-				
-			<br><br>
-			<div class="box-footer" style="border-top: 1px solid #d8d8d8;">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="col-md-6">
-							
-							<div class="col-md-4">
-								<div class="form-group">
-									<label>Total Specific Tax</label> 
-									<input disabled class="form-control" id="txtTST" type="text" placeholder="">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label>Total VAT</label> 
-									<input disabled id="txtTVAT" class="form-control" type="text" placeholder="">
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label>Location</label> 
-									<input disabled class="form-control" id="txtLocDetail" type="text" placeholder="">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label>Quantity Available</label> 
-									<input disabled id="txtQtyAvailable1" class="form-control" type="text" placeholder="">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label>UOM</label> 
-									<input disabled  id="txtUom1" class="form-control" type="text" placeholder="">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label>All Location</label> 
-									<input disabled class="form-control" value="All" type="text" placeholder="">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label>Quantity Available</label> 
-									<input disabled class="form-control" id="txtQtyAvailableAll" type="text" placeholder="">
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label>UOM</label> 
-									<input disabled id="txtUomAll" class="form-control" type="text" placeholder="">
-								</div>
-							</div>
-						</div>
-						
-						<div class="col-md-3"></div>
-						
-						<div class="col-md-3">
-							<div class="col-md-12">
-								<div class="form-group">
-									<label>Total Quote</label> 
-									<input disabled id="txtTSalOrd" class="form-control text-align-right" type="text" placeholder="">
-								</div>
-							</div>
-							<div class="col-md-12">
-								<label>Discount<span></span></label> 
-								<div class="input-group">
-				                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
-				                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
-				                  </div>
-				                  <br>
-							</div>
-							<div class="col-md-12">
-								<div class="form-group">
-									<label> Net Total Amount <span></span></label> 
-									<input disabled id="txtNetInv" class="form-control text-align-right" type="text" placeholder="">
-								</div>
-							</div>
-							
-							<div class="col-md-12" style="display:none;">
-									<label>Total Payment To Date</label> 
-									
-								<div class="input-group">
-				                    <span class="input-group-addon" style="cursor:pointer"><i class="fa  fa-play"></i></span>
-				                    <input disabled type="text" id="txtTPTDate" class="form-control text-align-right" placeholder="">
-				                  </div>
-				                  <br>
-							</div>
-							<div class="col-md-12" style="display:none;">
-								<div class="form-group">
-									<label>Amount Due</label> 
-									<input disabled id="txtAmtDue" class="form-control text-align-right" type="text" placeholder="">
-								</div>
-							</div>
-						</div>
-						
 					</div>
 				</div>
 			</div>
+			<br><br>
+			<div class="box-footer" style="border-top: 1px solid #d8d8d8;">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="row">
+						<div class="col-lg-4 pull-right">
+							<div class="row">
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
+									<div class="form-group">
+										<label>Total Quote</label> 
+										<input disabled id="txtTSalOrd" class="form-control text-align-right" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
+									<label>Discount<span></span></label> 
+									<div class="input-group">
+					                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
+					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
+					                  </div>
+					                  <br>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
+									<div class="form-group">
+										<label> Net Total Amount <span></span></label> 
+										<input disabled id="txtNetInv" class="form-control text-align-right" type="text" placeholder="">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-7">
+							<div class="row">
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="display:none;">
+										<label>Total Payment To Date</label> 
+										
+									<div class="input-group">
+					                    <span class="input-group-addon" style="cursor:pointer"><i class="fa  fa-play"></i></span>
+					                    <input disabled type="text" id="txtTPTDate" class="form-control text-align-right" placeholder="">
+					                  </div>
+					                  <br>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="display:none;">
+									<div class="form-group">
+										<label>Amount Due</label> 
+										<input disabled id="txtAmtDue" class="form-control text-align-right" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>Total Specific Tax</label> 
+										<input disabled class="form-control" id="txtTST" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>Total VAT</label> 
+										<input disabled id="txtTVAT" class="form-control" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>Location</label> 
+										<input disabled class="form-control" id="txtLocDetail" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>Quantity Available</label> 
+										<input disabled id="txtQtyAvailable1" class="form-control" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>UOM</label> 
+										<input disabled  id="txtUom1" class="form-control" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>All Location</label> 
+										<input disabled class="form-control" value="All" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>Quantity Available</label> 
+										<input disabled class="form-control" id="txtQtyAvailableAll" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>UOM</label> 
+										<input disabled id="txtUomAll" class="form-control" type="text" placeholder="">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 			<div id="errors"></div>
 		</div>
 				

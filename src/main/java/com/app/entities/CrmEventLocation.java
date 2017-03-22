@@ -17,7 +17,6 @@ public class CrmEventLocation {
 	private String loCreateBy;
 	private Date loCreateDate;
 	private String loModifiedBy;
-	private Date loModifiedDate;
 	private MeDataSource meDataSource;
 
 	public MeDataSource getMeDataSource() {
@@ -130,13 +129,5 @@ public class CrmEventLocation {
 
 	public void setLoModifiedBy(String loModifiedBy) {
 		this.loModifiedBy = loModifiedBy;
-	}
-
-	public Date getLoModifiedDate() {
-		return loModifiedDate;
-	}
-
-	public void setLoModifiedDate(Date loModifiedDate) {
-		this.loModifiedDate = loModifiedDate;
 	}
 }

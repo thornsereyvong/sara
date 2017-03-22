@@ -25,9 +25,7 @@
 .padding-right{
 padding-right: 10px;
 }
-
 </style>
-
 <div class="content-wrapper" ng-app="campaign" ng-controller="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
@@ -37,19 +35,14 @@ padding-right: 10px;
 			<li><a href="#"> Update Location</a></li>
 		</ol>
 	</section>
-
-
 <script type="text/javascript">
-
 var app = angular.module('campaign', ['angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
 }]);
 var self = this;
 app.controller('campController',['$scope','$http',function($scope, $http){
 
-
 }]);
-
 
 function listDataByCampID(){
 	
@@ -69,9 +62,7 @@ function listDataByCampID(){
 
 }
 
-
 $(document).ready(function() {
-	
 	listDataByCampID();
 	$("#btn_clear").click(function(){
 		location.reload();
@@ -167,7 +158,7 @@ $(document).ready(function() {
 			}
 		}
 	}).on('success.form.bv', function(e) {
-		
+		alert($.session.get("parentID"))
 		swal({   
 			title: "<span style='font-size: 25px;'>You are about to update location.</span>",
 			text: "Click OK to continue or CANCEL to abort.",
@@ -192,7 +183,7 @@ $(document).ready(function() {
 					      "loCity": getValueStringById("city"),
 					      "loState": getValueStringById("state"),
 					      "loCountry": getValueStringById("country"),
-					      "loModifiedBy":  $.session.get("parentID"),   
+					      "loModifiedBy": $.session.get("parentID"),   
 					    }),
 					beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
@@ -211,9 +202,7 @@ $(document).ready(function() {
 							setTimeout(function(){
 								window.location.href = "${pageContext.request.contextPath}/list-locations";
 							}, 2000);
-																														
 						}else{
-							
 							swal({
 	    						title: "UNSUCCESSFUL",
 	    					  	text: result.MSG,
@@ -229,111 +218,89 @@ $(document).ready(function() {
 				});
 			}, 500);
 		});	
-		
-		
 	});	
-	
 });
 </script>
 	<section class="content">
-
 		<!-- Default box -->
-		
 		<div class="box box-danger">
-		
 			<div class="box-body">
-		
 			<form method="post" id="form-contact">
-				
-				<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
-				<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
-				<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-locations"> <i class="fa fa-reply"></i> Back </a>
-
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
+					<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
+					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-locations"> <i class="fa fa-reply"></i> Back </a>
+				</div>
 				<div class="clearfix"></div>
-
-				
 				<div class="col-sm-12">
 					<hr style="margin-top: 3px;" />
 				</div>
-
-			
-				
 				<div class="col-sm-2"><h4>Address </h4></div>
-				
 				<div class="col-sm-12">
-						<hr style="margin-top: 3px;" />
+					<hr style="margin-top: 3px;" />
 				</div>
 				<input type="hidden" id="id">
-				<div class="col-sm-6">
-					<div class="col-sm-12">
-							<label class="font-label">Location Name <span class="requrie">(Required)</span></label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="name" name="name">
-							</div>	
-						</div>
-						
-						<div class="clearfix"></div>
-					<div class="col-sm-6">
-							<label class="font-label">No </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="no" name="no">
-							</div>	
-						</div>
-						
-					<div class="col-sm-6">
-							<label class="font-label">Street </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="street" name="street">
-							</div>	
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Village </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="village" name="village">
-							</div>	
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Commune </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="commune" name="commune">
-							</div>	
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+						<label class="font-label">Location Name <span class="requrie">(Required)</span></label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="name" name="name">
 						</div>	
+					</div>
+					<div class="clearfix hidden-lg"></div>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<label class="font-label">No </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="no" name="no">
+						</div>	
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<label class="font-label">Street </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="street" name="street">
+						</div>	
+					</div>
+					<div class="clearfix"></div>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<label class="font-label">Village </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="village" name="village">
+						</div>	
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<label class="font-label">Commune </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="commune" name="commune">
+						</div>	
+					</div>	
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<label class="font-label">District </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="district" name="district">
+						</div>	
+					</div>
+					
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<label class="font-label">City </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="city" name="city">
+						</div>	
+					</div>
+					
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<label class="font-label">State </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="state" name="state">
+						</div>
+					</div>
+					
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<label class="font-label">Country </label>
+						<div class="form-group">
+							<input type="text"  class="form-control" id="country" name="country">
+						</div>
+					</div>
 				</div>
-				<div class="col-sm-6">
-						
-						<div class="col-sm-6">
-							<label class="font-label">District </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="district" name="district">
-							</div>	
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">City </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="city" name="city">
-							</div>	
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">State </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="state" name="state">
-							</div>
-						</div>
-						
-						<div class="col-sm-6">
-							<label class="font-label">Country </label>
-							<div class="form-group">
-								<input type="text"  class="form-control" id="country" name="country">
-							</div>
-						</div>
-						
-				</div>
-				
-
 			</form>
 			</div>
 			<!-- /.box-body -->
@@ -342,20 +309,9 @@ $(document).ready(function() {
 			</div>
 			<!-- /.box-footer-->
 		</div>
-		
 		<!-- /.box -->
-
-
 	</section>
 	<!-- /.content -->
-
-
 </div>
-
 <!-- /.content-wrapper -->
-
-
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-

@@ -101,7 +101,7 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div style="background: #fff; margin-top:15px;">
-					 <div class="col-sm-12">
+					 <div class="col-sm-12" style="margin-left: -5px;">
 					 	<a href="${pageContext.request.contextPath}/quote/add" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>					 	
 					 </div>
 				</div>
@@ -178,7 +178,7 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 											<td ng-if="qq.empId != null">[{{qq.empId}}] {{qq.empName}}</td>
 											<td class="dis-number">$ {{qq.netTotalAmt | number:2}}</td>	
 											<td>{{qq.PostStatus}}</td>	
-											<td class="text-center">
+											<td class="text-center" style="min-width: 100px;">
 												<a ng-if="qq.PostStatus != 'Converted'" href="${pageContext.request.contextPath}/quote/edit/{{qq.saleId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 												<a ng-if="qq.PostStatus != 'Converted'" href="#" ng-click="deleteQuote(qq.saleId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
 											</td>
