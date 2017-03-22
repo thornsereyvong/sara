@@ -353,13 +353,15 @@ $(document).ready(function() {
 									<div class="form-group">
 										<input type="text" class="form-control  ng-cloak" name="c_tel2" id="c_tel2">
 									</div>
-								</div>							
+								</div>	
+								<div class="clearfix hidden-lg hidden-sm"></div>						
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Fax </label>
 									<div class="form-group">
 										<input type="text" class="form-control  ng-cloak" name="c_fax" id="c_fax">
 									</div>
-								</div>																		
+								</div>	
+								<div class="clearfix hidden-md"></div>																	
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Email </label>
 									<div class="form-group">

@@ -258,14 +258,14 @@ $(function(){
             
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="${pageContext.request.contextPath}/resources/images/user-icon-512.png" class="user-image" alt="User Image">
+                  <img src="${pageContext.request.contextPath}/resources/images/App Logo/user-logo.png" class="user-image" alt="User Image">
                   <span class="hidden-xs">Welcome ${SESSION}!</span>
                   
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="${pageContext.request.contextPath}/resources/images/user-icon-512.png" class="img-circle" alt="User Image">
+                    <img src="${pageContext.request.contextPath}/resources/images/App Logo/user-logo.png" class="img-circle" alt="User Image">
                     <p>
                    
                   </li>
