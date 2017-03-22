@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+ <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 
 <jsp:include page="${request.contextPath}/head"></jsp:include>
 <jsp:include page="${request.contextPath}/header"></jsp:include>
@@ -173,7 +173,6 @@ $(function(){
 	</section>
 
 	<section class="content" data-ng-init="reportStartup('${SESSION}')">
-		
 		<div class="row">
 			<div class="col-md-12">
 				<div class="box box-primary">	
@@ -186,8 +185,8 @@ $(function(){
 					<div class="box-body">
 						<form method="post" id="frmFilter">	
 							<div class="row">
-								<div class="col-sm-12">
-									<div class="col-md-3">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<div class="form-group">
 											<label>Date Filter</label> 
 											<select name="datafilter" id="datafilter" class="form-control select2 input-lg" style="width: 100%;">
@@ -200,7 +199,7 @@ $(function(){
 										</div>
 									</div>
 									
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 						                <label class="font-label">Start date </label>
 						                <div class="form-group">
 					                  		<div class="input-group">
@@ -210,7 +209,7 @@ $(function(){
 						                </div>
 					              	</div>
 						
-					              	<div class="col-sm-3">
+					              	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 					                	<label class="font-label">End date</label>
 					                	<div class="form-group">
 					                  		<div class="input-group">
@@ -220,7 +219,7 @@ $(function(){
 				                		</div>
 					              	</div>
 					              	
-					              	<div class="col-sm-3">
+					              	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Status</label>
 										<div class="form-group">
 											<select class="form-control select2" name="cam_status"
@@ -230,7 +229,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Type</label>
 										<div class="form-group">
 											<select class="form-control select2" name="cam_type"
@@ -240,7 +239,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Parent campaign </label>
 										<div class="form-group">
 											<select class="form-control select2" name="cam_parent"
@@ -251,7 +250,7 @@ $(function(){
 											</select>
 										</div>
 									</div>
-									<div class="col-sm-3">
+									<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 										<label class="font-label">Assigned to </label>
 										<div class="form-group">
 											<select class="form-control select2" name="cam_assignTo"
@@ -265,113 +264,122 @@ $(function(){
 							</div>
 						</form>
 					</div>
-					<div class="box-footer">						
-						<div class="col-sm-2">
-						  	<form class="form-inline">
-						        <div class="form-group">
-						        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
-										<i class="fa fa-file-excel-o"></i> &nbsp;excel
-									</button>
-						        </div>
-						        
-						        <div class="form-group">
-						        	<div class="input-group">
-						        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
-						        	</div>
-						        </div>
-						    </form>
-						</div>					
-						<button ng-click="searchBtnClick()" type="button" name="btnsearch" id="btnsearch" class="btn btn-info pull-right">
-							<i class="fa fa-search"></i> &nbsp;Search
-						</button>
+					<div class="box-footer" style="padding-left: 0px; padding-right: 0px;">						
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="row">
+							  	<form class="form-inline">
+							  		<div class="col-xs-8">
+								        <div class="form-group">
+								        	<button ng-click="excelBtnClick()" type="button" name="btnPrint" id="btnPrint" class="btn btn-success">
+												<i class="fa fa-file-excel-o"></i> &nbsp;excel
+											</button>
+								        </div>
+								        <div class="form-group">
+								        	<div class="input-group">
+								        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
+								        	</div>
+								        </div>
+								    </div>
+							        <div class="col-xs-4">
+								        <div class="form-group pull-right">
+								        	<button ng-click="searchBtnClick()" type="button" name="btnsearch" id="btnsearch" class="btn btn-info">
+												<i class="fa fa-search"></i> &nbsp;Search
+											</button>
+								        </div>
+							        </div>
+							    </form>
+						    </div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="box box-success">
 					<div class="box-body">
-						<div class="tablecontainer table-responsive">
-							<table class="table table-hover">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>Campaign Name</th>
-										<th>Type</th>
-										<th>Status</th>
-										<th>Start Date</th>
-										<th>End Date</th>
-										<th>Num Sent</th>
-										<th>Response</th>
-										<th>Num Total Opport</th>
-										<th>Num Won Opport</th>
-										<th>Total Amount Won Opport</th>
-										<th>Actual Cost</th>
-										<th>ROI</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr  dir-paginate="camp in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
-										<td>{{camp.campId}}</td>
-										<td>{{camp.campName}}</td>
-										<td>{{camp.typeName}}</td>
-										<td>{{camp.statusName}}</td>
-										<td ng-if="camp.startDate == null">-</td>
-										<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
-										<td>{{camp.endDate}}</td>
-										<td>{{camp.numSent}}</td>
-										<td>{{camp.expResponse}} %</td>
-										<td>{{camp.totalOpp}}</td>
-										<td>{{camp.totalOppWon}}</td>
-										<td>$ {{camp.totalAmtWon | number:2}}</td>
-										<td>$ {{camp.actCost | number:2}}</td>
-										<td>{{calROI(camp.totalAmtWon, camp.actCost) | number}} %</td>
-									</tr>
-								</tbody>
-							</table>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="tablecontainer table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Campaign Name</th>
+											<th>Type</th>
+											<th>Status</th>
+											<th>Start Date</th>
+											<th>End Date</th>
+											<th>Num Sent</th>
+											<th>Response</th>
+											<th>Num Total Opport</th>
+											<th>Num Won Opport</th>
+											<th>Total Amount Won Opport</th>
+											<th>Actual Cost</th>
+											<th>ROI</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr  dir-paginate="camp in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+											<td>{{camp.campId}}</td>
+											<td>{{camp.campName}}</td>
+											<td>{{camp.typeName}}</td>
+											<td>{{camp.statusName}}</td>
+											<td ng-if="camp.startDate == null">-</td>
+											<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
+											<td>{{camp.endDate}}</td>
+											<td>{{camp.numSent}}</td>
+											<td>{{camp.expResponse}} %</td>
+											<td>{{camp.totalOpp}}</td>
+											<td>{{camp.totalOppWon}}</td>
+											<td>$ {{camp.totalAmtWon | number:2}}</td>
+											<td>$ {{camp.actCost | number:2}}</td>
+											<td>{{calROI(camp.totalAmtWon, camp.actCost) | number}} %</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 							<dir-pagination-controls
 						       max-size="pageSize.row"
 						       direction-links="true"
 						       boundary-links="true" >
 							</dir-pagination-controls>
-						</div>
-						<div style="display:none;" id="exportTbl">
-							<table>
-								<thead>
-									<tr>
-										<th>Camp ID</th>
-										<th>Camp Name</th>
-										<th>Type</th>
-										<th>Status</th>
-										<th>Start Date</th>
-										<th>End Date</th>
-										<th>Num Sent</th>
-										<th>Response</th>
-										<th>Num Total Opport</th>
-										<th>Num Won Opport</th>
-										<th>Total Amount Won Opport</th>
-										<th>Actual Cost</th>
-										<th>ROI</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr  ng-repeat="camp in campaigns">
-										<td>{{camp.campId}}</td>
-										<td>{{camp.campName}}</td>
-										<td>{{camp.typeName}}</td>
-										<td>{{camp.statusName}}</td>
-										<td ng-if="camp.startDate == null">-</td>
-										<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
-										<td>{{camp.endDate}}</td>
-										<td>{{camp.numSent}}</td>
-										<td>{{camp.expResponse}} %</td>
-										<td>{{camp.totalOpp}}</td>
-										<td>{{camp.totalOppWon}}</td>
-										<td>{{camp.totalAmtWon | number:2}}</td>
-										<td>{{camp.actCost | number:2}}</td>
-										<td>{{calROI(camp.totalAmtWon, camp.actCost) | number}} %</td>
-									</tr>
-								</tbody>
-							</table>
+							<div style="display:none;" id="exportTbl">
+								<table>
+									<thead>
+										<tr>
+											<th>Camp ID</th>
+											<th>Camp Name</th>
+											<th>Type</th>
+											<th>Status</th>
+											<th>Start Date</th>
+											<th>End Date</th>
+											<th>Num Sent</th>
+											<th>Response</th>
+											<th>Num Total Opport</th>
+											<th>Num Won Opport</th>
+											<th>Total Amount Won Opport</th>
+											<th>Actual Cost</th>
+											<th>ROI</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr  ng-repeat="camp in campaigns">
+											<td>{{camp.campId}}</td>
+											<td>{{camp.campName}}</td>
+											<td>{{camp.typeName}}</td>
+											<td>{{camp.statusName}}</td>
+											<td ng-if="camp.startDate == null">-</td>
+											<td ng-if="camp.startDate != null">{{camp.startDate}}</td>
+											<td>{{camp.endDate}}</td>
+											<td>{{camp.numSent}}</td>
+											<td>{{camp.expResponse}} %</td>
+											<td>{{camp.totalOpp}}</td>
+											<td>{{camp.totalOppWon}}</td>
+											<td>{{camp.totalAmtWon | number:2}}</td>
+											<td>{{camp.actCost | number:2}}</td>
+											<td>{{calROI(camp.totalAmtWon, camp.actCost) | number}} %</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>

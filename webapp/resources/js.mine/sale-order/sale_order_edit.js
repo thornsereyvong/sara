@@ -1236,7 +1236,7 @@ function saleOrder(){
 		}
 		
 	}
-	alert(disInvP)
+	//alert(disInvP)
 	var master ={
 			saleId : entryNo,
 			custId : getCustomerByIndex(customer),

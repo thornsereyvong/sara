@@ -1649,8 +1649,8 @@ opacity:1
 .box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
 	display: inline-block;
 	font-size: 18px;
-	margin: 0;
-	line-height: 1
+	margin: 0px 0px 0px 14px;
+	line-height: 2
 }
 .box-header>.fa, .box-header>.glyphicon, .box-header>.ion {
 	margin-right: 5px
