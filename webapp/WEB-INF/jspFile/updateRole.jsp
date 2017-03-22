@@ -27,7 +27,7 @@ var app = angular.module('campaign', ['angularUtils.directives.dirPagination']).
 				
 var self = this;
 var username = "${SESSION}";
-var roleId = "${roleId}"
+var roleId = "${roleId}";
 app.controller('campController',['$scope','$http',function($scope, $http){
 
 	$scope.listModule = function(){
@@ -38,35 +38,75 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			$scope.roleName = $scope.module[0].roleName;
 			$scope.roleDecription = $scope.module[0].roleDescription;
 			setTimeout(function(){
+				var statusAll = true;
+				var statusRow = true;
 				for(var i=0; i<$scope.module.length;i++){
 					if($scope.module[i].groupType != "Report"){
 						if($scope.module[i].access == 'YES'){
-							
+							$scope.module[i].access = true;
+							$("#ckrAccess"+i).prop('checked',true);
+							$scope.disabled(i,false);
+						}else{
+							statusRow = false;
+							$scope.module[i].access = false;
 						}
 						if($scope.module[i].edit == 'YES'){
-							
+							$scope.module[i].edit = true;
+							$("#ckrEdit"+i).prop('checked',true);
+						}else{
+							statusRow = false;
+							$scope.module[i].edit = false;
 						}
 						if($scope.module[i].view == 'YES'){
-							
+							$scope.module[i].view = true;
+							$("#ckrView"+i).prop('checked',true);
+						}else{
+							statusRow = false;
+							$scope.module[i].view = false;
 						}
 						if($scope.module[i].list == 'YES'){
-							
+							$scope.module[i].list = true;
+							$("#ckrList"+i).prop('checked',true);
+						}else{
+							statusRow = false;
+							$scope.module[i].list = false;
 						}
 						if($scope.module[i].delete == 'YES'){
-							
+							$scope.module[i].delete = true;
+							$("#ckrDelete"+i).prop('checked',true);
+						}else{
+							statusRow = false;
+							$scope.module[i].delete = false;
 						}
 						if($scope.module[i].import == 'YES'){
-							
+							$scope.module[i].import = true;
+							$("#ckrImport"+i).prop('checked',true);
+						}else{
+							statusRow = false;
+							$scope.module[i].import = false;
 						}
 						if($scope.module[i].export == 'YES'){
-							
-						}						
+							$scope.module[i].export = true;
+							$("#ckrExport"+i).prop('checked',true);
+						}else{
+							statusRow = false;
+							$scope.module[i].export = false;
+						}
+						
+						$("#ckrAllByRow"+i).prop('checked',statusRow);
+						statusRow = true;
 					}else{
 						if($scope.module[i].access == 'YES'){
-							
+							$scope.module[i].access = true;
+							$("#ckrReportAccess"+i).prop('checked',true);
+						}else{							
+							$scope.module[i].access = false;
 						}
 					}				
-				}				
+				}
+				
+				$scope.checkStatusAll();
+				$scope.checkStatusReportAll();
 			},1000);
 			
 		});
@@ -327,7 +367,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		var statusAddRole = $("#form_status").data('bootstrapValidator').validate().isValid();
 		if(statusAddRole){
 			swal({   
-				title: "<span style='font-size: 25px;'>You are about to create new role.</span>",
+				title: "<span style='font-size: 25px;'>You are about to update role.</span>",
 				text: "Click OK to continue or CANCEL to abort.",
 				type: "info",
 				html: true,
@@ -351,13 +391,14 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 					}
 								
 					$.ajax({ 
-						url : "${pageContext.request.contextPath}/role/add",
-						type : "POST",
+						url : "${pageContext.request.contextPath}/role/edit",
+						type : "PUT",
 						data : JSON.stringify({ 
+							  "roleId": roleId,
 						      "roleName": getValueStringById("name"),
 						      "description": getValueStringById("desc"),
 						      "roleDetails": roleDetails,
-						      "createBy": username,				      
+						      "modifyBy": username,				      
 						      "roleStatus": 1
 						}),
 						beforeSend: function(xhr) {
@@ -365,7 +406,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 						    xhr.setRequestHeader("Content-Type", "application/json");
 					    }, 
 					    success: function(result){
-							if(result.MESSAGE == "INSERTED"){	
+							if(result.MESSAGE == "UPDATED"){	
 			    				swal({
 		    						title: "SUCCESSFUL",
 		    					  	text: result.MSG,
@@ -377,7 +418,13 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    				reloadForm(2000);
 			    				
 							}else{
-								swal("UNSUCCESSFUL", result.MSG, "error");
+								swal({
+		    						title: "UNSUCCESSFUL",
+		    					  	text: result.MSG,
+		    					  	html: true,
+		    					  	timer: 2000,
+		    					  	type: "error"
+		    					});
 							}
 						},
 			    		error:function(){

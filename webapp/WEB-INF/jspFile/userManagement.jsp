@@ -23,8 +23,7 @@ var str = "${roleDelete}";
 app.controller('campController',['$scope','$http',function($scope, $http){
 
 	$scope.listStatus = function(user){
-		$http.get("${pageContext.request.contextPath}/user/startup/list").success(function(response){
-			
+		$http.get("${pageContext.request.contextPath}/user/startup/list").success(function(response){			
 			$scope.user = response.DATA;
 			$scope.role = response.ROLE;
 			$scope.action = "Save";
@@ -78,7 +77,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    					  	timer: 2000,
 			    					  	type: "success"
 			    					});
-				    				$scope.clearFrom();
+				    				$scope.clearForm();
 				    				$scope.listStatus();
 				    				
 								}else{
@@ -127,7 +126,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 								if(result.MESSAGE == "UPDATED"){	
 				    				alertMsgSuccessSweetWithTxt(result.MSG);  
 				    				$scope.listStatus();
-				    				$scope.clearFrom();
+				    				$scope.clearForm();
 								}else{
 									alertMsgErrorSweetWithTxt(result.MSG);
 								}
@@ -143,8 +142,11 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		}
 	}
 	
-	$scope.clearFrom = function (){
-		
+	
+	
+	
+	$scope.clearForm = function (){
+		$scope.action = "Save";
 		$("#userId").val("");
 		$("#username").val("");
 		$("#role").select2('val',"");
@@ -162,16 +164,22 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		
 	}
 	
+	$scope.chBool = function(b){
+		if(b) return 1;
+		return 0;
+	}
+	
 	$scope.listUserID = function(userId){
 		
 		$scope.action = "Update";
 		var index = $scope.searchUserById(userId);
 		$scope.curIndex = index;
+				
 		
 		$("#userId").val($scope.user[index].userID);
 		$("#username").val($scope.user[index].username);
 		$("#role").select2('val',$scope.user[index].roleId);
-		$("#status").select2('val',$scope.user[index].status);
+		$("#status").select2('val',$scope.chBool($scope.user[index].status));
 		$("#password").val("xxxxxxxxxxxxx");
 		$("#cpassword").val("xxxxxxxxxxxxx");
 		
@@ -229,7 +237,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 			    					html: true,
 			    					timer: 2000,
 			    				});
-			    				$scope.clearFrom();  
+			    				$scope.clearForm();  
 			    				setTimeout(function(){		
 			    					$scope.listStatus();
 			    				},2000);
@@ -440,7 +448,7 @@ $(document).ready(function(){
 				 <div class="col-sm-12">
 				 	<button type="button" class="btn btn-info btn-app ng-cloak" ng-click="saveUser()" id="btn_save" value="{{action}}"> <i class="fa fa-save"></i>{{action}}</button> 
 				 	
-					<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+					<a class="btn btn-info btn-app" ng-click="clearForm()" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
 					
 				 </div>
 				
