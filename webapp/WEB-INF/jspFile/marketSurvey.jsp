@@ -964,7 +964,7 @@ $(document).ready(function(){
 													<div class="tablecontainer" data-ng-init="listSurveys()" > 
 														<div class="box-header row">
 															<div style="background: #fff;">
-																<div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
+																<div class="col-xs-2 col-sm-1 col-md-1 col-lg-1" style="margin-left: -5px;">
 																	<a href="#addSurvey_tap" class="btn btn-info btn-app"  data-toggle="tab" ng-click="startup()" id="surAdd"><i class="fa fa-plus"></i>Create</a> 
 																</div>
 																<div class="col-xs-6 col-sm-offset-3 col-sm-6 col-md-offset-5 col-md-4 col-lg-offset-8 col-lg-2">

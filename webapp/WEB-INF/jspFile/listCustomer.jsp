@@ -116,7 +116,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div style="background: #fff;margin-top: 15px;">
-				 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
 				 	<a href="${pageContext.request.contextPath}/create-customer" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>				 
 				 </div>
 			</div>
@@ -192,20 +192,13 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 												<td class="text-center" style="min-width: 100px;">
 													<a href="${pageContext.request.contextPath}/update-customer/{{cc.custID}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 													<a href="#" ng-click="deleteCustomer(cc.custID, cc.approval)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
-													<a ng-if="cc.approval==1" href="${pageContext.request.contextPath}/view-customer/{{cc.custID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+							 						<a ng-if="cc.approval==1" href="${pageContext.request.contextPath}/view-customer/{{cc.custID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 													<button ng-if="cc.approval==0" ​​type="button" data-toggle="tooltip" class="btn btn-xs" title="This customer have to approve first before you can view!"><i class="fa fa-eye text-info"></i></button>
 												</td>
 											</tr>	
-											<tr>
-												<td colspan="7">
-													<dir-pagination-controls
-												       max-size="pageSize.row"
-												       direction-links="true"
-												       boundary-links="true" >
-												    </dir-pagination-controls> 
-												</td>
-											</tr>
-									</table>
+										</table>
+									</div>
+									<dir-pagination-controls max-size="pageSize.row" direction-links="true" boundary-links="true" ></dir-pagination-controls> 
 									<%		
 										}else{
 									%>
@@ -213,8 +206,6 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 									<%			
 										}
 									%>
-									
-									</div>	
 								</div>
 							</div>
 				  		</div>

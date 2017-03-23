@@ -48,6 +48,9 @@
 			.color_msg{ color:#F8BB86 !important; }
 			.min-height-300{ height: 300px !important;}	
 			.pagination{margin: 5px 0;}		
+			.panel {
+   				 margin-bottom: 0px;
+   			}
 		</style>
 		
 		<script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.min.js"></script>

@@ -1079,6 +1079,11 @@ function addDataToDetailLead(){
 .breadcrumb1 li a:hover:after {
 	border-left-color: rgb(75, 202, 129) !important;
 }
+
+.list-group-item {
+        background-color: transparent;
+}
+
 </style>
 <div class="content-wrapper" id="viewOpportunityController" ng-app="viewOpportunity"
 	ng-controller="viewOpportunityController">
@@ -1092,10 +1097,7 @@ function addDataToDetailLead(){
 	</section>
 
 	<section class="content" data-ng-init="listLeads()">
-
-
 		<div class="row">
-
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">
@@ -1136,8 +1138,6 @@ function addDataToDetailLead(){
 								</div>
 							</div>
 							
-							
-
 							<!-- <div class="col-sm-12">
 								<ul class="breadcrumb1" id="objStatus">
 								</ul>
@@ -1145,7 +1145,7 @@ function addDataToDetailLead(){
 
 							<div class="clearfix"></div>
 							<br />
-							<div class="col-md-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 								<div class="nav-tabs-custom">
 									<ul class="nav nav-tabs">
 										<li class="active"><a href="#activity" data-toggle="tab"
@@ -1162,8 +1162,7 @@ function addDataToDetailLead(){
 									<div class="tab-content">
 										<div class="tab-pane active" id="activity">
 											<div class="row">
-
-												<div class="col-md-12" >
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
 													<a style="margin-left: 0px;" class="btn btn-app" ng-click="call_click()"> 
 														<i class="fa fa-phone"></i> Call
 													</a> 
@@ -1180,7 +1179,7 @@ function addDataToDetailLead(){
 														<i class="fa fa-envelope"></i> Email
 													</a>
 												</div>
-												<div class="col-md-12">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<div class="panel-group" id="accordion">
 														<div class="panel panel-default">
 															<div class="panel-heading">
@@ -1205,10 +1204,10 @@ function addDataToDetailLead(){
 																						<th class="text-center">Action</th>
 																					</tr>
 																				</thead>
-																				<tbody ng-repeat="call in listAllCallByLead">
+																				<tbody dir-paginate="call in listAllCallByLead|itemsPerPage:5">
 																					<tr>
 																						<td class="iTD-width-50">
-																							{{call.callId}}
+																							<a href="${pageContext.request.contextPath}/view-call/{{call.callId}}">{{call.callId}}</a>
 																						</td>
 																						<td>{{call.callSubject}}</td>
 																						<td> 
@@ -1225,6 +1224,7 @@ function addDataToDetailLead(){
 																					</tr>
 																			</table>
 																		</div>
+																		<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																	</div>
 																</div>
 															</div>
@@ -1252,10 +1252,10 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="meet in listAllMeetByLead">
+																			<tbody dir-paginate="meet in listAllMeetByLead|itemsPerPage:5">
 																				<tr>
 																					<td class="iTD-width-50">
-																						{{meet.meetingId}}
+																						<a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a>
 																					</td>
 																					<td>{{meet.meetingSubject}}</td>
 																					<td>{{meet.statusName}}</td>
@@ -1271,7 +1271,8 @@ function addDataToDetailLead(){
 																				</tr>
 																			</tbody>
 																		</table>
-																	</div>																
+																	</div>	
+																	<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>															
 																</div>
 															</div>
 														</div>
@@ -1298,12 +1299,12 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="task in listAllTaskByLead">
+																			<tbody dir-paginate="task in listAllTaskByLead|itemsPerPage:5">
 																				<tr>
-																					<td class="iTD-width-50">
-																						{{task.taskId}}
+																					<td>
+																						<a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a>
 																					</td>
-																					<td colspan="2">{{task.taskSubject}}</td>
+																					<td>{{task.taskSubject}}</td>
 																					<td>{{task.taskStatusName}}</td>
 																					<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{task.taskDueDate | date:'dd/MM/yyyy'}}</td>
@@ -1318,6 +1319,7 @@ function addDataToDetailLead(){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>	
 																</div>
 															</div>
 														</div>
@@ -1344,10 +1346,10 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="event in listAllEventByLead">
+																			<tbody dir-paginate="event in listAllEventByLead|itemsPerPage:5">
 																				<tr>
-																					<td class="iTD-width-50">
-																						{{event.evId}}
+																					<td>
+																						<a href="${pageContext.request.contextPath}/view-event/{{event.evId}}">{{event.evId}}</a>
 																					</td>
 																					<td>{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
@@ -1364,6 +1366,7 @@ function addDataToDetailLead(){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
@@ -1418,7 +1421,7 @@ function addDataToDetailLead(){
 											</div>
 										</div>
 										<div class="tab-pane" id="collaborate">
-											<div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
+											<div class="col-xs-12 col-sm-12 col-lg-12" style="padding-right: 0px; padding-left: 0px;">
 												<form id="frmCollab">													
 													<div class="col-sm-12"  style="padding-right: 0px; padding-left: 0px;">
 														<div class="form-group">
@@ -1540,13 +1543,12 @@ function addDataToDetailLead(){
 											</ul>
 										</div>
 
-
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
 												<form id="frmLeadDetail">
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Overview</b> <!-- <a
+															<li class="list-group-item" style="border-top: 0px;"><b>Overview</b> <!-- <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a> --></li>
@@ -1577,15 +1579,11 @@ function addDataToDetailLead(){
 																</div>
 															</li>
 															
-														</ul>
-													</div>
-													<div class="col-md-4">
-														<ul class="list-group list-group-unbordered">
 															<!-- <li class="list-group-item"><b>&nbsp;</b> <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a></li> -->
-															<li class="list-group-item">Status <a
+															<li class="list-group-item item_border">Status <a
 																class="pull-right show-text-detail">{{campaign.statusName}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<!-- <select class="form-control select2" name="lea_status"
@@ -1634,9 +1632,9 @@ function addDataToDetailLead(){
 															</li>
 														</ul>
 													</div>
-													<div class="col-md-4">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Budget</b> <!-- <a class="pull-right cusor_pointer"
+															<li class="list-group-item" style="border-top: 0px;"><b>Budget</b> <!-- <a class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a> --></li>
 																<li class="list-group-item item_border">Budget <a
@@ -1700,14 +1698,6 @@ function addDataToDetailLead(){
 																placeholder="Description">{{campaign.statusName}}</textarea> -->
 														</div>
 													</div>
-													<br>
-													<div class="col-md-12 text-center" id="showBtnEditLead"
-														style="display: none;">
-														<button type="button" class="btn btn-primary"
-															ng-click="saveEditDetailLead()">Save</button>
-														<button type="button" class="btn btn-danger"
-															ng-click="cancelEditDetailLead()">Cancel</button>
-													</div>
 												</form>
 											</div>
 										</div>
@@ -1731,24 +1721,20 @@ function addDataToDetailLead(){
 																			<table class="table iTable"> 					
 																				<thead>
 																					<tr>
-																						<th class="text-center">#</th>
+																						<th>ID</th>
 																						<th>Name</th>
 																						<th>Customer</th>
 																						<th>Stage</th>
 																						<th>Amount</th>
 																						<th>Close Date</th>
-																						<th>Action</th>
+																						<th class="text-center">Action</th>
 																					</tr>
 																				</thead>
 																				<tbody ng-repeat="opp in opportunity">
 																					<tr>
-																						<td class="iTD-width-50">
-																							<a href="#">
-																								<img style="width:30px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
-																							</a>
-																						</td>
+																						<td><a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}">{{opp.opId}}</a></td>
 																						<td>{{opp.opName}}</td>
-																						<td>{{opp.custName}}</td>
+																						<td>[{{opp.custID}}] {{opp.custName}}</td>
 																						<td>{{opp.opStageId.osName}}</td>
 																						<td>{{opp.opAmount | number:2}}</td>
 																						<td>{{opp.opCloseDate | date:'dd/MM/yyyy'}}</td>
@@ -1766,13 +1752,10 @@ function addDataToDetailLead(){
 												</div>
 											</div>
 										</div>
-
-
 									</div>
 									<!-- /.tab-content -->
 								</div>
 							</div>
-
 						</div>
 						<!-- /.row -->
 					</div>
@@ -2207,7 +2190,6 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</div>
-	<div id="errors"></div>
 </div>
 
 <jsp:include page="${request.contextPath}/footer"></jsp:include>

@@ -115,10 +115,10 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 <div class="content-wrapper" ng-app="campaign" ng-controller="campController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
-		<h1>Opportunity</h1>
+		<h1>Opportunities</h1>
 		<ol class="breadcrumb">
 			<li><a href="${pageContext.request.contextPath}"><i class="fa fa-home"></i> Home</a></li>
-			<li><a href="#"><i class="fa fa-dashboard"></i>Opportunity</a></li>
+			<li><a href="#"><i class="fa fa-dashboard"></i>Opportunities</a></li>
 		</ol>
 	</section>
 
@@ -205,7 +205,8 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 											<a href="${pageContext.request.contextPath}/view-opportunity/{{cc.opId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 										</td>
 									</tr>
-							</table>
+								</table>
+							</div>	
 							<dir-pagination-controls
 						       max-size="pageSize.row"
 						       direction-links="true"
@@ -223,11 +224,10 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 							}
 							
 							%>
-						</div>	
+							</div>
+				 		</div>
 					</div>
-				  </div>
-				 </div>
-			</div>
+				</div>
 			</div>
 			<div class="box-footer"></div>
 		</div>

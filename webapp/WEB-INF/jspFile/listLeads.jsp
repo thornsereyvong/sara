@@ -115,7 +115,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div style="background: #fff;margin-top: 15px;">
-				 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
 				 	<a href="${pageContext.request.contextPath}/create-lead" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
 				 	<%-- <a href="${pageContext.request.contextPath}/view-leads" class="btn btn-info btn-app" ><i class="fa fa-clone"	aria-hidden="true"></i> View</a> --%>
 				 </div>
@@ -195,47 +195,26 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 											<button ng-if=" cc.statusName == 'Converted'" type="button" disabled="disabled" data-toggle="tooltip" class="btn btn-xs" title="Converted"><i class="fa fa-retweet"></i></button>
 										</td>
 									</tr>
-							
-							</table>
+								</table>
+							</div>	
 							<dir-pagination-controls
 						       max-size="pageSize.row"
 						       direction-links="true"
 						       boundary-links="true" >
 						    </dir-pagination-controls>
-							
-							<%	}else{ %>					
-								<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>					
-							<% } %>
-							
-						</div>	
+						<%	}else{ %>					
+							<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>					
+						<% } %>
 					</div>
 				</div>
 			  </div>
-		</div>
+			</div>
 			</div>
 			<!-- /.box-body -->
-			<div class="box-footer"></div>
-			<!-- /.box-footer-->
 		</div>
-		
 		<!-- /.box -->
-
-
 	</section>
 	<!-- /.content -->
-
-
 </div>
-
 <!-- /.content-wrapper -->
-
-
-
-<!-- /.content-wrapper -->
-
-
-
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-
