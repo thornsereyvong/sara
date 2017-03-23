@@ -424,14 +424,14 @@ padding-right: 10px;
 							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label>Phone :</label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.phone}}"  class="form-control ng-cloak" id="lea_phone" name="lea_phone">
+									<input type="tel" value="{{LEAD.phone}}"  class="form-control ng-cloak" id="lea_phone" name="lea_phone">
 								</div>	
 							</div>
 							<div class="clearfix hidden-lg"></div>
 							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
 								<label class="font-label">Mobile Phone </label>
 								<div class="form-group">
-									<input type="text" value="{{LEAD.mobile}}"  class="form-control ng-cloak" id="lea_mobilePhone" name="lea_mobilePhone">
+									<input type="tel" value="{{LEAD.mobile}}"  class="form-control ng-cloak" id="lea_mobilePhone" name="lea_mobilePhone">
 								</div>	
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">

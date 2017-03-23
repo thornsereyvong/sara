@@ -393,14 +393,14 @@ $(document).ready(function() {
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label>Phone :</label>
 									<div class="form-group">
-										<input type="text"  class="form-control" pattern="[0-9]*" id="lea_phone" name="lea_phone">
+										<input type="tel"  class="form-control" id="lea_phone" name="lea_phone">
 									</div>	
 								</div>
 								<div class="clearfix hidden-lg"></div>
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Mobile Phone </label>
 									<div class="form-group">
-										<input type="text"  class="form-control" pattern="[0-9]*" id="lea_mobilePhone" name="lea_mobilePhone">
+										<input type="tel"  class="form-control" id="lea_mobilePhone" name="lea_mobilePhone">
 									</div>	
 								</div>
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
