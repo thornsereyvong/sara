@@ -238,64 +238,73 @@ $(document).ready(function() {
 		}
 	}).on('success.form.bv', function(e) {		
 		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/contact/edit",
-			type : "POST",
-			data : JSON.stringify({
-				  "conID" : conId,
-			      "conSalutation" : getValueStringById("con_salutation"),
-				  "conFirstname": getValueStringById("con_firstName"),
-			      "conLastname": getValueStringById("con_lastName"),
-			      "conPhone": getValueStringById("con_phone"),
-			      "conMobile": getValueStringById("con_mobilePhone"),
-			      "conEmial": getValueStringById("con_email"),
-			      "conTitle": getValueStringById("con_title"),
-			      "conDepartment": getValueStringById("con_department"),
-			      "conNo": getValueStringById("con_no"),
-			      "conStreet": getValueStringById("con_street"),
-			      "conVillage": getValueStringById("con_village"),
-			      "conCommune": getValueStringById("con_commune"),
-			      "conDistrict": getValueStringById("con_district"),
-			      "conCity": getValueStringById("con_city"),
-			      "conState": getValueStringById("con_state"),
-			      "conCountry": getValueStringById("con_country"),
-			      "conAssignTo": getJsonById("userID","con_assignedTo","str"),
-			      "conLeadSource": getJsonById("sourceID","con_leadSource","int"),
-			      "conReportTo": getJsonById("conID","con_report","str"),
-			      "conModifyBy": username,
-			      "customer": getJsonById("custID","con_customer","str")
-			    }),	
-			beforeSend: function(xhr) {
+		swal({   
+			title: "<span style='font-size: 25px;'>You are about to update contact.</span>",
+			text: "Click OK to continue or CANCEL to abort.",
+			type: "info",
+			html: true,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,		
+		}, function(){ 
+			setTimeout(function(){
+				$.ajax({ 
+					url : "${pageContext.request.contextPath}/contact/edit",
+					type : "POST",
+					data : JSON.stringify({
+						  "conID" : conId,
+					      "conSalutation" : getValueStringById("con_salutation"),
+						  "conFirstname": getValueStringById("con_firstName"),
+					      "conLastname": getValueStringById("con_lastName"),
+					      "conPhone": getValueStringById("con_phone"),
+					      "conMobile": getValueStringById("con_mobilePhone"),
+					      "conEmial": getValueStringById("con_email"),
+					      "conTitle": getValueStringById("con_title"),
+					      "conDepartment": getValueStringById("con_department"),
+					      "conNo": getValueStringById("con_no"),
+					      "conStreet": getValueStringById("con_street"),
+					      "conVillage": getValueStringById("con_village"),
+					      "conCommune": getValueStringById("con_commune"),
+					      "conDistrict": getValueStringById("con_district"),
+					      "conCity": getValueStringById("con_city"),
+					      "conState": getValueStringById("con_state"),
+					      "conCountry": getValueStringById("con_country"),
+					      "conAssignTo": getJsonById("userID","con_assignedTo","str"),
+					      "conLeadSource": getJsonById("sourceID","con_leadSource","int"),
+					      "conReportTo": getJsonById("conID","con_report","str"),
+					      "conModifyBy": username,
+					      "customer": getJsonById("custID","con_customer","str")
+					}),	
+					beforeSend: function(xhr) {
 					    xhr.setRequestHeader("Accept", "application/json");
 					    xhr.setRequestHeader("Content-Type", "application/json");
-					    },
-				
-			success:function(data){
-					if(data.MESSAGE == "UPDATED"){		
-						$("#con_customer").select2("val","");	
-						$("#con_assignedTo").select2("val","");
-						$("#con_report").select2("val","");
-						$("#con_leadSource").select2("val","");
-						$("#form-contact").bootstrapValidator('resetForm', 'true');
-						$('#form-contact')[0].reset();
-						swal({
-		            		title:"Success",
-		            		text:"User have been updated Contact!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-						
-						reloadForm(2000);
-						
-					}else{
-						alertMsgErrorSweet();	
-					}
-				},
-			error:function(){
-				alertMsgErrorSweet();	
-			}							
-		});		
+				    }, 
+				    success: function(result){				    	
+						if(result.MESSAGE == "UPDATED"){							
+		    				swal({
+	    						title: "SUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "success"
+	    					});
+							reloadForm(2000);																						
+						}else{
+							swal({
+	    						title: "UNSUCCESSFUL",
+	    					  	text: result.MSG,
+	    					  	html: true,
+	    					  	timer: 2000,
+	    					  	type: "error"
+	    					});	
+						}
+					},
+		    		error:function(){
+		    			swal("UNSUCCESSFUL", "Please try again!", "error");
+		    		} 
+				});
+			}, 500);
+		});						
 	});		
 });
 </script>
