@@ -31,20 +31,20 @@
 				<div class="clearfix"></div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">	
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Entry No<span class="requrie"> (Required)</span></label> 
 								<input class="form-control" name="entryNo" id="entryNo" type="text" value="" placeholder="***New***">
 							</div>
 						</div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Post Status</label> 
 								<input class="form-control" disabled="" id="postStatus" name="postStatus" type="text" placeholder="Open">
 							</div>
 						</div>
 						<div class="clearfix hidden-lg"></div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Customer<span class="requrie"> (Required)</span></label> 
 								<select id="customer" name="customer" class="form-control select2-small input-lg" style="width: 100%;">
@@ -53,8 +53,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="clearfix hidden-md hidden-sm"></div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Price Code<span class="requrie"> (Required)</span></label> 
 								<select name="priceCode" id="priceCode" class="form-control select2 input-lg" style="width: 100%;">
@@ -63,8 +62,8 @@
 								</select>
 							</div>
 						</div>
-						<div class="clearfix hidden-lg"></div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="clearfix"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Sale Rep. ID<span class="requrie"> (Required)</span></label> 
 								<select name="employee" id="employee" class="form-control select2 input-lg" style="width: 100%;">
@@ -72,7 +71,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Class</label> 
 								<select id="classCodeMaster" name="classCodeMaster" class="form-control select2 input-lg" style="width: 100%;">
@@ -81,8 +80,8 @@
 								</select>
 							</div>
 						</div>
-						<div class="clearfix"></div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="clearfix hidden-lg"></div>
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Quotation Date<span class="requrie"> (Required)</span></label>
 								<div class="input-group">
@@ -97,14 +96,14 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Reference</label> 
 								<input class="form-control" id="reference" name="reference" type="text" placeholder="Reference...">
 							</div>
 						</div>
 						<div class="clearfix hidden-lg"></div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="date-control">
 								<label for="startDate">Start Date<span class="requrie"> (Required)</span></label>
 								<div class="input-group datefield">
@@ -113,8 +112,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="clearfix  hidden-md hidden-sm"></div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Expire Date<span class="requrie"> (Required)</span></label>
 								<div class="input-group">
@@ -130,7 +128,7 @@
 							</div>
 						</div>
 						<div class="clearfix hidden-lg"></div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Ship to Address <span class="text-red"></span></label> 
 								<select name="shipToAdd" id="shipToAdd" class="form-control select2 input-lg" style="width: 100%;">
@@ -138,7 +136,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Remark</label> 
 								<input class="form-control" id="remark" name="remark" type="text" placeholder="Remark">
@@ -184,7 +182,7 @@
 			<div class="box-footer" style="border-top: 1px solid #d8d8d8;">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="row">
-						<div class="col-lg-4 pull-right">
+						<div class="col-lg-3 pull-right">
 							<div class="row">
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
 									<div class="form-group">
