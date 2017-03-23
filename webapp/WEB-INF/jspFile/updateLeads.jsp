@@ -266,9 +266,6 @@ $(document).ready(function() {
 					}
 				}
 			}
-			
-			
-			
 		}
 	}).on('success.form.bv', function(e) {
 		var frmDataLead = {
