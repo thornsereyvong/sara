@@ -383,7 +383,7 @@
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input type="text" class="form-control pull-right"
+											<input type="text" readonly="readonly" class="form-control pull-right"
 												name="cam_startDate" id="cam_startDate">
 										</div>
 									</div>
@@ -397,7 +397,7 @@
 											<div class="input-group-addon">
 												<i class="fa fa-calendar"></i>
 											</div>
-											<input type="text" class="form-control pull-right"
+											<input type="text" readonly="readonly" class="form-control pull-right"
 												name="cam_endDate" id="cam_endDate">
 										</div>
 									</div>
@@ -406,7 +406,7 @@
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Status <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<select class="form-control select2" name="cam_status"
+										<select class="form-control select2-small" name="cam_status"
 											id="cam_status" style="width: 100%;">
 
 										</select>
@@ -416,7 +416,7 @@
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Type <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<select class="form-control select2" name="cam_type"
+										<select class="form-control select2-small" name="cam_type"
 											id="cam_type" style="width: 100%;">
 
 										</select>
@@ -445,7 +445,7 @@
 
 							<div class="clearfix"></div>
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-								<div class="col-xs-12 col-sm-12 col-md-6">
+								<div class="col-xs-12 col-sm-12 col-md-12">
 									<label class="font-label">Description </label>
 									<div class="form-group">
 										<textarea rows="4" cols=""
@@ -490,7 +490,7 @@
 									</div>
 								</div>
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-									<label class="font-label">Expected response</label>
+									<label class="font-label">Expected response (%)</label>
 									<div class="form-group">
 										<input type="text" class="form-control"
 											name="cam_expectedResponse" id="cam_expectedResponse">

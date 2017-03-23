@@ -297,65 +297,7 @@ $(document).ready(function() {
 		    		} 
 				});
 			}, 500);
-		});
-		
-		
-		
-		
-		/* $.ajax({
-			url : "${pageContext.request.contextPath}/contact/add",
-			type : "POST",
-			data : JSON.stringify({
-			      "conSalutation" : getValueStringById("con_salutation"),
-				  "conFirstname": getValueStringById("con_firstName"),
-			      "conLastname": getValueStringById("con_lastName"),
-			      "conPhone": getValueStringById("con_phone"),
-			      "conMobile": getValueStringById("con_mobilePhone"),
-			      "conEmial": getValueStringById("con_email"),
-			      "conTitle": getValueStringById("con_title"),
-			      "conDepartment": getValueStringById("con_department"),
-			      "conNo": getValueStringById("con_no"),
-			      "conStreet": getValueStringById("con_street"),
-			      "conVillage": getValueStringById("con_village"),
-			      "conCommune": getValueStringById("con_commune"),
-			      "conDistrict": getValueStringById("con_district"),
-			      "conCity": getValueStringById("con_city"),
-			      "conState": getValueStringById("con_state"),
-			      "conCountry": getValueStringById("con_country"),
-			      "conAssignTo": getJsonById("userID","con_assignedTo","str"),
-			      "conLeadSource": getJsonById("sourceID","con_leadSource","int"),
-			      "conReportTo": getJsonById("conID","con_report","str"),
-			      "conCreateBy": username,
-			      "customer": getJsonById("custID","con_customer","str")
-			    }),	
-			beforeSend: function(xhr) {
-					    xhr.setRequestHeader("Accept", "application/json");
-					    xhr.setRequestHeader("Content-Type", "application/json");
-					    },
-				
-			success:function(data){
-					if(data.MESSAGE == "INSERTED"){		
-						$("#con_customer").select2("val","");	
-						$("#con_assignedTo").select2("val","");
-						$("#con_report").select2("val","");
-						$("#con_leadSource").select2("val","");
-						$("#form-contact").bootstrapValidator('resetForm', 'true');
-						$('#form-contact')[0].reset();
-						swal({
-		            		title:"Success",
-		            		text:"User have been created new Contact!",
-		            		type:"success",  
-		            		timer: 2000,   
-		            		showConfirmButton: false
-	        			});
-					}else{
-						alertMsgErrorSweet();	
-					}
-				},
-			error:function(){
-				alertMsgErrorSweet();	
-			}							
-		});	 */	
+		});		
 	});		
 });
 </script>
