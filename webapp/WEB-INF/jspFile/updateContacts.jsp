@@ -46,20 +46,6 @@ var self = this;
 var conId = "${conId}";
 var username = "${SESSION}";
 app.controller('contactController',['$scope','$http',function($scope, $http){
-	
-	
-	$scope.CONTACT = [];
-	angular.element(document).ready(function () {					
-		setTimeout(function(){ 
-			$("#con_customer").select2("val", $scope.CONTACT.custID);
-			$("#con_assignedTo").select2("val", $scope.CONTACT.assignToUserId)
-			$("#con_report").select2("val", $scope.CONTACT.reportToContactId);
-			$("#con_leadSource").select2("val", $scope.CONTACT.sourceID);
-			$("#con_salutation").val($scope.CONTACT.conSalutation);
-		}, 1000);
-    });
-	
-	
 	$scope.startupPage = function(){		
 		$http({
 		    method: 'GET',
@@ -75,8 +61,14 @@ app.controller('contactController',['$scope','$http',function($scope, $http){
 			$scope.reportTo = response.REPORT_TO;
 			$scope.CONTACT = response.CONTACT;
 			
-			//dis($scope.CONTACT)
 			
+			setTimeout(function(){ 
+				$("#con_customer").select2("val", $scope.CONTACT.custID);
+				$("#con_assignedTo").select2("val", $scope.CONTACT.assignToUserId)
+				$("#con_report").select2("val", $scope.CONTACT.reportToContactId);
+				$("#con_leadSource").select2("val", $scope.CONTACT.sourceID);
+				$("#con_salutation").val($scope.CONTACT.conSalutation);
+			}, 1000);
 		});
 	};
 		

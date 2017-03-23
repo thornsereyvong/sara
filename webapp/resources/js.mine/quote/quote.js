@@ -390,8 +390,8 @@ $(function(){
 		 disInvoive();
 		 netInvoice();	 
 	});
-	
-	$("#employee").select2('val', empLinkUser.EmpID);
+	if(empLinkUser.EmpID != "" && empLinkUser.EmpID != null)
+		$("#employee").select2('val', empLinkUser.EmpID);
 	
 	if(custId != "" && custId != null)
 		$("#customer").select2('val', findIndexCutomer(custId));
