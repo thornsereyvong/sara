@@ -2811,8 +2811,8 @@ table.text-center, table.text-center td, table.text-center th {
 	}
 	
 	.form-control {
-		height:22px !important;
-		font-size: 10px !important;
+		height:31px !important;
+		font-size: 12px !important;
 		padding:2px 5px !important;
 	}
 	
@@ -2828,16 +2828,16 @@ table.text-center, table.text-center td, table.text-center th {
 	}
 	
 	.font-label {
-	    font-size: 10px !important;
+	    font-size: 11px !important;
 	    padding-top: 2px !important;
 	}
 	
 	.h5, h5 {
-    	font-size: 12px !important;
+    	font-size: 14px !important;
 	}
 	
 	.h4, h4 {
-    	font-size: 11px !important;
+    	font-size: 13px !important;
 	}
 	
 	.content-header>.breadcrumb {
@@ -2845,8 +2845,15 @@ table.text-center, table.text-center td, table.text-center th {
 	}
 	
 	.btn {
-		font-size: 10px !important;
-		padding: 3px 6px !important;
+		font-size: 12px !important;
+		padding: 6px 9px !important;
+	}
+	
+	.btn-group-xs>.btn, .btn-xs {
+	    padding: 1px 5px !important;
+	    font-size: 12px !important;
+	    line-height: 1.5;
+	    border-radius: 3px !important;
 	}
 	
 	
@@ -2940,24 +2947,26 @@ table.text-center, table.text-center td, table.text-center th {
 	}
 	
 	.select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
-	    padding: 0px 7px !important;
-	    height: 22px !important;
+	    padding: 4px 7px !important;
+	    height: 31px !important;
 	}
 	
 	.select2-container--default .select2-selection--single .select2-selection__arrow b {
-	    top: 33% !important;
+	    top: 38% !important;
 	}
 		
 	#con_salutation {
-		height: 22px; 
+		height: 31px; 
 		width: 50px;
 		text-align:center;
+		padding: 6px 2px !important;
 	}
 	
 	#lea_salutation{
-		height: 22px; 
+		height: 31px; 
 		width: 50px;
 		text-align:center;
+		padding: 6px 2px !important;
 	}
 }
 

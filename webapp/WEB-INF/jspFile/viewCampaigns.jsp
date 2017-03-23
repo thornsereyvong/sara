@@ -1113,25 +1113,25 @@ function addDataToDetailLead(){
 					</div>
 					<div class="box-footer">
 						<div class="row">
-							<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 border-right">
+							<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{campaign.statusName}}</h5>
 									<span class="description-text">Status</span>
 								</div>
 							</div>
-							<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 border-right">
+							<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{campaign.typeName}}</h5>
 									<span class="description-text">Type</span>
 								</div>
 							</div>
-							<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 border-right">
+							<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{campaign.startDate | date:'dd/MM/yyyy'}}</h5>
 									<span class="description-text">Start Date</span>
 								</div>
 							</div>
-							<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 border-right">
+							<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{campaign.endDate | date:'dd/MM/yyyy'}}</h5>
 									<span class="description-text">End Date</span>

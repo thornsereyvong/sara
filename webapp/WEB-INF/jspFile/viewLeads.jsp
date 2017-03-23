@@ -1110,25 +1110,25 @@ function addDataToDetailLead(){
 					</div>
 					<div class="box-footer">
 						<div class="row">
-							<div class="col-sm-3">
+							<div class="col-xs-3 col-sm-3 col-md-3">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{lead.accountName}}</h5>
 									<span class="description-text">Company</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-3 col-sm-3 col-md-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{lead.sourceName}}</h5>
 									<span class="description-text">Lead Source</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-3 col-sm-3 col-md-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{lead.assignToUsername}}</h5>
 									<span class="description-text">Assign To</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-3 col-sm-3 col-md-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{lead.phone}}</h5>
 									<span class="description-text">Tel</span>

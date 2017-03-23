@@ -271,7 +271,6 @@ $(document).ready(function() {
 			
 		}
 	}).on('success.form.bv', function(e) {
-				
 		var frmDataLead = {
 				"leadID" : leadId,
 				"salutation": getValueStringById("lea_salutation"),
@@ -369,7 +368,7 @@ padding-right: 10px;
 			<div class="box-body">
 			
 			<form method="post" id="form-leads" data-ng-init = "addLeadOnStartup()">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
 					<a class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</a> 
 					<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
 					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-leads"> <i class="fa fa-reply"></i> Back </a>
@@ -450,9 +449,7 @@ padding-right: 10px;
 									<input type="email" value="{{LEAD.email}}"   class="form-control ng-cloak" id="lea_email" name="lea_email">
 								</div>	
 							</div>
-						</div>
-						<div class="col-sm-12">
-							<div class="col-sm-12">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 								<label class="font-label">Description </label>
 								<div class="form-group">
 									<textarea  rows="3" cols="" name="lea_description" id="lea_description"
