@@ -106,7 +106,7 @@ app.controller('leadProjectController',['$scope','$http',function($scope, $http)
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div style="background: #fff; margin-top: 15px;">
-					<div class="col-sm-12">
+					<div class="col-sm-12" style="margin-left: -5px;">
 						<a href="${pageContext.request.contextPath}/create-lead-project"
 							class="btn btn-info btn-app"><i class="fa fa-plus"
 							aria-hidden="true"></i> Create</a>
@@ -204,18 +204,14 @@ app.controller('leadProjectController',['$scope','$http',function($scope, $http)
 											</td>
 										</tr>
 									</table>
-									<dir-pagination-controls max-size="pageSize.row"
-										direction-links="true" boundary-links="true">
-									</dir-pagination-controls>
 								</div>
+								<dir-pagination-controls max-size="pageSize.row" direction-links="true" boundary-links="true"></dir-pagination-controls>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- /.box-footer -->
-			<div class="box-footer"></div>
-			<!-- /.box-footer-->
 		</div>
 		<!-- /.box -->
 	</section>

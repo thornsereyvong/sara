@@ -597,15 +597,17 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<div style="background: #fff; margin-top: 10px;">
-						<div class="col-sm-12">
-							<a class="btn btn-info btn-app" id = "btn-create"><i class="fa fa-plus" aria-hidden="true"></i> Create</a> 					
-							<a class="btn btn-info btn-app" id = "addToCom" ng-click="addComToPro(true)" ><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add To Product</a> 
+					<div class="row">
+						<div style="background: #fff; margin-top: 10px; margin-left: -5px;">
+							<div class="col-sm-12">
+								<a class="btn btn-info btn-app" id = "btn-create"><i class="fa fa-plus" aria-hidden="true"></i> Create</a> 					
+								<a class="btn btn-info btn-app" id = "addToCom" ng-click="addComToPro(true)" ><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Add To Product</a> 
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div data-ng-init="listCompetitors()" class="box-body " style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);padding:30px;">
+			<div data-ng-init="listCompetitors()" class="box-body " style="background: url(${pageContext.request.contextPath}/resources/images/boxed-bg.jpg);">
 				<div class="clearfix"></div>
 					<div class="panel panel-default">
 						<div class="panel-body">
@@ -801,19 +803,19 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 																	<td class="col-md-1 text-center"><input type="checkbox" ng-checked="com.meDataSource" data-index="{{$index}}" onClick="clkCompetitor(this)"  name="competitor" value="{{com.comId}}" /></td>
 																</tr>
 															</table>
-															<dir-pagination-controls
-														       max-size="comSize.row"
-														       pagination-id="compRowID" 
-														       direction-links="true"
-														       boundary-links="true" >
-														    </dir-pagination-controls>
-														</div>														
+														</div>	
+														<dir-pagination-controls
+													       max-size="comSize.row"
+													       pagination-id="compRowID" 
+													       direction-links="true"
+													       boundary-links="true" >
+													    </dir-pagination-controls>
 													</div>
+												</div>
 											</div>
-										</div>
-									</form>
+										</form>
+									</div>
 								</div>
-							</div>
 							<div class="modal-footer">
 								<button type="button" id="btnCancel"
 									ng-click="cancelAddCompetitor()" name="btnCancel"
@@ -825,8 +827,6 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 						</div>
 					</div>
 				</div>
-			<div class="box-footer"></div>
-			<div id="errors"></div>
 		</div>
 	</section>
 </div>

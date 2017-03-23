@@ -228,16 +228,16 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 							<div class="col-md-12">
 								<div class="nav-tabs-custom">
 									<ul class="nav nav-tabs">										
-										<li class="active"><a href="#detail_tap" data-toggle="tab"
-											aria-expanded="true">Overview</a></li>	
+										<li class="active"><a href="#detail_tap" data-toggle="tab" aria-expanded="true">Details</a></li>	
 									</ul>
 									<div class="tab-content" style="height: 500px;">
 										<div class="tab-pane in active" id="detail_tap">
 											<div class="row">
 												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-															<ul class="list-group list-group-unbordered">																																
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+															<ul class="list-group list-group-unbordered">
+																<li class="list-group-item" style="border-top: 0px;"><b>Overview</b></li>																																
 																<li class="list-group-item item_border">Account Manager<a
 																	class="pull-right show-text-detail ng-cloak">{{project.accountManager == ''?'-':project.accountManager}}</a>
 																	<div class="form-group show-edit" style="display: none;">
@@ -265,11 +265,17 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																	<div class="form-group show-edit" style="display: none;">
 																	</div>
 																</li>
+																<li class="list-group-item item_border">Email <a
+																	class="pull-right show-text-detail ng-cloak">{{project.email == ''?'-':project.email}}</a>
+																</li>
+																<li class="list-group-item item_border">Remark<a
+																	class="pull-right show-text-detail ng-cloak">{{project.remark == ''?'-':project.remark}}</a>
+																</li>
 															</ul>
 														</div>
-														<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">
-																
+																<li class="list-group-item" style="border-top: 0px;"><b>More Information</b></li>
 																<li class="list-group-item item_border">Construction <a
 																	class="pull-right show-text-detail ng-cloak">{{project.construction == ''?'-':project.construction}}</a>
 																	<div class="form-group show-edit" style="display: none;">
@@ -293,18 +299,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																	class="pull-right show-text-detail ng-cloak">{{project.url == ''?'-':project.url}}</a>
 																	<div class="form-group show-edit" style="display: none;"></div>
 																</li>
-															</ul>
-														</div>
-																										
-														<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-															<ul class="list-group list-group-unbordered">
 																
-																<li class="list-group-item item_border">Email <a
-																	class="pull-right show-text-detail ng-cloak">{{project.email == ''?'-':project.email}}</a>
-																</li>
-																<li class="list-group-item item_border">Remark<a
-																	class="pull-right show-text-detail ng-cloak">{{project.remark == ''?'-':project.remark}}</a>
-																</li>
 																<li class="list-group-item item_border">Start Date<a
 																	class="pull-right show-text-detail ng-cloak">{{project.startDate == ''?'-':project.startDate | date:'dd/MM/yyyy'}}</a>
 																</li>
@@ -316,7 +311,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 														<div class="clearfix"></div>
 														<div class="col-sm-12" style="margin-top: 15px;">
 															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item item_border">Address</li>
+																<li class="list-group-item" style="border-top: 0px;"><b>Address</b></li>
 																
 																<li class="list-group-item" ng-if="project.address != ''">													
 																	<a class="show-text-detail ng-cloak">{{project.address}}</a>

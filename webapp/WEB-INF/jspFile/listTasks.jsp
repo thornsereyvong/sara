@@ -220,13 +220,9 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 													<a href="${pageContext.request.contextPath}/view-task/{{cc.taskId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 												</td>
 											</tr>
-											<tr>
-												<td>
-													<dir-pagination-controls max-size="pageSize.row" direction-links="true" boundary-links="true"> </dir-pagination-controls>
-												</td>
-											</tr>
 										</table>
 									</div>
+									<dir-pagination-controls max-size="pageSize.row" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 										<%} else {%>
 										<div class="alert alert-warning" role="alert">
 											<i class="glyphicon glyphicon-cog"></i> You don't have

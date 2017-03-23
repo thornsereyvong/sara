@@ -242,7 +242,8 @@ app.controller('viewLeadController',['$scope','$http',function($scope, $http){
 	 	                text:"This post is safe!",
 	 	                type:"error",
 	 	                timer:2000,
-	 	                showConfirmButton: false});
+	 	                showConfirmButton: false
+	 	          });
 	       	  }         			
        });     	    	    	
     }	
@@ -1531,9 +1532,9 @@ function addDataToDetailLead(){
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
 												<form id="frmLeadDetail">
-													<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Overview</b> <a
+															<li class="list-group-item" style="border-top: 0px;"><b>Overview</b> <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a></li>
@@ -1622,9 +1623,9 @@ function addDataToDetailLead(){
 															</li>
 														</ul>
 													</div>
-													<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Address</b> <a
+															<li class="list-group-item" style="border-top: 0px;"><b>Address</b> <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a></li>
@@ -1688,9 +1689,9 @@ function addDataToDetailLead(){
 														</ul>
 													</div>
 													<div class="clearfix hidden-lg"></div>
-													<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>More Information
+															<li class="list-group-item" style="border-top: 0px;"><b>More Information
 																	& Others</b> <a class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a></li>

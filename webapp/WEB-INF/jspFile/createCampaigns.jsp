@@ -317,7 +317,7 @@
                   </select>
                 </div>
               </div>
-              <div class="clearfix hidden-md hidden-lg"></div>
+              <div class="clearfix hidden-md"></div>
               <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <label class="font-label">Type <span class="requrie">(Required)</span></label>
                 <div class="form-group">

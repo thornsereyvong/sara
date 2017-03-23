@@ -100,7 +100,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div style="background: #fff;margin-top: 15px;">
-					 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
 					 	<a href="${pageContext.request.contextPath}/create-campaign" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>
 					 </div>
 				</div>
@@ -136,9 +136,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 						<div class="clearfix"></div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
 							<div class="tablecontainer table-responsive" data-ng-init="listCampaigns()" > 
-							<%				
-							   if(roleList.equals("YES")){
-							%>
+							<%if(roleList.equals("YES")){%>
 								<table class="table table-hover" >
 									<tr>
 										<th style="cursor: pointer;" ng-click="sort('campID')">ID
@@ -162,7 +160,6 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 														
 										<th class="text-center">Action</th>
 									</tr>
-			
 									<tr dir-paginate="cc in campaigns |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" current-page="currentPage" class="ng-cloak">
 										<td data-index="{{ ($index + 1) + (currentPage - 1) * pageSize.row}}">{{cc.campID}}</td>
 										<td>{{cc.campName}}</td>
@@ -177,52 +174,26 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 											<a href="${pageContext.request.contextPath}/view-campaign/{{cc.campID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 										</td>
 									</tr>
-							
 								</table>
-								<dir-pagination-controls
-							       max-size="pageSize.row"
-							       direction-links="true"
-							       boundary-links="true" >
-								   </dir-pagination-controls>
-								</div>
 							</div>
-						<%	   
-						   }else{
-							   
-						%>
+							<dir-pagination-controls
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						   </dir-pagination-controls>
+						</div>
+						<%}else{%>
 							<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>
-						<%
-						   }
-						
-						%>
+						<%}%>
 			  		</div>
 			  	</div>
 				</div>
 			</div>
 			<!-- /.box-body -->
-			<div class="box-footer"></div>
-			<!-- /.box-footer-->
 		</div>
-		
 		<!-- /.box -->
-
-
 	</section>
 	<!-- /.content -->
-
-
 </div>
-
-<!-- /.content-wrapper -->
-				
-
-
-<!-- /.content-wrapper -->
-
-
-
-
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>
-
 				

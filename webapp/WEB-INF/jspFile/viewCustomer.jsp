@@ -1515,14 +1515,14 @@ function addDataToDetailLead(){
 											<div class="row">
 												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<form id="frmLeadDetail">
-														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item"><b>Overview</b> <!-- <a
+																<li class="list-group-item" style="border-top: 0px;"><b>Overview</b> <!-- <a
 																	class="pull-right cusor_pointer"
 																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																		Edit</a> --></li>
 																
-																<li class="list-group-item item_border">Customer ID <a
+																<li class="list-group-item item_border">ID <a
 																	class="pull-right show-text-detail">{{customer.custID}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -1531,8 +1531,8 @@ function addDataToDetailLead(){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Customer Name <a
-																	class="pull-right show-text-detail">{{customer.custName.trunc(15)}}</a>
+																<li class="list-group-item item_border">Name <a
+																	class="pull-right show-text-detail">{{customer.custName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
 																			id="lea_firstName" class="form-control"
@@ -1579,9 +1579,9 @@ function addDataToDetailLead(){
 																
 															</ul>
 														</div>
-														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item"><b>Other</b> <!-- <a
+																<li class="list-group-item" style="border-top: 0px;"><b>Other</b> <!-- <a
 																	class="pull-right cusor_pointer"
 																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																		Edit</a> --></li>
@@ -1634,9 +1634,9 @@ function addDataToDetailLead(){
 															</ul>
 														</div>
 														<div class="clearfix"></div>										
-														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item"><b>Setting</b> <!-- <a
+																<li class="list-group-item" style="border-top: 0px;"><b>Setting</b> <!-- <a
 																	class="pull-right cusor_pointer"
 																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																		Edit</a> --></li>
@@ -1654,13 +1654,12 @@ function addDataToDetailLead(){
 																			class="form-control" value="{{lead.street}}"> -->
 																	</div>
 																</li>
-																
 															</ul>
 														</div>
 														<div class="clearfix"></div>
 														<div class="col-sm-12">
 															<ul class="list-group list-group-unbordered">
-																<li class="list-group-item"><b>Address</b> <!-- <a
+																<li class="list-group-item" style="border-top: 0px;"><b>Address</b> <!-- <a
 																	class="pull-right cusor_pointer"
 																	ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																		Edit</a> -->
@@ -1691,15 +1690,6 @@ function addDataToDetailLead(){
 																</li>
 																
 															</ul>
-														</div>
-														
-														<br>
-														<div class="col-sm-12 text-center" id="showBtnEditLead"
-															style="display: none;">
-															<button type="button" class="btn btn-primary"
-																ng-click="saveEditDetailLead()">Save</button>
-															<button type="button" class="btn btn-danger"
-																ng-click="cancelEditDetailLead()">Cancel</button>
 														</div>
 													</form>
 												</div>
