@@ -48,7 +48,7 @@
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Customer<span class="requrie"> (Required)</span></label> 
-								<select id="customer" name="customer" class="form-control select2-small input-lg" style="width: 100%;">
+								<select id="customer" name="customer" class="form-control select2 input-lg" style="width: 100%;">
 									<option selected="selected" value="">Select A Customer</option>
 									
 								</select>
