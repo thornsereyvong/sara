@@ -11,6 +11,17 @@
 	font-size: 13px;
 	padding-top: 4px;
 }
+.input-group-btn select {
+	border-color: #ccc;
+	margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+.padding-right{
+	padding-right: 10px;
+}
+
 </style>
 
 
@@ -344,21 +355,6 @@ $(document).ready(function() {
 	
 });
 </script>
-
-<style type="text/css">
-.input-group-btn select {
-	border-color: #ccc;
-	margin-top: 0px;
-    margin-bottom: 0px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-}
-.padding-right{
-padding-right: 10px;
-}
-
-</style>
-
 	<section class="content">
 		<div class="box box-danger">
 			
