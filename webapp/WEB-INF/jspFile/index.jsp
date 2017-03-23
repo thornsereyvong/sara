@@ -546,7 +546,7 @@
 										<td><a href="${pageContext.request.contextPath}/view-opportunity/{{op.opId}}">{{op.opId}}</a></td>
 										<td>{{op.opName}}</td>
 										<td>[{{op.opCustId}}] {{op.opCustName}}</td>
-										<td><span>$</span>{{op.opAmount}}</td>
+										<td><span>$</span>{{op.opAmount | number:2}}</td>
 										<td>{{op.opStage}}</td>
 										<td ng-if="op.opCampId == ''">-</td>
 										<td ng-if="op.opCampId != ''">[{{op.opCampId}}] {{op.opCampName}}</td>
