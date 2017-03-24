@@ -1199,9 +1199,9 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="call in listAllCallByLead">
+																			<tbody dir-paginate="call in listAllCallByLead |itemsPerPage:5" pagination-id="callId">
 																				<tr>
-																					<td class="iTD-width-50">{{call.callId}}</td>
+																					<td><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}">{{call.callId}}</a></td>
 																					<td>{{call.callSubject}}</td>
 																					<td>{{call.callStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{call.callDuration}}</td>
@@ -1216,6 +1216,7 @@ function addDataToDetailLead(){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="callId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
@@ -1242,9 +1243,9 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="meet in listAllMeetByLead">
+																			<tbody dir-paginate="meet in listAllMeetByLead|itemsPerPage:5" pagination-id="meetId">
 																				<tr>
-																					<td class="iTD-width-50">{{meet.meetingId}}</td>
+																					<td><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a></td>
 																					<td>{{meet.meetingSubject}}</td>
 																					<td>{{meet.statusName}}</td>
 																					<td>{{meet.meetingStartDate | date:'dd/MM/yyyy'}}</td>
@@ -1259,7 +1260,8 @@ function addDataToDetailLead(){
 																				</tr>
 																			</tbody>
 																		</table>
-																	</div>																
+																	</div>
+																	<dir-pagination-controls pagination-id="meetId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>																
 																</div>
 															</div>
 														</div>
@@ -1286,9 +1288,9 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="task in listAllTaskByLead">
+																			<tbody dir-paginate="task in listAllTaskByLead|itemsPerPage:5" pagination-id="taskId">
 																				<tr>
-																					<td class="iTD-width-50">{{task.taskId}}</td>
+																					<td><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a></td>
 																					<td>{{task.taskSubject}}</td>
 																					<td>{{task.taskStatusName}}</td>
 																					<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
@@ -1304,6 +1306,7 @@ function addDataToDetailLead(){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="taskId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
@@ -1330,9 +1333,9 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="event in listAllEventByLead">
+																			<tbody dir-paginate="event in listAllEventByLead|itemsPerPage:5" pagination-id="eventId">
 																				<tr>
-																					<td class="iTD-width-50">{{event.evId}}</td>
+																					<td><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}">{{event.evId}}</a></td>
 																					<td>{{event.evName}}</td>
 																					<td>{{event.locateName}}</td>
 																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
@@ -1348,6 +1351,7 @@ function addDataToDetailLead(){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="eventId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>

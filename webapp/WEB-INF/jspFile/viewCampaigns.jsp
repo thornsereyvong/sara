@@ -1141,7 +1141,7 @@ function addDataToDetailLead(){
 																						<th class="text-center">Action</th>
 																					</tr>
 																				</thead>
-																				<tbody dir-paginate="call in listAllCallByLead|itemsPerPage:5">
+																				<tbody dir-paginate="call in listAllCallByLead|itemsPerPage:5" pagination-id="callId">
 																					<tr>
 																						<td class="iTD-width-50">
 																							<a href="${pageContext.request.contextPath}/view-call/{{call.callId}}">{{call.callId}}</a>
@@ -1161,7 +1161,7 @@ function addDataToDetailLead(){
 																					</tr>
 																			</table>
 																		</div>
-																		<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
+																		<dir-pagination-controls pagination-id="callId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																	</div>
 																</div>
 															</div>
@@ -1189,7 +1189,7 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody dir-paginate="meet in listAllMeetByLead|itemsPerPage:5">
+																			<tbody dir-paginate="meet in listAllMeetByLead|itemsPerPage:5" pagination-id="meetId">
 																				<tr>
 																					<td class="iTD-width-50">
 																						<a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a>
@@ -1209,7 +1209,7 @@ function addDataToDetailLead(){
 																			</tbody>
 																		</table>
 																	</div>	
-																	<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>															
+																	<dir-pagination-controls pagination-id="meetId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>															
 																</div>
 															</div>
 														</div>
@@ -1236,7 +1236,7 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody dir-paginate="task in listAllTaskByLead|itemsPerPage:5">
+																			<tbody dir-paginate="task in listAllTaskByLead|itemsPerPage:5" pagination-id="taskId">
 																				<tr>
 																					<td>
 																						<a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a>
@@ -1256,7 +1256,7 @@ function addDataToDetailLead(){
 																			</tbody>
 																		</table>
 																	</div>
-																	<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>	
+																	<dir-pagination-controls pagination-id="taskId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>	
 																</div>
 															</div>
 														</div>
@@ -1283,7 +1283,7 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody dir-paginate="event in listAllEventByLead|itemsPerPage:5">
+																			<tbody dir-paginate="event in listAllEventByLead|itemsPerPage:5" pagination-id="eventId">
 																				<tr>
 																					<td>
 																						<a href="${pageContext.request.contextPath}/view-event/{{event.evId}}">{{event.evId}}</a>
@@ -1303,7 +1303,7 @@ function addDataToDetailLead(){
 																			</tbody>
 																		</table>
 																	</div>
-																	<dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
+																	<dir-pagination-controls pagination-id="eventId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
@@ -1655,44 +1655,45 @@ function addDataToDetailLead(){
 															<div id="LOpp1" class="panel-collapse collapse in">
 																<div class="panel-body">
 																	<div class="mailbox-messages table-responsive">
-																			<table class="table iTable"> 					
-																				<thead>
-																					<tr>
-																						<th>ID</th>
-																						<th>Name</th>
-																						<th>Customer</th>
-																						<th>Stage</th>																						
-																						<th>Close Date</th>
-																						<th>Amount</th>
-																						<th class="text-center">Action</th>
-																					</tr>
-																				</thead>
-																				<tbody ng-repeat="opp in opportunity">
-																					<tr>
-																						<td><a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}">{{opp.opId}}</a></td>
-																						<td>{{opp.opName}}</td>
-																						<td>[{{opp.custID}}] {{opp.custName}}</td>
-																						<td>{{opp.opStageId.osName}}</td>																						
-																						<td>{{opp.opCloseDate | date:'dd/MM/yyyy'}}</td>
-																						<td>$ {{opp.opAmount | number:2}}</td>
-																						<td class="text-center mailbox-date" style="min-width: 100px;">
-																							<a href="${pageContext.request.contextPath}/update-opportunity/{{opp.opId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
-																							<a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
-																						</td>
-																					</tr>
-																				</tbody>
-																				<tfoot>
-																					<tr>
-																						<th></th>
-																						<th></th>
-																						<th></th>
-																						<th colspan="2">Total Amount</th>
-																						<th>$ {{totalAmtOpp() | number:2}}</th>
-																						<th></th>
-																					</tr>
-																				</tfoot>
-																			</table>
-																		</div>
+																		<table class="table iTable"> 					
+																			<thead>
+																				<tr>
+																					<th>ID</th>
+																					<th>Name</th>
+																					<th>Customer</th>
+																					<th>Stage</th>
+																					<th>Amount</th>
+																					<th>Close Date</th>
+																					<th class="text-center">Action</th>
+																				</tr>
+																			</thead>
+																			<tbody dir-paginate="opp in opportunity|itemsPerPage:5" pagination-id="opportId">
+																				<tr>
+																					<td><a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}">{{opp.opId}}</a></td>
+																					<td>{{opp.opName}}</td>
+																					<td>[{{opp.custID}}] {{opp.custName}}</td>
+																					<td>{{opp.opStageId.osName}}</td>
+																					<td>{{opp.opAmount | number:2}}</td>
+																					<td>{{opp.opCloseDate | date:'dd/MM/yyyy'}}</td>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="${pageContext.request.contextPath}/update-opportunity/{{opp.opId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																					</td>
+																				</tr>
+																			</tbody>
+																			<tfoot>
+																				<tr>
+																					<th></th>
+																					<th></th>
+																					<th></th>
+																					<th colspan="2">Total Amount</th>
+																					<th>$ {{totalAmtOpp() | number:2}}</th>
+																					<th></th>
+																				</tr>
+																			</tfoot>
+																		</table>
+																	</div>
+																	<dir-pagination-controls pagination-id="opportId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
