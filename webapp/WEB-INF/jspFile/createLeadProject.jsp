@@ -227,18 +227,21 @@ $(document).ready(function() {
 									<input type="text"  class="form-control" id="account_manager" name="account_manager">
 								</div>	
 							</div>
+							<div class="clearfix hidden-md hidden-lg"></div>
 							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Company </label>
 								<div class="form-group">
 									<input type="text" class="form-control" id="company" name="company">
 								</div>	
 							</div>
+							<div class="clearfix hidden-lg hidden-sm"></div>
 							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Business Type </label>
 								<div class="form-group">
 									<input type="text"  class="form-control" id="biz_type" name="biz_type">
 								</div>	
 							</div>
+							<div class="clearfix hidden-md"></div>
 							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Business Size </label>
 								<div class="form-group">

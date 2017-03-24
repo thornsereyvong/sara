@@ -344,14 +344,14 @@ $(document).ready(function() {
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Tel <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<input type="text" class="form-control  ng-cloak" name="c_tel1" id="c_tel1">
+										<input type="tel" class="form-control  ng-cloak" name="c_tel1" id="c_tel1">
 									</div>
 								</div>							
-								
+								<div class="clearfix hidden-lg hidden-md"></div>
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Tel </label>
 									<div class="form-group">
-										<input type="text" class="form-control  ng-cloak" name="c_tel2" id="c_tel2">
+										<input type="tel" class="form-control  ng-cloak" name="c_tel2" id="c_tel2">
 									</div>
 								</div>	
 								<div class="clearfix hidden-lg hidden-sm"></div>						
@@ -378,7 +378,6 @@ $(document).ready(function() {
 							<div class="clearfix"></div>
 						</div>
 					</div>
-					
 					<div class="clearfix"></div>				
 					<div class="col-sm-12"><h4>Address</h4></div>				
 					<div class="col-sm-12"><hr style="margin-top: 8px;"/></div>
