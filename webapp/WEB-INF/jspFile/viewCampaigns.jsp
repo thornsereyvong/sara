@@ -66,6 +66,12 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			$scope.campaign = response.CAMPAIGN;
 			
 			$scope.opportunity = response.OPPORTUNITIES;
+			
+			if($scope.opportunity != null){
+				$scope.lOpportunity = $scope.opportunity.length;
+			}else{
+				$scope.lOpportunity=0;
+			}			
 			$scope.listNote1(response.NOTES);
 			$scope.leadList = response.LEAD;
 			
@@ -1681,9 +1687,8 @@ function addDataToDetailLead(){
 																					</td>
 																				</tr>
 																			</tbody>
-																			<tfoot>
+																			<tfoot ng-if="(opportunity[(lOpportunity-1)].opId === opp.opId)" class="border-top">
 																				<tr>
-																					<th></th>
 																					<th></th>
 																					<th></th>
 																					<th colspan="2">Total Amount</th>
