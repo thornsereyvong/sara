@@ -23,16 +23,11 @@ var self = this;
 
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
-
 var leadId = "";
-
 var lLead = "";
-
 var oppId = "${campId}";
 var lOpportunity = "";
 var typeModule = "Campaign";
-
-
 var noteIdEdit = "";
 var response=[];
 var LEAD = [];
@@ -48,84 +43,80 @@ var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Propos
 
 app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
 	
-	angular.element(document).ready(function () {				
-		/* $("#oppStage").select2('val',response.OPPORTUNITY.osId);
-		$("#oppType").select2('val',response.OPPORTUNITY.otId);
-		$("#oppLeadSource").select2('val',response.OPPORTUNITY.sourceID);
-		$("#oppCustomer").select2('val',response.OPPORTUNITY.custID);
-		$("#oppCampaign").select2('val',response.OPPORTUNITY.campID);
-		$("#oppAssignTo").select2('val',response.OPPORTUNITY.userId); */
-    });
-	
 	$scope.collaborates = [];
 	$scope.tags = [];
 	$scope.username = username; 
 	
 	$scope.listLeads = function(){
-			//response = getLeadData();	
-			//dis(response)
-			$http({
-			    method: 'GET',
-			    url: '${pageContext.request.contextPath}/campaign/view/'+username+"/"+oppId,
-			    headers: {
-			    	'Accept': 'application/json',
-			        'Content-Type': 'application/json'
-			    }
-			}).success(function(response) {	
-				$scope.oppLeadSource = response.LEAD_SOURCE;
-				$scope.oppType = response.OPP_TYPES;
-				$scope.oppAssignTo = response.ASSIGN_TO;
-				$scope.oppCampaign = response.CAMPAIGNS;
-				$scope.oppStage = response.OPP_STAGES;
-				$scope.oppCustomer = response.CUSTOMERS;
-				
-				$scope.campaign = response.CAMPAIGN;
-				
-				$scope.opportunity = response.OPPORTUNITIES;
-				$scope.listNote1(response.NOTES);
-					
-				
-				userAllList($scope.oppAssignTo,'#callAssignTo','');
-				userAllList($scope.oppAssignTo,'#meetAssignTo','');
-				userAllList($scope.oppAssignTo,'#taskAssignTo','');
-				userAllList($scope.oppAssignTo,'#eventAssignTo','');
-				
-				curAssign = fmNull(response.CAMPAIGN.assignToUsername);
-				ownerItem = fmNull(response.CAMPAIGN.campCreateBy);
-				
-				$scope.listAllCallByLeadId(response.CALLS);	
-				$scope.listAllMeetByLeadId(response.MEETINGS);	
-				$scope.listAllTaskByLeadId(response.TASKS);
-				$scope.listAllEventByLeadId(response.EVENTS);
-				
-				$scope.listAllEmailByLeadId = function(){	
-					$scope.listAllEmailByLead = [];	
-				}
-				
-				$scope.listCollab(response.COLLABORATIONS);							
-				$scope.callStatusStartup = response.CALL_STATUS;
-				$scope.taskStatusStartup = response.TASK_STATUS;
-				$scope.taskContactStartup = response.CONTACTS;
-				$scope.eventLocationStartup = response.EVENT_LOCATION;
-				$scope.meetStatusStartup = response.MEETING_STATUS;				
-				$scope.tags = response.TAG_TO;	
-				
-			});
+		$http({
+		    method: 'GET',
+		    url: '${pageContext.request.contextPath}/campaign/view/'+username+"/"+oppId,
+		    headers: {
+		    	'Accept': 'application/json',
+		        'Content-Type': 'application/json'
+		    }
+		}).success(function(response) {	
+			$scope.oppLeadSource = response.LEAD_SOURCE;
+			$scope.oppType = response.OPP_TYPES;
+			$scope.oppAssignTo = response.ASSIGN_TO;
+			$scope.oppCampaign = response.CAMPAIGNS;
+			$scope.oppStage = response.OPP_STAGES;
+			$scope.oppCustomer = response.CUSTOMERS;
+			
+			$scope.campaign = response.CAMPAIGN;
+			
+			$scope.opportunity = response.OPPORTUNITIES;
+			$scope.listNote1(response.NOTES);
+			$scope.leadList = response.LEAD;
+			
+			userAllList($scope.oppAssignTo,'#callAssignTo','');
+			userAllList($scope.oppAssignTo,'#meetAssignTo','');
+			userAllList($scope.oppAssignTo,'#taskAssignTo','');
+			userAllList($scope.oppAssignTo,'#eventAssignTo','');
+			
+			curAssign = fmNull(response.CAMPAIGN.assignToUsername);
+			ownerItem = fmNull(response.CAMPAIGN.campCreateBy);
+			
+			$scope.listAllCallByLeadId(response.CALLS);	
+			$scope.listAllMeetByLeadId(response.MEETINGS);	
+			$scope.listAllTaskByLeadId(response.TASKS);
+			$scope.listAllEventByLeadId(response.EVENTS);
+			
+			$scope.listAllEmailByLeadId = function(){	
+				$scope.listAllEmailByLead = [];	
+			}
+			
+			$scope.listCollab(response.COLLABORATIONS);							
+			$scope.callStatusStartup = response.CALL_STATUS;
+			$scope.taskStatusStartup = response.TASK_STATUS;
+			$scope.taskContactStartup = response.CONTACTS;
+			$scope.eventLocationStartup = response.EVENT_LOCATION;
+			$scope.meetStatusStartup = response.MEETING_STATUS;				
+			$scope.tags = response.TAG_TO;	
+			
+		});
 	}
 	
 	$scope.sort = function(keyname){
-	    $scope.sortKey = keyname;   //set the sortKey to the param passed
-	    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+	    $scope.sortKey = keyname;
+	    $scope.reverse = !$scope.reverse;
 	};
+	
+	$scope.totalAmtOpp = function(){
+		var totalAmt = 0;
+		if($scope.opportunity != null){			
+			for(var i=0; i<$scope.opportunity.length; i++){
+				totalAmt += Number($scope.opportunity[i].opAmount);
+			}			
+		}
+		return totalAmt;
+	}
 	
 	
 // Tab Collaborate***************************
 	
 	$scope.listCollab = function(response){
-		$scope.collaborates = response;		
-		
-		//dis($scope.collaborates)
-		
+		$scope.collaborates = response;
 	}
 
 	$scope.listCollabByLeadByUser = function(){
@@ -189,8 +180,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
     };
 	
     
-	$scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){	    	
-    	
+	$scope.btnDeleteCollabCom = function(keyParent,keyChild,comId){    	
     	swal({
             title: "<span style='font-size: 25px;'>You are about to delete comment.</span>",
             text: "Click OK to continue or CANCEL to abort.",
@@ -257,11 +247,6 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
     }	
 	
 	// End Collaborate***************************
-	
-	
-	
-	
-	
 	
 	// note
 	$scope.addNote = function(){
@@ -722,11 +707,6 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 
 
 app.controller('callController',['$scope','$http',function( $scope, $http){
-	$scope.startupCallForm = function(){
-		/* $http.get("${pageContext.request.contextPath}/call_status/list").success(function(response){
-				$scope.callStatusStartup = response.DATA;
-	    }); */
-	}
 	$scope.cancelCallClick = function(){
 		callIdForEdit = null;
 		$("#callStatus").select2('val',"");
@@ -740,11 +720,6 @@ app.controller('callController',['$scope','$http',function( $scope, $http){
 
 
 app.controller('meetController',['$scope','$http',function( $scope, $http){
-	$scope.startupMeetForm = function(){
-		/* $http.get("${pageContext.request.contextPath}/meeting_status/list").success(function(response){
-			$scope.meetStatusStartup = response.DATA;
-	    }); */
-	}
 	$scope.cancelMeetClick = function(){
 		 meetIdForEdit = null;
 		$("#meetStatus").select2('val',"");
@@ -756,18 +731,6 @@ app.controller('meetController',['$scope','$http',function( $scope, $http){
 }]);
 
 app.controller('taskController',['$scope','$http',function( $scope, $http){
-	
-	$scope.startupTaskForm = function(){
-		/* $http.get("${pageContext.request.contextPath}/task_status/list").success(function(response){
-			$scope.taskStatusStartup = response.DATA;
-		});
-
-		$http.get("${pageContext.request.contextPath}/contact/list").success(function(response){
-			$scope.taskContactStartup = response.DATA;
-		}); */
-		
-	}
-	
 	$scope.cancelTaskClick = function(){
 		taskIdForEdit = null;
 		$("#taskPriority").select2('val',"");
@@ -781,13 +744,6 @@ app.controller('taskController',['$scope','$http',function( $scope, $http){
 }]);
 
 app.controller('eventController',['$scope','$http',function( $scope, $http){
-	
-	$scope.startupEventForm = function(){
-		/* $http.get("${pageContext.request.contextPath}/event_location/list").success(function(response){
-			$scope.eventLocationStartup = response.DATA;
-		}); */
-	}
-	
 	$scope.cancelEventClick = function(){
 		eventIdForEdit = null;
 		$("#eventLocation").select2('val',"");
@@ -848,21 +804,6 @@ function addDataEventToForm(data){
 	setValueById('eventBudget', data.evBudget);
 }
 
-
-/* function getLeadData(){	
-	var data = JSON.parse(
-		$.ajax({
-			method: 'GET',
-		    url: '${pageContext.request.contextPath}/campaign/view/'+username+"/"+oppId,
-		   	async: false,
-		    headers: {
-		    	'Accept': 'application/json',
-		        'Content-Type': 'application/json'
-		    }
-		}).responseText);	
-	return data;	
-} */
-
 function getLeadById(){
 	var data = JSON.parse(
 		$.ajax({
@@ -873,11 +814,7 @@ function getLeadById(){
 	return data;
 }
 
-function clickStatus(num){
-	/* if(num == 4){
-		window.location.href = server+"/convert-lead/"+leadId;
-	} */
-}
+function clickStatus(num){}
 
 function displayStatusLead(Status){	
 	var obj = "";	
@@ -1156,8 +1093,8 @@ function addDataToDetailLead(){
 											aria-expanded="false">NOTES</a></li>
 										<li class=""><a href="#detail_tap" data-toggle="tab"
 											aria-expanded="false">DETAILS</a></li>
-										<li class=""><a href="#opport_tap" data-toggle="tab"
-											aria-expanded="false">OPPORTUNITY</a></li>
+										<li class=""><a href="#opport_tap" data-toggle="tab" aria-expanded="false">OPPORTUNITIES</a></li>
+										<li class=""><a href="#lead_tap" data-toggle="tab" aria-expanded="false">LEADS</a></li>
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane active" id="activity">
@@ -1724,9 +1661,9 @@ function addDataToDetailLead(){
 																						<th>ID</th>
 																						<th>Name</th>
 																						<th>Customer</th>
-																						<th>Stage</th>
-																						<th>Amount</th>
+																						<th>Stage</th>																						
 																						<th>Close Date</th>
+																						<th>Amount</th>
 																						<th class="text-center">Action</th>
 																					</tr>
 																				</thead>
@@ -1735,14 +1672,25 @@ function addDataToDetailLead(){
 																						<td><a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}">{{opp.opId}}</a></td>
 																						<td>{{opp.opName}}</td>
 																						<td>[{{opp.custID}}] {{opp.custName}}</td>
-																						<td>{{opp.opStageId.osName}}</td>
-																						<td>{{opp.opAmount | number:2}}</td>
+																						<td>{{opp.opStageId.osName}}</td>																						
 																						<td>{{opp.opCloseDate | date:'dd/MM/yyyy'}}</td>
+																						<td>$ {{opp.opAmount | number:2}}</td>
 																						<td class="text-center mailbox-date" style="min-width: 100px;">
 																							<a href="${pageContext.request.contextPath}/update-opportunity/{{opp.opId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 																							<a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 																						</td>
 																					</tr>
+																				</tbody>
+																				<tfoot>
+																					<tr>
+																						<th></th>
+																						<th></th>
+																						<th></th>
+																						<th colspan="2">Total Amount</th>
+																						<th>$ {{totalAmtOpp() | number:2}}</th>
+																						<th></th>
+																					</tr>
+																				</tfoot>
 																			</table>
 																		</div>
 																</div>
@@ -1752,17 +1700,67 @@ function addDataToDetailLead(){
 												</div>
 											</div>
 										</div>
+										<div class="tab-pane " id="lead_tap">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="panel-group" id="LLead">
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title pull-left">
+																	<a data-toggle="collapse" data-parent="LLead" href="#LLead1">Leads  </a>
+																	
+																</h4>
+																<span class="badge bg-blue pull-right">{{leadList.length <= 0 ? '' : leadList.length }}</span>
+																<%-- <a href="${pageContext.request.contextPath}/create-opportunity" class="btn btn-default pull-right">New</a> --%>
+																<div class="clearfix"></div>
+															</div>
+															<div id="LLead1" class="panel-collapse collapse in">
+																<div class="panel-body">
+																	<div class="mailbox-messages table-responsive">
+																		<table class="table iTable"> 					
+																			<thead>
+																				<tr>
+																					<th>ID</th>
+																					<th>Name</th>
+																					<th>Status</th>
+																					<th>Company</th>																						
+																					<th>Email</th>
+																					<th>Create Date</th>
+																					<th class="text-center">Action</th>
+																				</tr>
+																			</thead>
+																			<tbody ng-repeat="l in leadList">
+																				<tr>
+																					<td><a href="${pageContext.request.contextPath}/view-lead/{{l.leadId}}">{{l.leadId}}</a></td>
+																					<td>{{l.fullName}}</td>
+																					<td>{{l.statusName}}</td>
+																					<td>{{l.company}}</td>
+																					<td>{{l.email}}</td>																						
+																					<td>{{l.createDate | date:'dd/MM/yyyy'}}</td>
+																					<td class="text-center mailbox-date" style="min-width: 100px;">
+																						<a href="${pageContext.request.contextPath}/update-lead/{{l.leadId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
+																						<a href="${pageContext.request.contextPath}/view-lead/{{l.leadId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
-									<!-- /.tab-content -->
 								</div>
 							</div>
 						</div>
-						<!-- /.row -->
 					</div>
 				</div>
-				<!-- /.widget-user -->
 			</div>
 		</div>
+		<div id="errors"></div>
 	</section>
 	<input type="hidden" id="btn_show_call" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCall" />
 	<div ng-controller="callController" class="modal fade modal-default" id="frmCall" role="dialog">
