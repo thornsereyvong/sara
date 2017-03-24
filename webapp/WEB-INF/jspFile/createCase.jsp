@@ -218,10 +218,10 @@ $(document).ready(function() {
 });
 </script>
 	<section class="content">
-		<div class="box box-danger">			
+		<div class="box box-danger" data-ng-element-ready="divIsReady()">			
 			<div class="box-body">			
 				<form method="post" id="form-case" data-ng-init="startupPage()">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
 						<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
 						<a class="btn btn-info btn-app" id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
 						<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-cases"> <i class="fa fa-reply"></i> Back </a>

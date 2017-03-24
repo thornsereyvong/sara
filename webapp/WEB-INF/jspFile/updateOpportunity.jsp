@@ -286,31 +286,26 @@ $(document).ready(function() {
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Amount <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<input type="text" value="{{dataOpport.opAmount}}" class="form-control" id="op_amount" name="op_amount">
+										<input type="number" value="{{dataOpport.opAmount}}" step="0.01" class="form-control" id="op_amount" name="op_amount">
 									</div>
 								</div>
-								<div class="clearfix hidden-md hidden-lg"></div>									
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-									<label class="font-label">Customer <span class="requrie">(Required)</span></label>
+									<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
 									<div class="form-group">
-										<select class="form-control select2" name="op_customer" id="op_customer" style="width: 100%;">
-											<option value="">-- SELECT Customer --</option>
-											<option data-index="{{u.priceCode.priceCode}}" ng-repeat="(key, u) in customer" value="{{u.custID}}">[{{u.custID}}] {{u.custName}}</option>
+										<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
+											<option value="">-- SELECT Stage --</option>
+											<option ng-repeat="u in stage" value="{{u.osId}}">{{u.osName}}</option> 
 										</select>
 									</div>
 								</div>
-								<div class="clearfix hidden-sm hidden-lg"></div>
+								<div class="clearfix hidden-lg hidden-sm"></div>
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-									<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
+									<label class="font-label">Probability (%) </label>
 									<div class="form-group">
-										<select style="width:100%" class="form-control select2" name="op_price" id="op_price">
-											<option value="">-- SELECT Price Code --</option>
-											<option ng-repeat="u in priceCode" value="{{u.priceCode}}">[{{u.priceCode}}] {{u.des}}</option> 
-										</select>
+										<input type="text" value="{{dataOpport.opProbability}}" class="form-control" id="op_probability" name="op_probability">
 									</div>
 								</div>
-								<div class="clearfix hidden-sm hidden-md"></div>	
-								
+								<div class="clearfix hidden-md"></div>
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Close date <span class="requrie">(Required)</span></label>
 									<div class="form-group">
@@ -323,47 +318,12 @@ $(document).ready(function() {
 									</div>
 								</div>
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-									<div class="form-group">
-										<label>Class</label> 
-										<select id="op_classCode" name="op_classCode" class="form-control select2 input-lg" style="width: 100%;">
-											<option selected="selected" value="">Select A Class</option>
-											<option ng-repeat="u in classCode" value="{{u.classId}}">[{{u.classId}}] {{u.des}}</option>
-										</select>
-									</div>
-								</div>
-								<div class="clearfix hidden-md hidden-lg"></div>	
-								<div class="col-sm-12">
 									<label class="font-label">Next Step </label>
 									<div class="form-group">
 										<input type="text" value="{{dataOpport.opNextStep}}" class="form-control" id="op_nextStep" name="op_nextStep">
 									</div>
 								</div>
-								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-									<label class="font-label ">Stage <span class="requrie">(Required)</span></label>
-									<div class="form-group">
-										<select class="form-control select2" name="op_stage" id="op_stage" style="width: 100%;">
-											<option value="">-- SELECT Stage --</option>
-											<option ng-repeat="u in stage" value="{{u.osId}}">{{u.osName}}</option> 
-										</select>
-									</div>
-								</div>
-								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-									<label class="font-label">Probability (%) </label>
-									<div class="form-group">
-										<input type="text" value="{{dataOpport.opProbability}}" class="form-control" id="op_probability" name="op_probability">
-									</div>
-								</div>
-								<div class="clearfix hidden-md hidden-lg"></div>
-								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-									<label class="font-label">Campaign </label>
-									<div class="form-group">
-										<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
-											<option value="">-- SELECT Campaign --</option>
-											<option ng-repeat="u in campaigns" value="{{u.campID}}">[{{u.campID}}] {{u.campName}}</option>
-										</select>
-									</div>
-								</div>
-								<div class="clearfix hidden-sm hidden-lg"></div>
+								<div class="clearfix hidden-lg hidden-sm"></div>
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Type </label>
 									<div class="form-group">
@@ -374,6 +334,17 @@ $(document).ready(function() {
 									</div>
 								</div>
 								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									<label class="font-label">Campaign </label>
+									<div class="form-group">
+										<select class="form-control select2" name="op_campaign" id="op_campaign" style="width: 100%;">
+											<option value="">-- SELECT Campaign --</option>
+											<option ng-repeat="u in campaigns" value="{{u.campID}}">[{{u.campID}}] {{u.campName}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="clearfix hidden-md"></div>
+								
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 									<label class="font-label">Lead Source </label>
 									<div class="form-group">
 										<select class="form-control select2" name="op_leadSource" id="op_leadSource" style="width: 100%;">
@@ -382,6 +353,34 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									<label class="font-label">Customer <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select class="form-control select2" name="op_customer" id="op_customer" style="width: 100%;">
+											<option value="">-- SELECT Customer --</option>
+											<option data-index="{{u.priceCode.priceCode}}" ng-repeat="(key, u) in customer" value="{{u.custID}}">[{{u.custID}}] {{u.custName}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									<label class="font-label">Price Code <span class="requrie">(Required)</span></label>
+									<div class="form-group">
+										<select style="width:100%" class="form-control select2" name="op_price" id="op_price">
+											<option value="">-- SELECT Price Code --</option>
+											<option ng-repeat="u in priceCode" value="{{u.priceCode}}">[{{u.priceCode}}] {{u.des}}</option> 
+										</select>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+									<div class="form-group">
+										<label>Class</label> 
+										<select id="op_classCode" name="op_classCode" class="form-control select2 input-lg" style="width: 100%;">
+											<option selected="selected" value="">Select A Class</option>
+											<option ng-repeat="u in classCode" value="{{u.classId}}">[{{u.classId}}] {{u.des}}</option>
+										</select>
+									</div>
+								</div>
+								<div class="clearfix"></div>
 							</div>
 							<div class="col-sm-12">
 								<div class="col-sm-12">

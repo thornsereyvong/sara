@@ -2022,6 +2022,10 @@ function iSplitBySplint(obj){
 .breadcrumb1 li a:hover:after {
 	border-left-color: rgb(75, 202, 129) !important;
 }
+
+.list-group-item {
+    background-color: transparent;
+}
 </style>
 <div class="content-wrapper" id="viewOpportunityController" ng-app="viewOpportunity"
 	ng-controller="viewOpportunityController">
@@ -2052,25 +2056,25 @@ function iSplitBySplint(obj){
 					</div>
 					<div class="box-footer">
 						<div class="row">
-							<div class="col-sm-3">
+							<div class="col-xs-4 col-sm-3">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">[{{opportunity.custID}}] {{opportunity.custName}}</h5>
 									<span class="description-text">Company</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-4 col-sm-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{opportunity.opCloseDate | date:'dd/MM/yyyy' }}</h5>
 									<span class="description-text">Close Date</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-xs-4 col-sm-3 border-right">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{opportunity.opAmount | number:2}}</h5>
 									<span class="description-text">Amount</span>
 								</div>
 							</div>
-							<div class="col-sm-3 border-right">
+							<div class="col-sm-3 border-right hidden-xs">
 								<div class="description-block">
 									<h5 class="description-header ng-cloak">{{opportunity.username}}</h5>
 									<span class="description-text">Assign To</span>
@@ -2135,9 +2139,9 @@ function iSplitBySplint(obj){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="call in listAllCallByLead">
+																			<tbody dir-paginate="call in listAllCallByLead|itemsPerPage:5" pagination-id="callId">
 																				<tr>
-																					<td class="iTD-width-50">{{call.callId}}</td>
+																					<td><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}">{{call.callId}}</a></td>
 																					<td>{{call.callSubject.trunc(15)}}</td>
 																					<td> {{call.callStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{call.callDuration}}</td>
@@ -2152,6 +2156,7 @@ function iSplitBySplint(obj){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="callId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
@@ -2178,9 +2183,9 @@ function iSplitBySplint(obj){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="meet in listAllMeetByLead">
+																			<tbody dir-paginate="meet in listAllMeetByLead|itemsPerPage:5" pagination-id="meetId">
 																				<tr>
-																					<td class="iTD-width-50">{{meet.meetingId}}</td>
+																					<td><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a></td>
 																					<td>{{meet.meetingSubject.trunc(15)}}</td>
 																					<td>{{meet.statusName}}</td>
 																					<td>{{meet.meetingStartDate | date:'dd/MM/yyyy'}}</td>
@@ -2195,7 +2200,8 @@ function iSplitBySplint(obj){
 																				</tr>
 																			</tbody>
 																		</table>
-																	</div>																
+																	</div>	
+																	<dir-pagination-controls pagination-id="meetId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>															
 																</div>
 															</div>
 														</div>
@@ -2222,9 +2228,9 @@ function iSplitBySplint(obj){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="task in listAllTaskByLead">
+																			<tbody dir-paginate="task in listAllTaskByLead|itemsPerPage:5" pagination-id="taskId">
 																				<tr>
-																					<td class="iTD-width-50">{{task.taskId}}</td>
+																					<td><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a></td>
 																					<td>{{task.taskSubject.trunc(15)}}</td>
 																					<td>{{task.taskStatusName}}</td>
 																					<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
@@ -2240,6 +2246,7 @@ function iSplitBySplint(obj){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="taskId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
@@ -2266,7 +2273,7 @@ function iSplitBySplint(obj){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="event in listAllEventByLead">
+																			<tbody dir-paginate="event in listAllEventByLead|itemsPerPage:5" pagination-id="eventId">
 																				<tr>
 																					<td class="iTD-width-50">{{event.evId}}</td>
 																					<td>{{event.evName.trunc(15)}}</td>
@@ -2284,6 +2291,7 @@ function iSplitBySplint(obj){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="eventId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
@@ -2479,9 +2487,9 @@ function iSplitBySplint(obj){
 										<div class="tab-pane " id="detail_tap">
 											<div class="row">
 												<form id="frmOpportDetail">
-													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Overview</b> <a
+															<li class="list-group-item" style="border-top: 0px;"><b>Overview</b> <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a></li>
@@ -2522,50 +2530,7 @@ function iSplitBySplint(obj){
 																		value="{{opportunity.opNextStep}}">
 																</div>
 															</li>
-															<li class="list-group-item item_border">Lead Source <a
-																class="pull-right show-text-detail">{{opportunity.sourceName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2" name="oppLeadSource"
-																		id="oppLeadSource" style="width: 100%;">
-																		<option value="">-- SELECT A Lead source --</option>
-																		<option ng-repeat="source in oppLeadSource"
-																			value="{{source.sourceID}}">{{source.sourceName}}</option>
-																	</select>
-																</div>
-															</li>
-															<li class="list-group-item item_border">Type <a
-																class="pull-right show-text-detail">{{opportunity.otName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2"
-																		name="oppType" id="oppType"
-																		style="width: 100%;">
-																		<option value="">-- SELECT A Type --</option>
-																		<option ng-repeat="type in oppType"
-																			value="{{type.otId}}">{{type.otName}}</option>
-																	</select>
-																</div>
-															</li>
-															
-															<li class="list-group-item item_border">Campaign <a
-																class="pull-right show-text-detail">[{{opportunity.campID}}] {{opportunity.campName}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2"
-																		name="oppCampaign" id="oppCampaign" style="width: 100%;">
-																		<option value="">-- SELECT A Campaign --</option>
-																		<option ng-repeat="camp in oppCampaign"
-																			value="{{camp.campID}}">[{{camp.campID}}] {{camp.campName}}</option>
-																	</select>
-																</div>
-															</li>
-														</ul>
-													</div>
-													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>&nbsp;</b> <a
-																class="pull-right cusor_pointer"
-																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a></li>
-															<li class="list-group-item item_border">Stage <a
+															<li class="list-group-item item_border" style="border-top: 0px;">Stage <a
 																class="pull-right show-text-detail">{{opportunity.osName}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<select class="form-control select2"
@@ -2581,6 +2546,60 @@ function iSplitBySplint(obj){
 																<div class="form-group show-edit" style="display: none;">
 																	<input type="text" name="oppProbability" id="oppProbability"
 																		class="form-control" value="{{opportunity.opProbability}}">
+																</div>
+															</li>
+															<li class="list-group-item item_border">Type <a
+																class="pull-right show-text-detail">{{opportunity.otName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="oppType" id="oppType"
+																		style="width: 100%;">
+																		<option value="">-- SELECT A Type --</option>
+																		<option ng-repeat="type in oppType"
+																			value="{{type.otId}}">{{type.otName}}</option>
+																	</select>
+																</div>
+															</li>
+														</ul>
+													</div>
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+														<ul class="list-group list-group-unbordered">
+															<li class="list-group-item" style="border-top: 0px;"><b>Others</b> 
+																	<a class="pull-right cusor_pointer"
+																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
+																	Edit</a></li>
+															<li class="list-group-item item_border">Lead Source <a
+																class="pull-right show-text-detail">{{opportunity.sourceName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2" name="oppLeadSource"
+																		id="oppLeadSource" style="width: 100%;">
+																		<option value="">-- SELECT A Lead source --</option>
+																		<option ng-repeat="source in oppLeadSource"
+																			value="{{source.sourceID}}">{{source.sourceName}}</option>
+																	</select>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Assign To <a
+																class="pull-right show-text-detail">{{opportunity.username}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="oppAssignTo" id="oppAssignTo"
+																		style="width: 100%;">
+																		<option value="">-- SELECT A Assign To --</option>
+																		<option ng-repeat="user in oppAssignTo"
+																			value="{{user.userID}}">{{user.username}}</option>
+																	</select>
+																</div>
+															</li>
+															<li class="list-group-item item_border">Campaign <a
+																class="pull-right show-text-detail">[{{opportunity.campID}}] {{opportunity.campName}}</a>
+																<div class="form-group show-edit" style="display: none;">
+																	<select class="form-control select2"
+																		name="oppCampaign" id="oppCampaign" style="width: 100%;">
+																		<option value="">-- SELECT A Campaign --</option>
+																		<option ng-repeat="camp in oppCampaign"
+																			value="{{camp.campID}}">[{{camp.campID}}] {{camp.campName}}</option>
+																	</select>
 																</div>
 															</li>
 															<li class="list-group-item item_border">Customer <a
@@ -2616,34 +2635,12 @@ function iSplitBySplint(obj){
 																	</select>
 																</div>
 															</li>
-															
-														</ul>
-													</div>
-													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Others</b> 
-																	<a class="pull-right cusor_pointer"
-																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a></li>
-															
-															<li class="list-group-item item_border">Assign To <a
-																class="pull-right show-text-detail">{{opportunity.username}}</a>
-																<div class="form-group show-edit" style="display: none;">
-																	<select class="form-control select2"
-																		name="oppAssignTo" id="oppAssignTo"
-																		style="width: 100%;">
-																		<option value="">-- SELECT A Assign To --</option>
-																		<option ng-repeat="user in oppAssignTo"
-																			value="{{user.userID}}">{{user.username}}</option>
-																	</select>
-																</div>
-															</li>
 														</ul>
 													</div>
 													<div class="col-md-12">
 														<ul class="list-group list-group-unbordered">
 															<li style="border-top: 0px;" class="list-group-item"><b>Description</b>
-																<a class="pull-right cusor_pointer"
+																<a class="pull-right cusor_pointer hidden-xs hidden-sm hidden-md"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a></li>
 														</ul>
@@ -2819,18 +2816,18 @@ function iSplitBySplint(obj){
 										<div class="tab-pane " id="related_tap">
 											<div class="row">
 												<div class="col-md-12" >
-														<a style="margin-left: 0px;" class="btn btn-app" ng-click="contact_click()"> 
-															<i class="fa fa-user"></i> Contact
-														</a> 
-														<a class="btn btn-app" ng-click="quote_click()"> 
-															<i class="fa fa-file-code-o"></i> Quote
-														</a> 
-														<a class="btn btn-app" ng-click="sale_order_click()"> 
-															<i class="fa fa-file-text-o"></i> Sale Order
-														</a> 
-														<a class="btn btn-app" ng-click="lead_project_click()"> 
-															<i class="fa fa-product-hunt" aria-hidden="true"></i>Lead Project
-														</a>
+													<a style="margin-left: 0px;" class="btn btn-app" ng-click="contact_click()"> 
+														<i class="fa fa-user"></i> Contact
+													</a> 
+													<a class="btn btn-app" ng-click="quote_click()"> 
+														<i class="fa fa-file-code-o"></i> Quote
+													</a> 
+													<a class="btn btn-app" ng-click="sale_order_click()"> 
+														<i class="fa fa-file-text-o"></i> Sale Order
+													</a> 
+													<a class="btn btn-app" ng-click="lead_project_click()"> 
+														<i class="fa fa-product-hunt" aria-hidden="true"></i>Lead Project
+													</a>
 												</div>
 												<div class="col-md-12">
 													<div class="panel-group" id="relatedGroup">														
@@ -2849,7 +2846,7 @@ function iSplitBySplint(obj){
 																		<table class="table iTable"> 					
 																			<thead>
 																				<tr>
-																					<th class="iTD-width-50"><img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Contact.png" alt="User Avatar"></th>
+																					<th>ID</th>
 																					<th>Name</th>
 																					<th>Title</th>
 																					<th>Department</th>
@@ -2859,13 +2856,9 @@ function iSplitBySplint(obj){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="(key, con) in contact">
+																			<tbody dir-paginate="(key, con) in contact|itemsPerPage:5" pagination-id="opportId">
 																				<tr>
-																					<td class="iTD-width-50">
-																						<a href="#">
-																							<img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Contact.png" alt="User Avatar">
-																						</a>
-																					</td>
+																					<td><a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}">{{con.conID}}</a></td>
 																					<td>{{con.conName}}</td>
 																					<td>{{con.conTitle}}</td>
 																					<td>{{con.conDepartment}}</td>
@@ -2880,10 +2873,10 @@ function iSplitBySplint(obj){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="opportId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
-														
 														<div class="panel panel-default">
 															<div class="panel-heading">
 																<h4 class="panel-title pull-left">
@@ -2899,7 +2892,6 @@ function iSplitBySplint(obj){
 																		<table class="table iTable"> 					
 																			<thead>
 																				<tr>
-																					<th class="iTD-width-50"><img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar"></th>
 																					<th>Entry No</th>
 																					<th>Quote Date</th>
 																					<th>Start Date</th>
@@ -2909,14 +2901,9 @@ function iSplitBySplint(obj){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="(key, q) in quote">
+																			<tbody dir-paginate="(key, q) in quote|itemsPerPage:5" pagination-id="quoteId">
 																				<tr>
-																					<td class="iTD-width-50">
-																						<a href="#">
-																							<img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
-																						</a>
-																					</td>
-																					<td>{{q.quoteId}}</td>
+																					<td><a href="${pageContext.request.contextPath}/quote/edit/{{q.quoteId}}">{{q.quoteId}}</a></td>
 																					<td>{{q.quoteDate | date:'dd/MM/yyyy h:mm a'}}</td>
 																					<td>{{q.startDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{q.expireDate | date:'dd/MM/yyyy'}}</td>
@@ -2930,6 +2917,7 @@ function iSplitBySplint(obj){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="quoteId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
@@ -2948,7 +2936,6 @@ function iSplitBySplint(obj){
 																		<table class="table iTable"> 					
 																			<thead>
 																				<tr>
-																					<th class="iTD-width-50"><img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar"></th>
 																					<th>Entry No</th>
 																					<th>Sale Date</th>
 																					<th>Due Date</th>
@@ -2957,14 +2944,9 @@ function iSplitBySplint(obj){
 																					<th class="text-center ">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="(key, s) in saleOrder">
+																			<tbody dir-paginate="(key, s) in saleOrder|itemsPerPage:5" pagination-id="saleOrderId">
 																				<tr>
-																					<td class="iTD-width-50">
-																						<a href="#">
-																							<img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
-																						</a>
-																					</td>
-																					<td>{{s.saleOrderId}}</td>
+																					<td><a href="${pageContext.request.contextPath}/sale-order/edit/{{s.saleOrderId}}">{{s.saleOrderId}}</a></td>
 																					<td>{{s.saleOrderDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{s.saleDueDate | date:'dd/MM/yyyy'}}</td>
 																					<td>[{{s.empId}}] {{s.empName}}</td>
@@ -2977,6 +2959,7 @@ function iSplitBySplint(obj){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="saleOrderId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>
@@ -2995,7 +2978,7 @@ function iSplitBySplint(obj){
 																		<table class="table iTable"> 					
 																			<thead>
 																				<tr>
-																					<th class="iTD-width-50"><img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar"></th>
+																					<th>ID</th>
 																					<th>Name</th>
 																					<th>Account Manager</th>
 																					<th>Company</th>
@@ -3005,12 +2988,10 @@ function iSplitBySplint(obj){
 																					<th  class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="(key, p) in opProjects">
+																			<tbody dir-paginate="(key, p) in opProjects|itemsPerPage:5" pagination-id="leadProjectId">
 																				<tr>
-																					<td class="iTD-width-50">
-																						<a href="#">
-																							<img style="width:20px;" class="img-circle" src="${pageContext.request.contextPath}/resources/images/module/Opportunity.png" alt="User Avatar">
-																						</a>
+																					<td>
+																						<a href="${pageContext.request.contextPath}/view-lead-project/{{p.id}}">{{p.id}}</a>
 																					</td>
 																					<td>{{p.name}}</td>
 																					<td>{{p.accountManager == ""?'-':p.accountManager}}</td>
@@ -3026,6 +3007,7 @@ function iSplitBySplint(obj){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="leadProjectId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>

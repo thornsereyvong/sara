@@ -202,6 +202,9 @@ function userReportList(id,vals){
 
 $(function(){
 	if($(window).width() > 768){
+		$(".sidebar-toggle").click(function(){
+			$("body").addClass('sidebar-collapse');
+		}); 
 		$("body").removeClass('class','sidebar-collapse');
 	}else{
 		$("body").addClass('sidebar-collapse');

@@ -110,7 +110,7 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 		<div class="box box-danger">
 			<div class="box-header with-border">
 				<div style="background: #fff;margin-top: 15px;">
-				 <div class="col-sm-12">
+				 <div class="col-sm-12" style="margin-left: -5px;">
 				 	<a href="${pageContext.request.contextPath}/create-case" class="btn btn-info btn-app" ><i class="fa fa-plus" aria-hidden="true"></i> Create</a>				 	
 				 </div>
 			</div>
@@ -181,7 +181,7 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 										<th class="text-center">Action</th>
 									</tr>
 			
-									<tr dir-paginate="cc in cases |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" class="ng-cloak">
+									<tr dir-paginate="cc in cases |orderBy:sortKey:reverse |filter:search |itemsPerPage:pageSize.row" pagination-id="caseId" class="ng-cloak">
 										<td>{{cc.caseId}}</td>
 										<td>{{cc.subject}}</td>
 										<td>{{cc.statusName}}</td>
@@ -197,21 +197,17 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 											<a href="${pageContext.request.contextPath}/view-case/{{cc.caseId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 										</td>
 									</tr>
-									<tr>
-										<td colspan="8">
-											<dir-pagination-controls max-size="pageSize.row" direction-links="true" boundary-links="true"></dir-pagination-controls>
-										</td>
-									</tr>
 								</table>
-							    <%	   
-								   }else{
-									   
-								%>
-									<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>
-								<%
-								   }
-								%>  
 							</div>	
+							<dir-pagination-controls pagination-id="caseId" max-size="pageSize.row" direction-links="true" boundary-links="true"></dir-pagination-controls>
+						    <%	   
+							   }else{
+								   
+							%>
+								<div class="alert alert-warning" role="alert"><i class="glyphicon glyphicon-cog"></i> You don't have permission list data</div>
+							<%
+							   }
+							%>  
 						</div>
 					</div>
 				</div>

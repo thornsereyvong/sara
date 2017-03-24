@@ -778,7 +778,7 @@
 					</div>
 					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
 					  <form class="form-inline">
-					        <div class="form-group" style="padding-top: 20px;">
+					        <div class="form-group pull-right" style="padding-top: 20px;">
 					        	<div class="input-group">
 					        		<select class="form-control" ng-model="pageSize.row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 					        	</div>
@@ -1064,7 +1064,7 @@
 		</div>
 		
 		
-		<div id="chartdiv" style="width: 500px; height: 300px;"></div>
+		<!-- <div id="chartdiv" style="width: 500px; height: 300px;"></div> -->
 		
 		<input type="hidden" id="btn_frm_setting" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="frm_setting" />
 		<div class="modal fade modal-default" id="frm_setting" role="dialog">
@@ -1097,8 +1097,8 @@
 											</li>
 										</ul>
 									</div>
-									<div class="chart tab-pane" id="tabChart">
-										<!-- <ul class="todo-list ui-sortable">
+									<!-- <div class="chart tab-pane" id="tabChart">
+										<ul class="todo-list ui-sortable">
 											<li class="">
 												<span class="handle ui-sortable-handle"> <i class="fa fa-ellipsis-v"></i> <i class="fa fa-ellipsis-v"></i></span> 
 												<input type="checkbox" value="S" name="module">
@@ -1129,8 +1129,8 @@
 												<input type="checkbox" value="S" name="module">
 												<span class="text">Pipeline By Sales Stage</span>										
 											</li>
-										</ul> -->
-									</div>
+										</ul>
+									</div> -->
 								</div>							
 							</div>
 							

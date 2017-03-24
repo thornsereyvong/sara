@@ -1276,9 +1276,9 @@ function setSelect2ToResolveBy(value){
 																				<th class="text-center">Action</th>
 																			</tr>
 																		</thead>
-																		<tbody ng-repeat="call in listAllCallByLead">
+																		<tbody dir-paginate="call in listAllCallByLead|itemsPerPage:5" pagination-id="callId">
 																			<tr>
-																				<td class="iTD-width-50">{{call.callId}}</td>
+																				<td><a href="${pageContext.request.contextPath}/view-call/{{call.callId}}">{{call.callId}}</a></td>
 																				<td>{{call.callSubject}}</td>
 																				<td>{{call.callStartDate | date:'dd/MM/yyyy'}}</td>
 																				<td>{{call.callDuration}}<span> min</span></td>
@@ -1293,6 +1293,7 @@ function setSelect2ToResolveBy(value){
 																		</tbody>
 																	</table>
 																</div>
+																<dir-pagination-controls pagination-id="callId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 															</div>
 														</div>
 													</div>
@@ -1321,9 +1322,9 @@ function setSelect2ToResolveBy(value){
 																				<th class="text-center">Action</th>
 																			</tr>
 																		</thead>
-																		<tbody ng-repeat="meet in listAllMeetByLead">
+																		<tbody dir-paginate="meet in listAllMeetByLead|itemsPerPage:5" pagination-id="meetId">
 																			<tr>
-																				<td class="iTD-width-50">{{meet.meetingId}}</td>
+																				<td><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a></td>
 																				<td>{{meet.meetingSubject}}</td>
 																				<td>{{meet.statusName}}</td>
 																				<td>{{meet.meetingStartDate |date:'dd/MM/yyyy'}}</td>
@@ -1339,6 +1340,7 @@ function setSelect2ToResolveBy(value){
 																		</tbody>
 																	</table>
 																</div>
+																<dir-pagination-controls pagination-id="meetId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 															</div>
 														</div>
 													</div>
@@ -1367,9 +1369,9 @@ function setSelect2ToResolveBy(value){
 																				<th class="text-center">Action</th>
 																			</tr>
 																		</thead>
-																		<tbody ng-repeat="task in listAllTaskByLead">
+																		<tbody dir-paginate="task in listAllTaskByLead|itemsPerPage:5" pagination-id="taskId">
 																			<tr>
-																				<td class="iTD-width-50">{{task.taskId}}</td>
+																				<td><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a></td>
 																				<td>{{task.taskSubject}}</td>
 																				<td>{{task.taskStatusName}}</td>
 																				<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
@@ -1385,6 +1387,7 @@ function setSelect2ToResolveBy(value){
 																		</tbody>
 																	</table>
 																</div>
+																<dir-pagination-controls pagination-id="taskId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 															</div>
 														</div>
 													</div>
@@ -1413,9 +1416,9 @@ function setSelect2ToResolveBy(value){
 																				<th class="text-center">Action</th>
 																			</tr>
 																		</thead>
-																		<tbody ng-repeat="event in listAllEventByLead">
+																		<tbody dir-paginate="event in listAllEventByLead|itemsPerPage:5" pagination-id="eventId">
 																			<tr>
-																				<td class="iTD-width-50">{{event.evId}}</td>
+																				<td><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}">{{event.evId}}</a></td>
 																				<td>{{event.evName}}</td>
 																				<td>{{event.locateName}}</td>
 																				<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
@@ -1431,6 +1434,7 @@ function setSelect2ToResolveBy(value){
 																		</tbody>
 																	</table>
 																</div>
+																<dir-pagination-controls pagination-id="eventId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 															</div>
 														</div>
 													</div>
@@ -1691,9 +1695,9 @@ function setSelect2ToResolveBy(value){
 										<div class="row">
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 												<form id="frmLeadDetail">
-													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Overview</b> <!-- <a
+															<li class="list-group-item" style="border-top: 0px;"><b>Overview</b> <!-- <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a> --></li>
@@ -1754,15 +1758,15 @@ function setSelect2ToResolveBy(value){
 	
 														</ul>
 													</div>
-													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+													<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Related To</b> <!-- <a
+															<li class="list-group-item" style="border-top: 0px;"><b>Related To</b> <!-- <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a> --></li>
 															<li class="list-group-item item_border">Product<a
 																class="pull-right show-text-detail">[{{cases.caseItemId}}]
-																	{{cases.caseItemName.trunc(20)}}</a>
+																	{{cases.caseItemName}}</a>
 																<div class="form-group show-edit"
 																	style="display: none;">
 																	<!-- <input type="text" name="lea_no" id="lea_no"
@@ -1771,7 +1775,7 @@ function setSelect2ToResolveBy(value){
 															</li>
 															<li class="list-group-item item_border">Customer<a
 																class="pull-right show-text-detail">[{{cases.custID}}]
-																	{{cases.custName.trunc(20)}}</a>
+																	{{cases.custName}}</a>
 																<div class="form-group show-edit"
 																	style="display: none;">
 																	<!-- <input type="text" name="lea_no" id="lea_no"
@@ -1788,17 +1792,8 @@ function setSelect2ToResolveBy(value){
 																		class="form-control" value="{{lead.street}}"> -->
 																</div>
 															</li>
-	
-														</ul>
-													</div>
-													<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Other</b> <!-- <a
-																class="pull-right cusor_pointer"
-																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
-																	Edit</a> --></li>
 															<li class="list-group-item item_border">Assigned to
-																<a class="pull-right show-text-detail">{{cases.username}}</a>
+																<a class="pull-right show-text-detail">{{cases.username==null?'-':cases.username}}</a>
 																<div class="form-group show-edit"
 																	style="display: none;">
 																	<!-- <input type="text" name="lea_firstName"
@@ -1810,16 +1805,15 @@ function setSelect2ToResolveBy(value){
 														</ul>
 													</div>
 	
-	
 													<div class="clearfix"></div>
 													<div class="col-sm-12">
 														<ul class="list-group list-group-unbordered">
-															<li class="list-group-item"><b>Description</b> <!-- <a
+															<li class="list-group-item" style="border-top: 0px;"><b>Description</b> <!-- <a
 																class="pull-right cusor_pointer"
 																ng-click="editDetailLead()"><i class="fa fa-pencil"></i>
 																	Edit</a> --></li>
 															<li class="list-group-item item_border"
-																ng-if="cases.des != null"><a
+																ng-if="cases.des != ''"><a
 																class="show-text-detail">{{cases.des}}</a>
 																<div class="form-group show-edit"
 																	style="display: none;">
@@ -1855,7 +1849,7 @@ function setSelect2ToResolveBy(value){
 												</a>
 											</div>
 											<div ng-if="cases.statusName != 'Open'">
-											<div class="col-sm-4">
+											<div class="col-sx-12 col-sm-6 col-sm-6 col-lg-4">
 												<ul class="list-group list-group-unbordered">
 													<li class="list-group-item item_border">Resolve by<a
 														class="pull-right show-text-detail">{{cases.resolveByName}}</a>
@@ -1868,7 +1862,7 @@ function setSelect2ToResolveBy(value){
 													</li>
 												</ul>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sx-12 col-sm-6 col-sm-6 col-lg-4">
 												<ul class="list-group list-group-unbordered">
 													<li class="list-group-item item_border">Resolve Date<a
 														class="pull-right show-text-detail">{{cases.resolveDate}}</a>
@@ -1880,7 +1874,7 @@ function setSelect2ToResolveBy(value){
 														</div></li>
 												</ul>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sx-12 col-sm-12 col-sm-12 col-lg-4">
 												<ul class="list-group list-group-unbordered">
 													<li class="list-group-item item_border">Article <a
 														class="pull-right show-text-detail">[{{cases.articleId}}]{{cases.articleTitle}}</a>

@@ -34,26 +34,8 @@ var username = "${SESSION}";
 var dataCase = [];
 app.controller('caseController',['$scope','$http',function($scope, $http){	
 	$scope.dataCase = [];
-	angular.element(document).ready(function () {					
-		setTimeout(function(){
-			$("#ca_type").select2("val",$scope.dataCase.caseTypeId);	
-			$("#ca_status").select2("val",$scope.dataCase.statusId);
-			$("#ca_priority").select2("val",$scope.dataCase.priorityId);
-			$("#ca_assignTo").select2("val",$scope.dataCase.userID);
-			$("#ca_customer").select2("val",$scope.dataCase.custID);
-			$("#ca_contact").select2("val",$scope.dataCase.conID);
-			$("#ca_product").select2("val",$scope.dataCase.caseItemId);	
-			$("#ca_origin").select2("val",$scope.dataCase.caseOriginId);
-			$("#ca_followup_date").val($scope.dataCase.followupDate);
-			
-			
-			$('#form-case').data('bootstrapValidator').resetField($('#ca_type'));
-			$('#form-case').data('bootstrapValidator').resetField($('#ca_status'));
-			$('#form-case').data('bootstrapValidator').resetField($('#ca_priority'));
-			//$('#form-case').data('bootstrapValidator').resetField($('#ca_origin'));
-			
-			
-		}, 2000);
+	angular.element(document).ready(function () {	
+		
     });
 	
 	$scope.startupPage = function(){
@@ -67,8 +49,25 @@ app.controller('caseController',['$scope','$http',function($scope, $http){
 			$scope.assignTo = response.ASSIGN_TO;
 			$scope.dataCase = response.CASE;
 			$scope.items = response.ITEMS;
-			
-			
+
+			setTimeout(function(){
+				$("#ca_type").select2("val",$scope.dataCase.caseTypeId);	
+				$("#ca_status").select2("val",$scope.dataCase.statusId);
+				$("#ca_priority").select2("val",$scope.dataCase.priorityId);
+				$("#ca_assignTo").select2("val",$scope.dataCase.userID);
+				$("#ca_customer").select2("val",$scope.dataCase.custID);
+				$("#ca_contact").select2("val",$scope.dataCase.conID);
+				$("#ca_product").select2("val",$scope.dataCase.caseItemId);	
+				$("#ca_origin").select2("val",$scope.dataCase.caseOriginId);
+				$("#ca_followup_date").val($scope.dataCase.followupDate);
+				
+				
+				$('#form-case').data('bootstrapValidator').resetField($('#ca_type'));
+				$('#form-case').data('bootstrapValidator').resetField($('#ca_status'));
+				$('#form-case').data('bootstrapValidator').resetField($('#ca_priority'));
+				//$('#form-case').data('bootstrapValidator').resetField($('#ca_origin'));
+				
+			}, 500);
 		});
 	};			
 }]);
@@ -236,7 +235,7 @@ $(document).ready(function() {
 		<div class="box box-danger">			
 			<div class="box-body">			
 				<form method="post" id="form-case" data-ng-init="startupPage()">	
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: -5px;">
 						<button type="button" class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</button> 
 						<a class="btn btn-info btn-app" id="btn_reload"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
 						<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-cases"> <i class="fa fa-reply"></i> Back </a>

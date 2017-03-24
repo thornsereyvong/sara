@@ -1066,7 +1066,6 @@ $(function(){
 						}
 					}
 				}
-				
 			}
 		}).on('success.form.bv', function(e) {		
 			var addPost = { "tags" : getTags("collabTags","username"), "colDes" : getValueStringById("collabPostDescription"), "colUser": username, "colRelatedToModuleName":typeModule, "colRelatedToModuleId":oppId};
@@ -1114,16 +1113,8 @@ $(function(){
 					});
 				}, 500);
 			});
-			
-					
 		});
 		
-
-
-
-	
-	
-	
 	$("#listItem").sortable();
     $("#listItem").disableSelection();
 	
@@ -1251,28 +1242,6 @@ $(function(){
 			},
 		}
 	});
-    
-    
-    
-    
-    
-    
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	$('#frmOpportDetail').bootstrapValidator({
 		message: 'This value is not valid',
