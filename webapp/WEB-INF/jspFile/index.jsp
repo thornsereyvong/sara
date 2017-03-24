@@ -302,7 +302,7 @@
 							</tr>
 							<tr>
 								<td colspan="8">
-									<div class="box-tools pull-right">
+									<div class="box-tools">
 										<dir-pagination-controls  pagination-id="camp_id" 
 									       max-size="pageSize.row"
 									       direction-links="true"
@@ -363,7 +363,7 @@
 								</tr>
 								<tr>
 									<td colspan="6">
-										<div class="box-tools pull-right">
+										<div class="box-tools">
 											<dir-pagination-controls  pagination-id="lead_id" 
 										       max-size="pageSize.row"
 										       direction-links="true"
@@ -427,7 +427,7 @@
 									</tr>
 									<tr>
 										<td colspan="6">
-											<div class="box-tools pull-right">
+											<div class="box-tools">
 												<dir-pagination-controls  pagination-id="cust_id" 
 											       max-size="pageSize.row"
 											       direction-links="true"
@@ -490,7 +490,7 @@
 									</tr>
 									<tr>
 										<td colspan="6">
-											<div class="box-tools pull-right">
+											<div class="box-tools">
 												<dir-pagination-controls  pagination-id="con_id" 
 											       max-size="pageSize.row"
 											       direction-links="true"
@@ -555,7 +555,7 @@
 									</tr>
 									<tr>
 										<td colspan="7">
-											<div class="box-tools pull-right">
+											<div class="box-tools">
 												<dir-pagination-controls  pagination-id="opp_id" 
 											       max-size="pageSize.row"
 											       direction-links="true"
@@ -612,13 +612,13 @@
 										<td ng-if="call.callRelatedToType == ''">-</td>
 										<td ng-if=" call.callRelatedToType != '' "><span ><span class="badge bg-red">{{call.callRelatedToType}}</span> <span>[{{call.callRelatedToId}}] {{call.callRelatedTo}}</span></span></td>
 										<td>{{call.callStartDate}}</td>
-										<td>{{call.callDuration}} min</td>
+										<td>{{call.callDuration}} h</td>
 										<td>{{call.callStatus}}</td>
 										
 									</tr>
 									<tr>
 										<td colspan="6">
-											<div class="box-tools pull-right">
+											<div class="box-tools">
 												<dir-pagination-controls  pagination-id="call_id" 
 											       max-size="pageSize.row"
 											       direction-links="true"
@@ -684,7 +684,7 @@
 									</tr>
 									<tr>
 										<td colspan="7">
-											<div class="box-tools pull-right">
+											<div class="box-tools">
 												<dir-pagination-controls  pagination-id="meet_id" 
 											       max-size="pageSize.row"
 											       direction-links="true"
@@ -749,7 +749,7 @@
 								</tr>
 								<tr>
 									<td colspan="7">
-										<div class="box-tools pull-right">
+										<div class="box-tools">
 											<dir-pagination-controls  pagination-id="task_id" 
 										       max-size="pageSize.row"
 										       direction-links="true"
@@ -805,7 +805,7 @@
 								</tr>
 								<tr>
 									<td colspan="4">
-										<div class="box-tools pull-right">
+										<div class="box-tools">
 											<dir-pagination-controls  pagination-id="note_id" 
 										       max-size="pageSize.row"
 										       direction-links="true"
@@ -868,7 +868,7 @@
 								</tr>
 								<tr>
 									<td colspan="7">
-										<div class="box-tools pull-right">
+										<div class="box-tools">
 											<dir-pagination-controls  pagination-id="event_id" 
 										       max-size="pageSize.row"
 										       direction-links="true"
@@ -931,7 +931,7 @@
 								</tr>
 								<tr>
 									<td colspan="7">
-										<div class="box-tools pull-right">
+										<div class="box-tools">
 											<dir-pagination-controls  pagination-id="lead_id" 
 										       max-size="pageSize.row"
 										       direction-links="true"
@@ -990,7 +990,7 @@
 								</tr>
 								<tr>
 									<td colspan="6">
-										<div class="box-tools pull-right">
+										<div class="box-tools">
 											<dir-pagination-controls  pagination-id="quote_id" 
 										       max-size="pageSize.row"
 										       direction-links="true"
@@ -1047,7 +1047,7 @@
 								</tr>
 								<tr>
 									<td colspan= "5">
-										<div class="box-tools pull-right">
+										<div class="box-tools">
 											<dir-pagination-controls  pagination-id="sale_id" 
 										       max-size="pageSize.row"
 										       direction-links="true"
