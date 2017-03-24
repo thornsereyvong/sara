@@ -21,7 +21,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmAccountType;
 import com.app.entities.MeDataSource;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -29,9 +28,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping(value="/")
 public class CrmAccountTypeController {
 	
-	//private final String URL = "";
-	@Autowired
-	private ObjectMapper objectMapper;
 	
 	@Autowired
 	private RestTemplate  restTemplate;
