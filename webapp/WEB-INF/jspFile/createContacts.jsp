@@ -346,14 +346,14 @@ $(document).ready(function() {
 							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label>Phone <span class="requrie">(Required)</span></label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="con_phone" name="con_phone">
+									<input type="tel"  class="form-control" id="con_phone" name="con_phone">
 								</div>	
 							</div>
 							<div class="clearfix hidden-lg hidden-sm"></div>						
 							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 								<label class="font-label">Mobile phone :</label>
 								<div class="form-group">
-									<input type="text"  class="form-control" id="con_mobilePhone" name="con_mobilePhone">
+									<input type="tel"  class="form-control" id="con_mobilePhone" name="con_mobilePhone">
 								</div>	
 							</div>
 							

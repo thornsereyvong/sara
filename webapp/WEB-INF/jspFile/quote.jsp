@@ -112,6 +112,7 @@
 								</div>
 							</div>
 						</div>
+						
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
 							<div class="form-group">
 								<label>Expire Date<span class="requrie"> (Required)</span></label>
@@ -450,14 +451,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Quantity <span class="requrie">(Required)</span></label>
-												<input id="oppQty"  onchange="oppQtyChange(this)"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type="text"
+												<input id="oppQty"  onchange="oppQtyChange(this)"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Unit Price <span class="requrie">(Required)</span></label>
-												<input onblur="fToNumber(this, 6)" onkeypress='return isNumeric(this,event)' onchange="oppUnitPriceChange(this)" id="oppUnitPrice" name="oppUnitPrice" class="form-control" type="text"
+												<input onblur="fToNumber(this, 6)" onkeypress='return isNumeric(this,event)' onchange="oppUnitPriceChange(this)" id="oppUnitPrice" name="oppUnitPrice" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
@@ -466,14 +467,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Price Factor<span class="requrie">(Required)</span></label>
-												<input id="oppPriceFactor" onblur="fToNumber(this, 4)" onchange="oppPriceFactorChange(this)" onkeypress='return isNumeric(this,event)'  name="oppPriceFactor" class="form-control" type="text"
+												<input id="oppPriceFactor" onblur="fToNumber(this, 4)" onchange="oppPriceFactorChange(this)" onkeypress='return isNumeric(this,event)'  name="oppPriceFactor" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Report Price</label>
-												<input id="oppReportPrice" ng-model="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type="text"
+												<input id="oppReportPrice" ng-model="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
@@ -482,7 +483,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Total Amount</label>
-												<input id="oppTAmount"   ng-model="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type="text"
+												<input id="oppTAmount"   ng-model="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
@@ -491,14 +492,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Discount %</label>
-												<input ng-model="oppDisPer" onblur="fToNumber(this, 5)" onchange="oppDisPerChange()" onkeypress='return isPersent(this,event)' id="oppDisPer" name="oppDisPer" class="form-control" type="text"
+												<input ng-model="oppDisPer" onblur="fToNumber(this, 5)" onchange="oppDisPerChange()" onkeypress='return isPersent(this,event)' id="oppDisPer" name="oppDisPer" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Discount $</label>
-												<input ng-model="oppDisDol" onblur="fToNumber(this, 2)" onchange="oppDisDolChange()" id="oppDisDol" onkeypress='return isNumeric(this,event)' name="oppDisDol" class="form-control" type="text"
+												<input ng-model="oppDisDol" onblur="fToNumber(this, 2)" onchange="oppDisDolChange()" id="oppDisDol" onkeypress='return isNumeric(this,event)' name="oppDisDol" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
@@ -506,14 +507,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>VAT %</label>
-												<input ng-model="oppVatPer" onblur="fToNumber(this, 5)" onchange="oppVatPerChange()" onkeypress='return isPersent(this,event)' id="oppVatPer" name="oppVatPer" class="form-control" type="text"
+												<input ng-model="oppVatPer" onblur="fToNumber(this, 5)" onchange="oppVatPerChange()" onkeypress='return isPersent(this,event)' id="oppVatPer" name="oppVatPer" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>VAT $</label>
-												<input ng-model="oppVatDol" onblur="fToNumber(this, 2)" onchange="oppVatDolChange()" id="oppVatDol" onkeypress='return isNumeric(this,event)' name="oppVatDol" class="form-control" type="text"
+												<input ng-model="oppVatDol" onblur="fToNumber(this, 2)" onchange="oppVatDolChange()" id="oppVatDol" onkeypress='return isNumeric(this,event)' name="oppVatDol" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
@@ -521,14 +522,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>ST %</label>
-												<input ng-model="oppSTPer" onblur="fToNumber(this, 5)" onchange="oppSTPerChange()" onkeypress='return isPersent(this,event)' id="oppSTPer" name="oppSTPer" class="form-control" type="text"
+												<input ng-model="oppSTPer" onblur="fToNumber(this, 5)" onchange="oppSTPerChange()" onkeypress='return isPersent(this,event)' id="oppSTPer" name="oppSTPer" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>ST $</label>
-												<input ng-model="oppSTDol" onblur="fToNumber(this, 2)" onchange="oppSTDolChange()" id="oppSTDol" onkeypress='return isNumeric(this,event)' name="oppSTDol" class="form-control" type="text"
+												<input ng-model="oppSTDol" onblur="fToNumber(this, 2)" onchange="oppSTDolChange()" id="oppSTDol" onkeypress='return isNumeric(this,event)' name="oppSTDol" class="form-control" type='number' step='0.01'
 												placeholder="">
 											</div>
 										</div>
@@ -732,11 +733,11 @@
 		
 		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><select onfocusout='actUomChange(this)' onChange='actUomChange(this)' name='uom' title='UOM is required.' id='uom"+index+"' class=\"form-control select2\" style=\"width:100% !important;display:none !important;\"><option selected='selected' value=''>-- SELECT AN UOM --</option>"+tagUom+"</select></div></td>";			
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' type='text' placeholder='' /></div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' type='number' step='0.01' placeholder='' /></div></td>";
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' type='text' placeholder='' /> </div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' type='number' step='0.01' placeholder='' /> </div></td>";
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' type='text' placeholder=''> </div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' type='number' step='0.01' placeholder=''> </div></td>";
 		
 		// hidden field
 		
