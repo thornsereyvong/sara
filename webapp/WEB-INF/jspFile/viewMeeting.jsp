@@ -482,7 +482,7 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 													<form id="frmLeadDetail">
 														<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Create By<a
+																<li class="list-group-item item_border">Created By<a
 																	class="pull-right show-text-detail">{{meet.meetingCreateBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -491,7 +491,7 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Create Date <a
+																<li class="list-group-item item_border">Created Date <a
 																	class="pull-right show-text-detail">{{meet.meetingCreateDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -500,7 +500,7 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item ">Modify By<a
+																<li class="list-group-item item_border">Modified By<a
 																	class="pull-right show-text-detail">{{meet.meetingModifiedBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -509,7 +509,7 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a ng-if="meet.meetingModifiedBy != null"
+																<li class="list-group-item item_border">Modified Date <a ng-if="meet.meetingModifiedBy != null"
 																	class="pull-right show-text-detail">{{meet.meetingModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"

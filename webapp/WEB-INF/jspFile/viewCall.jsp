@@ -381,7 +381,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 													<form id="frmLeadDetail">
 														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Create By<a
+																<li class="list-group-item ">Created By<a
 																	class="pull-right show-text-detail ng-cloak">{{call.callCreateBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -390,7 +390,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Create Date <a
+																<li class="list-group-item item_border">Created Date <a
 																	class="pull-right show-text-detail ng-cloak">{{call.callCreateDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -403,7 +403,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 														</div>
 														<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 															<ul class="list-group list-group-unbordered">																																
-																<li class="list-group-item ">Modify By<a
+																<li class="list-group-item ">Modified By<a
 																	class="pull-right show-text-detail ng-cloak">{{call.callModifiedBy}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"
@@ -412,7 +412,7 @@ app.controller('viewCallController',['$scope','$http',function($scope, $http){
 																		<div class="clearfix"></div>
 																	</div>
 																</li>
-																<li class="list-group-item item_border">Modify Date <a ng-if="call.callModifiedBy != null"
+																<li class="list-group-item item_border">Modified Date <a ng-if="call.callModifiedBy != null"
 																	class="pull-right show-text-detail ng-cloak">{{call.callModifiedDate | date:'dd/MM/yyyy h:mma'}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_firstName"

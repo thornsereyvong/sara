@@ -175,7 +175,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 											<td ng-if="cc.noteRelatedToModuleId == ''">-</td>
 											<td ng-if="cc.noteRelatedToModuleId != ''">[{{cc.noteRelatedToModuleId}}] {{cc.noteRelatedToModuleType}}</td>
 											<td ng-if="cc.noteDes == ''">-</td>
-											<td ng-if="cc.noteDes != ''">{{cc.noteDes}}</td>
+											<td ng-if="cc.noteDes != ''">{{cc.noteDes.trunc(20)}}</td>
 											<td class="text-center" style="min-width: 100px;">
 												<a href="${pageContext.request.contextPath}/update-note/{{cc.noteId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 												<a href="#" ng-click="deleteCon(cc.noteId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
