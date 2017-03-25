@@ -380,8 +380,8 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-								<div class="clearfix"></div>
 							</div>
+							<div class="clearfix"></div>
 							<div class="col-sm-12">
 								<div class="col-sm-12">
 									<label class="font-label">Description </label>

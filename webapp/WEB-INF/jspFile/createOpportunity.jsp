@@ -368,9 +368,7 @@ $(document).ready(function() {
 										</select>
 									</div>
 								</div>
-							</div>	
-							<div class="col-sm-12">
-								<div class="col-sm-12">
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 									<label class="font-label">Description </label>
 									<div class="form-group">
 										<textarea rows="3" cols="" name="cam_description" id="cam_description"
