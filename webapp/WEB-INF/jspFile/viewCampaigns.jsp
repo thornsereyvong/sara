@@ -73,7 +73,7 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				$scope.lOpportunity=0;
 			}			
 			$scope.listNote1(response.NOTES);
-			$scope.leadList = response.LEAD;
+			$scope.leadList = response.LEADS;
 			
 			userAllList($scope.oppAssignTo,'#callAssignTo','');
 			userAllList($scope.oppAssignTo,'#meetAssignTo','');
@@ -1678,8 +1678,8 @@ function addDataToDetailLead(){
 																					<td><a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}">{{opp.opId}}</a></td>
 																					<td>{{opp.opName}}</td>
 																					<td>[{{opp.custID}}] {{opp.custName}}</td>
-																					<td>{{opp.opStageId.osName}}</td>
-																					<td>{{opp.opAmount | number:2}}</td>
+																					<td>{{opp.stageName}}</td>
+																					<td><span>$</span>{{opp.opAmount | number:2}}</td>
 																					<td>{{opp.opCloseDate | date:'dd/MM/yyyy'}}</td>
 																					<td class="text-center mailbox-date" style="min-width: 100px;">
 																						<a href="${pageContext.request.contextPath}/update-opportunity/{{opp.opId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
