@@ -69,17 +69,17 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 			$http.get('${pageContext.request.contextPath}/customer/view/'+username+"/"+oppId).success(function(data){
 				$scope.response = response = data;
 				
-				$scope.opportunity = response.CUSTOMER.opportunities;
+				$scope.opportunity = response.OPPORTUNITIES;
 				$scope.customer = response.CUSTOMER;
 				curAssign = fmNull(response.CUSTOMER.assignToUsername);
 				ownerItem = "";
 				
 				$scope.listNote1(response.NOTES);
 				
-				$scope.contactList = response.CUSTOMER.contacts;
-				$scope.caseList = response.CUSTOMER.cases;
-				$scope.quoteList = response.CUSTOMER.quotes;
-				$scope.saleOrderList = response.CUSTOMER.saleOrders;
+				$scope.contactList = response.CONTACT_RELATED_TO;
+				$scope.caseList = response.CASES;
+				$scope.quoteList = response.QUOTES;
+				$scope.saleOrderList = response.SALE_ORDERS;
 				
 				userAllList(response.ASSIGN_TO,'#callAssignTo','');
 				userAllList(response.ASSIGN_TO,'#meetAssignTo','');
@@ -1749,8 +1749,8 @@ function addDataToDetailLead(){
 																				<tr>
 																					<td><a href="${pageContext.request.contextPath}/view-opportunity/{{opp.opId}}">{{opp.opId}}</a></td>
 																					<td>{{opp.opName}}</td>
-																					<td>{{opp.opStageId.osName}}</td>
-																					<td>{{opp.opAmount | number:2}}</td>
+																					<td>{{opp.stageName}}</td>
+																					<td><span>$</span>{{opp.opAmount | number:2}}</td>
 																					<td>{{opp.opCloseDate | date:'dd/MM/yyyy'}}</td>
 																					<td class="text-center mailbox-date" style="min-width: 100px;">
 																						<a href="${pageContext.request.contextPath}/update-opportunity/{{opp.opId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
@@ -1792,11 +1792,11 @@ function addDataToDetailLead(){
 																			<tbody dir-paginate="con in contactList|itemsPerPage:5" pagination-id="contactId">
 																				<tr>
 																					<td><a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}">{{con.conID}}</a></td>
-																					<td>{{con.conSalutation}}{{con.conFirstname}} {{con.conLastname}}</td>
+																					<td>{{con.fullName}}</td>
 																					<td>{{con.conTitle}}</td>
 																					<td>{{con.conDepartment}}</td>
 																					<td>{{con.conPhone}}</td>
-																					<td>{{con.conEmial}}</td>
+																					<td>{{con.conEmail}}</td>
 																					<td class="text-center mailbox-date" style="min-width: 100px;">
 																						<a href="${pageContext.request.contextPath}/update-contact/{{con.conID}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 																						<a href="${pageContext.request.contextPath}/view-contact/{{con.conID}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
@@ -1838,10 +1838,10 @@ function addDataToDetailLead(){
 																				<tr>
 																					<td><a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}">{{case.caseId}}</a></td>
 																					<td>{{case.subject.trunc(20)}}</td>
-																					<td>{{case.status.statusName}}</td>
-																					<td>{{case.priority.priorityName}}</td>
-																					<td>[{{case.item.itemId}}] {{case.item.itemName}}</td>
-																					<td>{{case.convertCreateDate}}</td>
+																					<td>{{case.statusName}}</td>
+																					<td>{{case.priorityName}}</td>
+																					<td>[{{case.itemId}}] {{case.itemName}}</td>
+																					<td>{{case.createDate}}</td>
 																					<td class="text-center mailbox-date" style="min-width: 100px;">
 																						<a href="${pageContext.request.contextPath}/update-case/{{case.caseId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 																						<a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
