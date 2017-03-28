@@ -1735,7 +1735,7 @@ function addDataToDetailLead(){
 																					<th class="text-center">Action</th>
 																				</tr>
 																			</thead>
-																			<tbody ng-repeat="l in leadList">
+																			<tbody dir-paginate="l in leadList|itemsPerPage:5" pagination-id="leadId">
 																				<tr>
 																					<td><a href="${pageContext.request.contextPath}/view-lead/{{l.leadId}}">{{l.leadId}}</a></td>
 																					<td>{{l.fullName}}</td>
@@ -1751,6 +1751,7 @@ function addDataToDetailLead(){
 																			</tbody>
 																		</table>
 																	</div>
+																	<dir-pagination-controls pagination-id="leadId" max-size="5" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 																</div>
 															</div>
 														</div>

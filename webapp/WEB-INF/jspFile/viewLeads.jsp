@@ -1509,14 +1509,12 @@ function addDataToDetailLead(){
 												ng-repeat="notePerDate in noteToFilter() | filter:filterNote">
 
 												<!-- START DATE -->
-												<li class="time-label"><span class="bg-red">{{notePerDate.noteCreateDate}}</span>
-												</li>
-												<li
-													ng-repeat="note in notes | filter:{noteCreateDate: notePerDate.noteCreateDate}">
+												<li class="time-label"><span class="bg-red">{{notePerDate.createDate}}</span></li>
+												<li ng-repeat="note in notes | filter:{createDate: notePerDate.createDate}">
 													<i class="fa  fa-edit bg-blue"></i>
 													<div class="timeline-item">
 														<span class="time"><i class="fa fa-clock-o"></i>
-															&nbsp;{{notePerDate.noteTime}}</span>
+															&nbsp;{{notePerDate.createTime}}</span>
 														<h3 class="timeline-header">
 															{{note.noteSubject}} <a style="font-size: 12px;">by {{note.noteCreateBy}}</a>
 														</h3>
