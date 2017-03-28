@@ -450,10 +450,8 @@ function priceFactorChange(obj,l){
 		num =1;
 	}
 	
-	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-	
-	calculateByItem(n);
-	
+	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");	
+	calculateByItem(n);	
 	totalSalOrd();
 	showOneLocation(n);
 }
@@ -464,10 +462,8 @@ function upChange(obj,l){
 	
 	obj.value = num.toFixed(l).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 	
-	calculateByItem(n);
-	
-	totalSalOrd();
-	
+	calculateByItem(n);	
+	totalSalOrd();	
 	showOneLocation(n);
 	
 }
@@ -1513,3 +1509,14 @@ function findIndexCutomer(custId){
 	
 	return '';
 }
+
+function disAllItem(type){
+	if(type == '%'){
+		
+		
+		
+	}else if(type == '$'){
+		
+	}
+}
+

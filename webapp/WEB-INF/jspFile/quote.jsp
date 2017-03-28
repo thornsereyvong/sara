@@ -179,20 +179,30 @@
 					</div>
 				</div>
 			</div>
-			<br><br>
+			
 			<div class="box-footer" style="border-top: 1px solid #d8d8d8;">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="row">
 						<div class="col-lg-3 pull-right">
-							<div class="row">
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
-									<div class="form-group">
-										<label>Total Quote</label> 
-										<input disabled id="txtTSalOrd" class="form-control text-align-right" type="text" placeholder="">
-									</div>
-								</div>
+							<div class="row">															
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
 									<label>Discount<span></span></label> 
+									<div class="input-group">
+					                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
+					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
+					                  </div>
+					                  <br>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
+									<label>Specific Tax<span></span></label> 
+									<div class="input-group">
+					                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
+					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
+					                  </div>
+					                  <br>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
+									<label>VAT<span></span></label> 
 									<div class="input-group">
 					                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
 					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
@@ -204,39 +214,11 @@
 										<label> Net Total Amount <span></span></label> 
 										<input disabled id="txtNetInv" class="form-control text-align-right" type="text" placeholder="">
 									</div>
-								</div>
+								</div>								
 							</div>
 						</div>
 						<div class="col-lg-7">
-							<div class="row">
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="display:none;">
-										<label>Total Payment To Date</label> 
-										
-									<div class="input-group">
-					                    <span class="input-group-addon" style="cursor:pointer"><i class="fa  fa-play"></i></span>
-					                    <input disabled type="text" id="txtTPTDate" class="form-control text-align-right" placeholder="">
-					                  </div>
-					                  <br>
-								</div>
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="display:none;">
-									<div class="form-group">
-										<label>Amount Due</label> 
-										<input disabled id="txtAmtDue" class="form-control text-align-right" type="text" placeholder="">
-									</div>
-								</div>
-								<div class="clearfix"></div>
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-									<div class="form-group">
-										<label>Total Specific Tax</label> 
-										<input disabled class="form-control" id="txtTST" type="text" placeholder="">
-									</div>
-								</div>
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-									<div class="form-group">
-										<label>Total VAT</label> 
-										<input disabled id="txtTVAT" class="form-control" type="text" placeholder="">
-									</div>
-								</div>
+							<div class="row">																					
 								<div class="clearfix"></div>
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 									<div class="form-group">
@@ -368,14 +350,17 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Discount Invoice</h4>
+							<h4 class="modal-title">Discount</h4>
 						</div>
 						<div class="modal-body">
 							<div class="form-group">
-								<label>Discount Invoice % :</label> 
-								<input id="txtDisInv" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
+								<label>Discount % :</label> 
+								<input id="txtDisInv" onkeyup="disAllItem('%')" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
 							</div>
-							
+							<div class="form-group">
+								<label>Discount $ :</label> 
+								<input id="txtDisInv" onkeyup="disAllItem('$')" onkeypress='return isNumeric(this,event)' class="form-control" type="text" placeholder="">
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" id="btnInvDisCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
@@ -451,14 +436,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Quantity <span class="requrie">(Required)</span></label>
-												<input id="oppQty"  onchange="oppQtyChange(this)"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type='number' step='0.01'
+												<input id="oppQty"  onchange="oppQtyChange(this)"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Unit Price <span class="requrie">(Required)</span></label>
-												<input onblur="fToNumber(this, 6)" onkeypress='return isNumeric(this,event)' onchange="oppUnitPriceChange(this)" id="oppUnitPrice" name="oppUnitPrice" class="form-control" type='number' step='0.01'
+												<input onblur="fToNumber(this, 6)" onkeypress='return isNumeric(this,event)' onchange="oppUnitPriceChange(this)" id="oppUnitPrice" name="oppUnitPrice" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
@@ -467,14 +452,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Price Factor<span class="requrie">(Required)</span></label>
-												<input id="oppPriceFactor" onblur="fToNumber(this, 4)" onchange="oppPriceFactorChange(this)" onkeypress='return isNumeric(this,event)'  name="oppPriceFactor" class="form-control" type='number' step='0.01'
+												<input id="oppPriceFactor" onblur="fToNumber(this, 4)" onchange="oppPriceFactorChange(this)" onkeypress='return isNumeric(this,event)'  name="oppPriceFactor" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Report Price</label>
-												<input id="oppReportPrice" ng-model="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type='number' step='0.01'
+												<input id="oppReportPrice" ng-model="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
@@ -483,7 +468,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Total Amount</label>
-												<input id="oppTAmount"   ng-model="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type='number' step='0.01'
+												<input id="oppTAmount"   ng-model="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
@@ -492,14 +477,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Discount %</label>
-												<input ng-model="oppDisPer" onblur="fToNumber(this, 5)" onchange="oppDisPerChange()" onkeypress='return isPersent(this,event)' id="oppDisPer" name="oppDisPer" class="form-control" type='number' step='0.01'
+												<input ng-model="oppDisPer" onblur="fToNumber(this, 5)" onchange="oppDisPerChange()" onkeypress='return isPersent(this,event)' id="oppDisPer" name="oppDisPer" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Discount $</label>
-												<input ng-model="oppDisDol" onblur="fToNumber(this, 2)" onchange="oppDisDolChange()" id="oppDisDol" onkeypress='return isNumeric(this,event)' name="oppDisDol" class="form-control" type='number' step='0.01'
+												<input ng-model="oppDisDol" onblur="fToNumber(this, 2)" onchange="oppDisDolChange()" id="oppDisDol" onkeypress='return isNumeric(this,event)' name="oppDisDol" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
@@ -507,14 +492,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>VAT %</label>
-												<input ng-model="oppVatPer" onblur="fToNumber(this, 5)" onchange="oppVatPerChange()" onkeypress='return isPersent(this,event)' id="oppVatPer" name="oppVatPer" class="form-control" type='number' step='0.01'
+												<input ng-model="oppVatPer" onblur="fToNumber(this, 5)" onchange="oppVatPerChange()" onkeypress='return isPersent(this,event)' id="oppVatPer" name="oppVatPer" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>VAT $</label>
-												<input ng-model="oppVatDol" onblur="fToNumber(this, 2)" onchange="oppVatDolChange()" id="oppVatDol" onkeypress='return isNumeric(this,event)' name="oppVatDol" class="form-control" type='number' step='0.01'
+												<input ng-model="oppVatDol" onblur="fToNumber(this, 2)" onchange="oppVatDolChange()" id="oppVatDol" onkeypress='return isNumeric(this,event)' name="oppVatDol" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
@@ -522,14 +507,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>ST %</label>
-												<input ng-model="oppSTPer" onblur="fToNumber(this, 5)" onchange="oppSTPerChange()" onkeypress='return isPersent(this,event)' id="oppSTPer" name="oppSTPer" class="form-control" type='number' step='0.01'
+												<input ng-model="oppSTPer" onblur="fToNumber(this, 5)" onchange="oppSTPerChange()" onkeypress='return isPersent(this,event)' id="oppSTPer" name="oppSTPer" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>ST $</label>
-												<input ng-model="oppSTDol" onblur="fToNumber(this, 2)" onchange="oppSTDolChange()" id="oppSTDol" onkeypress='return isNumeric(this,event)' name="oppSTDol" class="form-control" type='number' step='0.01'
+												<input ng-model="oppSTDol" onblur="fToNumber(this, 2)" onchange="oppSTDolChange()" id="oppSTDol" onkeypress='return isNumeric(this,event)' name="oppSTDol" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
@@ -733,11 +718,11 @@
 		
 		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><select onfocusout='actUomChange(this)' onChange='actUomChange(this)' name='uom' title='UOM is required.' id='uom"+index+"' class=\"form-control select2\" style=\"width:100% !important;display:none !important;\"><option selected='selected' value=''>-- SELECT AN UOM --</option>"+tagUom+"</select></div></td>";			
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' type='number' step='0.01' placeholder='' /></div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' type='text' step='0.01' placeholder='' /></div></td>";
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' type='number' step='0.01' placeholder='' /> </div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' type='text' step='0.01' placeholder='' /> </div></td>";
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' type='number' step='0.01' placeholder=''> </div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' type='text' step='0.01' placeholder=''> </div></td>";
 		
 		// hidden field
 		

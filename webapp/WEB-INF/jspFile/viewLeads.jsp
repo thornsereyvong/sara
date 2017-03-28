@@ -1514,7 +1514,7 @@ function addDataToDetailLead(){
 													<i class="fa  fa-edit bg-blue"></i>
 													<div class="timeline-item">
 														<span class="time"><i class="fa fa-clock-o"></i>
-															&nbsp;{{notePerDate.createTime}}</span>
+															&nbsp;{{note.createTime}}</span>
 														<h3 class="timeline-header">
 															{{note.noteSubject}} <a style="font-size: 12px;">by {{note.noteCreateBy}}</a>
 														</h3>

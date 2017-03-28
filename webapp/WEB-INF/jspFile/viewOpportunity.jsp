@@ -2469,7 +2469,7 @@ function iSplitBySplint(obj){
 													<i class="fa  fa-edit bg-blue"></i>
 													<div class="timeline-item">
 														<span class="time"><i class="fa fa-clock-o"></i>
-															&nbsp;{{notePerDate.noteTime}}</span>
+															&nbsp;{{note.noteTime}}</span>
 														<h3 class="timeline-header">
 															{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
 														</h3>

@@ -1673,7 +1673,7 @@ function setSelect2ToResolveBy(value){
 												<i class="fa  fa-edit bg-blue"></i>
 												<div class="timeline-item">
 													<span class="time"><i class="fa fa-clock-o"></i>
-														&nbsp;{{notePerDate.createTime}}</span>
+														&nbsp;{{note.createTime}}</span>
 													<h3 class="timeline-header">
 														{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
 													</h3>
