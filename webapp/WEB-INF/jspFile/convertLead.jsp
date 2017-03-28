@@ -238,11 +238,7 @@ $(document).ready(function() {
 	
 	
 	$("#btn_clear").click(function(){
-		$("#ctrContact").data('bootstrapValidator').resetForm();
-		$("#ctrCustomer").data('bootstrapValidator').resetForm();
-		$('#frmCustomer').data('bootstrapValidator').resetForm();
-		$('#frmContact').data('bootstrapValidator').resetForm();
-		$('#frmOpportunity').data('bootstrapValidator').resetForm();
+		 location.reload();
 	});
 	
 	 $("#btn_save").click(function(){
@@ -781,7 +777,7 @@ color:#2196F3;
 				<div style="background: #fff;margin-top: 15px;">				
 				 <div class="col-sm-12">
 				 	<a class="btn btn-info btn-app" id="btn_save"> <i class="fa fa-save"></i> Save</a> 
-					<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Clear</a> 
+					<a class="btn btn-info btn-app"  id="btn_clear"> <i class="fa fa-refresh" aria-hidden="true"></i>Reload</a> 
 					<a class="btn btn-info btn-app" href="${pageContext.request.contextPath}/list-leads"> <i class="fa fa-reply"></i> Back </a>
 				 </div> 
 			</div>
