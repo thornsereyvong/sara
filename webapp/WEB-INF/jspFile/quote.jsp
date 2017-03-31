@@ -179,7 +179,7 @@
 					</div>
 				</div>
 			</div>
-			<br><br>
+			
 			<div class="box-footer" style="border-top: 1px solid #d8d8d8;">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="row">
@@ -282,85 +282,34 @@
 			
 			<div id="errors"></div>
 		</div>
-				
-			<input type="hidden" id="alertMes" data-toggle="modal" data-target="#myModal" />
-			<div class="modal fade modal-danger" id="myModal" role="dialog">
+			
+			<!-- start Discount Modal -->
+			<!-- <input type="hidden" id="invDisDia" data-toggle="modal" data-target="#frmInvDisDia" />
+			<div class="modal fade modal-default" id="frmInvDisDia" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Require Field!</h4>
+							<h4 class="modal-title">Discount</h4>
 						</div>
 						<div class="modal-body">
-							<p id="alertMsgText">Please input *field require.</p>
+							<div class="form-group">
+								<label>Discount % :</label> 
+								<input id="txtDisAllPer" onkeyup="disAllItem('%')" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>Discount $ :</label> 
+								<input id="txtDisAllDol" onkeyup="disAllItem('$')" onkeypress='return isNumeric(this,event)' class="form-control" type="text" placeholder="">
+							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-outline pull-right"
-								data-dismiss="modal">Close</button>
-
-						</div>
-					</div>
-
-				</div>
-			</div>
-			
-			<input type="hidden" id="alertMesError" data-toggle="modal" data-target="#myError" />
-			<div class="modal fade modal-danger" id="myError" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Error!</h4>
-						</div>
-						<div class="modal-body">
-							<p id="txtMyError">Please try again...</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<input type="hidden" id="alertMesSucess" data-toggle="modal" data-target="#mySuccess" />
-			<div class="modal fade modal-success" id="mySuccess" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-							<h4 class="modal-title">Successful!</h4>
-						</div>
-						<div class="modal-body">
-							<p id="txtResultSuccess"></p>
-						</div>
-						<div class="modal-footer">
-							<!-- <button type="button" id="btnSucCancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; -->
-							<button type="button" id="btnSucOk" class="btn btn-outline pull-right" data-dismiss="modal">Ok</button>
+							<button type="button" id="btnInvDisCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+							<button type="button" id="btnInvDisOk" class="btn btn-primary pull-right" data-dismiss="modal">OK</button>
 							
 						</div>
 					</div>
 				</div>
-			</div>
-			
-			<input type="hidden" id="alertMesConfirm" data-toggle="modal" data-target="#myConfirm" />
-			<div class="modal fade modal-info" id="myConfirm" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Confirmation!</h4>
-						</div>
-						<div class="modal-body">
-							<p>Are you sure you want to delete this line?</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" id="btnConfirmCancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
-							<button type="button" id="btnConfirmOk" class="btn btn-outline pull-right" data-dismiss="modal">Ok</button>
-							
-						</div>
-					</div>
-				</div>
-			</div>
+			</div> -->
 			
 			<input type="hidden" id="invDisDia" data-toggle="modal" data-target="#frmInvDisDia" />
 			<div class="modal fade modal-default" id="frmInvDisDia" role="dialog">
@@ -387,6 +336,68 @@
 			</div>
 			
 			
+			<!-- end Discount Modal -->
+			
+			<!-- start ST Modal -->
+			<!-- <input type="hidden" id="btnFrmSTAll" data-toggle="modal" data-target="#frmSTAll" />
+			<div class="modal fade modal-default" id="frmSTAll" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Specific Tax </h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Specific Tax % :</label> 
+								<input id="txtSTAllPer" onkeyup="STAllItem('%')" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>Specific Tax $ :</label> 
+								<input id="txtSTAllDol" onkeyup="STAllItem('$')" onkeypress='return isNumeric(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="btnSTAllCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+							<button type="button" id="btnSTAllOk" class="btn btn-primary pull-right" data-dismiss="modal">OK</button>
+							
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<!-- end ST Modal -->
+			
+			<!-- start VAT Modal -->
+			<!-- <input type="hidden" id="btnFrmVATAll" data-toggle="modal" data-target="#frmVATAll" />
+			<div class="modal fade modal-default" id="frmVATAll" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">VAT </h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>VAT % :</label> 
+								<input id="txtVATAllPer" onkeyup="VATAllItem('%')" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>VAT $ :</label> 
+								<input id="txtVATAllDol" onkeyup="VATAllItem('$')" onkeypress='return isNumeric(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="btnVATAllCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+							<button type="button" id="btnVATAllOk" class="btn btn-primary pull-right" data-dismiss="modal">OK</button>
+							
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<!-- end VAT Modal -->
+			
+			
+			<!-- start Add An Row Modal -->
 			<input type="hidden" id="btn_show_product" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmProduct" />
 			<div class="modal fade modal-default" id="frmProduct" role="dialog">
 				<div class="modal-dialog  modal-lg">
@@ -451,14 +462,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Quantity <span class="requrie">(Required)</span></label>
-												<input id="oppQty"  onchange="oppQtyChange(this)"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type='number' step='0.01'
+												<input id="oppQty"  onchange="oppQtyChange(this)"  onkeypress='return isNumeric(this,event)' name="oppQty" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Unit Price <span class="requrie">(Required)</span></label>
-												<input onblur="fToNumber(this, 6)" onkeypress='return isNumeric(this,event)' onchange="oppUnitPriceChange(this)" id="oppUnitPrice" name="oppUnitPrice" class="form-control" type='number' step='0.01'
+												<input onblur="fToNumber(this, 6)" onkeypress='return isNumeric(this,event)' onchange="oppUnitPriceChange(this)" id="oppUnitPrice" name="oppUnitPrice" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
@@ -467,14 +478,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Price Factor<span class="requrie">(Required)</span></label>
-												<input id="oppPriceFactor" onblur="fToNumber(this, 4)" onchange="oppPriceFactorChange(this)" onkeypress='return isNumeric(this,event)'  name="oppPriceFactor" class="form-control" type='number' step='0.01'
+												<input id="oppPriceFactor" onblur="fToNumber(this, 4)" onchange="oppPriceFactorChange(this)" onkeypress='return isNumeric(this,event)'  name="oppPriceFactor" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Report Price</label>
-												<input id="oppReportPrice" ng-model="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type='number' step='0.01'
+												<input id="oppReportPrice" ng-model="oppReportPrice" disabled="disabled"  name="oppReportPrice" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
@@ -483,7 +494,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Total Amount</label>
-												<input id="oppTAmount"   ng-model="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type='number' step='0.01'
+												<input id="oppTAmount"   ng-model="oppTAmount" disabled="disabled" name="oppTAmount" class="form-control" type='text' 
 												placeholder="">
 											</div>
 										</div>
@@ -492,14 +503,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Discount %</label>
-												<input ng-model="oppDisPer" onblur="fToNumber(this, 5)" onchange="oppDisPerChange()" onkeypress='return isPersent(this,event)' id="oppDisPer" name="oppDisPer" class="form-control" type='number' step='0.01'
+												<input ng-model="oppDisPer" onblur="fToNumber(this, 5)" onchange="oppDisPerChange()" onkeypress='return isPersent(this,event)' id="oppDisPer" name="oppDisPer" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Discount $</label>
-												<input ng-model="oppDisDol" onblur="fToNumber(this, 2)" onchange="oppDisDolChange()" id="oppDisDol" onkeypress='return isNumeric(this,event)' name="oppDisDol" class="form-control" type='number' step='0.01'
+												<input ng-model="oppDisDol" onblur="fToNumber(this, 2)" onchange="oppDisDolChange()" id="oppDisDol" onkeypress='return isNumeric(this,event)' name="oppDisDol" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
@@ -507,14 +518,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>VAT %</label>
-												<input ng-model="oppVatPer" onblur="fToNumber(this, 5)" onchange="oppVatPerChange()" onkeypress='return isPersent(this,event)' id="oppVatPer" name="oppVatPer" class="form-control" type='number' step='0.01'
+												<input ng-model="oppVatPer" onblur="fToNumber(this, 5)" onchange="oppVatPerChange()" onkeypress='return isPersent(this,event)' id="oppVatPer" name="oppVatPer" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>VAT $</label>
-												<input ng-model="oppVatDol" onblur="fToNumber(this, 2)" onchange="oppVatDolChange()" id="oppVatDol" onkeypress='return isNumeric(this,event)' name="oppVatDol" class="form-control" type='number' step='0.01'
+												<input ng-model="oppVatDol" onblur="fToNumber(this, 2)" onchange="oppVatDolChange()" id="oppVatDol" onkeypress='return isNumeric(this,event)' name="oppVatDol" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
@@ -522,14 +533,14 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>ST %</label>
-												<input ng-model="oppSTPer" onblur="fToNumber(this, 5)" onchange="oppSTPerChange()" onkeypress='return isPersent(this,event)' id="oppSTPer" name="oppSTPer" class="form-control" type='number' step='0.01'
+												<input ng-model="oppSTPer" onblur="fToNumber(this, 5)" onchange="oppSTPerChange()" onkeypress='return isPersent(this,event)' id="oppSTPer" name="oppSTPer" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>ST $</label>
-												<input ng-model="oppSTDol" onblur="fToNumber(this, 2)" onchange="oppSTDolChange()" id="oppSTDol" onkeypress='return isNumeric(this,event)' name="oppSTDol" class="form-control" type='number' step='0.01'
+												<input ng-model="oppSTDol" onblur="fToNumber(this, 2)" onchange="oppSTDolChange()" id="oppSTDol" onkeypress='return isNumeric(this,event)' name="oppSTDol" class="form-control" type='text'
 												placeholder="">
 											</div>
 										</div>
@@ -559,7 +570,9 @@
 					</div>
 				</div>
 			</div>
+			<!-- end Add An Row Modal -->
 			
+			<!-- start Credit Info Modal -->
 			<input type="hidden" id="btn_show_creditInfo" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCreditInfo" />
 			<div class="modal fade modal-default" id="frmCreditInfo" role="dialog">
 				<div class="modal-dialog  modal-lg">
@@ -635,7 +648,7 @@
 					</div>
 				</div>
 			</div>
-			
+			<!-- end Credit Info Modal -->
 	</section>
 	
 </div>
@@ -733,11 +746,11 @@
 		
 		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><select onfocusout='actUomChange(this)' onChange='actUomChange(this)' name='uom' title='UOM is required.' id='uom"+index+"' class=\"form-control select2\" style=\"width:100% !important;display:none !important;\"><option selected='selected' value=''>-- SELECT AN UOM --</option>"+tagUom+"</select></div></td>";			
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' type='number' step='0.01' placeholder='' /></div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='qtyChange(this,4)' onkeypress='return isNumeric(this,event)' title='Quantity is bigger than 0.'  name='qty' id='qty"+index+"' class='form-control' type='text' step='0.01' placeholder='' /></div></td>";
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' type='number' step='0.01' placeholder='' /> </div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input onfocusout='upChange(this,6)' onkeypress='return isNumeric(this,event)'  name='up' id='up"+index+"' class='form-control' type='text' step='0.01' placeholder='' /> </div></td>";
 		
-		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' type='number' step='0.01' placeholder=''> </div></td>";
+		addAnItem +="<td><div class='form-group' style='min-width:155px; margin-bottom: 0px;'><input disabled onfocusout='fmNum(this,2,0)' onkeypress='return isNumeric(this,event)'  name='nTAmt' id='nTAmt"+index+"' class='form-control' type='text' step='0.01' placeholder=''> </div></td>";
 		
 		// hidden field
 		

@@ -505,6 +505,12 @@ function calculateMeetingDuration(startDate, endDate, durationId, formId){
 	$("#"+formId+"").bootstrapValidator('revalidateField', durationId);
 }
 
+function calPersent(tAmount, amount){
+	return (amount != 0 && tamount !=0 && amount != 'undefined' && tAmount != 'undefined' && amount != null && tAmount != null) ? ((100*amount)/ tAmount) : 0 ;	
+}
+function calDolar(tAmount, persent){
+	return (persent != 0 && tamount !=0 && persent != 'undefined' && tAmount != 'undefined' && persent != null && tAmount != null) ? ((persent*tAmount)/ 100) : 0 ;	
+}
 $(function(){
 	$("#op_stage").change(function(){ $("#op_probability").val(probab[getInt("op_stage")]); });
 	$("#oppStage").change(function(){ $("#oppProbability").val(probab[getInt("oppStage")]); });	
