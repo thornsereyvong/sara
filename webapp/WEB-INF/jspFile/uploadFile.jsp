@@ -6,14 +6,14 @@
 <script type="text/javascript">
 		function saveMedia() {
 			$.ajax({
-				url : '${pageContext.request.contextPath}/upload',
+				url : '${pageContext.request.contextPath}/upload/temp/',
 				enctype : 'multipart/form-data',
 				data :  new FormData(document.getElementById("uploadImage")),
 				processData : false,
 				contentType : false,
 				type : 'POST',
 				success : function(data) {
-					alert(data.FILENAME);
+					alert(data.fileNames);
 				},
 				error : function(err) {
 					alert("error");
@@ -56,12 +56,6 @@
 				<div class="col-sm-12">
 					<hr style="margin-bottom: 5px; margin-top: 8px;" />
 				</div>
-				<div style="background: #fff; margin-top: 15px;">
-					<form enctype="multipart/form-data" id="uploadImage" method="POST">
-						File to upload: <input type="file" name="file" id="file"> 
-						<input type="button" value="Upload" id="submit"> Press here to upload the file!
-					</form>
-				</div>
 			</div>
 
 			<div class="box-body"
@@ -81,6 +75,12 @@
 								</div>
 							</form>
 							<br />
+							<div style="background: #fff; margin-top: 15px;">
+								<form enctype="multipart/form-data" id="uploadImage" method="POST">
+									File to upload: <input type="file" name="file" id="file"> 
+									<input type="button" value="Upload" id="submit"> Press here to upload the file!
+								</form>
+							</div>
 						</div>
 						<div class="clearfix"></div>
 					</div>

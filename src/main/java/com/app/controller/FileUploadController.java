@@ -33,18 +33,19 @@ public class FileUploadController {
 	private String URL;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@RequestMapping(value="/upload",method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> uploadImage(@RequestParam(value = "file", required = false) MultipartFile file){
+	@RequestMapping(value="/upload/{srcFolder}",method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> upload(@RequestParam(value = "file", required = false) MultipartFile file,@PathVariable("srcFolder") String srcFolder){
 		System.out.println("CALL");
 		LinkedMultiValueMap<String, Object> multipartMap = new LinkedMultiValueMap<String, Object>();
 		multipartMap.add("file", new MultipartFileResource(file, FilenameUtils.removeExtension(file.getOriginalFilename())));
 		header.setContentType(MediaType.MULTIPART_FORM_DATA);
 		HttpEntity<Object> request = new HttpEntity<Object>(multipartMap,header);
-		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/upload/image", HttpMethod.POST, request, Map.class);
+		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/upload/"+srcFolder, HttpMethod.POST, request, Map.class);
+		header.remove(HttpHeaders.CONTENT_TYPE);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	/*@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="/upload/{srcFolder}",method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> uploadAttachment(@RequestParam(value = "file", required = false) MultipartFile file, @PathVariable("srcFolder") String srcFolder){
 		LinkedMultiValueMap<String, Object> multipartMap = new LinkedMultiValueMap<String, Object>();
@@ -53,5 +54,5 @@ public class FileUploadController {
 		HttpEntity<Object> request = new HttpEntity<Object>(multipartMap,header);
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/upload/attachment/"+srcFolder, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
-	}
+	}*/
 }
