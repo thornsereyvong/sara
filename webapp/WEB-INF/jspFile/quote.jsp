@@ -184,45 +184,59 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="row">
 						<div class="col-lg-3 pull-right">
-							<div class="row">															
-								<div class="clearfix hidden-sm hidden-md"></div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
+									<div class="form-group">
+										<label>Total Quote</label> 
+										<input disabled id="txtTSalOrd" class="form-control text-align-right" type="text" placeholder="">
+									</div>
+								</div>
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
 									<label>Discount<span></span></label> 
 									<div class="input-group">
-					                    <span class="input-group-addon btn" id="ckDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
+					                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
 					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
 					                  </div>
 					                  <br>
 								</div>
-								<div class="clearfix hidden-sm hidden-md"></div>
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
-									<label>Specific Tax<span></span></label> 
-									<div class="input-group">
-					                    <span class="input-group-addon btn" id="ckST" style="cursor:pointer"><i class="fa  fa-play"></i></span>
-					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
-					                  </div>
-					                  <br>
-								</div>
-								<div class="clearfix hidden-sm hidden-md"></div>
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
-									<label>VAT<span></span></label> 
-									<div class="input-group">
-					                    <span class="input-group-addon btn" id="ckVAT" style="cursor:pointer"><i class="fa  fa-play"></i></span>
-					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
-					                  </div>
-					                  <br>
-								</div>
-								<div class="clearfix hidden-sm hidden-md"></div>
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
 									<div class="form-group">
 										<label> Net Total Amount <span></span></label> 
 										<input disabled id="txtNetInv" class="form-control text-align-right" type="text" placeholder="">
 									</div>
-								</div>								
+								</div>
 							</div>
 						</div>
 						<div class="col-lg-7">
-							<div class="row">																					
+							<div class="row">
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="display:none;">
+										<label>Total Payment To Date</label> 
+										
+									<div class="input-group">
+					                    <span class="input-group-addon" style="cursor:pointer"><i class="fa  fa-play"></i></span>
+					                    <input disabled type="text" id="txtTPTDate" class="form-control text-align-right" placeholder="">
+					                  </div>
+					                  <br>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="display:none;">
+									<div class="form-group">
+										<label>Amount Due</label> 
+										<input disabled id="txtAmtDue" class="form-control text-align-right" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>Total Specific Tax</label> 
+										<input disabled class="form-control" id="txtTST" type="text" placeholder="">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<div class="form-group">
+										<label>Total VAT</label> 
+										<input disabled id="txtTVAT" class="form-control" type="text" placeholder="">
+									</div>
+								</div>
 								<div class="clearfix"></div>
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 									<div class="form-group">
@@ -270,7 +284,7 @@
 		</div>
 			
 			<!-- start Discount Modal -->
-			<input type="hidden" id="invDisDia" data-toggle="modal" data-target="#frmInvDisDia" />
+			<!-- <input type="hidden" id="invDisDia" data-toggle="modal" data-target="#frmInvDisDia" />
 			<div class="modal fade modal-default" id="frmInvDisDia" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -295,11 +309,37 @@
 						</div>
 					</div>
 				</div>
+			</div> -->
+			
+			<input type="hidden" id="invDisDia" data-toggle="modal" data-target="#frmInvDisDia" />
+			<div class="modal fade modal-default" id="frmInvDisDia" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Discount Invoice</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Discount Invoice % :</label> 
+								<input id="txtDisInv" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+							
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="btnInvDisCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+							<button type="button" id="btnInvDisOk" class="btn btn-primary pull-right" data-dismiss="modal">Ok</button>
+							
+						</div>
+					</div>
+				</div>
 			</div>
+			
+			
 			<!-- end Discount Modal -->
 			
 			<!-- start ST Modal -->
-			<input type="hidden" id="btnFrmSTAll" data-toggle="modal" data-target="#frmSTAll" />
+			<!-- <input type="hidden" id="btnFrmSTAll" data-toggle="modal" data-target="#frmSTAll" />
 			<div class="modal fade modal-default" id="frmSTAll" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -324,11 +364,11 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- end ST Modal -->
 			
 			<!-- start VAT Modal -->
-			<input type="hidden" id="btnFrmVATAll" data-toggle="modal" data-target="#frmVATAll" />
+			<!-- <input type="hidden" id="btnFrmVATAll" data-toggle="modal" data-target="#frmVATAll" />
 			<div class="modal fade modal-default" id="frmVATAll" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -353,7 +393,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- end VAT Modal -->
 			
 			
