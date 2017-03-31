@@ -185,30 +185,34 @@
 					<div class="row">
 						<div class="col-lg-3 pull-right">
 							<div class="row">															
+								<div class="clearfix hidden-sm hidden-md"></div>
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
 									<label>Discount<span></span></label> 
 									<div class="input-group">
-					                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
+					                    <span class="input-group-addon btn" id="ckDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
 					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
 					                  </div>
 					                  <br>
 								</div>
+								<div class="clearfix hidden-sm hidden-md"></div>
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
 									<label>Specific Tax<span></span></label> 
 									<div class="input-group">
-					                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
+					                    <span class="input-group-addon btn" id="ckST" style="cursor:pointer"><i class="fa  fa-play"></i></span>
 					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
 					                  </div>
 					                  <br>
 								</div>
+								<div class="clearfix hidden-sm hidden-md"></div>
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
 									<label>VAT<span></span></label> 
 									<div class="input-group">
-					                    <span class="input-group-addon btn" id="invDis" style="cursor:pointer"><i class="fa  fa-play"></i></span>
+					                    <span class="input-group-addon btn" id="ckVAT" style="cursor:pointer"><i class="fa  fa-play"></i></span>
 					                    <input disabled type="text" id="txtInvDis" data-persent="0" class="form-control text-align-right" placeholder="">
 					                  </div>
 					                  <br>
 								</div>
+								<div class="clearfix hidden-sm hidden-md"></div>
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-12">
 									<div class="form-group">
 										<label> Net Total Amount <span></span></label> 
@@ -264,86 +268,8 @@
 			
 			<div id="errors"></div>
 		</div>
-				
-			<input type="hidden" id="alertMes" data-toggle="modal" data-target="#myModal" />
-			<div class="modal fade modal-danger" id="myModal" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Require Field!</h4>
-						</div>
-						<div class="modal-body">
-							<p id="alertMsgText">Please input *field require.</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-outline pull-right"
-								data-dismiss="modal">Close</button>
-
-						</div>
-					</div>
-
-				</div>
-			</div>
 			
-			<input type="hidden" id="alertMesError" data-toggle="modal" data-target="#myError" />
-			<div class="modal fade modal-danger" id="myError" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Error!</h4>
-						</div>
-						<div class="modal-body">
-							<p id="txtMyError">Please try again...</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<input type="hidden" id="alertMesSucess" data-toggle="modal" data-target="#mySuccess" />
-			<div class="modal fade modal-success" id="mySuccess" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-							<h4 class="modal-title">Successful!</h4>
-						</div>
-						<div class="modal-body">
-							<p id="txtResultSuccess"></p>
-						</div>
-						<div class="modal-footer">
-							<!-- <button type="button" id="btnSucCancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>&nbsp;&nbsp; -->
-							<button type="button" id="btnSucOk" class="btn btn-outline pull-right" data-dismiss="modal">Ok</button>
-							
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<input type="hidden" id="alertMesConfirm" data-toggle="modal" data-target="#myConfirm" />
-			<div class="modal fade modal-info" id="myConfirm" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Confirmation!</h4>
-						</div>
-						<div class="modal-body">
-							<p>Are you sure you want to delete this line?</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" id="btnConfirmCancel" class="btn btn-outline" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
-							<button type="button" id="btnConfirmOk" class="btn btn-outline pull-right" data-dismiss="modal">Ok</button>
-							
-						</div>
-					</div>
-				</div>
-			</div>
-			
+			<!-- start Discount Modal -->
 			<input type="hidden" id="invDisDia" data-toggle="modal" data-target="#frmInvDisDia" />
 			<div class="modal fade modal-default" id="frmInvDisDia" role="dialog">
 				<div class="modal-dialog">
@@ -355,23 +281,83 @@
 						<div class="modal-body">
 							<div class="form-group">
 								<label>Discount % :</label> 
-								<input id="txtDisInv" onkeyup="disAllItem('%')" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
+								<input id="txtDisAllPer" onkeyup="disAllItem('%')" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
 							</div>
 							<div class="form-group">
 								<label>Discount $ :</label> 
-								<input id="txtDisInv" onkeyup="disAllItem('$')" onkeypress='return isNumeric(this,event)' class="form-control" type="text" placeholder="">
+								<input id="txtDisAllDol" onkeyup="disAllItem('$')" onkeypress='return isNumeric(this,event)' class="form-control" type="text" placeholder="">
 							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" id="btnInvDisCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
-							<button type="button" id="btnInvDisOk" class="btn btn-primary pull-right" data-dismiss="modal">Ok</button>
+							<button type="button" id="btnInvDisOk" class="btn btn-primary pull-right" data-dismiss="modal">OK</button>
 							
 						</div>
 					</div>
 				</div>
 			</div>
+			<!-- end Discount Modal -->
+			
+			<!-- start ST Modal -->
+			<input type="hidden" id="btnFrmSTAll" data-toggle="modal" data-target="#frmSTAll" />
+			<div class="modal fade modal-default" id="frmSTAll" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Specific Tax </h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Specific Tax % :</label> 
+								<input id="txtSTAllPer" onkeyup="STAllItem('%')" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>Specific Tax $ :</label> 
+								<input id="txtSTAllDol" onkeyup="STAllItem('$')" onkeypress='return isNumeric(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="btnSTAllCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+							<button type="button" id="btnSTAllOk" class="btn btn-primary pull-right" data-dismiss="modal">OK</button>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end ST Modal -->
+			
+			<!-- start VAT Modal -->
+			<input type="hidden" id="btnFrmVATAll" data-toggle="modal" data-target="#frmVATAll" />
+			<div class="modal fade modal-default" id="frmVATAll" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">VAT </h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label>VAT % :</label> 
+								<input id="txtVATAllPer" onkeyup="VATAllItem('%')" onkeypress='return isPersent(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+							<div class="form-group">
+								<label>VAT $ :</label> 
+								<input id="txtVATAllDol" onkeyup="VATAllItem('$')" onkeypress='return isNumeric(this,event)' class="form-control" type="text" placeholder="">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" id="btnVATAllCancel" class="btn btn-danger" data-dismiss="modal">Cancel</button>&nbsp;&nbsp;
+							<button type="button" id="btnVATAllOk" class="btn btn-primary pull-right" data-dismiss="modal">OK</button>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end VAT Modal -->
 			
 			
+			<!-- start Add An Row Modal -->
 			<input type="hidden" id="btn_show_product" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmProduct" />
 			<div class="modal fade modal-default" id="frmProduct" role="dialog">
 				<div class="modal-dialog  modal-lg">
@@ -544,7 +530,9 @@
 					</div>
 				</div>
 			</div>
+			<!-- end Add An Row Modal -->
 			
+			<!-- start Credit Info Modal -->
 			<input type="hidden" id="btn_show_creditInfo" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#frmCreditInfo" />
 			<div class="modal fade modal-default" id="frmCreditInfo" role="dialog">
 				<div class="modal-dialog  modal-lg">
@@ -620,7 +608,7 @@
 					</div>
 				</div>
 			</div>
-			
+			<!-- end Credit Info Modal -->
 	</section>
 	
 </div>

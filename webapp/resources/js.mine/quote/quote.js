@@ -8,17 +8,12 @@ var TermNetDueIn = 0;
 var entryCheck = true;
 var disOnChangeAct = 0;
 var disDolOnChangeAct = 0;
-
 var vatOnChangeAct = 0;
 var vatDolOnChangeAct = 0;
-
 var stOnChangeAct = 0;
 var stDolOnChangeAct = 0;
-
 var statusClickDetail = false;
-
 var rowIndexLine = 0; 
-
 var creditLimitByCustomer = 0;
 
 // detail item by row variable 
@@ -154,14 +149,12 @@ $(function(){
                         message: 'The discount % must be between 1 and 100'
                     }
 				}
-			},
-			
+			},			
 			oppDisDol: {
 				validators: {
 					
 				}
-			},
-			
+			},			
 			oppVatPer: {
 				validators: {
 					between: {
@@ -170,14 +163,12 @@ $(function(){
                         message: 'The VAT % must be between 1 and 100'
                     }
 				}
-			},
-			
+			},			
 			oppVatDol: {
 				validators: {
 					
 				}
-			},
-			
+			},			
 			oppSTPer: {
 				validators: {
 					between: {
@@ -186,8 +177,7 @@ $(function(){
                         message: 'The ST % must be between 1 and 100'
                     }
 				}
-			},
-			
+			},			
 			oppSTDol: {
 				validators: {
 					
@@ -218,8 +208,8 @@ $(function(){
 	$('#startDate').val(moment().format('D-MMM-YYYY'));  
 	$('#expireDate').val(moment().format('D-MMM-YYYY'));
 	
-	$("#listItem").sortable();
-    $("#listItem").disableSelection();	
+	//$("#listItem").sortable();
+    //$("#listItem").disableSelection();	
 	
 	$("#btnSucOk").click(function(){
 		cancel();
@@ -380,10 +370,20 @@ $(function(){
 	});
 	// end add an item	
 	
-	$("#invDis").click(function(){
-		if(getValueById('txtTSalOrd')>0){
-			$("#invDisDia").click();			
+	$("#ckDis").click(function(){
+		if(checkLine()){
+			$("#frmInvDisDia").modal({backdrop:'static'});
+		}
+	});
+	$("#ckST").click(function(){
+		if(checkLine()){
+			
 		}	
+	});
+	$("#ckVAT").click(function(){
+		if(checkLine()){
+			
+		}
 	});
 	
 	$("#btnInvDisOk").click(function(){
