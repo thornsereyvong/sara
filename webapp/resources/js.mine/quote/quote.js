@@ -208,8 +208,8 @@ $(function(){
 	$('#startDate').val(moment().format('D-MMM-YYYY'));  
 	$('#expireDate').val(moment().format('D-MMM-YYYY'));
 	
-	//$("#listItem").sortable();
-    //$("#listItem").disableSelection();	
+	$("#listItem").sortable();
+    $("#listItem").disableSelection();	
 	
 	$("#btnSucOk").click(function(){
 		cancel();
