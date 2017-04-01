@@ -612,7 +612,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 					<div class="panel panel-default">
 						<div class="panel-body">
 							<div class="row">
-								<div class="col-xs-9 col-sm-6 col-md-4 col-lg-2">
+								<div class="col-xs-9 col-sm-6 col-md-4 col-lg-4">
 									<form class="form-inline">
 								        <div class="form-group">
 								        	<div class="input-group">
@@ -625,7 +625,7 @@ app.controller('competitorController',['$scope','$http',function($scope, $http){
 								    </form>
 								    <br/>
 								</div>
-								<div class="col-xs-3 col-sm-2 col-sm-offset-4 col-md-offset-6 col-lg-1 col-lg-offset-9">
+								<div class="col-xs-3 col-sm-2 col-sm-offset-4 col-md-offset-6 col-lg-2 col-lg-offset-6">
 							        <form class="form-inline">
 								        <div class="form-group" style="float: right;">
 								        	<div class="input-group">

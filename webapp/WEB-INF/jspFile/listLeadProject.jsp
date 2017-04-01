@@ -118,7 +118,7 @@ app.controller('leadProjectController',['$scope','$http',function($scope, $http)
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-11">
+							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-10">
 								<form class="form-inline">
 									<div class="form-group">
 										<div class="input-group">
@@ -134,7 +134,7 @@ app.controller('leadProjectController',['$scope','$http',function($scope, $http)
 								</form>
 								<br />
 							</div>
-							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-1">
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-2">
 								<form class="form-inline">
 									<div class="form-group" style="float: right;">
 										<div class="input-group">

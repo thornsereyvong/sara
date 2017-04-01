@@ -251,7 +251,7 @@
 				<div class="chart tab-pane" id="tabCA">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="row">
-							<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+							<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 							  <form class="form-inline">
 							        <div class="form-group" style="padding-top: 20px;">
 							        	<div class="input-group">
@@ -264,7 +264,7 @@
 							    </form>
 							    <br/>
 							</div>
-							<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+							<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 							  <form class="form-inline">
 							        <div class="form-group " style="padding-top: 20px; float: right;">
 							        	<div class="input-group">
@@ -316,7 +316,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabLE">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -329,7 +329,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -377,7 +377,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabCUST">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -390,7 +390,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -442,7 +442,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabCO">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -455,7 +455,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -505,7 +505,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabOP">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -518,7 +518,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -570,7 +570,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabAC_CL">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -583,7 +583,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -633,7 +633,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabAC_ME">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -646,7 +646,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -699,7 +699,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabAC_TA">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -712,7 +712,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -763,7 +763,7 @@
 					</div>
 				</div>				
 				<div class="chart tab-pane " id="tabAC_NO">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -776,7 +776,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group pull-right" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -819,7 +819,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabAC_EV">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -832,7 +832,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -882,7 +882,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabCS">
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -895,7 +895,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -945,7 +945,7 @@
 					</div>
 				</div>
 				<div class="chart tab-pane " id="tabQ">	
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -958,7 +958,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
@@ -1004,7 +1004,7 @@
 					</div>	
 				</div>				
 				<div class="chart tab-pane " id="tabS">	
-					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-2">
+					<div class="col-xs-7 col-sm-9 col-md-4 col-lg-4">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px;">
 					        	<div class="input-group">
@@ -1017,7 +1017,7 @@
 					    </form>
 					    <br/>
 					</div>
-					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-1 col-lg-offset-9">
+					<div class="col-xs-4 col-xs-offset-1 col-sm-offset-1 col-sm-2 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 					  <form class="form-inline">
 					        <div class="form-group" style="padding-top: 20px; float: right;">
 					        	<div class="input-group">
