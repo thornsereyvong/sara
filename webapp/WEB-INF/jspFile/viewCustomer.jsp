@@ -1652,7 +1652,7 @@ function addDataToDetailLead(){
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Price Code
-																	<a class="pull-right show-text-detail">[{{customer.priceCode.priceCode}}] {{customer.priceCode.des.trunc(10)}}</a>
+																	<a class="pull-right show-text-detail">[{{customer.priceCode.priceCode}}] {{customer.priceCode.des}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_street" id="lea_street"
 																			class="form-control" value="{{lead.street}}"> -->

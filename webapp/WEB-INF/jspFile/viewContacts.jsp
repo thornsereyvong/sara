@@ -45,13 +45,6 @@ var opportunityStatusData = ["Prospecting", "Qualification", "Analysis", "Propos
 app.controller('viewOpportunityController',['$scope','$http',function($scope, $http){
 	
 	angular.element(document).ready(function () {				
-		/* $("#oppStage").select2('val',response.OPPORTUNITY.osId);
-		$("#oppType").select2('val',response.OPPORTUNITY.otId);
-		$("#oppLeadSource").select2('val',response.OPPORTUNITY.sourceID);
-		$("#oppCustomer").select2('val',response.OPPORTUNITY.custID);
-		$("#oppCampaign").select2('val',response.OPPORTUNITY.campID);
-		$("#oppAssignTo").select2('val',response.OPPORTUNITY.userId); */
-		//dis(permission)
     });
 	
 	$scope.collaborates = [];
@@ -92,9 +85,9 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				userAllList(response.ASSIGN_TO,'#taskAssignTo','');
 				userAllList(response.ASSIGN_TO,'#eventAssignTo','');
 				
-				
+				//alert(response.MEETINGS)
 				$scope.listAllCallByLeadId(response.CALLS);	
-				$scope.listAllMeetByLeadId(response.METTINGS);	
+				$scope.listAllMeetByLeadId(response.MEETINGS);	
 				$scope.listAllTaskByLeadId(response.TASKS);
 				$scope.listAllEventByLeadId(response.EVENTS);
 				
@@ -1203,7 +1196,7 @@ function addDataToDetailLead(){
 																					<td>{{call.callSubject.trunc(10)}}</td>
 																					<td>{{call.callStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{call.callDuration}}</td>
-																					<td>{{call.username}}</td>
+																					<td>{{call.username==null?'-':call.username}}</td>
 																					<td>{{call.callCreateBy}}</td>
 																					<td class="text-center mailbox-date" style="min-width: 100px;">
 																						<a href="#" ng-click="actEditCall(call.callId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
@@ -1246,11 +1239,11 @@ function addDataToDetailLead(){
 																			<tbody dir-paginate="meet in listAllMeetByLead|itemsPerPage:5" pagination-id="meetId">
 																				<tr>
 																					<td><a href="${pageContext.request.contextPath}/view-meeting/{{meet.meetingId}}">{{meet.meetingId}}</a></td>
-																					<td>{{meet.meetingSubject.trunc(10)}}</td>
+																					<td>{{meet.meetingSubject.trunc(30)}}</td>
 																					<td>{{meet.statusName}}</td>
 																					<td>{{meet.meetingStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{meet.meetingEndDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{meet.username}}</td>
+																					<td>{{meet.username==null?'-':meet.username}}</td>
 																					<td>{{meet.meetingCreateBy}}</td>
 																					<td class="text-center mailbox-date" style="min-width: 100px;">
 																						<a href="#" ng-click="actEditMeeting(meet.meetingId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
@@ -1281,8 +1274,9 @@ function addDataToDetailLead(){
 																					<th>ID</th>
 																					<th>Subject</th>
 																					<th>Status</th>
+																					<th>Priority</th>
 																					<th>Start Date</th>
-																					<th>End Date</th>
+																					<th>Due Date</th>
 																					<th>Assign To</th>
 																					<th>Create By</th>
 																					<th class="text-center">Action</th>
@@ -1291,11 +1285,14 @@ function addDataToDetailLead(){
 																			<tbody dir-paginate="task in listAllTaskByLead|itemsPerPage:5" pagination-id="taskId">
 																				<tr>
 																					<td><a href="${pageContext.request.contextPath}/view-task/{{task.taskId}}">{{task.taskId}}</a></td>
-																					<td>{{task.taskSubject.trunc(10)}}</td>
+																					<td>{{task.taskSubject.trunc(30)}}</td>
 																					<td>{{task.taskStatusName}}</td>
-																					<td>{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{task.taskDueDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{task.username}}</td>
+																					<td>{{task.taskPriority}}</td>
+																					<td ng-if="task.taskStartDate == null">-</td>
+																					<td ng-if="task.taskStartDate != null">{{task.taskStartDate | date:'dd/MM/yyyy'}}</td>
+																					<td ng-if="task.taskDueDate == null">-</td>
+																					<td ng-if="task.taskDueDate != null">{{task.taskDueDate | date:'dd/MM/yyyy'}}</td>
+																					<td>{{task.username == null?'-':task.username}}</td>
 																					<td>{{task.taskCreateBy}}</td>
 																					<td class="text-center mailbox-date" style="min-width: 100px;">
 																						<a href="#" ng-click="actEditTask(task.taskId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
@@ -1336,11 +1333,11 @@ function addDataToDetailLead(){
 																			<tbody dir-paginate="event in listAllEventByLead|itemsPerPage:5" pagination-id="eventId">
 																				<tr>
 																					<td><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}">{{event.evId}}</a></td>
-																					<td>{{event.evName.trunc(10)}}</td>
-																					<td>{{event.locateName}}</td>
+																					<td>{{event.evName.trunc(30)}}</td>
+																					<td>{{event.locateName==null?'-':event.LocateName}}</td>
 																					<td>{{event.evStartDate | date:'dd/MM/yyyy'}}</td>
 																					<td>{{event.evEndDate | date:'dd/MM/yyyy'}}</td>
-																					<td>{{event.username}}</td>
+																					<td>{{event.username == null?'-':event.username}}</td>
 																					<td>{{event.evCreateBy}}</td>
 																					<td class="text-center mailbox-date" style="min-width: 100px;">
 																						<a href="#" ng-click="actEditEvent(event.evId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
@@ -1409,7 +1406,6 @@ function addDataToDetailLead(){
 																									<li ng-click="actDeleteEvent(event.evId)">
 																										<a href="#"><i class="fa fa-trash"></i> Delete</a></li>
 																									<li><a href="${pageContext.request.contextPath}/view-event/{{event.evId}}"><i class="fa fa-eye"></i> View</a></li>
-				
 																								</ul>
 																							</div>
 																						</div>
@@ -1621,7 +1617,7 @@ function addDataToDetailLead(){
 																	</div>
 																</li>
 																<li class="list-group-item item_border">Customer<a
-																	class="pull-right show-text-detail">{{contact.custName == null?'-':contact.custName.trunc(30)}}</a>
+																	class="pull-right show-text-detail">{{contact.custName == null?'-':contact.custName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_title" id="lea_title"
 																			class="form-control" value="{{lead.title}}"> -->
@@ -1722,7 +1718,7 @@ function addDataToDetailLead(){
 																</li>
 																<li class="list-group-item item_border">Report To
 																	<a class="pull-right show-text-detail" ng-if="contact.reportToContactId == null">-</a>
-																	<a ng-if="contact.reportToContactId != null" class="pull-right show-text-detail">{{contact.reportToSalutation}}{{contact.reportToFirstName}} {{contact.reportToLastName}}</a>
+																	<a ng-if="contact.reportToContactId != null" class="pull-right show-text-detail">{{contact.reportToSalutation}}{{contact.reportToFirstname}} {{contact.reportToLastName}}</a>
 																	<div class="form-group show-edit" style="display: none;">
 																		<!-- <input type="text" name="lea_street" id="lea_street"
 																			class="form-control" value="{{lead.street}}"> -->
@@ -1805,7 +1801,7 @@ function addDataToDetailLead(){
 																					<th>Subject</th>
 																					<th>Status</th>
 																					<th>Priority</th>
-																					<th>Date</th>
+																					<th>Created Date</th>
 																					<th  class="text-center">Action</th>
 																				</tr>
 																			</thead>
@@ -1813,9 +1809,9 @@ function addDataToDetailLead(){
 																				<tr>
 																					<td><a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}">{{case.caseId}}</a></td>
 																					<td>{{case.subject}}</td>
-																					<td>{{case.status.statusName}}</td>
-																					<td>{{case.priority.priorityName}}</td>
-																					<td>{{case.convertCreateDate}}</td>
+																					<td>{{case.statusName}}</td>
+																					<td>{{case.priorityName}}</td>
+																					<td>{{case.createDate}}</td>
 																					<td class="text-center mailbox-date" style="min-width: 100px;">
 																						<a href="${pageContext.request.contextPath}/update-case/{{case.caseId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 																						<a href="${pageContext.request.contextPath}/view-case/{{case.caseId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
