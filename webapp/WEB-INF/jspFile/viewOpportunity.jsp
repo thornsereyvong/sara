@@ -132,21 +132,21 @@ app.controller('viewOpportunityController',['$scope','$http',function($scope, $h
 				$scope.listCollab(response.COLLABORATIONS);							
 				$scope.callStatusStartup = response.CALL_STATUS;
 				$scope.taskStatusStartup = response.TASK_STATUS;
-				$scope.taskContactStartup = response.ALL_CONTACT;	
+				$scope.taskContactStartup = response.ALL_CONTACTS;	
 				$scope.eventLocationStartup = response.EVENT_LOCATION;
 				$scope.meetStatusStartup = response.MEETING_STATUS;				
 				$scope.tags = response.TAG_TO;
 				
 				addContactToTask(response.CONTACTS);
 				
-				$scope.oppPriceCode = 	response.PRICE_CODE;
-				$scope.oppClass = 	response.OPPORTUNITY_DETAILS_STARTUP.CLASSES;
+				$scope.oppPriceCode = response.PRICE_CODE;
+				$scope.oppClass = response.CLASSES;
 				
 				
 				// frm add opportunity
-				$scope.oppLocation = response.OPPORTUNITY_DETAILS_STARTUP.LOCATION;
-				$scope.oppItem = response.OPPORTUNITY_DETAILS_STARTUP.ITEMS;
-				$scope.oppUom = response.OPPORTUNITY_DETAILS_STARTUP.UOM;			
+				$scope.oppLocation = response.LOCATION;
+				$scope.oppItem = response.ITEMS;
+				$scope.oppUom = response.UOM;			
 				$scope.opportunityDetail = response.OPPORTUNITY_DETAILS;
 				
 				//dis($scope.opportunity)
@@ -2070,7 +2070,7 @@ function iSplitBySplint(obj){
 							</div>
 							<div class="col-xs-4 col-sm-3 border-right">
 								<div class="description-block">
-									<h5 class="description-header ng-cloak">{{opportunity.opAmount | number:2}}</h5>
+									<h5 class="description-header ng-cloak"><span ng-if="opportunity.opAmount != null">$</span>{{opportunity.opAmount | number:2}}</h5>
 									<span class="description-text">Amount</span>
 								</div>
 							</div>
@@ -2463,13 +2463,13 @@ function iSplitBySplint(obj){
 											<ul class="timeline timeline-inverse"
 												ng-repeat="notePerDate in noteToFilter() | filter:filterNote">
 												<!-- START DATE -->
-												<li class="time-label"><span class="bg-red">{{notePerDate.noteCreateDate}}</span>
+												<li class="time-label"><span class="bg-red">{{notePerDate.createDate}}</span>
 												</li>
-												<li ng-repeat="note in notes | filter:{noteCreateDate: notePerDate.noteCreateDate}">
+												<li ng-repeat="note in notes | filter:{createDate: notePerDate.createDate}">
 													<i class="fa  fa-edit bg-blue"></i>
 													<div class="timeline-item">
 														<span class="time"><i class="fa fa-clock-o"></i>
-															&nbsp;{{note.noteTime}}</span>
+															&nbsp;{{note.createTime}}</span>
 														<h3 class="timeline-header">
 															{{note.noteSubject}} <a>by {{note.noteCreateBy}}</a>
 														</h3>
@@ -2504,7 +2504,7 @@ function iSplitBySplint(obj){
 																</div>
 															</li>
 															<li class="list-group-item item_border">Amount <a
-																class="pull-right show-text-detail">{{opportunity.opAmount | number:2}}</a>
+																class="pull-right show-text-detail"><span>$</span>{{opportunity.opAmount | number:2}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<input type="text" name="oppAmount"
 																		id="oppAmount" class="form-control"
@@ -2603,7 +2603,7 @@ function iSplitBySplint(obj){
 																</div>
 															</li>
 															<li class="list-group-item item_border">Customer <a
-																class="pull-right show-text-detail">[{{opportunity.custID}}] {{opportunity.custName.trunc(15)}}</a>
+																class="pull-right show-text-detail">[{{opportunity.custID}}] {{opportunity.custName}}</a>
 																<div class="form-group show-edit" style="display: none;">
 																	<select class="form-control select2"
 																		name="oppCustomer" id="oppCustomer" style="width: 100%;">

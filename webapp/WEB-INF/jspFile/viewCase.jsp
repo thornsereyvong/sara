@@ -1918,7 +1918,7 @@ function setSelect2ToResolveBy(value){
 																	<select class="form-control select2" name="ca_escalateTo"
 																		id="ca_escalateTo" style="width: 100%">
 																		<option value="">-- SELECT Escalate To --</option>
-																		<option ng-repeat="u in users" value="{{u.userID}}">{{u.username}}</option>
+																		<option ng-repeat="u in users" value="{{u.userID}}">[{{u.userID}}] {{u.username}}</option>
 																	</select>
 																</div>
 															</div>

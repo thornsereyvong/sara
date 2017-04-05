@@ -200,6 +200,7 @@ app.controller('campController',['$scope','$http',function( $scope, $http){
 										<td>{{cc.opAmount | number:2}}</td>
 										<td style="min-width: 100px;">{{cc.opCloseDate | date:'dd-MM-yyyy'}}</td>	
 										<td class="text-center" style="min-width: 100px;">
+											<!-- <button ng-if="cc.osName=='Closed Lost'" type="button" disabled="disabled" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button> -->
 											<a href="${pageContext.request.contextPath}/update-opportunity/{{cc.opId}}"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="edit"><i class="fa fa-pencil text-primary"></i></button></a>
 											<a href="#" ng-click="deleteOpp(cc.opId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
 											<a href="${pageContext.request.contextPath}/view-opportunity/{{cc.opId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
