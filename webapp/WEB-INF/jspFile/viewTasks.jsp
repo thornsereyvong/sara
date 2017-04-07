@@ -210,10 +210,7 @@ app.controller('viewTaskController',['$scope','$http',function($scope, $http){
 	</section>
 
 	<section class="content" data-ng-init="startupView()">
-
-
 		<div class="row">
-
 			<div class="col-md-12">
 				<!-- Widget: user widget style 1 -->
 				<div class="box box-widget widget-user">

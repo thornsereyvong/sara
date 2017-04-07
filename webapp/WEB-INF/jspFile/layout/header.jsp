@@ -200,12 +200,13 @@ function userReportList(id,vals){
 	});	
 }
 
-$(function(){
+$(function(){	
 	if($(window).width() > 768){
 		$("body").removeClass('sidebar-collapse');
 	}else{
 		$("body").addClass('sidebar-collapse');
 	}
+	
 	$(window).resize(function(){
 		var winSize = $(window).width();
 		if(winSize <= 768){

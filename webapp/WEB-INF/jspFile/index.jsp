@@ -280,38 +280,33 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<div class="table-responsive">
 							<table class="table table-striped">
-							<tr>
-								<th>ID</th>
-								<th>Name</th>
-								<th>Status</th>
-								<th>Type</th>
-								<th>Budget</th>
-								<th>Start Date</th>
-								<th>End Date</th>
-							</tr>
-							<tr dir-paginate="camp in campaigns|filter:search_campaign |itemsPerPage:pageSize.row"  pagination-id="camp_id"  class="ng-cloak">
-								<td><a href="${pageContext.request.contextPath}/view-campaign/{{camp.campId}}">{{camp.campId}}</a></td>
-								<td>{{camp.campName}}</td>								
-								<td>{{camp.campType}}</td>
-								<td>{{camp.campStatus}}</td>
-								<td><span>$</span>{{camp.campBudget | number:2}}</td>	
-								<td ng-if="camp.campStartDate == ''">-</td>
-								<td ng-if="camp.campStartDate != ''">{{camp.campStartDate}}</td>							
-								<td>{{camp.campEndDate}}</td>
-								
-							</tr>
-							<tr>
-								<td colspan="8">
-									<div class="box-tools">
-										<dir-pagination-controls  pagination-id="camp_id" 
-									       max-size="pageSize.row"
-									       direction-links="true"
-									       boundary-links="true" >
-									    </dir-pagination-controls>
-									</div>
-								</td>
-							</tr>
-						</table>
+								<tr>
+									<th>ID</th>
+									<th>Name</th>
+									<th>Status</th>
+									<th>Type</th>
+									<th>Budget</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+								</tr>
+								<tr dir-paginate="camp in campaigns|filter:search_campaign |itemsPerPage:pageSize.row"  pagination-id="camp_id"  class="ng-cloak">
+									<td><a href="${pageContext.request.contextPath}/view-campaign/{{camp.campId}}">{{camp.campId}}</a></td>
+									<td>{{camp.campName}}</td>								
+									<td>{{camp.campType}}</td>
+									<td>{{camp.campStatus}}</td>
+									<td><span>$</span>{{camp.campBudget | number:2}}</td>	
+									<td ng-if="camp.campStartDate == ''">-</td>
+									<td ng-if="camp.campStartDate != ''">{{camp.campStartDate}}</td>							
+									<td>{{camp.campEndDate}}</td>
+								</tr>
+							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="camp_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -361,18 +356,14 @@
 									<td ng-if="lead.leadPhone == ''">-</td>							
 									<td ng-if="lead.leadPhone != ''">{{lead.leadPhone}}</td>
 								</tr>
-								<tr>
-									<td colspan="6">
-										<div class="box-tools">
-											<dir-pagination-controls  pagination-id="lead_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="lead_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -425,19 +416,15 @@
 										<td ng-if="cust.custEmail == ''">-</td>
 										<td ng-if="cust.custEmail != ''">{{cust.custEmail}}</td>
 									</tr>
-									<tr>
-										<td colspan="6">
-											<div class="box-tools">
-												<dir-pagination-controls  pagination-id="cust_id" 
-											       max-size="pageSize.row"
-											       direction-links="true"
-											       boundary-links="true" >
-											    </dir-pagination-controls>
-											</div>
-										</td>
-									</tr>
 								</tbody>
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="cust_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -488,19 +475,15 @@
 										<td ng-if="con.conEmail == ''">-</td>
 										<td ng-if="con.conEmail != ''">{{con.conEmail}}</td>
 									</tr>
-									<tr>
-										<td colspan="6">
-											<div class="box-tools">
-												<dir-pagination-controls  pagination-id="con_id" 
-											       max-size="pageSize.row"
-											       direction-links="true"
-											       boundary-links="true" >
-											    </dir-pagination-controls>
-											</div>
-										</td>
-									</tr>
 								</tbody>
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="con_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -553,19 +536,15 @@
 										<td ng-if="op.opLeadSource == ''">-</td>
 										<td ng-if="op.opLeadSource != ''">{{op.opLeadSource}}</td>
 									</tr>
-									<tr>
-										<td colspan="7">
-											<div class="box-tools">
-												<dir-pagination-controls  pagination-id="opp_id" 
-											       max-size="pageSize.row"
-											       direction-links="true"
-											       boundary-links="true" >
-											    </dir-pagination-controls>
-											</div>
-										</td>
-									</tr>
 								</tbody>
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="opp_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -614,21 +593,16 @@
 										<td>{{call.callStartDate}}</td>
 										<td>{{call.callDuration}} h</td>
 										<td>{{call.callStatus}}</td>
-										
-									</tr>
-									<tr>
-										<td colspan="6">
-											<div class="box-tools">
-												<dir-pagination-controls  pagination-id="call_id" 
-											       max-size="pageSize.row"
-											       direction-links="true"
-											       boundary-links="true" >
-											    </dir-pagination-controls>
-											</div>
-										</td>
 									</tr>
 								</tbody>
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="call_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -680,21 +654,16 @@
 										<td>{{meet.meetingStartDate}}</td>
 										<td>{{meet.meetingEndDate}}</td>
 										<td>{{meet.meetingStatus}}</td>
-										
-									</tr>
-									<tr>
-										<td colspan="7">
-											<div class="box-tools">
-												<dir-pagination-controls  pagination-id="meet_id" 
-											       max-size="pageSize.row"
-											       direction-links="true"
-											       boundary-links="true" >
-											    </dir-pagination-controls>
-											</div>
-										</td>
 									</tr>
 								</tbody>
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="meet_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -747,18 +716,14 @@
 									<td ng-if="task.taskDueDate == ''">-</td>
 									<td ng-if="task.taskDueDate != ''">{{task.taskDueDate}}</td>
 								</tr>
-								<tr>
-									<td colspan="7">
-										<div class="box-tools">
-											<dir-pagination-controls  pagination-id="task_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="task_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>				
@@ -803,18 +768,14 @@
 									<td ng-if=" note.noteRelatedToType != '' "><span><span  class="badge bg-red">{{note.noteRelatedToType}}</span> <span>[{{note.noteRelatedToId}}] {{note.noteRelatedTo}}</span></span></td>
 									<td>{{note.noteCreatedDate}}</td>
 								</tr>
-								<tr>
-									<td colspan="4">
-										<div class="box-tools">
-											<dir-pagination-controls  pagination-id="note_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="note_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -866,18 +827,14 @@
 									<td>{{event.eventEndDate}}</td>
 									<td><span>$</span>{{event.eventBudget | number:2}}</td>	
 								</tr>
-								<tr>
-									<td colspan="7">
-										<div class="box-tools">
-											<dir-pagination-controls  pagination-id="event_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="event_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -929,18 +886,14 @@
 									<td ng-if=" case.custId =='' ">-</td>						
 									<td ng-if=" case.custId !='' "><span>[{{case.custId}}] {{case.caseCustomer}}</span></td>
 								</tr>
-								<tr>
-									<td colspan="7">
-										<div class="box-tools">
-											<dir-pagination-controls  pagination-id="lead_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>	
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="lead_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>
 				</div>
@@ -988,18 +941,14 @@
 									<td>{{qu.startDate == ''?'-':qu.startDate}} </td>	
 									<td>{{qu.expireDate == ''?'-':qu.expireDate}}</td>
 								</tr>
-								<tr>
-									<td colspan="6">
-										<div class="box-tools">
-											<dir-pagination-controls  pagination-id="quote_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>	
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="quote_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>	
 				</div>				
@@ -1045,18 +994,14 @@
 									<td>{{sal.saleDate}}</td>
 									<td>{{sal.dueDate}} </td>	
 								</tr>
-								<tr>
-									<td colspan= "5">
-										<div class="box-tools">
-											<dir-pagination-controls  pagination-id="sale_id" 
-										       max-size="pageSize.row"
-										       direction-links="true"
-										       boundary-links="true" >
-										    </dir-pagination-controls>
-										</div>
-									</td>
-								</tr>	
 							</table>
+						</div>
+						<div class="box-tools">
+							<dir-pagination-controls  pagination-id="sale_id" 
+						       max-size="pageSize.row"
+						       direction-links="true"
+						       boundary-links="true" >
+						    </dir-pagination-controls>
 						</div>
 					</div>				
 				</div>
