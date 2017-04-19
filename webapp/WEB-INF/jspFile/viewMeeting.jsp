@@ -9,10 +9,7 @@
 	String roleDelete = (String) request.getAttribute("role_delete");
 %>
 
-
 <script type="text/javascript">
-
-
 var app = angular.module('meetApp', ['angularUtils.directives.dirPagination','angular-loading-bar', 'ngAnimate']).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.includeSpinner = false;
 }]);
@@ -21,21 +18,44 @@ var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
 var meetId = "${meetId}";
 app.controller('viewMeetController',['$scope','$http',function($scope, $http){
-	
-	angular.element(document).ready(function () {				
-		
-    });
-	
 	$scope.startupView = function(){				
 		$http.get("${pageContext.request.contextPath}/meeting/list/"+meetId).success(function(response){
-			$scope.meet = response.DATA;	
-			//dis(response.DATA)
+			$scope.meet = response.DATA;
+			if(response.DATA.meetingLatitude != null){
+				initMap(response.DATA.meetingLatitude, response.DATA.meetingLongitude);	
+			}else{
+				$("#map").parent().removeAttr('style');
+				$("#map").append('<div class="text-center" style="font-size:20px;margin-top:5%; height:300px;"><div class="text-info">Sorry! Map is not avialable!</div></div>');
+			}
 		});
-		
 	}
 }]);
 
 
+</script>
+
+<script>
+  var map;
+  function initMap(latitude, longitude) {
+	  var location = {lat: parseFloat(latitude), lng: parseFloat(longitude)};
+	  map = new google.maps.Map(document.getElementById('map'), {
+		  center: location,
+		  zoom: 17,
+		  mapTypeId: google.maps.MapTypeId.ROADMAP
+	  });
+
+	  var marker = new google.maps.Marker({
+		  position: location,
+		  map: map
+	  });
+
+	  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			google.maps.event.trigger(map, 'resize');
+			map.setZoom(map.getZoom());
+			map.setCenter(map.getCenter());
+            map.panTo(new google.maps.LatLng(parseFloat(latitude),parseFloat(longitude)));
+		})
+  }
 </script>
 <style>
 .panel-heading1 h4 {
@@ -198,9 +218,20 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 .breadcrumb1 li a:hover:after {
 	border-left-color: rgb(75, 202, 129) !important;
 }
+
+#map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+     /*  html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      } */
+      
+.angular-google-map-container { height: 400px; }
 </style>
-<div class="content-wrapper" id="viewMeetController" ng-app="meetApp"
-	ng-controller="viewMeetController">
+<div class="content-wrapper" id="viewMeetController" ng-app="meetApp" ng-controller="viewMeetController">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 		<h1>View Meeting</h1>
@@ -231,7 +262,9 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 								<div class="nav-tabs-custom">
 									<ul class="nav nav-tabs">										
 										<li class="active"><a href="#detail_tap" data-toggle="tab"
-											aria-expanded="true">Overview</a></li>	
+											aria-expanded="true">Overview</a></li>
+										<li class=""><a href="#checkedin_location_tap" data-toggle="tab"
+											aria-expanded="true">Check In Location</a></li>	
 										<li class=""><a href="#systemInfo_tap" data-toggle="tab"
 											aria-expanded="false">System Information</a></li>										
 									</ul>
@@ -524,11 +557,19 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 												</div>
 											</div>
 										</div>
+										<div class="tab-pane" id="checkedin_location_tap">
+											<div class="row">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<div style="height: 500px;">
+														<div id="map"></div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 									<!-- /.tab-content -->
 								</div>
 							</div>
-
 						</div>
 						<!-- /.row -->
 					</div>
@@ -539,5 +580,4 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 	</section>
 	<div id="errors"></div>
 </div>
-
 <jsp:include page="${request.contextPath}/footer"></jsp:include>

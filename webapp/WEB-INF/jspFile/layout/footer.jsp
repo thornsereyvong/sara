@@ -18,9 +18,7 @@
     <script src="${pageContext.request.contextPath}/resources/dist/js/app.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/dist/js/demo.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js.mine/function.mine.js"></script>
-    <script type="text/javascript">
-  
-    
+<script>
     $(document).ready(function() {
       $('.summernote').summernote({
         height: 400,
@@ -35,8 +33,6 @@
 	});
 	  
     });
-
-	
   </script>
   <script>
        $(function () {

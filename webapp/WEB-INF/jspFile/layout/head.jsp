@@ -52,7 +52,7 @@
    				 margin-bottom: 0px;
    			}
 		</style>
-		
+		<script src="${pageContext.request.contextPath}/resources/angular/lodash.min.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery.min.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquerysession.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap-filestyle.min.js"></script>
@@ -60,6 +60,8 @@
 		<script src="${pageContext.request.contextPath}/resources/angular/angular-material.min.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/angular/angular-animate.min.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/angular/loading-bar.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/angular/angular-simple-logger.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/angular/angular-google-maps.min.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/angular/angular-block-ui.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/angular/angular-aria.min.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/angular/angular-messages.min.js"></script>
@@ -78,5 +80,5 @@
 		<script src="${pageContext.request.contextPath}/resources/plugins/timepicker/bootstrap-timepicker.min.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/bootstrap/menu/menu.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/js.mine/uploadFile.js"></script>
-	
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAls6m93tn9uGDWG_ufeHaCzVCffaZaZ68"></script>
 	</head>
