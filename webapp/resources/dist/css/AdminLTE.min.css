@@ -2701,7 +2701,7 @@ table.text-center, table.text-center td, table.text-center th {
 	.btn-app {
 	    border-radius: 3px;
 	    position: relative;
-	    padding: 9px 5px;
+	    padding: 9px 5px;	
 	    margin: 0 0 10px 5px;
 	    min-width: 70px;
 	    height: 50px;

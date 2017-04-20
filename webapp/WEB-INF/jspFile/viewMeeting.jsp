@@ -40,7 +40,7 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 	  var location = {lat: parseFloat(latitude), lng: parseFloat(longitude)};
 	  map = new google.maps.Map(document.getElementById('map'), {
 		  center: location,
-		  zoom: 17,
+		  zoom: 18,
 		  mapTypeId: google.maps.MapTypeId.ROADMAP
 	  });
 
