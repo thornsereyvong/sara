@@ -56,9 +56,6 @@ public class MainController {
 	private CrmNoteController noteController;
 
 	@Autowired
-	private CrmRoleManagementController roleController;
-
-	@Autowired
 	private RestTemplate restTemplate;
 
 	@Autowired
