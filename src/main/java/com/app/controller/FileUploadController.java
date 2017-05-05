@@ -1,8 +1,13 @@
 package com.app.controller;
 
+import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.FilenameUtils;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,4 +61,14 @@ public class FileUploadController {
 		ResponseEntity<Map> response = restTemplate.exchange(URL+"api/upload/attachment/"+srcFolder, HttpMethod.POST, request, Map.class);
 		return new ResponseEntity<Map<String,Object>>(response.getBody(), response.getStatusCode());
 	}*/
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = {"/file/get"}, method = RequestMethod.GET)
+	public byte[] getFile(@ModelAttribute(value="path") String path, HttpServletRequest servletRequest, HttpServletResponse response) throws IOException {
+		JSONObject json = new JSONObject();
+		json.put("path", path);
+		HttpEntity<Object> request = new HttpEntity<Object>(json,header);
+		ResponseEntity<byte[]> result = restTemplate.exchange(URL+"api/file/get", HttpMethod.POST,request, byte[].class);
+		return result.getBody();
+	}
 }

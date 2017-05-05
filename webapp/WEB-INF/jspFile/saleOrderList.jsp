@@ -162,9 +162,9 @@ app.controller('saleOrderController',['$scope','$http',function($scope, $http){
 						    </form>
 						    <br/>
 						</div>
-						<div class="col-xs-3 col-sm-2 col-sm-offset-4 col-md-offset-6 col-lg-4 col-lg-offset-6">
+						<div class="col-xs-3 col-sm-2 col-sm-offset-4 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 						  	<form class="form-inline">
-						        <div class="form-group pull-right">
+						        <div class="form-group" style="float: right;">
 						        	<div class="input-group">
 						        		<select class="form-control" ng-model="pageSize.row" id ="row" ng-options="obj.value as obj.label for obj in pageSize.rows"></select>
 						        	</div>

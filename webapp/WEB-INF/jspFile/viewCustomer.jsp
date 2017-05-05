@@ -2354,6 +2354,7 @@ function addDataToDetailLead(){
 			</div>
 		</div>
 	</div>
+	
 	<div id="errors"></div>
 </div>
 

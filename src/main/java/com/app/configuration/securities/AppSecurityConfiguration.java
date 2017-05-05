@@ -14,7 +14,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 @EnableWebSecurity
@@ -45,7 +49,13 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.and()
 		.logout().logoutSuccessUrl("/login?logout")
 		.and()*/
-		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+		.sessionManagement()
+		.sessionFixation().migrateSession()
+        .maximumSessions(1)
+        .expiredUrl("/expired")
+        .maxSessionsPreventsLogin(true)
+        .sessionRegistry(sessionRegistry());;
 		http.authorizeRequests().anyRequest().authenticated();
 		http.csrf().disable();
 	}
@@ -64,8 +74,20 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	    authFilter.setAuthenticationManager(authenticationManager);
 	    authFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
 	    //authFilter.setAuthenticationSuccessHandler(successHandler);
+	    authFilter.setSessionAuthenticationStrategy(new RegisterSessionAuthenticationStrategy(sessionRegistry()));
 	    authFilter.setUsernameParameter("crm_username");
 	    authFilter.setPasswordParameter("crm_password");
 	    return authFilter;
 	}
+	
+	@Bean
+	public HttpSessionEventPublisher httpSessionEventPublisher() {
+	    return new HttpSessionEventPublisher();
+	}
+	
+	@Bean
+    public SessionRegistry sessionRegistry() {
+        SessionRegistry sessionRegistry = new SessionRegistryImpl();
+        return sessionRegistry;
+    }
 }

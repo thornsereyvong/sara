@@ -209,11 +209,6 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 												<a href="${pageContext.request.contextPath}/view-call/{{cc.callId}}"><button type="button" data-toggle="tooltip" class="btn btn-xs" title="view"><i class="fa fa-eye text-info"></i></button></a>
 											</td>
 										</tr>
-										<tr>
-											<td colspan="7">
-												<dir-pagination-controls max-size="pageSize.row" direction-links="true" boundary-links="true"> </dir-pagination-controls>
-											</td>
-										</tr>
 									</table>
 									<%
 										} else {
@@ -225,6 +220,7 @@ app.controller('campController',['$scope','$http',function($scope, $http){
 										}
 									%>
 								</div>
+								<dir-pagination-controls max-size="pageSize.row" direction-links="true" boundary-links="true"> </dir-pagination-controls>
 							</div>
 						</div>
 					</div>

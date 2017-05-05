@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmMeeting;
 import com.app.entities.MeDataSource;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
@@ -28,9 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CrmMeetingController {
 	
 	//private final String URL = "";
-	@Autowired
-	private ObjectMapper objectMapper;
-	
 	@Autowired
 	private RestTemplate  restTemplate;
 	

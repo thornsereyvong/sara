@@ -15,9 +15,9 @@
 						},
 					}).success(function(response) {					
 						$scope.database = response.DATABASE;
-						setTimeout(function(){ 	
+						/* setTimeout(function(){ 	
 							$("#company").val("lab_balancika_main12345Lab Balancika AME (Main)"); 
-						},1000);
+						},1000); */
 					});
 			};
 		}]);
@@ -117,11 +117,11 @@
 			<div class="clearfix"></div>
 			<form id="form-login" method="POST" action="${pageContext.request.contextPath}/login" ng-controller="viewCompany">
 				<div class="form-group has-feedback">
-					<input type="text" class="form-control" value="balancika" placeholder="Username"
+					<input type="text" class="form-control" placeholder="Username"
 						name="crm_username" id="username" required>
 				</div>
 				<div class="form-group has-feedback">
-					<input type="password" class="form-control" value="balancika@123"  placeholder="Password"
+					<input type="password" class="form-control" placeholder="Password"
 						name="crm_password" id="password" required>
 				</div>
 				<div class="form-group has-feedback">

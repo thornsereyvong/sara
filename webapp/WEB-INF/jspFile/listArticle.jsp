@@ -187,13 +187,14 @@ app.controller('articleController',['$scope','$http',function($scope, $http){
 							</tr>
 					
 					</table>
-					<dir-pagination-controls
+					
+				  </div>
+				  <dir-pagination-controls
 				       max-size="pageSize.row"
 				       direction-links="true"
 				       boundary-links="true" >
 					   </dir-pagination-controls>
 					</div>
-				  </div>
 			</div>
 			</div>
 			<!-- /.box-body -->

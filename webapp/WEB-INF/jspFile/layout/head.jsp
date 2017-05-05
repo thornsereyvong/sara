@@ -32,6 +32,7 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/angular/css/angular-block-ui.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/plugins/toggle/bootstrap-toggle.min.css">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/build.css">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/fancybox/jquery.fancybox.css">
 		
 		<style type="text/css">
 			.cursor_move{ cursor: move; }
@@ -69,6 +70,7 @@
 		<script src="${pageContext.request.contextPath}/resources/angular/custom-input.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/angular/FileSaver.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/plugins/toggle/bootstrap-toggle.min.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/fancybox/jquery.fancybox.js"></script>
 		
 		<script src="${pageContext.request.contextPath}/resources/angular/svg-assets-cache.js"></script>
 		<script src="${pageContext.request.contextPath}/resources/bootstrap/js/dirPagination.js"></script>

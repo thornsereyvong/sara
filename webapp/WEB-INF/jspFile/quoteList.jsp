@@ -125,7 +125,7 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 							    </form>
 							    <br/>
 							</div>
-							<div class="col-xs-3 col-sm-2 col-sm-offset-4 col-md-offset-6 col-lg-2 col-lg-offset-6">
+							<div class="col-xs-3 col-sm-2 col-sm-offset-4 col-md-2 col-md-offset-6 col-lg-2 col-lg-offset-6">
 							  	<form class="form-inline">
 							        <div class="form-group" style="float: right;">
 							        	<div class="input-group">
@@ -183,17 +183,9 @@ app.controller('quoteController',['$scope','$http',function($scope, $http){
 												<a ng-if="qq.PostStatus != 'Converted'" href="#" ng-click="deleteQuote(qq.saleId)"><button type="button" class="btn btn-xs" data-toggle="tooltip" title="delete"><i class="fa fa-trash text-danger"></i></button></a>
 											</td>
 										</tr>
-										<tr>
-											<td colspan="8" class="pull-rigth">
-												 <dir-pagination-controls
-											       max-size="pageSize.row"
-											       direction-links="true"
-											       boundary-links="true" >
-											    </dir-pagination-controls> 
-											</td>
-										</tr>
 									</table>
 								</div>	
+								<dir-pagination-controls max-size="pageSize.row" direction-links="true" boundary-links="true" ></dir-pagination-controls> 
 							</div>
 						</div>
 				 	</div>

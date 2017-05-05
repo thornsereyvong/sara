@@ -20,15 +20,11 @@ import org.springframework.web.client.RestTemplate;
 
 import com.app.entities.CrmTask;
 import com.app.entities.MeDataSource;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
 @RequestMapping(value="/")
 public class CrmTaskController {
-	
-	@Autowired
-	private ObjectMapper objectMapper;
 	
 	@Autowired
 	private RestTemplate  restTemplate;

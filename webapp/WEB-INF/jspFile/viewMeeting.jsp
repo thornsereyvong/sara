@@ -17,7 +17,7 @@ var self = this;
 var username = "${SESSION}";
 var server = "${pageContext.request.contextPath}";
 var meetId = "${meetId}";
-app.controller('viewMeetController',['$scope','$http',function($scope, $http){
+app.controller('viewMeetController',['$scope','$http','$sce',function($scope, $http, $sce){
 	$scope.startupView = function(){				
 		$http.get("${pageContext.request.contextPath}/meeting/list/"+meetId).success(function(response){
 			$scope.meet = response.DATA;
@@ -29,9 +29,13 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 			}
 		});
 	}
+	
+	$scope.getAudioUrl = function(val){
+		var audioUrl = '${pageContext.request.contextPath}/file/get?path='+val;
+		$scope.audioUrl = $sce.trustAsResourceUrl(audioUrl);
+	}
 }]);
-
-
+ 
 </script>
 
 <script>
@@ -56,6 +60,10 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
             map.panTo(new google.maps.LatLng(parseFloat(latitude),parseFloat(longitude)));
 		})
   }
+  
+  $(document).ready(function() {
+	  $(".fancybox").fancybox();
+  });
 </script>
 <style>
 .panel-heading1 h4 {
@@ -256,7 +264,7 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 							src="${pageContext.request.contextPath}/resources/images/module/Meeting.png"
 							alt="User Avatar">
 					</div>
-					<div class="box-footer">
+					<div class="box-footer ng-cloak">
 						<div class="row">
 							<div class="col-md-12">
 								<div class="nav-tabs-custom">
@@ -266,7 +274,9 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 										<li class=""><a href="#checkedin_location_tap" data-toggle="tab"
 											aria-expanded="true">Check In Location</a></li>	
 										<li class=""><a href="#systemInfo_tap" data-toggle="tab"
-											aria-expanded="false">System Information</a></li>										
+											aria-expanded="false">System Information</a></li>
+										<li class=""><a href="#attachment_tap" data-toggle="tab"
+											aria-expanded="false">Attachment</a></li>									
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane in active" id="detail_tap">
@@ -562,6 +572,52 @@ app.controller('viewMeetController',['$scope','$http',function($scope, $http){
 												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 													<div style="height: 500px;">
 														<div id="map"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+										<div class="tab-pane" id="attachment_tap" class="ng-cloak">
+											<div class="row">
+												<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+													<div class="row">
+														<div class="col-xs-12 col-sm-12">
+															<div class="panel panel-info">
+															  <div class="panel-heading">
+															    <h3 class="panel-title">Images</h3>
+															  </div>
+															  <div class="panel-body">
+															    <div ng-repeat="img in meet.images" class="img-responsive">
+																	<div class="col-sm-3">
+																		<a class="fancybox thumbnail" href="${pageContext.request.contextPath}/file/get?path={{img.imgPath}}">
+																			<img ng-if="meet.images != null" class="img-thumbnail" ng-src="${pageContext.request.contextPath}/file/get?path={{img.imgPath}}">
+																		</a>
+																	</div>
+																</div>
+															  </div>
+															</div>
+														</div>
+														<div class="col-xs-12"></div>
+														<div class="col-xs-12 col-sm-12">
+															<div class="row"> 
+																<div class="col-sm-12">
+																	<div class="panel panel-info">
+																	  <div class="panel-heading">
+																	    <h3 class="panel-title">Audio</h3>
+																	  </div>
+																	  <div class="panel-body">
+																	    <div ng-repeat="au in meet.audio">
+																			<div data-ng-init="getAudioUrl(au.audioPath)">
+																				<audio controls  >
+																					<source ng-src="{{audioUrl}}" type="audio/mpeg">
+																				</audio>
+																			</div>
+																		</div>
+																	  </div>
+																	</div>
+																</div>
+															</div>
+														</div>	
 													</div>
 												</div>
 											</div>
